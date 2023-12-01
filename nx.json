@@ -1,0 +1,23 @@
+{
+  "implicitDependencies": {
+    ".prettierrc.js": "*",
+    "package.json": "*",
+    "tsconfig.json": "*",
+    "eslintrc.js": "*",
+    "nx.json": "*"
+  },
+  "targetDefaults": {
+    "build": {
+      "cache": true,
+      "dependsOn": [
+        "^build"
+      ]
+    },
+    "lint": {
+      "cache": true
+    },
+    "e2e": {
+      "cache": true
+    }
+  }
+}
