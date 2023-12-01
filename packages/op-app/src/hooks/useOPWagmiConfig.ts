@@ -1,5 +1,6 @@
 import { predeploys } from '@eth-optimism/contracts-ts'
 import { useMemo } from 'react'
+import type { Config} from 'wagmi';
 import { useConfig } from 'wagmi'
 
 import { deploymentAddresses } from '../configs/deploymentAddresses'
@@ -9,7 +10,7 @@ export const useOPWagmiConfig = () => {
     const config = useConfig()
     const { currentNetworkPair } = useNetworkPair()
 
-    const opConfig = useMemo(() => {
+    const opConfig = useMemo<Config | undefined>(() => {
         if (!currentNetworkPair) {
             return
         }
@@ -57,7 +58,7 @@ export const useOPWagmiConfig = () => {
                     },
                 },
             },
-        }
+        } as Config // we typecase to Config here, because op-wagmi for now is missing the OpConfig export
     }, [config, currentNetworkPair])
 
     return { opConfig }
