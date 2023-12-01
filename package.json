@@ -1,0 +1,18 @@
+{
+  "name": "ecosystem",
+  "version": "0.0.0",
+  "license": "MIT",
+  "scripts": {
+    "create:app": "cd apps && pnpm create vite --template=react-ts ",
+    "create:react:library": "cd packages && pnpm create vite --template=react-ts "
+  },
+  "private": true,
+  "devDependencies": {
+    "@nx/js": "17.1.3",
+    "eslint-config-react-app": "^7.0.1",
+    "eslint-plugin-jsdoc": "^46.9.0",
+    "eslint-plugin-simple-import-sort": "^10.0.0",
+    "eslint-plugin-storybook": "^0.6.15",
+    "nx": "17.1.3"
+  }
+}

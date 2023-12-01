@@ -1,0 +1,27 @@
+# dependencies
+**/node_modules
+/.pnp
+packages/*/.env
+.npmrc
+
+.vscode
+
+# testing
+/coverage
+
+# build artifacts
+**/build/
+**/tsconfig.tsbuildinfo
+.nx
+
+# misc
+.DS_Store
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+npm-debug.log*
+
+#storybook
+**/storybook-static/
