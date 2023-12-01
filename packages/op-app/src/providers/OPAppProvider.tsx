@@ -11,8 +11,6 @@ import { NetworkProvider } from './NetworkProvider'
 
 export type OPAppProviderProps = {
     type?: NetworkType
-    infuraApiKey?: string
-    alchemyApiKey?: string
     wagmiConfig?: CreateConfigParameters
     connectors?: CreateConnectorFn[]
     children: React.ReactNode
@@ -21,8 +19,6 @@ export type OPAppProviderProps = {
 type CreateWagmiConfig = {
     type: NetworkType
     connectors?: CreateConnectorFn[]
-    infuraApiKey?: string
-    alchemyApiKey?: string
 }
 
 const queryClient = new QueryClient() 
@@ -53,15 +49,13 @@ export const OPAppProvider = ({
     children,
     connectors,
     wagmiConfig,
-    infuraApiKey,
-    alchemyApiKey,
     type = 'op',
 }: OPAppProviderProps) => {
     const config = useMemo<Config>(() => {
         if (!type && !wagmiConfig) {
             throw new Error('type of wagmiConfig must be supplied')
         }
-        return wagmiConfig ? createConfig(wagmiConfig) : createWagmiConfigFromType({ type, alchemyApiKey, infuraApiKey, connectors })
+        return wagmiConfig ? createConfig(wagmiConfig) : createWagmiConfigFromType({ type, connectors })
     }, [type, wagmiConfig])
 
     return (
