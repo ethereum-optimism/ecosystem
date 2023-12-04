@@ -1,6 +1,6 @@
 import { useOPNetworkContext } from './useOPNetworkContext'
 
 export const useIsNetworkUnsupported = () => {
-    const { isCurrentNetworkUnsupported } = useOPNetworkContext()
-    return { isCurrentNetworkUnsupported }
+  const { isCurrentNetworkUnsupported } = useOPNetworkContext()
+  return { isCurrentNetworkUnsupported }
 }

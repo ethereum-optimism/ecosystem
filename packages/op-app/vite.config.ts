@@ -10,7 +10,10 @@ export default defineConfig({
   plugins: [react()],
   build: {
     lib: {
-      entry: resolve(__dirname, process.env.MODE === 'development' ? TEST_APP_ENTRY : PROD_ENTRY),
+      entry: resolve(
+        __dirname,
+        process.env.MODE === 'development' ? TEST_APP_ENTRY : PROD_ENTRY,
+      ),
       name: 'op-app',
     },
     rollupOptions: {

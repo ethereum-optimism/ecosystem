@@ -4,24 +4,24 @@ import { useSwitchChain } from 'wagmi'
 import type { NetworkDirection, NetworkPair } from '../types'
 
 export type SwitchNetworkPairArgs = {
-    networkPair: NetworkPair
-    direction: NetworkDirection
+  networkPair: NetworkPair
+  direction: NetworkDirection
 }
 
 export const useSwitchNetworkDirection = ({
-    networkPair,
-    direction,
+  networkPair,
+  direction,
 }: SwitchNetworkPairArgs) => {
-    const { error, status, switchChain } = useSwitchChain()
+  const { error, status, switchChain } = useSwitchChain()
 
-    const switchNetworkPair = useCallback(() => {
-        const { l1, l2 } = networkPair
-        switchChain?.({ chainId: direction === 'l1' ? l1.id : l2.id })
-    }, [direction, networkPair, switchChain])
+  const switchNetworkPair = useCallback(() => {
+    const { l1, l2 } = networkPair
+    switchChain?.({ chainId: direction === 'l1' ? l1.id : l2.id })
+  }, [direction, networkPair, switchChain])
 
-    return {
-        error,
-        isLoading: status === 'pending',
-        switchNetworkPair,
-    }
+  return {
+    error,
+    isLoading: status === 'pending',
+    switchNetworkPair,
+  }
 }
