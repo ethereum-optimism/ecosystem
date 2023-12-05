@@ -1,0 +1,7 @@
+{
+    "networks": [
+        "mainnet",
+        "goerli",
+        "sepolia"
+    ]
+}
