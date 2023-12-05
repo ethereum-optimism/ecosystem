@@ -1,13 +1,17 @@
+import './App.css'
+
 import { useCallback, useEffect, useState } from 'react'
 import { formatEther } from 'viem'
 import type { Connector } from 'wagmi'
 import { useAccount, useConnect } from 'wagmi'
 import { walletConnect } from 'wagmi/connectors'
 
+import type { NetworkType } from '..'
+import { networkPairsByGroup } from '..'
 import { useIsNetworkUnsupported } from '../hooks/useIsNetworkUnsupported'
 import { useL1PublicClient } from '../hooks/useL1PublicClient'
 import { useL2PublicClient } from '../hooks/useL2PublicClient'
-import { useNetworkPair } from '../hooks/useNetworkPair'
+import { useOPNetwork } from '../hooks/useOPNetwork'
 import { OPAppProvider } from '../providers/OPAppProvider'
 
 const connectors = [
@@ -15,16 +19,19 @@ const connectors = [
 ]
 
 const Demo = () => {
+  const [chainId, setChainId] = useState<number | undefined>(undefined)
+  const [type, setNetworkType] = useState<NetworkType>('op')
+
   const [l1Balance, setL1Balance] = useState<bigint | undefined>(undefined)
   const [l2Balance, setL2Balance] = useState<bigint | undefined>(undefined)
 
-  const { address, chain } = useAccount()
-  const { currentNetworkPair } = useNetworkPair()
-  const { isCurrentNetworkUnsupported } = useIsNetworkUnsupported()
+  const { address } = useAccount()
+  const { networkPair } = useOPNetwork({ type, chainId })
+  const { isUnsupported } = useIsNetworkUnsupported()
   const { connect, connectors } = useConnect()
 
-  const { l1PublicClient } = useL1PublicClient()
-  const { l2PublicClient } = useL2PublicClient()
+  const { l1PublicClient } = useL1PublicClient({ type, chainId })
+  const { l2PublicClient } = useL2PublicClient({ type, chainId })
 
   const onConnectWallet = useCallback(
     (connector: Connector) => {
@@ -48,11 +55,10 @@ const Demo = () => {
 
   const networkInfo = (
     <div>
-      <h1>Current Network: {chain?.name ?? 'Not Connected'}</h1>
       <h2>
         Network Pair
-        <div>L1: {currentNetworkPair?.l1.name}</div>
-        <div>L2: {currentNetworkPair?.l2.name}</div>
+        <div>L1: {networkPair?.l1.name}</div>
+        <div>L2: {networkPair?.l2.name}</div>
       </h2>
       <h2>
         <div>Account: {address}</div>
@@ -62,9 +68,27 @@ const Demo = () => {
     </div>
   )
 
+  const groupTypes = Object.keys(networkPairsByGroup).map((group) => {
+    return (
+      <button key={group} onClick={() => setNetworkType(group as NetworkType)}>
+        {group}
+      </button>
+    )
+  })
+
+  const networkTypes = Object.values(networkPairsByGroup[type] ?? []).map(
+    ([l1, l2]) => {
+      return (
+        <button key={l2.id} onClick={() => setChainId(l1.id)}>
+          {l1.name}/{l2.name}
+        </button>
+      )
+    },
+  )
   return (
-    <div>
-      <center>
+    <div className="app">
+      <div className="row">
+        Connectors:
         {connectors.map((connector) => (
           <button
             key={connector.uid}
@@ -73,18 +97,22 @@ const Demo = () => {
             {connector.name}
           </button>
         ))}
-        {isCurrentNetworkUnsupported ? (
-          <h1>Network Not Supported by App</h1>
-        ) : (
-          networkInfo
-        )}
-      </center>
+      </div>
+      <div className="row">
+        Chains:
+        {groupTypes}
+      </div>
+      <div className="row">
+        Supported Networks:
+        {networkTypes}
+      </div>
+      {isUnsupported ? <h1>Network Not Supported by App</h1> : networkInfo}
     </div>
   )
 }
 
 const App = () => (
-  <OPAppProvider type="base" connectors={connectors}>
+  <OPAppProvider connectors={connectors}>
     <Demo />
   </OPAppProvider>
 )

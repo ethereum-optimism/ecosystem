@@ -4,18 +4,23 @@ import type { Config } from 'wagmi'
 import { useConfig } from 'wagmi'
 
 import { deploymentAddresses } from '../configs/deploymentAddresses'
-import { useNetworkPair } from './useNetworkPair'
+import type { NetworkType } from '../types'
+import { useOPNetwork } from './useOPNetwork'
 
-export const useOPWagmiConfig = () => {
+export type UseOPWagmiConfigArgs = {
+  type: NetworkType
+}
+
+export const useOPWagmiConfig = ({ type }: UseOPWagmiConfigArgs) => {
   const config = useConfig()
-  const { currentNetworkPair } = useNetworkPair()
+  const { networkPair } = useOPNetwork({ type })
 
   const opConfig = useMemo<Config | undefined>(() => {
-    if (!currentNetworkPair) {
+    if (!networkPair) {
       return
     }
 
-    const { l1, l2 } = currentNetworkPair
+    const { l1, l2 } = networkPair
     const deploymentAddress = deploymentAddresses[l2.id]
 
     return {
@@ -59,7 +64,7 @@ export const useOPWagmiConfig = () => {
         },
       },
     } as Config // we typecase to Config here, because op-wagmi for now is missing the OpConfig export
-  }, [config, currentNetworkPair])
+  }, [config, networkPair])
 
   return { opConfig }
 }

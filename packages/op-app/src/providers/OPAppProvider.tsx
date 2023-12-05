@@ -7,36 +7,44 @@ import { createConfig, http, WagmiProvider } from 'wagmi'
 
 import { networkPairsByGroup } from '../configs/networkPairs'
 import type { NetworkType } from '../types'
-import { NetworkProvider } from './NetworkProvider'
 
 export type OPAppProviderProps = {
-  type?: NetworkType
   wagmiConfig?: CreateConfigParameters
   connectors?: CreateConnectorFn[]
+  defaultChainId?: number
   children: React.ReactNode
 }
 
 type CreateWagmiConfig = {
-  type: NetworkType
+  defaultChainId?: number
   connectors?: CreateConnectorFn[]
 }
 
 const queryClient = new QueryClient()
 
 const createWagmiConfigFromType = ({
-  type,
   connectors,
+  defaultChainId,
 }: CreateWagmiConfig): Config => {
   let supportedChains = [] as Chain[]
 
-  if (networkPairsByGroup[type]) {
-    supportedChains = Object.values(networkPairsByGroup[type]).flat()
-  } else {
-    throw new Error('NetworkType not found!')
+  const networkTypes = Object.keys(networkPairsByGroup) as NetworkType[]
+  for (const type of networkTypes) {
+    const networks = Object.values(networkPairsByGroup[type]).flat()
+    supportedChains = supportedChains.concat(networks)
   }
 
+  const defaultChain = (
+    defaultChainId
+      ? supportedChains.find((chain) => chain.id === defaultChainId)
+      : supportedChains[0]
+  ) as Chain
+  const allOtherChains = defaultChain
+    ? supportedChains.filter((chain) => chain.id !== defaultChainId)
+    : supportedChains.slice(1)
+
   return createConfig({
-    chains: [supportedChains[0], ...supportedChains.slice(1)],
+    chains: [defaultChain, ...allOtherChains],
     connectors: connectors,
     transports: supportedChains.reduce(
       (acc, chain) => {
@@ -51,23 +59,18 @@ const createWagmiConfigFromType = ({
 export const OPAppProvider = ({
   children,
   connectors,
+  defaultChainId,
   wagmiConfig,
-  type = 'op',
 }: OPAppProviderProps) => {
   const config = useMemo<Config>(() => {
-    if (!type && !wagmiConfig) {
-      throw new Error('type of wagmiConfig must be supplied')
-    }
     return wagmiConfig
       ? createConfig(wagmiConfig)
-      : createWagmiConfigFromType({ type, connectors })
-  }, [connectors, type, wagmiConfig])
+      : createWagmiConfigFromType({ connectors, defaultChainId })
+  }, [connectors, defaultChainId, wagmiConfig])
 
   return (
     <WagmiProvider reconnectOnMount config={config}>
-      <QueryClientProvider client={queryClient}>
-        <NetworkProvider type={type}>{children}</NetworkProvider>
-      </QueryClientProvider>
+      <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
     </WagmiProvider>
   )
 }
