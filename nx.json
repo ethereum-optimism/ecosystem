@@ -1,4 +1,5 @@
 {
+  "$schema": "./node_modules/nx/schemas/nx-schema.json",
   "implicitDependencies": {
     ".prettierrc.js": "*",
     "package.json": "*",
