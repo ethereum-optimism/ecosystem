@@ -1,9 +1,17 @@
 import './App.css'
 
-import { useCallback, useEffect, useState } from 'react'
-import { formatEther } from 'viem'
-import type { Connector } from 'wagmi'
-import { useAccount, useConnect } from 'wagmi'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { useCallback, useEffect, useMemo, useState } from 'react'
+import type { Chain, Transport } from 'viem'
+import { formatEther, http } from 'viem'
+import type { Config, Connector } from 'wagmi'
+import {
+  createConfig,
+  useAccount,
+  useConfig,
+  useConnect,
+  WagmiProvider,
+} from 'wagmi'
 import { walletConnect } from 'wagmi/connectors'
 
 import type { NetworkType } from '..'
@@ -12,32 +20,57 @@ import { useIsNetworkUnsupported } from '../hooks/useIsNetworkUnsupported'
 import { useL1PublicClient } from '../hooks/useL1PublicClient'
 import { useL2PublicClient } from '../hooks/useL2PublicClient'
 import { useOPNetwork } from '../hooks/useOPNetwork'
-import { OPAppProvider } from '../providers/OPAppProvider'
+import { configureOpChains } from '../utils'
+
+type DemoProps = {
+  type: NetworkType
+  defaultChainId: number
+  onNetworkTypeChange: (type: NetworkType) => void
+}
 
 const connectors = [
   walletConnect({ projectId: 'e9c485da698064d6df5c19c5d12a845c' }),
 ]
 
-const Demo = () => {
-  const [chainId, setChainId] = useState<number | undefined>(undefined)
-  const [type, setNetworkType] = useState<NetworkType>('op')
+const queryClient = new QueryClient()
 
+const Demo = ({ type, onNetworkTypeChange }: DemoProps) => {
+  const config = useConfig()
+
+  const [chainId, setChainId] = useState<number | undefined>()
   const [l1Balance, setL1Balance] = useState<bigint | undefined>(undefined)
   const [l2Balance, setL2Balance] = useState<bigint | undefined>(undefined)
 
   const { address } = useAccount()
-  const { networkPair } = useOPNetwork({ type, chainId })
+  const { networkPair } = useOPNetwork({
+    type,
+    chainId: chainId ?? config.chains[0].id,
+  })
   const { isUnsupported } = useIsNetworkUnsupported()
   const { connect, connectors } = useConnect()
 
-  const { l1PublicClient } = useL1PublicClient({ type, chainId })
-  const { l2PublicClient } = useL2PublicClient({ type, chainId })
+  const { l1PublicClient } = useL1PublicClient({
+    type,
+    chainId: networkPair.l1.id,
+  })
+  const { l2PublicClient } = useL2PublicClient({
+    type,
+    chainId: networkPair.l2.id,
+  })
 
   const onConnectWallet = useCallback(
     (connector: Connector) => {
       connect({ connector })
     },
     [connect],
+  )
+
+  const onChangeNetwork = useCallback(
+    (networkType: NetworkType) => {
+      setChainId(undefined)
+      onNetworkTypeChange(networkType)
+    },
+    [setChainId, onNetworkTypeChange],
   )
 
   useEffect(() => {
@@ -70,7 +103,7 @@ const Demo = () => {
 
   const groupTypes = Object.keys(networkPairsByGroup).map((group) => {
     return (
-      <button key={group} onClick={() => setNetworkType(group as NetworkType)}>
+      <button key={group} onClick={() => onChangeNetwork(group as NetworkType)}>
         {group}
       </button>
     )
@@ -111,10 +144,45 @@ const Demo = () => {
   )
 }
 
-const App = () => (
-  <OPAppProvider connectors={connectors}>
-    <Demo />
-  </OPAppProvider>
-)
+const App = () => {
+  const [networkType, setNetworkType] = useState<NetworkType>('op')
+
+  const opChains = useMemo<[Chain, ...Chain[]]>(() => {
+    return configureOpChains({ type: networkType })
+  }, [networkType])
+
+  const config = useMemo<Config>(() => {
+    return createConfig({
+      chains: opChains,
+      connectors,
+      transports: opChains.reduce(
+        (acc, chain) => {
+          acc[chain.id] = http()
+          return acc
+        },
+        {} as Record<number, Transport>,
+      ),
+    })
+  }, [opChains])
+
+  const onNetworkTypeChange = useCallback(
+    (type: NetworkType) => {
+      setNetworkType(type)
+    },
+    [setNetworkType],
+  )
+
+  return (
+    <WagmiProvider config={config}>
+      <QueryClientProvider client={queryClient}>
+        <Demo
+          defaultChainId={opChains[0].id}
+          type={networkType}
+          onNetworkTypeChange={onNetworkTypeChange}
+        />
+      </QueryClientProvider>
+    </WagmiProvider>
+  )
+}
 
 export default App
