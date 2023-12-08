@@ -1,6 +1,7 @@
 {
   "name": "op-app",
   "private": true,
+  "main": "dist/op-app",
   "version": "0.0.0",
   "scripts": {
     "dev": "vite -m development",
