@@ -68,6 +68,9 @@ importers:
       op-app:
         specifier: '*'
         version: link:../../packages/op-app
+      prettier:
+        specifier: ^3.1.0
+        version: 3.1.0
       react:
         specifier: ^18.2.0
         version: 18.2.0
@@ -141,9 +144,6 @@ importers:
       '@tanstack/react-query':
         specifier: ^5.10.0
         version: 5.10.0(react@18.2.0)
-      lucide-react:
-        specifier: ^0.294.0
-        version: 0.294.0(react@18.2.0)
       op-viem:
         specifier: 1.1.0
         version: 1.1.0(@wagmi/core@2.0.0-beta.5)(typescript@5.3.2)(viem@1.19.9)(wagmi@2.0.0-beta.5)

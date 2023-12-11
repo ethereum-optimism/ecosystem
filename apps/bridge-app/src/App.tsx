@@ -1,5 +1,5 @@
-import './globals.css'
-import logo from './assets/logo.svg'
+import '@/globals.css'
+import logo from '@/assets/logo.svg'
 
 import { RouterProvider, Outlet, createBrowserRouter } from 'react-router-dom'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'

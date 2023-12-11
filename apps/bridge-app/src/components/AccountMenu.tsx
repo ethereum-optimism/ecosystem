@@ -1,17 +1,21 @@
 import { useAccount, useDisconnect } from 'wagmi'
+import { useCallback } from 'react'
+import { ExternalLink } from 'lucide-react'
 
 import { shortenAddress, useOPNetwork } from 'op-app'
 
 import { Button } from '@/components/ui/button'
 import { ConnectButton } from '@/components/ConnectButton'
-
 import { useTheme } from '@/providers/ThemeProvider'
 import { AccountAvatar } from '@/components/AccountAvatar'
-import { NetworkSelector } from './NetworkSelector'
-import { Dialog, DialogContent, DialogHeader, DialogTrigger } from './ui/dialog'
-import { Separator } from './ui/separator'
-import { useCallback } from 'react'
-import { ExternalLink } from 'lucide-react'
+import { NetworkSelector } from '@/components/NetworkSelector'
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTrigger,
+} from '@/components/ui/dialog'
+import { Separator } from '@/components/ui/separator'
 
 export const AccountMenu = () => {
   const { address, chain } = useAccount()
