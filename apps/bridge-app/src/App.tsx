@@ -14,6 +14,7 @@ import { connectors } from '@/constants/connectors'
 import { ThemeProvider } from '@/providers/ThemeProvider'
 import { HeaderLeft } from '@/components/header/HeaderLeft'
 import { HeaderRight } from '@/components/header/HeaderRight'
+import { NETWORK_TYPE } from '@/constants/networkType'
 
 const classNames = {
   app: 'app w-full min-h-screen flex flex-col',
@@ -25,7 +26,7 @@ type ProviderProps = {
 
 const queryClient = new QueryClient()
 
-const opChains = configureOpChains({ type: 'op' })
+const opChains = configureOpChains({ type: NETWORK_TYPE })
 
 const wagmiConfig = createConfig({
   chains: opChains,
@@ -40,7 +41,7 @@ const wagmiConfig = createConfig({
 })
 
 const Providers = ({ children }: ProviderProps) => (
-  <WagmiProvider config={wagmiConfig}>
+  <WagmiProvider reconnectOnMount config={wagmiConfig}>
     <QueryClientProvider client={queryClient}>
       <ThemeProvider>{children}</ThemeProvider>
     </QueryClientProvider>
@@ -67,7 +68,8 @@ const router = createBrowserRouter([
     path: '/',
     element: <AppRoot />,
     children: [
-      { index: true, path: '/deposit', element: <Bridge action="deposit" /> },
+      { path: '/', element: <Bridge action="deposit" /> },
+      { path: '/deposit', element: <Bridge action="deposit" /> },
       { path: '/withdrawal', element: <Bridge action="withdrawal" /> },
     ],
   },

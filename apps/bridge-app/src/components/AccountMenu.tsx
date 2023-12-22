@@ -16,10 +16,14 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog'
 import { Separator } from '@/components/ui/separator'
+import { NETWORK_TYPE } from '@/constants/networkType'
 
 export const AccountMenu = () => {
   const { address, chain } = useAccount()
-  const { networkPair } = useOPNetwork({ type: 'op', chainId: chain?.id })
+  const { networkPair } = useOPNetwork({
+    type: NETWORK_TYPE,
+    chainId: chain?.id,
+  })
   const { theme } = useTheme()
   const { disconnect } = useDisconnect()
 

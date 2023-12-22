@@ -37,3 +37,18 @@ export type OPNetworkContextValue = {
   isCurrentNetworkUnsupported?: boolean | undefined
   supportedChains?: Record<string, Chain>
 }
+
+export type Token = {
+  chainId: number
+  address: Address
+  name: string
+  symbol: string
+  decimals: number
+  logoURI: string
+  extensions: {
+    optimismBridgeAddress: Address
+    opListId: string
+    opTokenId: string
+  }
+}
+

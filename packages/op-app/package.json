@@ -13,17 +13,14 @@
   },
   "dependencies": {
     "@eth-optimism/contracts-ts": "^0.17.0",
-    "@tanstack/react-query": "^5.10.0",
-    "op-viem": "1.1.0",
-    "op-wagmi": "^0.2.2",
+    "@eth-optimism/tokenlist": "^9.0.12",
     "prettier": "^3.1.0",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "viem": "1.19.9",
-    "wagmi": "2.0.0-beta.5"
+    "react-dom": "^18.2.0"
   },
   "devDependencies": {
     "@eth-optimism/superchain-registry": "github:ethereum-optimism/superchain-registry",
+    "@tanstack/react-query": "^5.10.0",
     "@types/node": "^20.10.0",
     "@types/react": "^18.2.37",
     "@types/react-dom": "^18.2.15",
@@ -35,8 +32,19 @@
     "eslint-plugin-react-refresh": "^0.4.4",
     "eta": "^3.1.1",
     "node-fetch": "^3.3.2",
+    "op-viem": "1.1.0",
+    "op-wagmi": "^0.2.2",
     "ts-node": "^10.9.1",
     "typescript": "^5.2.2",
-    "vite": "^5.0.0"
+    "viem": "1.19.9",
+    "vite": "^5.0.0",
+    "wagmi": "2.0.0-beta.5"
+  },
+  "peerDependencies": {
+    "@tanstack/react-query": "^5.10.0",
+    "op-viem": "1.1.0",
+    "op-wagmi": "^0.2.2",
+    "viem": "1.19.9",
+    "wagmi": "2.0.0-beta.5"
   }
 }

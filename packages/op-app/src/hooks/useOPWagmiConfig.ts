@@ -9,11 +9,12 @@ import { useOPNetwork } from './useOPNetwork'
 
 export type UseOPWagmiConfigArgs = {
   type: NetworkType
+  chainId?: number
 }
 
-export const useOPWagmiConfig = ({ type }: UseOPWagmiConfigArgs) => {
+export const useOPWagmiConfig = ({ type, chainId }: UseOPWagmiConfigArgs) => {
   const config = useConfig()
-  const { networkPair } = useOPNetwork({ type })
+  const { networkPair } = useOPNetwork({ type, chainId })
 
   const opConfig = useMemo<Config | undefined>(() => {
     if (!networkPair) {
@@ -53,11 +54,11 @@ export const useOPWagmiConfig = ({ type }: UseOPWagmiConfigArgs) => {
           },
           l2Addresses: {
             l2L1MessagePasserAddress: {
-              address: predeploys.L2ToL1MessagePasser,
+              address: predeploys.L2ToL1MessagePasser.address,
               chainId: l2.id,
             },
             l2StandardBridge: {
-              address: predeploys.L2StandardBridge,
+              address: predeploys.L2StandardBridge.address,
               chainId: l2.id,
             },
           },
