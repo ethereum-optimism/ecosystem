@@ -9,7 +9,9 @@ export type UseSwitchNetworkPairArgs = {
   direction: NetworkDirection
 }
 
-export type UseSwitchNetworkPairReturnType = (args: UseSwitchNetworkPairArgs) => {
+export type UseSwitchNetworkPairReturnType = (
+  args: UseSwitchNetworkPairArgs,
+) => {
   error: SwitchChainErrorType | null
   isLoading: boolean
   switchNetworkPair: () => void

@@ -51,4 +51,3 @@ export type Token = {
     opTokenId: string
   }
 }
-
