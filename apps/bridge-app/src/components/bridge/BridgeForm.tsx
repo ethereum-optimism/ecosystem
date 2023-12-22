@@ -1,5 +1,5 @@
 import { Chain } from 'viem'
-import { useOPTokens, Token } from 'op-app'
+import { useOPTokens, Token } from '@eth-optimism/op-app'
 import { BridgeReviewButton } from '@/components/bridge/BridgeReviewButton'
 import { From } from '@/components/bridge/From'
 import { To } from '@/components/bridge/To'

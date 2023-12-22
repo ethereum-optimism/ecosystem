@@ -1,7 +1,7 @@
 import { Chain, formatUnits } from 'viem'
 import { Label } from '@/components/ui/label'
 
-import type { Token } from 'op-app'
+import type { Token } from '@eth-optimism/op-app'
 import { useAccount, useBalance } from 'wagmi'
 import { useMemo } from 'react'
 import { Skeleton } from '@/components/ui/skeleton'

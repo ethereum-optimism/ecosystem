@@ -11,7 +11,7 @@ import { Separator } from '@/components/ui/separator'
 import { Check } from 'lucide-react'
 import { Chain } from 'viem'
 import { useCallback, useState } from 'react'
-import { networkPairsByID } from 'op-app'
+import { networkPairsByID } from '@eth-optimism/op-app'
 
 import l1AssetLogo from '@/assets/l1-asset-logo.png'
 import l2AssetLogo from '@/assets/l2-asset-logo.png'
