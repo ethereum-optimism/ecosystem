@@ -1,6 +1,6 @@
 {
   "name": "ecosystem",
-  "version": "0.0.0",
+  "author": "Optimism PBC",
   "license": "MIT",
   "scripts": {
     "create:app": "cd apps && pnpm create vite --template=react-ts ",
