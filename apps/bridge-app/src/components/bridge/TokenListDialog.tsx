@@ -1,4 +1,4 @@
-import { useOPTokens, Token } from 'op-app'
+import { useOPTokens, Token } from '@eth-optimism/op-app'
 import { useCallback, useMemo, useState } from 'react'
 import {
   Dialog,

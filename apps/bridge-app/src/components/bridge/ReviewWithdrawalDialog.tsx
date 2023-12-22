@@ -5,8 +5,8 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog'
 import { useWriteWithdrawERC20, useWriteWithdrawETH } from 'op-wagmi'
-import type { Token } from 'op-app'
-import { useOPWagmiConfig } from 'op-app'
+import type { Token } from '@eth-optimism/op-app'
+import { useOPWagmiConfig } from '@eth-optimism/op-app'
 import { Button } from '@/components/ui/button'
 import {
   Address,

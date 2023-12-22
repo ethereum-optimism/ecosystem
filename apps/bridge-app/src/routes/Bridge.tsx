@@ -1,4 +1,4 @@
-import { useOPNetwork } from 'op-app'
+import { useOPNetwork } from '@eth-optimism/op-app'
 
 import { Card, CardContent } from '@/components/ui/card'
 

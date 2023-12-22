@@ -1,6 +1,6 @@
 import { Chain, formatUnits, parseEther } from 'viem'
 
-import type { Token } from 'op-app'
+import type { Token } from '@eth-optimism/op-app'
 
 import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'

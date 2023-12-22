@@ -2,7 +2,7 @@ import { useAccount, useDisconnect } from 'wagmi'
 import { useCallback } from 'react'
 import { ExternalLink } from 'lucide-react'
 
-import { shortenAddress, useOPNetwork } from 'op-app'
+import { shortenAddress, useOPNetwork } from '@eth-optimism/op-app'
 
 import { Button } from '@/components/ui/button'
 import { ConnectButton } from '@/components/ConnectButton'

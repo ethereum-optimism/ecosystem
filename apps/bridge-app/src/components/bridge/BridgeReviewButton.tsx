@@ -1,6 +1,6 @@
-import type { NetworkPair, Token } from 'op-app'
+import type { NetworkPair, Token } from '@eth-optimism/op-app'
 
-import { useIsNetworkUnsupported, useSwitchNetworkDirection } from 'op-app'
+import { useIsNetworkUnsupported, useSwitchNetworkDirection } from '@eth-optimism/op-app'
 
 import { Button } from '@/components/ui/button'
 import { useAccount } from 'wagmi'

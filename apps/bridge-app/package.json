@@ -1,5 +1,5 @@
 {
-  "name": "bridge-app",
+  "name": "@eth-optimism/bridge-app",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -26,7 +26,7 @@
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.0.0",
     "lucide-react": "^0.294.0",
-    "op-app": "*",
+    "@eth-optimism/op-app": "*",
     "op-viem": "1.3.1-alpha",
     "op-wagmi": "^0.2.2",
     "prettier": "^3.1.0",

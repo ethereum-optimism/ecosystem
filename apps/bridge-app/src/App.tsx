@@ -6,7 +6,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { createConfig, http, WagmiProvider } from 'wagmi'
 
 import type { Chain, Transport } from 'viem'
-import { configureOpChains } from 'op-app'
+import { configureOpChains } from '@eth-optimism/op-app'
 
 import { Bridge } from '@/routes'
 import { Layout } from '@/components/Layout'
