@@ -3,6 +3,7 @@
   "compilerOptions": {
     "composite": true,
     "noEmit": false,
+    "emitDeclarationOnly": false,
     "allowSyntheticDefaultImports": true,
   },
   "include": ["vite.config.ts"]

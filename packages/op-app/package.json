@@ -1,12 +1,13 @@
 {
   "name": "op-app",
   "private": true,
-  "main": "dist/op-app",
+  "main": "dist/index",
+  "types": "dist/index.d.ts",
   "version": "0.0.0",
   "scripts": {
     "dev": "vite -m development",
-    "build": "tsc && vite build",
-    "typecheck": "tsc --noEmit",
+    "build": "tsup && pnpm tsc",
+    "typecheck": "tsc --noEmit --emitDeclarationOnly false",
     "lint": "eslint \"**/*.{ts,tsx}\" && pnpm prettier --check \"**/*.{ts,tsx}\"",
     "lint:fix": "eslint \"**/*.{ts,tsx}\" --fix --quiet && pnpm prettier \"**/*.{ts,tsx}\" --write --loglevel=warn",
     "codegen": "ts-node --esm ./scripts/codegen"
@@ -16,7 +17,8 @@
     "@eth-optimism/tokenlist": "^9.0.12",
     "prettier": "^3.1.0",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "tsup": "^8.0.1"
   },
   "devDependencies": {
     "@eth-optimism/superchain-registry": "github:ethereum-optimism/superchain-registry",
@@ -36,9 +38,9 @@
     "op-wagmi": "^0.2.2",
     "ts-node": "^10.9.1",
     "typescript": "^5.2.2",
-    "viem": "1.19.9",
+    "viem": "2.0.0-rc.1",
     "vite": "^5.0.0",
-    "wagmi": "2.0.0-beta.5"
+    "wagmi": "2.0.0-rc.0"
   },
   "peerDependencies": {
     "@tanstack/react-query": "^5.10.0",

@@ -62,7 +62,7 @@ export const NetworkSelector = () => {
     [switchChainAsync, setDialogOpen],
   )
 
-  const isL2 = Boolean(networkPairsByID[chain?.id])
+  const isL2 = Boolean(networkPairsByID[chain?.id ?? 0])
 
   return (
     <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>

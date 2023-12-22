@@ -62,7 +62,7 @@ export const AccountMenu = () => {
               <div className="my-3 w-full hover:bg-accent p-3">
                 <a
                   className="flex w-full items-center cursor-pointer"
-                  href={`${networkPair.l1.blockExplorers.default.url}/address/${address}`}
+                  href={`${networkPair.l1?.blockExplorers?.default?.url}/address/${address}`}
                   target="_blank"
                 >
                   View L1 Explorer <ExternalLink className="ml-1" size={20} />
@@ -71,7 +71,7 @@ export const AccountMenu = () => {
               <div className="w-full hover:bg-accent p-3">
                 <a
                   className="flex w-full items-center cursor-pointer"
-                  href={`${networkPair.l2.blockExplorers.default.url}/address/${address}`}
+                  href={`${networkPair.l2?.blockExplorers?.default?.url}/address/${address}`}
                   target="_blank"
                 >
                   View L2 Explorer <ExternalLink className="ml-1" size={20} />
