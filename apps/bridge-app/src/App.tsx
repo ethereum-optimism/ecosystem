@@ -5,7 +5,7 @@ import { RouterProvider, Outlet, createBrowserRouter } from 'react-router-dom'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { createConfig, http, WagmiProvider } from 'wagmi'
 
-import type { Transport } from 'viem'
+import type { Chain, Transport } from 'viem'
 import { configureOpChains } from 'op-app'
 
 import { Bridge } from '@/routes'
@@ -29,7 +29,7 @@ const queryClient = new QueryClient()
 const opChains = configureOpChains({ type: NETWORK_TYPE })
 
 const wagmiConfig = createConfig({
-  chains: opChains,
+  chains: opChains as readonly [Chain, ...Chain[]],
   connectors,
   transports: opChains.reduce(
     (acc, chain) => {

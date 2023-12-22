@@ -2,13 +2,16 @@ import { usePublicClient } from 'wagmi'
 
 import type { NetworkType } from '../types'
 import { useOPNetwork } from './useOPNetwork'
+import type { PublicClient } from 'viem'
 
 export type UseL1PublicClientArgs = {
   chainId?: number
   type: NetworkType
 }
 
-export const useL1PublicClient = ({ type, chainId }: UseL1PublicClientArgs) => {
+export type UseL1PublicClientReturnType = (args: UseL1PublicClientArgs) => { l1PublicClient: PublicClient }
+
+export const useL1PublicClient: UseL1PublicClientReturnType = ({ type, chainId }: UseL1PublicClientArgs) => {
   const { networkPair } = useOPNetwork({ type, chainId })
   const l1PublicClient = usePublicClient({ chainId: networkPair?.l1.id })
   return { l1PublicClient }

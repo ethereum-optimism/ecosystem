@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "declaration": true,
     "useUnknownInCatchVariables": false,
     "allowJs": true,
     "skipLibCheck": true,
@@ -10,6 +11,6 @@
     "noFallthroughCasesInSwitch": true,
     "moduleResolution": "node",
     "resolveJsonModule": true,
-    "isolatedModules": true,    
+    "isolatedModules": true,
   }
 }

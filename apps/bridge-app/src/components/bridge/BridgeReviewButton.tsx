@@ -4,7 +4,7 @@ import { useIsNetworkUnsupported, useSwitchNetworkDirection } from 'op-app'
 
 import { Button } from '@/components/ui/button'
 import { useAccount } from 'wagmi'
-import { parseEther } from 'viem'
+import { Chain, parseEther } from 'viem'
 import { ReviewDepositDialog } from '@/components/bridge/ReviewDepositDialog'
 import { ReviewWithdrawalDialog } from '@/components/bridge/ReviewWithdrawalDialog'
 
@@ -66,18 +66,18 @@ export const BridgeReviewButton = ({
 
   return action === 'deposit' ? (
     <ReviewDepositDialog
-      l1={networkPair.l1}
-      l2={networkPair.l2}
-      amount={amount}
+      l1={networkPair.l1 as Chain}
+      l2={networkPair.l2 as Chain}
+      amount={amount ?? '0'}
       disabled={shouldDisableReview}
       selectedTokenPair={selectedTokenPair}
       onSubmit={onSubmit}
     />
   ) : (
     <ReviewWithdrawalDialog
-      l1={networkPair.l1}
-      l2={networkPair.l2}
-      amount={amount}
+      l1={networkPair.l1 as Chain}
+      l2={networkPair.l2 as Chain}
+      amount={amount ?? '0'}
       disabled={shouldDisableReview}
       selectedTokenPair={selectedTokenPair}
       onSubmit={onSubmit}

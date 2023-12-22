@@ -1,17 +1,24 @@
 import { useCallback } from 'react'
 import { useSwitchChain } from 'wagmi'
+import type { SwitchChainErrorType } from 'wagmi/actions'
 
 import type { NetworkDirection, NetworkPair } from '../types'
 
-export type SwitchNetworkPairArgs = {
+export type UseSwitchNetworkPairArgs = {
   networkPair: NetworkPair
   direction: NetworkDirection
 }
 
-export const useSwitchNetworkDirection = ({
+export type UseSwitchNetworkPairReturnType = (args: UseSwitchNetworkPairArgs) => {
+  error: SwitchChainErrorType | null
+  isLoading: boolean
+  switchNetworkPair: () => void
+}
+
+export const useSwitchNetworkDirection: UseSwitchNetworkPairReturnType = ({
   networkPair,
   direction,
-}: SwitchNetworkPairArgs) => {
+}: UseSwitchNetworkPairArgs) => {
   const { error, status, switchChain } = useSwitchChain()
 
   const switchNetworkPair = useCallback(() => {
