@@ -1,0 +1,17 @@
+name: Setup
+runs:
+  using: composite
+  steps:
+    - uses: pnpm/action-setup@v2
+      with:
+        version: 8.6.5
+
+    - uses: actions/setup-node@v3
+      with:
+        node-version-file: '.nvmrc'
+        registry-url: https://registry.npmjs.org
+        cache: pnpm
+
+    - name: Pnpm install node modules
+      run: pnpm i --frozen-lockfile
+      shell: bash
