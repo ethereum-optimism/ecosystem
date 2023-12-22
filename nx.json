@@ -1,12 +1,5 @@
 {
   "$schema": "./node_modules/nx/schemas/nx-schema.json",
-  "implicitDependencies": {
-    ".prettierrc.js": "*",
-    "package.json": "*",
-    "tsconfig.json": "*",
-    "eslintrc.js": "*",
-    "nx.json": "*"
-  },
   "targetDefaults": {
     "build": {
       "cache": true,
@@ -20,5 +13,20 @@
     "e2e": {
       "cache": true
     }
+  },
+  "namedInputs": {
+    "default": [
+      "{projectRoot}/**/*",
+      "sharedGlobals"
+    ],
+    "sharedGlobals": [
+      "{workspaceRoot}/.prettierrc.js",
+      "{workspaceRoot}/tsconfig.json",
+      "{workspaceRoot}/eslintrc.js",
+      "{workspaceRoot}/nx.json"
+    ],
+    "production": [
+      "default"
+    ]
   }
 }

@@ -1,3 +1,5 @@
 build
 types
 node_modules
+
+/.nx/cache
