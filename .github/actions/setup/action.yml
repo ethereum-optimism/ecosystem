@@ -17,5 +17,5 @@ runs:
       shell: bash
 
     - name: pnpm build
-    run: pnpm nx run-many --target=build
-    shell: bash
+      run: pnpm nx run-many --target=build
+      shell: bash
