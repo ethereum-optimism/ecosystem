@@ -1,4 +1,4 @@
-import { Connector, useConnect } from 'wagmi'
+import { Connector, useChainId, useConnect } from 'wagmi'
 import { Button } from '@/components/ui/button'
 import { useCallback } from 'react'
 
@@ -12,13 +12,14 @@ import {
 } from '@/components/ui/dialog'
 
 export const ConnectButton = () => {
+  const chainId = useChainId()
   const { connect, connectors } = useConnect()
 
   const onConnect = useCallback(
     (connector: Connector) => {
-      connect({ connector })
+      connect({ connector, chainId: chainId })
     },
-    [connect],
+    [connect, chainId],
   )
 
   return (

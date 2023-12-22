@@ -17,7 +17,7 @@ export default defineConfig({
       name: 'op-app',
     },
     rollupOptions: {
-      external: ['react'],
+      external: ['react', 'op-wagmi', 'op-viem', 'wagmi', 'viem'],
     },
   },
 })

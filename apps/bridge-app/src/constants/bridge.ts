@@ -1,0 +1,1 @@
+export const ERC20_DEPOSIT_MIN_GAS_LIMIT = 200_000

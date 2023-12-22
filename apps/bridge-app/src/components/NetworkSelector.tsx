@@ -10,7 +10,7 @@ import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import { Check } from 'lucide-react'
 import { Chain } from 'viem'
-import { useCallback } from 'react'
+import { useCallback, useState } from 'react'
 import { networkPairsByID } from 'op-app'
 
 import l1AssetLogo from '@/assets/l1-asset-logo.png'
@@ -45,31 +45,33 @@ const NetworkSelectorItem = ({
 }
 
 export const NetworkSelector = () => {
+  const [dialogOpen, setDialogOpen] = useState<boolean>(false)
   const config = useConfig()
   const { theme } = useTheme()
   const { chain } = useAccount()
-  const { switchChain } = useSwitchChain()
+  const { switchChainAsync } = useSwitchChain()
 
   const mainnets = config.chains.filter((chain) => !chain.testnet)
   const testnets = config.chains.filter((chain) => chain.testnet)
 
   const onSwitchNetwork = useCallback(
-    (selectedChain: Chain) => {
-      switchChain({ chainId: selectedChain.id })
+    async (selectedChain: Chain) => {
+      await switchChainAsync({ chainId: selectedChain.id })
+      setDialogOpen(false)
     },
-    [switchChain],
+    [switchChainAsync, setDialogOpen],
   )
 
-  const isL2 = networkPairsByID[chain?.id] !== null
+  const isL2 = Boolean(networkPairsByID[chain?.id])
 
   return (
-    <Dialog>
+    <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
       <DialogTrigger asChild>
         <Button
           variant={theme === 'light' ? 'outline' : 'secondary'}
           className="flex flex-row h-12"
         >
-          <img className="h-full" src={isL2 ? l1AssetLogo : l2AssetLogo} />{' '}
+          <img className="h-full" src={isL2 ? l2AssetLogo : l1AssetLogo} />{' '}
           <span className="ml-2 hidden md:inline">{chain?.name}</span>
         </Button>
       </DialogTrigger>
@@ -79,8 +81,9 @@ export const NetworkSelector = () => {
           <span className="text-base mb-2">Mainnets:</span>
           {mainnets.map((mainnet) => (
             <NetworkSelectorItem
+              key={mainnet.id}
               chain={mainnet}
-              logo={networkPairsByID[mainnet.id] ? l1AssetLogo : l2AssetLogo}
+              logo={networkPairsByID[mainnet.id] ? l2AssetLogo : l1AssetLogo}
               isActive={chain?.id === mainnet.id}
               onSelect={onSwitchNetwork}
             />
@@ -91,8 +94,9 @@ export const NetworkSelector = () => {
           <span className="text-base mb-2">Testsnets:</span>
           {testnets.map((testnet) => (
             <NetworkSelectorItem
+              key={testnet.id}
               chain={testnet}
-              logo={networkPairsByID[testnet.id] ? l1AssetLogo : l2AssetLogo}
+              logo={networkPairsByID[testnet.id] ? l2AssetLogo : l1AssetLogo}
               isActive={chain?.id === testnet.id}
               onSelect={onSwitchNetwork}
             />

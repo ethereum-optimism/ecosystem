@@ -17,5 +17,10 @@ module.exports = {
     "no-restricted-imports": ["error", {
       "patterns": [".*"]
     }],
+    '@typescript-eslint/no-unused-vars': [
+      'error',
+      { "varsIgnorePattern": "_", "argsIgnorePattern": "_" } 
+    ],
+    'react-refresh/only-export-components': ['off']
   },
 }
