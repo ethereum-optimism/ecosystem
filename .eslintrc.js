@@ -1,7 +1,7 @@
 module.exports = {
     extends: ['react-app', 'plugin:storybook/recommended'],
     root: true,
-    ignorePatterns: ['src/assets/**/*', '**/build/**/*', '**/typechain/**/*'],
+    ignorePatterns: ['src/assets/**/*', '**/build/**/*', '**/dist/**/*', '**/typechain/**/*'],
     plugins: [
       'simple-import-sort',
       'eslint-plugin-testing-library',
