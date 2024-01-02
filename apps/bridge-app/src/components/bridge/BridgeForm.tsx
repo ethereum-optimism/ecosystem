@@ -35,7 +35,6 @@ export const BridgeForm = ({ l1, l2, action }: BridgeFormProps) => {
   const onTokenChange = useCallback(
     (l1Token: Token, l2Token: Token) => {
       setSelectedTokenPair([l1Token, l2Token])
-      console.log('here', l1Token, l2Token)
     },
     [setSelectedTokenPair],
   )

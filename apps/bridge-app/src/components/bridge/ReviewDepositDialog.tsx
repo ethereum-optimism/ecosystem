@@ -175,7 +175,6 @@ export const ReviewDepositDialog = ({
     const [l1Token, l2Token] = selectedTokenPair
 
     const isETH = l1Token.extensions.opTokenId.toLowerCase() === 'eth'
-    console.log('isETH', isETH)
     const parsedAmount = parseUnits(amount ?? '0', l1Token.decimals)
 
     if (isETH) {

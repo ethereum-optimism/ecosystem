@@ -75,7 +75,7 @@ function createNetworkPairs(config: Record<string, bigint>): {
 
     if (supportedNetworks.has(l1Name) && config[pairKey]) {
       const l1 = l1s[l1Name]
-      console.log(pairKey)
+
       const { chain: l2, importKey: l2ImportKey } =
         chainIdMap[config[pairKey].toString()]
 
