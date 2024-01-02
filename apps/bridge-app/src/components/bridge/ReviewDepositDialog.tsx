@@ -85,7 +85,7 @@ const ReviewDepositDialogContent = ({
     spender: txData.to,
   })
 
-  const txHash = l1TxHash || l1ERC20TxHash
+  const txHash = txData.isETH ? l1TxHash : l1ERC20TxHash
   const [l1Token, l2Token] = selectedTokenPair
 
   const onSubmitDeposit = useCallback(async () => {

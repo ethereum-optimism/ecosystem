@@ -80,7 +80,7 @@ const ReviewWithdrawalDialogContent = ({
     spender: txData.to,
   })
 
-  const txHash = l2TxHash || l2ERC20TxHash
+  const txHash = txData.isETH ? l2TxHash : l2ERC20TxHash
   const [_, l2Token] = selectedTokenPair
 
   const onSubmitWithdrawal = useCallback(async () => {
