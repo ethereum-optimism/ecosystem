@@ -1,14 +1,15 @@
-import { Chain, formatUnits, parseEther } from 'viem'
+import { Chain, parseEther } from 'viem'
 
 import type { Token } from '@eth-optimism/op-app'
 
 import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
-import { useBalance, useAccount } from 'wagmi'
+import { useAccount } from 'wagmi'
 import { useEffect, useMemo } from 'react'
 import { Skeleton } from '@/components/ui/skeleton'
 import { cn } from '@/utils'
 import { TokenListDialog } from '@/components/bridge/TokenListDialog'
+import { useReadBalance } from '@/hooks/useReadBalance'
 
 export type FromProps = {
   l1: Chain
@@ -33,20 +34,10 @@ export const From = ({
 }: FromProps) => {
   const { address } = useAccount()
 
-  const balance = useBalance({
-    chainId: action === 'deposit' ? l1.id : l2.id,
-    address:
-      selectedToken.extensions.opTokenId.toLowerCase() === 'eth'
-        ? address
-        : selectedToken.address,
+  const balance = useReadBalance({
+    chain: action === 'deposit' ? l1 : l2,
+    selectedToken,
   })
-
-  const formattedBalance = useMemo<string>(() => {
-    if (!balance.data) {
-      return '0.0'
-    }
-    return formatUnits(balance.data.value, balance.data.decimals)
-  }, [balance])
 
   const validationError = useMemo<string>(() => {
     if (typeof amount === 'undefined') {
@@ -54,7 +45,7 @@ export const From = ({
     }
 
     const bigAmount = parseEther(amount)
-    if (balance.data && bigAmount > balance.data.value) {
+    if (balance && bigAmount > balance.data.value) {
       return 'Insufficent Balance'
     }
 
@@ -96,10 +87,10 @@ export const From = ({
         )}
         <div className="flex flex-row items-center py-2">
           Balance:{' '}
-          {!address || balance.isLoading ? (
+          {!address || balance.isPending ? (
             <Skeleton className="h-4 w-[200px] mt-1 ml-1" />
           ) : (
-            formattedBalance
+            balance.data.formatted
           )}
         </div>
       </div>
