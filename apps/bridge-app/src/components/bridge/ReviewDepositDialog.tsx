@@ -17,14 +17,20 @@ import {
   formatUnits,
   parseUnits,
 } from 'viem'
-import { useAccount, useEstimateFeesPerGas, useEstimateGas } from 'wagmi'
+import {
+  useAccount,
+  useEstimateFeesPerGas,
+  useEstimateGas,
+  usePublicClient,
+} from 'wagmi'
 import { useCallback, useMemo, useState } from 'react'
 import { NETWORK_TYPE } from '@/constants/networkType'
 import {
   l1StandardBridgeABI,
   optimismPortalABI,
 } from '@eth-optimism/contracts-ts'
-import { ERC20_DEPOSIT_MIN_GAS_LIMIT } from '@/constants/bridge'
+import { ERC20_DEPOSIT_MIN_GAS_LIMIT, MAX_ALLOWANCE } from '@/constants/bridge'
+import { useERC20Allowance } from '@/hooks/useERC20Allowance'
 
 export type ReviewDepositDialogProps = {
   l1: Chain
@@ -58,17 +64,25 @@ const ReviewDepositDialogContent = ({
   gasPrice,
   onSubmit,
 }: ReviewDepositDialogContent) => {
-  const { chain } = useAccount()
+  const { address, chain } = useAccount()
   const { opConfig } = useOPWagmiConfig({
     type: NETWORK_TYPE,
     chainId: chain?.id,
   })
+
+  const l1PublicClient = usePublicClient({ chainId: l1.id })
 
   const { data: l1TxHash, writeDepositETHAsync } = useWriteDepositETH({
     config: opConfig,
   })
   const { data: l1ERC20TxHash, writeDepositERC20Async } = useWriteDepositERC20({
     config: opConfig,
+  })
+  const { allowance, approve } = useERC20Allowance({
+    token: selectedTokenPair[0],
+    amount: MAX_ALLOWANCE,
+    owner: address as Address,
+    spender: txData.to,
   })
 
   const txHash = l1TxHash || l1ERC20TxHash
@@ -84,25 +98,32 @@ const ReviewDepositDialogContent = ({
         l2ChainId: l2.id,
       })
     } else {
+      const shouldApprove =
+        !txData.isETH && (allowance.data ?? 0n) < txData.amount
+      if (shouldApprove) {
+        const approvalTxHash = await approve()
+        await l1PublicClient.waitForTransactionReceipt({ hash: approvalTxHash })
+      }
+
       await writeDepositERC20Async({
         args: {
           l1Token: l1Token.address as Address,
           l2Token: l2Token.address as Address,
           to: txData.to,
           amount: txData.amount,
-          minGasLimit: ERC20_DEPOSIT_MIN_GAS_LIMIT,
-          extraData: '0x',
         },
         l2ChainId: l2.id,
       })
     }
     onSubmit?.()
   }, [
+    approve,
     writeDepositETHAsync,
     writeDepositERC20Async,
     onSubmit,
     txData,
     l2,
+    l1PublicClient,
     l1Token,
     l2Token,
   ])
@@ -110,7 +131,8 @@ const ReviewDepositDialogContent = ({
   return (
     <div className="flex flex-col w-full">
       <div>
-        Amount to Deposit: {formatUnits(txData.amount, l1Token.decimals)} ETH
+        Amount to Deposit: {formatUnits(txData.amount, l1Token.decimals)}{' '}
+        {l1Token.symbol}
       </div>
       <div>Gas Fee to Transfer: ~{formatEther(gasPrice)} ETH</div>
       <div>Time to transfer: ~1 minute</div>
@@ -153,6 +175,7 @@ export const ReviewDepositDialog = ({
     const [l1Token, l2Token] = selectedTokenPair
 
     const isETH = l1Token.extensions.opTokenId.toLowerCase() === 'eth'
+    console.log('isETH', isETH)
     const parsedAmount = parseUnits(amount ?? '0', l1Token.decimals)
 
     if (isETH) {

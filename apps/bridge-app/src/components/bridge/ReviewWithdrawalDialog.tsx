@@ -18,10 +18,17 @@ import {
   parseEther,
   parseUnits,
 } from 'viem'
-import { useAccount, useEstimateFeesPerGas, useEstimateGas } from 'wagmi'
+import {
+  useAccount,
+  useEstimateFeesPerGas,
+  useEstimateGas,
+  usePublicClient,
+} from 'wagmi'
 import { useCallback, useMemo, useState } from 'react'
 import { NETWORK_TYPE } from '@/constants/networkType'
 import { l2StandardBridgeABI, predeploys } from '@eth-optimism/contracts-ts'
+import { useERC20Allowance } from '@/hooks/useERC20Allowance'
+import { MAX_ALLOWANCE } from '@/constants/bridge'
 
 export type ReviewWithdrawalDialogProps = {
   l1: Chain
@@ -52,17 +59,26 @@ const ReviewWithdrawalDialogContent = ({
   gasPrice,
   onSubmit,
 }: ReviewWithdrawalDialogContent) => {
-  const { chain } = useAccount()
+  const { address, chain } = useAccount()
   const { opConfig } = useOPWagmiConfig({
     type: NETWORK_TYPE,
     chainId: chain?.id,
   })
+
+  const l2PublicClient = usePublicClient({ chainId: l2.id })
 
   const { data: l2TxHash, writeWithdrawETHAsync } = useWriteWithdrawETH({
     config: opConfig,
   })
   const { data: l2ERC20TxHash, writeWithdrawERC20Async } =
     useWriteWithdrawERC20({ config: opConfig })
+
+  const { allowance, approve } = useERC20Allowance({
+    token: selectedTokenPair[1],
+    amount: MAX_ALLOWANCE,
+    owner: address as Address,
+    spender: txData.to,
+  })
 
   const txHash = l2TxHash || l2ERC20TxHash
   const [_, l2Token] = selectedTokenPair
@@ -77,13 +93,18 @@ const ReviewWithdrawalDialogContent = ({
         chainId: l2.id,
       })
     } else {
+      const shouldApprove =
+        !txData.isETH && (allowance.data ?? 0n) < txData.amount
+      if (shouldApprove) {
+        const approvalTxHash = await approve()
+        await l2PublicClient.waitForTransactionReceipt({ hash: approvalTxHash })
+      }
+
       await writeWithdrawERC20Async({
         args: {
           to: txData.to,
           l2Token: l2Token.address,
           amount: txData.amount,
-          minGasLimit: 0,
-          extraData: '0x',
         },
         chainId: l2.id,
       })
@@ -97,12 +118,14 @@ const ReviewWithdrawalDialogContent = ({
     txData,
     l2,
     l2Token,
+    l2PublicClient,
   ])
 
   return (
     <div className="flex flex-col w-full">
       <div>
-        Amount to Withdraw: {formatUnits(txData.amount, l2Token.decimals)} ETH
+        Amount to Withdraw: {formatUnits(txData.amount, l2Token.decimals)}{' '}
+        {l2Token.symbol}
       </div>
       <div>Gas Fee to Transfer: ~{formatEther(gasPrice)} ETH</div>
       <div>Time to transfer: ~1 minute</div>
