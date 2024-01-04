@@ -69,14 +69,14 @@ pnpm i
 
 ### Running Targets
 
-Each application and package have npm scripts in there indivdual package.json.
+Each application and package have npm scripts in there indivdual `package.json`.
 In order to run those easily we can leverage nx here. The `nx.json` file is setup
 to improve QoL while working in the repo.
 
 The npm package name can be found in their `package.json` and the targets are what you'll see in the `scripts` object in the `package.json`
 
 ```bash
-pnpm nx run <npm package name>:dev
+pnpm nx run <npm package name>:<target>
 ```
 
 For example if we wanted to run the `bridge-app` for development we could run this
@@ -90,3 +90,14 @@ pnpm nx run @eth-optimism/op-app:build
 ```
 
 Feel free to open up an issue on the repo if you're running into any issues!
+
+## Contributing
+
+No contribution is too small and all contributions are valued.
+Thanks for your help improving the project! We are so happy to have you!
+
+You can read our contribution guide [here](./CONTRIBUTING.md) to understand better how we work in the repo.
+
+## License
+
+All other files within this repository are licensed under the [MIT License](https://github.com/ethereum-optimism/ecosystem/blob/main/LICENSE) unless stated otherwise.
