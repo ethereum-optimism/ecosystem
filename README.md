@@ -7,11 +7,9 @@
   <br />
 </div>
 
-## What is Optimism?
+## Ecosystem
 
-[Optimism](https://www.optimism.io/) is a project dedicated to scaling Ethereum's technology and expanding its ability to coordinate people from across the world to build effective decentralized economies and governance systems. The [Optimism Collective](https://app.optimism.io/announcement) builds open-source software for running L2 blockchains and aims to address key governance and economic challenges in the wider cryptocurrency ecosystem. Optimism operates on the principle of **impact=profit**, the idea that individuals who positively impact the Collective should be proportionally rewarded with profit. **Change the incentives and you change the world.**
-
-In this repository, you'll find numerous ecosystem components of the OP Stack, the decentralized software stack maintained by the Optimism Collective that powers Optimism and forms the backbone of blockchains like [OP Mainnet](https://explorer.optimism.io/) and [Base](https://base.org). Designed to be "aggressively open source," the OP Stack encourages you to explore, modify, extend, and test the code as needed. Packages in this repository are geared towards dapp developers looking to speed up development and getting running across all OP Stack chains.
+In this repository, you'll find numerous code references for applications & packages to help app developers build on top of the OP Stack with ease. Designed to be "aggressively open source," we encourage you to explore, modify, extend, and test the code as needed. We look forward to building with you!
 
 ## Documentation
 
@@ -107,6 +105,10 @@ No contribution is too small and all contributions are valued.
 Thanks for your help improving the project! We are so happy to have you!
 
 You can read our contribution guide [here](./CONTRIBUTING.md) to understand better how we work in the repo.
+
+## Releases
+
+As of now we have not published any packages in this repo to npm, but stay tuned as we plan to do that once we add more packages to the repo!
 
 ## License
 
