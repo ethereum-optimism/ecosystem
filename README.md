@@ -91,7 +91,7 @@ pnpm nx run @eth-optimism/op-app:build
 
 Feel free to open up an issue on the repo if you're running into any issues!
 
-### Contributing
+## Contributing
 
 No contribution is too small and all contributions are valued.
 Thanks for your help improving the project! We are so happy to have you!
