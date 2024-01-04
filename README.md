@@ -90,3 +90,7 @@ pnpm nx run @eth-optimism/op-app:build
 ```
 
 Feel free to open up an issue on the repo if you're running into any issues!
+
+## License
+
+All other files within this repository are licensed under the [MIT License](https://github.com/ethereum-optimism/ecosystem/blob/main/LICENSE) unless stated otherwise.
