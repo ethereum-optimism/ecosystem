@@ -7,6 +7,7 @@
   "scripts": {
     "dev": "vite -m development",
     "build": "tsup && pnpm tsc",
+    "clean": "rm -rf dist",
     "typecheck": "tsc --noEmit --emitDeclarationOnly false",
     "lint": "eslint \"**/*.{ts,tsx}\" && pnpm prettier --check \"**/*.{ts,tsx}\"",
     "lint:fix": "eslint \"**/*.{ts,tsx}\" --fix --quiet && pnpm prettier \"**/*.{ts,tsx}\" --write --loglevel=warn",

@@ -17,7 +17,7 @@ In this repository, you'll find numerous ecosystem components of the OP Stack, t
 
 - If you want to build on top of OP Mainnet, refer to the [Optimism Documentation](https://docs.optimism.io)
 - If you want to build your own OP Stack based blockchain, refer to the [OP Stack Guide](https://docs.optimism.io/stack/getting-started)
-- If you want to contribute to the OP Stack, check out the [Protocol Specs](./specs)
+- If you want to contribute to the OP Stack, check out the [Protocol Specs](https://github.com/ethereum-optimism/optimism/tree/develop/specs)
 
 ## Community
 
@@ -32,3 +32,61 @@ Governance discussion can also be found on the [Optimism Governance Forum](https
 ├── <a href="./packages">packages</a>
 │   ├── <a href="./packages/op-app">op-app</a>: Optimism Stack App Utils
 </pre>
+
+## Development Quick Start
+
+### Dependencies
+
+You'll need the following:
+
+* [Git](https://git-scm.com/downloads)
+* [NodeJS](https://nodejs.org/en/download/)
+* [Node Version Manager](https://github.com/nvm-sh/nvm)
+* [pnpm](https://pnpm.io/installation)
+
+### Setup
+
+Clone the repository and open it:
+
+```bash
+git clone git@github.com:ethereum-optimism/ecosystem.git
+cd ecosystem
+```
+
+### Install the Correct Version of NodeJS
+
+Install the correct node version with [nvm](https://github.com/nvm-sh/nvm)
+
+```bash
+nvm use
+```
+
+### Install Node Modules With pnpm
+
+```bash
+pnpm i
+```
+
+### Running Targets
+
+Each application and package have npm scripts in there indivdual package.json.
+In order to run those easily we can leverage nx here. The `nx.json` file is setup
+to improve QoL while working in the repo.
+
+The npm package name can be found in their `package.json` and the targets are what you'll see in the `scripts` object in the `package.json`
+
+```bash
+pnpm nx run <npm package name>:dev
+```
+
+For example if we wanted to run the `bridge-app` for development we could run this
+```bash
+pnpm nx run @eth-optimism/bridge-app:dev
+```
+
+If we wanted to build the `op-app` package we could run this
+```bash
+pnpm nx run @eth-optimism/op-app:build
+```
+
+Feel free to open up an issue on the repo if you're running into any issues!
