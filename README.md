@@ -91,6 +91,13 @@ pnpm nx run @eth-optimism/op-app:build
 
 Feel free to open up an issue on the repo if you're running into any issues!
 
+### Contributing
+
+No contribution is too small and all contributions are valued.
+Thanks for your help improving the project! We are so happy to have you!
+
+You can read our contribution guide [here](./CONTRIBUTING.md) to understand better how we work in the repo.
+
 ## License
 
 All other files within this repository are licensed under the [MIT License](https://github.com/ethereum-optimism/ecosystem/blob/main/LICENSE) unless stated otherwise.
