@@ -89,6 +89,16 @@ If we wanted to build the `op-app` package we could run this
 pnpm nx run @eth-optimism/op-app:build
 ```
 
+There will be a few common targets that you will most likely see across all applications and packages in the repo.
+
+* `build`
+* `clean`
+* `dev`
+* `typecheck`
+* `lint`
+* `lint:fix`
+
+
 Feel free to open up an issue on the repo if you're running into any issues!
 
 ## Contributing
