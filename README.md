@@ -69,14 +69,14 @@ pnpm i
 
 ### Running Targets
 
-Each application and package have npm scripts in there indivdual package.json.
+Each application and package have npm scripts in there indivdual `package.json`.
 In order to run those easily we can leverage nx here. The `nx.json` file is setup
 to improve QoL while working in the repo.
 
 The npm package name can be found in their `package.json` and the targets are what you'll see in the `scripts` object in the `package.json`
 
 ```bash
-pnpm nx run <npm package name>:dev
+pnpm nx run <npm package name>:<target>
 ```
 
 For example if we wanted to run the `bridge-app` for development we could run this
