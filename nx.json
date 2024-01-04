@@ -1,11 +1,22 @@
 {
   "$schema": "./node_modules/nx/schemas/nx-schema.json",
+  "neverConnectToCloud": true,
+  "projects": {
+    "apps": {
+      "bridge-app": ["type:app"]
+    },
+    "packages": {
+      "op-app": ["type:package"]
+    }
+  },
   "targetDefaults": {
+    "dev": {
+      "cache": true,
+      "dependsOn": ["^build"]
+    },
     "build": {
       "cache": true,
-      "dependsOn": [
-        "^build"
-      ]
+      "dependsOn": ["^build"]
     },
     "lint": {
       "cache": true
