@@ -8,6 +8,9 @@ const PROD_ENTRY = 'src/index.ts'
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
+  test: {
+    environment: 'jsdom',
+  },
   build: {
     lib: {
       entry: resolve(
