@@ -2,10 +2,12 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import type { RenderHookResult } from '@testing-library/react'
 import { renderHook } from '@testing-library/react'
 import { createElement } from 'react'
+import type { Address } from 'viem'
 import type { Config, WagmiProviderProps } from 'wagmi'
 import { createConfig, http, WagmiProvider } from 'wagmi'
 import { mock } from 'wagmi/connectors'
 
+import type { OpConfig } from '..'
 import { l1, l2 } from './chains'
 import { TEST_ACCOUNT } from './constants'
 
@@ -31,13 +33,13 @@ const opConfig = {
   },
 } as Config
 
-function mockConnectedWallet(chainId: number): Config {
+function mockConnectedWallet(chainId: number, account: Address): Config {
   return {
     ...opConfig,
     state: {
       chainId: chainId,
       connections: new Map().set(opConfig.connectors[0].uid, {
-        accounts: [TEST_ACCOUNT],
+        accounts: [account],
         chainId: chainId,
         connector: opConfig.connectors[0],
       }),
@@ -63,13 +65,15 @@ export function createWrapper<
 
 export type RenderConnectedHooksOptions =
   | {
-      network: 'l1' | 'l2' | 'unsupported'
+      network?: 'l1' | 'l2' | 'unsupported'
+      account?: Address
+      config?: OpConfig
     }
   | undefined
 
 export function renderConnectedHook<Result, Props>(
   render: (props: Props) => Result,
-  connection: RenderConnectedHooksOptions,
+  connection?: RenderConnectedHooksOptions,
   options?: RenderConnectedHooksOptions,
 ): RenderHookResult<Result, Props> {
   queryClient.clear()
@@ -83,7 +87,9 @@ export function renderConnectedHook<Result, Props>(
 
   return renderHook(render, {
     wrapper: createWrapper(WagmiProvider, {
-      config: mockConnectedWallet(chainId),
+      config: connection?.config
+        ? connection.config
+        : mockConnectedWallet(chainId, connection?.account ?? TEST_ACCOUNT),
       reconnectOnMount: false,
     }),
     ...options,

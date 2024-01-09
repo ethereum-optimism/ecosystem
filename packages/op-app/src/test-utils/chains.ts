@@ -1,3 +1,5 @@
+import type { Chain } from 'viem'
+
 import { networkPairsByGroup } from '..'
 import { L1_PORT, L2_PORT } from './constants'
 
@@ -18,7 +20,7 @@ export const l1 = {
       webSocket: [`ws://127.0.0.1:${L1_PORT}/${vitestPool}`],
     },
   },
-}
+} as Chain
 
 export const l2 = {
   ...opMainnet,
@@ -33,4 +35,4 @@ export const l2 = {
       webSocket: [`ws://127.0.0.1:${L2_PORT}/${vitestPool}`],
     },
   },
-}
+} as Chain

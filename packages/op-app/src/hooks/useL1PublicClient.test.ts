@@ -6,22 +6,16 @@ import { useL1PublicClient } from '.'
 
 describe('useL1PublicClient', () => {
   it('should return default l1PublicClient', () => {
-    const { result } = renderConnectedHook(
-      () => useL1PublicClient({ type: 'op' }),
-      {
-        network: 'l1',
-      },
+    const { result } = renderConnectedHook(() =>
+      useL1PublicClient({ type: 'op' }),
     )
 
     expect(result.current.l1PublicClient.chain?.id).toEqual(l1.id)
   })
 
   it('should return expected l1PublicClient when providing a chain id', () => {
-    const { result } = renderConnectedHook(
-      () => useL1PublicClient({ type: 'op', chainId: l1.id }),
-      {
-        network: 'l1',
-      },
+    const { result } = renderConnectedHook(() =>
+      useL1PublicClient({ type: 'op', chainId: l1.id }),
     )
     expect(result.current.l1PublicClient.chain?.id).toEqual(l1.id)
   })
