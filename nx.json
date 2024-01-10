@@ -6,7 +6,8 @@
       "bridge-app": ["type:app"]
     },
     "packages": {
-      "op-app": ["type:package"]
+      "op-app": ["type:package"],
+      "ui-components": ["type:package"]
     }
   },
   "targetDefaults": {
@@ -26,18 +27,13 @@
     }
   },
   "namedInputs": {
-    "default": [
-      "{projectRoot}/**/*",
-      "sharedGlobals"
-    ],
+    "default": ["{projectRoot}/**/*", "sharedGlobals"],
     "sharedGlobals": [
       "{workspaceRoot}/.prettierrc.js",
       "{workspaceRoot}/tsconfig.json",
       "{workspaceRoot}/eslintrc.js",
       "{workspaceRoot}/nx.json"
     ],
-    "production": [
-      "default"
-    ]
+    "production": ["default"]
   }
 }

@@ -15,6 +15,7 @@
   "dependencies": {
     "@eth-optimism/contracts-ts": "^0.17.0",
     "@eth-optimism/op-app": "*",
+    "@eth-optimism/ui-components": "*",
     "@eth-optimism/tokenlist": "^9.0.12",
     "@radix-ui/react-avatar": "^1.0.4",
     "@radix-ui/react-dialog": "^1.0.5",
