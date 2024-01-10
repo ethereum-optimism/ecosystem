@@ -1,4 +1,5 @@
 import { useOPNetwork } from '@eth-optimism/op-app'
+import { TestComponent } from '@eth-optimism/ui-components'
 
 import { Card, CardContent } from '@/components/ui/card'
 
@@ -24,6 +25,7 @@ export const Bridge = ({ action }: BridgeProps) => {
 
   return (
     <Card className="mt-6 px-6 py-6 shadow-none border-none md:border-solid md:rounded-lg md:shadow-md">
+      <TestComponent />
       <Tabs defaultValue={action} className="w-[500px]">
         <TabsList className="grid w-full grid-cols-2">
           <TabsTrigger value="deposit" onClick={() => navigate('/deposit')}>
