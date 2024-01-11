@@ -11,8 +11,6 @@ export type NetworkPair = {
   l2: Chain
 }
 
-export type NetworkType = 'base' | 'op' | 'pgn' | 'zora'
-
 export type NetworkPairGroup = Record<
   NetworkType,
   Record<string, [Chain, Chain]>
