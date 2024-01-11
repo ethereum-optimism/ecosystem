@@ -1,18 +1,18 @@
 import { Eta } from 'eta'
 import fs from 'fs'
 import yaml from 'js-yaml'
+import type { Hash } from 'viem'
 import * as allChains from 'viem/chains'
 import type { Chain } from 'wagmi/chains'
 
 import type { DeploymentAddresses } from '../src/types'
-import { Hash } from 'viem'
 
 const SUPERCHAIN_CONFIG =
   './node_modules/@eth-optimism/superchain-registry/superchain/configs/chainids.json'
 const DEPLOYMENT_ADDRESSES =
   './node_modules/@eth-optimism/superchain-registry/superchain/extra/addresses/addresses.json'
 const CHAIN_CONFIG =
-'./node_modules/@eth-optimism/superchain-registry/superchain/configs'
+  './node_modules/@eth-optimism/superchain-registry/superchain/configs'
 const SUPPORTED_L1_NETWORKS = './supportedL1Networks.json'
 
 const NETWORK_PAIR_FILE_PATH = './src/configs/networkPairs.ts'
@@ -27,13 +27,13 @@ type ChainDef = {
   explorer: string
   genesis: {
     l1: {
-      hash: Hash,
+      hash: Hash
       number: number
-    },
+    }
     l2: {
-      hash: Hash,
+      hash: Hash
       number: 0
-    },
+    }
     l2_time: number
   }
 }
@@ -73,9 +73,15 @@ const chainIdMap = Object.keys(supportedChains).reduce(
 
 const customChainIdMap = {} as Record<string, ChainDef>
 
-function camelCase (str: string): string {
+function camelCase(str: string): string {
   const parts = str.split(' ')
-  return parts[0].toLowerCase() + parts.slice(1).map((part) => part[0].toUpperCase() + part.substring(1)).join('')
+  return (
+    parts[0].toLowerCase() +
+    parts
+      .slice(1)
+      .map((part) => part[0].toUpperCase() + part.substring(1))
+      .join('')
+  )
 }
 
 function readJSON<T>(filePath: string): T {
@@ -139,7 +145,10 @@ function createNetworkPairs(config: Record<string, bigint>): {
         name: l1Name,
         group: l2Name,
         l1: { id: l1.id.toString(), name: l1Name },
-        l2: { id: l2ChainId.toString(), name: l2ImportKey || l2CustomImportKey || '' },
+        l2: {
+          id: l2ChainId.toString(),
+          name: l2ImportKey || l2CustomImportKey || '',
+        },
       })
     }
   }
@@ -160,17 +169,22 @@ async function writeNetworkPairs(
   networkPairGroups: NetworkPairGroups,
   importKeys: string[],
 ) {
-  const customChainImportKeys = Object.values(customChainIdMap).reduce((acc, chainDef) => {
-    acc.push(camelCase(chainDef.name))
-    return acc
-  }, [] as string[])
+  const customChainImportKeys = Object.values(customChainIdMap).reduce(
+    (acc, chainDef) => {
+      acc.push(camelCase(chainDef.name))
+      return acc
+    },
+    [] as string[],
+  )
 
-  const networkPairsFileContents = eta.render('networkPairs', {
-    networkPairs,
-    networkPairGroups,
-    importKeys,
-    customChainImportKeys,
-  }).replace(/&#39;/g, '\'')
+  const networkPairsFileContents = eta
+    .render('networkPairs', {
+      networkPairs,
+      networkPairGroups,
+      importKeys,
+      customChainImportKeys,
+    })
+    .replace(/&#39;/g, "'")
   fs.writeFileSync(NETWORK_PAIR_FILE_PATH, networkPairsFileContents)
 }
 
@@ -193,7 +207,9 @@ async function writeChains() {
     const chains = fs.readdirSync(`${CHAIN_CONFIG}/${network}`)
 
     chains.forEach((fileName: string) => {
-      const chainDef = readYAML<ChainDef>(`${CHAIN_CONFIG}/${network}/${fileName}`)
+      const chainDef = readYAML<ChainDef>(
+        `${CHAIN_CONFIG}/${network}/${fileName}`,
+      )
 
       if (!chainIdMap[chainDef.chain_id] && chainDef.chain_id) {
         customChainIdMap[chainDef.chain_id] = chainDef
@@ -206,10 +222,7 @@ async function writeChains() {
     chainDefs,
     camelCase,
   })
-  fs.writeFileSync(
-    CHAINS_FILE_PATH,
-    chainsFileContents,
-  )
+  fs.writeFileSync(CHAINS_FILE_PATH, chainsFileContents)
 }
 
 async function main() {
