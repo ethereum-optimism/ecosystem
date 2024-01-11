@@ -46,6 +46,7 @@ const Demo = ({ type, onNetworkTypeChange }: DemoProps) => {
     type,
     chainId: chainId ?? config.chains[0].id,
   })
+
   const { isUnsupported } = useIsNetworkUnsupported()
   const { connect, connectors } = useConnect()
 
@@ -95,8 +96,8 @@ const Demo = ({ type, onNetworkTypeChange }: DemoProps) => {
       </h2>
       <h2>
         <div>Account: {address}</div>
-        <div>L1 Balance: {l1Balance ? formatEther(l1Balance) : ''}</div>
-        <div>L2 Balance: {l2Balance ? formatEther(l2Balance) : ''}</div>
+        <div>L1 Balance: {l1Balance ? formatEther(l1Balance) : '0.0'}</div>
+        <div>L2 Balance: {l2Balance ? formatEther(l2Balance) : '0.0'}</div>
       </h2>
     </div>
   )
@@ -168,6 +169,7 @@ const App = () => {
   const onNetworkTypeChange = useCallback(
     (type: NetworkType) => {
       setNetworkType(type)
+      localStorage.clear()
     },
     [setNetworkType],
   )
