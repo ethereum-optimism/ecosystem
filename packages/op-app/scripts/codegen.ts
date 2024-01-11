@@ -1,18 +1,42 @@
 import { Eta } from 'eta'
 import fs from 'fs'
+import yaml from 'js-yaml'
 import * as allChains from 'viem/chains'
 import type { Chain } from 'wagmi/chains'
 
 import type { DeploymentAddresses } from '../src/types'
+import { Hash } from 'viem'
 
 const SUPERCHAIN_CONFIG =
   './node_modules/@eth-optimism/superchain-registry/superchain/configs/chainids.json'
 const DEPLOYMENT_ADDRESSES =
   './node_modules/@eth-optimism/superchain-registry/superchain/extra/addresses/addresses.json'
+const CHAIN_CONFIG =
+'./node_modules/@eth-optimism/superchain-registry/superchain/configs'
 const SUPPORTED_L1_NETWORKS = './supportedL1Networks.json'
 
 const NETWORK_PAIR_FILE_PATH = './src/configs/networkPairs.ts'
 const DEPLOYMENT_ADDRESS_FILE_PATH = './src/configs/deploymentAddresses.ts'
+const CHAINS_FILE_PATH = './src/configs/chains.ts'
+
+type ChainDef = {
+  name: string
+  chain_id: number
+  public_rpc: string
+  sequencer_rpc: string
+  explorer: string
+  genesis: {
+    l1: {
+      hash: Hash,
+      number: number
+    },
+    l2: {
+      hash: Hash,
+      number: 0
+    },
+    l2_time: number
+  }
+}
 
 type NetworkPair = {
   name: string
@@ -47,8 +71,19 @@ const chainIdMap = Object.keys(supportedChains).reduce(
   {} as Record<string, { chain: Chain; importKey: string }>,
 )
 
+const customChainIdMap = {} as Record<string, ChainDef>
+
+function camelCase (str: string): string {
+  const parts = str.split(' ')
+  return parts[0].toLowerCase() + parts.slice(1).map((part) => part[0].toUpperCase() + part.substring(1)).join('')
+}
+
 function readJSON<T>(filePath: string): T {
   return JSON.parse(fs.readFileSync(filePath).toString()) as T
+}
+
+function readYAML<T>(filePath: string) {
+  return yaml.load(fs.readFileSync(filePath, 'utf8')) as T
 }
 
 function createNetworkPairs(config: Record<string, bigint>): {
@@ -76,21 +111,35 @@ function createNetworkPairs(config: Record<string, bigint>): {
     if (supportedNetworks.has(l1Name) && config[pairKey]) {
       const l1 = l1s[l1Name]
 
-      const { chain: l2, importKey: l2ImportKey } =
-        chainIdMap[config[pairKey].toString()]
+      let l2ChainId = 0
+      let l2ImportKey: string | undefined
+      let l2CustomImportKey: string | undefined
+      const chainIdKey = config[pairKey].toString()
+
+      if (chainIdMap[chainIdKey]) {
+        const { chain, importKey } = chainIdMap[chainIdKey]
+        l2ChainId = chain.id
+        l2ImportKey = importKey
+      } else if (customChainIdMap[chainIdKey]) {
+        l2ChainId = customChainIdMap[chainIdKey].chain_id
+        l2CustomImportKey = camelCase(customChainIdMap[chainIdKey].name)
+      }
 
       if (!groups.has(l2Name)) {
         networkPairGroups[l2Name] = { networks: [] }
       }
 
       groups.add(l2Name)
-      importKeys.add(l2ImportKey)
+
+      if (l2ImportKey) {
+        importKeys.add(l2ImportKey)
+      }
 
       networkPairs.push({
         name: l1Name,
         group: l2Name,
         l1: { id: l1.id.toString(), name: l1Name },
-        l2: { id: l2.id.toString(), name: l2ImportKey },
+        l2: { id: l2ChainId.toString(), name: l2ImportKey || l2CustomImportKey || '' },
       })
     }
   }
@@ -111,11 +160,17 @@ async function writeNetworkPairs(
   networkPairGroups: NetworkPairGroups,
   importKeys: string[],
 ) {
+  const customChainImportKeys = Object.values(customChainIdMap).reduce((acc, chainDef) => {
+    acc.push(camelCase(chainDef.name))
+    return acc
+  }, [] as string[])
+
   const networkPairsFileContents = eta.render('networkPairs', {
     networkPairs,
     networkPairGroups,
     importKeys,
-  })
+    customChainImportKeys,
+  }).replace(/&#39;/g, '\'')
   fs.writeFileSync(NETWORK_PAIR_FILE_PATH, networkPairsFileContents)
 }
 
@@ -133,7 +188,34 @@ async function writeDeploymentAddresses(
   )
 }
 
+async function writeChains() {
+  supportedNetworks.forEach((network) => {
+    const chains = fs.readdirSync(`${CHAIN_CONFIG}/${network}`)
+
+    chains.forEach((fileName: string) => {
+      const chainDef = readYAML<ChainDef>(`${CHAIN_CONFIG}/${network}/${fileName}`)
+
+      if (!chainIdMap[chainDef.chain_id] && chainDef.chain_id) {
+        customChainIdMap[chainDef.chain_id] = chainDef
+      }
+    })
+  })
+
+  const chainDefs = Object.values(customChainIdMap)
+  const chainsFileContents = eta.render('chains', {
+    chainDefs,
+    camelCase,
+  })
+  fs.writeFileSync(
+    CHAINS_FILE_PATH,
+    chainsFileContents,
+  )
+}
+
 async function main() {
+  // generate chains not defined in viem
+  writeChains()
+
   // generate network pairs
   const superchains = readJSON<Record<string, bigint>>(SUPERCHAIN_CONFIG)
   const { networkPairs, networkPairGroups, importKeys } =

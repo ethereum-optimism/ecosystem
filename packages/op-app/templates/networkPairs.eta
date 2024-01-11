@@ -7,7 +7,16 @@ import {
   <% }) %>
 } from 'viem/chains'
 
+import {
+  <% it.customChainImportKeys.forEach(function(importKey){ %>
+    <%= importKey %>,
+  <% }) %>
+} from './chains'
+
 import type { NetworkPairGroup } from '../types'
+
+export type NetworkType = <%= Object.keys(it.networkPairGroups).map((groupName) => `'${groupName}'`).join(' | ') %>
+
 
 export const networkPairsByGroup: NetworkPairGroup = {
 <% Object.entries(it.networkPairGroups).forEach(function([groupName, group]){ %>
