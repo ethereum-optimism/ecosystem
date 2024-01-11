@@ -36,6 +36,7 @@ type ChainDef = {
     }
     l2_time: number
   }
+  source_chain_id?: number
 }
 
 type NetworkPair = {
@@ -213,6 +214,11 @@ async function writeChains() {
 
       if (!chainIdMap[chainDef.chain_id] && chainDef.chain_id) {
         customChainIdMap[chainDef.chain_id] = chainDef
+
+        const l1 = allChains[network]
+        if (l1) {
+          chainDef.source_chain_id = l1.id
+        }
       }
     })
   })

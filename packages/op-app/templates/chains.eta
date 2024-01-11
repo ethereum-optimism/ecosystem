@@ -23,6 +23,7 @@ export const <%= it.camelCase(chainDef.name) %> = defineChain({
             url: '<%= chainDef.explorer %>',
         },
     },
+    sourceId: <%= chainDef.source_chain_id %>
 })
 
 <% }) %>

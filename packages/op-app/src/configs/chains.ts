@@ -22,6 +22,7 @@ export const orderlyNetwork = defineChain({
       url: 'https://explorer.orderly.network',
     },
   },
+  sourceId: 1,
 })
 
 export const lyra = defineChain({
@@ -44,6 +45,7 @@ export const lyra = defineChain({
       url: 'https://explorer.lyra.finance',
     },
   },
+  sourceId: 1,
 })
 
 export const mode = defineChain({
@@ -66,4 +68,5 @@ export const mode = defineChain({
       url: 'https://explorer.mode.network',
     },
   },
+  sourceId: 1,
 })
