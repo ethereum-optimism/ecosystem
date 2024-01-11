@@ -17,7 +17,7 @@ export const <%= it.camelCase(chainDef.name) %> = defineChain({
     },
     blockExplorers: {
         default: {
-            name: '<%= chainDef.name %>',
+            name: 'Blockscout',
             url: '<%= chainDef.explorer %>',
         },
     },

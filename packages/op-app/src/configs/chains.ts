@@ -16,7 +16,7 @@ export const orderlyNetwork = defineChain({
   },
   blockExplorers: {
     default: {
-      name: 'Orderly Network',
+      name: 'Blockscout',
       url: 'https://explorer.orderly.network',
     },
   },
@@ -37,7 +37,7 @@ export const lyra = defineChain({
   },
   blockExplorers: {
     default: {
-      name: 'Lyra',
+      name: 'Blockscout',
       url: 'https://explorer.lyra.finance',
     },
   },
@@ -58,7 +58,7 @@ export const mode = defineChain({
   },
   blockExplorers: {
     default: {
-      name: 'Mode',
+      name: 'Blockscout',
       url: 'https://explorer.mode.network',
     },
   },
