@@ -17,6 +17,16 @@ import {
 } from 'viem/chains'
 
 import type { NetworkPairGroup } from '../types'
+import { lyra, mode, orderlyNetwork } from './chains'
+
+export type NetworkType =
+  | 'base'
+  | 'op'
+  | 'lyra'
+  | 'mode'
+  | 'orderly'
+  | 'pgn'
+  | 'zora'
 
 export const networkPairsByGroup: NetworkPairGroup = {
   base: {
@@ -28,6 +38,15 @@ export const networkPairsByGroup: NetworkPairGroup = {
     goerli: [goerli, optimismGoerli],
     mainnet: [mainnet, optimism],
     sepolia: [sepolia, optimismSepolia],
+  },
+  lyra: {
+    mainnet: [mainnet, lyra],
+  },
+  mode: {
+    mainnet: [mainnet, mode],
+  },
+  orderly: {
+    mainnet: [mainnet, orderlyNetwork],
   },
   pgn: {
     mainnet: [mainnet, pgn],
@@ -43,7 +62,10 @@ export const networkPairsByID: Record<number, [Chain, Chain]> = {
   84531: [goerli, baseGoerli],
   420: [goerli, optimismGoerli],
   8453: [mainnet, base],
+  957: [mainnet, lyra],
+  34443: [mainnet, mode],
   10: [mainnet, optimism],
+  291: [mainnet, orderlyNetwork],
   424: [mainnet, pgn],
   7777777: [mainnet, zora],
   84532: [sepolia, baseSepolia],

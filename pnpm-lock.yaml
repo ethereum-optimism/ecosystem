@@ -174,13 +174,16 @@ importers:
     devDependencies:
       '@eth-optimism/superchain-registry':
         specifier: github:ethereum-optimism/superchain-registry
-        version: github.com/ethereum-optimism/superchain-registry/655947053753f145b590a8ddaf13d092ba0da651
+        version: github.com/ethereum-optimism/superchain-registry/8dbdcf965b5fd5a92c57757d4b1389242d02e8d6
       '@tanstack/react-query':
         specifier: ^5.10.0
         version: 5.10.0(react@18.2.0)
       '@testing-library/react':
         specifier: ^14.1.2
         version: 14.1.2(react-dom@18.2.0)(react@18.2.0)
+      '@types/js-yaml':
+        specifier: ^4.0.9
+        version: 4.0.9
       '@types/node':
         specifier: ^20.10.0
         version: 20.10.0
@@ -211,6 +214,9 @@ importers:
       eta:
         specifier: ^3.1.1
         version: 3.1.1
+      js-yaml:
+        specifier: ^4.1.0
+        version: 4.1.0
       jsdom:
         specifier: ^23.2.0
         version: 23.2.0
@@ -4889,6 +4895,10 @@ packages:
     resolution: {integrity: sha512-pk2B1NWalF9toCRu6gjBzR69syFjP4Od8WRAX+0mmf9lAjCRicLOWc+ZrxZHx/0XRjotgkF9t6iaMJ+aXcOdZQ==}
     dependencies:
       '@types/istanbul-lib-report': 3.0.3
+
+  /@types/js-yaml@4.0.9:
+    resolution: {integrity: sha512-k4MGaQl5TGo/iipqb2UDG2UwjXziSWkh0uysQelTlJpX1qGlpUZYm8PnO4DxG1qBomtJUdYJ6qR6xdIah10JLg==}
+    dev: true
 
   /@types/json-schema@7.0.15:
     resolution: {integrity: sha512-5+fP8P8MFNC+AyZCDxrB2pkZFPGzqQWUzpSeuuVLvm8VMcorNYavBqoFcxK8bQz4Qsbn4oUEEem4wDLfcysGHA==}
@@ -12934,8 +12944,8 @@ packages:
       react: 18.2.0
       use-sync-external-store: 1.2.0(react@18.2.0)
 
-  github.com/ethereum-optimism/superchain-registry/655947053753f145b590a8ddaf13d092ba0da651:
-    resolution: {tarball: https://codeload.github.com/ethereum-optimism/superchain-registry/tar.gz/655947053753f145b590a8ddaf13d092ba0da651}
+  github.com/ethereum-optimism/superchain-registry/8dbdcf965b5fd5a92c57757d4b1389242d02e8d6:
+    resolution: {tarball: https://codeload.github.com/ethereum-optimism/superchain-registry/tar.gz/8dbdcf965b5fd5a92c57757d4b1389242d02e8d6}
     name: '@eth-optimism/superchain-registry'
     version: 0.0.1-alpha.1
     dev: true

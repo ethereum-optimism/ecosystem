@@ -2,6 +2,8 @@ import type { Address } from 'viem'
 import type { Chain } from 'viem/chains'
 import type { Config } from 'wagmi'
 
+import type { NetworkType } from '../configs/networkPairs'
+
 export type NetworkPairItem = {
   chain: Chain
 }
@@ -11,7 +13,7 @@ export type NetworkPair = {
   l2: Chain
 }
 
-export type NetworkType = 'base' | 'op' | 'pgn' | 'zora'
+export { NetworkType }
 
 export type NetworkPairGroup = Record<
   NetworkType,
@@ -29,6 +31,10 @@ export type DeploymentAddresses = {
   OptimismMintableERC20FactoryProxy: Address
   OptimismPortalProxy: Address
   ProxyAdmin: Address
+  ProxyAdminOwner?: Address
+  SystemConfigOwner?: Address
+  Guardian?: Address
+  Challenger?: Address
   SystemConfigProxy?: Address // Only OP mainnet & testnets include this
 }
 
