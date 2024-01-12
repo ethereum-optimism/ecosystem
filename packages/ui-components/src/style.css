@@ -58,7 +58,6 @@
   }
   body {
     @apply bg-background text-foreground;
-    @apply font-sans;
   }
   input[type='number']::-webkit-outer-spin-button,
   input[type='number']::-webkit-inner-spin-button,
