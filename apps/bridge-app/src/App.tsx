@@ -1,16 +1,18 @@
 import '@/globals.css'
+import '@rainbow-me/rainbowkit/styles.css'
+
 import logo from '@/assets/logo.svg'
 
 import { RouterProvider, Outlet, createBrowserRouter } from 'react-router-dom'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { createConfig, http, WagmiProvider } from 'wagmi'
+import { http, WagmiProvider } from 'wagmi'
+import { getDefaultConfig, RainbowKitProvider } from '@rainbow-me/rainbowkit'
 
-import type { Chain, Transport } from 'viem'
+import type { Transport } from 'viem'
 import { configureOpChains } from '@eth-optimism/op-app'
 
 import { Bridge } from '@/routes'
 import { Layout } from '@/components/Layout'
-import { connectors } from '@/constants/connectors'
 import { ThemeProvider } from '@/providers/ThemeProvider'
 import { HeaderLeft } from '@/components/header/HeaderLeft'
 import { HeaderRight } from '@/components/header/HeaderRight'
@@ -28,9 +30,10 @@ const queryClient = new QueryClient()
 
 const opChains = configureOpChains({ type: NETWORK_TYPE })
 
-const wagmiConfig = createConfig({
-  chains: opChains as readonly [Chain, ...Chain[]],
-  connectors,
+const wagmiConfig = getDefaultConfig({
+  appName: 'Example OP Stack Bridge',
+  projectId: import.meta.env.VITE_WALLECT_CONNECT_PROJECT_ID,
+  chains: opChains,
   transports: opChains.reduce(
     (acc, chain) => {
       acc[chain.id] = http()
@@ -43,7 +46,9 @@ const wagmiConfig = createConfig({
 const Providers = ({ children }: ProviderProps) => (
   <WagmiProvider reconnectOnMount config={wagmiConfig}>
     <QueryClientProvider client={queryClient}>
-      <ThemeProvider>{children}</ThemeProvider>
+      <RainbowKitProvider>
+        <ThemeProvider>{children}</ThemeProvider>
+      </RainbowKitProvider>
     </QueryClientProvider>
   </WagmiProvider>
 )
