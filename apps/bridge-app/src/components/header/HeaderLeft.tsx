@@ -3,6 +3,7 @@ export type HeaderLeftProps = {
 }
 
 
+
 export const HeaderLeft = ({ logo }: HeaderLeftProps) => {
   return (
     <div className="flex logo">
