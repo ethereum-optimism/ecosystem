@@ -1,5 +1,9 @@
 const TestComponent = () => {
-  return <div>Test Component</div>
+  return (
+    <div>
+      <p className="bg-red-800">TESTTTT</p>
+    </div>
+  )
 }
 
 export { TestComponent }
