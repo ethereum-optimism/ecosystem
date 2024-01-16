@@ -1,11 +1,11 @@
 import { useAccount, useDisconnect } from 'wagmi'
 import { useCallback } from 'react'
 import { ExternalLink } from 'lucide-react'
+import { ConnectButton } from '@rainbow-me/rainbowkit'
 
 import { shortenAddress, useOPNetwork } from '@eth-optimism/op-app'
 
 import { Button } from '@/components/ui/button'
-import { ConnectButton } from '@/components/ConnectButton'
 import { useTheme } from '@/providers/ThemeProvider'
 import { AccountAvatar } from '@/components/AccountAvatar'
 import { NetworkSelector } from '@/components/NetworkSelector'

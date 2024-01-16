@@ -1,5 +1,3 @@
-import { MobileMenu } from '@/components/MobileMenu'
-
 export type HeaderLeftProps = {
   logo: string
 }
@@ -7,7 +5,6 @@ export type HeaderLeftProps = {
 export const HeaderLeft = ({ logo }: HeaderLeftProps) => {
   return (
     <div className="flex logo">
-      <MobileMenu />
       <img src={logo} />
     </div>
   )
