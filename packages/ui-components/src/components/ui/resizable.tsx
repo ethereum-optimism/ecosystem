@@ -48,4 +48,4 @@ const ResizableHandle: React.FC<ResizableHandleProps> = ({
   </ResizablePrimitive.PanelResizeHandle>
 )
 
-export { ResizablePanelGroup, ResizablePanel, ResizableHandle }
+export { ResizableHandle, ResizablePanel, ResizablePanelGroup }
