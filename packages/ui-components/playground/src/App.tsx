@@ -1,7 +1,7 @@
 import './App.css'
 
-import { Button } from '@eth-optimism/ui-components'
 import {
+  Button,
   Tooltip,
   TooltipContent,
   TooltipProvider,
