@@ -19,7 +19,7 @@ In this repository, you'll find numerous code references for applications & pack
 
 ## Community
 
-General discussion happens most frequently on the [Optimism discord](https://discord.gg/optimism).
+For technical support head over to the [GitHub Developer forum](https://github.com/ethereum-optimism/developers/discussions).
 Governance discussion can also be found on the [Optimism Governance Forum](https://gov.optimism.io/).
 
 ## Directory Structure
