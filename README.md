@@ -9,7 +9,11 @@
 
 ## Ecosystem
 
-In this repository, you'll find numerous code references for applications & packages to help app developers build on top of the OP Stack with ease. Designed to be "aggressively open source," we encourage you to explore, modify, extend, and test the code as needed. We look forward to building with you!
+In this repository, you'll find numerous code references for applications & packages to help app developers build on top of the OP Stack with ease. 
+
+If the [Optimism Repository](https://github.com/ethereum-optimism/ecosystem) is a place where the protocol and its infrastructure gets built. The Ecosystem Repository is a place where utilities, applications, and examples get built to interact with the protocols and it’s infrastructure.
+
+Designed to be "aggressively open source," we encourage you to explore, modify, extend, and test the code as needed. We look forward to building with you!
 
 ## Documentation
 
@@ -17,7 +21,7 @@ In this repository, you'll find numerous code references for applications & pack
 - If you want to build your own OP Stack based blockchain, refer to the [OP Stack Guide](https://docs.optimism.io/stack/getting-started)
 - If you want to contribute to the OP Stack, check out the [Protocol Specs](https://github.com/ethereum-optimism/optimism/tree/develop/specs)
 
-## Community
+## Support
 
 For technical support head over to the [GitHub Developer forum](https://github.com/ethereum-optimism/developers/discussions).
 Governance discussion can also be found on the [Optimism Governance Forum](https://gov.optimism.io/).
