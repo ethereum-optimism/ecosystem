@@ -9,7 +9,7 @@ import {
   DialogTrigger,
 } from '@eth-optimism/ui-components'
 
-import { Check } from 'lucide-react'
+import { RiCheckLine } from '@remixicon/react'
 import { Chain } from 'viem'
 import { useCallback, useState } from 'react'
 import { networkPairsByID } from '@eth-optimism/op-app'
@@ -35,7 +35,7 @@ const NetworkSelectorItem = ({
       className="flex flex-row p-3 cursor-pointer max-h-12 hover:bg-accent rounded-md"
       onClick={() => onSelect(chain)}
     >
-      <Check className={isActive ? 'visible' : 'invisible'} />
+      <RiCheckLine className={isActive ? 'visible' : 'invisible'} />
       <div className="flex items-center flex-row ml-3">
         <img className="h-full" src={logo} />{' '}
         <span className="text-base ml-3">{chain.name}</span>

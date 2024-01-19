@@ -4,7 +4,7 @@ import { BridgeReviewButton } from '@/components/bridge/BridgeReviewButton'
 import { From } from '@/components/bridge/From'
 import { To } from '@/components/bridge/To'
 import { useCallback, useState } from 'react'
-import { ArrowDown } from 'lucide-react'
+import { RiArrowDownLine } from '@remixicon/react'
 
 export type BridgeFormProps = {
   l1: Chain
@@ -54,7 +54,7 @@ export const BridgeForm = ({ l1, l2, action }: BridgeFormProps) => {
         }
       />
       <div className="w-full flex items-center justify-center py-3">
-        <ArrowDown />
+        <RiArrowDownLine size={20} />
       </div>
       <To
         chain={action === 'deposit' ? l2 : l1}
