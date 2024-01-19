@@ -1,6 +1,5 @@
 import * as SelectPrimitive from '@radix-ui/react-select'
-
-import { RiCheckLine, RiArrowDownSLine, RiArrowUpSLine } from '@remixicon/react'
+import { RiArrowDownSLine, RiArrowUpSLine, RiCheckLine } from '@remixicon/react'
 import * as React from 'react'
 
 import { cn } from '../../lib/utils'

@@ -1,10 +1,10 @@
 import './App.css'
 
 import {
-  useToast,
-  ToastAction,
   Button,
+  ToastAction,
   Toaster,
+  useToast,
 } from '@eth-optimism/ui-components'
 
 function App() {

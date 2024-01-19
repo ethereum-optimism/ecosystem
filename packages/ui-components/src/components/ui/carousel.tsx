@@ -1,10 +1,10 @@
+import { RiArrowLeftLine, RiArrowRightLine } from '@remixicon/react'
 import {
   type EmblaCarouselType as CarouselApi,
   type EmblaOptionsType as CarouselOptions,
   type EmblaPluginType as CarouselPlugin,
 } from 'embla-carousel'
 import useEmblaCarousel from 'embla-carousel-react'
-import { RiArrowLeftLine, RiArrowRightLine } from '@remixicon/react'
 import * as React from 'react'
 
 import { Button } from '../../components/ui/button'
