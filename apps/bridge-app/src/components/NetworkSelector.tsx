@@ -16,7 +16,6 @@ import { networkPairsByID } from '@eth-optimism/op-app'
 
 import l1AssetLogo from '@/assets/l1-asset-logo.png'
 import l2AssetLogo from '@/assets/l2-asset-logo.png'
-import { useTheme } from '@/providers/ThemeProvider'
 
 type NetworkSelectorItemProps = {
   chain: Chain
@@ -48,7 +47,6 @@ const NetworkSelectorItem = ({
 export const NetworkSelector = () => {
   const [dialogOpen, setDialogOpen] = useState<boolean>(false)
   const config = useConfig()
-  const { theme } = useTheme()
   const { chain } = useAccount()
   const { switchChainAsync } = useSwitchChain()
 

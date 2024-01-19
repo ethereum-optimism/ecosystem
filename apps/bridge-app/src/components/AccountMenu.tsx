@@ -13,7 +13,6 @@ import {
   DialogTrigger,
   Separator,
 } from '@eth-optimism/ui-components'
-import { useTheme } from '@/providers/ThemeProvider'
 import { AccountAvatar } from '@/components/AccountAvatar'
 import { NetworkSelector } from '@/components/NetworkSelector'
 
@@ -25,7 +24,6 @@ export const AccountMenu = () => {
     type: NETWORK_TYPE,
     chainId: chain?.id,
   })
-  const { theme } = useTheme()
   const { disconnect } = useDisconnect()
 
   const onDisconnectWallet = useCallback(() => {
