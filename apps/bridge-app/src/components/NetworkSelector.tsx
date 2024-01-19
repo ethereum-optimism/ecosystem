@@ -1,13 +1,14 @@
 import { useAccount, useConfig, useSwitchChain } from 'wagmi'
 import {
+  Button,
+  Separator,
   Dialog,
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTrigger,
-} from '@/components/ui/dialog'
-import { Button } from '@/components/ui/button'
-import { Separator } from '@/components/ui/separator'
+} from '@eth-optimism/ui-components'
+
 import { Check } from 'lucide-react'
 import { Chain } from 'viem'
 import { useCallback, useState } from 'react'
@@ -67,11 +68,11 @@ export const NetworkSelector = () => {
   return (
     <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
       <DialogTrigger asChild>
-        <Button
-          variant={theme === 'light' ? 'outline' : 'secondary'}
-          className="flex flex-row h-12"
-        >
-          <img className="h-full" src={isL2 ? l2AssetLogo : l1AssetLogo} />{' '}
+        <Button variant="outline" className="flex flex-row h-12">
+          <img
+            className="h-3/4 rounded-full"
+            src={isL2 ? l2AssetLogo : l1AssetLogo}
+          />{' '}
           <span className="ml-2 hidden md:inline">{chain?.name}</span>
         </Button>
       </DialogTrigger>

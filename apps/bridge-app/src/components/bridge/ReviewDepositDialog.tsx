@@ -3,11 +3,12 @@ import {
   DialogContent,
   DialogHeader,
   DialogTrigger,
-} from '@/components/ui/dialog'
+  Button,
+} from '@eth-optimism/ui-components'
 import { useWriteDepositERC20, useWriteDepositETH } from 'op-wagmi'
 import type { Token } from '@eth-optimism/op-app'
 import { useOPWagmiConfig, deploymentAddresses } from '@eth-optimism/op-app'
-import { Button } from '@/components/ui/button'
+
 import {
   Address,
   Chain,

@@ -1,9 +1,9 @@
 import { Chain } from 'viem'
-import { Label } from '@/components/ui/label'
+import { Skeleton, Label } from '@eth-optimism/ui-components'
 
 import type { Token } from '@eth-optimism/op-app'
 import { useAccount } from 'wagmi'
-import { Skeleton } from '@/components/ui/skeleton'
+
 import { useReadBalance } from '@/hooks/useReadBalance'
 
 export type FromProps = {

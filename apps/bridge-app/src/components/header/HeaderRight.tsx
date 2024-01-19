@@ -1,6 +1,6 @@
 import { AccountMenu } from '@/components/AccountMenu'
 import { ThemeToggle } from '@/components/ThemeToggle'
-import { Separator } from '@/components/ui/separator'
+import { Separator } from '@eth-optimism/ui-components'
 
 export const HeaderRight = () => {
   return (

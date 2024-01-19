@@ -5,7 +5,7 @@ import {
   useSwitchNetworkDirection,
 } from '@eth-optimism/op-app'
 
-import { Button } from '@/components/ui/button'
+import { Button } from '@eth-optimism/ui-components'
 import { useAccount } from 'wagmi'
 import { Chain, parseEther } from 'viem'
 import { ReviewDepositDialog } from '@/components/bridge/ReviewDepositDialog'
