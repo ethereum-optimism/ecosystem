@@ -3,7 +3,6 @@ import { useOPNetwork } from '@eth-optimism/op-app'
 import {
   Card,
   CardContent,
-  CardHeader,
   Tabs,
   TabsContent,
   TabsList,
