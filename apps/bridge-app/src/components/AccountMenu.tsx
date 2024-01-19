@@ -55,9 +55,9 @@ export const AccountMenu = () => {
             <Separator />
             <div className="flex flex-col w-full test-base text-left my-4">
               <div className="text-sm">Block Explorers:</div>
-              <div className="my-3 w-full hover:bg-accent p-3">
+              <div className="my-3 w-full hover:bg-accent p-3 cursor-pointer rounded-md">
                 <a
-                  className="flex w-full items-center cursor-pointer"
+                  className="flex w-full items-center"
                   rel="noopener noreferrer"
                   href={`${networkPair.l1?.blockExplorers?.default?.url}/address/${address}`}
                   target="_blank"
@@ -65,9 +65,9 @@ export const AccountMenu = () => {
                   View L1 Explorer <ExternalLink className="ml-1" size={20} />
                 </a>
               </div>
-              <div className="w-full hover:bg-accent p-3">
+              <div className="w-full hover:bg-accent p-3 cursor-pointer rounded-md">
                 <a
-                  className="flex w-full items-center cursor-pointer"
+                  className="flex w-full items-center"
                   rel="noopener noreferrer"
                   href={`${networkPair.l2?.blockExplorers?.default?.url}/address/${address}`}
                   target="_blank"

@@ -23,7 +23,7 @@ export const To = ({ chain, amount, selectedToken }: FromProps) => {
   return (
     <div>
       <div className="from-label">
-        <Label>To:</Label> {chain.name}
+        <Label className="text-base">To:</Label> {chain.name}
         {amount && selectedToken && (
           <div className="text-sm">
             You will receive: {amount} {selectedToken.symbol.toUpperCase()}
