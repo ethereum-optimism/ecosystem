@@ -5,17 +5,17 @@ import { ConnectButton } from '@rainbow-me/rainbowkit'
 
 import { shortenAddress, useOPNetwork } from '@eth-optimism/op-app'
 
-import { Button } from '@/components/ui/button'
-import { useTheme } from '@/providers/ThemeProvider'
-import { AccountAvatar } from '@/components/AccountAvatar'
-import { NetworkSelector } from '@/components/NetworkSelector'
 import {
+  Button,
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTrigger,
-} from '@/components/ui/dialog'
-import { Separator } from '@/components/ui/separator'
+  Separator,
+} from '@eth-optimism/ui-components'
+import { AccountAvatar } from '@/components/AccountAvatar'
+import { NetworkSelector } from '@/components/NetworkSelector'
+
 import { NETWORK_TYPE } from '@/constants/networkType'
 
 export const AccountMenu = () => {
@@ -24,7 +24,6 @@ export const AccountMenu = () => {
     type: NETWORK_TYPE,
     chainId: chain?.id,
   })
-  const { theme } = useTheme()
   const { disconnect } = useDisconnect()
 
   const onDisconnectWallet = useCallback(() => {
@@ -38,10 +37,7 @@ export const AccountMenu = () => {
       </div>
       <Dialog>
         <DialogTrigger asChild>
-          <Button
-            variant={theme === 'light' ? 'outline' : 'secondary'}
-            className="h-12"
-          >
+          <Button variant="outline" className="h-12">
             <span>
               <AccountAvatar />
             </span>

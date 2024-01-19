@@ -1,4 +1,5 @@
-import { Avatar, AvatarImage } from '@/components/ui/avatar'
+import { Avatar, AvatarImage } from '@eth-optimism/ui-components'
+
 import { cn } from '@/utils'
 
 const defaultAvatar =

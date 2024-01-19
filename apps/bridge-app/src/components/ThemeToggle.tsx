@@ -1,6 +1,6 @@
 import { Moon, Sun } from 'lucide-react'
 
-import { Button } from '@/components/ui/button'
+import { Button } from '@eth-optimism/ui-components'
 
 import { useTheme } from '@/providers/ThemeProvider'
 import { useCallback } from 'react'

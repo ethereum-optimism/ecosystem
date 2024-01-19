@@ -1,12 +1,13 @@
 import { useOPTokens, Token } from '@eth-optimism/op-app'
 import { useCallback, useMemo, useState } from 'react'
 import {
+  Button,
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTrigger,
-} from '@/components/ui/dialog'
-import { Button } from '@/components/ui/button'
+} from '@eth-optimism/ui-components'
+
 import { Chain } from 'viem'
 
 export type TokenListDialogProps = {
@@ -64,7 +65,7 @@ export const TokenListDialog = ({
           {selectedToken.symbol}
         </Button>
       </DialogTrigger>
-      <DialogContent className="max-h-[50%] overflow-scroll pb-8">
+      <DialogContent className="max-h-[50%] overflow-scroll pb-8 w-1/2">
         <DialogHeader>Token List</DialogHeader>
 
         <div className="flex flex-col w-full">

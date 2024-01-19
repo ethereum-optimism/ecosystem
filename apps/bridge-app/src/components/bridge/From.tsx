@@ -2,11 +2,10 @@ import { Chain, parseEther } from 'viem'
 
 import type { Token } from '@eth-optimism/op-app'
 
-import { Label } from '@/components/ui/label'
-import { Input } from '@/components/ui/input'
+import { Input, Skeleton, Label } from '@eth-optimism/ui-components'
 import { useAccount } from 'wagmi'
 import { useEffect, useMemo } from 'react'
-import { Skeleton } from '@/components/ui/skeleton'
+
 import { cn } from '@/utils'
 import { TokenListDialog } from '@/components/bridge/TokenListDialog'
 import { useReadBalance } from '@/hooks/useReadBalance'
