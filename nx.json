@@ -3,7 +3,8 @@
   "neverConnectToCloud": true,
   "projects": {
     "apps": {
-      "bridge-app": ["type:app"]
+      "bridge-app": ["type:app"],
+      "paymaster-proxy": ["type:app"]
     },
     "packages": {
       "op-app": ["type:package"],
