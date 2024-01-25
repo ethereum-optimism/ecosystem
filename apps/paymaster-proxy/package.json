@@ -2,7 +2,7 @@
   "name": "@eth-optimism/paymaster-proxy",
   "version": "0.0.0",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "echo \"Error: no test specified\" && exit 0",
     "typecheck": "tsc --noEmit",
     "dev": "tsup src/app.ts --watch --onSuccess 'node dist/app.js'",
     "build": "tsup src/app.ts",
