@@ -15,7 +15,7 @@ RUN apk add --no-cache python3 make g++
 # Fetches packages based on lockfile not package.json - cache is valid even if package.json changes
 RUN pnpm fetch
 
-# install monorepo dependencies
+# install monorepo dependencies, from the virtual store
 RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile --offline
 
 # build all packages/apps
