@@ -44,5 +44,5 @@ RUN pnpm deploy --filter=paymaster-proxy --prod /prod/paymaster-proxy
 FROM base AS paymaster-proxy
 COPY --from=builder /prod/paymaster-proxy /prod/paymaster-proxy
 WORKDIR /prod/paymaster-proxy
-EXPOSE 3000
+EXPOSE 7310
 CMD [ "pnpm", "start" ]

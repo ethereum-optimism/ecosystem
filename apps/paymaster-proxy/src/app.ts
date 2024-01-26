@@ -4,8 +4,13 @@ import { envVars } from '@/envVars'
 
 const app = express()
 
-app.get('/', (req, res) => {
-  res.send('Hello World!')
+app.get('/healthz', (req, res) => {
+  res.json({ ok: true })
+})
+
+app.get('/ready', (req, res) => {
+  // TODO: add check for whether underlying services are ready
+  res.json({ ok: true })
 })
 
 app.listen(envVars.PORT, envVars.HOST, () => {
