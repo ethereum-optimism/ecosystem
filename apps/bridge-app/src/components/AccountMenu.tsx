@@ -1,6 +1,6 @@
 import { useAccount, useDisconnect } from 'wagmi'
 import { useCallback } from 'react'
-import { ExternalLink } from 'lucide-react'
+import { RiExternalLinkLine } from '@remixicon/react'
 import { ConnectButton } from '@rainbow-me/rainbowkit'
 
 import { shortenAddress, useOPNetwork } from '@eth-optimism/op-app'
@@ -62,7 +62,8 @@ export const AccountMenu = () => {
                   href={`${networkPair.l1?.blockExplorers?.default?.url}/address/${address}`}
                   target="_blank"
                 >
-                  View L1 Explorer <ExternalLink className="ml-1" size={20} />
+                  View L1 Explorer{' '}
+                  <RiExternalLinkLine className="ml-1" size={20} />
                 </a>
               </div>
               <div className="w-full hover:bg-accent p-3 cursor-pointer rounded-md">
@@ -72,7 +73,8 @@ export const AccountMenu = () => {
                   href={`${networkPair.l2?.blockExplorers?.default?.url}/address/${address}`}
                   target="_blank"
                 >
-                  View L2 Explorer <ExternalLink className="ml-1" size={20} />
+                  View L2 Explorer{' '}
+                  <RiExternalLinkLine className="ml-1" size={20} />
                 </a>
               </div>
             </div>

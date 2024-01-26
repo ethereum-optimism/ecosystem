@@ -1,4 +1,4 @@
-import { Moon, Sun } from 'lucide-react'
+import { RiMoonLine, RiSunLine } from '@remixicon/react'
 
 import { Button } from '@eth-optimism/ui-components'
 
@@ -20,9 +20,9 @@ export const ThemeToggle = () => {
 
   const themeToggle =
     theme === 'dark' ? (
-      <Moon className={classNames.dark} />
+      <RiMoonLine className={classNames.dark} />
     ) : (
-      <Sun className={classNames.light} />
+      <RiSunLine className={classNames.light} />
     )
 
   return (

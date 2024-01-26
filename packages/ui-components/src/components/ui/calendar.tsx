@@ -1,4 +1,4 @@
-import { ChevronLeft, ChevronRight } from 'lucide-react'
+import { RiArrowLeftSLine, RiArrowRightSLine } from '@remixicon/react'
 import * as React from 'react'
 import { DayPicker } from 'react-day-picker'
 
@@ -53,9 +53,9 @@ function Calendar({
       }}
       components={{
         // @ts-ignore ignore this error
-        IconLeft: ({ ...props }) => <ChevronLeft className="h-4 w-4" />,
+        IconLeft: ({ ...props }) => <RiArrowLeftSLine className="h-4 w-4" />,
         // @ts-ignore ignore this error
-        IconRight: ({ ...props }) => <ChevronRight className="h-4 w-4" />,
+        IconRight: ({ ...props }) => <RiArrowRightSLine className="h-4 w-4" />,
       }}
       {...props}
     />

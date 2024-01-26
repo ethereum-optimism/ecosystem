@@ -1,29 +1,32 @@
 import './App.css'
 
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
+  Button,
+  ToastAction,
+  Toaster,
+  useToast,
 } from '@eth-optimism/ui-components'
 
 function App() {
+  const { toast } = useToast()
+
   return (
     <div>
-      <Dialog>
-        <DialogTrigger>Open</DialogTrigger>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Are you absolutely sure?</DialogTitle>
-            <DialogDescription>
-              This action cannot be undone. This will permanently delete your
-              account and remove your data from our servers.
-            </DialogDescription>
-          </DialogHeader>
-        </DialogContent>
-      </Dialog>
+      <Toaster />
+      <Button
+        variant="outline"
+        onClick={() => {
+          toast({
+            title: 'Scheduled: Catch up ',
+            description: 'Friday, February 10, 2023 at 5:57 PM',
+            action: (
+              <ToastAction altText="Goto schedule to undo">Undo</ToastAction>
+            ),
+          })
+        }}
+      >
+        Add to calendar
+      </Button>
     </div>
   )
 }

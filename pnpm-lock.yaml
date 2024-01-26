@@ -68,6 +68,9 @@ importers:
       '@rainbow-me/rainbowkit':
         specifier: 2.0.0-beta.1
         version: 2.0.0-beta.1(@types/react@18.2.37)(react-dom@18.2.0)(react@18.2.0)(viem@2.0.3)(wagmi@2.0.3)
+      '@remixicon/react':
+        specifier: ^4.1.1
+        version: 4.1.1(react@18.2.0)
       '@tanstack/react-query':
         specifier: ^5.10.0
         version: 5.10.0(react@18.2.0)
@@ -77,9 +80,6 @@ importers:
       clsx:
         specifier: ^2.0.0
         version: 2.0.0
-      lucide-react:
-        specifier: ^0.294.0
-        version: 0.294.0(react@18.2.0)
       op-viem:
         specifier: 1.3.1-alpha
         version: 1.3.1-alpha(@wagmi/core@2.0.2)(typescript@5.3.2)(viem@2.0.3)(wagmi@2.0.3)
@@ -365,6 +365,9 @@ importers:
       '@radix-ui/react-tooltip':
         specifier: ^1.0.7
         version: 1.0.7(@types/react@18.2.47)(react-dom@18.2.0)(react@18.2.0)
+      '@remixicon/react':
+        specifier: ^4.1.1
+        version: 4.1.1(react@18.2.0)
       '@tanstack/react-table':
         specifier: ^8.11.6
         version: 8.11.6(react-dom@18.2.0)(react@18.2.0)
@@ -386,9 +389,6 @@ importers:
       embla-carousel-react:
         specifier: 8.0.0-rc19
         version: 8.0.0-rc19(react@18.2.0)
-      lucide-react:
-        specifier: ^0.294.0
-        version: 0.294.0(react@18.2.0)
       next-themes:
         specifier: ^0.2.1
         version: 0.2.1(next@14.0.4)(react-dom@18.2.0)(react@18.2.0)
@@ -6143,6 +6143,14 @@ packages:
     engines: {node: '>=14.0.0'}
     dev: false
 
+  /@remixicon/react@4.1.1(react@18.2.0):
+    resolution: {integrity: sha512-a2WSRfuv94OwSX2AK2IRhDEYAYxL0AOeF5+3boTILpC41e8Mp8ZJ7b2980ekOnJsnkcBofcHi4/GDR9cKTl/Bg==}
+    peerDependencies:
+      react: '>=18.2.0'
+    dependencies:
+      react: 18.2.0
+    dev: false
+
   /@rollup/rollup-android-arm-eabi@4.6.0:
     resolution: {integrity: sha512-keHkkWAe7OtdALGoutLY3utvthkGF+Y17ws9LYT8pxMBYXaCoH/8dXS2uzo6e8+sEhY7y/zi5RFo22Dy2lFpDw==}
     cpu: [arm]
@@ -11373,14 +11381,6 @@ packages:
     engines: {node: '>=10'}
     dependencies:
       yallist: 4.0.0
-
-  /lucide-react@0.294.0(react@18.2.0):
-    resolution: {integrity: sha512-V7o0/VECSGbLHn3/1O67FUgBwWB+hmzshrgDVRJQhMh8uj5D3HBuIvhuAmQTtlupILSplwIZg5FTc4tTKMA2SA==}
-    peerDependencies:
-      react: ^16.5.1 || ^17.0.0 || ^18.0.0
-    dependencies:
-      react: 18.2.0
-    dev: false
 
   /lz-string@1.5.0:
     resolution: {integrity: sha512-h5bgJWpxJNswbU7qCrV0tIKQCaS3blPDrqKWx+QxzuzL1zGUzij9XCWLrSLsJPu5t+eWA/ycetzYAO5IOMcWAQ==}
