@@ -57,21 +57,18 @@ export const TokenListDialog = ({
   return (
     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline" className="ml-1 w-1/4 h-[40px]">
-          <img
-            className="max-w-[25%] h-[100%] mr-2"
-            src={selectedToken.logoURI}
-          />{' '}
+        <Button variant="outline" className="ml-2 h-[40px] w-[100px]">
+          <img className="w-5 h-[100%] mr-2" src={selectedToken.logoURI} />{' '}
           {selectedToken.symbol}
         </Button>
       </DialogTrigger>
-      <DialogContent className="max-h-[50%] overflow-scroll pb-8 w-1/2">
+      <DialogContent className="max-h-[50%] overflow-y-scroll pb-8 w-1/2">
         <DialogHeader>Token List</DialogHeader>
 
         <div className="flex flex-col w-full">
           {l2Tokens.map((token) => (
             <div
-              className="flex flex-row p-2 h-[60px] cursor-pointer hover:bg-accent items-center"
+              className="flex flex-row p-2 h-[60px] cursor-pointer hover:bg-accent items-center rounded-md"
               key={token.extensions.opTokenId}
               onClick={() => onTokenClick(token)}
             >

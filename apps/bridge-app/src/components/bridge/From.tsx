@@ -58,12 +58,13 @@ export const From = ({
   return (
     <div>
       <div className="from-label">
-        <Label>From:</Label> {action === 'deposit' ? l1.name : l2.name}
-        <div className="flex flex-row w-full justify-between">
+        <Label className="text-base">From:</Label>{' '}
+        {action === 'deposit' ? l1.name : l2.name}
+        <div className="flex flex-row w-full justify-between my-2">
           <Input
             className={cn([
               'mt-2',
-              'w-9/12',
+              'w-full',
               validationError ? 'outline-red-50 outline-solid' : '',
             ])}
             placeholder="0.0"

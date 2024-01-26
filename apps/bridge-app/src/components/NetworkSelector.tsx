@@ -32,7 +32,7 @@ const NetworkSelectorItem = ({
 }: NetworkSelectorItemProps) => {
   return (
     <div
-      className="flex flex-row p-3 cursor-pointer max-h-12 hover:bg-accent"
+      className="flex flex-row p-3 cursor-pointer max-h-12 hover:bg-accent rounded-md"
       onClick={() => onSelect(chain)}
     >
       <Check className={isActive ? 'visible' : 'invisible'} />

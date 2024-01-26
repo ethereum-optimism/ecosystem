@@ -28,38 +28,40 @@ export const Bridge = ({ action }: BridgeProps) => {
   })
 
   return (
-    <Card className="mt-6 px-6 py-6 shadow-none border-none md:border-solid md:rounded-lg ">
-      <Tabs defaultValue={action} className="w-[500px]">
-        <TabsList className="grid w-full grid-cols-2 gap-2">
-          <TabsTrigger value="deposit" onClick={() => navigate('/deposit')}>
-            Deposit
-          </TabsTrigger>
-          <TabsTrigger
-            value="withdrawal"
-            onClick={() => navigate('/withdrawal')}
-          >
-            Withdrawal
-          </TabsTrigger>
-        </TabsList>
-        <TabsContent value="deposit">
-          <CardContent className="p-0 pt-3 space-y-2">
-            <BridgeForm
-              l1={networkPair.l1}
-              l2={networkPair.l2}
-              action="deposit"
-            />
-          </CardContent>
-        </TabsContent>
-        <TabsContent value="withdrawal">
-          <CardContent className="p-0 pt-3 space-y-2">
-            <BridgeForm
-              l1={networkPair.l1}
-              l2={networkPair.l2}
-              action="withdrawal"
-            />
-          </CardContent>
-        </TabsContent>
-      </Tabs>
+    <Card className="pt-6">
+      <CardContent>
+        <Tabs defaultValue={action} className="w-[500px]">
+          <TabsList className="grid w-full grid-cols-2 gap-2">
+            <TabsTrigger value="deposit" onClick={() => navigate('/deposit')}>
+              Deposit
+            </TabsTrigger>
+            <TabsTrigger
+              value="withdrawal"
+              onClick={() => navigate('/withdrawal')}
+            >
+              Withdrawal
+            </TabsTrigger>
+          </TabsList>
+          <TabsContent value="deposit">
+            <CardContent className="p-0 pt-3 space-y-2">
+              <BridgeForm
+                l1={networkPair.l1}
+                l2={networkPair.l2}
+                action="deposit"
+              />
+            </CardContent>
+          </TabsContent>
+          <TabsContent value="withdrawal">
+            <CardContent className="p-0 pt-3 space-y-2">
+              <BridgeForm
+                l1={networkPair.l1}
+                l2={networkPair.l2}
+                action="withdrawal"
+              />
+            </CardContent>
+          </TabsContent>
+        </Tabs>
+      </CardContent>
     </Card>
   )
 }
