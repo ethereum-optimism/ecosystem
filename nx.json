@@ -4,7 +4,8 @@
   "projects": {
     "apps": {
       "bridge-app": ["type:app"],
-      "paymaster-proxy": ["type:app"]
+      "paymaster-proxy": ["type:app"],
+      "dapp-console": ["type:app"]
     },
     "packages": {
       "op-app": ["type:package"],
