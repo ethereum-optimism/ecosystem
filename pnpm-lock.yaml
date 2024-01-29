@@ -181,6 +181,9 @@ importers:
       express:
         specifier: ^4.18.2
         version: 4.18.2
+      express-rate-limit:
+        specifier: ^7.1.5
+        version: 7.1.5(express@4.18.2)
       zod:
         specifier: ^3.22.4
         version: 3.22.4
@@ -236,7 +239,7 @@ importers:
     devDependencies:
       '@eth-optimism/superchain-registry':
         specifier: github:ethereum-optimism/superchain-registry
-        version: github.com/ethereum-optimism/superchain-registry/fe19702bda9d64117c3f09abc0cb8829450f9eb9
+        version: github.com/ethereum-optimism/superchain-registry/b5afd5e353902d74f4c47f3dfbfafb8eb9f7f0a7
       '@tanstack/react-query':
         specifier: ^5.10.0
         version: 5.10.0(react@18.2.0)
@@ -9571,6 +9574,15 @@ packages:
       strip-final-newline: 3.0.0
     dev: true
 
+  /express-rate-limit@7.1.5(express@4.18.2):
+    resolution: {integrity: sha512-/iVogxu7ueadrepw1bS0X0kaRC/U0afwiYRSLg68Ts+p4Dc85Q5QKsOnPS/QUjPMHvOJQtBDrZgvkOzf8ejUYw==}
+    engines: {node: '>= 16'}
+    peerDependencies:
+      express: 4 || 5 || ^5.0.0-beta.1
+    dependencies:
+      express: 4.18.2
+    dev: false
+
   /express@4.18.2:
     resolution: {integrity: sha512-5/PsL6iGPdfQ/lKM1UuielYgv3BUoJfz1aUwU9vHZ+J7gyvwdQXFEBIEIaxeGf0GIcreATNyBExtalisDbuMqQ==}
     engines: {node: '>= 0.10.0'}
@@ -15264,8 +15276,8 @@ packages:
       react: 18.2.0
       use-sync-external-store: 1.2.0(react@18.2.0)
 
-  github.com/ethereum-optimism/superchain-registry/fe19702bda9d64117c3f09abc0cb8829450f9eb9:
-    resolution: {tarball: https://codeload.github.com/ethereum-optimism/superchain-registry/tar.gz/fe19702bda9d64117c3f09abc0cb8829450f9eb9}
+  github.com/ethereum-optimism/superchain-registry/b5afd5e353902d74f4c47f3dfbfafb8eb9f7f0a7:
+    resolution: {tarball: https://codeload.github.com/ethereum-optimism/superchain-registry/tar.gz/b5afd5e353902d74f4c47f3dfbfafb8eb9f7f0a7}
     name: '@eth-optimism/superchain-registry'
     version: 0.0.1-alpha.1
     dev: true
