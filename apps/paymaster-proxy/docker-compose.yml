@@ -7,7 +7,6 @@ services:
       dockerfile: Dockerfile
       target: paymaster-proxy
     environment:
-      - HOST=0.0.0.0
       - PORT=7310
     ports:
       - 7310:7310
