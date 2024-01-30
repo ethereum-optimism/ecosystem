@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  paymaster-proxy:
+    build:
+      context: ../../
+      dockerfile: Dockerfile
+      target: paymaster-proxy
+    environment:
+      - PORT=7310
+    ports:
+      - 7310:7310
+    healthcheck:
+      test: wget localhost:7310/healthz -q -O - > /dev/null 2>&1
