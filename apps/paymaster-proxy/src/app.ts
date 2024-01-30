@@ -1,10 +1,13 @@
 import express from 'express'
 
+import { envVars } from '@/envVars'
+
 const app = express()
-const port = 3000
+
 app.get('/', (req, res) => {
   res.send('Hello World!')
 })
-app.listen(port, () => {
-  console.log(`Server listening at http://localhost:${port}`)
+
+app.listen(envVars.PORT, envVars.HOST, () => {
+  console.log(`Server listening at http://${envVars.HOST}:${envVars.PORT}`)
 })
