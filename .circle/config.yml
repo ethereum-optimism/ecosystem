@@ -152,6 +152,10 @@ jobs:
 
 workflows:
   build-and-publish-paymaster-proxy:
+    filters:
+      branches:
+        only:
+          - main
     jobs:
       - docker-build:
           name: paymaster-proxy-docker-build
