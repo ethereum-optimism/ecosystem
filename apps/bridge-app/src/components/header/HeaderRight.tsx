@@ -9,7 +9,7 @@ export const HeaderRight = () => {
         <ThemeToggle />
         <Separator orientation="vertical" />
       </div>
-      <div className="flex flex-row align-center pl-6">
+      <div className="flex flex-row items-center pl-6">
         <AccountMenu />
       </div>
     </div>
