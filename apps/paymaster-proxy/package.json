@@ -2,11 +2,11 @@
   "name": "@eth-optimism/paymaster-proxy",
   "version": "0.0.0",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 0",
+    "test": "vitest run --passWithNoTests",
     "typecheck": "tsc --noEmit",
-    "dev": "tsup src/app.ts --watch --onSuccess 'node dist/app.js'",
-    "build": "tsup src/app.ts",
-    "start": "node dist/app.js",
+    "dev": "tsup --watch --onSuccess 'node dist/runProxyService.js'",
+    "build": "tsup",
+    "start": "node dist/runProxyService.js",
     "lint": "eslint \"**/*.{ts,tsx}\" && pnpm prettier --check \"**/*.{ts,tsx}\"",
     "lint:fix": "eslint \"**/*.{ts,tsx}\" --fix --quiet && pnpm prettier \"**/*.{ts,tsx}\" --write --loglevel=warn",
     "generate-example-env": "ts-node scripts/generateExampleEnv.ts",
@@ -21,7 +21,8 @@
     "prettier": "^3.1.0",
     "ts-node": "^10.9.1",
     "tsup": "^8.0.1",
-    "typescript": "^5.2.2"
+    "typescript": "^5.2.2",
+    "vitest": "^1.1.3"
   },
   "dependencies": {
     "dotenv": "^16.4.1",
