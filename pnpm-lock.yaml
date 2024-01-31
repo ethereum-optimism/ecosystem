@@ -135,9 +135,15 @@ importers:
       '@privy-io/react-auth':
         specifier: ^1.54.3
         version: 1.54.3(@babel/core@7.23.7)(@types/react@18.2.47)(react-dom@18.2.0)(react-is@18.2.0)(react@18.2.0)(typescript@5.3.2)
+      '@remixicon/react':
+        specifier: ^4.1.1
+        version: 4.1.1(react@18.2.0)
       next:
         specifier: 14.1.0
         version: 14.1.0(@babel/core@7.23.7)(react-dom@18.2.0)(react@18.2.0)
+      next-themes:
+        specifier: ^0.2.1
+        version: 0.2.1(next@14.1.0)(react-dom@18.2.0)(react@18.2.0)
       react:
         specifier: ^18
         version: 18.2.0
@@ -10152,6 +10158,7 @@ packages:
       is-hex-prefixed: 1.0.0
       strip-hex-prefix: 1.0.0
     dev: false
+    bundledDependencies: false
 
   /event-target-shim@5.0.1:
     resolution: {integrity: sha512-i/2XbnSz/uxRCU6+NdVJgKWDTM427+MqYbkQzD321DuCQJUqOuJKIA0IM2+W2xtYHdKOmZ4dR6fExsd4SXL+WQ==}
