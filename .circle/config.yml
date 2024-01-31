@@ -1,0 +1,174 @@
+version: 2.1
+
+commands:
+  gcp-oidc-authenticate:
+    description: 'Authenticate with GCP using a CircleCI OIDC token.'
+    parameters:
+      project_id:
+        type: env_var_name
+        default: GCP_PROJECT_ID
+      workload_identity_pool_id:
+        type: env_var_name
+        default: GCP_WIP_ID
+      workload_identity_pool_provider_id:
+        type: env_var_name
+        default: GCP_WIP_PROVIDER_ID
+      service_account_email:
+        type: env_var_name
+        default: GCP_SERVICE_ACCOUNT_EMAIL
+      gcp_cred_config_file_path:
+        type: string
+        default: /home/circleci/gcp_cred_config.json
+      oidc_token_file_path:
+        type: string
+        default: /home/circleci/oidc_token.json
+    steps:
+      - run:
+          name: 'Create OIDC credential configuration'
+          command: |
+            # Store OIDC token in temp file
+            echo $CIRCLE_OIDC_TOKEN > << parameters.oidc_token_file_path >>
+            # Create a credential configuration for the generated OIDC ID Token
+            gcloud iam workload-identity-pools create-cred-config \
+                "projects/${<< parameters.project_id >>}/locations/global/workloadIdentityPools/${<< parameters.workload_identity_pool_id >>}/providers/${<< parameters.workload_identity_pool_provider_id >>}"\
+                --output-file="<< parameters.gcp_cred_config_file_path >>" \
+                --service-account="${<< parameters.service_account_email >>}" \
+                --credential-source-file=<< parameters.oidc_token_file_path >>
+      - run:
+          name: 'Authenticate with GCP using OIDC'
+          command: |
+            # Configure gcloud to leverage the generated credential configuration
+            gcloud auth login --brief --cred-file "<< parameters.gcp_cred_config_file_path >>"
+            # Configure ADC
+            echo "export GOOGLE_APPLICATION_CREDENTIALS='<< parameters.gcp_cred_config_file_path >>'" | tee -a "$BASH_ENV"
+
+jobs:
+  docker-build:
+    environment:
+      DOCKER_BUILDKIT: 1
+    machine:
+      image: ubuntu-2204:2022.07.1
+    parameters:
+      docker_name:
+        description: Docker image name
+        type: string
+      docker_tags:
+        description: Docker image tags as csv
+        type: string
+      docker_file:
+        description: Path to Dockerfile
+        type: string
+      docker_context:
+        description: Docker build context
+        type: string
+      docker_target:
+        description: Docker build target for multi-stage builds
+        type: string
+      registry:
+        description: Docker registry
+        type: string
+        default: 'us-docker.pkg.dev'
+      repo:
+        description: Docker repo
+        type: string
+        default: 'oplabs-tools-artifacts/internal-images'
+    steps:
+      - checkout
+      - setup_remote_docker:
+          docker_layer_caching: true
+      - run:
+          command: mkdir -p /tmp/docker_images
+      - run:
+          name: Build
+          command: |
+            # Check to see if DOCKER_HUB_READ_ONLY_TOKEN is set (i.e. we are in repo) before attempting to use secrets.
+            # Building should work without this read only login, but may get rate limited.
+            if [[ -v DOCKER_HUB_READ_ONLY_TOKEN ]]; then
+              echo "$DOCKER_HUB_READ_ONLY_TOKEN" | docker login -u "$DOCKER_HUB_READ_ONLY_USER" --password-stdin
+            fi
+            IMAGE_BASE="<<parameters.registry>>/<<parameters.repo>>/<<parameters.docker_name>>"
+            DOCKER_TAGS=$(echo -ne <<parameters.docker_tags>> | sed "s/,/\n/g" | sed "s/[^a-zA-Z0-9\n]/-/g" | sed -e "s|^|-t ${IMAGE_BASE}:|")
+            TARGET_OPTION=""
+            if [[ -n "<<parameters.docker_target>>" ]]; then
+              TARGET_OPTION="--target <<parameters.docker_target>>"
+            fi
+            docker build \
+            $TARGET_OPTION \
+            $(echo -ne $DOCKER_TAGS | tr '\n' ' ') \
+            -f <<parameters.docker_file>> \
+            <<parameters.docker_context>>
+      - run:
+          name: Save
+          command: |
+            IMAGE_BASE="<<parameters.registry>>/<<parameters.repo>>/<<parameters.docker_name>>"
+            DOCKER_LABELS=$(echo -ne <<parameters.docker_tags>> | sed "s/,/\n/g" | sed "s/[^a-zA-Z0-9\n]/-/g")
+            echo -ne $DOCKER_LABELS | tr ' ' '\n' | xargs -I {} docker save -o /tmp/docker_images/<<parameters.docker_name>>_{}.tar $IMAGE_BASE:{}
+      - persist_to_workspace:
+          root: /tmp/docker_images
+          paths:
+            - '.'
+
+  docker-publish:
+    parameters:
+      docker_name:
+        description: Docker image name
+        type: string
+      docker_tags:
+        description: Docker image tags as csv
+        type: string
+      registry:
+        description: Docker registry
+        type: string
+        default: 'us-docker.pkg.dev'
+      repo:
+        description: Docker repo
+        type: string
+        default: 'oplabs-tools-artifacts/internal-images'
+    machine:
+      image: ubuntu-2204:2022.07.1
+    steps:
+      - attach_workspace:
+          at: /tmp/docker_images
+      - run:
+          name: Docker load
+          command: |
+            DOCKER_LABELS=$(echo -ne <<parameters.docker_tags>> | sed "s/,/\n/g" | sed "s/[^a-zA-Z0-9\n]/-/g")
+            echo -ne $DOCKER_LABELS | tr ' ' '\n' | xargs -I {} docker load -i /tmp/docker_images/<<parameters.docker_name>>_{}.tar
+      - gcp-oidc-authenticate
+      # Below is CircleCI recommended way of specifying nameservers on an Ubuntu box:
+      # https://support.circleci.com/hc/en-us/articles/7323511028251-How-to-set-custom-DNS-on-Ubuntu-based-images-using-netplan
+      - run: sudo sed -i '13 i \ \ \ \ \ \ \ \ \ \ \ \ nameservers:' /etc/netplan/50-cloud-init.yaml
+      - run: sudo sed -i '14 i \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ addresses:' /etc/netplan/50-cloud-init.yaml
+      - run: sudo sed -i "s/addresses:/ addresses":" [8.8.8.8, 8.8.4.4] /g" /etc/netplan/50-cloud-init.yaml
+      - run: cat /etc/netplan/50-cloud-init.yaml
+      - run: sudo netplan apply
+      - run:
+          name: Publish
+          command: |
+            gcloud auth configure-docker <<parameters.registry>>
+            IMAGE_BASE="<<parameters.registry>>/<<parameters.repo>>/<<parameters.docker_name>>"
+            DOCKER_TAGS=$(echo -ne <<parameters.docker_tags>> | sed "s/,/\n/g" | sed "s/[^a-zA-Z0-9\n]/-/g" | sed -e "s|^|${IMAGE_BASE}:|")
+            echo -ne $DOCKER_TAGS | tr ' ' '\n' | xargs -L1 docker push
+
+workflows:
+  build-and-publish-paymaster-proxy:
+    filters:
+      branches:
+        only:
+          - main
+    jobs:
+      - docker-build:
+          name: paymaster-proxy-docker-build
+          docker_file: ./Dockerfile
+          docker_name: paymaster-proxy
+          docker_tags: <<pipeline.git.revision>>,<<pipeline.git.branch>>
+          docker_context: .
+          docker_target: paymaster-proxy
+      - docker-publish:
+          name: paymaster-proxy-docker-publish
+          docker_name: paymaster-proxy
+          docker_tags: <<pipeline.git.revision>>,<<pipeline.git.branch>>
+          context:
+            - oplabs-gcr-internal
+          requires:
+            - paymaster-proxy-docker-build
