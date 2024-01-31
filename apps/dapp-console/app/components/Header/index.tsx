@@ -8,7 +8,7 @@ import { Button } from '@eth-optimism/ui-components/src/components/ui/button'
 const Header = () => {
   return (
     <div className="h-20 px-6 border-b border-border flex items-center justify-between">
-      <div className="flex align-center gap-12">
+      <div className="flex items-center gap-12">
         <HeaderLogo />
         <HeaderTabs />
       </div>
@@ -23,7 +23,7 @@ const Header = () => {
 
 const HeaderLogo = () => {
   return (
-    <div className="flex align-center">
+    <div className="flex items-center">
       <Image
         src="logos/op-superchain-logo.svg"
         alt="Superchain dapp developer logo"
