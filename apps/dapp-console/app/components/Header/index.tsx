@@ -3,6 +3,7 @@
 import Image from 'next/image'
 import { ThemeToggle } from '@/app/components/Header/ThemeToggle'
 import { Separator } from '@eth-optimism/ui-components/src/components/ui/separator'
+import { Text } from '@eth-optimism/ui-components/src/components/ui/text'
 import { Button } from '@eth-optimism/ui-components/src/components/ui/button'
 import { HeaderTabs } from '@/app/components/Header/HeaderTab'
 import { usePathname } from 'next/navigation'
@@ -19,7 +20,9 @@ const Header = () => {
       <div className="flex items-center">
         <ThemeToggle />
         <Separator orientation="vertical" className="h-6 mx-4" />
-        <Button>Sign in</Button>
+        <Button>
+          <Text as="span">Sign in</Text>
+        </Button>
       </div>
     </div>
   )
@@ -35,7 +38,9 @@ const HeaderLogo = () => {
         height={24}
       />
       <Separator orientation="vertical" className="h-4 mx-4" />
-      <span className="tracking-widest font-medium">DAPP DEVELOPER</span>
+      <Text as="span" className="tracking-widest font-medium">
+        DAPP DEVELOPER
+      </Text>
     </div>
   )
 }

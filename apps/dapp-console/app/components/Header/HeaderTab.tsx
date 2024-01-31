@@ -1,6 +1,7 @@
 import { Route, routes } from '@/app/constants'
 import { cn } from '@/app/lib/utils'
 import Link from 'next/link'
+import { Text } from '@eth-optimism/ui-components/src/components/ui/text'
 
 type HeaderTabsProps = {
   currentRoute: Route['path']
@@ -17,7 +18,7 @@ const HeaderTabs = ({ currentRoute }: HeaderTabsProps) => {
             href={path}
             isActive={currentRoute === path}
           >
-            {label}
+            <Text as="span">{label}</Text>
           </HeaderTabItem>
         )
       })}
