@@ -1,3 +1,3 @@
 export default function Page() {
-  return <main></main>
+  return <main>This is the dapp console home page</main>
 }
