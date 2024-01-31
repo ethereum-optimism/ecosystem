@@ -4,13 +4,18 @@ import Image from 'next/image'
 import { ThemeToggle } from '@/app/components/Header/ThemeToggle'
 import { Separator } from '@eth-optimism/ui-components/src/components/ui/separator'
 import { Button } from '@eth-optimism/ui-components/src/components/ui/button'
+import { HeaderTabItem } from './HeaderTab'
+import { Route, routes } from '@/app/constants'
+import { usePathname } from 'next/navigation'
 
 const Header = () => {
+  const pathname = usePathname()
+
   return (
     <div className="h-20 px-6 border-b border-border flex items-center justify-between">
-      <div className="flex items-center gap-12">
+      <div className="flex items-center gap-12 h-full">
         <HeaderLogo />
-        <HeaderTabs />
+        <HeaderTabs currentRoute={pathname} />
       </div>
       <div className="flex items-center">
         <ThemeToggle />
@@ -36,10 +41,25 @@ const HeaderLogo = () => {
   )
 }
 
-const HeaderTabs = () => {
+type HeaderTabsProps = {
+  currentRoute: Route['path']
+}
+
+const HeaderTabs = ({ currentRoute }: HeaderTabsProps) => {
   return (
-    <div className="flex">
-      <p>tabs</p>
+    <div className="flex gap-8 items-end h-full">
+      {Object.keys(routes).map((route) => {
+        const { path, label } = routes[route]
+        return (
+          <HeaderTabItem
+            key={path}
+            href={path}
+            isActive={currentRoute === path}
+          >
+            {label}
+          </HeaderTabItem>
+        )
+      })}
     </div>
   )
 }

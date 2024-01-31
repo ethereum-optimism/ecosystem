@@ -138,6 +138,9 @@ importers:
       '@remixicon/react':
         specifier: ^4.1.1
         version: 4.1.1(react@18.2.0)
+      clsx:
+        specifier: ^2.0.0
+        version: 2.1.0
       next:
         specifier: 14.1.0
         version: 14.1.0(@babel/core@7.23.7)(react-dom@18.2.0)(react@18.2.0)
@@ -150,6 +153,9 @@ importers:
       react-dom:
         specifier: ^18
         version: 18.2.0(react@18.2.0)
+      tailwind-merge:
+        specifier: ^2.1.0
+        version: 2.1.0
     devDependencies:
       '@types/node':
         specifier: ^20
