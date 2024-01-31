@@ -4,7 +4,7 @@ import Image from 'next/image'
 import { ThemeToggle } from '@/app/components/Header/ThemeToggle'
 import { Separator } from '@eth-optimism/ui-components/src/components/ui/separator'
 import { Button } from '@eth-optimism/ui-components/src/components/ui/button'
-import { HeaderTabs } from './HeaderTab'
+import { HeaderTabs } from '@/app/components/Header/HeaderTab'
 import { usePathname } from 'next/navigation'
 
 const Header = () => {
