@@ -46,8 +46,8 @@ jobs:
   docker-build:
     environment:
       DOCKER_BUILDKIT: 1
-    machine:
-      image: ubuntu-2204:2022.07.1
+    docker:
+      - image: cimg/base:2024.01
     parameters:
       docker_name:
         description: Docker image name
