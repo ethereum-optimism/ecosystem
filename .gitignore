@@ -2,6 +2,7 @@
 **/node_modules
 /.pnp
 packages/*/.env
+app/*/.env
 .npmrc
 
 .vscode
