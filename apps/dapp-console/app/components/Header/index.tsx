@@ -4,13 +4,17 @@ import Image from 'next/image'
 import { ThemeToggle } from '@/app/components/Header/ThemeToggle'
 import { Separator } from '@eth-optimism/ui-components/src/components/ui/separator'
 import { Button } from '@eth-optimism/ui-components/src/components/ui/button'
+import { HeaderTabs } from '@/app/components/Header/HeaderTab'
+import { usePathname } from 'next/navigation'
 
 const Header = () => {
+  const pathname = usePathname()
+
   return (
     <div className="h-20 px-6 border-b border-border flex items-center justify-between">
-      <div className="flex items-center gap-12">
+      <div className="flex items-center gap-12 h-full">
         <HeaderLogo />
-        <HeaderTabs />
+        <HeaderTabs currentRoute={pathname} />
       </div>
       <div className="flex items-center">
         <ThemeToggle />
@@ -32,14 +36,6 @@ const HeaderLogo = () => {
       />
       <Separator orientation="vertical" className="h-4 mx-4" />
       <span className="tracking-widest font-medium">DAPP DEVELOPER</span>
-    </div>
-  )
-}
-
-const HeaderTabs = () => {
-  return (
-    <div className="flex">
-      <p>tabs</p>
     </div>
   )
 }
