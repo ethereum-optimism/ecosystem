@@ -1,0 +1,6 @@
+*.crt
+*.pem
+
+*
+!README.md
+!.gitignore
