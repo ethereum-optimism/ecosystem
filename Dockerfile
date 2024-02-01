@@ -42,13 +42,11 @@ RUN pnpm deploy --filter=paymaster-proxy --prod /prod/paymaster-proxy
 ########################################
 
 FROM base AS paymaster-proxy
+
 COPY --from=builder /prod/paymaster-proxy /prod/paymaster-proxy
 WORKDIR /prod/paymaster-proxy
 
-# setup certs for internal services
-RUN update-ca-certificates
-
-ENV NODE_EXTRA_CA_CERTS=/etc/ssl/certs/ca-certificates.crt
+ENV NODE_EXTRA_CA_CERTS=/usr/local/share/ca-certificates/extra-ca-certificates.crt
 
 EXPOSE 7310
 

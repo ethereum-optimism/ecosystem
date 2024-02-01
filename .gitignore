@@ -24,5 +24,11 @@ packages/*/.env
 
 npm-debug.log*
 
-#storybook
+# storybook
 **/storybook-static/
+
+# cert files
+
+*.crt
+*.pem
+*.key
