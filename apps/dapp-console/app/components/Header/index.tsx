@@ -5,7 +5,7 @@ import { ThemeToggle } from '@/app/components/Header/ThemeToggle'
 import { Separator } from '@eth-optimism/ui-components/src/components/ui/separator'
 import { Text } from '@eth-optimism/ui-components/src/components/ui/text'
 import { Button } from '@eth-optimism/ui-components/src/components/ui/button'
-import { HeaderTabs } from '@/app/components/Header/HeaderTab'
+import { HeaderTabs } from '@/app/components/Header/HeaderTabs'
 import { usePathname } from 'next/navigation'
 
 const Header = () => {

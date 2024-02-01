@@ -1,7 +1,8 @@
-import { routes } from '@/app/constants'
+import { Route, externalRoutes, routes } from '@/app/constants'
 import { cn } from '@/app/lib/utils'
 import Link from 'next/link'
 import { Text } from '@eth-optimism/ui-components/src/components/ui/text'
+import Image from 'next/image'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -11,7 +12,6 @@ import {
   DropdownMenuItem,
 } from '@eth-optimism/ui-components/src/components/ui/dropdown-menu'
 
-import { Button } from '@eth-optimism/ui-components/src/components/ui/button'
 import { RiArrowDownSLine } from '@remixicon/react'
 import { useState } from 'react'
 
@@ -65,8 +65,54 @@ const HeaderTabItem = ({
   )
 }
 
+const supportItems = [
+  externalRoutes.DEV_FORUM,
+  externalRoutes.FARCASTER,
+  externalRoutes.DISCORD,
+  externalRoutes.DAPP_EXAPMPLES,
+]
+
+const docsItems = [
+  {
+    ...externalRoutes.ETH_DOCS,
+    logo: '/logos/eth-logo.png',
+  },
+  {
+    ...externalRoutes.BASE_DOCS,
+    logo: '/logos/base-logo.png',
+  },
+  {
+    ...externalRoutes.FRAX_DOCS,
+    logo: '/logos/frax-logo.png',
+  },
+  {
+    ...externalRoutes.LISK_DOCS,
+    logo: '/logos/lisk-logo.png',
+  },
+  {
+    ...externalRoutes.MODE_DOCS,
+    logo: '/logos/mode-logo.png',
+  },
+  {
+    ...externalRoutes.OPTIMISM_DOCS,
+    logo: '/logos/op-logo.svg',
+  },
+  {
+    ...externalRoutes.REDSTONE_DOCS,
+    logo: '/logos/redstone-logo.png',
+  },
+  {
+    ...externalRoutes.ZORA_DOCS,
+    logo: '/logos/zora-logo.png',
+  },
+]
+
 const SupportDropdownMenu = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
+
+  const dropdownLabelClasses = 'text-xs text-muted-foreground uppercase'
+  const dropdownItemClasses =
+    'flex items-center gap-2 cursor-pointer h-12 px-2 text-base text-secondary-foreground'
 
   return (
     <DropdownMenu
@@ -86,9 +132,37 @@ const SupportDropdownMenu = () => {
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-80">
         <DropdownMenuLabel>
-          <Text as="span">Support</Text>
+          <Text as="span" className={dropdownLabelClasses}>
+            SUPPORT
+          </Text>
         </DropdownMenuLabel>
-        <DropdownMenuItem>heeeello</DropdownMenuItem>
+        {supportItems.map((item) => (
+          <DropdownMenuItem key={item.path} asChild>
+            <a href={item.path} target="_blank" className={dropdownItemClasses}>
+              <Text as="span">{item.label}</Text>
+            </a>
+          </DropdownMenuItem>
+        ))}
+        <DropdownMenuSeparator />
+        <DropdownMenuLabel>
+          <Text as="span" className={dropdownLabelClasses}>
+            DOCS
+          </Text>
+        </DropdownMenuLabel>
+        {docsItems.map((item) => (
+          <DropdownMenuItem key={item.path} asChild>
+            <a href={item.path} target="_blank" className={dropdownItemClasses}>
+              <Image
+                src={item.logo}
+                alt={`${item.label} logo`}
+                width={24}
+                height={24}
+                className="rounded-full"
+              />
+              <Text as="span">{item.label}</Text>
+            </a>
+          </DropdownMenuItem>
+        ))}
       </DropdownMenuContent>
     </DropdownMenu>
   )
