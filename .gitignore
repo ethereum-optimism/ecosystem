@@ -2,6 +2,7 @@
 **/node_modules
 /.pnp
 packages/*/.env
+app/*/.env
 .npmrc
 
 .vscode
@@ -24,5 +25,10 @@ packages/*/.env
 
 npm-debug.log*
 
-#storybook
+# storybook
 **/storybook-static/
+
+# cert files
+*.crt
+*.pem
+*.key

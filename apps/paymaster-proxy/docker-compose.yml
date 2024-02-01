@@ -12,3 +12,5 @@ services:
       - 7310:7310
     healthcheck:
       test: wget localhost:7310/healthz -q -O - > /dev/null 2>&1
+    volumes:
+      - ../../certs/extra-ca-certificates.crt:/usr/local/share/ca-certificates/extra-ca-certificates.crt
