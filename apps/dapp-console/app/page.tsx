@@ -1,12 +1,9 @@
-'use client'
+import { PrivyDemo } from '@/app/components/PrivyDemo/PrivyDemo'
 
-import { Button } from '@eth-optimism/ui-components'
-
-export default function Home() {
+export default function Page() {
   return (
     <main>
-      welcome to the dapp console
-      <Button>Test Button</Button>
+      <PrivyDemo />
     </main>
   )
 }
