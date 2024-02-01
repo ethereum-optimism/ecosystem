@@ -1,16 +1,17 @@
-import { Route, routes } from '@/app/constants'
+import { routes } from '@/app/constants'
 import { cn } from '@/app/lib/utils'
 import Link from 'next/link'
 
 type HeaderTabsProps = {
-  currentRoute: Route['path']
+  currentRoute: string
 }
 
 const HeaderTabs = ({ currentRoute }: HeaderTabsProps) => {
+  const supportedRoutes = [routes.CONSOLE, routes.INSIGHTS]
   return (
     <div className="flex gap-8 items-end h-full">
-      {Object.keys(routes).map((route) => {
-        const { path, label } = routes[route]
+      {supportedRoutes.map((route) => {
+        const { path, label } = route
         return (
           <HeaderTabItem
             key={path}

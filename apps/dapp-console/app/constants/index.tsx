@@ -14,6 +14,6 @@ const routes: Routes = {
     path: '/insights',
     label: 'Insights',
   },
-}
+} as const satisfies Routes
 
 export { routes }
