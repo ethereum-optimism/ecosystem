@@ -28,7 +28,6 @@ npm-debug.log*
 **/storybook-static/
 
 # cert files
-
 *.crt
 *.pem
 *.key
