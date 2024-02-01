@@ -12,7 +12,6 @@ import {
   DropdownMenuItem,
 } from '@eth-optimism/ui-components/src/components/ui/dropdown-menu'
 
-import { Button } from '@eth-optimism/ui-components/src/components/ui/button'
 import { RiArrowDownSLine } from '@remixicon/react'
 import { useState } from 'react'
 
