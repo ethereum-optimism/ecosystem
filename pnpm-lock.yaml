@@ -181,6 +181,9 @@ importers:
       express:
         specifier: ^4.18.2
         version: 4.18.2
+      express-rate-limit:
+        specifier: ^7.1.5
+        version: 7.1.5(express@4.18.2)
       zod:
         specifier: ^3.22.4
         version: 3.22.4
@@ -236,7 +239,7 @@ importers:
     devDependencies:
       '@eth-optimism/superchain-registry':
         specifier: github:ethereum-optimism/superchain-registry
-        version: github.com/ethereum-optimism/superchain-registry/fe19702bda9d64117c3f09abc0cb8829450f9eb9
+        version: github.com/ethereum-optimism/superchain-registry/5a8a6079c012fbbcf29be7d0a180a5d5a39507ba
       '@tanstack/react-query':
         specifier: ^5.10.0
         version: 5.10.0(react@18.2.0)
@@ -5503,7 +5506,7 @@ packages:
       chalk: 4.1.2
       cosmiconfig: 5.2.1
       deepmerge: 4.3.1
-      glob: 7.1.6
+      glob: 7.2.3
       joi: 17.11.0
     transitivePeerDependencies:
       - encoding
@@ -5556,7 +5559,7 @@ packages:
       '@react-native-community/cli-tools': 11.3.10
       chalk: 4.1.2
       execa: 5.1.1
-      glob: 7.1.6
+      glob: 7.2.3
       logkitty: 0.7.1
     transitivePeerDependencies:
       - encoding
@@ -5568,7 +5571,7 @@ packages:
       chalk: 4.1.2
       execa: 5.1.1
       fast-xml-parser: 4.3.2
-      glob: 7.1.6
+      glob: 7.2.3
       ora: 5.4.1
     transitivePeerDependencies:
       - encoding
@@ -9571,6 +9574,15 @@ packages:
       strip-final-newline: 3.0.0
     dev: true
 
+  /express-rate-limit@7.1.5(express@4.18.2):
+    resolution: {integrity: sha512-/iVogxu7ueadrepw1bS0X0kaRC/U0afwiYRSLg68Ts+p4Dc85Q5QKsOnPS/QUjPMHvOJQtBDrZgvkOzf8ejUYw==}
+    engines: {node: '>= 16'}
+    peerDependencies:
+      express: 4 || 5 || ^5.0.0-beta.1
+    dependencies:
+      express: 4.18.2
+    dev: false
+
   /express@4.18.2:
     resolution: {integrity: sha512-5/PsL6iGPdfQ/lKM1UuielYgv3BUoJfz1aUwU9vHZ+J7gyvwdQXFEBIEIaxeGf0GIcreATNyBExtalisDbuMqQ==}
     engines: {node: '>= 0.10.0'}
@@ -9989,6 +10001,16 @@ packages:
 
   /glob@7.1.6:
     resolution: {integrity: sha512-LwaxwyZ72Lk7vZINtNNrywX0ZuLyStrdDtabefZKAY5ZGJhVtgdznluResxNmPitE0SAO+O26sWTHeKSI2wMBA==}
+    dependencies:
+      fs.realpath: 1.0.0
+      inflight: 1.0.6
+      inherits: 2.0.4
+      minimatch: 3.1.2
+      once: 1.4.0
+      path-is-absolute: 1.0.1
+
+  /glob@7.2.3:
+    resolution: {integrity: sha512-nFR0zLpU2YCaRxwoCJvL6UvCH2JFyFVIvwTLsIf21AuHlMskA1hhTdk+LlYJtOlYt9v6dvszD2BGRqBL+iQK9Q==}
     dependencies:
       fs.realpath: 1.0.0
       inflight: 1.0.6
@@ -13292,7 +13314,7 @@ packages:
     resolution: {integrity: sha512-mwqeW5XsA2qAejG46gYdENaxXjx9onRNCfn7L0duuP4hCuTIi/QO7PDK07KJfp1d+izWPrzEJDcSqBa0OZQriA==}
     hasBin: true
     dependencies:
-      glob: 7.1.6
+      glob: 7.2.3
 
   /rimraf@3.0.2:
     resolution: {integrity: sha512-JZkJMZkAGFFPP2YqXZXPbMlMBgsxzE8ILs4lMIX/2o0L9UBw9O/Y3o6wFw/i9YLapcUJWwqbi3kdxIPdC62TIA==}
@@ -15264,8 +15286,8 @@ packages:
       react: 18.2.0
       use-sync-external-store: 1.2.0(react@18.2.0)
 
-  github.com/ethereum-optimism/superchain-registry/fe19702bda9d64117c3f09abc0cb8829450f9eb9:
-    resolution: {tarball: https://codeload.github.com/ethereum-optimism/superchain-registry/tar.gz/fe19702bda9d64117c3f09abc0cb8829450f9eb9}
+  github.com/ethereum-optimism/superchain-registry/5a8a6079c012fbbcf29be7d0a180a5d5a39507ba:
+    resolution: {tarball: https://codeload.github.com/ethereum-optimism/superchain-registry/tar.gz/5a8a6079c012fbbcf29be7d0a180a5d5a39507ba}
     name: '@eth-optimism/superchain-registry'
     version: 0.0.1-alpha.1
     dev: true

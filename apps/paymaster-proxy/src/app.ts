@@ -1,10 +1,13 @@
 import express from 'express'
 
 import { envVars } from '@/envVars'
+import { rateLimiter } from '@/middlewares/rateLimiter'
 
 const HOST = '0.0.0.0'
 
 const app = express()
+
+app.use(rateLimiter)
 
 app.get('/healthz', (req, res) => {
   res.json({ ok: true })
