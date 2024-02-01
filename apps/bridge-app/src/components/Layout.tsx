@@ -8,8 +8,8 @@ export type LayoutProps = {
 
 const classNames = {
   header:
-    'flex flex-row w-full h-20 px-6 py-6 align-center justify-between border-b-1',
-  main: 'flex flex-row px-6 py-6 justify-center align-center',
+    'flex flex-row w-full h-20 px-6 py-6 items-center justify-between border-b-1',
+  main: 'flex flex-row px-6 py-6 justify-center items-center',
   footer: 'flex flex-row w-full h-10 px-6 py-6 justify-between',
 }
 
