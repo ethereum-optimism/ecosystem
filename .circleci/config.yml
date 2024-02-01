@@ -46,8 +46,8 @@ jobs:
   docker-build:
     environment:
       DOCKER_BUILDKIT: 1
-    machine:
-      image: ubuntu-2204:2022.07.1
+    docker:
+      - image: cimg/base:2024.01
     parameters:
       docker_name:
         description: Docker image name
@@ -152,12 +152,12 @@ jobs:
 
 workflows:
   build-and-publish-paymaster-proxy:
-    filters:
-      branches:
-        only:
-          - main
     jobs:
       - docker-build:
+          filters:
+            branches:
+              only:
+                - main
           name: paymaster-proxy-docker-build
           docker_file: ./Dockerfile
           docker_name: paymaster-proxy
@@ -165,6 +165,10 @@ workflows:
           docker_context: .
           docker_target: paymaster-proxy
       - docker-publish:
+          filters:
+            branches:
+              only:
+                - main
           name: paymaster-proxy-docker-publish
           docker_name: paymaster-proxy
           docker_tags: <<pipeline.git.revision>>,<<pipeline.git.branch>>
