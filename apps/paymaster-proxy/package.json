@@ -10,7 +10,11 @@
     "lint": "eslint \"**/*.{ts,tsx}\" && pnpm prettier --check \"**/*.{ts,tsx}\"",
     "lint:fix": "eslint \"**/*.{ts,tsx}\" --fix --quiet && pnpm prettier \"**/*.{ts,tsx}\" --write --loglevel=warn",
     "generate-example-env": "ts-node scripts/generateExampleEnv.ts",
-    "run:loadtest": "pnpm dlx artillery run loadtest/basic-loadtest.yml"
+    "run:loadtest": "pnpm dlx artillery run loadtest/basic-loadtest.yml",
+    "docker:up": "docker-compose up -d",
+    "docker:down": "docker-compose down",
+    "docker:replicas:up": "docker-compose -f docker-compose.replicas.yml up -d",
+    "docker:replicas:down": "docker-compose -f docker-compose.replicas.yml down"
   },
   "devDependencies": {
     "@types/express": "^4.17.21",
@@ -28,6 +32,7 @@
     "dotenv": "^16.4.1",
     "express": "^4.18.2",
     "express-rate-limit": "^7.1.5",
+    "ioredis": "^5.3.2",
     "rate-limit-redis": "^4.2.0",
     "zod": "^3.22.4"
   },

@@ -1,12 +1,15 @@
 import type { Express } from 'express'
 import express from 'express'
+import type { Redis } from 'ioredis'
 
-import { rateLimiter } from '@/middlewares/rateLimiter'
+import { getRateLimiter } from '@/middlewares/getRateLimiter'
 
-export const initializeApiServer = async (): Promise<Express> => {
+export const initializeApiServer = async (
+  redisClient: Redis,
+): Promise<Express> => {
   const app = express()
 
-  app.use(rateLimiter)
+  app.use(getRateLimiter(redisClient))
 
   app.get('/healthz', (req, res) => {
     res.json({ ok: true })

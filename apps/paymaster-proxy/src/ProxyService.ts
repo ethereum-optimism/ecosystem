@@ -1,5 +1,5 @@
 import type { Express } from 'express'
-
+import { Redis } from 'ioredis'
 import { envVars } from '@/envVars'
 import { initializeApiServer } from '@/initializeApiServer'
 
@@ -13,7 +13,9 @@ export class ProxyService {
   }
 
   static async init() {
-    const apiServer = await initializeApiServer()
+    const redisClient = new Redis(envVars.REDIS_URL)
+
+    const apiServer = await initializeApiServer(redisClient)
 
     return new ProxyService(apiServer)
   }
