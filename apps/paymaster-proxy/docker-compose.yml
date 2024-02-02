@@ -1,7 +1,7 @@
 version: '3.8'
 
 services:
-  redis-app:
+  redis:
     image: 'redis:latest'
     healthcheck:
       test: ['CMD', 'redis-cli', 'ping']
@@ -19,7 +19,7 @@ services:
       target: paymaster-proxy
     environment:
       - PORT=7310
-      - REDIS_URL=redis://redis-app:6379
+      - REDIS_URL=redis://redis:6379
     healthcheck:
       test: wget localhost:7310/healthz -q -O - > /dev/null 2>&1
     volumes:
@@ -27,7 +27,7 @@ services:
     ports:
       - 7310:7310
     depends_on:
-      redis-app:
+      redis:
         condition: service_healthy
 
   paymaster-proxy-app-replica:
@@ -42,7 +42,7 @@ services:
     image: traefik:v2.5
     command: --api.insecure=true --providers.docker
     ports:
-      - '80:80'
+      - '7310:80' # more consistent between the single app and the replicas
       - '8080:8080'
     volumes:
       # So that Traefik can listen to the Docker events
