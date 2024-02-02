@@ -1,4 +1,4 @@
-import { Route, externalRoutes, routes } from '@/app/constants'
+import { externalRoutes, routes } from '@/app/constants'
 import { cn } from '@/app/lib/utils'
 import Link from 'next/link'
 import { Text } from '@eth-optimism/ui-components/src/components/ui/text'
