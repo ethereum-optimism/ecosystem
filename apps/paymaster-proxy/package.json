@@ -11,10 +11,9 @@
     "lint:fix": "eslint \"**/*.{ts,tsx}\" --fix --quiet && pnpm prettier \"**/*.{ts,tsx}\" --write --loglevel=warn",
     "generate-example-env": "ts-node scripts/generateExampleEnv.ts",
     "run:loadtest": "pnpm dlx artillery run loadtest/basic-loadtest.yml",
-    "docker:up": "docker-compose up -d",
+    "docker:up": "docker compose up -d redis-app paymaster-proxy-app",
     "docker:down": "docker-compose down",
-    "docker:replicas:up": "docker-compose -f docker-compose.replicas.yml up -d",
-    "docker:replicas:down": "docker-compose -f docker-compose.replicas.yml down"
+    "docker:replicas:up": "docker compose up -d redis-app paymaster-proxy-app-replica reverse-proxy"
   },
   "devDependencies": {
     "@types/express": "^4.17.21",
