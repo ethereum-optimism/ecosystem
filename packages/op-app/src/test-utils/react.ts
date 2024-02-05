@@ -18,9 +18,7 @@ export { act, cleanup } from '@testing-library/react'
 
 export const opConfig = createConfig({
   chains: [l1, l2],
-  connectors: [
-    mock({ accounts: [anvilAccounts[0]] }),
-  ],
+  connectors: [mock({ accounts: [anvilAccounts[0]] })],
   pollingInterval: 100,
   storage: null,
   transports: {
