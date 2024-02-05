@@ -70,6 +70,7 @@ const IconLink = ({ logo, label, href, key, style }: IconLinkProps) => {
       href={href}
       target="_blank"
       key={key}
+      rel="noreferrer noopener"
       className="rounded-full overflow-hidden border border-gray-200 -ml-2"
       style={{ ...style, position: 'relative' }}
     >
