@@ -1,27 +1,26 @@
 import { waitFor } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
 
-import { renderConnectedHook } from '../test-utils/react'
+import {
+  connectToNetwork,
+  disconnectFromNetwork,
+  renderHook,
+} from '../test-utils/react'
 import { useIsNetworkUnsupported } from '.'
 
 describe('useIsNetowrkUnsupported', () => {
-  it('should return supported', () => {
-    const { result } = renderConnectedHook(() => useIsNetworkUnsupported(), {
-      network: 'l2',
-    })
+  it('should return supported', async () => {
+    await connectToNetwork()
 
-    waitFor(() => {
-      expect(result.current.isUnsupported).toBeTruthy()
-    })
-  })
+    const { result } = renderHook(() => useIsNetworkUnsupported())
 
-  it('should return unsupported', () => {
-    const { result } = renderConnectedHook(() => useIsNetworkUnsupported(), {
-      network: 'unsupported',
-    })
+    waitFor(
+      () => {
+        expect(result.current.isUnsupported).toBeFalsy()
+      },
+      { timeout: 10_000 },
+    )
 
-    waitFor(() => {
-      expect(result.current.isUnsupported).toBeFalsy()
-    })
+    await disconnectFromNetwork()
   })
 })

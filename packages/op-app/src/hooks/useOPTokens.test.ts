@@ -1,12 +1,12 @@
 import { describe, expect, it } from 'vitest'
 
-import { renderConnectedHook } from '../test-utils/react'
+import { renderHook } from '../test-utils/react'
 import { useOPTokens } from '.'
 
 describe('useOPTokens', () => {
   it('should return all tokens for the chain id provided', () => {
     const chainId = 1
-    const { result } = renderConnectedHook(() => useOPTokens({ chainId }))
+    const { result } = renderHook(() => useOPTokens({ chainId }))
 
     expect(result.current.ethToken.extensions.opTokenId.toLowerCase()).toEqual(
       'eth',
