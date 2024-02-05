@@ -1,3 +1,2 @@
 export const L1_PORT = 8545
 export const L2_PORT = 8546
-export const TEST_ACCOUNT = '0x0BB3e1eE3A7C97aC27835BACa5b3D5825D1A788a'
