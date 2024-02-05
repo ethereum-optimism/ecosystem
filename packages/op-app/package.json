@@ -18,6 +18,7 @@
   "dependencies": {
     "@eth-optimism/contracts-ts": "^0.17.0",
     "@eth-optimism/tokenlist": "^9.0.12",
+    "@viem/anvil": "^0.0.7",
     "prettier": "^3.1.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
