@@ -8,6 +8,11 @@ import {
 
 import { Text } from '@eth-optimism/ui-components/src/components/ui/text'
 import { ProjectIconLinks } from '@/app/console/components/ProjectIconLinks'
+import { BuildSection } from '@/app/console/components/BuildSection'
+import { LaunchSection } from '@/app/console/components/LaunchSection'
+import { PromotionsSection } from '@/app/console/components/PromotionsSection'
+import { SupportSection } from '@/app/console/components/SupportSection'
+import { FooterSection } from '@/app/console/components/FooterSection'
 
 export default function Page() {
   return (
@@ -23,14 +28,27 @@ export default function Page() {
           <CardDescription>
             <Text as="span" className="text-base mb-6">
               Tools to help you build, launch, and grow your dapp on the{' '}
-              <b className="text-accent-foreground">Superchain</b>
+              <a
+                href=""
+                target="_blank"
+                rel="noreferrer noopener"
+                className="text-accent-foreground font-bold"
+              >
+                Superchain
+              </a>
             </Text>
           </CardDescription>
           <div className="pt-6">
             <ProjectIconLinks />
           </div>
         </CardHeader>
-        <CardContent>hey</CardContent>
+        <CardContent>
+          <BuildSection />
+          <LaunchSection />
+          <PromotionsSection />
+          <SupportSection />
+          <FooterSection />
+        </CardContent>
       </Card>
     </main>
   )

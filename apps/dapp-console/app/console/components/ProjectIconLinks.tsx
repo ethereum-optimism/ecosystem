@@ -1,4 +1,7 @@
+'use client'
+
 import { externalRoutes } from '@/app/constants'
+import { motion } from 'framer-motion'
 import Image from 'next/image'
 
 const linkItems = [
@@ -65,17 +68,23 @@ type IconLinkProps = {
 }
 
 const IconLink = ({ logo, label, href, key, style }: IconLinkProps) => {
+  const hoverAnimation = {
+    y: -10,
+    transition: { type: 'spring', stiffness: 400, damping: 15 },
+  }
+
   return (
-    <a
+    <motion.a
       href={href}
       target="_blank"
       key={key}
       rel="noreferrer noopener"
-      className="rounded-full overflow-hidden border border-gray-200 -ml-2"
+      className="rounded-full overflow-hidden border border-border -ml-2"
       style={{ ...style, position: 'relative' }}
+      whileHover={hoverAnimation} // Apply the hover animation
     >
       <Image src={logo} alt={`${label} logo`} height={40} width={40} />
-    </a>
+    </motion.a>
   )
 }
 
