@@ -1,3 +1,5 @@
+'use client'
+
 import { Tile, TileGrid } from '@/app/components/Tile/Tile'
 import { Badge } from '@eth-optimism/ui-components/src/components/ui/badge'
 import { Text } from '@eth-optimism/ui-components/src/components/ui/text'
