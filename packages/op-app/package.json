@@ -10,14 +10,15 @@
     "build": "tsup && pnpm tsc",
     "clean": "rm -rf dist",
     "typecheck": "tsc --noEmit --emitDeclarationOnly false",
-    "lint": "eslint \"**/*.{ts,tsx}\" && pnpm prettier --check \"**/*.{ts,tsx}\"",
-    "lint:fix": "eslint \"**/*.{ts,tsx}\" --fix --quiet && pnpm prettier \"**/*.{ts,tsx}\" --write --loglevel=warn",
+    "lint": "eslint \"**/*.{ts,tsx}\" && pnpm prettier --check \"**/*.{ts,tsx}\" --log-level=warn",
+    "lint:fix": "eslint \"**/*.{ts,tsx}\" --fix --quiet && pnpm prettier \"**/*.{ts,tsx}\" --write --log-level=warn",
     "codegen": "ts-node --esm -T ./scripts/codegen",
     "test": "vitest run"
   },
   "dependencies": {
     "@eth-optimism/contracts-ts": "^0.17.0",
     "@eth-optimism/tokenlist": "^9.0.12",
+    "@viem/anvil": "^0.0.7",
     "prettier": "^3.1.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

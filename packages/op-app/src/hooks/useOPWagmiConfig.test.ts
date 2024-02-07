@@ -3,7 +3,7 @@ import { describe, expect, it } from 'vitest'
 
 import type { NetworkType } from '..'
 import { deploymentAddresses, networkPairsByGroup, useOPWagmiConfig } from '..'
-import { renderConnectedHook } from '../test-utils/react'
+import { renderHook } from '../test-utils/react'
 
 describe('useOPWagmiConfig', () => {
   const groups = Object.keys(networkPairsByGroup) as NetworkType[]
@@ -13,7 +13,7 @@ describe('useOPWagmiConfig', () => {
 
     Object.entries(networkPairs).forEach(([network, [_, l2]]) => {
       it(`should return valid OpConfig with correct protocol contract addresses for ${group} ${network}`, () => {
-        const { result } = renderConnectedHook(() =>
+        const { result } = renderHook(() =>
           useOPWagmiConfig({ type: group, chainId: l2.id }),
         )
 

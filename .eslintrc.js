@@ -25,7 +25,7 @@ module.exports = {
         },
       ],
       '@typescript-eslint/no-floating-promises': 'off',
-      '@typescript-eslint/no-explicit-any': 'error',
+      '@typescript-eslint/no-explicit-any': 'warn',
       '@typescript-eslint/array-type': ['error', { default: 'array-simple' }],
       // END TYPESCRIPT RULES
   

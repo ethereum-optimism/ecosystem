@@ -9,7 +9,11 @@ const PROD_ENTRY = 'src/index.ts'
 export default defineConfig({
   plugins: [react()],
   test: {
+    hookTimeout: 20_000,
+    testTimeout: 20_000,
     environment: 'jsdom',
+    globalSetup: ['./src/test-utils/global.ts'],
+    setupFiles: ['./src/test-utils/setup.ts'],
   },
   build: {
     lib: {
