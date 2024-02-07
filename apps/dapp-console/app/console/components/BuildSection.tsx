@@ -6,7 +6,7 @@ import { Text } from '@eth-optimism/ui-components/src/components/ui/text'
 
 const BuildSection = () => {
   return (
-    <div className="mb-12">
+    <div>
       <Text as="h3" className="text-2xl font-semibold mb-4">
         Build
       </Text>
@@ -25,7 +25,7 @@ const BuildSection = () => {
           title="UX Review"
           description="Get actionable feedback from Superchain pros to get your dapp ready for launch."
           onClick={() => {}}
-          badge={<Badge variant="secondary">Featured</Badge>}
+          badge={<Badge>Featured</Badge>}
         />
         <Tile
           title="Superchain Safe"
