@@ -8,6 +8,8 @@ import {
 } from 'viem/chains'
 
 import {
+  devnetL1,
+  devnetL2,
   <% it.customChainImportKeys.forEach(function(importKey){ %>
     <%= importKey %>,
   <% }) %>
@@ -15,10 +17,13 @@ import {
 
 import type { NetworkPairGroup } from '../types'
 
-export type NetworkType = <%= Object.keys(it.networkPairGroups).map((groupName) => `'${groupName}'`).join(' | ') %>
+export type NetworkType = <%= Object.keys(it.networkPairGroups).map((groupName) => `'${groupName}'`).join(' | ') %> | 'devnet'
 
 
 export const networkPairsByGroup: NetworkPairGroup = {
+  devnet: {
+    mainnet: [devnetL1, devnetL2],
+  },
 <% Object.entries(it.networkPairGroups).forEach(function([groupName, group]){ %>
   <%= groupName %>: {
   <% group.networks.forEach(function(network){ %>
@@ -29,6 +34,7 @@ export const networkPairsByGroup: NetworkPairGroup = {
 }
 
 export const networkPairsByID: Record<number, [Chain, Chain]> = {
+  901: [devnetL1, devnetL2],
 <% it.networkPairs.forEach(function(networkPair){ %>
   <%= networkPair.l2.id %>: [<%= networkPair.l1.name %>, <%= networkPair.l2.name %>],
 <% }) %>

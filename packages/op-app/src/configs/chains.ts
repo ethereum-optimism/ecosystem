@@ -2,6 +2,38 @@
 import { defineChain } from 'viem'
 import { chainConfig } from 'viem/op-stack'
 
+export const devnetL1 = defineChain({
+  id: 900,
+  name: 'Devnet L1',
+  nativeCurrency: {
+    decimals: 18,
+    name: 'Ether',
+    symbol: 'ETH',
+  },
+  rpcUrls: {
+    default: {
+      http: ['http://localhost:8545'],
+    },
+  },
+})
+
+export const devnetL2 = defineChain({
+  ...chainConfig,
+  id: 901,
+  name: 'Devnet L2',
+  nativeCurrency: {
+    decimals: 18,
+    name: 'Ether',
+    symbol: 'ETH',
+  },
+  rpcUrls: {
+    default: {
+      http: ['http://localhost:9545'],
+    },
+  },
+  sourceId: 900,
+})
+
 export const orderlyNetwork = defineChain({
   ...chainConfig,
   id: 291,
@@ -59,7 +91,7 @@ export const mode = defineChain({
   },
   rpcUrls: {
     default: {
-      http: ['https://rpc.mode.network'],
+      http: ['https://mainnet.mode.network'],
     },
   },
   blockExplorers: {

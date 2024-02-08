@@ -63,6 +63,22 @@ const supportedNetworks = new Set(
   readJSON<SupportedL1Networks>(SUPPORTED_L1_NETWORKS).networks,
 )
 
+const devnetDeploymentAddresses: Record<string, DeploymentAddresses> = {
+  '901': {
+    AddressManager: '0xBb2180ebd78ce97360503434eD37fcf4a1Df61c3',
+    L1CrossDomainMessengerProxy: '0x0c8b5822b6e02CDa722174F19A1439A7495a3fA6',
+    L1ERC721BridgeProxy: '0xDeF3bca8c80064589E6787477FFa7Dd616B5574F',
+    L1StandardBridgeProxy: '0x1c23A6d89F95ef3148BCDA8E242cAb145bf9c0E4',
+    L2OutputOracleProxy: '0xD31598c909d9C935a9e35bA70d9a3DD47d4D5865',
+    OptimismMintableERC20FactoryProxy:
+      '0x20A42a5a785622c6Ba2576B2D6e924aA82BFA11D',
+    OptimismPortalProxy: '0x978e3286EB805934215a88694d80b09aDed68D90',
+    ProxyAdmin: '0xDB8cFf278adCCF9E9b5da745B44E754fC4EE3C76',
+    SystemConfigProxy: '0x229047fed2591dbec1eF1118d64F7aF3dB9EB290',
+    ProxyAdminOwner: '0x9BA6e03D8B90dE867373Db8cF1A58d2F7F006b3A',
+  },
+}
+
 const chainIdMap = Object.keys(supportedChains).reduce(
   (acc, importKey) => {
     const chain = supportedChains[importKey]
@@ -242,8 +258,10 @@ async function main() {
   writeNetworkPairs(networkPairs, networkPairGroups, importKeys)
 
   // generate deployment addresses
-  const deploymentAddresses =
-    readJSON<Record<string, DeploymentAddresses>>(DEPLOYMENT_ADDRESSES)
+  const deploymentAddresses = {
+    ...readJSON<Record<string, DeploymentAddresses>>(DEPLOYMENT_ADDRESSES),
+    ...devnetDeploymentAddresses,
+  }
   writeDeploymentAddresses(deploymentAddresses)
 }
 

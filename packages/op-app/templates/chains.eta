@@ -2,6 +2,38 @@
 import { defineChain } from 'viem'
 import { chainConfig } from 'viem/op-stack'
 
+export const devnetL1 = defineChain({
+  id: 900,
+  name: 'Devnet L1',
+  nativeCurrency: {
+    decimals: 18,
+    name: 'Ether',
+    symbol: 'ETH',
+  },
+  rpcUrls: {
+    default: {
+      http: ['http://localhost:8545'],
+    },
+  },
+})
+
+export const devnetL2 = defineChain({
+  ...chainConfig,
+  id: 901,
+  name: 'Devnet L2',
+  nativeCurrency: {
+    decimals: 18,
+    name: 'Ether',
+    symbol: 'ETH',
+  },
+  rpcUrls: {
+    default: {
+      http: ['http://localhost:9545'],
+    },
+  },
+  sourceId: 900,
+})
+
 <% it.chainDefs.forEach(function(chainDef){ %>
 export const <%= it.camelCase(chainDef.name) %> = defineChain({
     ...chainConfig,
