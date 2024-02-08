@@ -138,6 +138,9 @@ importers:
       '@remixicon/react':
         specifier: ^4.1.1
         version: 4.1.1(react@18.2.0)
+      class-variance-authority:
+        specifier: ^0.7.0
+        version: 0.7.0
       clsx:
         specifier: ^2.0.0
         version: 2.1.0

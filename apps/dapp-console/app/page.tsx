@@ -45,8 +45,8 @@ export default function Page() {
         <CardContent className="pt-0 flex flex-col gap-16 md:px-10 md:pb-10 lg:px-16 lg:pb-16">
           <BuildSection />
           <LaunchSection />
-          <PromotionsSection />
           <SupportSection />
+          <PromotionsSection />
           <FooterSection />
         </CardContent>
       </Card>
