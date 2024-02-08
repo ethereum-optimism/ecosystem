@@ -18,6 +18,7 @@ const SupportSection = () => {
           onClick={() => {}}
           variant="secondary"
           icon={<RiGithubFill size={24} />}
+          className="xl:h-auto min-h-[125px]"
         />
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 auto-rows-[125px]">
           <Tile

@@ -28,6 +28,7 @@ type TileProps = {
   badge?: React.ReactNode
   icon?: React.ReactNode
   onClick: () => void
+  className?: string
 } & VariantProps<typeof tileVariants>
 
 const Tile = ({
@@ -37,9 +38,13 @@ const Tile = ({
   icon,
   onClick,
   variant = 'primary',
+  className,
 }: TileProps) => {
   return (
-    <Card className={tileVariants({ variant })} onClick={onClick}>
+    <Card
+      className={cn(tileVariants({ variant }), className)}
+      onClick={onClick}
+    >
       <div className="flex gap-2">
         <div className="flex-1">
           <CardHeader
