@@ -1,5 +1,6 @@
 import type { Express } from 'express'
 import { Redis } from 'ioredis'
+
 import { envVars } from '@/envVars'
 import { initializeApiServer } from '@/initializeApiServer'
 
