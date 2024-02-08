@@ -14,7 +14,7 @@
     "docker:services:up": "docker compose up -d redis",
     "docker:up": "docker compose up -d redis paymaster-proxy-app",
     "docker:replicas:up": "docker compose up -d redis paymaster-proxy-app-replica reverse-proxy",
-    "docker:down": "docker-compose down"
+    "docker:down": "docker compose down"
   },
   "devDependencies": {
     "@types/express": "^4.17.21",
