@@ -1,16 +1,49 @@
 version: '3.8'
 
 services:
-  paymaster-proxy:
+  redis:
+    image: 'redis:latest'
+    healthcheck:
+      test: ['CMD', 'redis-cli', 'ping']
+      interval: 5s
+      timeout: 10s
+      retries: 3
+      start_period: 2s
+    ports:
+      - 6379:6379
+
+  paymaster-proxy-app: &paymaster-proxy-app
     build:
       context: ../../
       dockerfile: Dockerfile
       target: paymaster-proxy
     environment:
       - PORT=7310
-    ports:
-      - 7310:7310
+      - REDIS_URL=redis://redis:6379
     healthcheck:
       test: wget localhost:7310/healthz -q -O - > /dev/null 2>&1
     volumes:
       - ../../certs/extra-ca-certificates.crt:/usr/local/share/ca-certificates/extra-ca-certificates.crt
+    ports:
+      - 7310:7310
+    depends_on:
+      redis:
+        condition: service_healthy
+
+  paymaster-proxy-app-replica:
+    <<: *paymaster-proxy-app
+    labels:
+      - 'traefik.http.routers.paymaster-proxy.rule=Host(`0.0.0.0`)'
+    deploy:
+      replicas: 3 # Simulate 3 pods
+    ports: [] # unset ports
+
+  reverse-proxy:
+    image: traefik:v2.5
+    command: --api.insecure=true --providers.docker
+    ports:
+      - '7310:80' # more consistent between the single app and the replicas
+      - '8080:8080'
+    volumes:
+      # So that Traefik can listen to the Docker events
+      - /var/run/docker.sock:/var/run/docker.sock
