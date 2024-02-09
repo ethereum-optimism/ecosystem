@@ -275,7 +275,7 @@ importers:
     devDependencies:
       '@eth-optimism/superchain-registry':
         specifier: github:ethereum-optimism/superchain-registry
-        version: github.com/ethereum-optimism/superchain-registry/f15e141fbc4c6c7c130ad9ab1e44bc9d0f3a7b8a
+        version: github.com/ethereum-optimism/superchain-registry/44d58c365a6986cc9bc0e42d825e54b470a8e397
       '@tanstack/react-query':
         specifier: ^5.10.0
         version: 5.10.0(react@18.2.0)
@@ -10345,6 +10345,7 @@ packages:
       is-hex-prefixed: 1.0.0
       strip-hex-prefix: 1.0.0
     dev: false
+    bundledDependencies: false
 
   /event-target-shim@5.0.1:
     resolution: {integrity: sha512-i/2XbnSz/uxRCU6+NdVJgKWDTM427+MqYbkQzD321DuCQJUqOuJKIA0IM2+W2xtYHdKOmZ4dR6fExsd4SXL+WQ==}
@@ -14553,7 +14554,7 @@ packages:
     resolution: {integrity: sha512-JZkJMZkAGFFPP2YqXZXPbMlMBgsxzE8ILs4lMIX/2o0L9UBw9O/Y3o6wFw/i9YLapcUJWwqbi3kdxIPdC62TIA==}
     hasBin: true
     dependencies:
-      glob: 7.1.6
+      glob: 7.2.3
 
   /rollup-plugin-visualizer@5.11.0:
     resolution: {integrity: sha512-exM0Ms2SN3AgTzMeW7y46neZQcyLY7eKwWAop1ZoRTCZwyrIRdMMJ6JjToAJbML77X/9N8ZEpmXG4Z/Clb9k8g==}
@@ -16865,8 +16866,8 @@ packages:
       react: 18.2.0
       use-sync-external-store: 1.2.0(react@18.2.0)
 
-  github.com/ethereum-optimism/superchain-registry/f15e141fbc4c6c7c130ad9ab1e44bc9d0f3a7b8a:
-    resolution: {tarball: https://codeload.github.com/ethereum-optimism/superchain-registry/tar.gz/f15e141fbc4c6c7c130ad9ab1e44bc9d0f3a7b8a}
+  github.com/ethereum-optimism/superchain-registry/44d58c365a6986cc9bc0e42d825e54b470a8e397:
+    resolution: {tarball: https://codeload.github.com/ethereum-optimism/superchain-registry/tar.gz/44d58c365a6986cc9bc0e42d825e54b470a8e397}
     name: '@eth-optimism/superchain-registry'
     version: 0.0.1-alpha.1
     dev: true
