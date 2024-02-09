@@ -14,7 +14,7 @@ import { Text } from '@eth-optimism/ui-components/src/components/ui/text'
 import { RiArrowDownSLine, RiUser3Fill } from '@remixicon/react'
 
 const SignInButton = () => {
-  const { login, logout, user, authenticated } = usePrivy()
+  const { login, logout, authenticated } = usePrivy()
   return !authenticated ? (
     <Button onClick={login}>Sign in</Button>
   ) : (
