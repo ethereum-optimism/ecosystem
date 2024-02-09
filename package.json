@@ -14,6 +14,6 @@
     "eslint-plugin-jsdoc": "^46.9.0",
     "eslint-plugin-simple-import-sort": "^10.0.0",
     "eslint-plugin-storybook": "^0.6.15",
-    "nx": "17.2.8"
+    "nx": "17.3.1"
   }
 }
