@@ -112,7 +112,7 @@ const SupportDropdownMenu = () => {
 
   const dropdownLabelClasses = 'text-xs text-muted-foreground uppercase'
   const dropdownItemClasses =
-    'flex items-center gap-2 cursor-pointer h-12 px-2 text-base text-secondary-foreground'
+    'flex items-center gap-2 cursor-pointer h-12 px-4 text-base text-secondary-foreground'
 
   return (
     <DropdownMenu

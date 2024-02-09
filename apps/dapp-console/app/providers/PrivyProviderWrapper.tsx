@@ -10,11 +10,16 @@ function PrivyProviderWrapper({ children }: { children: React.ReactNode }) {
     <PrivyProvider
       appId={process.env.NEXT_PUBLIC_PRIVY_APP_ID || PRIVY_PUBLIC_APP_ID}
       config={{
-        loginMethods: ['email', 'wallet'],
+        loginMethods: ['email'],
         appearance: {
           theme: 'light',
           accentColor: '#FF0420',
-          logo: '/logos/superchain-developer-logo.svg',
+          logo: '/logos/superchain-developer-logo.png',
+        },
+        // TODO: Fill in
+        legal: {
+          termsAndConditionsUrl: '',
+          privacyPolicyUrl: '',
         },
       }}
     >
