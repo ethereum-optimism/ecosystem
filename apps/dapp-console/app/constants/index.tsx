@@ -36,35 +36,35 @@ const externalRoutes: Routes = {
   },
   // Documentation items
   ETH_DOCS: {
-    path: '',
+    path: 'https://ethereum.org/developers/docs',
     label: 'Ethereum',
   },
   BASE_DOCS: {
-    path: '',
+    path: 'https://docs.base.org/',
     label: 'Base',
   },
   FRAX_DOCS: {
-    path: '',
+    path: 'https://docs.frax.finance/',
     label: 'Fraxtal',
   },
   LISK_DOCS: {
-    path: '',
+    path: 'https://documentation.lisk.com/',
     label: 'Lisk',
   },
   MODE_DOCS: {
-    path: '',
+    path: 'https://docs.mode.network/introduction/introducing-mode',
     label: 'Mode',
   },
   OPTIMISM_DOCS: {
-    path: '',
+    path: 'https://docs.optimism.io/',
     label: 'Optimism',
   },
   REDSTONE_DOCS: {
-    path: '',
+    path: 'https://redstone.xyz/docs/what-is-redstone',
     label: 'Redstone',
   },
   ZORA_DOCS: {
-    path: '',
+    path: 'https://docs.zora.co/',
     label: 'Zora',
   },
 }
