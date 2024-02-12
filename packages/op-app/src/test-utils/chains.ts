@@ -6,7 +6,7 @@ import { L1_PORT, L2_PORT } from './constants'
 
 const [mainnet, opMainnet] = networkPairsByGroup.op.mainnet
 
-const vitestPool = process.env.VITEST_vitestPool_ID ?? 1
+const vitestPool = process.env.VITEST_POOL_ID ?? 1
 
 export const l1ForkURL = mainnet.rpcUrls.default.http[0]
 export const l2ForkURL = optimism.rpcUrls.default.http[0]
