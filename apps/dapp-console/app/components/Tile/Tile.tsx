@@ -5,32 +5,73 @@ import {
   CardHeader,
 } from '@eth-optimism/ui-components/src/components/ui/card'
 import { Text } from '@eth-optimism/ui-components/src/components/ui/text'
+import { cn } from '@eth-optimism/ui-components/src/lib/utils'
+
+import { cva, type VariantProps } from 'class-variance-authority'
+
+const tileVariants = cva('cursor-pointer flex flex-col', {
+  variants: {
+    variant: {
+      primary: 'shadow-sm hover:shadow',
+      secondary:
+        'bg-secondary border-secondary hover:bg-secondary/80 transition-colors',
+    },
+  },
+  defaultVariants: {
+    variant: 'primary',
+  },
+})
 
 type TileProps = {
   title: string
-  description: string
+  description?: string
   badge?: React.ReactNode
+  icon?: React.ReactNode
   onClick: () => void
-}
-const Tile = ({ title, description, badge, onClick }: TileProps) => {
+  className?: string
+} & VariantProps<typeof tileVariants>
+
+const Tile = ({
+  title,
+  description,
+  badge,
+  icon,
+  onClick,
+  variant = 'primary',
+  className,
+}: TileProps) => {
   return (
     <Card
-      className="cursor-pointer flex flex-col shadow-sm hover:shadow"
+      className={cn(tileVariants({ variant }), className)}
       onClick={onClick}
     >
-      <CardHeader className="pb-1">
-        <Text as="span" className="text-base font-semibold">
-          {title}
-        </Text>
-      </CardHeader>
-      <CardContent>
-        <Text as="p" className="text-muted-foreground">
-          {description}
-        </Text>
-      </CardContent>
-      <CardFooter className="mt-auto">
-        <span>{badge}</span>
-      </CardFooter>
+      <div className="flex gap-2">
+        <div className="flex-1">
+          <CardHeader
+            className={cn('pb-1 flex-row items-start', icon && 'pr-0')}
+          >
+            <Text
+              as="span"
+              className={cn('text-base font-semibold flex-1', icon && 'pr-0')}
+            >
+              {title}
+            </Text>
+          </CardHeader>
+          {description && (
+            <CardContent>
+              <Text as="p" className="text-muted-foreground">
+                {description}
+              </Text>
+            </CardContent>
+          )}
+        </div>
+        {icon && <div className="pr-6 pt-6">{icon}</div>}
+      </div>
+      {badge && (
+        <CardFooter className="mt-auto">
+          <span>{badge}</span>
+        </CardFooter>
+      )}
     </Card>
   )
 }
