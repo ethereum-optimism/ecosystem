@@ -1,0 +1,27 @@
+{
+  "name": "@eth-optimism/event-log-indexer",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "pnpm codegen",
+    "dev": "ponder dev",
+    "start": "ponder start",
+    "codegen": "ponder codegen",
+    "lint": "eslint \"**/*.{ts,tsx}\" && pnpm prettier --check \"**/*.{ts,tsx}\"",
+    "lint:fix": "eslint \"**/*.{ts,tsx}\" --fix --quiet && pnpm prettier \"**/*.{ts,tsx}\" --write --loglevel=warn",
+    "typecheck": "tsc"
+  },
+  "dependencies": {
+    "@ponder/core": "^0.2.4",
+    "viem": "^1.19.9"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.0",
+    "eslint": "^8.54.0",
+    "eslint-config-ponder": "^0.2.4",
+    "typescript": "^5.3.2"
+  },
+  "engines": {
+    "node": ">=18.14"
+  }
+}
