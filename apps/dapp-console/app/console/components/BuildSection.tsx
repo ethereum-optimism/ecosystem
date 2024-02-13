@@ -11,6 +11,7 @@ import {
 } from '@eth-optimism/ui-components/src/components/ui/dialog'
 import { useState } from 'react'
 import { useDialogContent } from '@/app/console/useDialogContent'
+import { openWindow } from '@/app/helpers'
 
 const BuildSection = () => {
   const [dialogContent, setDialogContent] = useState<React.ReactNode>()
@@ -28,11 +29,7 @@ const BuildSection = () => {
             title="Superchain Faucet"
             description="Get test ETH tokens to build your dapp on the Superchain."
             onClick={() => {
-              window.open(
-                externalRoutes.SUPERCHAIN_FAUCET.path,
-                '_blank',
-                'noopener noreferrer',
-              )
+              openWindow(externalRoutes.SUPERCHAIN_FAUCET.path)
             }}
           />
           <DialogTrigger asChild>

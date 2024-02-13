@@ -11,6 +11,7 @@ import { Text } from '@eth-optimism/ui-components/src/components/ui/text'
 import { useState } from 'react'
 import { useDialogContent } from '@/app/console/useDialogContent'
 import { externalRoutes } from '@/app/constants'
+import { openWindow } from '@/app/helpers'
 
 const LaunchSection = () => {
   const [dialogContent, setDialogContent] = useState<React.ReactNode>()
@@ -69,11 +70,7 @@ const LaunchSection = () => {
             title="RetroPGF"
             description="Get funded for adding value to the Superchain ecosystem."
             onClick={() => {
-              window.open(
-                externalRoutes.RETRO_PGF.path,
-                '_blank',
-                'noopener noreferrer',
-              )
+              openWindow(externalRoutes.RETRO_PGF.path)
             }}
           />
         </TileGrid>

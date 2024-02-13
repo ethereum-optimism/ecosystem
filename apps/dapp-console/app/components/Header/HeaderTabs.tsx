@@ -1,4 +1,4 @@
-import { externalRoutes, routes } from '@/app/constants'
+import { docsItems, externalRoutes, routes } from '@/app/constants'
 import { cn } from '@/app/lib/utils'
 import Link from 'next/link'
 import { Text } from '@eth-optimism/ui-components/src/components/ui/text'
@@ -69,42 +69,7 @@ const supportItems = [
   externalRoutes.DEV_FORUM,
   externalRoutes.FARCASTER,
   externalRoutes.DISCORD,
-  externalRoutes.DAPP_EXAPMPLES,
-]
-
-const docsItems = [
-  {
-    ...externalRoutes.ETH_DOCS,
-    logo: '/logos/eth-logo.png',
-  },
-  {
-    ...externalRoutes.BASE_DOCS,
-    logo: '/logos/base-logo.png',
-  },
-  {
-    ...externalRoutes.FRAX_DOCS,
-    logo: '/logos/frax-logo.png',
-  },
-  {
-    ...externalRoutes.LISK_DOCS,
-    logo: '/logos/lisk-logo.png',
-  },
-  {
-    ...externalRoutes.MODE_DOCS,
-    logo: '/logos/mode-logo.png',
-  },
-  {
-    ...externalRoutes.OPTIMISM_DOCS,
-    logo: '/logos/op-logo.svg',
-  },
-  {
-    ...externalRoutes.REDSTONE_DOCS,
-    logo: '/logos/redstone-logo.png',
-  },
-  {
-    ...externalRoutes.ZORA_DOCS,
-    logo: '/logos/zora-logo.png',
-  },
+  externalRoutes.DAPP_EXAMPLES,
 ]
 
 const SupportDropdownMenu = () => {
