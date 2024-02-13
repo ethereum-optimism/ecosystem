@@ -11,7 +11,12 @@ import {
   mainnetPaymasterMetadata,
   megaphoneMetadata,
   userFeedbackMetadata,
+  gelatoMetadata,
+  quicknodeMetadata,
+  moralisMetadata,
+  thirdWebMetadata,
 } from '@/app/console/constants'
+import Image from 'next/image'
 import { DialogClose } from '@eth-optimism/ui-components/src/components/ui/dialog'
 
 export type DialogMetadata = {
@@ -20,6 +25,7 @@ export type DialogMetadata = {
   description: string
   primaryButton: React.ReactNode
   secondaryButton?: React.ReactNode
+  bannerImage?: string
 }
 
 const useDialogContent = () => {
@@ -92,6 +98,30 @@ const useDialogContent = () => {
     })
   }, [authenticated, login])
 
+  const gelatoContent = useMemo(() => {
+    return renderDialog({
+      ...gelatoMetadata,
+    })
+  }, [])
+
+  const quicknodeContent = useMemo(() => {
+    return renderDialog({
+      ...quicknodeMetadata,
+    })
+  }, [])
+
+  const moralisContent = useMemo(() => {
+    return renderDialog({
+      ...moralisMetadata,
+    })
+  }, [])
+
+  const thirdWebContent = useMemo(() => {
+    return renderDialog({
+      ...thirdWebMetadata,
+    })
+  }, [])
+
   return {
     testnetPaymasterContent,
     uxReviewContent,
@@ -100,6 +130,10 @@ const useDialogContent = () => {
     mainnetPaymasterContent,
     megaphoneContent,
     userFeedbackContent,
+    gelatoContent,
+    quicknodeContent,
+    moralisContent,
+    thirdWebContent,
   }
 }
 
@@ -109,6 +143,15 @@ const renderDialog = (dialogMetadata: DialogMetadata) => {
       <Badge variant="secondary">
         <Text as="p">{dialogMetadata.label}</Text>
       </Badge>
+      {dialogMetadata.bannerImage && (
+        <Image
+          src={dialogMetadata.bannerImage}
+          alt={`${dialogMetadata.label} banner`}
+          className="w-full rounded-xs mt-6 object-cover"
+          width={450}
+          height={140}
+        />
+      )}
       <div className="py-6">
         <Text as="h3" className="text-lg font-semibold mb-2">
           {dialogMetadata.title}
