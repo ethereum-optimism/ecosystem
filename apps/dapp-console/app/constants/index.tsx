@@ -19,19 +19,19 @@ const routes: Routes = {
 const externalRoutes: Routes = {
   // Support items
   DEV_FORUM: {
-    path: '',
+    path: 'https://github.com/ethereum-optimism/developers/discussions',
     label: 'Developer Forum',
   },
   FARCASTER: {
-    path: '',
+    path: 'https://warpcast.com/~/channel/op-stack',
     label: 'Farcaster',
   },
   DISCORD: {
-    path: '',
+    path: 'https://discord.optimism.io/',
     label: 'Discord',
   },
   DAPP_EXAPMPLES: {
-    path: '',
+    path: 'https://github.com/ethereum-optimism/ecosystem',
     label: 'Dapp Examples',
   },
   // Documentation items
@@ -66,6 +66,15 @@ const externalRoutes: Routes = {
   ZORA_DOCS: {
     path: 'https://docs.zora.co/',
     label: 'Zora',
+  },
+  // Project links
+  SUPERCHAIN_FAUCET: {
+    path: 'https://app.optimism.io/faucet',
+    label: 'Superchain Faucet',
+  },
+  RETRO_PGF: {
+    path: 'https://optimism.io/retropgf',
+    label: 'Retro PGF',
   },
 }
 
