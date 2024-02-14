@@ -1,4 +1,4 @@
-import { docsItems, externalRoutes, routes } from '@/app/constants'
+import { docsItems, routes, supportItems } from '@/app/constants'
 import { cn } from '@/app/lib/utils'
 import Link from 'next/link'
 import { Text } from '@eth-optimism/ui-components/src/components/ui/text'
@@ -21,7 +21,7 @@ type HeaderTabsProps = {
 
 const HeaderTabs = ({ currentRoute }: HeaderTabsProps) => {
   return (
-    <div className="flex gap-8 items-end h-full">
+    <div className="gap-8 items-end h-full hidden lg:flex">
       <HeaderTabItem
         href={routes.CONSOLE.path}
         isActive={currentRoute === routes.CONSOLE.path}
@@ -64,13 +64,6 @@ const HeaderTabItem = ({
     </Link>
   )
 }
-
-const supportItems = [
-  externalRoutes.DEV_FORUM,
-  externalRoutes.FARCASTER,
-  externalRoutes.DISCORD,
-  externalRoutes.DAPP_EXAMPLES,
-]
 
 const SupportDropdownMenu = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
