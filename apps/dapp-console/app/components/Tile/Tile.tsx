@@ -27,6 +27,7 @@ type TileProps = {
   description?: string
   badge?: React.ReactNode
   icon?: React.ReactNode
+  image?: React.ReactNode
   onClick: () => void
   className?: string
 } & VariantProps<typeof tileVariants>
@@ -36,6 +37,7 @@ const Tile = ({
   description,
   badge,
   icon,
+  image,
   onClick,
   variant = 'primary',
   className,
@@ -45,20 +47,22 @@ const Tile = ({
       className={cn(tileVariants({ variant }), className)}
       onClick={onClick}
     >
+      {image && <div className="p-6 pb-4">{image}</div>}
       <div className="flex gap-2">
         <div className="flex-1">
           <CardHeader
-            className={cn('pb-1 flex-row items-start', icon && 'pr-0')}
+            className={cn(
+              'pb-1 flex-row items-start',
+              icon && 'pr-0',
+              image && 'pt-0',
+            )}
           >
-            <Text
-              as="span"
-              className={cn('text-base font-semibold flex-1', icon && 'pr-0')}
-            >
+            <Text as="span" className="text-base font-semibold flex-1">
               {title}
             </Text>
           </CardHeader>
           {description && (
-            <CardContent>
+            <CardContent className={cn(icon && 'pr-0')}>
               <Text as="p" className="text-muted-foreground">
                 {description}
               </Text>
