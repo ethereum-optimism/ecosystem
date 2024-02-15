@@ -6,7 +6,7 @@ import type {
 } from '@/errors/PaymasterError'
 import type { UserOperation } from '@/schemas/userOperationSchema'
 
-type PaymasterRpcResult<T> =
+export type PaymasterResponse<T> =
   | {
       success: true
       result: T
@@ -21,7 +21,7 @@ export type SponsorUserOperationImpl = (
   userOperation: UserOperation,
   entryPoint: Address,
 ) => Promise<
-  PaymasterRpcResult<{
+  PaymasterResponse<{
     paymasterAndData: Hex
     callGasLimit: Hex
     verificationGasLimit: Hex

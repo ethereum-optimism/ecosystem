@@ -2,8 +2,23 @@ import type * as Express from 'express'
 
 import { processSingleOrMultiple } from '@/helpers/processSingleOrMultiple'
 import type { SponsorUserOperationImpl } from '@/paymaster/types'
-import { handleValidatedPaymasterRequest } from '@/rpc/handleValidatedPaymasterRequest'
 import { validateJsonRpcRequest } from '@/rpc/validateJsonRpcRequest'
+import { wrapPaymasterResponseIntoJsonRpcResponse } from '@/rpc/wrapPaymasterResponseIntoJsonRpcResponse'
+import type { SupportedPaymasterRequest } from '@/schemas/supportedPaymasterRequestSchema'
+
+const handlePaymasterMethod = async <
+  T extends SupportedPaymasterRequest = SupportedPaymasterRequest,
+>(
+  request: T,
+  sponsorUserOperation: SponsorUserOperationImpl,
+) => {
+  switch (request.method) {
+    case 'pm_sponsorUserOperation': {
+      const [userOp, entryPoint] = request.params
+      return await sponsorUserOperation(userOp, entryPoint)
+    }
+  }
+}
 
 export const getJsonRpcRequestHandler =
   ({
@@ -23,9 +38,14 @@ export const getJsonRpcRequestHandler =
         }
 
         // Send transaction to paymaster RPC and return result
-        return await handleValidatedPaymasterRequest(
+        const handlePaymasterRequestResult = await handlePaymasterMethod(
           validationResult.data,
           sponsorUserOperation,
+        )
+
+        return wrapPaymasterResponseIntoJsonRpcResponse(
+          handlePaymasterRequestResult,
+          validationResult.data.id,
         )
       },
     )

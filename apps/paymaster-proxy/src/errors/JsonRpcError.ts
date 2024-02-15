@@ -67,7 +67,7 @@ export class JsonRpcError extends Error {
 
   response() {
     return {
-      jsonrpc: '2.0',
+      jsonrpc: '2.0' as const,
       id: this.params.id,
       error: {
         code: this.errorCode,
