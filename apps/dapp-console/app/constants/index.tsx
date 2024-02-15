@@ -78,6 +78,13 @@ const externalRoutes: Routes = {
   },
 }
 
+const supportItems = [
+  externalRoutes.DEV_FORUM,
+  externalRoutes.FARCASTER,
+  externalRoutes.DISCORD,
+  externalRoutes.DAPP_EXAMPLES,
+]
+
 const docsItems = [
   {
     ...externalRoutes.ETH_DOCS,
@@ -113,4 +120,4 @@ const docsItems = [
   },
 ]
 
-export { routes, externalRoutes, docsItems }
+export { routes, externalRoutes, docsItems, supportItems }
