@@ -8,13 +8,13 @@ export const userOperationSchema = z.object({
   nonce: hexSchema,
   initCode: hexSchema,
   callData: hexSchema,
-  callGasLimit: hexSchema,
-  verificationGasLimit: hexSchema,
-  preVerificationGas: hexSchema,
-  maxFeePerGas: hexSchema,
-  maxPriorityFeePerGas: hexSchema,
-  paymasterAndData: hexSchema,
   signature: hexSchema,
+  callGasLimit: hexSchema.optional(),
+  verificationGasLimit: hexSchema.optional(),
+  preVerificationGas: hexSchema.optional(),
+  maxFeePerGas: hexSchema.optional(),
+  maxPriorityFeePerGas: hexSchema.optional(),
+  paymasterAndData: hexSchema.optional(),
 })
 
 export type UserOperation = z.infer<typeof userOperationSchema>
