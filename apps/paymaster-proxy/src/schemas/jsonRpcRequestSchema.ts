@@ -5,6 +5,6 @@ export const jsonRpcRequestSchema = z
     jsonrpc: z.literal('2.0'),
     id: z.number(),
     method: z.string(),
-    params: z.unknown(),
+    params: z.array(z.unknown()),
   })
   .strict()

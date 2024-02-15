@@ -5,14 +5,16 @@ import { hexSchema } from '@/schemas/hexSchema'
 
 export const userOperationSchema = z.object({
   sender: addressSchema,
-  nonce: z.bigint(),
+  nonce: hexSchema,
   initCode: hexSchema,
   callData: hexSchema,
-  callGasLimit: z.bigint(),
-  verificationGasLimit: z.bigint(),
-  preVerificationGas: z.bigint(),
-  maxFeePerGas: z.bigint(),
-  maxPriorityFeePerGas: z.bigint(),
+  callGasLimit: hexSchema,
+  verificationGasLimit: hexSchema,
+  preVerificationGas: hexSchema,
+  maxFeePerGas: hexSchema,
+  maxPriorityFeePerGas: hexSchema,
   paymasterAndData: hexSchema,
   signature: hexSchema,
 })
+
+export type UserOperation = z.infer<typeof userOperationSchema>
