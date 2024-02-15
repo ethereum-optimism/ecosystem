@@ -1,5 +1,3 @@
-import type { RpcRequestError } from 'viem'
-
 // These are the errors that can be proxied and returned to the user
 export class PaymasterRpcError extends Error {
   constructor(
@@ -8,10 +6,6 @@ export class PaymasterRpcError extends Error {
   ) {
     super(message)
     this.name = 'PaymasterRpcError'
-  }
-
-  static fromViemRpcRequestError(err: RpcRequestError) {
-    return new PaymasterRpcError(err.code, err.message)
   }
 }
 
