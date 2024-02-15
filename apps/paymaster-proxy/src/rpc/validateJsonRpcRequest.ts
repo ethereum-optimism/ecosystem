@@ -1,15 +1,22 @@
+import { z } from 'zod'
 import { fromZodError } from 'zod-validation-error'
 
 import { JsonRpcError } from '@/errors/JsonRpcError'
-import { jsonRpcRequestSchema } from '@/schemas/jsonRpcRequestSchema'
+import { createJsonRpcRequestSchema } from '@/schemas/createJsonRpcRequestSchema'
 import { supportedPaymasterRequestSchema } from '@/schemas/supportedPaymasterRequestSchema'
 
-export const validateJsonRpcRequest = (jsonRpcRequest: unknown) => {
-  const jsonRpcRequestParseResult =
-    jsonRpcRequestSchema.safeParse(jsonRpcRequest)
+// General JSON-RPC request schema - doesn't validate the specifics method or params
+const generalJsonRpcRequestSchema = createJsonRpcRequestSchema(
+  z.string(),
+  z.unknown(),
+)
 
-  if (!jsonRpcRequestParseResult.success) {
-    const validationError = fromZodError(jsonRpcRequestParseResult.error)
+export const validateJsonRpcRequest = (jsonRpcRequest: unknown) => {
+  const generalJsonRpcRequestParseResult =
+    generalJsonRpcRequestSchema.safeParse(jsonRpcRequest)
+
+  if (!generalJsonRpcRequestParseResult.success) {
+    const validationError = fromZodError(generalJsonRpcRequestParseResult.error)
     return {
       success: false as const,
       error: JsonRpcError.invalidRequestError({
@@ -19,7 +26,9 @@ export const validateJsonRpcRequest = (jsonRpcRequest: unknown) => {
   }
 
   const supportedRequestSchemaParseResult =
-    supportedPaymasterRequestSchema.safeParse(jsonRpcRequestParseResult.data)
+    supportedPaymasterRequestSchema.safeParse(
+      generalJsonRpcRequestParseResult.data,
+    )
 
   if (!supportedRequestSchemaParseResult.success) {
     const { error } = supportedRequestSchemaParseResult
@@ -30,7 +39,7 @@ export const validateJsonRpcRequest = (jsonRpcRequest: unknown) => {
       return {
         success: false as const,
         error: JsonRpcError.methodNotFoundError({
-          id: jsonRpcRequestParseResult.data.id,
+          id: generalJsonRpcRequestParseResult.data.id,
           message: `Method not found: ${validationError.message}`,
         }),
       }
@@ -39,7 +48,7 @@ export const validateJsonRpcRequest = (jsonRpcRequest: unknown) => {
     return {
       success: false as const,
       error: JsonRpcError.invalidParamsError({
-        id: jsonRpcRequestParseResult.data.id,
+        id: generalJsonRpcRequestParseResult.data.id,
         message: `Invalid params: ${validationError.message}`,
       }),
     }
