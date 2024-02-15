@@ -2,6 +2,7 @@ import { Button } from '@eth-optimism/ui-components/src/components/ui/button'
 import { Text } from '@eth-optimism/ui-components/src/components/ui/text'
 import { DialogMetadata } from '@/app/console/useDialogContent'
 
+// Build Section
 export const testnetPaymasterMetadata: DialogMetadata = {
   label: 'Testnet Paymaster',
   title:
@@ -60,6 +61,7 @@ export const superchainSafeMetadata: DialogMetadata = {
   ),
 }
 
+// Launch & Grow Section
 export const deploymentRebateMetadata: DialogMetadata = {
   label: 'Deployment Rebate',
   title:
@@ -121,6 +123,95 @@ export const userFeedbackMetadata: DialogMetadata = {
     <Button asChild>
       <a href="">
         <Text as="span">Apply</Text>
+      </a>
+    </Button>
+  ),
+}
+
+// Promo Section
+export const gelatoMetadata: DialogMetadata = {
+  label: 'Gelato',
+  title: 'Get $50/month in credits for up to 3 months',
+  description:
+    'Gelato is a protocol that automates smart contract executions on Ethereum. Use Gelato to automate your dapp and save on gas fees.',
+  bannerImage: '/banners/gelato-banner.png',
+  primaryButton: (
+    <Button asChild>
+      <a href="">
+        <Text as="span">Apply</Text>
+      </a>
+    </Button>
+  ),
+  secondaryButton: (
+    <Button asChild variant="secondary">
+      <a href="">
+        <Text as="span">See offer details</Text>
+      </a>
+    </Button>
+  ),
+}
+
+export const moralisMetadata: DialogMetadata = {
+  label: 'Moralis',
+  title: 'Get $50/month in credits for up to 3 months',
+  description:
+    'Moralis is a protocol that automates smart contract executions on Ethereum. Use Moralis to automate your dapp and save on gas fees.',
+  bannerImage: '/banners/moralis-banner.png',
+  primaryButton: (
+    <Button asChild>
+      <a href="">
+        <Text as="span">Apply</Text>
+      </a>
+    </Button>
+  ),
+  secondaryButton: (
+    <Button asChild variant="secondary">
+      <a href="">
+        <Text as="span">See offer details</Text>
+      </a>
+    </Button>
+  ),
+}
+
+export const quicknodeMetadata: DialogMetadata = {
+  label: 'Quicknode',
+  title: 'Get $50/month in credits for up to 3 months',
+  description:
+    'Quicknode is a protocol that automates smart contract executions on Ethereum. Use Quicknode to automate your dapp and save on gas fees.',
+  bannerImage: '/banners/quicknode-banner.png',
+  primaryButton: (
+    <Button asChild>
+      <a href="">
+        <Text as="span">Apply</Text>
+      </a>
+    </Button>
+  ),
+  secondaryButton: (
+    <Button asChild variant="secondary">
+      <a href="">
+        <Text as="span">See offer details</Text>
+      </a>
+    </Button>
+  ),
+}
+
+export const thirdWebMetadata: DialogMetadata = {
+  label: 'Third Web',
+  title: 'Get $50/month in credits for up to 3 months',
+  description:
+    'Third Web is a protocol that automates smart contract executions on Ethereum. Use Third Web to automate your dapp and save on gas fees.',
+  bannerImage: '/banners/thirdweb-banner.png',
+  primaryButton: (
+    <Button asChild>
+      <a href="">
+        <Text as="span">Apply</Text>
+      </a>
+    </Button>
+  ),
+  secondaryButton: (
+    <Button asChild variant="secondary">
+      <a href="">
+        <Text as="span">See offer details</Text>
       </a>
     </Button>
   ),
