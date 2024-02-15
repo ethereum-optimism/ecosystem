@@ -30,7 +30,7 @@ const externalRoutes: Routes = {
     path: 'https://discord.optimism.io/',
     label: 'Discord',
   },
-  DAPP_EXAPMPLES: {
+  DAPP_EXAMPLES: {
     path: 'https://github.com/ethereum-optimism/ecosystem',
     label: 'Dapp Examples',
   },
@@ -78,4 +78,39 @@ const externalRoutes: Routes = {
   },
 }
 
-export { routes, externalRoutes }
+const docsItems = [
+  {
+    ...externalRoutes.ETH_DOCS,
+    logo: '/logos/eth-logo.png',
+  },
+  {
+    ...externalRoutes.BASE_DOCS,
+    logo: '/logos/base-logo.png',
+  },
+  {
+    ...externalRoutes.FRAX_DOCS,
+    logo: '/logos/frax-logo.png',
+  },
+  {
+    ...externalRoutes.LISK_DOCS,
+    logo: '/logos/lisk-logo.png',
+  },
+  {
+    ...externalRoutes.MODE_DOCS,
+    logo: '/logos/mode-logo.png',
+  },
+  {
+    ...externalRoutes.OPTIMISM_DOCS,
+    logo: '/logos/op-logo.svg',
+  },
+  {
+    ...externalRoutes.REDSTONE_DOCS,
+    logo: '/logos/redstone-logo.png',
+  },
+  {
+    ...externalRoutes.ZORA_DOCS,
+    logo: '/logos/zora-logo.png',
+  },
+]
+
+export { routes, externalRoutes, docsItems }
