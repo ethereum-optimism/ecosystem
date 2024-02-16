@@ -40,7 +40,7 @@ export const initializeApiServer = async (
   }
 
   app.use((req, res) => {
-    res.status(404)
+    res.status(404).send()
   })
 
   return app
