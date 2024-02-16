@@ -1,6 +1,5 @@
 import type * as Express from 'express'
 
-import { JsonRpcError } from '@/errors/JsonRpcError'
 import { processSingleOrMultiple } from '@/helpers/processSingleOrMultiple'
 import type { SponsorUserOperationImpl } from '@/paymaster/types'
 import { validateJsonRpcRequest } from '@/rpc/validateJsonRpcRequest'
