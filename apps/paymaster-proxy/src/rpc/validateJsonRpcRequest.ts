@@ -11,6 +11,9 @@ const generalJsonRpcRequestSchema = createJsonRpcRequestSchema(
   z.unknown(),
 )
 
+// Validates JSON-RPC request
+// 1. First validates the structure of the request to make sure it satisfies the JSON-RPC 2.0 spec
+// 2. Then does application specific validation
 export const validateJsonRpcRequest = (jsonRpcRequest: unknown) => {
   const generalJsonRpcRequestParseResult =
     generalJsonRpcRequestSchema.safeParse(jsonRpcRequest)
