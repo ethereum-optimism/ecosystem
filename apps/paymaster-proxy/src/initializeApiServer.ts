@@ -39,5 +39,9 @@ export const initializeApiServer = async (
     app.post(`/${chain.id}`, getJsonRpcRequestHandler({ sponsorUserOperation }))
   }
 
+  app.use((req, res) => {
+    res.status(404)
+  })
+
   return app
 }
