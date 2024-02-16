@@ -1,16 +1,18 @@
-import type { ErrorRequestHandler, Express } from 'express'
+import type { Express } from 'express'
 import express from 'express'
 import type { Redis } from 'ioredis'
 
-import { JsonRpcError } from '@/errors/JsonRpcError'
+import { getV1ApiRoute, V1_API_BASE_PATH } from '@/api/getV1ApiRoute'
 import { getRateLimiter } from '@/middlewares/getRateLimiter'
 import type { PaymasterConfig } from '@/paymaster/types'
-import { getJsonRpcRequestHandler } from '@/rpc/getJsonRpcRequestHandler'
 
-export const initializeApiServer = async (
-  redisClient: Redis,
-  paymasterConfigs: PaymasterConfig[],
-): Promise<Express> => {
+export const initializeApiServer = async ({
+  redisClient,
+  paymasterConfigs,
+}: {
+  redisClient: Redis
+  paymasterConfigs: PaymasterConfig[]
+}): Promise<Express> => {
   const app = express()
 
   app.use(getRateLimiter(redisClient))
@@ -24,20 +26,7 @@ export const initializeApiServer = async (
     res.json({ ok: true })
   })
 
-  app.use(express.json(), ((err, req, res, next) => {
-    if (err.status === 400 && err instanceof SyntaxError && 'body' in err) {
-      // If JSON parsing fails, return a -32700 JSON-RPC error
-      return res.json(JsonRpcError.parseError().response())
-    }
-
-    next(err)
-  }) as ErrorRequestHandler)
-
-  for (const { chain, sponsorUserOperation } of paymasterConfigs) {
-    console.info(`Registering paymaster route at /${chain.id}: ${chain.name}`)
-
-    app.post(`/${chain.id}`, getJsonRpcRequestHandler({ sponsorUserOperation }))
-  }
+  app.use(V1_API_BASE_PATH, getV1ApiRoute({ paymasterConfigs }))
 
   app.use((req, res) => {
     res.status(404).send()

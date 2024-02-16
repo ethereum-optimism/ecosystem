@@ -6,7 +6,7 @@ export const wrapPaymasterResponseIntoJsonRpcResponse = <T>(
   response: PaymasterResponse<T>,
   id: number,
 ) => {
-  if (response.success === false) {
+  if (!response.success) {
     // Pass the RPC error to the user so it can be used for debugging
     if (response.error instanceof PaymasterRpcError) {
       return JsonRpcError.fromPaymasterRpcError(response.error, id).response()

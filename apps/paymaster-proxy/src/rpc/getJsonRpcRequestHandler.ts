@@ -12,12 +12,11 @@ const handlePaymasterMethod = async <
   request: T,
   sponsorUserOperation: SponsorUserOperationImpl,
 ) => {
-  switch (request.method) {
-    case 'pm_sponsorUserOperation': {
-      const [userOp, entryPoint] = request.params
-      return await sponsorUserOperation(userOp, entryPoint)
-    }
+  if (request.method === 'pm_sponsorUserOperation') {
+    const [userOp, entryPoint] = request.params
+    return await sponsorUserOperation(userOp, entryPoint)
   }
+  throw new Error('Unsupported method') // should not happen
 }
 
 export const getJsonRpcRequestHandler =
@@ -34,7 +33,7 @@ export const getJsonRpcRequestHandler =
           // Basic validation to check that request is valid and that it is a supported method
           const validationResult = validateJsonRpcRequest(jsonRpcRequest)
 
-          if (validationResult.success === false) {
+          if (!validationResult.success) {
             return validationResult.error.response()
           }
 
