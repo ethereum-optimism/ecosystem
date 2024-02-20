@@ -1,6 +1,8 @@
 import type * as Express from 'express'
 
+import { JsonRpcError } from '@/errors/JsonRpcError'
 import { processSingleOrMultiple } from '@/helpers/processSingleOrMultiple'
+import { screenAddress } from '@/helpers/screenAddress'
 import type { SponsorUserOperationImpl } from '@/paymaster/types'
 import { validateJsonRpcRequest } from '@/rpc/validateJsonRpcRequest'
 import { wrapPaymasterResponseIntoJsonRpcResponse } from '@/rpc/wrapPaymasterResponseIntoJsonRpcResponse'
@@ -35,6 +37,18 @@ export const getJsonRpcRequestHandler =
 
           if (!validationResult.success) {
             return validationResult.error.response()
+          }
+
+          const paymasterRequest = validationResult.data
+
+          const isAddressSanctioned = await screenAddress(
+            paymasterRequest.params[0].sender,
+          )
+
+          if (isAddressSanctioned) {
+            return JsonRpcError.internalErrorSanctionedAddress({
+              id: paymasterRequest.id,
+            })
           }
 
           // Send transaction to paymaster RPC and return result
