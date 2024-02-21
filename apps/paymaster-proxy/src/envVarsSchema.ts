@@ -15,3 +15,5 @@ export const envVarsSchema = z.object({
     .string()
     .describe('Alchemy Gas Manager policyId for OP Sepolia'),
 })
+
+export type EnvVars = z.infer<typeof envVarsSchema>
