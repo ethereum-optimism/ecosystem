@@ -1,0 +1,37 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:14-alpine
+    environment:
+      - POSTGRES_USER=db_username
+      - POSTGRES_PASSWORD=db_password
+      - POSTGRES_DB=db_name
+      - PGDATA=/data/postgres
+      - POSTGRES_HOST_AUTH_METHOD=trust
+    ports:
+      - '5432:5432'
+    volumes:
+      - db:/var/lib/postgres_ponder/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -q -U db_username -d db_name']
+  
+  indexer:
+    build:
+      context: ../../
+      dockerfile: Dockerfile
+      target: event-log-indexer
+    env_file:
+      - .env.local
+    environment:
+      - DATABASE_URL=postgresql://db_username:db_password@postgres:5432/db_name
+    volumes:
+      - ../../certs/extra-ca-certificates.crt:/usr/local/share/ca-certificates/extra-ca-certificates.crt
+    ports:
+      - "42069:42069"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+volumes:
+  db:
