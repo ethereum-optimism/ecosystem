@@ -1,9 +1,7 @@
-import { toHex } from 'viem'
+import { zeroAddress } from 'viem'
 
 import type { IndexingFunctionArgs } from '@/generated'
 import { ponder } from '@/generated'
-
-export const NULL_ADDRESS = toHex(0, { size: 20 })
 
 export async function transfer(
   args: IndexingFunctionArgs<'optimist:Transfer'>,
@@ -16,7 +14,7 @@ export async function transfer(
   const { hash: transactionHash, blockNumber } = event.transaction
   const { from, to, tokenId } = event.args
 
-  if (from === NULL_ADDRESS) {
+  if (from === zeroAddress) {
     await Optimist.upsert({
       id: to,
       create: {
@@ -27,11 +25,11 @@ export async function transfer(
       },
       update: {},
     })
-  } else if (to === NULL_ADDRESS) {
+  } else if (to === zeroAddress) {
     await Optimist.delete({ id: from })
   }
 }
 
-export function registerOptimstEvents() {
+export function registerOptimistEvents() {
   ponder.on('optimist:Transfer', transfer)
 }

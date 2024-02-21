@@ -1,7 +1,7 @@
-import { registerOptimstEvents } from './events/optimist'
+import { registerOptimistEvents } from './events/optimist'
 
 async function main() {
-  registerOptimstEvents()
+  registerOptimistEvents()
 }
 
 main()
