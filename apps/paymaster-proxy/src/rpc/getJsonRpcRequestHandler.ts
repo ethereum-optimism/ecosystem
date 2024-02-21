@@ -48,7 +48,7 @@ export const getJsonRpcRequestHandler =
           if (isAddressSanctioned) {
             return JsonRpcError.internalErrorSanctionedAddress({
               id: paymasterRequest.id,
-            })
+            }).response()
           }
 
           // Send transaction to paymaster RPC and return result
