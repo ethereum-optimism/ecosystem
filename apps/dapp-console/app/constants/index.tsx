@@ -108,7 +108,7 @@ const docsItems = [
   },
   {
     ...externalRoutes.OPTIMISM_DOCS,
-    logo: '/logos/op-logo.svg',
+    logo: '/logos/opmainnet-logo.png',
   },
   {
     ...externalRoutes.REDSTONE_DOCS,
