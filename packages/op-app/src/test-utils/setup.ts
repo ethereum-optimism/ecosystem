@@ -9,8 +9,17 @@ const l1TestClient = createL1AnvilClient()
 const l2TestClient = createL2AnvilClient()
 
 afterAll(async () => {
-  await l1TestClient.reset({ jsonRpcUrl: l1ForkURL })
-  await l2TestClient.reset({ jsonRpcUrl: l2ForkURL })
+  try {
+    await l1TestClient.reset({ jsonRpcUrl: l1ForkURL })
+  } catch (e) {
+    console.error('error attempting to reset L1 anvil client', e)
+  }
+
+  try {
+    await l2TestClient.reset({ jsonRpcUrl: l2ForkURL })
+  } catch (e) {
+    console.error('error attempting to reset L2 anvil client', e)
+  }
 })
 
 afterEach(async (context) => {
