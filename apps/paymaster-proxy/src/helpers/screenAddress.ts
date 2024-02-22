@@ -18,7 +18,7 @@ const screeningServiceResponse = createJsonRpcResponseSchema(
 )
 
 export const screenAddress = async (address: Address) => {
-  const res = await fetch(`${envVars.SCREENING_SERVICE_URL}`, {
+  const res = await fetch(envVars.SCREENING_SERVICE_URL, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -34,7 +34,11 @@ export const screenAddress = async (address: Address) => {
   const json = await res.json()
   const response = screeningServiceResponse.parse(json)
 
-  if ('error' in response || response.result.length === 0) {
+  if (
+    'error' in response ||
+    response.result.length === 0 ||
+    !!response.result[0].Error
+  ) {
     throw new Error('Failed to call screening service')
   }
 
