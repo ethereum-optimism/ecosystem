@@ -5,6 +5,7 @@ import type { Redis } from 'ioredis'
 import { getV1ApiRoute, V1_API_BASE_PATH } from '@/api/getV1ApiRoute'
 import { getPromBaseMetrics } from '@/middlewares/getPromBaseMetrics'
 import { getRateLimiter } from '@/middlewares/getRateLimiter'
+import { metrics } from '@/monitoring/metrics'
 import type { PaymasterConfig } from '@/paymaster/types'
 
 export const initializeApiServer = async ({
@@ -31,7 +32,7 @@ export const initializeApiServer = async ({
     res.json({ ok: true })
   })
 
-  app.use(V1_API_BASE_PATH, getV1ApiRoute({ paymasterConfigs }))
+  app.use(V1_API_BASE_PATH, getV1ApiRoute({ paymasterConfigs, metrics }))
 
   app.use((req, res) => {
     res.status(404).send()
