@@ -3,7 +3,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "pnpm codegen",
+    "build": "echo 'No build step'",
     "dev": "ponder dev",
     "start": "ponder start",
     "codegen": "ponder codegen",
