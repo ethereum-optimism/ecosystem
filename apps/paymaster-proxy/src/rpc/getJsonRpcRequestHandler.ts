@@ -3,6 +3,7 @@ import type * as Express from 'express'
 import { JsonRpcError } from '@/errors/JsonRpcError'
 import { processSingleOrMultiple } from '@/helpers/processSingleOrMultiple'
 import { screenAddress } from '@/helpers/screenAddress'
+import type { Metrics } from '@/monitoring/metrics'
 import type { SponsorUserOperationImpl } from '@/paymaster/types'
 import { validateJsonRpcRequest } from '@/rpc/validateJsonRpcRequest'
 import { wrapPaymasterResponseIntoJsonRpcResponse } from '@/rpc/wrapPaymasterResponseIntoJsonRpcResponse'
@@ -24,8 +25,10 @@ const handlePaymasterMethod = async <
 export const getJsonRpcRequestHandler =
   ({
     sponsorUserOperation,
+    metrics,
   }: {
     sponsorUserOperation: SponsorUserOperationImpl
+    metrics: Metrics
   }) =>
   async (req: Express.Request, res: Express.Response) => {
     try {
@@ -41,11 +44,20 @@ export const getJsonRpcRequestHandler =
 
           const paymasterRequest = validationResult.data
 
-          const isAddressSanctioned = await screenAddress(
-            paymasterRequest.params[0].sender,
-          )
+          let isAddressSanctioned = false
+          try {
+            isAddressSanctioned = await screenAddress(
+              paymasterRequest.params[0].sender,
+            )
+          } catch (e) {
+            metrics.screeningServiceCallFailures.inc({ chainId: 1 })
+            return JsonRpcError.internalError({
+              id: paymasterRequest.id,
+            }).response()
+          }
 
           if (isAddressSanctioned) {
+            metrics.sanctionedAddressBlocked.inc({ chainId: 1 })
             return JsonRpcError.internalErrorSanctionedAddress({
               id: paymasterRequest.id,
             }).response()

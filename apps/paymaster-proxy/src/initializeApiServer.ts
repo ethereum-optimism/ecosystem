@@ -3,7 +3,7 @@ import express from 'express'
 import type { Redis } from 'ioredis'
 
 import { getV1ApiRoute, V1_API_BASE_PATH } from '@/api/getV1ApiRoute'
-import { getPromMetrics } from '@/middlewares/getPromMetrics'
+import { getPromBaseMetrics } from '@/middlewares/getPromBaseMetrics'
 import { getRateLimiter } from '@/middlewares/getRateLimiter'
 import type { PaymasterConfig } from '@/paymaster/types'
 
@@ -16,7 +16,7 @@ export const initializeApiServer = async ({
 }): Promise<Express> => {
   const app = express()
 
-  const promMetrics = getPromMetrics()
+  const promMetrics = getPromBaseMetrics()
 
   app.use(getRateLimiter(redisClient))
 
