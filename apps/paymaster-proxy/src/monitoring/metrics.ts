@@ -1,36 +1,38 @@
-import { CurriableCounter } from '@/monitoring/CurriableCounter'
-import type { Curriable } from '@/monitoring/types'
+import { Counter } from 'prom-client'
 
-const metricsNamespaces = ['apiVersion', 'chainId'] as const
-type MetricsNamespace = (typeof metricsNamespaces)[number]
+export type MetricsNamespaceLabel = (typeof metricsNamespaceLabels)[number]
+export type DefaultMetricsNamespaceLabels = Partial<
+  Record<MetricsNamespaceLabel, string | number>
+>
+export type Metrics = typeof metrics
+
+export const metricsNamespaceLabels = ['apiVersion', 'chainId'] as const
 
 // PromClient is registered globally, so no need to inject it
 export const metrics = {
-  screeningServiceCallFailures: CurriableCounter.create({
+  screeningServiceCallFailures: new Counter({
     name: 'screeningServiceCallFailures',
     help: 'Number of failures when calling the screening service',
-    labelNames: [...metricsNamespaces] as const,
+    labelNames: [...metricsNamespaceLabels] as const,
   }),
-  sanctionedAddressBlocked: CurriableCounter.create({
+  sanctionedAddressBlocked: new Counter({
     name: 'sanctionedAddressBlocked',
     help: 'Number of addresses screened',
-    labelNames: [...metricsNamespaces] as const,
+    labelNames: [...metricsNamespaceLabels] as const,
   }),
-} as const satisfies Record<string, Curriable<string, string>>
-
-const getMetricsForApiVersion = (apiVersion: string) => {
-  // map throug metrics and return one that has each metric curried with apiVersion
-  // with typesafety
-  return Object.fromEntries(
-    Object.entries(metrics).map(([key, metric]) => [
-      key,
-      metric.curryWith({ apiVersion }),
-    ]),
-  ) as {
-    [K in keyof typeof metrics]: ReturnType<(typeof metrics)[K]['curryWith']>
-  }
-}
-
-const apiV0Metrics = getMetricsForApiVersion('v0')
-
-export type Metrics = typeof metrics
+  paymasterCallRpcFailures: new Counter({
+    name: 'paymasterCallRpcFailures',
+    help: 'Number of RPC failures when calling the paymaster RPC',
+    labelNames: [...metricsNamespaceLabels, 'jsonRpcCode'] as const,
+  }),
+  paymasterCallNonRpcFailures: new Counter({
+    name: 'paymasterCallNonRpcFailures',
+    help: 'Number of non-RPC failures when calling the paymaster RPC',
+    labelNames: [...metricsNamespaceLabels] as const,
+  }),
+  paymasterCallSuccesses: new Counter({
+    name: 'paymasterCallSuccesses',
+    help: 'Number of successes when calling the paymaster RPC',
+    labelNames: [...metricsNamespaceLabels] as const,
+  }),
+} as const

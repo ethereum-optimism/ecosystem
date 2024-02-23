@@ -25,7 +25,14 @@ export const getV1ApiRoute = ({
     )
 
     route.use(path, express.json())
-    route.post(path, getJsonRpcRequestHandler({ sponsorUserOperation }))
+    route.post(
+      path,
+      getJsonRpcRequestHandler({
+        sponsorUserOperation,
+        metrics,
+        defaultMetricLabels: { apiVersion: 'v1', chainId: chain.id },
+      }),
+    )
     route.use(path, jsonRpcRequestParseErrorHandler)
   }
 
