@@ -7,4 +7,9 @@ export default defineConfig({
       '@': path.resolve(__dirname, './src'),
     },
   },
+  test: {
+    hookTimeout: 20_000,
+    testTimeout: 20_000,
+    setupFiles: ['./src/testUtils/setup.ts'],
+  },
 })

@@ -65,6 +65,13 @@ export class JsonRpcError extends Error {
     return new JsonRpcError(internalErrorCode, { id, message })
   }
 
+  static internalErrorSanctionedAddress = ({
+    id = null,
+    message = 'Ineligible address: sanctioned address',
+  }: JsonRpcErrorParams = {}): JsonRpcError => {
+    return new JsonRpcError(internalErrorCode, { id, message })
+  }
+
   response() {
     return {
       jsonrpc: '2.0' as const,

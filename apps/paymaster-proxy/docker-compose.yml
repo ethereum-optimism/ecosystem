@@ -17,8 +17,8 @@ services:
       context: ../../
       dockerfile: Dockerfile
       target: paymaster-proxy
+    env_file: .env
     environment:
-      - PORT=7310
       - REDIS_URL=redis://redis:6379
     healthcheck:
       test: wget localhost:7310/healthz -q -O - > /dev/null 2>&1
