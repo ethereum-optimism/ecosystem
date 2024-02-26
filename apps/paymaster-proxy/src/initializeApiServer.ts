@@ -7,7 +7,7 @@ import type {
 } from 'express'
 import express from 'express'
 import type { Redis } from 'ioredis'
-import { type Logger, pino } from 'pino'
+import { type Logger } from 'pino'
 
 import { getV1ApiRoute, V1_API_BASE_PATH } from '@/api/getV1ApiRoute'
 import { getPromBaseMetrics } from '@/middlewares/getPromBaseMetrics'
