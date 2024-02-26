@@ -37,6 +37,7 @@
     "express-prom-bundle": "^7.0.0",
     "express-rate-limit": "^7.1.5",
     "ioredis": "^5.3.2",
+    "pino": "^8.19.0",
     "prom-client": "^15.1.0",
     "rate-limit-redis": "^4.2.0",
     "viem": "^2.7.1",
