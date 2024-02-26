@@ -35,4 +35,9 @@ export const metrics = {
     help: 'Number of successes when calling the paymaster RPC',
     labelNames: [...metricsNamespaceLabels] as const,
   }),
+  unhandledApiServerErrorCount: new Counter({
+    name: 'unhandledApiServerErrorCount',
+    help: 'Number of unhandled API server errors',
+    labelNames: ['apiVersion'] as const,
+  }),
 } as const

@@ -1,4 +1,10 @@
-import type { Express } from 'express'
+import type {
+  ErrorRequestHandler,
+  Express,
+  NextFunction,
+  Request,
+  Response,
+} from 'express'
 import express from 'express'
 import type { Redis } from 'ioredis'
 import { type Logger, pino } from 'pino'
@@ -51,6 +57,13 @@ export const initializeApiServer = async ({
   app.use((req, res) => {
     res.status(404).send()
   })
+
+  // Default error handler
+  app.use(((err: Error, req: Request, res: Response, next: NextFunction) => {
+    logger.error(err, 'Unhandled error')
+    metrics.unhandledApiServerErrorCount.inc({ apiVersion: 'v1' })
+    res.status(500).send()
+  }) satisfies ErrorRequestHandler)
 
   return app
 }
