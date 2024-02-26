@@ -4,6 +4,7 @@ import { optimismSepolia, sepolia } from 'viem/chains'
 
 import { envVars } from '@/envVars'
 import { initializeApiServer } from '@/initializeApiServer'
+import { metrics } from '@/monitoring/metrics'
 import { getAlchemyPaymasterConfig } from '@/paymaster/alchemy/getAlchemyPaymasterConfig'
 import type { PaymasterConfig } from '@/paymaster/types'
 
@@ -35,6 +36,7 @@ export class ProxyService {
     const apiServer = await initializeApiServer({
       redisClient,
       paymasterConfigs,
+      metrics,
     })
 
     return new ProxyService(apiServer)

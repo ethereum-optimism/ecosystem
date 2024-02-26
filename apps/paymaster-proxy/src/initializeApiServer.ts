@@ -5,15 +5,17 @@ import type { Redis } from 'ioredis'
 import { getV1ApiRoute, V1_API_BASE_PATH } from '@/api/getV1ApiRoute'
 import { getPromBaseMetrics } from '@/middlewares/getPromBaseMetrics'
 import { getRateLimiter } from '@/middlewares/getRateLimiter'
-import { metrics } from '@/monitoring/metrics'
+import type { Metrics } from '@/monitoring/metrics'
 import type { PaymasterConfig } from '@/paymaster/types'
 
 export const initializeApiServer = async ({
   redisClient,
   paymasterConfigs,
+  metrics,
 }: {
   redisClient: Redis
   paymasterConfigs: PaymasterConfig[]
+  metrics: Metrics
 }): Promise<Express> => {
   const app = express()
 
