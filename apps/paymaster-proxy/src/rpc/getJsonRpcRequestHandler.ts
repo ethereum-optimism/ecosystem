@@ -81,7 +81,7 @@ export const getJsonRpcRequestHandler =
               paymasterRequest.params[0].sender,
             )
           } catch (e) {
-            metrics.screeningServiceCallFailures.inc({ chainId: 1 })
+            metrics.screeningServiceCallFailures.inc(defaultMetricLabels)
             return JsonRpcError.internalError({
               id: paymasterRequest.id,
             }).response()
