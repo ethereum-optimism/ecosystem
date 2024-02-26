@@ -2,6 +2,7 @@ import type { Router } from 'express'
 import express from 'express'
 
 import { jsonRpcRequestParseErrorHandler } from '@/middlewares/jsonRpcRequestParseErrorHandler'
+import type { Metrics } from '@/monitoring/metrics'
 import type { PaymasterConfig } from '@/paymaster/types'
 import { getJsonRpcRequestHandler } from '@/rpc/getJsonRpcRequestHandler'
 
@@ -9,8 +10,10 @@ export const V1_API_BASE_PATH = '/v1'
 
 export const getV1ApiRoute = ({
   paymasterConfigs,
+  metrics,
 }: {
   paymasterConfigs: PaymasterConfig[]
+  metrics: Metrics
 }): Router => {
   const route = express.Router()
 
@@ -22,7 +25,14 @@ export const getV1ApiRoute = ({
     )
 
     route.use(path, express.json())
-    route.post(path, getJsonRpcRequestHandler({ sponsorUserOperation }))
+    route.post(
+      path,
+      getJsonRpcRequestHandler({
+        sponsorUserOperation,
+        metrics,
+        defaultMetricLabels: { apiVersion: 'v1', chainId: chain.id },
+      }),
+    )
     route.use(path, jsonRpcRequestParseErrorHandler)
   }
 
