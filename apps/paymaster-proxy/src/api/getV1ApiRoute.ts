@@ -1,5 +1,6 @@
 import type { Router } from 'express'
 import express from 'express'
+import type { Logger } from 'pino'
 
 import { jsonRpcRequestParseErrorHandler } from '@/middlewares/jsonRpcRequestParseErrorHandler'
 import type { Metrics } from '@/monitoring/metrics'
@@ -11,16 +12,18 @@ export const V1_API_BASE_PATH = '/v1'
 export const getV1ApiRoute = ({
   paymasterConfigs,
   metrics,
+  logger,
 }: {
   paymasterConfigs: PaymasterConfig[]
   metrics: Metrics
+  logger: Logger
 }): Router => {
   const route = express.Router()
 
   for (const { chain, sponsorUserOperation } of paymasterConfigs) {
     const path = `/${chain.id}/rpc`
 
-    console.info(
+    logger.info(
       `Registering paymaster RPC route at ${V1_API_BASE_PATH}${path}: ${chain.name}`,
     )
 
@@ -29,6 +32,7 @@ export const getV1ApiRoute = ({
       path,
       getJsonRpcRequestHandler({
         sponsorUserOperation,
+        logger: logger.child({ chainId: chain.id }),
         metrics,
         defaultMetricLabels: { apiVersion: 'v1', chainId: chain.id },
       }),

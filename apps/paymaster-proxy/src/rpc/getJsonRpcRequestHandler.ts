@@ -1,4 +1,5 @@
 import type * as Express from 'express'
+import type { Logger } from 'pino'
 
 import { JsonRpcError } from '@/errors/JsonRpcError'
 import { PaymasterNonRpcError } from '@/errors/PaymasterError'
@@ -26,38 +27,49 @@ const handlePaymasterMethod = async <
     const [userOp, entryPoint] = request.params
     return await sponsorUserOperation(userOp, entryPoint)
   }
+
   throw new Error('Unsupported method') // should not happen
 }
 
-const logMetricsForPaymasterRpcCall = ({
+const logPaymasterRpcCallResponse = ({
   paymasterResponse,
   metrics,
   defaultMetricLabels,
+  logger,
 }: {
   paymasterResponse: PaymasterResponse<any>
   metrics: Metrics
   defaultMetricLabels: DefaultMetricsNamespaceLabels
+  logger: Logger
 }) => {
   if (paymasterResponse.success) {
     return metrics.paymasterCallSuccesses.inc(defaultMetricLabels)
   }
 
   if (paymasterResponse.error instanceof PaymasterNonRpcError) {
-    return metrics.paymasterCallNonRpcFailures.inc(defaultMetricLabels)
+    logger.error(
+      paymasterResponse.error.underlyingError?.message,
+      'Paymaster non-RPC error',
+    )
+    metrics.paymasterCallNonRpcFailures.inc(defaultMetricLabels)
+    return
   }
-  return metrics.paymasterCallRpcFailures.inc({
+  metrics.paymasterCallRpcFailures.inc({
     ...defaultMetricLabels,
     jsonRpcCode: paymasterResponse.error.code,
   })
+  return
 }
 
 export const getJsonRpcRequestHandler =
   ({
     sponsorUserOperation,
+    logger,
     metrics,
     defaultMetricLabels,
   }: {
     sponsorUserOperation: SponsorUserOperationImpl
+    logger: Logger
     metrics: Metrics
     defaultMetricLabels: DefaultMetricsNamespaceLabels
   }) =>
@@ -82,6 +94,11 @@ export const getJsonRpcRequestHandler =
             )
           } catch (e) {
             metrics.screeningServiceCallFailures.inc(defaultMetricLabels)
+            logger.error({
+              message: 'Error while screening address',
+              error: e,
+              address: paymasterRequest.params[0].sender,
+            })
             return JsonRpcError.internalError({
               id: paymasterRequest.id,
             }).response()
@@ -89,6 +106,10 @@ export const getJsonRpcRequestHandler =
 
           if (isAddressSanctioned) {
             metrics.sanctionedAddressBlocked.inc(defaultMetricLabels)
+            logger.info({
+              message: 'Screened address',
+              address: paymasterRequest.params[0].sender,
+            })
             return JsonRpcError.internalErrorSanctionedAddress({
               id: paymasterRequest.id,
             }).response()
@@ -100,10 +121,11 @@ export const getJsonRpcRequestHandler =
             sponsorUserOperation,
           )
 
-          logMetricsForPaymasterRpcCall({
+          logPaymasterRpcCallResponse({
             paymasterResponse: handlePaymasterRequestResult,
             metrics,
             defaultMetricLabels,
+            logger,
           })
 
           return wrapPaymasterResponseIntoJsonRpcResponse(
@@ -114,6 +136,7 @@ export const getJsonRpcRequestHandler =
       )
       return res.json(result)
     } catch (e) {
+      logger.error(e, 'Unhandled error in JSON-RPC request handler')
       res.status(500).send()
     }
   }
