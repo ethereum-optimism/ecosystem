@@ -239,6 +239,9 @@ importers:
       ioredis:
         specifier: ^5.3.2
         version: 5.3.2
+      pino:
+        specifier: ^8.19.0
+        version: 8.19.0
       prom-client:
         specifier: ^15.1.0
         version: 15.1.0
@@ -321,7 +324,7 @@ importers:
     devDependencies:
       '@eth-optimism/superchain-registry':
         specifier: github:ethereum-optimism/superchain-registry
-        version: github.com/ethereum-optimism/superchain-registry/ab073f6aa74fad109f1299d77f015f94059687c9
+        version: github.com/ethereum-optimism/superchain-registry/1cdbad415df731baccfbbc64700a3a0a0dfa9948
       '@tanstack/react-query':
         specifier: ^5.10.0
         version: 5.10.0(react@18.2.0)
@@ -14463,6 +14466,23 @@ packages:
       thread-stream: 2.4.1
     dev: false
 
+  /pino@8.19.0:
+    resolution: {integrity: sha512-oswmokxkav9bADfJ2ifrvfHUwad6MLp73Uat0IkQWY3iAw5xTRoznXbXksZs8oaOUMpmhVWD+PZogNzllWpJaA==}
+    hasBin: true
+    dependencies:
+      atomic-sleep: 1.0.0
+      fast-redact: 3.3.0
+      on-exit-leak-free: 2.1.2
+      pino-abstract-transport: 1.1.0
+      pino-std-serializers: 6.2.2
+      process-warning: 3.0.0
+      quick-format-unescaped: 4.0.4
+      real-require: 0.2.0
+      safe-stable-stringify: 2.4.3
+      sonic-boom: 3.8.0
+      thread-stream: 2.4.1
+    dev: false
+
   /pirates@4.0.6:
     resolution: {integrity: sha512-saLsH7WeYYPiD25LDuLRRY/i+6HaPYr6G1OUlN39otzkSTxKnubR9RTxS3/Kk50s1g2JTgFwWQDQyplC5/SHZg==}
     engines: {node: '>= 6'}
@@ -18123,8 +18143,8 @@ packages:
       react: 18.2.0
       use-sync-external-store: 1.2.0(react@18.2.0)
 
-  github.com/ethereum-optimism/superchain-registry/ab073f6aa74fad109f1299d77f015f94059687c9:
-    resolution: {tarball: https://codeload.github.com/ethereum-optimism/superchain-registry/tar.gz/ab073f6aa74fad109f1299d77f015f94059687c9}
+  github.com/ethereum-optimism/superchain-registry/1cdbad415df731baccfbbc64700a3a0a0dfa9948:
+    resolution: {tarball: https://codeload.github.com/ethereum-optimism/superchain-registry/tar.gz/1cdbad415df731baccfbbc64700a3a0a0dfa9948}
     name: '@eth-optimism/superchain-registry'
     version: 0.0.1-alpha.1
     dev: true

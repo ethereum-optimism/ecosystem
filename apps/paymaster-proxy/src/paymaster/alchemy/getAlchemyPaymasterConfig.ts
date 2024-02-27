@@ -1,6 +1,5 @@
 import { createAlchemyPublicRpcClient } from '@alchemy/aa-alchemy'
-import type { Address, Chain } from 'viem'
-import { HttpRequestError } from 'viem'
+import type { Address, Chain, HttpRequestError } from 'viem'
 import { z } from 'zod'
 
 import {
@@ -17,6 +16,10 @@ const alchemyJsonRpcHttpRequestErrorDetailsSchema = createJsonStringSchema(
     message: z.string(),
   }),
 )
+
+const isHttpRequestError = (e: unknown): e is HttpRequestError => {
+  return (e as any).name === 'HttpRequestError'
+}
 
 export const getAlchemyPaymasterConfig = <T extends Chain>({
   chain,
@@ -91,7 +94,7 @@ export const getAlchemyPaymasterConfig = <T extends Chain>({
         }
       } catch (e: unknown) {
         // Alchemy returns a HttpRequestError when the RPC call fails
-        if (e instanceof HttpRequestError) {
+        if (isHttpRequestError(e)) {
           const detailsParse =
             alchemyJsonRpcHttpRequestErrorDetailsSchema.safeParse(e.details)
 
