@@ -9,7 +9,8 @@
     },
     "packages": {
       "op-app": ["type:package"],
-      "ui-components": ["type:package"]
+      "ui-components": ["type:package"],
+      "api-plugin": ["type:package"]
     }
   },
   "targetDefaults": {
