@@ -26,7 +26,7 @@ RUN pnpm fetch
 COPY . ./
 
 # install monorepo dependencies, from the virtual store
-RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile --offline
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile --prefer-offline
 
 # build all packages/apps
 RUN pnpm nx run-many --target=build
@@ -49,5 +49,28 @@ WORKDIR /prod/paymaster-proxy
 ENV NODE_EXTRA_CA_CERTS=/usr/local/share/ca-certificates/extra-ca-certificates.crt
 
 EXPOSE 7310
+
+CMD [ "pnpm", "start" ]
+
+########################################
+# STEP 3: EVENT-LOG-INDEXER
+########################################
+
+FROM node:18.19-bullseye-slim AS event-log-indexer
+
+RUN apt-get update \
+  && apt-get install -y libvips libxtst6 libxss1 curl \
+  git ca-certificates python3 pkg-config build-essential --no-install-recommends
+
+COPY ./ ./monorepo
+WORKDIR /monorepo/apps/event-log-indexer
+
+RUN npm install pnpm --global
+RUN pnpm install --frozen-lockfile
+
+ENV NODE_ENVIRONMENT=production
+ENV NODE_EXTRA_CA_CERTS=/usr/local/share/ca-certificates/extra-ca-certificates.crt
+
+EXPOSE 42069
 
 CMD [ "pnpm", "start" ]
