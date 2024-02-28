@@ -1,12 +1,21 @@
 import {
   BundlerClient,
   ClientMiddlewareConfig,
+  Hex,
   HttpTransport,
+  UserOperationFeeOptions,
+  UserOperationRequest,
+  deepHexlify,
   defaultFeeEstimator,
   defaultGasEstimator,
+  filterUndefined,
+  isBigNumberish,
+  resolveProperties,
 } from '@alchemy/aa-core'
+import { fromHex } from 'viem'
 
 // Based off of `alchemyGasManagerMiddleware`
+// Since paymaster call also returns gas estimations, no need to estimate in the gasEstimator
 export const superchainPaymasterMiddleware = <
   C extends BundlerClient<HttpTransport>,
 >(
@@ -70,6 +79,48 @@ export const superchainPaymasterMiddleware = <
         maxPriorityFeePerGas,
       }
     },
-    paymasterAndData: async () => {},
+    paymasterAndData: {
+      paymasterAndData: async (struct, { overrides, account }) => {
+        const userOperation: UserOperationRequest = deepHexlify(
+          await resolveProperties(struct),
+        )
+
+        const overrideField = (
+          field: keyof UserOperationFeeOptions,
+        ): Hex | undefined => {
+          if (overrides?.[field] != null) {
+            // one-off absolute override
+            if (isBigNumberish(overrides[field])) {
+              return deepHexlify(overrides[field])
+            }
+          }
+          if (fromHex(userOperation[field], 'bigint') > 0n) {
+            return userOperation[field]
+          }
+
+          return undefined
+        }
+
+        const userOperationWithOverrides = filterUndefined({
+          ...userOperation,
+          maxFeePerGas: overrideField('maxFeePerGas'),
+          maxPriorityFeePerGas: overrideField('maxPriorityFeePerGas'),
+          callGasLimit: overrideField('callGasLimit'),
+          verificationGasLimit: overrideField('verificationGasLimit'),
+          preVerificationGas: overrideField('preVerificationGas'),
+        })
+
+        const result = await client.request({
+          method: 'pm_sponsorUserOperation',
+          params: [userOperationWithOverrides, account.getEntryPoint().address],
+        })
+
+        return {
+          ...struct,
+          ...result,
+        }
+      },
+      dummyPaymasterAndData: () => '0x',
+    },
   }
 }

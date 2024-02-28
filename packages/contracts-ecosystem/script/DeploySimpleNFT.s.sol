@@ -6,7 +6,7 @@ import {console} from "forge-std/console.sol";
 import {SimpleNFT} from "../src/SimpleNFT.sol";
 
 contract DeploySimpleNFT is Script {
-    address constant EXPECTED_SIMPLE_NFT_ADDRESS = 0xCff4770B208358661f7350Abe77900C25b0C2b95;
+    address constant EXPECTED_SIMPLE_NFT_ADDRESS = 0xAB559628B94Fd9748658c46E58a85EfB52FdaCa6;
 
     function setUp() public {}
 
