@@ -12,7 +12,7 @@ import { LocalAccountSigner, createBundlerClient } from '@alchemy/aa-core'
 import { encodeFunctionData, http } from 'viem'
 
 import { createMultiOwnerModularAccountClient } from '@alchemy/aa-accounts'
-import { optimismSepolia } from 'viem/chains'
+import { optimismSepolia, sepolia } from 'viem/chains'
 import { useQuery } from '@tanstack/react-query'
 import { superchainPaymasterMiddleware } from '@/middleware/superchainPaymasterMiddleware'
 import { SimpleNftAbi } from '@/abis/SimpleNftAbi'
@@ -22,14 +22,16 @@ const simpleNftAddress = '0xAB559628B94Fd9748658c46E58a85EfB52FdaCa6'
 const signer = LocalAccountSigner.mnemonicToAccountSigner(
   'test test test test test test test test test test test junk',
 )
-const chain = optimismSepolia
+const chain = sepolia
 
 const bundlerRpcTransport = http(
-  import.meta.env.VITE_BUNDLER_RPC_URL_OP_SEPOLIA as string,
+  import.meta.env.VITE_BUNDLER_RPC_URL_SEPOLIA as string,
 )
 
 const paymasterClient = createBundlerClient({
-  transport: http('https://dev-paymaster.optimism.io/v1/11155420/rpc'),
+  // transport: http('https://dev-paymaster.optimism.io/v1/11155420/rpc'),
+  transport: http('http://localhost:7310/v1/11155111/rpc'),
+
   chain,
 })
 
