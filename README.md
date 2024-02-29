@@ -100,6 +100,16 @@ There will be a few common targets that you will most likely see across all appl
 * `lint`
 * `lint:fix`
 
+### Codegen
+
+#### Nx generateors
+
+* `trpc-api-generator`: generates the boiler plate code for creating a trpc api server
+
+To run a generator run this command:
+```bash
+pnpm nx generate <name of generator> <name of new project>
+```
 
 Feel free to open up an issue on the repo if you're running into any issues!
 
