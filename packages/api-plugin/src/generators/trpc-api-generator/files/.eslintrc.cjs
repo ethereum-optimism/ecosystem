@@ -1,4 +1,4 @@
 module.exports = {
   extends: ['../../.eslintrc.js'],
-  ignorePatterns: ["types/**/*.d.ts"],
+  ignorePatterns: ['types/**/*.d.ts'],
 }
