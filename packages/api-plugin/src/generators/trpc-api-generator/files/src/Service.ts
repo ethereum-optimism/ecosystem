@@ -1,17 +1,34 @@
 import bodyParser from 'body-parser'
-import type { Router } from 'express'
+import type {
+  ErrorRequestHandler,
+  NextFunction,
+  Request,
+  Response,
+  Router,
+} from 'express'
 import express from 'express'
+import promBundle from 'express-prom-bundle'
 import type { Server } from 'net'
+import type { Registry } from 'prom-client'
+import prometheus from 'prom-client'
 
 import { ApiV0, Middleware } from './api'
 import { corsAllowlist, envVars } from './constants'
+import { metrics } from './monitoring/metrics'
 import { Trpc } from './Trpc'
+
+const API_PATH = '/api'
 
 export class Service {
   /**
    * App server.
    */
   private server?: Server
+
+  /**
+   * Registry for prometheus metrics.
+   */
+  private metricsRegistry: Registry
 
   /**
    * @param state - the state object that stores cached delegate chain data
@@ -21,7 +38,32 @@ export class Service {
   constructor(
     private readonly apiServerV0: ApiV0,
     private readonly middleware: Middleware,
-  ) {}
+  ) {
+    // Create the metrics server.
+    this.metricsRegistry = prometheus.register
+    prometheus.collectDefaultMetrics({
+      register: this.metricsRegistry,
+      labels: { version: this.apiServerV0.version },
+    })
+
+    // Gracefully handle stop signals.
+    const maxSignalCount = 3
+    let currSignalCount = 0
+    const stop = async () => {
+      // Allow exiting fast if more signals are received.
+      currSignalCount++
+      if (currSignalCount === 1) {
+        await this.stop()
+        process.exit(0)
+      } else if (currSignalCount >= maxSignalCount) {
+        process.exit(0)
+      }
+    }
+
+    // Handle stop signals.
+    process.on('SIGTERM', stop)
+    process.on('SIGINT', stop)
+  }
 
   /**
    * @returns service with all dependencies injected
@@ -71,16 +113,58 @@ export class Service {
       const router = express.Router()
       this.routes(router)
 
-      app.use('/api', router)
+      const healthzPath = '/healthz'
+      const readyPath = '/ready'
 
-      app.get('/healthz', (req, res) => {
+      // Metrics.
+      // Will expose a /metrics endpoint by default.
+      app.use(
+        promBundle({
+          promRegistry: this.metricsRegistry,
+          includeMethod: true,
+          includePath: true,
+          includeStatusCode: true,
+          normalizePath: (req, opts) => {
+            const urlPath = `${req.baseUrl}${req.path}`
+            if (urlPath === healthzPath || urlPath === readyPath) {
+              return promBundle.normalizePath(req, opts)
+            }
+
+            for (const layer of router.stack) {
+              if (layer.route && urlPath.match(layer.regexp)) {
+                return promBundle.normalizePath(req, opts)
+              }
+            }
+
+            return '/invalid_path_not_a_real_route'
+          },
+        }),
+      )
+
+      app.use(API_PATH, router)
+
+      app.get(healthzPath, (req, res) => {
         res.json({ ok: true })
       })
 
-      app.get('/ready', (req, res) => {
+      app.get(readyPath, (req, res) => {
         // TODO: add check for whether underlying services are ready
         res.json({ ok: true })
       })
+
+      // Default error handler
+      app.use(((
+        err: Error,
+        req: Request,
+        res: Response,
+        next: NextFunction,
+      ) => {
+        // TODO add logging
+        metrics.unhandledApiServerErrorCount.inc({
+          apiVersion: this.apiServerV0.version,
+        })
+        res.status(500).send()
+      }) satisfies ErrorRequestHandler)
 
       // Wait for server to come up.
       await new Promise((resolve) => {
@@ -102,11 +186,26 @@ export class Service {
           resolve(null)
         })
       })
+      this.server = undefined
     }
   }
 
   private readonly routes = async (router: Router) => {
     router.use(this.middleware.cors)
+    // These handlers do nothing. they pass on the request to the next handler.
+    // They are a hack I added because our trpc middleware does not expose the supported routes
+    // in the canonical way and we need a way to filter invalid request paths from being logged to
+    // our metrics server since this is a DoS attack vector.
+    this.apiServerV0.getSupportedPaths().forEach((path) => {
+      router.all(
+        `${API_PATH}${this.apiServerV0.expressRoute}${path}`,
+        (req, res, next) => next(),
+      )
+    })
+    router.all(
+      `${API_PATH}${this.apiServerV0.playgroundEndpoint}`,
+      (req, res, next) => next(),
+    )
 
     // user facing
     router.use(
