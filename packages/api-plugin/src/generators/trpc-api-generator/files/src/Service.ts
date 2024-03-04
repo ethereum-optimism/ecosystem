@@ -8,7 +8,10 @@ import type {
 } from 'express'
 import express from 'express'
 import promBundle from 'express-prom-bundle'
+import morgan from 'morgan'
 import type { Server } from 'net'
+import type { Logger } from 'pino'
+import pino from 'pino'
 import type { Registry } from 'prom-client'
 import prometheus from 'prom-client'
 
@@ -18,6 +21,8 @@ import { metrics } from './monitoring/metrics'
 import { Trpc } from './Trpc'
 
 const API_PATH = '/api'
+
+const HOST = '0.0.0.0'
 
 export class Service {
   /**
@@ -38,6 +43,7 @@ export class Service {
   constructor(
     private readonly apiServerV0: ApiV0,
     private readonly middleware: Middleware,
+    private readonly logger: Logger,
   ) {
     // Create the metrics server.
     this.metricsRegistry = prometheus.register
@@ -49,14 +55,22 @@ export class Service {
     // Gracefully handle stop signals.
     const maxSignalCount = 3
     let currSignalCount = 0
-    const stop = async () => {
+    const stop = async (signal: string) => {
       // Allow exiting fast if more signals are received.
       currSignalCount++
       if (currSignalCount === 1) {
+        this.logger.info(`stopping service with signal`, { signal })
         await this.stop()
         process.exit(0)
       } else if (currSignalCount >= maxSignalCount) {
+        this.logger.info(`performing hard stop`)
         process.exit(0)
+      } else {
+        this.logger.info(
+          `send ${
+            maxSignalCount - currSignalCount
+          } more signal(s) to hard stop`,
+        )
       }
     }
 
@@ -83,7 +97,11 @@ export class Service {
      */
     const apiServer = new ApiV0(trpc, {})
 
-    const service = new Service(apiServer, middleware)
+    const logger = pino().child({
+      namespace: 'api-server',
+    })
+
+    const service = new Service(apiServer, middleware, logger)
 
     return service
   }
@@ -91,6 +109,7 @@ export class Service {
   public async run(): Promise<void> {
     // Start the app server if not yet running.
     if (!this.server) {
+      this.logger.info('starting server')
       // Start building the app.
       const app = express()
 
@@ -107,7 +126,18 @@ export class Service {
         }),
       )
 
-      // TODO add logging
+      // Logging.
+      app.use(
+        morgan('short', {
+          stream: {
+            write: (str: string) => {
+              this.logger.info(`server log`, {
+                log: str,
+              })
+            },
+          },
+        }),
+      )
 
       // Register user routes.
       const router = express.Router()
@@ -159,7 +189,7 @@ export class Service {
         res: Response,
         next: NextFunction,
       ) => {
-        // TODO add logging
+        this.logger.error(err, 'Unhandled error')
         metrics.unhandledApiServerErrorCount.inc({
           apiVersion: this.apiServerV0.version,
         })
@@ -168,9 +198,14 @@ export class Service {
 
       // Wait for server to come up.
       await new Promise((resolve) => {
-        this.server = app.listen(envVars.PORT, () => {
+        this.server = app.listen(envVars.PORT, HOST, () => {
           resolve(null)
         })
+      })
+
+      this.logger.info(`app server started`, {
+        port: envVars.PORT,
+        hostname: HOST,
       })
     }
   }
@@ -181,11 +216,13 @@ export class Service {
    */
   public async stop(): Promise<void> {
     if (this.server) {
+      this.logger.info('stopping server')
       await new Promise((resolve) => {
         this.server!.close(() => {
           resolve(null)
         })
       })
+      this.logger.info('server stopped')
       this.server = undefined
     }
   }

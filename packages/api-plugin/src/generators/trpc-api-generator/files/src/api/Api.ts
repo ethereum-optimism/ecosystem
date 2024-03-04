@@ -1,4 +1,5 @@
 import * as trpcExpress from '@trpc/server/adapters/express'
+import type { Logger } from 'pino'
 import * as trpcPlayground from 'trpc-playground/handlers/express'
 
 import type { MajorApiVersion } from '../constants'
@@ -69,5 +70,9 @@ export abstract class Api extends Route {
       createContext: this.trpc.createContext,
     })
 
-  // TODO add logger
+  public readonly setLoggingServer = (logger: Logger) => {
+    Object.values(this.routes).forEach((route) => {
+      route.setLoggingServer(logger)
+    })
+  }
 }
