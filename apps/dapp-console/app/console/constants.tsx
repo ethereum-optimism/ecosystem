@@ -3,14 +3,18 @@ import { Text } from '@eth-optimism/ui-components/src/components/ui/text'
 import { DialogMetadata } from '@/app/console/useDialogContent'
 import { trackOfferEngaged } from '@/app/event-tracking/mixpanel'
 
-function generatePrimaryButton(label: string, buttonText: string, url: string): React.ReactNode {
+function generatePrimaryButton(
+  label: string,
+  buttonText: string,
+  url: string,
+): React.ReactNode {
   return (
     <Button asChild>
       <a href={url} onClick={() => trackOfferEngaged(label)}>
         <Text as="span">{buttonText}</Text>
       </a>
     </Button>
-  );
+  )
 }
 
 // Build Section
@@ -20,7 +24,11 @@ export const testnetPaymasterMetadata: DialogMetadata = {
     'Get your testnet transactions sponsored to remove friction from your dapp experience',
   description:
     'Continue to Github for information on how to setup and use the Testnet Paymaster.',
-  primaryButton: generatePrimaryButton('Testnet Paymaster', 'View on Github', ''),
+  primaryButton: generatePrimaryButton(
+    'Testnet Paymaster',
+    'View on Github',
+    '',
+  ),
   secondaryButton: (
     <Button asChild variant="secondary">
       <a href="">
@@ -44,7 +52,11 @@ export const superchainSafeMetadata: DialogMetadata = {
   title: 'Get multisig support on any OP Chain in the Superchain with Safe',
   description:
     'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore.',
-  primaryButton: generatePrimaryButton('Superchain Safe', 'Get safe for Base or Optimism', ''),
+  primaryButton: generatePrimaryButton(
+    'Superchain Safe',
+    'Get safe for Base or Optimism',
+    '',
+  ),
   secondaryButton: (
     <Button asChild variant="secondary">
       <a href="">

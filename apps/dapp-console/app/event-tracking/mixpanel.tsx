@@ -4,7 +4,9 @@ const initMixpanel = () => {
   if (!process.env.NEXT_PUBLIC_MIXPANEL_TOKEN) {
     return null
   }
-  mixpanelBrowser.init(process.env.NEXT_PUBLIC_MIXPANEL_TOKEN, {track_pageview: true})
+  mixpanelBrowser.init(process.env.NEXT_PUBLIC_MIXPANEL_TOKEN, {
+    track_pageview: true,
+  })
   return mixpanelBrowser
 }
 
@@ -37,21 +39,31 @@ export const trackSignInClick = () => {
 }
 
 export const trackSuccessfulSignIn = (isNewUser: boolean) => {
-  mixpanel?.track(TRACKING_EVENT_NAME.SuccessfulSignIn, {[CUSTOM_TRACKING_PROPERTY.NewUser]: isNewUser})
-};
+  mixpanel?.track(TRACKING_EVENT_NAME.SuccessfulSignIn, {
+    [CUSTOM_TRACKING_PROPERTY.NewUser]: isNewUser,
+  })
+}
 
 export const trackCardClick = (cardName: string) => {
-  mixpanel?.track(TRACKING_EVENT_NAME.CardClick, {[CUSTOM_TRACKING_PROPERTY.CardName]: cardName});
-};
+  mixpanel?.track(TRACKING_EVENT_NAME.CardClick, {
+    [CUSTOM_TRACKING_PROPERTY.CardName]: cardName,
+  })
+}
 
 export const trackTopBarClick = (pageName: string) => {
-  mixpanel?.track(TRACKING_EVENT_NAME.TopBarClick, {[CUSTOM_TRACKING_PROPERTY.PageName]: pageName});
-};
+  mixpanel?.track(TRACKING_EVENT_NAME.TopBarClick, {
+    [CUSTOM_TRACKING_PROPERTY.PageName]: pageName,
+  })
+}
 
 export const trackSupportDocsClick = (chainName: string) => {
-  mixpanel?.track(TRACKING_EVENT_NAME.SupportDocsClick, {[CUSTOM_TRACKING_PROPERTY.ChainName]: chainName});
-};
+  mixpanel?.track(TRACKING_EVENT_NAME.SupportDocsClick, {
+    [CUSTOM_TRACKING_PROPERTY.ChainName]: chainName,
+  })
+}
 
 export const trackOfferEngaged = (offeringName: string) => {
-  mixpanel?.track(TRACKING_EVENT_NAME.OfferEngaged, {[CUSTOM_TRACKING_PROPERTY.OfferingName]: offeringName});
-};
+  mixpanel?.track(TRACKING_EVENT_NAME.OfferEngaged, {
+    [CUSTOM_TRACKING_PROPERTY.OfferingName]: offeringName,
+  })
+}

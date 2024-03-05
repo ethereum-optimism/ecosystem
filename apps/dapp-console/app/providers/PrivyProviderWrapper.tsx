@@ -12,7 +12,7 @@ function PrivyProviderWrapper({ children }: { children: React.ReactNode }) {
 
   const handleSuccess = (user: User, isNewUser: boolean) => {
     trackSuccessfulSignIn(isNewUser)
-  };
+  }
 
   return (
     <PrivyProvider

@@ -14,7 +14,10 @@ import {
 
 import { RiArrowDownSLine } from '@remixicon/react'
 import { useCallback, useState } from 'react'
-import { trackSupportDocsClick, trackTopBarClick } from '@/app/event-tracking/mixpanel'
+import {
+  trackSupportDocsClick,
+  trackTopBarClick,
+} from '@/app/event-tracking/mixpanel'
 
 type HeaderTabsProps = {
   currentRoute: string
@@ -24,14 +27,14 @@ const HeaderTabs = ({ currentRoute }: HeaderTabsProps) => {
   return (
     <div className="gap-8 items-end h-full hidden lg:flex">
       <HeaderTabItem
-        id='Console'
+        id="Console"
         href={routes.CONSOLE.path}
         isActive={currentRoute === routes.CONSOLE.path}
       >
         <Text as="span">{routes.CONSOLE.label}</Text>
       </HeaderTabItem>
       <HeaderTabItem
-        id= 'Insights'
+        id="Insights"
         href={routes.INSIGHTS.path}
         isActive={currentRoute === routes.INSIGHTS.path}
       >
@@ -48,7 +51,7 @@ const hoverClasses = 'hover:border-muted-foreground hover:text-foreground'
 const activeClasses = 'border-foreground text-foreground'
 
 type HeaderTabItemProps = {
-  id: string,
+  id: string
   href?: string
   isActive?: boolean
   children: React.ReactNode
@@ -79,9 +82,9 @@ const SupportDropdownMenu = () => {
     'flex items-center gap-2 cursor-pointer h-12 px-4 text-base text-secondary-foreground'
 
   const handleDropdownOpenChange = useCallback((isOpen: boolean) => {
-    setIsDropdownOpen(isOpen);
+    setIsDropdownOpen(isOpen)
     if (isOpen) {
-      trackTopBarClick('Support');
+      trackTopBarClick('Support')
     }
   }, [])
 
@@ -122,7 +125,12 @@ const SupportDropdownMenu = () => {
         </DropdownMenuLabel>
         {docsItems.map((item) => (
           <DropdownMenuItem key={item.path} asChild>
-            <a href={item.path} target="_blank" className={dropdownItemClasses} onClick={() => trackSupportDocsClick(item.label)} >
+            <a
+              href={item.path}
+              target="_blank"
+              className={dropdownItemClasses}
+              onClick={() => trackSupportDocsClick(item.label)}
+            >
               <Image
                 src={item.logo}
                 alt={`${item.label} logo`}
