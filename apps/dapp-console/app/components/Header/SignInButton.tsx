@@ -12,11 +12,16 @@ import { useState } from 'react'
 import { cn } from '@eth-optimism/ui-components/src/lib/utils'
 import { Text } from '@eth-optimism/ui-components/src/components/ui/text'
 import { RiArrowDownSLine, RiUser3Fill } from '@remixicon/react'
+import { trackSignInClick } from '@/app/event-tracking/mixpanel'
 
 const SignInButton = () => {
   const { login, logout, authenticated } = usePrivy()
+  const handleLogin = () => {
+    trackSignInClick()
+    login()
+  }
   return !authenticated ? (
-    <Button onClick={login}>Sign in</Button>
+    <Button onClick={handleLogin}>Sign in</Button>
   ) : (
     <AccountDropdown logout={logout} />
   )

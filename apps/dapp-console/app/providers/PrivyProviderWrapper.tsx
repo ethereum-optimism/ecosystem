@@ -1,13 +1,18 @@
 'use client'
 
-import { PrivyProvider } from '@privy-io/react-auth'
+import { PrivyProvider, User } from '@privy-io/react-auth'
 import { useTheme } from 'next-themes'
+import { trackSuccessfulSignIn } from '@/app/event-tracking/mixpanel'
 
 // This is a public app_id provided in the privy docs: https://docs.privy.io/guide/quickstart
 const PRIVY_PUBLIC_APP_ID = 'clpispdty00ycl80fpueukbhl'
 
 function PrivyProviderWrapper({ children }: { children: React.ReactNode }) {
   const { theme } = useTheme()
+
+  const handleSuccess = (user: User, isNewUser: boolean) => {
+    trackSuccessfulSignIn(isNewUser)
+  }
 
   return (
     <PrivyProvider
@@ -25,6 +30,7 @@ function PrivyProviderWrapper({ children }: { children: React.ReactNode }) {
           privacyPolicyUrl: '',
         },
       }}
+      onSuccess={handleSuccess}
     >
       {children}
     </PrivyProvider>
