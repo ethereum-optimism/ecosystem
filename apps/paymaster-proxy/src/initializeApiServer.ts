@@ -1,3 +1,4 @@
+import cors from 'cors'
 import type {
   ErrorRequestHandler,
   Express,
@@ -28,11 +29,12 @@ export const initializeApiServer = async ({
 }): Promise<Express> => {
   const app = express()
 
-  const promMetrics = getPromBaseMetrics()
+  // Allow all origins
+  app.use(cors())
 
   app.use(getRateLimiter(redisClient))
 
-  app.use(promMetrics)
+  app.use(getPromBaseMetrics())
 
   app.get('/healthz', (req, res) => {
     res.json({ ok: true })
