@@ -1,4 +1,3 @@
-import cors from 'cors'
 import type {
   ErrorRequestHandler,
   Express,

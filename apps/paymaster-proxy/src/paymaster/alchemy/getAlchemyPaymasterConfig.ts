@@ -90,8 +90,6 @@ export const getAlchemyPaymasterConfig = <T extends Chain>({
             callGasLimit: response.callGasLimit,
             verificationGasLimit: response.verificationGasLimit,
             preVerificationGas: response.preVerificationGas,
-            maxFeePerGas: response.maxFeePerGas,
-            maxPriorityFeePerGas: response.maxPriorityFeePerGas,
           },
         }
       } catch (e: unknown) {

@@ -19,6 +19,6 @@ export const wrapPaymasterResponseIntoJsonRpcResponse = <T>(
   return {
     jsonrpc: '2.0' as const,
     id,
-    result: response.result,
+    result: response,
   }
 }
