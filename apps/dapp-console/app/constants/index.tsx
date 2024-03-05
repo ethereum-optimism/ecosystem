@@ -14,6 +14,18 @@ const routes: Routes = {
     path: '/insights',
     label: 'Insights',
   },
+  ACCOUNT: {
+    path: '/settings/account',
+    label: 'Account',
+  },
+  CONTRACTS: {
+    path: '/settings/contracts',
+    label: 'Contracts',
+  },
+  WALLETS: {
+    path: '/settings/wallets',
+    label: 'Wallets',
+  },
 } as const satisfies Routes
 
 const externalRoutes: Routes = {
