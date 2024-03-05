@@ -69,7 +69,5 @@ export abstract class Api extends Route {
       createContext: this.trpc.createContext,
     })
 
-  // TODO add metrics
-
   // TODO add logger
 }
