@@ -4,7 +4,7 @@ import express from 'express'
 import type { Server } from 'net'
 
 import { ApiV0, Middleware } from './api'
-import { envVars } from './constants'
+import { corsAllowlist, envVars } from './constants'
 import { Trpc } from './Trpc'
 
 export class Service {
@@ -30,7 +30,7 @@ export class Service {
     /**
      * middleware used by the express server
      */
-    const middleware = new Middleware()
+    const middleware = new Middleware(corsAllowlist)
     /**
      * Routes and controllers are created with trpc
      */
@@ -106,6 +106,8 @@ export class Service {
   }
 
   private readonly routes = async (router: Router) => {
+    router.use(this.middleware.cors)
+
     // user facing
     router.use(
       this.apiServerV0.expressRoute,
