@@ -1,4 +1,5 @@
 import type { BuildProcedure, CreateRouterInner } from '@trpc/server'
+import type { Logger } from 'pino'
 import { z } from 'zod'
 
 import type { Trpc } from '../Trpc'
@@ -28,5 +29,12 @@ export abstract class Route {
   public abstract readonly handler:
     | BuildProcedure<any, any, any>
     | CreateRouterInner<any, any>
-  constructor(protected readonly trpc: Trpc) {}
+  constructor(
+    protected readonly trpc: Trpc,
+    protected logger?: Logger,
+  ) {}
+
+  public readonly setLoggingServer = (logger: Logger) => {
+    this.logger = logger
+  }
 }
