@@ -1,9 +1,6 @@
-import type { ReactNode } from 'react'
-import React from 'react'
-
 type TextProps<T extends React.ElementType> = {
   as?: T
-  children: ReactNode
+  children: React.ReactNode
   className?: string
 }
 
