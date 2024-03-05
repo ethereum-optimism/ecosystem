@@ -9,6 +9,7 @@ import { usePathname } from 'next/navigation'
 import { SignInButton } from '@/app/components/Header/SignInButton'
 import { MenuButton, MobileMenu } from '@/app/components/Header/MobileMenu'
 import { useState } from 'react'
+import Link from 'next/link'
 
 const Header = () => {
   const pathname = usePathname()
@@ -41,16 +42,21 @@ const Header = () => {
 const HeaderLogo = () => {
   return (
     <div className="flex items-center">
-      <Image
-        src="logos/op-superchain-logo.svg"
-        alt="Superchain dapp developer logo"
-        width={200}
-        height={24}
-      />
-      <Separator orientation="vertical" className="h-4 mx-4 hidden md:block" />
-      <Text as="span" className="tracking-widest font-medium hidden md:block">
-        DAPP DEVELOPER
-      </Text>
+      <Link href="/" className="flex flex-row">
+        <Image
+          src="/logos/op-superchain-logo.svg"
+          alt="Superchain dapp developer logo"
+          width={200}
+          height={24}
+        />
+        <Separator
+          orientation="vertical"
+          className="h-4 mx-4 hidden md:block"
+        />
+        <Text as="span" className="tracking-widest font-medium hidden md:block">
+          DAPP DEVELOPER
+        </Text>
+      </Link>
     </div>
   )
 }
