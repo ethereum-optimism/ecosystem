@@ -130,6 +130,7 @@ const SupportDropdownMenu = () => {
               target="_blank"
               className={dropdownItemClasses}
               onClick={() => trackSupportDocsClick(item.label)}
+              ref={'noopener noreferrer'}
             >
               <Image
                 src={item.logo}
