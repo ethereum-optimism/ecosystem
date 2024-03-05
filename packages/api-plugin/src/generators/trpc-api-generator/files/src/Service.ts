@@ -131,9 +131,12 @@ export class Service {
         morgan('short', {
           stream: {
             write: (str: string) => {
-              this.logger.info(`server log`, {
-                log: str,
-              })
+              this.logger.info(
+                {
+                  log: str,
+                },
+                'server log',
+              )
             },
           },
         }),
@@ -203,10 +206,13 @@ export class Service {
         })
       })
 
-      this.logger.info(`app server started`, {
-        port: envVars.PORT,
-        hostname: HOST,
-      })
+      this.logger.info(
+        {
+          port: envVars.PORT,
+          hostname: HOST,
+        },
+        `app server started`,
+      )
     }
   }
 

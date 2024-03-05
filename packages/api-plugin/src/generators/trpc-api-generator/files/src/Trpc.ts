@@ -1,12 +1,20 @@
 import type { inferAsyncReturnType } from '@trpc/server'
 import { initTRPC, TRPCError } from '@trpc/server'
 import type * as trpcExpress from '@trpc/server/adapters/express'
+import { getIronSession } from 'iron-session'
 import superjson from 'superjson'
 
-const createContext = ({
+import type { SessionData } from './constants'
+import { sessionOptions } from './constants'
+
+const createContext = async ({
   req,
   res,
-}: trpcExpress.CreateExpressContextOptions) => ({ req, res })
+}: trpcExpress.CreateExpressContextOptions) => {
+  const session = await getIronSession<SessionData>(req, res, sessionOptions)
+
+  return { session, req, res }
+}
 
 /**
  * TRPC is a typesafe way of a making an api server and a client

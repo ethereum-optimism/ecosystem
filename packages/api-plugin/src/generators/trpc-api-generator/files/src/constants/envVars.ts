@@ -13,6 +13,11 @@ const envVarSchema = z.object({
   DEPLOYMENT_ENV: z.enum(['production', 'staging', 'development']),
   DEV_CORS_ALLOWLIST_REG_EXP: z.custom<RegExp>().array(),
   CORS_ALLOWLIST_REG_EXP: z.custom<RegExp>().array(),
+  IRON_SESSION_SECRET: z
+    .string()
+    .min(32)
+    .max(32)
+    .describe('32 character iron session secret'),
 })
 
 const isTest = process.env.NODE_ENV === 'test'
@@ -41,6 +46,7 @@ export const envVars = envVarSchema.parse(
         CORS_ALLOWLIST_REG_EXP: getCommaSeparatedValues(
           'CORS_ALLOWLIST_REG_EXP',
         ).map((regExp) => new RegExp(regExp)),
+        IRON_SESSION_SECRET: 'UNKNOWN_IRON_SESSION_PASSWORD_32',
       }
     : {
         PORT: process.env.PORT
@@ -55,5 +61,6 @@ export const envVars = envVarSchema.parse(
         CORS_ALLOWLIST_REG_EXP: getCommaSeparatedValues(
           'CORS_ALLOWLIST_REG_EXP',
         ).map((regExp) => new RegExp(regExp)),
+        IRON_SESSION_SECRET: process.env.IRON_SESSION_SECRET,
       },
 )
