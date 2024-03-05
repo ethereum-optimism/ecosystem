@@ -13,7 +13,7 @@ import {
 } from '@eth-optimism/ui-components/src/components/ui/dropdown-menu'
 
 import { RiArrowDownSLine } from '@remixicon/react'
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 import { trackSupportDocsClick, trackTopBarClick } from '@/app/event-tracking/mixpanel'
 
 type HeaderTabsProps = {
@@ -60,14 +60,11 @@ const HeaderTabItem = ({
   isActive,
   children,
 }: HeaderTabItemProps) => {
-  const handleClick = (id: string) => {
-    trackTopBarClick(id)
-  }
   return (
     <Link
       href={href}
       className={cn(baseClasses, isActive ? activeClasses : hoverClasses)}
-      onClick={() => handleClick(id)}
+      onClick={() => trackTopBarClick(id)}
     >
       {children}
     </Link>
@@ -81,12 +78,12 @@ const SupportDropdownMenu = () => {
   const dropdownItemClasses =
     'flex items-center gap-2 cursor-pointer h-12 px-4 text-base text-secondary-foreground'
 
-  const handleDropdownOpenChange = (isOpen: boolean) => {
+  const handleDropdownOpenChange = useCallback((isOpen: boolean) => {
     setIsDropdownOpen(isOpen);
     if (isOpen) {
       trackTopBarClick('Support');
     }
-  };
+  }, [])
 
   return (
     <DropdownMenu
