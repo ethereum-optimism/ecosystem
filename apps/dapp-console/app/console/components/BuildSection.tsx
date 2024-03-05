@@ -12,6 +12,7 @@ import {
 import { useState } from 'react'
 import { useDialogContent } from '@/app/console/useDialogContent'
 import { openWindow } from '@/app/helpers'
+import { trackCardClick } from '@/app/event-tracking/mixpanel'
 
 const BuildSection = () => {
   const [dialogContent, setDialogContent] = useState<React.ReactNode>()
@@ -29,6 +30,7 @@ const BuildSection = () => {
             title="Superchain Faucet"
             description="Get test ETH tokens to build your dapp on the Superchain."
             onClick={() => {
+              trackCardClick('Superchain Faucet')
               openWindow(externalRoutes.SUPERCHAIN_FAUCET.path)
             }}
           />
@@ -37,6 +39,7 @@ const BuildSection = () => {
               title="Testnet Paymaster"
               description="Get your testnet transactions sponsored to remove friction from your dapp experience."
               onClick={() => {
+                trackCardClick('Testnet Paymaster')
                 setDialogContent(testnetPaymasterContent)
               }}
             />
@@ -46,6 +49,7 @@ const BuildSection = () => {
               title="UX Review"
               description="Get actionable feedback from Superchain pros to get your dapp ready for launch."
               onClick={() => {
+                trackCardClick('UX Review')
                 setDialogContent(uxReviewContent)
               }}
               badge={<Badge>Featured</Badge>}
@@ -56,6 +60,7 @@ const BuildSection = () => {
               title="Superchain Safe"
               description="Get multisig support on any OP Chain in the Superchain."
               onClick={() => {
+                trackCardClick('Superchain Safe')
                 setDialogContent(superchainSafeContent)
               }}
             />

@@ -11,6 +11,7 @@ import { Text } from '@eth-optimism/ui-components/src/components/ui/text'
 import Image from 'next/image'
 import { useDialogContent } from '@/app/console/useDialogContent'
 import { useState } from 'react'
+import { trackCardClick } from '@/app/event-tracking/mixpanel'
 
 const PromotionsSection = () => {
   const { quicknodeContent, moralisContent, gelatoContent, thirdWebContent } =
@@ -34,6 +35,7 @@ const PromotionsSection = () => {
               title="Gelato"
               description="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
               onClick={() => {
+                trackCardClick('Gelato')
                 setDialogContent(gelatoContent)
               }}
               variant="secondary"
@@ -52,6 +54,7 @@ const PromotionsSection = () => {
               title="Moralis"
               description="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
               onClick={() => {
+                trackCardClick('Moralis')
                 setDialogContent(moralisContent)
               }}
               variant="secondary"
@@ -70,6 +73,7 @@ const PromotionsSection = () => {
               title="QuickNode"
               description="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
               onClick={() => {
+                trackCardClick('QuickNode')
                 setDialogContent(quicknodeContent)
               }}
               variant="secondary"
@@ -88,6 +92,7 @@ const PromotionsSection = () => {
               title="ThirdWeb"
               description="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
               onClick={() => {
+                trackCardClick('ThirdWeb')
                 setDialogContent(thirdWebContent)
               }}
               variant="secondary"

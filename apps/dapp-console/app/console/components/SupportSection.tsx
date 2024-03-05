@@ -2,6 +2,7 @@
 
 import { Tile } from '@/app/components/Tile/Tile'
 import { docsItems, externalRoutes } from '@/app/constants'
+import { trackCardClick } from '@/app/event-tracking/mixpanel'
 import { openWindow } from '@/app/helpers'
 import { FarcasterIcon } from '@/app/icons/FarcasterIcon'
 import { Button } from '@eth-optimism/ui-components/src/components/ui/button'
@@ -26,6 +27,7 @@ const SupportSection = () => {
           title="Github Developer Forum"
           description="Get all of your development questions answered by Superchain experts."
           onClick={() => {
+            trackCardClick('Github Developer Forum')
             openWindow(externalRoutes.DEV_FORUM.path)
           }}
           variant="secondary"
@@ -37,6 +39,7 @@ const SupportSection = () => {
             title="Farcaster"
             description="Join the /op-stack channel."
             onClick={() => {
+              trackCardClick('Farcaster')
               openWindow(externalRoutes.FARCASTER.path)
             }}
             variant="secondary"
@@ -45,6 +48,7 @@ const SupportSection = () => {
           <Tile
             title="Dapp examples"
             onClick={() => {
+              trackCardClick('Dapp examples')
               openWindow(externalRoutes.DAPP_EXAMPLES.path)
             }}
             variant="secondary"
@@ -53,6 +57,7 @@ const SupportSection = () => {
           <Tile
             title="Discord"
             onClick={() => {
+              trackCardClick('Discord')
               openWindow(externalRoutes.DISCORD.path)
             }}
             variant="secondary"
@@ -62,7 +67,9 @@ const SupportSection = () => {
             <DialogTrigger asChild>
               <Tile
                 title="Docs"
-                onClick={() => {}}
+                onClick={() => {
+                  trackCardClick('Docs')
+                }}
                 variant="secondary"
                 icon={<RiGitForkFill size={24} />}
               />
