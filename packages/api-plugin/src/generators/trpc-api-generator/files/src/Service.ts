@@ -16,6 +16,8 @@ import type { Registry } from 'prom-client'
 import prometheus from 'prom-client'
 
 import { ApiV0, Middleware } from './api'
+import { AdminApi } from './api/AdminApi'
+import { ensureAdmin } from './auth'
 import { corsAllowlist, envVars } from './constants'
 import { metrics } from './monitoring/metrics'
 import { Trpc } from './Trpc'
@@ -44,6 +46,7 @@ export class Service {
     private readonly apiServerV0: ApiV0,
     private readonly middleware: Middleware,
     private readonly logger: Logger,
+    private readonly adminServer: AdminApi,
   ) {
     // Create the metrics server.
     this.metricsRegistry = prometheus.register
@@ -101,7 +104,9 @@ export class Service {
       namespace: 'api-server',
     })
 
-    const service = new Service(apiServer, middleware, logger)
+    const adminServer = new AdminApi(trpc, {})
+
+    const service = new Service(apiServer, middleware, logger, adminServer)
 
     return service
   }
@@ -257,8 +262,11 @@ export class Service {
     )
     router.use(
       this.apiServerV0.playgroundEndpoint,
-      // TODO add admin check
+      ensureAdmin(),
       await this.apiServerV0.playgroundHandler(),
     )
+
+    // admin
+    await this.adminServer.registerRoutes(router)
   }
 }
