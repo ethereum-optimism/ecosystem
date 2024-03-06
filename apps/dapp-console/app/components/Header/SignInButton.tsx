@@ -1,5 +1,6 @@
 'use client'
 
+import Link from 'next/link'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -14,6 +15,7 @@ import { cn } from '@eth-optimism/ui-components/src/lib/utils'
 import { Text } from '@eth-optimism/ui-components/src/components/ui/text'
 import { RiArrowDownSLine, RiUser3Fill } from '@remixicon/react'
 import { trackSignInClick } from '@/app/event-tracking/mixpanel'
+import { routes } from '@/app/constants'
 
 const SignInButton = () => {
   const { login, logout, authenticated } = usePrivy()
