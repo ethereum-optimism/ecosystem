@@ -139,7 +139,7 @@ const IconLink = ({ logo, label, href, key, joined, style }: IconLinkProps) => {
           </Text>
           {joined && (
             <Text as="p" className="text-muted-foreground text-center mt-2">
-              Joined the superchain on {joined}.
+              Joined the Superchain on {joined}.
             </Text>
           )}
         </div>

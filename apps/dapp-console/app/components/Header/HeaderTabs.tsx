@@ -90,6 +90,7 @@ const SupportDropdownMenu = () => {
 
   return (
     <DropdownMenu
+      modal={false}
       onOpenChange={(isOpen) => {
         handleDropdownOpenChange(isOpen)
       }}
