@@ -13,6 +13,11 @@ export const sessionOptions: SessionOptions = {
   },
 }
 
-export type SessionData = {}
+export type SessionData = {
+  admin?: {
+    isActive: boolean
+    createdAt: string
+  }
+}
 
 export type Session = IronSession<SessionData>

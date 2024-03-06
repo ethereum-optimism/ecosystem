@@ -18,6 +18,8 @@ const envVarSchema = z.object({
     .min(32)
     .max(32)
     .describe('32 character iron session secret'),
+  ADMIN_API_PASSWORD: z.string().optional(),
+  ADMIN_API_SALT: z.string().optional(),
 })
 
 const isTest = process.env.NODE_ENV === 'test'
@@ -62,5 +64,7 @@ export const envVars = envVarSchema.parse(
           'CORS_ALLOWLIST_REG_EXP',
         ).map((regExp) => new RegExp(regExp)),
         IRON_SESSION_SECRET: process.env.IRON_SESSION_SECRET,
+        ADMIN_API_PASSWORD: process.env.ADMIN_API_PASSWORD,
+        ADMIN_API_SALT: process.env.ADMIN_API_SALT,
       },
 )
