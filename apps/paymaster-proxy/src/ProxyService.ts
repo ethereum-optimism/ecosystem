@@ -27,7 +27,7 @@ export class ProxyService {
       getAlchemyPaymasterConfig({
         chain: sepolia,
         rpcUrl: envVars.ALCHEMY_RPC_URL_SEPOLIA,
-        policyId: envVars.ALCHEMY_GAS_MANAGER_POLICY_ID_OP_SEPOLIA,
+        policyId: envVars.ALCHEMY_GAS_MANAGER_POLICY_ID_SEPOLIA,
       }),
       getAlchemyPaymasterConfig({
         chain: optimismSepolia,
