@@ -7,12 +7,12 @@ const aaRpcConfigByChainId: Record<
 > = {
   [sepolia.id]: {
     chain: sepolia,
-    paymasterRpcUrl: 'http://localhost:7310/v1/11155111/rpc',
+    paymasterRpcUrl: import.meta.env.VITE_PAYMASTER_RPC_URL_SEPOLIA!,
     bundlerRpcUrl: import.meta.env.VITE_BUNDLER_RPC_URL_SEPOLIA!,
   },
   [optimismSepolia.id]: {
     chain: optimismSepolia,
-    paymasterRpcUrl: 'http://localhost:7310/v1/11155420/rpc',
+    paymasterRpcUrl: import.meta.env.VITE_PAYMASTER_RPC_URL_OP_SEPOLIA!,
     bundlerRpcUrl: import.meta.env.VITE_BUNDLER_RPC_URL_OP_SEPOLIA!,
   },
 }

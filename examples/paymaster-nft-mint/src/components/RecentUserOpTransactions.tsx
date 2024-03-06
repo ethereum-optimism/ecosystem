@@ -72,7 +72,6 @@ export const RecentUserOpTransactions = ({
 }) => {
   const { userOpTransactionByAddressChainId } = useUserOperationTransactions()
 
-  console.log(userOpTransactionByAddressChainId)
   const userOpTransactions =
     userOpTransactionByAddressChainId[
       getUserOperationTransactionKey(chainId, accountAddress)
