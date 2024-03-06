@@ -45,7 +45,7 @@ export const useUserOperationTransactions =
               if (!draft.userOpTransactionByAddressChainId[key]) {
                 draft.userOpTransactionByAddressChainId[key] = []
               }
-              draft.userOpTransactionByAddressChainId[key].push({
+              draft.userOpTransactionByAddressChainId[key].unshift({
                 transactionHash: transactionHash,
                 userOpHash: userOpHash,
                 userOp: userOp,

@@ -49,8 +49,8 @@ export const AaSdkExample = () => {
           </div>
           <div className="flex items-center gap-2">
             <RiEthLine className="h-[1rem] w-[1rem]" />
-
-            <ExternalLink href="https://github.com/alchemyplatform/modular-account">
+            {/* TODO: fix link to updated readme */}
+            <ExternalLink href="https://github.com/ethereum-optimism/ecosystem">
               Superchain paymaster
             </ExternalLink>
           </div>
@@ -60,9 +60,11 @@ export const AaSdkExample = () => {
               aa-sdk
             </ExternalLink>
           </div>
+
           <div className="flex items-center gap-2">
             <RiGithubFill className="h-[1rem] w-[1rem]" />
-            <ExternalLink href="https://github.com/alchemyplatform/modular-account">
+            {/* TODO: fix link to updated readme */}
+            <ExternalLink href="https://github.com/ethereum-optimism/ecosystem">
               GitHub repo
             </ExternalLink>
           </div>
