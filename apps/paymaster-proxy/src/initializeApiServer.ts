@@ -32,10 +32,6 @@ export const initializeApiServer = async ({
   // Allow all origins
   app.use(cors())
 
-  app.use(getRateLimiter(redisClient))
-
-  app.use(getPromBaseMetrics())
-
   app.get('/healthz', (req, res) => {
     res.json({ ok: true })
   })
@@ -44,6 +40,10 @@ export const initializeApiServer = async ({
     // TODO: add check for whether underlying services are ready
     res.json({ ok: true })
   })
+
+  app.use(getRateLimiter(redisClient))
+
+  app.use(getPromBaseMetrics())
 
   app.use(
     V1_API_BASE_PATH,
