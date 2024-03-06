@@ -4,7 +4,7 @@ import { envVars } from './envVars'
 
 export const sessionOptions: SessionOptions = {
   password: envVars.IRON_SESSION_SECRET,
-  cookieName: `<%= name %>.${envVars.DEPLOYMENT_ENV}.auth.session-token`,
+  cookieName: `dapp-console-api.${envVars.DEPLOYMENT_ENV}.auth.session-token`,
   ttl: 60 * 60 * 24 * 14, // 14 days
   cookieOptions: {
     secure: true,
