@@ -18,7 +18,7 @@
     "@uidotdev/usehooks": "^2.4.1",
     "date-fns": "^3.2.0",
     "immer": "^10.0.3",
-    "permissionless": "^0.1.4",
+    "permissionless": "^0.1.5",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-json-pretty": "^2.2.0",

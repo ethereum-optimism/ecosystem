@@ -352,7 +352,7 @@ importers:
         specifier: ^10.0.3
         version: 10.0.3
       permissionless:
-        specifier: ^0.1.4
+        specifier: ^0.1.5
         version: 0.1.5(viem@2.7.22)
       react:
         specifier: ^18.2.0
