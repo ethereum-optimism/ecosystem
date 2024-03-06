@@ -225,89 +225,7 @@ importers:
         specifier: ^5.3.2
         version: 5.3.2
 
-  apps/paymaster-proxy:
-    dependencies:
-      '@alchemy/aa-alchemy':
-        specifier: 3.0.0-alpha.8
-        version: 3.0.0-alpha.8(typescript@5.3.2)(zod@3.22.4)
-      abitype:
-        specifier: ^1.0.0
-        version: 1.0.0(typescript@5.3.2)(zod@3.22.4)
-      cors:
-        specifier: ^2.8.5
-        version: 2.8.5
-      dotenv:
-        specifier: ^16.4.1
-        version: 16.4.1
-      express:
-        specifier: ^4.18.2
-        version: 4.18.2
-      express-prom-bundle:
-        specifier: ^7.0.0
-        version: 7.0.0(prom-client@15.1.0)
-      express-rate-limit:
-        specifier: ^7.1.5
-        version: 7.1.5(express@4.18.2)
-      ioredis:
-        specifier: ^5.3.2
-        version: 5.3.2
-      pino:
-        specifier: ^8.19.0
-        version: 8.19.0
-      prom-client:
-        specifier: ^15.1.0
-        version: 15.1.0
-      rate-limit-redis:
-        specifier: ^4.2.0
-        version: 4.2.0(express-rate-limit@7.1.5)
-      viem:
-        specifier: ^2.7.1
-        version: 2.7.1(typescript@5.3.2)(zod@3.22.4)
-      zod:
-        specifier: ^3.22.4
-        version: 3.22.4
-      zod-validation-error:
-        specifier: ^3.0.2
-        version: 3.0.2(zod@3.22.4)
-    devDependencies:
-      '@types/cors':
-        specifier: ^2.8.17
-        version: 2.8.17
-      '@types/express':
-        specifier: ^4.17.21
-        version: 4.17.21
-      '@types/node':
-        specifier: ^20.10.0
-        version: 20.10.0
-      '@typescript-eslint/eslint-plugin':
-        specifier: ^6.10.0
-        version: 6.10.0(@typescript-eslint/parser@6.10.0)(eslint@8.56.0)(typescript@5.3.2)
-      '@typescript-eslint/parser':
-        specifier: ^6.10.0
-        version: 6.10.0(eslint@8.56.0)(typescript@5.3.2)
-      eslint:
-        specifier: ^8.53.0
-        version: 8.56.0
-      msw:
-        specifier: ^2.2.1
-        version: 2.2.1(typescript@5.3.2)
-      prettier:
-        specifier: ^3.1.0
-        version: 3.1.0
-      ts-node:
-        specifier: ^10.9.1
-        version: 10.9.1(@types/node@20.10.0)(typescript@5.3.2)
-      tsup:
-        specifier: ^8.0.1
-        version: 8.0.1(ts-node@10.9.1)(typescript@5.3.2)
-      typescript:
-        specifier: ^5.2.2
-        version: 5.3.2
-      vitest:
-        specifier: ^1.1.3
-        version: 1.1.3(@types/node@20.10.0)
-
-  examples/paymaster-nft-mint:
+  apps/paymaster-nft-mint:
     dependencies:
       '@alchemy/aa-accounts':
         specifier: ^3.2.0
@@ -398,6 +316,88 @@ importers:
         specifier: ^5.1.4
         version: 5.1.5(@types/node@20.11.24)
 
+  apps/paymaster-proxy:
+    dependencies:
+      '@alchemy/aa-alchemy':
+        specifier: 3.0.0-alpha.8
+        version: 3.0.0-alpha.8(typescript@5.3.2)(zod@3.22.4)
+      abitype:
+        specifier: ^1.0.0
+        version: 1.0.0(typescript@5.3.2)(zod@3.22.4)
+      cors:
+        specifier: ^2.8.5
+        version: 2.8.5
+      dotenv:
+        specifier: ^16.4.1
+        version: 16.4.1
+      express:
+        specifier: ^4.18.2
+        version: 4.18.2
+      express-prom-bundle:
+        specifier: ^7.0.0
+        version: 7.0.0(prom-client@15.1.0)
+      express-rate-limit:
+        specifier: ^7.1.5
+        version: 7.1.5(express@4.18.2)
+      ioredis:
+        specifier: ^5.3.2
+        version: 5.3.2
+      pino:
+        specifier: ^8.19.0
+        version: 8.19.0
+      prom-client:
+        specifier: ^15.1.0
+        version: 15.1.0
+      rate-limit-redis:
+        specifier: ^4.2.0
+        version: 4.2.0(express-rate-limit@7.1.5)
+      viem:
+        specifier: ^2.7.1
+        version: 2.7.1(typescript@5.3.2)(zod@3.22.4)
+      zod:
+        specifier: ^3.22.4
+        version: 3.22.4
+      zod-validation-error:
+        specifier: ^3.0.2
+        version: 3.0.2(zod@3.22.4)
+    devDependencies:
+      '@types/cors':
+        specifier: ^2.8.17
+        version: 2.8.17
+      '@types/express':
+        specifier: ^4.17.21
+        version: 4.17.21
+      '@types/node':
+        specifier: ^20.10.0
+        version: 20.10.0
+      '@typescript-eslint/eslint-plugin':
+        specifier: ^6.10.0
+        version: 6.10.0(@typescript-eslint/parser@6.10.0)(eslint@8.56.0)(typescript@5.3.2)
+      '@typescript-eslint/parser':
+        specifier: ^6.10.0
+        version: 6.10.0(eslint@8.56.0)(typescript@5.3.2)
+      eslint:
+        specifier: ^8.53.0
+        version: 8.56.0
+      msw:
+        specifier: ^2.2.1
+        version: 2.2.1(typescript@5.3.2)
+      prettier:
+        specifier: ^3.1.0
+        version: 3.1.0
+      ts-node:
+        specifier: ^10.9.1
+        version: 10.9.1(@types/node@20.10.0)(typescript@5.3.2)
+      tsup:
+        specifier: ^8.0.1
+        version: 8.0.1(ts-node@10.9.1)(typescript@5.3.2)
+      typescript:
+        specifier: ^5.2.2
+        version: 5.3.2
+      vitest:
+        specifier: ^1.1.3
+        version: 1.1.3(@types/node@20.10.0)(jsdom@23.2.0)
+
   packages/api-plugin:
     dependencies:
       '@nx/devkit':
@@ -446,7 +446,7 @@ importers:
     devDependencies:
       '@eth-optimism/superchain-registry':
         specifier: github:ethereum-optimism/superchain-registry
-        version: github.com/ethereum-optimism/superchain-registry/8b68171bb20f76fa5eb9de17c7093d9cc0e928e0
+        version: github.com/ethereum-optimism/superchain-registry/3a7414fd64903a1ae66dd41c63fc17ccfb4cbe5c
       '@tanstack/react-query':
         specifier: ^5.10.0
         version: 5.10.0(react@18.2.0)
@@ -772,12 +772,12 @@ packages:
   /@alchemy/aa-alchemy@3.0.0-alpha.8(typescript@5.3.2)(zod@3.22.4):
     resolution: {integrity: sha512-UNvVnlJ1i0YmZZ1sV1oeMktnqO54Q3PqOJXuT6kqQvT4+XSthYO80W6MZV+dJK3YCzBNJPo6NEitc21YHvoV7Q==}
     dependencies:
-      '@alchemy/aa-core': 3.0.1(typescript@5.3.2)
+      '@alchemy/aa-core': 3.4.0(typescript@5.3.2)
       '@turnkey/http': 2.7.1
       '@turnkey/iframe-stamper': 1.0.0
-      '@turnkey/viem': 0.4.10(viem@2.7.1)
+      '@turnkey/viem': 0.4.10(viem@2.7.12)
       '@turnkey/webauthn-stamper': 0.4.3
-      viem: 2.7.1(typescript@5.3.2)(zod@3.22.4)
+      viem: 2.7.12(typescript@5.3.2)(zod@3.22.4)
     optionalDependencies:
       '@alchemy/aa-accounts': 3.4.0(typescript@5.3.2)(zod@3.22.4)
       alchemy-sdk: 3.1.2
@@ -789,19 +789,6 @@ packages:
       - typescript
       - utf-8-validate
       - zod
-    dev: false
-
-  /@alchemy/aa-core@3.0.1(typescript@5.3.2):
-    resolution: {integrity: sha512-LoPSikQFpza2SR0vzKAiOyLqNabShXlTtv350VG6EzDqzDzEqGQNuq9l5zlsQn/ZL2Qud9cKJA5TTdRyDB4PbQ==}
-    dependencies:
-      abitype: 0.8.11(typescript@5.3.2)(zod@3.22.4)
-      eventemitter3: 5.0.1
-      viem: 2.7.12(typescript@5.3.2)(zod@3.22.4)
-      zod: 3.22.4
-    transitivePeerDependencies:
-      - bufferutil
-      - typescript
-      - utf-8-validate
     dev: false
 
   /@alchemy/aa-core@3.4.0(typescript@5.3.2):
@@ -968,7 +955,7 @@ packages:
       '@babel/helpers': 7.23.8
       '@babel/parser': 7.23.6
       '@babel/template': 7.22.15
-      '@babel/traverse': 7.23.7(supports-color@5.5.0)
+      '@babel/traverse': 7.23.7
       '@babel/types': 7.23.6
       convert-source-map: 2.0.0
       debug: 4.3.4(supports-color@5.5.0)
@@ -1037,7 +1024,7 @@ packages:
     resolution: {integrity: sha512-LvBTxu8bQSQkcyKOU+a1btnNFQ1dMAd0R6PyW3arXes06F6QLWLIrd681bxRPIXlrMGR3XYnW9JyML7dP3qgxg==}
     engines: {node: '>=6.9.0'}
     dependencies:
-      '@babel/types': 7.23.4
+      '@babel/types': 7.24.0
 
   /@babel/helper-builder-binary-assignment-operator-visitor@7.22.15:
     resolution: {integrity: sha512-QkBXwGgaoC2GtGZRoma6kv7Szfv06khvhFav67ZExau2RaXzy8MpHSMO2PNoP2XtmQphJQRHFfg77Bq731Yizw==}
@@ -1127,7 +1114,7 @@ packages:
       '@babel/core': ^7.4.0 || ^8.0.0-0 <8.0.0
     dependencies:
       '@babel/core': 7.23.3
-      '@babel/helper-compilation-targets': 7.22.15
+      '@babel/helper-compilation-targets': 7.23.6
       '@babel/helper-plugin-utils': 7.22.5
       debug: 4.3.4(supports-color@5.5.0)
       lodash.debounce: 4.0.8
@@ -1141,7 +1128,7 @@ packages:
       '@babel/core': ^7.4.0 || ^8.0.0-0 <8.0.0
     dependencies:
       '@babel/core': 7.24.0
-      '@babel/helper-compilation-targets': 7.22.15
+      '@babel/helper-compilation-targets': 7.23.6
       '@babel/helper-plugin-utils': 7.22.5
       debug: 4.3.4(supports-color@5.5.0)
       lodash.debounce: 4.0.8
@@ -1157,8 +1144,8 @@ packages:
     resolution: {integrity: sha512-OErEqsrxjZTJciZ4Oo+eoZqeW9UIiOcuYKRJA4ZAgV9myA+pOXhhmpfNCKjEH/auVfEYVFJ6y1Tc4r0eIApqiw==}
     engines: {node: '>=6.9.0'}
     dependencies:
-      '@babel/template': 7.22.15
-      '@babel/types': 7.23.6
+      '@babel/template': 7.24.0
+      '@babel/types': 7.24.0
 
   /@babel/helper-hoist-variables@7.22.5:
     resolution: {integrity: sha512-wGjk9QZVzvknA6yKIUURb8zY3grXCcOZt+/7Wcy8O2uctxhplmUPkOdlgoNhmdVee2c92JXbf1xpMtVNbfoxRw==}
@@ -1170,7 +1157,7 @@ packages:
     resolution: {integrity: sha512-6gfrPwh7OuT6gZyJZvd6WbTfrqAo7vm4xCzAXOusKqq/vWdKXphTpj5klHKNmRUU6/QRGlBsyU9mAIPaWHlqJA==}
     engines: {node: '>=6.9.0'}
     dependencies:
-      '@babel/types': 7.23.4
+      '@babel/types': 7.24.0
 
   /@babel/helper-module-imports@7.22.15:
     resolution: {integrity: sha512-0pYVBnDKZO2fnSPCrgM/6WMc7eS20Fbok+0r88fp+YtWVLZrp4CkafFGIp+W0VKw4a22sgebPT99y+FDNMdP4w==}
@@ -1222,7 +1209,7 @@ packages:
     resolution: {integrity: sha512-HBwaojN0xFRx4yIvpwGqxiV2tUfl7401jlok564NgB9EHS1y6QT17FmKWm4ztqjeVdXLuC4fSvHc5ePpQjoTbw==}
     engines: {node: '>=6.9.0'}
     dependencies:
-      '@babel/types': 7.23.4
+      '@babel/types': 7.24.0
 
   /@babel/helper-plugin-utils@7.22.5:
     resolution: {integrity: sha512-uLls06UVKgFG9QD4OeFYLEGteMIAa5kpTPcFL28yuCIIzsf6ZyKZMllKVOCZFhiZ5ptnwX4mtKdWCBE/uT4amg==}
@@ -1282,7 +1269,7 @@ packages:
     resolution: {integrity: sha512-tK14r66JZKiC43p8Ki33yLBVJKlQDFoA8GYN67lWCDCqoL6EMMSuM9b+Iff2jHaM/RRFYl7K+iiru7hbRqNx8Q==}
     engines: {node: '>=6.9.0'}
     dependencies:
-      '@babel/types': 7.23.4
+      '@babel/types': 7.24.0
 
   /@babel/helper-split-export-declaration@7.22.6:
     resolution: {integrity: sha512-AsUnxuLhRYsisFiaJwvp1QF+I3KjD5FOxut14q/GzovUe6orHLesW2C7d754kRm53h5gqrz6sFl6sxc4BVtE/g==}
@@ -3174,6 +3161,24 @@ packages:
     transitivePeerDependencies:
       - supports-color
 
+  /@babel/traverse@7.23.7:
+    resolution: {integrity: sha512-tY3mM8rH9jM0YHFGyfC0/xf+SB5eKUu7HPj7/k3fpi9dAlsMc5YbQvDi0Sh2QTPXqMhyaAtzAr807TIyfQrmyg==}
+    engines: {node: '>=6.9.0'}
+    dependencies:
+      '@babel/code-frame': 7.23.5
+      '@babel/generator': 7.23.6
+      '@babel/helper-environment-visitor': 7.22.20
+      '@babel/helper-function-name': 7.23.0
+      '@babel/helper-hoist-variables': 7.22.5
+      '@babel/helper-split-export-declaration': 7.22.6
+      '@babel/parser': 7.24.0
+      '@babel/types': 7.24.0
+      debug: 4.3.4(supports-color@5.5.0)
+      globals: 11.12.0
+    transitivePeerDependencies:
+      - supports-color
+    dev: true
+
   /@babel/traverse@7.23.7(supports-color@5.5.0):
     resolution: {integrity: sha512-tY3mM8rH9jM0YHFGyfC0/xf+SB5eKUu7HPj7/k3fpi9dAlsMc5YbQvDi0Sh2QTPXqMhyaAtzAr807TIyfQrmyg==}
     engines: {node: '>=6.9.0'}
@@ -3190,6 +3195,7 @@ packages:
       globals: 11.12.0
     transitivePeerDependencies:
       - supports-color
+    dev: false
 
   /@babel/traverse@7.24.0:
     resolution: {integrity: sha512-HfuJlI8qq3dEDmNU5ChzzpZRWq+oxCZQyMzIMEqLho+AQnhMnKQUzH6ydo3RBl/YjPCuk68Y6s0Gx0AeyULiWw==}
@@ -7772,7 +7778,7 @@ packages:
     engines: {node: '>=18.0.0'}
     dev: false
 
-  /@turnkey/viem@0.4.10(viem@2.7.1):
+  /@turnkey/viem@0.4.10(viem@2.7.12):
     resolution: {integrity: sha512-x2k+8h7ic1hrFZ4zOFCD9CMI7ZhrQ/TeQ6k20rHZ3dbG0RyalIa29IulL0iJ7xjUX6v/3sucyGt6FtS6yjIWgg==}
     engines: {node: '>=18.0.0'}
     peerDependencies:
@@ -7782,7 +7788,7 @@ packages:
       '@turnkey/http': 2.7.1
       cross-fetch: 4.0.0(encoding@0.1.13)
       typescript: 5.3.2
-      viem: 2.7.1(typescript@5.3.2)(zod@3.22.4)
+      viem: 2.7.12(typescript@5.3.2)(zod@3.22.4)
     transitivePeerDependencies:
       - encoding
     dev: false
@@ -19579,63 +19585,6 @@ packages:
       fsevents: 2.3.3
     dev: true
 
-  /vitest@1.1.3(@types/node@20.10.0):
-    resolution: {integrity: sha512-2l8om1NOkiA90/Y207PsEvJLYygddsOyr81wLQ20Ra8IlLKbyQncWsGZjnbkyG2KwwuTXLQjEPOJuxGMG8qJBQ==}
-    engines: {node: ^18.0.0 || >=20.0.0}
-    hasBin: true
-    peerDependencies:
-      '@edge-runtime/vm': '*'
-      '@types/node': ^18.0.0 || >=20.0.0
-      '@vitest/browser': ^1.0.0
-      '@vitest/ui': ^1.0.0
-      happy-dom: '*'
-      jsdom: '*'
-    peerDependenciesMeta:
-      '@edge-runtime/vm':
-        optional: true
-      '@types/node':
-        optional: true
-      '@vitest/browser':
-        optional: true
-      '@vitest/ui':
-        optional: true
-      happy-dom:
-        optional: true
-      jsdom:
-        optional: true
-    dependencies:
-      '@types/node': 20.10.0
-      '@vitest/expect': 1.1.3
-      '@vitest/runner': 1.1.3
-      '@vitest/snapshot': 1.1.3
-      '@vitest/spy': 1.1.3
-      '@vitest/utils': 1.1.3
-      acorn-walk: 8.3.1
-      cac: 6.7.14
-      chai: 4.4.0
-      debug: 4.3.4(supports-color@5.5.0)
-      execa: 8.0.1
-      local-pkg: 0.5.0
-      magic-string: 0.30.5
-      pathe: 1.1.1
-      picocolors: 1.0.0
-      std-env: 3.5.0
-      strip-literal: 1.3.0
-      tinybench: 2.5.1
-      tinypool: 0.8.1
-      vite: 5.0.12(@types/node@20.10.0)
-      vite-node: 1.1.3(@types/node@20.10.0)
-      why-is-node-running: 2.2.2
-    transitivePeerDependencies:
-      - less
-      - lightningcss
-      - sass
-      - stylus
-      - sugarss
-      - supports-color
-      - terser
-    dev: true
-
   /vitest@1.1.3(@types/node@20.10.0)(jsdom@23.2.0):
     resolution: {integrity: sha512-2l8om1NOkiA90/Y207PsEvJLYygddsOyr81wLQ20Ra8IlLKbyQncWsGZjnbkyG2KwwuTXLQjEPOJuxGMG8qJBQ==}
     engines: {node: ^18.0.0 || >=20.0.0}
@@ -20423,8 +20372,8 @@ packages:
       use-sync-external-store: 1.2.0(react@18.2.0)
     dev: false
 
-  github.com/ethereum-optimism/superchain-registry/8b68171bb20f76fa5eb9de17c7093d9cc0e928e0:
-    resolution: {tarball: https://codeload.github.com/ethereum-optimism/superchain-registry/tar.gz/8b68171bb20f76fa5eb9de17c7093d9cc0e928e0}
+  github.com/ethereum-optimism/superchain-registry/3a7414fd64903a1ae66dd41c63fc17ccfb4cbe5c:
+    resolution: {tarball: https://codeload.github.com/ethereum-optimism/superchain-registry/tar.gz/3a7414fd64903a1ae66dd41c63fc17ccfb4cbe5c}
     name: '@eth-optimism/superchain-registry'
     version: 0.0.1-alpha.1
     dev: true
