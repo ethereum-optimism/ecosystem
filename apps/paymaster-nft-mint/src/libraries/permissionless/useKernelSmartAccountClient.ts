@@ -10,6 +10,7 @@ import { signerToEcdsaKernelSmartAccount } from 'permissionless/accounts'
 import { createPimlicoPaymasterClient } from 'permissionless/clients/pimlico'
 import { Chain, LocalAccount, createPublicClient, http } from 'viem'
 import { privateKeyToAccount } from 'viem/accounts'
+import { getBytecode } from 'viem/actions'
 
 export const publicClient = createPublicClient({
   transport: http('https://rpc.ankr.com/eth_sepolia'),
@@ -49,9 +50,48 @@ const createKernelSmartAccountClient = async <T extends string = 'custom'>({
     chain,
     bundlerTransport: http(bundlerRpcUrl),
     middleware: {
-      sponsorUserOperation: paymasterClient.sponsorUserOperation,
+      // sponsorUserOperation: paymasterClient.sponsorUserOperation,
+      sponsorUserOperation: async (args) => {
+        // const { userOperation } = args
+
+        const {
+          callGasLimit: k,
+          verificationGasLimit: a,
+          preVerificationGas: z,
+          ...userOpWithoutUnnecessary
+        } = args.userOperation
+        const result = await paymasterClient.sponsorUserOperation({
+          ...args,
+          userOperation: userOpWithoutUnnecessary,
+        })
+
+        const {
+          callGasLimit,
+          verificationGasLimit,
+          preVerificationGas,
+          paymasterAndData,
+        } = result
+
+        console.log('paymasterAndData', paymasterAndData)
+
+        return {
+          callGasLimit,
+          verificationGasLimit,
+          preVerificationGas,
+          paymasterAndData,
+        }
+      },
     },
   })
+
+  console.log(smartAccountClient.chain)
+
+  console.log(
+    'bytecode',
+    await getBytecode(smartAccountClient, {
+      address: smartAccountClient.account.address,
+    }),
+  )
 
   return smartAccountClient
 }

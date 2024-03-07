@@ -66,8 +66,10 @@ export const KernelPermissionlessCard = () => {
     isPending: isUserOpPending,
     data: userOperationResult,
     reset: resetSendMintNftUserOp,
+    error,
   } = useSendMintNftUserOp(kernelSmartAccountClient)
 
+  console.log(error)
   if (isKernelSmartAccountClientLoading || !kernelSmartAccountClient) {
     return <LoadingCard />
   }
