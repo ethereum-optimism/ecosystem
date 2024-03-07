@@ -48,9 +48,6 @@ export const getAlchemyPaymasterConfig = <T extends Chain>({
         initCode,
         callData,
         signature,
-        callGasLimit,
-        verificationGasLimit,
-        preVerificationGas,
         maxFeePerGas,
         maxPriorityFeePerGas,
       } = userOperation
@@ -72,10 +69,8 @@ export const getAlchemyPaymasterConfig = <T extends Chain>({
                 callData,
               } as Required<UserOperation>,
               dummySignature: signature,
+              // Consistent with Pimlico and Stackup paymaster behavior, we ignore any overrides to gas estimation params (callGasLimit, verificationGasLimit, preVerificationGas)
               overrides: {
-                callGasLimit,
-                verificationGasLimit,
-                preVerificationGas,
                 maxFeePerGas,
                 maxPriorityFeePerGas,
               },
