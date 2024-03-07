@@ -20,8 +20,6 @@ export const paymasterClient = createPimlicoPaymasterClient({
   entryPoint: ENTRYPOINT_ADDRESS_V06,
 })
 
-const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
-
 const createKernelSmartAccountClient = async <T extends string = 'custom'>({
   signer,
   paymasterRpcUrl,
@@ -51,34 +49,7 @@ const createKernelSmartAccountClient = async <T extends string = 'custom'>({
     chain,
     bundlerTransport: http(bundlerRpcUrl),
     middleware: {
-      sponsorUserOperation: async (args) => {
-        // const { userOperation } = args
-
-        const {
-          callGasLimit: k,
-          verificationGasLimit: a,
-          preVerificationGas: z,
-          ...userOpWithoutUnnecessary
-        } = args.userOperation
-        const result = await paymasterClient.sponsorUserOperation({
-          ...args,
-          userOperation: userOpWithoutUnnecessary,
-        })
-
-        const {
-          callGasLimit,
-          verificationGasLimit,
-          preVerificationGas,
-          paymasterAndData,
-        } = result
-
-        return {
-          callGasLimit,
-          verificationGasLimit,
-          preVerificationGas,
-          paymasterAndData,
-        }
-      },
+      sponsorUserOperation: paymasterClient.sponsorUserOperation,
     },
   })
 
