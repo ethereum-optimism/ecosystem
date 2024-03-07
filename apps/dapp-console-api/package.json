@@ -1,5 +1,5 @@
 {
-  "name": "@eth-optimism/<%= name %>",
+  "name": "@eth-optimism/dapp-console-api",
   "private": true,
   "version": "0.0.0",
   "main": "src/index.ts",
