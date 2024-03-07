@@ -37,6 +37,9 @@ RUN pnpm nx run-many --target=build
 # - it ignores /dist folder because it is listed in the local gitignore. Have to add "dist" folder explicitly to "files" in package.json to include. (https://github.com/pnpm/pnpm/issues/7286)
 RUN pnpm deploy --filter=paymaster-proxy --prod /prod/paymaster-proxy
 
+# copy built dapp-console-api app & isolated node_modules to prod/dapp-console-api
+RUN pnpm deploy --filter=dapp-console-api --prod /prod/dapp-console-api
+
 ########################################
 # STEP 2: PAYMASTER-PROXY
 ########################################
@@ -72,5 +75,20 @@ ENV NODE_ENVIRONMENT=production
 ENV NODE_EXTRA_CA_CERTS=/usr/local/share/ca-certificates/extra-ca-certificates.crt
 
 EXPOSE 42069
+
+CMD [ "pnpm", "start" ]
+
+########################################
+# STEP 4: DAPP-CONSOLE-API
+########################################
+
+FROM base AS dapp-console-api
+
+COPY  --from=builder /prod/dapp-console-api /prod/dapp-console-api
+WORKDIR /prod/dapp-console-api
+
+ENV NODE_EXTRA_CA_CERTS=/usr/local/share/ca-certificates/extra-ca-certificates.crt
+
+EXPOSE 7300
 
 CMD [ "pnpm", "start" ]

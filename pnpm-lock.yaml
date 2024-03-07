@@ -223,6 +223,9 @@ importers:
       cors:
         specifier: ^2.8.5
         version: 2.8.5
+      dotenv:
+        specifier: ^16.4.1
+        version: 16.4.1
       express:
         specifier: ^4.18.2
         version: 4.18.2
@@ -6668,7 +6671,7 @@ packages:
       '@walletconnect/ethereum-provider': 2.11.0(@types/react@18.2.47)(encoding@0.1.13)(react@18.2.0)
       '@walletconnect/modal': 2.6.2(@types/react@18.2.47)(react@18.2.0)
       base64-js: 1.5.1
-      dotenv: 16.3.1
+      dotenv: 16.4.1
       encoding: 0.1.13
       eventemitter3: 5.0.1
       fast-password-entropy: 1.1.1
