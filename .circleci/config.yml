@@ -176,3 +176,29 @@ workflows:
             - oplabs-gcr-internal
           requires:
             - paymaster-proxy-docker-build
+
+  build-and-publish-dapp-console-api:
+    jobs:
+      - docker-build:
+          filters:
+            branches:
+              only:
+                - main
+          name: dapp-console-api-docker-build
+          docker_file: ./Dockerfile
+          docker_name: dapp-console-api
+          docker_tags: <<pipeline.git.revision>>,<<pipeline.git.branch>>
+          docker_context: .
+          docker_target: dapp-console-api
+      - docker-publish:
+          filters:
+            branches:
+              only:
+                - main
+          name: dapp-console-api-docker-publish
+          docker_name: dapp-console-api
+          docker_tags: <<pipeline.git.revision>>,<<pipeline.git.branch>>
+          context:
+            - oplabs-gcr-internal
+          requires:
+            - dapp-console-api-docker-build
