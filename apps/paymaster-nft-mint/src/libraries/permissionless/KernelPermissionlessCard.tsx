@@ -8,8 +8,7 @@ import {
   CardTitle,
 } from '@eth-optimism/ui-components'
 
-import { SendUserOperationResult } from '@alchemy/aa-core'
-import { Hex, encodeFunctionData } from 'viem'
+import { Chain, Hex, LocalAccount, Transport, encodeFunctionData } from 'viem'
 import { SimpleNftAbi } from '@/abis/SimpleNftAbi'
 import { useDefaultModularAccountClientWithPaymaster } from '@/libraries/aa-sdk/useModularAccountClientWithPaymaster'
 import { simpleNftAddress } from '@/constants/addresses'
@@ -21,18 +20,22 @@ import { useSimpleNftBalance } from '@/hooks/useSimpleNftBalance'
 import { useWatchChainSwitch } from '@/hooks/useWatchChainSwitch'
 import { useUserOperationTransactions } from '@/state/UserOperationTransactionsState'
 import { useChainId } from 'wagmi'
+import {
+  KernelSmartAccountWithLocalAccountSigner,
+  useDefaultKernelSmartAccountClient,
+} from '@/libraries/permissionless/useKernelSmartAccountClient'
 import { CopiableHash } from '@/components/CopiableHash'
-import { ModularAccountClientWithPaymaster } from '@/libraries/aa-sdk/createModularAccountClientWithPaymaster'
+import {
+  ENTRYPOINT_ADDRESS_V06,
+  SmartAccountClient as PermissionlessSmartAccountClient,
+} from 'permissionless'
 
 const useSendMintNftUserOp = (
-  smartAccountClient?: ModularAccountClientWithPaymaster,
+  smartAccountClient?: KernelSmartAccountWithLocalAccountSigner,
 ) => {
+  const smartAccountAddress = smartAccountClient?.account?.address
   return useMutation({
-    mutationKey: [
-      'mintNft',
-      smartAccountClient?.chain,
-      smartAccountClient?.getAddress(),
-    ],
+    mutationKey: ['mintNft', smartAccountClient?.chain, smartAccountAddress],
     mutationFn: async () => {
       if (!smartAccountClient) {
         return
@@ -41,90 +44,36 @@ const useSendMintNftUserOp = (
       const mintCalldata = encodeFunctionData({
         abi: SimpleNftAbi,
         functionName: 'mintTo',
-        args: [smartAccountClient.getAddress()],
+        args: [smartAccountAddress!],
       })
 
-      return await smartAccountClient.sendUserOperation({
-        uo: {
-          target: simpleNftAddress,
-          data: mintCalldata,
-        },
+      return await smartAccountClient.sendTransaction({
+        to: simpleNftAddress,
+        data: mintCalldata,
       })
     },
   })
 }
 
-const useWaitForUserOperation = (
-  smartAccountClient?: ModularAccountClientWithPaymaster,
-  userOp?: SendUserOperationResult,
-  onSuccess?: (result: Hex) => void,
-) => {
-  return useQuery({
-    queryKey: [
-      'userOperationReceipt',
-      smartAccountClient?.chain.id,
-      smartAccountClient?.getAddress(),
-      userOp?.hash,
-    ],
-    queryFn: async () => {
-      const result = await smartAccountClient!.waitForUserOperationTransaction(
-        userOp!,
-      )
-      onSuccess?.(result)
-      return result
-    },
-    enabled: !!userOp && !!smartAccountClient,
-    staleTime: Infinity,
-  })
-}
-
-export const ModularAccountAaSdkCard = () => {
-  const { add } = useUserOperationTransactions()
-
-  const chainId = useChainId()
-
+export const KernelPermissionlessCard = () => {
   const {
-    data: modularAccountClient,
-    isLoading: isModularAccountClientLoading,
-  } = useDefaultModularAccountClientWithPaymaster()
-
-  const { refetch: refetchSimpleNftBalance } = useSimpleNftBalance(
-    modularAccountClient?.getAddress(),
-  )
+    data: kernelSmartAccountClient,
+    isLoading: isKernelSmartAccountClientLoading,
+  } = useDefaultKernelSmartAccountClient()
 
   const {
     mutate: mintNft,
     isPending: isUserOpPending,
     data: userOperationResult,
     reset: resetSendMintNftUserOp,
-  } = useSendMintNftUserOp(modularAccountClient)
+  } = useSendMintNftUserOp(kernelSmartAccountClient)
 
-  const { isLoading: isUserOpLoading } = useWaitForUserOperation(
-    modularAccountClient,
-    userOperationResult,
-    (txHash) => {
-      refetchSimpleNftBalance()
-      add({
-        chainId,
-        transactionHash: txHash,
-        userOpHash: userOperationResult!.hash,
-        userOp: userOperationResult!.request,
-      })
-    },
-  )
-
-  useWatchChainSwitch(() => {
-    resetSendMintNftUserOp()
-  })
-
-  if (isModularAccountClientLoading || !modularAccountClient) {
+  if (isKernelSmartAccountClientLoading || !kernelSmartAccountClient) {
     return <LoadingCard />
   }
+  const smartAccountAddress = kernelSmartAccountClient.account.address
 
-  const smartAccountAddress = modularAccountClient.getAddress()
-
-  const isLoading = isUserOpPending || isUserOpLoading
-
+  const isLoading = isUserOpPending
   const loadingText = isUserOpPending
     ? 'Sending user operation to bundler...'
     : 'Waiting for user operation to be included...'
@@ -132,8 +81,8 @@ export const ModularAccountAaSdkCard = () => {
   return (
     <Card className="w-[400px]">
       <CardHeader>
-        <CardTitle>Modular account</CardTitle>
-        <CardDescription>Mint an NFT using a modular account</CardDescription>
+        <CardTitle>Kernel account</CardTitle>
+        <CardDescription>Mint an NFT using a Kernel account</CardDescription>
       </CardHeader>
       <CardContent className="flex flex-col gap-4">
         <div className="flex flex-col">
@@ -152,7 +101,7 @@ export const ModularAccountAaSdkCard = () => {
         <Button
           disabled={isLoading}
           className="w-full"
-          onClick={() => modularAccountClient && mintNft()}
+          onClick={() => mintNft()}
         >
           {isLoading ? (
             <>

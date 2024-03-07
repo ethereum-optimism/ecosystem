@@ -26,3 +26,7 @@ export const createModularAccountClientWithPaymaster = ({
     }),
   })
 }
+
+export type ModularAccountClientWithPaymaster = Awaited<
+  ReturnType<typeof createModularAccountClientWithPaymaster>
+>

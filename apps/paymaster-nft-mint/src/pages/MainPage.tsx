@@ -1,5 +1,6 @@
 import { ChainSwitcher } from '@/components/ChainSwitcher'
 import { AaSdkExample } from '@/libraries/aa-sdk/AaSdkExample'
+import { KernelPermissionlessCard } from '@/libraries/permissionless/KernelPermissionlessCard'
 
 export const MainPage = () => {
   return (
@@ -10,6 +11,7 @@ export const MainPage = () => {
       <div className="flex justify-end">
         <ChainSwitcher />
       </div>
+      <KernelPermissionlessCard />
       <AaSdkExample />
     </div>
   )
