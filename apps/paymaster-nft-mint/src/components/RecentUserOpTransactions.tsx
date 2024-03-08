@@ -64,19 +64,14 @@ const RecentUserOperationItem = ({
 }: {
   transactionHash: Hex
 }) => {
-  const {
-    data: transactionReceipt,
-    isLoading: isGetTransactionReceiptLoading,
-  } = useTransactionReceipt({
+  const { data: transactionReceipt } = useTransactionReceipt({
     hash: transactionHash,
   })
   const userOpHash = getUserOpHashFromTransactionLogs(
     transactionReceipt?.logs || [],
   )
-  const {
-    data: getUserOperationByHashResult,
-    isLoading: isGetUserOperationLoading,
-  } = useGetUserOperationByHash(userOpHash)
+  const { data: getUserOperationByHashResult } =
+    useGetUserOperationByHash(userOpHash)
 
   const userOperation = getUserOperationByHashResult?.userOperation
 

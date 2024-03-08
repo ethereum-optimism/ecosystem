@@ -5,12 +5,6 @@ import {
   CardTitle,
 } from '@eth-optimism/ui-components'
 import { ExternalLink } from '@/components/ExternalLink'
-import {
-  RiEthLine,
-  RiGithubFill,
-  RiToolsLine,
-  RiWallet3Line,
-} from '@remixicon/react'
 
 export const ReferencesCard = ({ children }: { children: React.ReactNode }) => {
   return (
