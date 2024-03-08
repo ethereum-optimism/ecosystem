@@ -26,9 +26,6 @@ const createKernelSmartAccountClient = async <T extends string = 'custom'>({
 }) => {
   const paymasterClient = createPimlicoPaymasterClient({
     transport: http(paymasterRpcUrl),
-    // transport: http(
-    //   'https://api.pimlico.io/v2/optimism-sepolia/rpc?apikey=ae917ace-332b-47b3-af17-0535c4cce641',
-    // ),
     entryPoint: entrypointAddress,
   })
 
@@ -50,47 +47,8 @@ const createKernelSmartAccountClient = async <T extends string = 'custom'>({
     bundlerTransport: http(bundlerRpcUrl),
     middleware: {
       sponsorUserOperation: paymasterClient.sponsorUserOperation,
-      // sponsorUserOperation: async (args) => {
-      //   // const { userOperation } = args
-
-      //   const {
-      //     callGasLimit: k,
-      //     verificationGasLimit: a,
-      //     preVerificationGas: z,
-      //     ...userOpWithoutUnnecessary
-      //   } = args.userOperation
-      //   const result = await paymasterClient.sponsorUserOperation({
-      //     ...args,
-      //     userOperation: userOpWithoutUnnecessary,
-      //   })
-
-      //   const {
-      //     callGasLimit,
-      //     verificationGasLimit,
-      //     preVerificationGas,
-      //     paymasterAndData,
-      //   } = result
-
-      //   console.log('paymasterAndData', paymasterAndData)
-
-      //   return {
-      //     callGasLimit,
-      //     verificationGasLimit,
-      //     preVerificationGas,
-      //     paymasterAndData,
-      //   }
-      // },
     },
   })
-
-  // console.log(smartAccountClient.chain)
-
-  // console.log(
-  //   'bytecode',
-  //   await getBytecode(smartAccountClient, {
-  //     address: smartAccountClient.account.address,
-  //   }),
-  // )
 
   return smartAccountClient
 }
