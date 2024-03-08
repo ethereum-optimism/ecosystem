@@ -125,7 +125,7 @@ jobs:
         type: string
         default: 'oplabs-tools-artifacts/internal-images'
     machine:
-      image: ubuntu-2204:2022.07.1
+      image: ubuntu-2204:2024.01.1
     steps:
       - attach_workspace:
           at: /tmp/docker_images
