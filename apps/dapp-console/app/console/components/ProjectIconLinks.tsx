@@ -19,46 +19,50 @@ import {
 import { Button } from '@eth-optimism/ui-components/src/components/ui/button'
 import { Text } from '@eth-optimism/ui-components/src/components/ui/text'
 
+const joinedDescription = (joined: string) => {
+  return `Joined the Superchain on ${joined}.`
+}
+
 const linkItems = [
   {
     ...externalRoutes.ETH_DOCS,
     logo: '/logos/eth-logo.png',
-    joined: null,
+    description: 'The Superchain is scaling Ethereum',
   },
   {
     ...externalRoutes.BASE_DOCS,
     logo: '/logos/base-logo.png',
-    joined: 'Feb 23, 2023',
+    description: joinedDescription('Feb 23, 2023'),
   },
   {
     ...externalRoutes.FRAX_DOCS,
     logo: '/logos/frax-logo.png',
-    joined: 'Feb 7, 2024',
+    description: joinedDescription('Feb 7, 2024'),
   },
   {
     ...externalRoutes.LISK_DOCS,
     logo: '/logos/lisk-logo.png',
-    joined: 'Dec 19, 2024',
+    description: joinedDescription('Dec 19, 2024'),
   },
   {
     ...externalRoutes.MODE_DOCS,
     logo: '/logos/mode-logo.png',
-    joined: 'Jan 23, 2024',
+    description: joinedDescription('Jan 23, 2024'),
   },
   {
     ...externalRoutes.OPTIMISM_DOCS,
     logo: '/logos/op-logo.svg',
-    joined: 'Feb 23, 2023',
+    description: joinedDescription('Feb 23, 2023'),
   },
   {
     ...externalRoutes.REDSTONE_DOCS,
     logo: '/logos/redstone-logo.png',
-    joined: 'Nov 15, 2023',
+    description: joinedDescription('Nov 15, 2023'),
   },
   {
     ...externalRoutes.ZORA_DOCS,
     logo: '/logos/zora-logo.png',
-    joined: 'June 21, 2023',
+    description: joinedDescription('June 21, 2023'),
   },
 ]
 
@@ -74,7 +78,7 @@ const ProjectIconLinks = () => {
             label={item.label}
             href={item.path}
             key={item.logo}
-            joined={item.joined}
+            description={item.description}
             style={{ zIndex }}
           />
         )
@@ -88,11 +92,18 @@ type IconLinkProps = {
   label: string
   href: string
   key: string
-  joined: string | null
+  description: string
   style: React.CSSProperties
 }
 
-const IconLink = ({ logo, label, href, key, joined, style }: IconLinkProps) => {
+const IconLink = ({
+  logo,
+  label,
+  href,
+  key,
+  description,
+  style,
+}: IconLinkProps) => {
   const hoverAnimation = {
     y: -10,
     transition: { type: 'spring', stiffness: 400, damping: 15 },
@@ -137,11 +148,9 @@ const IconLink = ({ logo, label, href, key, joined, style }: IconLinkProps) => {
           <Text as="h3" className="text-2xl font-semibold mt-4">
             {label}
           </Text>
-          {joined && (
-            <Text as="p" className="text-muted-foreground text-center mt-2">
-              Joined the Superchain on {joined}.
-            </Text>
-          )}
+          <Text as="p" className="text-muted-foreground text-center mt-2">
+            {description}
+          </Text>
         </div>
         <DialogFooter>
           <Button className="w-full" asChild>
