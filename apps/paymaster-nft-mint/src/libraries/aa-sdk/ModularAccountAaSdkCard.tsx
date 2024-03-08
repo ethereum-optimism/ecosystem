@@ -8,12 +8,8 @@ import {
   CardTitle,
 } from '@eth-optimism/ui-components'
 
-import {
-  SendUserOperationResult,
-  SmartAccountClient,
-  SmartContractAccount,
-} from '@alchemy/aa-core'
-import { Chain, Hex, Transport, encodeFunctionData } from 'viem'
+import { SendUserOperationResult } from '@alchemy/aa-core'
+import { Hex, encodeFunctionData } from 'viem'
 import { SimpleNftAbi } from '@/abis/SimpleNftAbi'
 import { useDefaultModularAccountClientWithPaymaster } from '@/libraries/aa-sdk/useModularAccountClientWithPaymaster'
 import { simpleNftAddress } from '@/constants/addresses'
@@ -23,15 +19,13 @@ import { useMutation, useQuery } from '@tanstack/react-query'
 import { RiLoader4Line } from '@remixicon/react'
 import { useSimpleNftBalance } from '@/hooks/useSimpleNftBalance'
 import { useWatchChainSwitch } from '@/hooks/useWatchChainSwitch'
-import { useUserOperationTransactions } from '@/state/UserOperationTransactionsState'
 import { useChainId } from 'wagmi'
+import { CopiableHash } from '@/components/CopiableHash'
+import { ModularAccountClientWithPaymaster } from '@/libraries/aa-sdk/createModularAccountClientWithPaymaster'
+import { useSmartAccountTransactionHashes } from '@/state/SmartAccountTransactionHashesState'
 
 const useSendMintNftUserOp = (
-  smartAccountClient?: SmartAccountClient<
-    Transport,
-    Chain,
-    SmartContractAccount
-  >,
+  smartAccountClient?: ModularAccountClientWithPaymaster,
 ) => {
   return useMutation({
     mutationKey: [
@@ -61,11 +55,7 @@ const useSendMintNftUserOp = (
 }
 
 const useWaitForUserOperation = (
-  smartAccountClient?: SmartAccountClient<
-    Transport,
-    Chain,
-    SmartContractAccount
-  >,
+  smartAccountClient?: ModularAccountClientWithPaymaster,
   userOp?: SendUserOperationResult,
   onSuccess?: (result: Hex) => void,
 ) => {
@@ -89,7 +79,7 @@ const useWaitForUserOperation = (
 }
 
 export const ModularAccountAaSdkCard = () => {
-  const { add } = useUserOperationTransactions()
+  const { add } = useSmartAccountTransactionHashes()
 
   const chainId = useChainId()
 
@@ -116,9 +106,8 @@ export const ModularAccountAaSdkCard = () => {
       refetchSimpleNftBalance()
       add({
         chainId,
+        address: modularAccountClient!.getAddress(),
         transactionHash: txHash,
-        userOpHash: userOperationResult!.hash,
-        userOp: userOperationResult!.request,
       })
     },
   )
@@ -148,7 +137,12 @@ export const ModularAccountAaSdkCard = () => {
       <CardContent className="flex flex-col gap-4">
         <div className="flex flex-col">
           <div className="font-semibold">Smart account address</div>
-          <div className="font-mono text-sm">{smartAccountAddress}</div>
+          <div className="font-mono text-sm">
+            <CopiableHash
+              href={`https://onceupon.gg/${smartAccountAddress}`}
+              hash={smartAccountAddress}
+            />
+          </div>
         </div>
 
         <SimpleNftBalance address={smartAccountAddress} />

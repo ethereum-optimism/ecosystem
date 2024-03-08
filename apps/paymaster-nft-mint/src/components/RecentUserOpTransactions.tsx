@@ -1,11 +1,12 @@
 import { CopiableHash } from '@/components/CopiableHash'
 import { formatDistanceToNow } from 'date-fns'
 import {
-  getUserOperationTransactionKey,
-  useUserOperationTransactions,
-} from '@/state/UserOperationTransactionsState'
+  getSmartAccountTransactionKey,
+  useSmartAccountTransactionHashes,
+} from '@/state/SmartAccountTransactionHashesState'
 import { truncateHash } from '@/utils/truncateHash'
-import { UserOperationRequest } from '@alchemy/aa-core'
+import { useBlock, useTransactionReceipt } from 'wagmi'
+
 import {
   Accordion,
   AccordionContent,
@@ -17,27 +18,71 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
+  Skeleton,
 } from '@eth-optimism/ui-components'
 import JSONPretty from 'react-json-pretty'
-import { Hex } from 'viem'
+import { Hex, parseAbiItem, parseEventLogs, TransactionReceipt } from 'viem'
+import { useGetUserOperationByHash } from '@/hooks/useGetUserOperationByHash'
+import { deepHexlify } from 'permissionless'
+import { useMemo } from 'react'
+
+const getUserOpHashFromTransactionLogs = (logs: TransactionReceipt['logs']) => {
+  const parsedLogs = parseEventLogs({
+    abi: [
+      parseAbiItem(
+        'event UserOperationEvent(bytes32 indexed userOpHash, address indexed sender, address indexed paymaster, uint256 nonce, bool success, uint256 actualGasCost, uint256 actualGasUsed)',
+      ),
+    ],
+
+    logs,
+  })
+  return parsedLogs[0]?.args.userOpHash || null
+}
+
+const TimestampDisplay = ({ blockNumber }: { blockNumber?: bigint }) => {
+  const { data: getBlockResult, isLoading: isGetBlockResultLoading } = useBlock(
+    {
+      blockNumber: blockNumber,
+      query: {
+        enabled: Boolean(blockNumber),
+      },
+    },
+  )
+
+  if (isGetBlockResultLoading || !getBlockResult) {
+    return <Skeleton className="h-[1rem] w-[6rem]" />
+  }
+
+  return (
+    <Badge variant="secondary">
+      {formatDistanceToNow(Number(getBlockResult.timestamp) * 1000)} ago
+    </Badge>
+  )
+}
 
 const RecentUserOperationItem = ({
-  userOpTransaction,
+  transactionHash,
 }: {
-  userOpTransaction: {
-    transactionHash: Hex
-    userOpHash: Hex
-    userOp: UserOperationRequest
-    addedAt: number
-  }
+  transactionHash: Hex
 }) => {
-  const { transactionHash, userOpHash, userOp, addedAt } = userOpTransaction
+  const { data: transactionReceipt } = useTransactionReceipt({
+    hash: transactionHash,
+  })
+  const userOpHash = useMemo(
+    () => getUserOpHashFromTransactionLogs(transactionReceipt?.logs || []),
+    [transactionReceipt],
+  )
+  const { data: getUserOperationByHashResult } =
+    useGetUserOperationByHash(userOpHash)
+
+  const userOperation = getUserOperationByHashResult?.userOperation
+
   return (
     <AccordionItem key={transactionHash} value={transactionHash}>
       <AccordionTrigger className="font-mono flex hover:no-underline no-underline">
         <div className="flex-1 flex justify-between pr-1">
           {truncateHash(transactionHash)}
-          <Badge variant="secondary">{formatDistanceToNow(addedAt)} ago</Badge>
+          <TimestampDisplay blockNumber={transactionReceipt?.blockNumber} />
         </div>
       </AccordionTrigger>
       <AccordionContent className="flex flex-col gap-4">
@@ -55,7 +100,7 @@ const RecentUserOperationItem = ({
         <div className="flex flex-col gap-1">
           <div className="font-semibold">User operation</div>
           <div className="overflow-scroll">
-            <JSONPretty data={userOp} />
+            <JSONPretty data={deepHexlify(userOperation)} />
           </div>
         </div>
       </AccordionContent>
@@ -70,11 +115,12 @@ export const RecentUserOpTransactions = ({
   accountAddress: Hex
   chainId: number
 }) => {
-  const { userOpTransactionByAddressChainId } = useUserOperationTransactions()
+  const { transactionHashesByAddressChainId } =
+    useSmartAccountTransactionHashes()
 
-  const userOpTransactions =
-    userOpTransactionByAddressChainId[
-      getUserOperationTransactionKey(chainId, accountAddress)
+  const txHashes =
+    transactionHashesByAddressChainId[
+      getSmartAccountTransactionKey(chainId, accountAddress)
     ] || []
 
   return (
@@ -85,11 +131,8 @@ export const RecentUserOpTransactions = ({
       </CardHeader>
       <CardContent className="flex flex-col gap-1">
         <Accordion type="single" collapsible className="w-full">
-          {userOpTransactions.map((userOpTransaction) => (
-            <RecentUserOperationItem
-              key={userOpTransaction.transactionHash}
-              userOpTransaction={userOpTransaction}
-            />
+          {txHashes.map((hash) => (
+            <RecentUserOperationItem key={hash} transactionHash={hash} />
           ))}
         </Accordion>
       </CardContent>

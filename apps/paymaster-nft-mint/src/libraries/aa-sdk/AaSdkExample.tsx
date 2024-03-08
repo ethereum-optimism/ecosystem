@@ -1,11 +1,4 @@
 import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from '@eth-optimism/ui-components'
-import { ExternalLink } from '@/components/ExternalLink'
-import {
   RiEthLine,
   RiGithubFill,
   RiToolsLine,
@@ -16,6 +9,7 @@ import { ModularAccountAaSdkCard } from '@/libraries/aa-sdk/ModularAccountAaSdkC
 
 import { useDefaultModularAccountClientWithPaymaster } from '@/libraries/aa-sdk/useModularAccountClientWithPaymaster'
 import { LoadingCard } from '@/components/LoadingCard'
+import { ReferenceItem, ReferencesCard } from '@/components/ReferencesCard'
 
 export const AaSdkExample = () => {
   const {
@@ -35,41 +29,34 @@ export const AaSdkExample = () => {
           chainId={modularAccountClient.chain.id}
         />
       )}
+      <ReferencesCard>
+        <ReferenceItem
+          Icon={RiWallet3Line}
+          href="https://github.com/alchemyplatform/modular-account"
+        >
+          Modular account
+        </ReferenceItem>
 
-      <Card className="w-[400px]">
-        <CardHeader className="pb-3">
-          <CardTitle className="text-xl">References</CardTitle>
-        </CardHeader>
-        <CardContent className="flex flex-col gap-1">
-          <div className="flex items-center gap-2">
-            <RiWallet3Line className="h-[1rem] w-[1rem]" />
-            <ExternalLink href="https://github.com/alchemyplatform/modular-account">
-              Modular account
-            </ExternalLink>
-          </div>
-          <div className="flex items-center gap-2">
-            <RiEthLine className="h-[1rem] w-[1rem]" />
-            {/* TODO: fix link to updated readme */}
-            <ExternalLink href="https://github.com/ethereum-optimism/ecosystem">
-              Superchain paymaster
-            </ExternalLink>
-          </div>
-          <div className="flex items-center gap-2">
-            <RiToolsLine className="h-[1rem] w-[1rem]" />
-            <ExternalLink href="https://github.com/alchemyplatform/aa-sdk">
-              aa-sdk
-            </ExternalLink>
-          </div>
+        <ReferenceItem
+          Icon={RiEthLine}
+          href="https://github.com/ethereum-optimism/ecosystem"
+        >
+          Superchain paymaster
+        </ReferenceItem>
+        <ReferenceItem
+          Icon={RiToolsLine}
+          href="https://github.com/alchemyplatform/aa-sdk"
+        >
+          aa-sdk
+        </ReferenceItem>
 
-          <div className="flex items-center gap-2">
-            <RiGithubFill className="h-[1rem] w-[1rem]" />
-            {/* TODO: fix link to updated readme */}
-            <ExternalLink href="https://github.com/ethereum-optimism/ecosystem">
-              GitHub repo
-            </ExternalLink>
-          </div>
-        </CardContent>
-      </Card>
+        <ReferenceItem
+          Icon={RiGithubFill}
+          href="https://github.com/ethereum-optimism/ecosystem"
+        >
+          GitHub repo
+        </ReferenceItem>
+      </ReferencesCard>
     </>
   )
 }
