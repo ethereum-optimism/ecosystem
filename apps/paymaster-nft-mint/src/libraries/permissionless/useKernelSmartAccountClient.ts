@@ -10,16 +10,6 @@ import { signerToEcdsaKernelSmartAccount } from 'permissionless/accounts'
 import { createPimlicoPaymasterClient } from 'permissionless/clients/pimlico'
 import { Chain, LocalAccount, createPublicClient, http } from 'viem'
 import { privateKeyToAccount } from 'viem/accounts'
-import { getBytecode } from 'viem/actions'
-
-export const publicClient = createPublicClient({
-  transport: http('https://rpc.ankr.com/eth_sepolia'),
-})
-
-export const paymasterClient = createPimlicoPaymasterClient({
-  transport: http(import.meta.env.VITE_PAYMASTER_RPC_URL_SEPOLIA),
-  entryPoint: ENTRYPOINT_ADDRESS_V06,
-})
 
 const createKernelSmartAccountClient = async <T extends string = 'custom'>({
   signer,
@@ -36,13 +26,22 @@ const createKernelSmartAccountClient = async <T extends string = 'custom'>({
 }) => {
   const paymasterClient = createPimlicoPaymasterClient({
     transport: http(paymasterRpcUrl),
+    // transport: http(
+    //   'https://api.pimlico.io/v2/optimism-sepolia/rpc?apikey=ae917ace-332b-47b3-af17-0535c4cce641',
+    // ),
     entryPoint: entrypointAddress,
   })
 
-  const kernelAccount = await signerToEcdsaKernelSmartAccount(publicClient, {
-    entryPoint: entrypointAddress, // global entrypoint
-    signer: signer,
-  })
+  const kernelAccount = await signerToEcdsaKernelSmartAccount(
+    createPublicClient({
+      transport: http(chain.rpcUrls.default.http[0]),
+      chain,
+    }),
+    {
+      entryPoint: entrypointAddress, // global entrypoint
+      signer: signer,
+    },
+  )
 
   const smartAccountClient = createSmartAccountClient({
     account: kernelAccount,
@@ -50,48 +49,48 @@ const createKernelSmartAccountClient = async <T extends string = 'custom'>({
     chain,
     bundlerTransport: http(bundlerRpcUrl),
     middleware: {
-      // sponsorUserOperation: paymasterClient.sponsorUserOperation,
-      sponsorUserOperation: async (args) => {
-        // const { userOperation } = args
+      sponsorUserOperation: paymasterClient.sponsorUserOperation,
+      // sponsorUserOperation: async (args) => {
+      //   // const { userOperation } = args
 
-        const {
-          callGasLimit: k,
-          verificationGasLimit: a,
-          preVerificationGas: z,
-          ...userOpWithoutUnnecessary
-        } = args.userOperation
-        const result = await paymasterClient.sponsorUserOperation({
-          ...args,
-          userOperation: userOpWithoutUnnecessary,
-        })
+      //   const {
+      //     callGasLimit: k,
+      //     verificationGasLimit: a,
+      //     preVerificationGas: z,
+      //     ...userOpWithoutUnnecessary
+      //   } = args.userOperation
+      //   const result = await paymasterClient.sponsorUserOperation({
+      //     ...args,
+      //     userOperation: userOpWithoutUnnecessary,
+      //   })
 
-        const {
-          callGasLimit,
-          verificationGasLimit,
-          preVerificationGas,
-          paymasterAndData,
-        } = result
+      //   const {
+      //     callGasLimit,
+      //     verificationGasLimit,
+      //     preVerificationGas,
+      //     paymasterAndData,
+      //   } = result
 
-        console.log('paymasterAndData', paymasterAndData)
+      //   console.log('paymasterAndData', paymasterAndData)
 
-        return {
-          callGasLimit,
-          verificationGasLimit,
-          preVerificationGas,
-          paymasterAndData,
-        }
-      },
+      //   return {
+      //     callGasLimit,
+      //     verificationGasLimit,
+      //     preVerificationGas,
+      //     paymasterAndData,
+      //   }
+      // },
     },
   })
 
-  console.log(smartAccountClient.chain)
+  // console.log(smartAccountClient.chain)
 
-  console.log(
-    'bytecode',
-    await getBytecode(smartAccountClient, {
-      address: smartAccountClient.account.address,
-    }),
-  )
+  // console.log(
+  //   'bytecode',
+  //   await getBytecode(smartAccountClient, {
+  //     address: smartAccountClient.account.address,
+  //   }),
+  // )
 
   return smartAccountClient
 }

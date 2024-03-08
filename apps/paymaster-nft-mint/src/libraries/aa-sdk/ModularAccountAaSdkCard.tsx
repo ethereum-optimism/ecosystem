@@ -19,10 +19,10 @@ import { useMutation, useQuery } from '@tanstack/react-query'
 import { RiLoader4Line } from '@remixicon/react'
 import { useSimpleNftBalance } from '@/hooks/useSimpleNftBalance'
 import { useWatchChainSwitch } from '@/hooks/useWatchChainSwitch'
-import { useUserOperationTransactions } from '@/state/UserOperationTransactionsState'
 import { useChainId } from 'wagmi'
 import { CopiableHash } from '@/components/CopiableHash'
 import { ModularAccountClientWithPaymaster } from '@/libraries/aa-sdk/createModularAccountClientWithPaymaster'
+import { useSmartAccountTransactionHashes } from '@/state/SmartAccountTransactionHashesState'
 
 const useSendMintNftUserOp = (
   smartAccountClient?: ModularAccountClientWithPaymaster,
@@ -79,7 +79,7 @@ const useWaitForUserOperation = (
 }
 
 export const ModularAccountAaSdkCard = () => {
-  const { add } = useUserOperationTransactions()
+  const { add } = useSmartAccountTransactionHashes()
 
   const chainId = useChainId()
 
@@ -106,9 +106,8 @@ export const ModularAccountAaSdkCard = () => {
       refetchSimpleNftBalance()
       add({
         chainId,
+        address: modularAccountClient!.getAddress(),
         transactionHash: txHash,
-        userOpHash: userOperationResult!.hash,
-        userOp: userOperationResult!.request,
       })
     },
   )

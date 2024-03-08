@@ -1,75 +1,64 @@
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from '@eth-optimism/ui-components'
-import { ExternalLink } from '@/components/ExternalLink'
+import { RecentUserOpTransactions } from '@/components/RecentUserOpTransactions'
+
+import { LoadingCard } from '@/components/LoadingCard'
+import { useDefaultKernelSmartAccountClient } from '@/libraries/permissionless/useKernelSmartAccountClient'
+import { KernelPermissionlessCard } from '@/libraries/permissionless/KernelPermissionlessCard'
+import { ReferenceItem, ReferencesCard } from '@/components/ReferencesCard'
 import {
   RiEthLine,
   RiGithubFill,
   RiToolsLine,
   RiWallet3Line,
 } from '@remixicon/react'
-import { RecentUserOpTransactions } from '@/components/RecentUserOpTransactions'
-import { ModularAccountAaSdkCard } from '@/libraries/aa-sdk/ModularAccountAaSdkCard'
-
-import { useDefaultModularAccountClientWithPaymaster } from '@/libraries/aa-sdk/useModularAccountClientWithPaymaster'
-import { LoadingCard } from '@/components/LoadingCard'
 
 export const PermissionlessExample = () => {
   const {
-    data: modularAccountClient,
-    isLoading: isModularAccountClientLoading,
-  } = useDefaultModularAccountClientWithPaymaster()
+    data: kernelSmartAccountClient,
+    isLoading: isKernelSmartAccountClientLoading,
+  } = useDefaultKernelSmartAccountClient()
 
-  const isLoading = isModularAccountClientLoading || !modularAccountClient
+  const isLoading =
+    isKernelSmartAccountClientLoading || !kernelSmartAccountClient
   return (
     <>
-      <ModularAccountAaSdkCard />
+      <KernelPermissionlessCard />
       {isLoading ? (
         <LoadingCard />
       ) : (
         <RecentUserOpTransactions
-          accountAddress={modularAccountClient.getAddress()}
-          chainId={modularAccountClient.chain.id}
+          accountAddress={kernelSmartAccountClient.account.address}
+          chainId={kernelSmartAccountClient.chain.id}
         />
       )}
 
-      <Card className="w-[400px]">
-        <CardHeader className="pb-3">
-          <CardTitle className="text-xl">References</CardTitle>
-        </CardHeader>
-        <CardContent className="flex flex-col gap-1">
-          <div className="flex items-center gap-2">
-            <RiWallet3Line className="h-[1rem] w-[1rem]" />
-            <ExternalLink href="https://github.com/alchemyplatform/modular-account">
-              Modular account
-            </ExternalLink>
-          </div>
-          <div className="flex items-center gap-2">
-            <RiEthLine className="h-[1rem] w-[1rem]" />
-            {/* TODO: fix link to updated readme */}
-            <ExternalLink href="https://github.com/ethereum-optimism/ecosystem">
-              Superchain paymaster
-            </ExternalLink>
-          </div>
-          <div className="flex items-center gap-2">
-            <RiToolsLine className="h-[1rem] w-[1rem]" />
-            <ExternalLink href="https://github.com/alchemyplatform/aa-sdk">
-              aa-sdk
-            </ExternalLink>
-          </div>
+      <ReferencesCard>
+        <ReferenceItem
+          Icon={RiWallet3Line}
+          href="https://github.com/zerodevapp/kernel"
+        >
+          Kernel account
+        </ReferenceItem>
 
-          <div className="flex items-center gap-2">
-            <RiGithubFill className="h-[1rem] w-[1rem]" />
-            {/* TODO: fix link to updated readme */}
-            <ExternalLink href="https://github.com/ethereum-optimism/ecosystem">
-              GitHub repo
-            </ExternalLink>
-          </div>
-        </CardContent>
-      </Card>
+        <ReferenceItem
+          Icon={RiEthLine}
+          href="https://github.com/ethereum-optimism/ecosystem"
+        >
+          Superchain paymaster
+        </ReferenceItem>
+        <ReferenceItem
+          Icon={RiToolsLine}
+          href="https://github.com/pimlicolabs/permissionless.js"
+        >
+          aa-sdk
+        </ReferenceItem>
+
+        <ReferenceItem
+          Icon={RiGithubFill}
+          href="https://github.com/ethereum-optimism/ecosystem"
+        >
+          GitHub repo
+        </ReferenceItem>
+      </ReferencesCard>
     </>
   )
 }

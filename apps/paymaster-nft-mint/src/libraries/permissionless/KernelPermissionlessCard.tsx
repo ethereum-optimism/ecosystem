@@ -8,31 +8,29 @@ import {
   CardTitle,
 } from '@eth-optimism/ui-components'
 
-import { Chain, Hex, LocalAccount, Transport, encodeFunctionData } from 'viem'
+import { Hex } from 'viem'
 import { SimpleNftAbi } from '@/abis/SimpleNftAbi'
-import { useDefaultModularAccountClientWithPaymaster } from '@/libraries/aa-sdk/useModularAccountClientWithPaymaster'
 import { simpleNftAddress } from '@/constants/addresses'
 import { LoadingCard } from '@/components/LoadingCard'
 import { SimpleNftBalance } from '@/components/SimpleNftBalance'
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { useMutation } from '@tanstack/react-query'
 import { RiLoader4Line } from '@remixicon/react'
-import { useSimpleNftBalance } from '@/hooks/useSimpleNftBalance'
 import { useWatchChainSwitch } from '@/hooks/useWatchChainSwitch'
-import { useUserOperationTransactions } from '@/state/UserOperationTransactionsState'
-import { useChainId } from 'wagmi'
 import {
   KernelSmartAccountWithLocalAccountSigner,
   useDefaultKernelSmartAccountClient,
 } from '@/libraries/permissionless/useKernelSmartAccountClient'
 import { CopiableHash } from '@/components/CopiableHash'
-import {
-  ENTRYPOINT_ADDRESS_V06,
-  SmartAccountClient as PermissionlessSmartAccountClient,
-} from 'permissionless'
+import { useSmartAccountTransactionHashes } from '@/state/SmartAccountTransactionHashesState'
+import { useSimpleNftBalance } from '@/hooks/useSimpleNftBalance'
 
-const useSendMintNftUserOp = (
-  smartAccountClient?: KernelSmartAccountWithLocalAccountSigner,
-) => {
+const useSendMintNft = ({
+  smartAccountClient,
+  onSuccess,
+}: {
+  smartAccountClient?: KernelSmartAccountWithLocalAccountSigner
+  onSuccess: (result: Hex) => void
+}) => {
   const smartAccountAddress = smartAccountClient?.account?.address
   return useMutation({
     mutationKey: ['mintNft', smartAccountClient?.chain, smartAccountAddress],
@@ -41,44 +39,59 @@ const useSendMintNftUserOp = (
         return
       }
 
-      const mintCalldata = encodeFunctionData({
+      const transactionHash = await smartAccountClient.writeContract({
         abi: SimpleNftAbi,
+        address: simpleNftAddress,
         functionName: 'mintTo',
         args: [smartAccountAddress!],
       })
 
-      return await smartAccountClient.sendTransaction({
-        to: simpleNftAddress,
-        data: mintCalldata,
-      })
+      onSuccess(transactionHash)
+
+      return transactionHash
     },
   })
 }
 
 export const KernelPermissionlessCard = () => {
+  const { add } = useSmartAccountTransactionHashes()
+
   const {
     data: kernelSmartAccountClient,
     isLoading: isKernelSmartAccountClientLoading,
   } = useDefaultKernelSmartAccountClient()
 
+  const { refetch } = useSimpleNftBalance(
+    kernelSmartAccountClient?.account.address,
+  )
+
   const {
     mutate: mintNft,
-    isPending: isUserOpPending,
-    data: userOperationResult,
+    isPending: isTransactionPending,
     reset: resetSendMintNftUserOp,
-    error,
-  } = useSendMintNftUserOp(kernelSmartAccountClient)
+  } = useSendMintNft({
+    smartAccountClient: kernelSmartAccountClient,
+    onSuccess: (hash: Hex) => {
+      add({
+        chainId: kernelSmartAccountClient!.chain.id,
+        address: kernelSmartAccountClient!.account.address,
+        transactionHash: hash,
+      })
+      refetch()
+    },
+  })
 
-  console.log(error)
+  useWatchChainSwitch(() => {
+    resetSendMintNftUserOp()
+  })
+
   if (isKernelSmartAccountClientLoading || !kernelSmartAccountClient) {
     return <LoadingCard />
   }
   const smartAccountAddress = kernelSmartAccountClient.account.address
 
-  const isLoading = isUserOpPending
-  const loadingText = isUserOpPending
-    ? 'Sending user operation to bundler...'
-    : 'Waiting for user operation to be included...'
+  const isLoading = isTransactionPending
+  const loadingText = 'Sending user operation...'
 
   return (
     <Card className="w-[400px]">

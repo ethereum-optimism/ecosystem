@@ -5,9 +5,9 @@ import { Hex } from 'viem'
 
 export const CopiableHash = ({ hash, href }: { hash: Hex; href?: string }) => {
   return (
-    <div className="flex items-center">
+    <div className="flex items-center font-mono ">
       {href ? (
-        <a href={href} className="font-mono hover:opacity-70">
+        <a href={href} className="hover:opacity-70 font-mono ">
           {truncateHash(hash)}
         </a>
       ) : (
