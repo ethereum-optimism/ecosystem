@@ -16,6 +16,7 @@ import { Text } from '@eth-optimism/ui-components/src/components/ui/text'
 import { RiArrowDownSLine, RiUser3Fill } from '@remixicon/react'
 import { trackSignInClick } from '@/app/event-tracking/mixpanel'
 import { routes } from '@/app/constants'
+import { useFeature } from '@/app/hooks/useFeatureFlag'
 
 const SignInButton = () => {
   const { login, logout, authenticated } = usePrivy()
@@ -35,11 +36,11 @@ type AccountDropdownProps = {
 }
 
 const AccountDropdown = ({ logout }: AccountDropdownProps) => {
+  const shouldShowSettings = useFeature('enable_console_settings')
+
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
   const dropdownItemClasses =
     'flex items-center gap-2 cursor-pointer h-12 px-4 rounded-none text-base text-secondary-foreground'
-
-  const shouldShowSettings = process.env.NEXT_PUBLIC_ENABLE_SETTINGS === 'true'
 
   return (
     <DropdownMenu

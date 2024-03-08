@@ -12,6 +12,7 @@ import {
   SettingsCardTitle,
 } from '@/app/settings/components/SettingsCard'
 import { SettingsTabType, SettingsTab } from '@/app/settings/types'
+import { useFeature } from '@/app/hooks/useFeatureFlag'
 
 const tabs: Record<SettingsTabType, SettingsTab> = {
   account: {
@@ -55,7 +56,7 @@ export default function SettingsLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
-  const shouldShowSettings = process.env.NEXT_PUBLIC_ENABLE_SETTINGS === 'true'
+  const shouldShowSettings = useFeature('enable_console_settings')
   const pathname = usePathname()
   const tab = useMemo(() => getActiveTab(pathname), [pathname])
 

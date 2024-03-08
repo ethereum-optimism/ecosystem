@@ -135,9 +135,12 @@ importers:
       '@eth-optimism/ui-components':
         specifier: '*'
         version: link:../../packages/ui-components
+      '@growthbook/growthbook-react':
+        specifier: ^0.24.0
+        version: 0.24.0(react@18.2.0)
       '@privy-io/react-auth':
         specifier: ^1.54.3
-        version: 1.54.3(@babel/core@7.24.0)(@types/react@18.2.47)(react-dom@18.2.0)(react-is@18.2.0)(react@18.2.0)(typescript@5.3.2)
+        version: 1.54.3(@babel/core@7.24.0)(@types/react@18.2.47)(react-dom@18.2.0)(react-is@18.2.0)(react@18.2.0)(typescript@5.3.2)(zod@3.22.4)
       '@remixicon/react':
         specifier: ^4.1.1
         version: 4.1.1(react@18.2.0)
@@ -168,6 +171,9 @@ importers:
       tailwind-merge:
         specifier: ^2.1.0
         version: 2.1.0
+      zod:
+        specifier: ^3.22.4
+        version: 3.22.4
     devDependencies:
       '@types/mixpanel-browser':
         specifier: ^2.49.0
@@ -304,7 +310,7 @@ importers:
         version: 0.2.4(@types/node@20.10.0)(typescript@5.3.2)(viem@1.19.9)
       viem:
         specifier: ^1.19.9
-        version: 1.19.9(typescript@5.3.2)
+        version: 1.19.9(typescript@5.3.2)(zod@3.22.4)
     devDependencies:
       '@types/node':
         specifier: ^20.10.0
@@ -503,7 +509,7 @@ importers:
     devDependencies:
       tsup:
         specifier: ^8.0.1
-        version: 8.0.1(postcss@8.4.33)(typescript@5.3.2)
+        version: 8.0.1(ts-node@10.9.1)(typescript@5.3.2)
       typescript:
         specifier: ^5.2.2
         version: 5.3.2
@@ -540,7 +546,7 @@ importers:
     devDependencies:
       '@eth-optimism/superchain-registry':
         specifier: github:ethereum-optimism/superchain-registry
-        version: github.com/ethereum-optimism/superchain-registry/46f8c2f74debd4a40facf5686b2238cf7093023c
+        version: github.com/ethereum-optimism/superchain-registry/b74ab7c9f693ce375917bbc67d1cfb5d680ede42
       '@tanstack/react-query':
         specifier: ^5.10.0
         version: 5.10.0(react@18.2.0)
@@ -4488,7 +4494,7 @@ packages:
       '@wagmi/core': 2.0.2(@types/react@18.2.37)(react@18.2.0)(typescript@5.3.2)(viem@2.0.3)
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
-      viem: 1.19.9(typescript@5.3.2)
+      viem: 1.19.9(typescript@5.3.2)(zod@3.22.4)
       wagmi: 2.0.3(@tanstack/react-query@5.10.0)(@types/react@18.2.37)(react-dom@18.2.0)(react-native@0.72.7)(react@18.2.0)(typescript@5.3.2)(viem@2.0.3)
     transitivePeerDependencies:
       - bufferutil
@@ -4514,7 +4520,7 @@ packages:
       change-case: 4.1.2
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
-      viem: 1.19.9(typescript@5.3.2)
+      viem: 1.19.9(typescript@5.3.2)(zod@3.22.4)
       wagmi: 2.0.3(@tanstack/react-query@5.10.0)(@types/react@18.2.37)(react-dom@18.2.0)(react-native@0.72.7)(react@18.2.0)(typescript@5.3.2)(viem@2.0.3)
     transitivePeerDependencies:
       - bufferutil
@@ -4895,6 +4901,23 @@ packages:
 
   /@floating-ui/utils@0.1.6:
     resolution: {integrity: sha512-OfX7E2oUDYxtBvsuS4e/jSn4Q9Qb6DzgeYtsAdkPZ47znpoNsMgZw0+tVijiv3uGNR6dgNlty6r9rzIzHjtd/A==}
+    dev: false
+
+  /@growthbook/growthbook-react@0.24.0(react@18.2.0):
+    resolution: {integrity: sha512-7Nz8FIc5PPlCXbRzv9GyY/86hmDytJ84ZCtLBuOt/Bna/MsuJlh/TXUg6eF4OFeRN039FhgyapBJ4hC4Mqt+Qw==}
+    engines: {node: '>=10'}
+    peerDependencies:
+      react: ^16.8.0-0 || ^17.0.0-0 || ^18.0.0-0
+    dependencies:
+      '@growthbook/growthbook': 0.34.0
+      react: 18.2.0
+    dev: false
+
+  /@growthbook/growthbook@0.34.0:
+    resolution: {integrity: sha512-3K5JL8QftX7y77EpieYg9anXVYb6+ZafTsrNCWp0HOdmtf4lxHOzCUYwuYDaS3bvmaeIUWJ5hYcOTc6WhNbfJw==}
+    engines: {node: '>=10'}
+    dependencies:
+      dom-mutator: 0.6.0
     dev: false
 
   /@hapi/hoek@9.3.0:
@@ -6407,7 +6430,7 @@ packages:
       retry: 0.13.1
       stacktrace-parser: 0.1.10
       typescript: 5.3.2
-      viem: 1.19.9(typescript@5.3.2)
+      viem: 1.19.9(typescript@5.3.2)(zod@3.22.4)
       vite: 5.0.12(@types/node@20.10.0)
       vite-node: 1.1.3(@types/node@20.10.0)
       vite-tsconfig-paths: 4.3.1(typescript@5.3.2)(vite@5.0.12)
@@ -6428,7 +6451,7 @@ packages:
       - zod
     dev: false
 
-  /@privy-io/react-auth@1.54.3(@babel/core@7.24.0)(@types/react@18.2.47)(react-dom@18.2.0)(react-is@18.2.0)(react@18.2.0)(typescript@5.3.2):
+  /@privy-io/react-auth@1.54.3(@babel/core@7.24.0)(@types/react@18.2.47)(react-dom@18.2.0)(react-is@18.2.0)(react@18.2.0)(typescript@5.3.2)(zod@3.22.4):
     resolution: {integrity: sha512-Wxp+RRvGaG6U2FSPTyxji95l8DU+7FY38JCLGC6BSzmnD0xwDR2QFxpQdt9pftYyhd/UcCY89MU9DiGWPc+mUQ==}
     peerDependencies:
       react: ^18
@@ -6461,7 +6484,7 @@ packages:
       libphonenumber-js: 1.10.54
       lokijs: 1.5.12
       md5: 2.3.0
-      mipd: 0.0.5(typescript@5.3.2)
+      mipd: 0.0.5(typescript@5.3.2)(zod@3.22.4)
       ofetch: 1.3.3
       pino-pretty: 10.3.1
       qrcode: 1.5.3
@@ -8220,7 +8243,7 @@ packages:
     resolution: {integrity: sha512-XJbEPuaVc7b9n23MqlF6c+ToYIS3f7P2Sel8f3cSBQ9WORE4xrSuvhMpK9fDSFqJ7by/brc+rmJR/5HViRr0/w==}
     dependencies:
       '@safe-global/safe-gateway-typescript-sdk': 3.13.2
-      viem: 1.19.9(typescript@5.3.2)
+      viem: 1.19.9(typescript@5.3.2)(zod@3.22.4)
     transitivePeerDependencies:
       - bufferutil
       - typescript
@@ -9624,7 +9647,7 @@ packages:
         optional: true
     dependencies:
       eventemitter3: 5.0.1
-      mipd: 0.0.5(typescript@5.3.2)
+      mipd: 0.0.5(typescript@5.3.2)(zod@3.22.4)
       typescript: 5.3.2
       viem: 2.0.3(typescript@5.3.2)
       zustand: 4.4.1(@types/react@18.2.37)(react@18.2.0)
@@ -9649,7 +9672,7 @@ packages:
         optional: true
     dependencies:
       eventemitter3: 5.0.1
-      mipd: 0.0.5(typescript@5.3.2)
+      mipd: 0.0.5(typescript@5.3.2)(zod@3.22.4)
       typescript: 5.3.2
       viem: 2.7.12(typescript@5.3.2)(zod@3.22.4)
       zustand: 4.4.1(@types/react@18.2.63)(immer@10.0.3)(react@18.2.0)
@@ -10198,7 +10221,7 @@ packages:
       zod: 3.22.4
     dev: false
 
-  /abitype@0.9.8(typescript@5.3.2):
+  /abitype@0.9.8(typescript@5.3.2)(zod@3.22.4):
     resolution: {integrity: sha512-puLifILdm+8sjyss4S+fsUN09obiT1g2YW6CtcQF+QDzxR0euzgEB29MZujC6zMk2a6SVmtttq1fc6+YFA7WYQ==}
     peerDependencies:
       typescript: '>=5.0.4'
@@ -10210,6 +10233,7 @@ packages:
         optional: true
     dependencies:
       typescript: 5.3.2
+      zod: 3.22.4
 
   /abitype@1.0.0(typescript@5.3.2)(zod@3.22.4):
     resolution: {integrity: sha512-NMeMah//6bJ56H5XRj8QCV4AwuW6hB6zqz2LnhhLdcWVQOsXki6/Pn3APeqxCma62nXIcmZWdu1DlHWS74umVQ==}
@@ -12239,6 +12263,11 @@ packages:
 
   /dom-accessibility-api@0.5.16:
     resolution: {integrity: sha512-X7BJ2yElsnOJ30pZF4uIIDfBEVgF4XEBxL9Bxhy6dnrm5hkzqmsWHGTiHqRiITNhMyFLyAiWndIJP7Z1NTteDg==}
+
+  /dom-mutator@0.6.0:
+    resolution: {integrity: sha512-iCt9o0aYfXMUkz/43ZOAUFQYotjGB+GNbYJiJdz4TgXkyToXbbRy5S6FbTp72lRBtfpUMwEc1KmpFEU4CZeoNg==}
+    engines: {node: '>=10'}
+    dev: false
 
   /dot-case@3.0.4:
     resolution: {integrity: sha512-Kv5nKlh6yRrdrGvxeJ2e5y2eRUpkUosIW4A2AS38zwSz27zu7ufDwQPi5Jhs3XAlGNetl3bmnGhQsMtkKJnj3w==}
@@ -16101,7 +16130,7 @@ packages:
       yallist: 4.0.0
     dev: false
 
-  /mipd@0.0.5(typescript@5.3.2):
+  /mipd@0.0.5(typescript@5.3.2)(zod@3.22.4):
     resolution: {integrity: sha512-gbKA784D2WKb5H/GtqEv+Ofd1S9Zj+Z/PGDIl1u1QAbswkxD28BQ5bSXQxkeBzPBABg1iDSbiwGG1XqlOxRspA==}
     peerDependencies:
       typescript: '>=5.0.4'
@@ -16110,7 +16139,7 @@ packages:
         optional: true
     dependencies:
       typescript: 5.3.2
-      viem: 1.19.9(typescript@5.3.2)
+      viem: 1.19.9(typescript@5.3.2)(zod@3.22.4)
     transitivePeerDependencies:
       - bufferutil
       - utf-8-validate
@@ -20259,7 +20288,7 @@ packages:
       - '@types/react-dom'
     dev: false
 
-  /viem@1.19.9(typescript@5.3.2):
+  /viem@1.19.9(typescript@5.3.2)(zod@3.22.4):
     resolution: {integrity: sha512-Sf9U2x4jU0S/FALqYypcspWOGene0NZyD470oUripNhE0Ta6uOE/OgE4toTDVfRxov8qw0JFinr/wPGxYE3+HQ==}
     peerDependencies:
       typescript: '>=5.0.4'
@@ -20272,7 +20301,7 @@ packages:
       '@noble/hashes': 1.3.2
       '@scure/bip32': 1.3.2
       '@scure/bip39': 1.2.1
-      abitype: 0.9.8(typescript@5.3.2)
+      abitype: 0.9.8(typescript@5.3.2)(zod@3.22.4)
       isows: 1.0.3(ws@8.13.0)
       typescript: 5.3.2
       ws: 8.13.0
@@ -21334,7 +21363,6 @@ packages:
 
   /zod@3.22.4:
     resolution: {integrity: sha512-iC+8Io04lddc+mVqQ9AZ7OQ2MrUKGN+oIQyq1vemgt46jwCwLfhq7/pwnBnNXXXZb8VTVLKwp9EDkx+ryxIWmg==}
-    dev: false
 
   /zustand@4.4.1(@types/react@18.2.37)(react@18.2.0):
     resolution: {integrity: sha512-QCPfstAS4EBiTQzlaGP1gmorkh/UL1Leaj2tdj+zZCZ/9bm0WS7sI2wnfD5lpOszFqWJ1DcPnGoY8RDL61uokw==}
@@ -21397,8 +21425,8 @@ packages:
       use-sync-external-store: 1.2.0(react@18.2.0)
     dev: false
 
-  github.com/ethereum-optimism/superchain-registry/46f8c2f74debd4a40facf5686b2238cf7093023c:
-    resolution: {tarball: https://codeload.github.com/ethereum-optimism/superchain-registry/tar.gz/46f8c2f74debd4a40facf5686b2238cf7093023c}
+  github.com/ethereum-optimism/superchain-registry/b74ab7c9f693ce375917bbc67d1cfb5d680ede42:
+    resolution: {tarball: https://codeload.github.com/ethereum-optimism/superchain-registry/tar.gz/b74ab7c9f693ce375917bbc67d1cfb5d680ede42}
     name: '@eth-optimism/superchain-registry'
     version: 0.0.1-alpha.1
     dev: true
