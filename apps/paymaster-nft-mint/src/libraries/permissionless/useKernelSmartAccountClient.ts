@@ -1,6 +1,8 @@
+import { config } from '@/config'
 import { useChainRpcConfig } from '@/hooks/useChainRpcConfig'
 import { useLocallyStoredPrivateKey } from '@/hooks/useLocallyStoredPrivateKey'
 import { useQuery } from '@tanstack/react-query'
+import { getPublicClient } from '@wagmi/core'
 import {
   ENTRYPOINT_ADDRESS_V06,
   createSmartAccountClient,
@@ -8,7 +10,7 @@ import {
 
 import { signerToEcdsaKernelSmartAccount } from 'permissionless/accounts'
 import { createPimlicoPaymasterClient } from 'permissionless/clients/pimlico'
-import { Chain, LocalAccount, createPublicClient, http } from 'viem'
+import { Chain, LocalAccount, PublicClient, http } from 'viem'
 import { privateKeyToAccount } from 'viem/accounts'
 
 const createKernelSmartAccountClient = async <T extends string = 'custom'>({
@@ -24,18 +26,20 @@ const createKernelSmartAccountClient = async <T extends string = 'custom'>({
   entrypointAddress: typeof ENTRYPOINT_ADDRESS_V06
   chain: Chain
 }) => {
+  const publicClient = getPublicClient(config, {
+    // @ts-expect-error TODO: restrict Chain type to only allow configured ones
+    chainId: chain.id,
+  })
+
   const paymasterClient = createPimlicoPaymasterClient({
     transport: http(paymasterRpcUrl),
     entryPoint: entrypointAddress,
   })
 
   const kernelAccount = await signerToEcdsaKernelSmartAccount(
-    createPublicClient({
-      transport: http(chain.rpcUrls.default.http[0]),
-      chain,
-    }),
+    publicClient as PublicClient,
     {
-      entryPoint: entrypointAddress, // global entrypoint
+      entryPoint: entrypointAddress,
       signer: signer,
     },
   )

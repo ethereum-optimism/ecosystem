@@ -24,6 +24,7 @@ import JSONPretty from 'react-json-pretty'
 import { Hex, parseAbiItem, parseEventLogs, TransactionReceipt } from 'viem'
 import { useGetUserOperationByHash } from '@/hooks/useGetUserOperationByHash'
 import { deepHexlify } from 'permissionless'
+import { useMemo } from 'react'
 
 const getUserOpHashFromTransactionLogs = (logs: TransactionReceipt['logs']) => {
   const parsedLogs = parseEventLogs({
@@ -67,8 +68,9 @@ const RecentUserOperationItem = ({
   const { data: transactionReceipt } = useTransactionReceipt({
     hash: transactionHash,
   })
-  const userOpHash = getUserOpHashFromTransactionLogs(
-    transactionReceipt?.logs || [],
+  const userOpHash = useMemo(
+    () => getUserOpHashFromTransactionLogs(transactionReceipt?.logs || []),
+    [transactionReceipt],
   )
   const { data: getUserOperationByHashResult } =
     useGetUserOperationByHash(userOpHash)

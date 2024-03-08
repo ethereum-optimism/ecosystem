@@ -26,6 +26,7 @@
     "react-json-pretty": "^2.2.0",
     "viem": "^2.7.20",
     "wagmi": "^2.5.7",
+    "zod": "^3.22.4",
     "zustand": "^4.5.2"
   },
   "devDependencies": {

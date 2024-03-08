@@ -1,3 +1,4 @@
+import { envVars } from '@/envVars'
 import { Chain, optimismSepolia, sepolia } from 'viem/chains'
 import { useChainId } from 'wagmi'
 
@@ -7,13 +8,13 @@ const aaRpcConfigByChainId: Record<
 > = {
   [sepolia.id]: {
     chain: sepolia,
-    paymasterRpcUrl: import.meta.env.VITE_PAYMASTER_RPC_URL_SEPOLIA!,
-    bundlerRpcUrl: import.meta.env.VITE_BUNDLER_RPC_URL_SEPOLIA!,
+    paymasterRpcUrl: envVars.VITE_PAYMASTER_RPC_URL_SEPOLIA,
+    bundlerRpcUrl: envVars.VITE_BUNDLER_RPC_URL_SEPOLIA,
   },
   [optimismSepolia.id]: {
     chain: optimismSepolia,
-    paymasterRpcUrl: import.meta.env.VITE_PAYMASTER_RPC_URL_OP_SEPOLIA!,
-    bundlerRpcUrl: import.meta.env.VITE_BUNDLER_RPC_URL_OP_SEPOLIA!,
+    paymasterRpcUrl: envVars.VITE_PAYMASTER_RPC_URL_OP_SEPOLIA,
+    bundlerRpcUrl: envVars.VITE_BUNDLER_RPC_URL_OP_SEPOLIA,
   },
 }
 
