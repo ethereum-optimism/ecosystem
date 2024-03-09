@@ -5,7 +5,7 @@ export type Route = {
 
 export type Routes = Record<string, Route>
 
-const routes: Routes = {
+export const routes: Routes = {
   CONSOLE: {
     path: '/',
     label: 'Console',
@@ -28,7 +28,7 @@ const routes: Routes = {
   },
 } as const satisfies Routes
 
-const externalRoutes: Routes = {
+export const externalRoutes: Routes = {
   // Support items
   DEV_FORUM: {
     path: 'https://github.com/ethereum-optimism/developers/discussions',
@@ -85,19 +85,85 @@ const externalRoutes: Routes = {
     label: 'Superchain Faucet',
   },
   RETRO_PGF: {
-    path: 'https://optimism.io/retropgf',
+    path: 'https://app.optimism.io/retropgf',
     label: 'Retro PGF',
+  },
+
+  // Misc links
+  SUPERCHAIN: {
+    path: 'https://optimism.io/superchain',
+    label: 'Superchain',
+  },
+  TERMS: {
+    path: 'https://optimism.io/terms',
+    label: 'Terms',
+  },
+  PRIVACY_POLICY: {
+    path: 'https://optimism.io/data-privacy-policy',
+    label: 'Privacy Policy',
+  },
+
+  // Build links
+  TESTNET_PAYMASTER_GITHUB: {
+    path: 'https://github.com/ethereum-optimism/ecosystem/tree/main/apps/paymaster-proxy',
+    label: 'Testnet paymaster',
+  },
+  LEARN_ABOUT_PAYMASTER: {
+    path: 'https://www.erc4337.io/docs/paymasters/introduction',
+    label: 'Learn about paymasters',
+  },
+  SUPERCHAIN_SAFE: {
+    path: 'https://safe.optimism.io/welcome',
+    label: 'Superchain Safe',
+  },
+
+  // Promo links
+  ALCHEMY_LEARN_MORE: {
+    path: 'https://www.alchemy.com/',
+    label: 'Learn about Alchemy',
+  },
+  ALCHEMY_SUBGRAPHS_LEARN_MORE: {
+    path: 'https://www.alchemy.com/subgraphs',
+    label: 'Learn about Subgraphs',
+  },
+  THIRDWEB_LEARN_MORE: {
+    path: 'https://thirdweb.com/community/startup-program',
+    label: 'Learn more',
+  },
+  GELATO_LEARN_MORE: {
+    path: 'https://share-eu1.hsforms.com/1kaQ2KRLYRym3mZNOF2aEVQ2bmmck',
+    label: 'Learn more',
+  },
+  QUICKNODE_LEARN_MORE: {
+    path: 'https://quicknode.notion.site/OP-Labs-x-QuickNode-f11ee23df47b4107a70c5cbfcb0b1e38',
+    label: 'Learn more',
   },
 }
 
-const supportItems = [
+export const forms = {
+  CONTACT_US: 'https://share.hsforms.com/1fvxLHGW9TQuxdGCmgSlRRgqoshb',
+  UX_REVIEW_TESTNET: 'https://share.hsforms.com/1bPQi4dwCTEGafybJi6yv8Aqoshb',
+  MAINNET_PAYMASTER: 'https://share.hsforms.com/1cbNWGorjSR2Dn_QLC-lHogqoshb',
+  MEGAPHONE: 'https://share.hsforms.com/1XHQ9Io_lT0-vf9nSVoUahQqoshb',
+  USER_FEEDBACK_MAINNET:
+    'https://share.hsforms.com/1nKIdgLNpQeqsocMP2qMrXAqoshb',
+  ALCHEMY_GROWTH:
+    'https://alchemyapi.typeform.com/to/Ka0tJ3oT?typeform-source=www.google.com#email=xxxxx',
+  ALCHEMY_SUBGRAPHS:
+    'https://alchemyapi.typeform.com/to/vJAnlTwy?typeform-source=www.alchemy.com',
+  THIRDWEB: 'https://share.hsforms.com/1WCgMOvmuQqmCjdEqtu1NdAea58c',
+  GELATO: 'https://share-eu1.hsforms.com/1kaQ2KRLYRym3mZNOF2aEVQ2bmmck',
+  QUICKNODE: 'https://quiknode.typeform.com/to/sWxlcYV4#cd=H7qNVcJb',
+}
+
+export const supportItems = [
   externalRoutes.DEV_FORUM,
   externalRoutes.FARCASTER,
   externalRoutes.DISCORD,
   externalRoutes.DAPP_EXAMPLES,
 ]
 
-const docsItems = [
+export const docsItems = [
   {
     ...externalRoutes.ETH_DOCS,
     logo: '/logos/eth-logo.png',
@@ -131,5 +197,3 @@ const docsItems = [
     logo: '/logos/zora-logo.png',
   },
 ]
-
-export { routes, externalRoutes, docsItems, supportItems }

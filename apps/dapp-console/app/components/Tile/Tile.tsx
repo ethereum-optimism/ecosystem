@@ -55,6 +55,7 @@ const Tile = ({
               'pb-1 flex-row items-start',
               icon && 'pr-0',
               image && 'pt-0',
+              !description && 'pb-6',
             )}
           >
             <Text as="span" className="text-base font-semibold flex-1">

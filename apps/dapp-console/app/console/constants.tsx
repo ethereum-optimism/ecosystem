@@ -2,6 +2,7 @@ import { Button } from '@eth-optimism/ui-components/src/components/ui/button'
 import { Text } from '@eth-optimism/ui-components/src/components/ui/text'
 import { DialogMetadata } from '@/app/console/useDialogContent'
 import { trackOfferEngaged } from '@/app/event-tracking/mixpanel'
+import { externalRoutes, forms } from '@/app/constants'
 
 function generatePrimaryButton(
   label: string,
@@ -10,7 +11,7 @@ function generatePrimaryButton(
 ): React.ReactNode {
   return (
     <Button asChild>
-      <a href={url} onClick={() => trackOfferEngaged(label)}>
+      <a href={url} onClick={() => trackOfferEngaged(label)} target="_blank">
         <Text as="span">{buttonText}</Text>
       </a>
     </Button>
@@ -22,16 +23,20 @@ export const testnetPaymasterMetadata: DialogMetadata = {
   label: 'Testnet Paymaster',
   title:
     'Get your testnet transactions sponsored to remove friction from your dapp experience',
-  description:
-    'Continue to Github for information on how to setup and use the Testnet Paymaster.',
+  description: (
+    <Text as="p">
+      Continue to Github for information on how to setup and use the Testnet
+      Paymaster.
+    </Text>
+  ),
   primaryButton: generatePrimaryButton(
     'Testnet Paymaster',
     'View on Github',
-    '',
+    externalRoutes.TESTNET_PAYMASTER_GITHUB.path,
   ),
   secondaryButton: (
     <Button asChild variant="secondary">
-      <a href="">
+      <a href={externalRoutes.LEARN_ABOUT_PAYMASTER.path} target="_blank">
         <Text as="span">Learn about paymasters</Text>
       </a>
     </Button>
@@ -42,20 +47,35 @@ export const uxReviewMetadata: DialogMetadata = {
   label: 'UX Review',
   title:
     'Get actionable feedback from Superchain pros to get your dapp ready for launch',
-  description:
-    'Technical builders from Superchain teams are standing by to review your dapp. Whether you’re building DeFi, DeSo, Infra, or anything else, we’ll connect you with people who get it.',
-  primaryButton: generatePrimaryButton('UX Review', 'Apply', ''),
+  description: (
+    <Text as="p">
+      Technical builders from Superchain teams are standing by to review your
+      dapp. Whether you’re building DeFi, DeSo, Infra, or anything else, we’ll
+      connect you with people who get it.
+    </Text>
+  ),
+
+  primaryButton: generatePrimaryButton(
+    'UX Review',
+    'Apply',
+    forms.UX_REVIEW_TESTNET,
+  ),
 }
 
 export const superchainSafeMetadata: DialogMetadata = {
   label: 'Superchain Safe',
   title: 'Get multisig support on any OP Chain in the Superchain with Safe',
-  description:
-    'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore.',
+  description: (
+    <Text as="p">
+      Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium
+      doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo
+      inventore.
+    </Text>
+  ),
   primaryButton: generatePrimaryButton(
     'Superchain Safe',
     'Get safe for Base or Optimism',
-    '',
+    externalRoutes.SUPERCHAIN_SAFE.path,
   ),
   secondaryButton: (
     <Button asChild variant="secondary">
@@ -71,21 +91,36 @@ export const deploymentRebateMetadata: DialogMetadata = {
   label: 'Deployment Rebate',
   title:
     'Launch on the Superchain and get your deployment costs covered up to $200',
-  description:
-    'Get your app up and running without having to worry about deployment fees.',
-  primaryButton: generatePrimaryButton('Deployment Rebate', 'Apply', ''),
+  description: (
+    <Text as="p">
+      Get your app up and running without having to worry about deployment fees.
+    </Text>
+  ),
+  primaryButton: (
+    <Button disabled>
+      <Text as="span">Coming soon</Text>
+    </Button>
+  ),
 }
 
 export const mainnetPaymasterMetadata: DialogMetadata = {
   label: 'Paymaster',
   title:
     'Get up to $500 in free gas for your users when you use the Superchain Paymaster',
-  description:
-    'Optimism will sponsor your mainnet transactions to help you attract users and grow your product.',
-  primaryButton: generatePrimaryButton('Paymaster', 'Join waitlist', ''),
+  description: (
+    <Text as="p">
+      Optimism will sponsor your mainnet transactions to help you attract users
+      and grow your product.
+    </Text>
+  ),
+  primaryButton: generatePrimaryButton(
+    'Paymaster',
+    'Join waitlist',
+    forms.MAINNET_PAYMASTER,
+  ),
   secondaryButton: (
     <Button asChild variant="secondary">
-      <a href="">
+      <a href={externalRoutes.LEARN_ABOUT_PAYMASTER.path} target="_blank">
         <Text as="span">Learn about paymasters</Text>
       </a>
     </Button>
@@ -95,80 +130,161 @@ export const mainnetPaymasterMetadata: DialogMetadata = {
 export const megaphoneMetadata: DialogMetadata = {
   label: 'Megaphone',
   title: 'Amplify your launch through Superchain marketing channels',
-  description:
-    'When you’re ready, Superchain teams will communicate your launch to audiences across X, Farcaster, and other marketing channels.',
-  primaryButton: generatePrimaryButton('Megaphone', 'Apply', ''),
+  description: (
+    <Text as="p">
+      When you’re ready, Superchain teams will communicate your launch to
+      audiences across X, Farcaster, and other marketing channels.
+    </Text>
+  ),
+  primaryButton: generatePrimaryButton('Megaphone', 'Apply', forms.MEGAPHONE),
 }
 
 export const userFeedbackMetadata: DialogMetadata = {
   label: 'User Feedback',
   title:
     'Get actionable feedback from Superchain contributors to improve your app',
-  description:
-    'Passionate contributors from Superchain communities, like Base and Optimism, are standing by to provide feedback on any topic.',
-  primaryButton: generatePrimaryButton('User Feedback', 'Apply', ''),
+  description: (
+    <Text as="p">
+      Passionate contributors from Superchain communities, like Base and
+      Optimism, are standing by to provide feedback on any topic.
+    </Text>
+  ),
+  primaryButton: generatePrimaryButton(
+    'User Feedback',
+    'Apply',
+    forms.USER_FEEDBACK_MAINNET,
+  ),
 }
 
 // Promo Section
-export const gelatoMetadata: DialogMetadata = {
-  label: 'Gelato',
-  title: 'Get $50/month in credits for up to 3 months',
-  description:
-    'Gelato is a protocol that automates smart contract executions on Ethereum. Use Gelato to automate your dapp and save on gas fees.',
-  bannerImage: '/banners/gelato-banner.png',
-  primaryButton: generatePrimaryButton('Gelato', 'Apply', ''),
+export const alchemyGrowthMetadata: DialogMetadata = {
+  label: 'Deals',
+  title: 'Get 2 months of Alchemy Growth tier for free',
+  description: (
+    <>
+      <Text as="p" className="mb-4">
+        Redeem Alchemy’s account abstraction partner benefits for two months of
+        free Growth tier ($100 value!). You’ll also get 50% reduced Gas Manager
+        Admin fees.
+      </Text>
+      <Text as="p" className="mb-1">
+        Details:
+      </Text>
+      <ul className="list-disc pl-4">
+        <li>You must have an Alchemy account with a credit card on file</li>
+        <li>Your dapp must be ERC-1271 compatible</li>
+      </ul>
+    </>
+  ),
+  bannerImage: '/banners/alchemy-banner.png',
+  primaryButton: generatePrimaryButton(
+    'Alchemy Growth',
+    'Apply',
+    forms.ALCHEMY_GROWTH,
+  ),
   secondaryButton: (
     <Button asChild variant="secondary">
-      <a href="">
-        <Text as="span">See offer details</Text>
+      <a href={externalRoutes.ALCHEMY_LEARN_MORE.path} target="_blank">
+        <Text as="span">{externalRoutes.ALCHEMY_LEARN_MORE.label}</Text>
       </a>
     </Button>
   ),
 }
 
-export const moralisMetadata: DialogMetadata = {
-  label: 'Moralis',
-  title: 'Get $50/month in credits for up to 3 months',
-  description:
-    'Moralis is a protocol that automates smart contract executions on Ethereum. Use Moralis to automate your dapp and save on gas fees.',
-  bannerImage: '/banners/moralis-banner.png',
-  primaryButton: generatePrimaryButton('Moralis', 'Apply', ''),
+export const alchemySubgraphMetadata: DialogMetadata = {
+  label: 'Deals',
+  title: 'Get 3 months of Alchemy Subgraphs for free ',
+  description: (
+    <Text as="p">
+      Migrate to Subgraphs by March 31, 2024 for 3 months free.
+    </Text>
+  ),
+  bannerImage: '/banners/alchemy-banner.png',
+  primaryButton: generatePrimaryButton(
+    'Alchemy Growth',
+    'Apply',
+    forms.ALCHEMY_SUBGRAPHS,
+  ),
   secondaryButton: (
     <Button asChild variant="secondary">
-      <a href="">
-        <Text as="span">See offer details</Text>
+      <a
+        href={externalRoutes.ALCHEMY_SUBGRAPHS_LEARN_MORE.path}
+        target="_blank"
+      >
+        <Text as="span">
+          {externalRoutes.ALCHEMY_SUBGRAPHS_LEARN_MORE.label}
+        </Text>
+      </a>
+    </Button>
+  ),
+}
+
+export const gelatoMetadata: DialogMetadata = {
+  label: 'Deals',
+  title: 'Get 30 days of VIP deployment support from Gelato',
+  description: (
+    <Text as="p">
+      To support Superchain builders, Gelato is offering 30-days of VIP
+      deployment support to help you integrate Gelato Web3 Services and
+      fast-track your development time.
+    </Text>
+  ),
+  bannerImage: '/banners/gelato-banner.png',
+  primaryButton: generatePrimaryButton('Gelato', 'Apply', forms.GELATO),
+  secondaryButton: (
+    <Button asChild variant="secondary">
+      <a href={externalRoutes.GELATO_LEARN_MORE.path} target="_blank">
+        <Text as="span">{externalRoutes.GELATO_LEARN_MORE.label}</Text>
       </a>
     </Button>
   ),
 }
 
 export const quicknodeMetadata: DialogMetadata = {
-  label: 'Quicknode',
-  title: 'Get $50/month in credits for up to 3 months',
-  description:
-    'Quicknode is a protocol that automates smart contract executions on Ethereum. Use Quicknode to automate your dapp and save on gas fees.',
+  label: 'Deals',
+  title:
+    'Get $50/month in credits for up to 3 months when you build on the Superchain',
+  description: (
+    <Text as="p">
+      With the QuickNode credit program, you can experiment with the platform
+      without having to worry about cost. You’ll receive $150 of credits over
+      the next three months.
+    </Text>
+  ),
   bannerImage: '/banners/quicknode-banner.png',
-  primaryButton: generatePrimaryButton('Quicknode', 'Apply', ''),
+  primaryButton: generatePrimaryButton('Quicknode', 'Apply', forms.QUICKNODE),
   secondaryButton: (
     <Button asChild variant="secondary">
-      <a href="">
-        <Text as="span">See offer details</Text>
+      <a href={externalRoutes.QUICKNODE_LEARN_MORE.path} target="_blank">
+        <Text as="span">{externalRoutes.QUICKNODE_LEARN_MORE.label}</Text>
       </a>
     </Button>
   ),
 }
 
 export const thirdWebMetadata: DialogMetadata = {
-  label: 'Third Web',
-  title: 'Get $50/month in credits for up to 3 months',
-  description:
-    'Third Web is a protocol that automates smart contract executions on Ethereum. Use Third Web to automate your dapp and save on gas fees.',
+  label: 'Deals',
+  title: 'Get 90 days of Thirdweb’s Growth plan and more for free',
+  description: (
+    <>
+      <Text as="p" className="mb-4">
+        Supercharge your dapp’s growth by using Thirdweb’s growth plan along
+        with an array of benefits including credits, prioritized support,
+        co-marketing opportunities, educational resources, ecosystem
+        connections, and more.
+      </Text>
+      <Text as="p">
+        Details: In the following form, write Dev Console when asked “how you
+        learned about the program”.
+      </Text>
+    </>
+  ),
   bannerImage: '/banners/thirdweb-banner.png',
-  primaryButton: generatePrimaryButton('Third Web', 'Apply', ''),
+  primaryButton: generatePrimaryButton('Third Web', 'Apply', forms.THIRDWEB),
   secondaryButton: (
     <Button asChild variant="secondary">
-      <a href="">
-        <Text as="span">See offer details</Text>
+      <a href={externalRoutes.THIRDWEB_LEARN_MORE.path} target="_blank">
+        <Text as="span">{externalRoutes.THIRDWEB_LEARN_MORE.label}</Text>
       </a>
     </Button>
   ),

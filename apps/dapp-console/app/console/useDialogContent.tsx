@@ -13,8 +13,9 @@ import {
   userFeedbackMetadata,
   gelatoMetadata,
   quicknodeMetadata,
-  moralisMetadata,
   thirdWebMetadata,
+  alchemyGrowthMetadata,
+  alchemySubgraphMetadata,
 } from '@/app/console/constants'
 import Image from 'next/image'
 import { DialogClose } from '@eth-optimism/ui-components/src/components/ui/dialog'
@@ -22,7 +23,7 @@ import { DialogClose } from '@eth-optimism/ui-components/src/components/ui/dialo
 export type DialogMetadata = {
   label: string
   title: string
-  description: string
+  description: React.ReactNode
   primaryButton: React.ReactNode
   secondaryButton?: React.ReactNode
   bannerImage?: string
@@ -65,9 +66,6 @@ const useDialogContent = () => {
   const deploymentRebateContent = useMemo(() => {
     return renderDialog({
       ...deploymentRebateMetadata,
-      primaryButton: !authenticated
-        ? loginButton('Sign in to apply')
-        : deploymentRebateMetadata.primaryButton,
     })
   }, [authenticated, login])
 
@@ -101,24 +99,45 @@ const useDialogContent = () => {
   const gelatoContent = useMemo(() => {
     return renderDialog({
       ...gelatoMetadata,
+      primaryButton: !authenticated
+        ? loginButton('Sign in to apply')
+        : gelatoMetadata.primaryButton,
+    })
+  }, [])
+
+  const alchemyGrowthContent = useMemo(() => {
+    return renderDialog({
+      ...alchemyGrowthMetadata,
+      primaryButton: !authenticated
+        ? loginButton('Sign in to apply')
+        : alchemyGrowthMetadata.primaryButton,
+    })
+  }, [])
+
+  const alchemySubgraphContent = useMemo(() => {
+    return renderDialog({
+      ...alchemySubgraphMetadata,
+      primaryButton: !authenticated
+        ? loginButton('Sign in to apply')
+        : alchemySubgraphMetadata.primaryButton,
     })
   }, [])
 
   const quicknodeContent = useMemo(() => {
     return renderDialog({
       ...quicknodeMetadata,
-    })
-  }, [])
-
-  const moralisContent = useMemo(() => {
-    return renderDialog({
-      ...moralisMetadata,
+      primaryButton: !authenticated
+        ? loginButton('Sign in to apply')
+        : quicknodeMetadata.primaryButton,
     })
   }, [])
 
   const thirdWebContent = useMemo(() => {
     return renderDialog({
       ...thirdWebMetadata,
+      primaryButton: !authenticated
+        ? loginButton('Sign in to apply')
+        : thirdWebMetadata.primaryButton,
     })
   }, [])
 
@@ -131,8 +150,9 @@ const useDialogContent = () => {
     megaphoneContent,
     userFeedbackContent,
     gelatoContent,
+    alchemyGrowthContent,
+    alchemySubgraphContent,
     quicknodeContent,
-    moralisContent,
     thirdWebContent,
   }
 }
@@ -156,9 +176,9 @@ const renderDialog = (dialogMetadata: DialogMetadata) => {
         <Text as="h3" className="text-lg font-semibold mb-2">
           {dialogMetadata.title}
         </Text>
-        <Text as="p" className="text-sm text-muted-foreground">
+        <div className="text-sm text-muted-foreground">
           {dialogMetadata.description}
-        </Text>
+        </div>
       </div>
       <div className="flex flex-col gap-2.5">
         {dialogMetadata.primaryButton}

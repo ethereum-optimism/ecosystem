@@ -13,6 +13,7 @@ import { LaunchSection } from '@/app/console/components/LaunchSection'
 import { PromotionsSection } from '@/app/console/components/PromotionsSection'
 import { SupportSection } from '@/app/console/components/SupportSection'
 import { FooterSection } from '@/app/console/components/FooterSection'
+import { externalRoutes } from '@/app/constants'
 
 export default function Page() {
   return (
@@ -22,19 +23,19 @@ export default function Page() {
         <CardHeader className="md:p-10 lg:p-16">
           <CardTitle>
             <Text as="span" className="text-4xl mb-2">
-              Dapp Developer Console
+              Superchain Developer Console
             </Text>
           </CardTitle>
           <CardDescription>
             <Text as="span" className="text-base mb-6">
               Tools to help you build, launch, and grow your dapp on the{' '}
               <a
-                href=""
+                href={externalRoutes.SUPERCHAIN.path}
                 target="_blank"
                 rel="noreferrer noopener"
                 className="text-accent-foreground font-bold"
               >
-                Superchain
+                {externalRoutes.SUPERCHAIN.label}
               </a>
             </Text>
           </CardDescription>
