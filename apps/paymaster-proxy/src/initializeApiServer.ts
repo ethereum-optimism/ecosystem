@@ -8,6 +8,7 @@ import type {
 } from 'express'
 import express from 'express'
 import type { Redis } from 'ioredis'
+import morgan from 'morgan'
 import { type Logger } from 'pino'
 
 import { getV1ApiRoute, V1_API_BASE_PATH } from '@/api/getV1ApiRoute'
@@ -28,6 +29,21 @@ export const initializeApiServer = async ({
   logger: Logger
 }): Promise<Express> => {
   const app = express()
+
+  app.use(
+    morgan('short', {
+      stream: {
+        write: (str: string) => {
+          logger.info(
+            {
+              log: str,
+            },
+            'server log',
+          )
+        },
+      },
+    }),
+  )
 
   // Allow all origins
   app.use(cors())
