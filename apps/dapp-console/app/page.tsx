@@ -1,3 +1,5 @@
+'use client'
+
 import {
   Card,
   CardContent,
@@ -13,6 +15,9 @@ import { LaunchSection } from '@/app/console/components/LaunchSection'
 import { PromotionsSection } from '@/app/console/components/PromotionsSection'
 import { SupportSection } from '@/app/console/components/SupportSection'
 import { FooterSection } from '@/app/console/components/FooterSection'
+import { externalRoutes } from '@/app/constants'
+import Image from 'next/image'
+import { useTheme } from 'next-themes'
 
 export default function Page() {
   return (
@@ -22,19 +27,19 @@ export default function Page() {
         <CardHeader className="md:p-10 lg:p-16">
           <CardTitle>
             <Text as="span" className="text-4xl mb-2">
-              Dapp Developer Console
+              Superchain Developer Console
             </Text>
           </CardTitle>
           <CardDescription>
             <Text as="span" className="text-base mb-6">
               Tools to help you build, launch, and grow your dapp on the{' '}
               <a
-                href=""
+                href={externalRoutes.SUPERCHAIN.path}
                 target="_blank"
                 rel="noreferrer noopener"
                 className="text-accent-foreground font-bold"
               >
-                Superchain
+                {externalRoutes.SUPERCHAIN.label}
               </a>
             </Text>
           </CardDescription>
@@ -55,5 +60,19 @@ export default function Page() {
 }
 
 const Banner = () => {
-  return <div className="absolute -inset-x-0 w-full h-80 bg-red-200" />
+  const { theme } = useTheme()
+  const bannerSrc =
+    theme === 'dark'
+      ? '/banners/console-dark.png'
+      : '/banners/console-light.png'
+
+  return (
+    <Image
+      className="absolute -inset-x-0 w-full h-80 object-cover object-top"
+      src={bannerSrc}
+      alt="Superchain Developer Console banner"
+      width={1920}
+      height={400}
+    />
+  )
 }

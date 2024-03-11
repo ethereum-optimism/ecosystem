@@ -37,7 +37,7 @@ const LaunchSection = () => {
                 trackCardClick('Deployment Rebate')
                 setDialogContent(deploymentRebateContent)
               }}
-              badge={<Badge>Featured</Badge>}
+              badge={<Badge variant="secondary">Coming soon</Badge>}
             />
           </DialogTrigger>
           <DialogTrigger asChild>

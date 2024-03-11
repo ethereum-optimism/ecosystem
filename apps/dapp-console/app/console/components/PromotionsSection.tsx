@@ -14,8 +14,13 @@ import { useState } from 'react'
 import { trackCardClick } from '@/app/event-tracking/mixpanel'
 
 const PromotionsSection = () => {
-  const { quicknodeContent, moralisContent, gelatoContent, thirdWebContent } =
-    useDialogContent()
+  const {
+    quicknodeContent,
+    gelatoContent,
+    thirdWebContent,
+    alchemyGrowthContent,
+    alchemySubgraphContent,
+  } = useDialogContent()
 
   const [dialogContent, setDialogContent] = useState<React.ReactNode>()
 
@@ -28,12 +33,47 @@ const PromotionsSection = () => {
         Special deals for Superchain Dapp Developers.
       </Text>
 
-      <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
         <Dialog>
           <DialogTrigger asChild>
             <Tile
-              title="Gelato"
-              description="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+              title="Get 2 months of Alchemy Growth tier for free"
+              onClick={() => {
+                trackCardClick('AlchemyGrowth') // will adding this add the tracking event?
+                setDialogContent(alchemyGrowthContent)
+              }}
+              variant="secondary"
+              image={
+                <Image
+                  src="/logos/alchemy-logo.png"
+                  alt="alchemy logo"
+                  width={64}
+                  height={64}
+                />
+              }
+            />
+          </DialogTrigger>
+          <DialogTrigger asChild>
+            <Tile
+              title="Get 3 months of Alchemy Subgraphs for free "
+              onClick={() => {
+                trackCardClick('AlchemySubgraphs') // will adding this add the tracking event?
+                setDialogContent(alchemySubgraphContent)
+              }}
+              variant="secondary"
+              image={
+                <Image
+                  src="/logos/alchemy-logo.png"
+                  alt="alchemy logo"
+                  width={64}
+                  height={64}
+                />
+              }
+            />
+          </DialogTrigger>
+          <DialogTrigger asChild>
+            <Tile
+              title="Get 30 days of VIP deployment support from Gelato"
               onClick={() => {
                 trackCardClick('Gelato')
                 setDialogContent(gelatoContent)
@@ -51,27 +91,7 @@ const PromotionsSection = () => {
           </DialogTrigger>
           <DialogTrigger asChild>
             <Tile
-              title="Moralis"
-              description="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-              onClick={() => {
-                trackCardClick('Moralis')
-                setDialogContent(moralisContent)
-              }}
-              variant="secondary"
-              image={
-                <Image
-                  src="/logos/moralis-logo.png"
-                  alt="Gelato logo"
-                  width={64}
-                  height={64}
-                />
-              }
-            />
-          </DialogTrigger>
-          <DialogTrigger asChild>
-            <Tile
-              title="QuickNode"
-              description="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+              title="Get 3 months of credits and support from Quicknode"
               onClick={() => {
                 trackCardClick('QuickNode')
                 setDialogContent(quicknodeContent)
@@ -89,8 +109,7 @@ const PromotionsSection = () => {
           </DialogTrigger>
           <DialogTrigger asChild>
             <Tile
-              title="ThirdWeb"
-              description="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+              title="Get 90 days of Thirdweb’s Growth plan and more for free"
               onClick={() => {
                 trackCardClick('ThirdWeb')
                 setDialogContent(thirdWebContent)

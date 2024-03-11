@@ -42,7 +42,7 @@ const Header = () => {
 const HeaderLogo = () => {
   return (
     <div className="flex items-center">
-      <Link href="/" className="flex flex-row">
+      <Link href="/" className="flex flex-row items-center">
         <Image
           src="/logos/op-superchain-logo.svg"
           alt="Superchain dapp developer logo"
@@ -54,7 +54,7 @@ const HeaderLogo = () => {
           className="h-4 mx-4 hidden md:block"
         />
         <Text as="span" className="tracking-widest font-medium hidden md:block">
-          DAPP DEVELOPER
+          DEVELOPER
         </Text>
       </Link>
     </div>

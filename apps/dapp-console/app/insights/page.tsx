@@ -2,6 +2,7 @@ import { Button } from '@eth-optimism/ui-components/src/components/ui/button'
 import { Card } from '@eth-optimism/ui-components/src/components/ui/card'
 import { Text } from '@eth-optimism/ui-components/src/components/ui/text'
 import { RiCompasses2Line } from '@remixicon/react'
+import { forms } from '@/app/constants'
 
 export default function Insights() {
   return (
@@ -16,8 +17,8 @@ export default function Insights() {
           What kind of content would be valuable to you?
         </Text>
         <Button variant="secondary" asChild>
-          <a href="">
-            <Text as="span">Let us know</Text>
+          <a href={forms.CONTACT_US} target="_blank" rel="noopener noreferrer">
+            <Text as="span">Contact us</Text>
           </a>
         </Button>
       </Card>
