@@ -1,3 +1,5 @@
+'use client'
+
 import {
   Card,
   CardContent,
@@ -14,6 +16,8 @@ import { PromotionsSection } from '@/app/console/components/PromotionsSection'
 import { SupportSection } from '@/app/console/components/SupportSection'
 import { FooterSection } from '@/app/console/components/FooterSection'
 import { externalRoutes } from '@/app/constants'
+import Image from 'next/image'
+import { useTheme } from 'next-themes'
 
 export default function Page() {
   return (
@@ -56,5 +60,19 @@ export default function Page() {
 }
 
 const Banner = () => {
-  return <div className="absolute -inset-x-0 w-full h-80 bg-red-200" />
+  const { theme } = useTheme()
+  const bannerSrc =
+    theme === 'dark'
+      ? '/banners/console-dark.png'
+      : '/banners/console-light.png'
+
+  return (
+    <Image
+      className="absolute -inset-x-0 w-full h-80 object-cover object-top"
+      src={bannerSrc}
+      alt="Superchain Developer Console banner"
+      width={1920}
+      height={400}
+    />
+  )
 }

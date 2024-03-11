@@ -105,7 +105,7 @@ export const externalRoutes: Routes = {
 
   // Build links
   TESTNET_PAYMASTER_GITHUB: {
-    path: 'https://github.com/ethereum-optimism/ecosystem/tree/main/apps/paymaster-proxy',
+    path: 'https://github.com/ethereum-optimism/ecosystem/tree/main/docs/superchain-paymaster',
     label: 'Testnet paymaster',
   },
   LEARN_ABOUT_PAYMASTER: {
