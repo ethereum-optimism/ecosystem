@@ -4,7 +4,6 @@ import { Address, Chain, Client, Transport, createClient, http } from 'viem'
 
 const superchainPaymasterClientActions = (client: Client) => {
   const clientAdapter = client as SuperchainPaymasterClient
-
   return {
     sponsorUserOperation: async (
       request: UserOperationRequest,

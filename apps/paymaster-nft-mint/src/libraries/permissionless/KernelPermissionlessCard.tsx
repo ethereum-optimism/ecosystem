@@ -8,8 +8,7 @@ import {
   CardTitle,
 } from '@eth-optimism/ui-components'
 
-import { Hex } from 'viem'
-import { SimpleNftAbi } from '@/abis/SimpleNftAbi'
+import { Hex, parseAbiItem } from 'viem'
 import { simpleNftAddress } from '@/constants/addresses'
 import { LoadingCard } from '@/components/LoadingCard'
 import { SimpleNftBalance } from '@/components/SimpleNftBalance'
@@ -40,10 +39,9 @@ const useSendMintNft = ({
       }
 
       const transactionHash = await smartAccountClient.writeContract({
-        abi: SimpleNftAbi,
+        abi: [parseAbiItem('function mint() returns (uint256)')],
         address: simpleNftAddress,
-        functionName: 'mintTo',
-        args: [smartAccountAddress!],
+        functionName: 'mint',
       })
 
       onSuccess(transactionHash)

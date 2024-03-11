@@ -8,11 +8,13 @@ import { Chain } from 'viem'
 
 export const useModularAccountClientWithPaymaster = ({
   signer,
+  rpcUrl,
   paymasterRpcUrl,
   bundlerRpcUrl,
   chain,
 }: {
   signer: SmartAccountSigner
+  rpcUrl: string
   paymasterRpcUrl: string
   bundlerRpcUrl: string
   chain: Chain
@@ -28,6 +30,7 @@ export const useModularAccountClientWithPaymaster = ({
     queryFn: () =>
       createModularAccountClientWithPaymaster({
         signer,
+        rpcUrl,
         paymasterRpcUrl,
         bundlerRpcUrl,
         chain,
@@ -40,10 +43,11 @@ export const useModularAccountClientWithPaymaster = ({
 export const useDefaultModularAccountClientWithPaymaster = () => {
   const privateKey = useLocallyStoredPrivateKey()
 
-  const { chain, paymasterRpcUrl, bundlerRpcUrl } = useChainRpcConfig()
+  const { chain, rpcUrl, paymasterRpcUrl, bundlerRpcUrl } = useChainRpcConfig()
 
   return useModularAccountClientWithPaymaster({
     signer: LocalAccountSigner.privateKeyToAccountSigner(privateKey),
+    rpcUrl,
     paymasterRpcUrl,
     bundlerRpcUrl,
     chain,

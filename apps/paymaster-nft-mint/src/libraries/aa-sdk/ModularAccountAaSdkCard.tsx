@@ -9,8 +9,7 @@ import {
 } from '@eth-optimism/ui-components'
 
 import { SendUserOperationResult } from '@alchemy/aa-core'
-import { Hex, encodeFunctionData } from 'viem'
-import { SimpleNftAbi } from '@/abis/SimpleNftAbi'
+import { Hex, encodeFunctionData, parseAbiItem } from 'viem'
 import { useDefaultModularAccountClientWithPaymaster } from '@/libraries/aa-sdk/useModularAccountClientWithPaymaster'
 import { simpleNftAddress } from '@/constants/addresses'
 import { LoadingCard } from '@/components/LoadingCard'
@@ -39,9 +38,8 @@ const useSendMintNftUserOp = (
       }
 
       const mintCalldata = encodeFunctionData({
-        abi: SimpleNftAbi,
-        functionName: 'mintTo',
-        args: [smartAccountClient.getAddress()],
+        abi: [parseAbiItem('function mint() returns (uint256)')],
+        functionName: 'mint',
       })
 
       return await smartAccountClient.sendUserOperation({

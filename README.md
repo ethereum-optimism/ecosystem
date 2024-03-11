@@ -34,7 +34,7 @@ Governance discussion can also be found on the [Optimism Governance Forum](https
 │   ├── <a href="./apps/dapp-console">dapp-console</a>: Dapp console frontend app
 │   ├── <a href="./apps/dapp-console-api">dapp-console-api</a>: Dapp console backend api
 │   ├── <a href="./apps/event-log-indexer">event-log-indexer</a>: Indexer app
-│   ├── <a href="./apps/paymaster-nft-mint">event-log-indexer</a>: Nft mint + paymaster example app
+│   ├── <a href="./apps/paymaster-nft-mint">paymaster-nft-mint</a>: Nft mint + paymaster example app
 │   ├── <a href="./apps/paymaster-proxy">paymaster-proxy</a>: Paymaster proxy service
 ├── <a href="./packages">packages</a>
 │   ├── <a href="./packages/api-plugin">api-plugin</a>: Nx generators for api apps
