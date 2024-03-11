@@ -52,6 +52,8 @@ This endpoint returns gas estimation, fee estimation, and paymaster signature fo
 
 **Response**
 
+Include the returned fields in your user operation to send to a bundler.
+
 ```typescript
 {
 	jsonrpc: "2.0",
@@ -155,4 +157,15 @@ Only `sender`, `nonce`, `initCode`, `callData`, `signature` are required in the 
 
 - Mainnet support
 - Entrypoint v0.7.0 support
-- ERC-20 paymasters: pay for gas with ERC20 tokens
+
+## Contact us
+
+If you're
+
+- using smart accounts in your dapp
+- bulding smart accounts
+- building account abstraction tooling / infrastructure
+- want to chat about your project
+- have questions
+
+reach out to us [here](https://share.hsforms.com/1fvxLHGW9TQuxdGCmgSlRRgqoshb)!
