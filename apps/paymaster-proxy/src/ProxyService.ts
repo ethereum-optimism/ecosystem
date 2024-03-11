@@ -1,6 +1,6 @@
 import type { Express } from 'express'
 import { Redis } from 'ioredis'
-import pino from 'pino'
+import pino, { type Logger } from 'pino'
 import { optimismSepolia, sepolia } from 'viem/chains'
 
 import { envVars } from '@/envVars'
@@ -13,9 +13,11 @@ const HOST = '0.0.0.0'
 
 export class ProxyService {
   private readonly apiServer: Express
+  private readonly logger: Logger
 
-  constructor(apiServer: Express) {
+  constructor(apiServer: Express, logger: Logger) {
     this.apiServer = apiServer
+    this.logger = logger
   }
 
   static async init() {
@@ -45,12 +47,12 @@ export class ProxyService {
       }),
     })
 
-    return new ProxyService(apiServer)
+    return new ProxyService(apiServer, logger)
   }
 
   async run() {
     this.apiServer.listen(envVars.PORT, HOST, () => {
-      console.log(`API server listening at http://${HOST}:${envVars.PORT}`)
+      this.logger.info(`API server listening at http://${HOST}:${envVars.PORT}`)
     })
   }
 }
