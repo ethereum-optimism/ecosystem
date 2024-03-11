@@ -136,7 +136,7 @@ export const mainnetPaymasterMetadata: DialogMetadata = {
       <a
         href={externalRoutes.LEARN_ABOUT_PAYMASTER.path}
         target="_blank"
-        ref="noopener noreferrer"
+        rel="noopener noreferrer"
       >
         <Text as="span">Learn about paymasters</Text>
       </a>
