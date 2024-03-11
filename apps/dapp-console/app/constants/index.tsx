@@ -117,7 +117,7 @@ export const externalRoutes: Routes = {
     label: 'Superchain Safe',
   },
   SUPERCHAIN_SAFE_OTHER: {
-    path: 'https://app.safe.global/welcome/',
+    path: 'https://app.safe.global/welcome/accounts',
     label: 'Superchain Safe',
   },
 
@@ -135,7 +135,7 @@ export const externalRoutes: Routes = {
     label: 'Learn more',
   },
   GELATO_LEARN_MORE: {
-    path: 'https://share-eu1.hsforms.com/1kaQ2KRLYRym3mZNOF2aEVQ2bmmck',
+    path: 'https://docs.google.com/document/d/1ewcG2FIjSwhWlgXngaKJm2J955_bjVZ9PHhuyi19uuQ',
     label: 'Learn more',
   },
   QUICKNODE_LEARN_MORE: {

@@ -103,7 +103,7 @@ const useDialogContent = () => {
         ? loginButton('Sign in to apply')
         : gelatoMetadata.primaryButton,
     })
-  }, [])
+  }, [authenticated, login])
 
   const alchemyGrowthContent = useMemo(() => {
     return renderDialog({
@@ -112,7 +112,7 @@ const useDialogContent = () => {
         ? loginButton('Sign in to apply')
         : alchemyGrowthMetadata.primaryButton,
     })
-  }, [])
+  }, [authenticated, login])
 
   const alchemySubgraphContent = useMemo(() => {
     return renderDialog({
@@ -121,7 +121,7 @@ const useDialogContent = () => {
         ? loginButton('Sign in to apply')
         : alchemySubgraphMetadata.primaryButton,
     })
-  }, [])
+  }, [authenticated, login])
 
   const quicknodeContent = useMemo(() => {
     return renderDialog({
@@ -130,7 +130,7 @@ const useDialogContent = () => {
         ? loginButton('Sign in to apply')
         : quicknodeMetadata.primaryButton,
     })
-  }, [])
+  }, [authenticated, login])
 
   const thirdWebContent = useMemo(() => {
     return renderDialog({
@@ -139,7 +139,7 @@ const useDialogContent = () => {
         ? loginButton('Sign in to apply')
         : thirdWebMetadata.primaryButton,
     })
-  }, [])
+  }, [authenticated, login])
 
   return {
     testnetPaymasterContent,
