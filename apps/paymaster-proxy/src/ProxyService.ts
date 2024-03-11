@@ -1,6 +1,6 @@
 import type { Express } from 'express'
 import { Redis } from 'ioredis'
-import pino, { Logger } from 'pino'
+import pino, { type Logger } from 'pino'
 import { optimismSepolia, sepolia } from 'viem/chains'
 
 import { envVars } from '@/envVars'
