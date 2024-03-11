@@ -1,7 +1,7 @@
 import type { Express } from 'express'
 import { Redis } from 'ioredis'
 import pino, { type Logger } from 'pino'
-import { optimismSepolia, sepolia } from 'viem/chains'
+import { baseSepolia, optimismSepolia, sepolia } from 'viem/chains'
 
 import { envVars } from '@/envVars'
 import { initializeApiServer } from '@/initializeApiServer'
@@ -35,6 +35,11 @@ export class ProxyService {
         chain: optimismSepolia,
         rpcUrl: envVars.ALCHEMY_RPC_URL_OP_SEPOLIA,
         policyId: envVars.ALCHEMY_GAS_MANAGER_POLICY_ID_OP_SEPOLIA,
+      }),
+      getAlchemyPaymasterConfig({
+        chain: baseSepolia,
+        rpcUrl: envVars.ALCHEMY_RPC_URL_BASE_SEPOLIA,
+        policyId: envVars.ALCHEMY_GAS_MANAGER_POLICY_ID_BASE_SEPOLIA,
       }),
     ] as const satisfies PaymasterConfig[]
 
