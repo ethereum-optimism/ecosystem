@@ -30,8 +30,8 @@ export const testnetPaymasterMetadata: DialogMetadata = {
     'Get your testnet transactions sponsored to remove friction from your dapp experience',
   description: (
     <Text as="p">
-      Continue to Github for information on how to setup and use the Testnet
-      Paymaster.
+      Testnet Paymaster supports dapps on OP Mainnet, Base, Fraxtal, and Zora.
+      Continue to Github for information on setup.
     </Text>
   ),
   primaryButton: generatePrimaryButton(
@@ -76,9 +76,8 @@ export const superchainSafeMetadata: DialogMetadata = {
   title: 'Get multisig support on any OP Chain in the Superchain with Safe',
   description: (
     <Text as="p">
-      Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium
-      doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo
-      inventore.
+      Superchain Safe provides an interface for multsig custody and asset
+      management—for dapps across the Superchain.
     </Text>
   ),
   primaryButton: generatePrimaryButton(
@@ -87,7 +86,7 @@ export const superchainSafeMetadata: DialogMetadata = {
     externalRoutes.SUPERCHAIN_SAFE_OP.path,
   ),
   secondaryButton: (
-    <Button asChild variant="secondary">
+    <Button asChild>
       <a
         href={externalRoutes.SUPERCHAIN_SAFE_OTHER.path}
         target="_blank"
