@@ -112,8 +112,12 @@ export const externalRoutes: Routes = {
     path: 'https://www.erc4337.io/docs/paymasters/introduction',
     label: 'Learn about paymasters',
   },
-  SUPERCHAIN_SAFE: {
+  SUPERCHAIN_SAFE_OP: {
     path: 'https://safe.optimism.io/welcome',
+    label: 'Superchain Safe',
+  },
+  SUPERCHAIN_SAFE_OTHER: {
+    path: 'https://app.safe.global/welcome/',
     label: 'Superchain Safe',
   },
 

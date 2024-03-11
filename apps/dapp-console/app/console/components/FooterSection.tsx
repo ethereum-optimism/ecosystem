@@ -17,7 +17,7 @@ const FooterSection = () => {
         </Text>
       </div>
       <Button variant="secondary" asChild>
-        <a href={forms.CONTACT_US} target="_blank">
+        <a href={forms.CONTACT_US} target="_blank" rel="noopener noreferrer">
           <Text as="span">Contact us</Text>
         </a>
       </Button>

@@ -11,7 +11,12 @@ function generatePrimaryButton(
 ): React.ReactNode {
   return (
     <Button asChild>
-      <a href={url} onClick={() => trackOfferEngaged(label)} target="_blank">
+      <a
+        href={url}
+        onClick={() => trackOfferEngaged(label)}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
         <Text as="span">{buttonText}</Text>
       </a>
     </Button>
@@ -36,7 +41,11 @@ export const testnetPaymasterMetadata: DialogMetadata = {
   ),
   secondaryButton: (
     <Button asChild variant="secondary">
-      <a href={externalRoutes.LEARN_ABOUT_PAYMASTER.path} target="_blank">
+      <a
+        href={externalRoutes.LEARN_ABOUT_PAYMASTER.path}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
         <Text as="span">Learn about paymasters</Text>
       </a>
     </Button>
@@ -75,11 +84,15 @@ export const superchainSafeMetadata: DialogMetadata = {
   primaryButton: generatePrimaryButton(
     'Superchain Safe',
     'Get safe for Base or Optimism',
-    externalRoutes.SUPERCHAIN_SAFE.path,
+    externalRoutes.SUPERCHAIN_SAFE_OP.path,
   ),
   secondaryButton: (
     <Button asChild variant="secondary">
-      <a href="">
+      <a
+        href={externalRoutes.SUPERCHAIN_SAFE_OTHER.path}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
         <Text as="span">Get safe for any other chain</Text>
       </a>
     </Button>
@@ -120,7 +133,11 @@ export const mainnetPaymasterMetadata: DialogMetadata = {
   ),
   secondaryButton: (
     <Button asChild variant="secondary">
-      <a href={externalRoutes.LEARN_ABOUT_PAYMASTER.path} target="_blank">
+      <a
+        href={externalRoutes.LEARN_ABOUT_PAYMASTER.path}
+        target="_blank"
+        ref="noopener noreferrer"
+      >
         <Text as="span">Learn about paymasters</Text>
       </a>
     </Button>
@@ -184,7 +201,11 @@ export const alchemyGrowthMetadata: DialogMetadata = {
   ),
   secondaryButton: (
     <Button asChild variant="secondary">
-      <a href={externalRoutes.ALCHEMY_LEARN_MORE.path} target="_blank">
+      <a
+        href={externalRoutes.ALCHEMY_LEARN_MORE.path}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
         <Text as="span">{externalRoutes.ALCHEMY_LEARN_MORE.label}</Text>
       </a>
     </Button>
@@ -210,6 +231,7 @@ export const alchemySubgraphMetadata: DialogMetadata = {
       <a
         href={externalRoutes.ALCHEMY_SUBGRAPHS_LEARN_MORE.path}
         target="_blank"
+        rel="noopener noreferrer"
       >
         <Text as="span">
           {externalRoutes.ALCHEMY_SUBGRAPHS_LEARN_MORE.label}
@@ -233,7 +255,11 @@ export const gelatoMetadata: DialogMetadata = {
   primaryButton: generatePrimaryButton('Gelato', 'Apply', forms.GELATO),
   secondaryButton: (
     <Button asChild variant="secondary">
-      <a href={externalRoutes.GELATO_LEARN_MORE.path} target="_blank">
+      <a
+        href={externalRoutes.GELATO_LEARN_MORE.path}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
         <Text as="span">{externalRoutes.GELATO_LEARN_MORE.label}</Text>
       </a>
     </Button>
@@ -255,7 +281,11 @@ export const quicknodeMetadata: DialogMetadata = {
   primaryButton: generatePrimaryButton('Quicknode', 'Apply', forms.QUICKNODE),
   secondaryButton: (
     <Button asChild variant="secondary">
-      <a href={externalRoutes.QUICKNODE_LEARN_MORE.path} target="_blank">
+      <a
+        href={externalRoutes.QUICKNODE_LEARN_MORE.path}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
         <Text as="span">{externalRoutes.QUICKNODE_LEARN_MORE.label}</Text>
       </a>
     </Button>
@@ -283,7 +313,11 @@ export const thirdWebMetadata: DialogMetadata = {
   primaryButton: generatePrimaryButton('Third Web', 'Apply', forms.THIRDWEB),
   secondaryButton: (
     <Button asChild variant="secondary">
-      <a href={externalRoutes.THIRDWEB_LEARN_MORE.path} target="_blank">
+      <a
+        href={externalRoutes.THIRDWEB_LEARN_MORE.path}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
         <Text as="span">{externalRoutes.THIRDWEB_LEARN_MORE.label}</Text>
       </a>
     </Button>
