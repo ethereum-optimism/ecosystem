@@ -3,6 +3,7 @@ import { Card } from '@eth-optimism/ui-components/src/components/ui/card'
 import { Text } from '@eth-optimism/ui-components/src/components/ui/text'
 import { RiCompasses2Line } from '@remixicon/react'
 import { forms } from '@/app/constants'
+import { Banner } from '@/app/components/Banner'
 
 export default function Insights() {
   return (
@@ -24,8 +25,4 @@ export default function Insights() {
       </Card>
     </main>
   )
-}
-
-const Banner = () => {
-  return <div className="absolute -inset-x-0 w-full h-80 bg-red-200" />
 }
