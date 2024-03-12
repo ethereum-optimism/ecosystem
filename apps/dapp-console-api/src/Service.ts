@@ -19,14 +19,17 @@ import { ApiV0, Middleware } from './api'
 import { AdminApi } from './api/AdminApi'
 import { ensureAdmin } from './auth'
 import { corsAllowlist, envVars } from './constants'
+import { connectToDatabase, runMigrations } from './db'
 import { metrics } from './monitoring/metrics'
 import { Trpc } from './Trpc'
+import { retryWithBackoff } from './utils'
 
 const API_PATH = '/api'
 
 const HOST = '0.0.0.0'
 
 export class Service {
+  private static readonly LOG_TAG = '[DappConsoleApiService]'
   /**
    * App server.
    */
@@ -86,6 +89,17 @@ export class Service {
    * @returns service with all dependencies injected
    */
   public static readonly init = async () => {
+    // TODO remove this disable after this variable is used.
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const appDB = connectToDatabase({
+      user: envVars.DB_USER,
+      password: envVars.DB_PASSWORD,
+      database: envVars.DB_NAME,
+      host: envVars.DB_HOST,
+      port: envVars.DB_PORT,
+      max: envVars.DB_MAX_CONNECTIONS,
+    })
+
     /**
      * middleware used by the express server
      */
@@ -112,6 +126,31 @@ export class Service {
   }
 
   public async run(): Promise<void> {
+    if (envVars.MIGRATE_DB_USER) {
+      try {
+        await retryWithBackoff(
+          () =>
+            runMigrations({
+              user: envVars.MIGRATE_DB_USER,
+              password: envVars.MIGRATE_DB_PASSWORD,
+              database: envVars.DB_NAME,
+              host: envVars.DB_HOST,
+              port: envVars.DB_PORT,
+            }),
+          envVars.MIGRATE_MAX_RETRIES,
+          envVars.MIGRATE_INITIAL_RETRY_DELAY,
+          envVars.MIGRATE_MAX_RETRY_DELAY,
+        )
+        this.logger.info('successfully ran migrations')
+      } catch (e) {
+        this.logger.error(
+          `${Service.LOG_TAG} migrations failed: ${e.message}`,
+          e,
+        )
+        throw e
+      }
+    }
+
     // Start the app server if not yet running.
     if (!this.server) {
       this.logger.info('starting server')
