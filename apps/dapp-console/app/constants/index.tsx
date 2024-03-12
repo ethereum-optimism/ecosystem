@@ -56,7 +56,7 @@ export const externalRoutes: Routes = {
     label: 'Base',
   },
   FRAX_DOCS: {
-    path: 'https://docs.frax.finance/',
+    path: 'https://docs.frax.com/fraxtal',
     label: 'Fraxtal',
   },
   LISK_DOCS: {
@@ -152,9 +152,9 @@ export const forms = {
   USER_FEEDBACK_MAINNET:
     'https://share.hsforms.com/1nKIdgLNpQeqsocMP2qMrXAqoshb',
   ALCHEMY_GROWTH:
-    'https://alchemyapi.typeform.com/to/Ka0tJ3oT?typeform-source=www.google.com#email=xxxxx',
+    'https://alchemyapi.typeform.com/to/Ka0tJ3oT?typeform-source=www.console.optimism.io',
   ALCHEMY_SUBGRAPHS:
-    'https://alchemyapi.typeform.com/to/vJAnlTwy?typeform-source=www.alchemy.com',
+    'https://alchemyapi.typeform.com/to/vJAnlTwy?typeform-source=www.console.optimism.io',
   THIRDWEB: 'https://share.hsforms.com/1WCgMOvmuQqmCjdEqtu1NdAea58c',
   GELATO: 'https://share-eu1.hsforms.com/1kaQ2KRLYRym3mZNOF2aEVQ2bmmck',
   QUICKNODE: 'https://quiknode.typeform.com/to/sWxlcYV4#cd=H7qNVcJb',

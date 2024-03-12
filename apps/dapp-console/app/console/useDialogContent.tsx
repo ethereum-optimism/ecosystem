@@ -102,6 +102,7 @@ const useDialogContent = () => {
       primaryButton: !authenticated
         ? loginButton('Sign in to apply')
         : gelatoMetadata.primaryButton,
+      secondaryButton: !authenticated ? null : gelatoMetadata.secondaryButton,
     })
   }, [authenticated, login])
 
@@ -111,6 +112,9 @@ const useDialogContent = () => {
       primaryButton: !authenticated
         ? loginButton('Sign in to apply')
         : alchemyGrowthMetadata.primaryButton,
+      secondaryButton: !authenticated
+        ? null
+        : alchemyGrowthMetadata.secondaryButton,
     })
   }, [authenticated, login])
 
@@ -120,6 +124,9 @@ const useDialogContent = () => {
       primaryButton: !authenticated
         ? loginButton('Sign in to apply')
         : alchemySubgraphMetadata.primaryButton,
+      secondaryButton: !authenticated
+        ? null
+        : alchemySubgraphMetadata.secondaryButton,
     })
   }, [authenticated, login])
 
@@ -129,6 +136,9 @@ const useDialogContent = () => {
       primaryButton: !authenticated
         ? loginButton('Sign in to apply')
         : quicknodeMetadata.primaryButton,
+      secondaryButton: !authenticated
+        ? null
+        : quicknodeMetadata.secondaryButton,
     })
   }, [authenticated, login])
 
@@ -138,6 +148,7 @@ const useDialogContent = () => {
       primaryButton: !authenticated
         ? loginButton('Sign in to apply')
         : thirdWebMetadata.primaryButton,
+      secondaryButton: !authenticated ? null : thirdWebMetadata.secondaryButton,
     })
   }, [authenticated, login])
 
