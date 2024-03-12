@@ -26,13 +26,9 @@ const PromotionsSection = () => {
 
   return (
     <div>
-      <Text as="h3" className="text-2xl font-semibold mb-2">
-        Promotions
+      <Text as="h3" className="text-2xl font-semibold mb-4">
+        Deals
       </Text>
-      <Text as="p" className="text-base text-muted-foreground mb-4">
-        Special deals for Superchain Dapp Developers.
-      </Text>
-
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
         <Dialog>
           <DialogTrigger asChild>

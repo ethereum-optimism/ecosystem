@@ -42,7 +42,7 @@ const linkItems = [
   {
     ...externalRoutes.LISK_DOCS,
     logo: '/logos/lisk-logo.png',
-    description: joinedDescription('Dec 19, 2024'),
+    description: joinedDescription('Dec 19, 2023'),
   },
   {
     ...externalRoutes.MODE_DOCS,

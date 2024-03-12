@@ -9,7 +9,7 @@ import { FeatureFlagProvider } from '@/app/providers/FeatureFlagProvider'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'Supercain Developer Console',
+  title: 'Superchain Dev Console',
   description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
 }
 

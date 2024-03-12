@@ -80,7 +80,9 @@ const LaunchSection = () => {
             }}
           />
         </TileGrid>
-        <DialogContent className="w-[448px]">{dialogContent}</DialogContent>
+        <DialogContent className="w-full max-w-[448px]">
+          {dialogContent}
+        </DialogContent>
       </Dialog>
     </div>
   )

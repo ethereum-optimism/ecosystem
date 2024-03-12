@@ -52,7 +52,7 @@ const BuildSection = () => {
                 trackCardClick('UX Review')
                 setDialogContent(uxReviewContent)
               }}
-              badge={<Badge>Featured</Badge>}
+              badge={<Badge variant="success">Featured</Badge>}
             />
           </DialogTrigger>
           <DialogTrigger asChild>
@@ -66,7 +66,9 @@ const BuildSection = () => {
             />
           </DialogTrigger>
         </TileGrid>
-        <DialogContent className="w-[448px]">{dialogContent}</DialogContent>
+        <DialogContent className="w-full max-w-[448px]">
+          {dialogContent}
+        </DialogContent>
       </Dialog>
     </div>
   )
