@@ -1,24 +1,9 @@
 'use client'
 
 import { WalletWithMetadata, usePrivy } from '@privy-io/react-auth'
-import { RiAddLine, RiCloseLine } from '@remixicon/react'
-
 import { Button } from '@eth-optimism/ui-components/src/components/ui/button'
-import { Input } from '@eth-optimism/ui-components/src/components/ui/input'
-
-type LinkedWalletProps = {
-  wallet: WalletWithMetadata
-  onUnlink: (wallet: WalletWithMetadata) => void
-}
-
-const LinkedWallet = ({ wallet, onUnlink }: LinkedWalletProps) => (
-  <div className="flex flex-row gap-2">
-    <Input value={wallet.address} disabled />
-    <Button variant="secondary" size="icon" onClick={() => onUnlink(wallet)}>
-      <RiCloseLine />
-    </Button>
-  </div>
-)
+import { Text } from '@eth-optimism/ui-components/src/components/ui/text'
+import { LinkedWallet } from '@/app/settings/components/LinkedWallet'
 
 export default function Wallets() {
   const { ready, linkWallet, unlinkWallet, user } = usePrivy()
@@ -34,6 +19,7 @@ export default function Wallets() {
 
   return (
     <div className="flex flex-col">
+      <Text className="font-semibold text-lg">Your Wallets</Text>
       {linkedWallets.map((wallet) => (
         <LinkedWallet
           key={wallet.address}
@@ -43,10 +29,9 @@ export default function Wallets() {
       ))}
       <Button
         onClick={linkWallet}
-        className="mt-8 gap-2 w-[88px]"
-        variant="secondary"
+        className="font-medium rounded mt-8 px-14 py-2 gap-2 w-[88px]"
       >
-        <RiAddLine /> Add
+        Link Wallet
       </Button>
     </div>
   )
