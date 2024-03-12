@@ -8,8 +8,9 @@ import { HeaderTabs } from '@/app/components/Header/HeaderTabs'
 import { usePathname } from 'next/navigation'
 import { SignInButton } from '@/app/components/Header/SignInButton'
 import { MenuButton, MobileMenu } from '@/app/components/Header/MobileMenu'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
+import { useTheme } from 'next-themes'
 
 const Header = () => {
   const pathname = usePathname()
@@ -17,8 +18,8 @@ const Header = () => {
 
   return (
     <>
-      <div className="h-20 px-6 border-b border-border flex items-center justify-between">
-        <div className="flex items-center gap-6 lg:gap-12 h-full">
+      <div className="h-20 px-6 pl-2 lg:pl-6 border-b border-border flex items-center justify-between">
+        <div className="flex items-center gap-4 lg:gap-12 h-full">
           <span className="flex lg:hidden">
             <MenuButton isOpen={isOpen} onClick={() => setIsOpen(!isOpen)} />
           </span>
@@ -40,15 +41,28 @@ const Header = () => {
 }
 
 const HeaderLogo = () => {
+  const { resolvedTheme } = useTheme()
+  const [logoSrc, setLogoSrc] = useState('')
+
+  useEffect(() => {
+    setLogoSrc(
+      resolvedTheme === 'dark'
+        ? '/logos/op-superchain-logo-dark.svg'
+        : '/logos/op-superchain-logo-light.svg',
+    )
+  }, [resolvedTheme])
+
   return (
     <div className="flex items-center">
       <Link href="/" className="flex flex-row items-center">
-        <Image
-          src="/logos/op-superchain-logo.svg"
-          alt="Superchain dapp developer logo"
-          width={200}
-          height={24}
-        />
+        {logoSrc && (
+          <Image
+            src={logoSrc}
+            alt="Superchain dapp developer logo"
+            width={142}
+            height={24}
+          />
+        )}
         <Separator
           orientation="vertical"
           className="h-4 mx-4 hidden md:block"

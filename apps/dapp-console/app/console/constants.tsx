@@ -10,7 +10,7 @@ function generatePrimaryButton(
   url: string,
 ): React.ReactNode {
   return (
-    <Button asChild>
+    <Button asChild size="lg">
       <a
         href={url}
         onClick={() => trackOfferEngaged(label)}
@@ -40,7 +40,7 @@ export const testnetPaymasterMetadata: DialogMetadata = {
     externalRoutes.TESTNET_PAYMASTER_GITHUB.path,
   ),
   secondaryButton: (
-    <Button asChild variant="secondary">
+    <Button asChild variant="secondary" size="lg">
       <a
         href={externalRoutes.LEARN_ABOUT_PAYMASTER.path}
         target="_blank"
@@ -86,7 +86,7 @@ export const superchainSafeMetadata: DialogMetadata = {
     externalRoutes.SUPERCHAIN_SAFE_OP.path,
   ),
   secondaryButton: (
-    <Button asChild>
+    <Button asChild size="lg">
       <a
         href={externalRoutes.SUPERCHAIN_SAFE_OTHER.path}
         target="_blank"
@@ -109,7 +109,7 @@ export const deploymentRebateMetadata: DialogMetadata = {
     </Text>
   ),
   primaryButton: (
-    <Button disabled>
+    <Button disabled size="lg">
       <Text as="span">Coming soon</Text>
     </Button>
   ),
@@ -131,7 +131,7 @@ export const mainnetPaymasterMetadata: DialogMetadata = {
     forms.MAINNET_PAYMASTER,
   ),
   secondaryButton: (
-    <Button asChild variant="secondary">
+    <Button asChild variant="secondary" size="lg">
       <a
         href={externalRoutes.LEARN_ABOUT_PAYMASTER.path}
         target="_blank"
@@ -199,7 +199,7 @@ export const alchemyGrowthMetadata: DialogMetadata = {
     forms.ALCHEMY_GROWTH,
   ),
   secondaryButton: (
-    <Button asChild variant="secondary">
+    <Button asChild variant="secondary" size="lg">
       <a
         href={externalRoutes.ALCHEMY_LEARN_MORE.path}
         target="_blank"
@@ -226,7 +226,7 @@ export const alchemySubgraphMetadata: DialogMetadata = {
     forms.ALCHEMY_SUBGRAPHS,
   ),
   secondaryButton: (
-    <Button asChild variant="secondary">
+    <Button asChild variant="secondary" size="lg">
       <a
         href={externalRoutes.ALCHEMY_SUBGRAPHS_LEARN_MORE.path}
         target="_blank"
@@ -253,7 +253,7 @@ export const gelatoMetadata: DialogMetadata = {
   bannerImage: '/banners/gelato-banner.png',
   primaryButton: generatePrimaryButton('Gelato', 'Apply', forms.GELATO),
   secondaryButton: (
-    <Button asChild variant="secondary">
+    <Button asChild variant="secondary" size="lg">
       <a
         href={externalRoutes.GELATO_LEARN_MORE.path}
         target="_blank"
@@ -279,7 +279,7 @@ export const quicknodeMetadata: DialogMetadata = {
   bannerImage: '/banners/quicknode-banner.png',
   primaryButton: generatePrimaryButton('Quicknode', 'Apply', forms.QUICKNODE),
   secondaryButton: (
-    <Button asChild variant="secondary">
+    <Button asChild variant="secondary" size="lg">
       <a
         href={externalRoutes.QUICKNODE_LEARN_MORE.path}
         target="_blank"
@@ -311,7 +311,7 @@ export const thirdWebMetadata: DialogMetadata = {
   bannerImage: '/banners/thirdweb-banner.png',
   primaryButton: generatePrimaryButton('Third Web', 'Apply', forms.THIRDWEB),
   secondaryButton: (
-    <Button asChild variant="secondary">
+    <Button asChild variant="secondary" size="lg">
       <a
         href={externalRoutes.THIRDWEB_LEARN_MORE.path}
         target="_blank"

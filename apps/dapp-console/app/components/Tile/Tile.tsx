@@ -12,7 +12,7 @@ import { cva, type VariantProps } from 'class-variance-authority'
 const tileVariants = cva('cursor-pointer flex flex-col', {
   variants: {
     variant: {
-      primary: 'shadow-sm hover:shadow',
+      primary: 'shadow-sm hover:shadow-md transition-shadow',
       secondary:
         'bg-secondary border-secondary hover:bg-secondary/80 transition-colors',
     },
