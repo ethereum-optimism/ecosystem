@@ -6,13 +6,14 @@ The Superchain paymaster is a ERC-4337 [verifying paymaster](https://github.com/
 
 ## Endpoints
 
-| Network      | Chain ID  | Endpoint                                      |
-| ------------ | --------- | --------------------------------------------- |
-| Sepolia      | 11155111  | https://paymaster.optimism.io/v1/11155111/rpc |
-| OP Sepolia   | 11155420  | https://paymaster.optimism.io/v1/11155420/rpc |
-| Base Sepolia | 84532     | coming soon                                   |
-| Zora Sepolia | 999999999 | coming soon                                   |
-| Mode Sepolia | 919       | coming soon                                   |
+| Network         | Chain ID  | Endpoint                                      |
+| --------------- | --------- | --------------------------------------------- |
+| Sepolia         | 11155111  | https://paymaster.optimism.io/v1/11155111/rpc |
+| OP Sepolia      | 11155420  | https://paymaster.optimism.io/v1/11155420/rpc |
+| Base Sepolia    | 84532     | coming soon                                   |
+| Zora Sepolia    | 999999999 | coming soon                                   |
+| Mode Sepolia    | 919       | coming soon                                   |
+| Fraxtal Sepolia | 2523      | coming soon                                   |
 
 Mainnet endpoints coming soon!
 
