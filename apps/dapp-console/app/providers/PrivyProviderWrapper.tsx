@@ -12,8 +12,8 @@ function PrivyProviderWrapper({ children }: { children: React.ReactNode }) {
   const { theme } = useTheme()
   const logo =
     theme === 'dark'
-      ? '/logos/superchain-developer-logo-dark.png'
-      : '/logos/superchain-developer-logo-light.png'
+      ? '/logos/superchain-developer-logo-dark.svg'
+      : '/logos/superchain-developer-logo-light.svg'
 
   const handleSuccess = (user: User, isNewUser: boolean) => {
     trackSuccessfulSignIn(isNewUser)

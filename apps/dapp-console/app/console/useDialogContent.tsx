@@ -187,7 +187,7 @@ const renderDialog = (dialogMetadata: DialogMetadata) => {
         <Text as="h3" className="text-lg font-semibold mb-2">
           {dialogMetadata.title}
         </Text>
-        <div className="text-sm text-muted-foreground">
+        <div className="text-md text-muted-foreground">
           {dialogMetadata.description}
         </div>
       </div>

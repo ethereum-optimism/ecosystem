@@ -105,7 +105,7 @@ const SupportDropdownMenu = () => {
           })}
         />
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-80">
+      <DropdownMenuContent align="end" className="w-80 -mt-1">
         <DropdownMenuLabel>
           <Text as="span" className={dropdownLabelClasses}>
             SUPPORT

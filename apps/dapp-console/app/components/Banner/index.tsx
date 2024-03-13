@@ -28,7 +28,7 @@ export const Banner = () => {
         width={1920}
         height={400}
       />
-      <div className="absolute bottom-0 h-64 w-full bg-gradient-to-t from-background to-transparent" />
+      <div className="absolute bottom-0 h-3/5 w-full bg-gradient-to-t from-background to-transparent" />
     </div>
   )
 }
