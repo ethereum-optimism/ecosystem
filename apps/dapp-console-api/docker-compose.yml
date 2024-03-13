@@ -1,6 +1,17 @@
 version: '3.8'
 
 services:
+  postgres:
+    image: postgres:latest
+    environment:
+      - POSTGRES_HOST_AUTH_METHOD=trust
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -q -U dapp-console-api@oplabs-local-web.iam -d dapp-console']
+    volumes:
+      - ./setup-local-db.sql:/docker-entrypoint-initdb.d/setup-local-db.sql
+    ports:
+      - '5432:5432'
+  
   redis:
     image: 'redis:latest'
     healthcheck:
@@ -22,6 +33,11 @@ services:
     env_file: .env
     environment:
       - REDIS_URL=redis://redis:6379
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_NAME=dapp-console
+      - MIGRATE_DB_USER=dapp-console-api@oplabs-local-web.iam
+      - DB_USER=dapp-console-api@oplabs-local-web.iam
     healthcheck:
       test: curl http://0.0.0.0:7300/api/v0/healthz
     volumes:

@@ -84,6 +84,7 @@ CMD [ "pnpm", "start" ]
 
 FROM base AS dapp-console-api
 
+COPY ./apps/dapp-console-api/migrations ./prod/dapp-console-api/migrations
 COPY  --from=builder /prod/dapp-console-api /prod/dapp-console-api
 WORKDIR /prod/dapp-console-api
 
