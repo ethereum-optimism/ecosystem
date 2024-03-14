@@ -15,6 +15,7 @@ import {
   thirdWebMetadata,
   alchemyGrowthMetadata,
   alchemySubgraphMetadata,
+  quickStartMetadata,
 } from '@/app/console/constants'
 import Image from 'next/image'
 import { DialogClose } from '@eth-optimism/ui-components/src/components/ui/dialog'
@@ -53,6 +54,12 @@ const useDialogContent = () => {
       primaryButton: !authenticated
         ? loginButton('Sign in to apply')
         : uxReviewMetadata.primaryButton,
+    })
+  }, [authenticated, login])
+
+  const quickStartContent: React.ReactNode = useMemo(() => {
+    return renderDialog({
+      ...quickStartMetadata,
     })
   }, [authenticated, login])
 
@@ -149,6 +156,7 @@ const useDialogContent = () => {
     testnetPaymasterContent,
     uxReviewContent,
     deploymentRebateContent,
+    quickStartContent,
     mainnetPaymasterContent,
     megaphoneContent,
     userFeedbackContent,

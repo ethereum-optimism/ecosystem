@@ -82,6 +82,23 @@ export const superchainSafeMetadata: DialogMetadata = {
   ),
 }
 
+export const quickStartMetadata: DialogMetadata = {
+  label: 'Quick Start',
+  title: 'Deploy a dapp on the Superchain in under 15 minutes.',
+  description: (
+    <Text as="p">
+      Follow this three-step tutorial to deploy your first dapp to any chain in
+      the Superchain
+    </Text>
+  ),
+
+  primaryButton: generatePrimaryButton(
+    'Quick Start',
+    'Go to tutorial',
+    externalRoutes.QUICK_START.path,
+  ),
+}
+
 // Launch & Grow Section
 export const deploymentRebateMetadata: DialogMetadata = {
   label: 'Deployment Rebate',
