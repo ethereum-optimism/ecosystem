@@ -11,6 +11,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@eth-optimism/op-app": "workspace:*",
     "@eth-optimism/ui-components": "*",
     "@growthbook/growthbook-react": "^0.24.0",
     "@privy-io/react-auth": "^1.54.3",
