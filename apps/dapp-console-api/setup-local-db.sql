@@ -3,10 +3,12 @@ CREATE USER "dapp-console-api@oplabs-local-web.iam";
 CREATE ROLE read_only;
 CREATE ROLE read_write;
 
+CREATE DATABASE "dapp-console";
+
+\c "dapp-console"
+
 GRANT read_write TO postgres;
 GRANT read_write TO "dapp-console-api@oplabs-local-web.iam";
-
-CREATE DATABASE "dapp-console";
 
 -- read_only
 GRANT CONNECT ON DATABASE "dapp-console" TO read_only;
