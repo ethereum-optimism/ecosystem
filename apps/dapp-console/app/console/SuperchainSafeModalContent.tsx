@@ -44,6 +44,7 @@ const SuperchainSafeModalContent = () => {
               href={item.path}
               target="_blank"
               className="flex items-center gap-4"
+              rel="noreferrer noopener"
             >
               <Image
                 src={item.logo}
