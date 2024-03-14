@@ -6,7 +6,6 @@ import { useMemo } from 'react'
 import {
   testnetPaymasterMetadata,
   uxReviewMetadata,
-  superchainSafeMetadata,
   deploymentRebateMetadata,
   mainnetPaymasterMetadata,
   megaphoneMetadata,
@@ -24,7 +23,7 @@ export type DialogMetadata = {
   label: string
   title: string
   description: React.ReactNode
-  primaryButton: React.ReactNode
+  primaryButton?: React.ReactNode
   secondaryButton?: React.ReactNode
   bannerImage?: string
 }
@@ -56,12 +55,6 @@ const useDialogContent = () => {
         : uxReviewMetadata.primaryButton,
     })
   }, [authenticated, login])
-
-  const superchainSafeContent = useMemo(() => {
-    return renderDialog({
-      ...superchainSafeMetadata,
-    })
-  }, [])
 
   const deploymentRebateContent = useMemo(() => {
     return renderDialog({
@@ -155,7 +148,6 @@ const useDialogContent = () => {
   return {
     testnetPaymasterContent,
     uxReviewContent,
-    superchainSafeContent,
     deploymentRebateContent,
     mainnetPaymasterContent,
     megaphoneContent,
@@ -168,7 +160,7 @@ const useDialogContent = () => {
   }
 }
 
-const renderDialog = (dialogMetadata: DialogMetadata) => {
+export const renderDialog = (dialogMetadata: DialogMetadata) => {
   return (
     <div>
       <Badge variant="secondary">
@@ -191,7 +183,8 @@ const renderDialog = (dialogMetadata: DialogMetadata) => {
           {dialogMetadata.description}
         </div>
       </div>
-      <div className="flex flex-col gap-2.5">
+
+      <div className="flex flex-col gap-2.5 w-full">
         {dialogMetadata.primaryButton}
         {dialogMetadata.secondaryButton}
       </div>

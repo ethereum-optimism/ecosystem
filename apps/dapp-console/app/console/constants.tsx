@@ -80,22 +80,6 @@ export const superchainSafeMetadata: DialogMetadata = {
       management—for dapps across the Superchain.
     </Text>
   ),
-  primaryButton: generatePrimaryButton(
-    'Superchain Safe',
-    'Get safe for Base or Optimism',
-    externalRoutes.SUPERCHAIN_SAFE_OP.path,
-  ),
-  secondaryButton: (
-    <Button asChild size="lg">
-      <a
-        href={externalRoutes.SUPERCHAIN_SAFE_OTHER.path}
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        <Text as="span">Get safe for any other chain</Text>
-      </a>
-    </Button>
-  ),
 }
 
 // Launch & Grow Section
