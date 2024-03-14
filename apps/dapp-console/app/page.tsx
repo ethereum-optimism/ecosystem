@@ -15,6 +15,10 @@ import { SupportSection } from '@/app/console/components/SupportSection'
 import { FooterSection } from '@/app/console/components/FooterSection'
 import { externalRoutes } from '@/app/constants'
 import { Banner } from '@/app/components/Banner'
+import { Metadata } from 'next'
+import { homeMetadata } from '@/app/seo'
+
+export const metadata: Metadata = homeMetadata
 
 export default function Page() {
   return (
@@ -24,7 +28,7 @@ export default function Page() {
         <CardHeader className="md:p-10 lg:p-16">
           <CardTitle>
             <Text as="span" className="text-4xl mb-2">
-              Superchain Developer Console
+              Superchain Dev Console
             </Text>
           </CardTitle>
           <CardDescription>

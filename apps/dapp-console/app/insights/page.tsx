@@ -4,6 +4,10 @@ import { Text } from '@eth-optimism/ui-components/src/components/ui/text'
 import { RiCompasses2Line } from '@remixicon/react'
 import { forms } from '@/app/constants'
 import { Banner } from '@/app/components/Banner'
+import { Metadata } from 'next'
+import { insightsMetadata } from '@/app/seo'
+
+export const metadata: Metadata = { ...insightsMetadata }
 
 export default function Insights() {
   return (
