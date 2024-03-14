@@ -15,12 +15,14 @@ import { SupportSection } from '@/app/console/components/SupportSection'
 import { FooterSection } from '@/app/console/components/FooterSection'
 import { externalRoutes } from '@/app/constants'
 import { Banner } from '@/app/components/Banner'
-import Meta from '@/app/components/Meta'
+import { Metadata } from 'next'
+import { homeMetadata } from '@/app/seo'
+
+export const metadata: Metadata = homeMetadata
 
 export default function Page() {
   return (
     <>
-      <Meta />
       <main className="flex justify-center relative">
         <Banner />
         <Card className="max-w-7xl w-full mt-36 mx-8 z-10 mb-16">
