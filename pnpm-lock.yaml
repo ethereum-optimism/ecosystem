@@ -132,6 +132,9 @@ importers:
 
   apps/dapp-console:
     dependencies:
+      '@eth-optimism/op-app':
+        specifier: workspace:*
+        version: link:../../packages/op-app
       '@eth-optimism/ui-components':
         specifier: '*'
         version: link:../../packages/ui-components
@@ -539,7 +542,7 @@ importers:
     devDependencies:
       tsup:
         specifier: ^8.0.1
-        version: 8.0.1(postcss@8.4.33)(typescript@5.3.2)
+        version: 8.0.1(ts-node@10.9.1)(typescript@5.3.2)
       typescript:
         specifier: ^5.2.2
         version: 5.3.2
@@ -576,7 +579,7 @@ importers:
     devDependencies:
       '@eth-optimism/superchain-registry':
         specifier: github:ethereum-optimism/superchain-registry
-        version: github.com/ethereum-optimism/superchain-registry/8b7de82acf5284d3daca9bedfb6a83e060bad448
+        version: github.com/ethereum-optimism/superchain-registry/04644e0bcf9aa2bdead0fc583bab804acc68217b
       '@tanstack/react-query':
         specifier: ^5.10.0
         version: 5.10.0(react@18.2.0)
@@ -22898,8 +22901,8 @@ packages:
       use-sync-external-store: 1.2.0(react@18.2.0)
     dev: false
 
-  github.com/ethereum-optimism/superchain-registry/8b7de82acf5284d3daca9bedfb6a83e060bad448:
-    resolution: {tarball: https://codeload.github.com/ethereum-optimism/superchain-registry/tar.gz/8b7de82acf5284d3daca9bedfb6a83e060bad448}
+  github.com/ethereum-optimism/superchain-registry/04644e0bcf9aa2bdead0fc583bab804acc68217b:
+    resolution: {tarball: https://codeload.github.com/ethereum-optimism/superchain-registry/tar.gz/04644e0bcf9aa2bdead0fc583bab804acc68217b}
     name: '@eth-optimism/superchain-registry'
     version: 0.0.1-alpha.1
     dev: true
