@@ -17,7 +17,8 @@ import { SuperchainSafeModalContent } from '@/app/console/SuperchainSafeModalCon
 
 const BuildSection = () => {
   const [dialogContent, setDialogContent] = useState<React.ReactNode>()
-  const { testnetPaymasterContent, uxReviewContent } = useDialogContent()
+  const { testnetPaymasterContent, uxReviewContent, quickStartContent } =
+    useDialogContent()
   const superchainSafeContent = <SuperchainSafeModalContent />
 
   return (
@@ -63,6 +64,17 @@ const BuildSection = () => {
               onClick={() => {
                 trackCardClick('Superchain Safe')
                 setDialogContent(superchainSafeContent)
+              }}
+            />
+          </DialogTrigger>
+
+          <DialogTrigger asChild>
+            <Tile
+              title="Quick Start"
+              description="Deploy a dapp on the Superchain in under 15 minutes."
+              onClick={() => {
+                trackCardClick('Quick start')
+                setDialogContent(quickStartContent)
               }}
             />
           </DialogTrigger>

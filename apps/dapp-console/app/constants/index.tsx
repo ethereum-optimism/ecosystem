@@ -120,6 +120,10 @@ export const externalRoutes: Routes = {
     path: 'https://app.safe.global/welcome/accounts',
     label: 'Superchain Safe',
   },
+  QUICK_START: {
+    path: 'https://docs.optimism.io/builders/dapp-developers/quick-start',
+    label: 'Quick Start',
+  },
 
   // Promo links
   ALCHEMY_LEARN_MORE: {
