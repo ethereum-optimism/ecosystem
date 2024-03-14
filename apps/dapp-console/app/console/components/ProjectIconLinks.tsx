@@ -153,7 +153,7 @@ const IconLink = ({
           </Text>
         </div>
         <DialogFooter>
-          <Button className="w-full" asChild>
+          <Button className="w-full" asChild size="lg">
             <a href={href} target="_blank" rel="noreferrer noopener">
               <Text as="span">Learn more</Text>
             </a>

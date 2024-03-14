@@ -13,11 +13,12 @@ import { useState } from 'react'
 import { useDialogContent } from '@/app/console/useDialogContent'
 import { openWindow } from '@/app/helpers'
 import { trackCardClick } from '@/app/event-tracking/mixpanel'
+import { SuperchainSafeModalContent } from '@/app/console/SuperchainSafeModalContent'
 
 const BuildSection = () => {
   const [dialogContent, setDialogContent] = useState<React.ReactNode>()
-  const { testnetPaymasterContent, uxReviewContent, superchainSafeContent } =
-    useDialogContent()
+  const { testnetPaymasterContent, uxReviewContent } = useDialogContent()
+  const superchainSafeContent = <SuperchainSafeModalContent />
 
   return (
     <div>

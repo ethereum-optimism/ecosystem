@@ -201,3 +201,46 @@ export const docsItems = [
     logo: '/logos/zora-logo.png',
   },
 ]
+
+export const superchainSafeNetworks = [
+  {
+    label: 'Base',
+    path: 'https://app.safe.global/welcome/accounts?chain=base',
+    logo: '/logos/base-logo.png',
+  },
+  {
+    label: 'Base Sepolia',
+    path: 'https://app.safe.global/welcome/accounts?chain=basesep',
+    logo: '/logos/base-logo.png',
+  },
+  {
+    label: 'Mode',
+    path: 'https://safe.optimism.io/welcome?chain=mode',
+    logo: '/logos/mode-logo.png',
+  },
+  {
+    label: 'Mode Sepolia',
+    path: 'https://safe.optimism.io/welcome?chain=modeTestnet',
+    logo: '/logos/mode-logo.png',
+  },
+  {
+    label: 'OP Mainnet',
+    path: 'https://app.safe.global/welcome/accounts?chain=oeth',
+    logo: '/logos/op-logo.svg',
+  },
+  {
+    label: 'OP Sepolia',
+    path: 'https://safe.optimism.io/welcome?chain=opsep',
+    logo: '/logos/op-logo.svg',
+  },
+  {
+    label: 'Zora',
+    path: 'https://safe.optimism.io/welcome?chain=zora',
+    logo: '/logos/zora-logo.png',
+  },
+  {
+    label: 'Zora Sepolia',
+    path: 'https://safe.optimism.io/welcome?chain=zsep',
+    logo: '/logos/zora-logo.png',
+  },
+]
