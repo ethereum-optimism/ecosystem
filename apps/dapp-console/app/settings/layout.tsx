@@ -13,7 +13,7 @@ import {
 } from '@/app/settings/components/SettingsCard'
 import { SettingsTabType, SettingsTab } from '@/app/settings/types'
 import { useFeature } from '@/app/hooks/useFeatureFlag'
-import { WalletVerificationMethods } from '@/app//settings/components/WalletVerificationMethods'
+import { WalletVerificationMethods } from '@/app/settings/components/WalletVerificationMethods'
 
 const tabs: Record<SettingsTabType, SettingsTab> = {
   account: {
