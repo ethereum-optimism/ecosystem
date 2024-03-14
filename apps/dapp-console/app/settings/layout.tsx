@@ -13,6 +13,7 @@ import {
 } from '@/app/settings/components/SettingsCard'
 import { SettingsTabType, SettingsTab } from '@/app/settings/types'
 import { useFeature } from '@/app/hooks/useFeatureFlag'
+import { WalletVerificationMethods } from '@/app/settings/components/WalletVerificationMethods'
 
 const tabs: Record<SettingsTabType, SettingsTab> = {
   account: {
@@ -40,6 +41,7 @@ const tabs: Record<SettingsTabType, SettingsTab> = {
         Link any wallets you want associated with your account. Superchain
         Developer will remember your addresses and use them to verify your
         onchain identity.
+        <WalletVerificationMethods />
       </SettingsCardDescription>
     ),
   },
