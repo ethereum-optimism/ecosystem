@@ -33,7 +33,7 @@ export default function Page() {
           </CardTitle>
           <CardDescription>
             <Text as="span" className="text-base mb-6">
-              Tools to help you build, launch, and grow your dapp on the{' '}
+              Tools to help you build, launch, and grow your app on the{' '}
               <a
                 href={externalRoutes.SUPERCHAIN.path}
                 target="_blank"

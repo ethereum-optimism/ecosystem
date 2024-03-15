@@ -44,7 +44,7 @@ export const externalRoutes: Routes = {
   },
   DAPP_EXAMPLES: {
     path: 'https://github.com/ethereum-optimism/ecosystem',
-    label: 'Dapp Examples',
+    label: 'App Examples',
   },
   // Documentation items
   ETH_DOCS: {
