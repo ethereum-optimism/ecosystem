@@ -27,7 +27,7 @@ function generatePrimaryButton(
 export const testnetPaymasterMetadata: DialogMetadata = {
   label: 'Testnet Paymaster',
   title:
-    'Get your testnet transactions sponsored to remove friction from your dapp experience',
+    'Get your testnet transactions sponsored to remove friction from your app experience',
   description: (
     <Text as="p">
       Testnet Paymaster supports dapps on OP Mainnet, Base, Fraxtal, and Zora.
@@ -55,7 +55,7 @@ export const testnetPaymasterMetadata: DialogMetadata = {
 export const uxReviewMetadata: DialogMetadata = {
   label: 'UX Review',
   title:
-    'Get actionable feedback from Superchain pros to get your dapp ready for launch',
+    'Get actionable feedback from Superchain pros to get your app ready for launch',
   description: (
     <Text as="p">
       Technical builders from Superchain teams are standing by to review your
@@ -84,10 +84,10 @@ export const superchainSafeMetadata: DialogMetadata = {
 
 export const quickStartMetadata: DialogMetadata = {
   label: 'Quick Start',
-  title: 'Deploy a dapp on the Superchain in under 15 minutes.',
+  title: 'Deploy a app on the Superchain in under 15 minutes.',
   description: (
     <Text as="p">
-      Follow this three-step tutorial to deploy your first dapp to any chain in
+      Follow this three-step tutorial to deploy your first app to any chain in
       the Superchain
     </Text>
   ),
@@ -189,7 +189,7 @@ export const alchemyGrowthMetadata: DialogMetadata = {
       </Text>
       <ul className="list-disc pl-4">
         <li>You must have an Alchemy account with a credit card on file</li>
-        <li>Your dapp must be ERC-1271 compatible</li>
+        <li>Your app must be ERC-1271 compatible</li>
       </ul>
     </>
   ),

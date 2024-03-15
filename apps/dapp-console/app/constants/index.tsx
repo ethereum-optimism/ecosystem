@@ -44,7 +44,7 @@ export const externalRoutes: Routes = {
   },
   DAPP_EXAMPLES: {
     path: 'https://github.com/ethereum-optimism/ecosystem',
-    label: 'Dapp Examples',
+    label: 'App Examples',
   },
   // Documentation items
   ETH_DOCS: {
@@ -86,7 +86,7 @@ export const externalRoutes: Routes = {
   },
   RETRO_PGF: {
     path: 'https://app.optimism.io/retropgf',
-    label: 'Retro PGF',
+    label: 'Retro Funding',
   },
 
   // Misc links
@@ -246,5 +246,15 @@ export const superchainSafeNetworks = [
     label: 'Zora Sepolia',
     path: 'https://safe.optimism.io/welcome?chain=zsep',
     logo: '/logos/zora-logo.png',
+  },
+  {
+    label: 'Lisk (soon)',
+    path: null,
+    logo: '/logos/lisk-logo.png',
+  },
+  {
+    label: 'Lisk Sepolia',
+    path: 'https://safe.optimism.io/welcome?chain=lisksep',
+    logo: '/logos/lisk-logo.png',
   },
 ]

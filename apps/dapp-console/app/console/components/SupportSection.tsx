@@ -46,9 +46,9 @@ const SupportSection = () => {
             icon={<FarcasterIcon size={24} />}
           />
           <Tile
-            title="Dapp examples"
+            title="App examples"
             onClick={() => {
-              trackCardClick('Dapp examples')
+              trackCardClick('App examples')
               openWindow(externalRoutes.DAPP_EXAMPLES.path)
             }}
             variant="secondary"

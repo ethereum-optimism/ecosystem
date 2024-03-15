@@ -7,6 +7,25 @@ import { DialogHeader } from '@eth-optimism/ui-components/src/components/ui/dial
 import Image from 'next/image'
 import { superchainSafeNetworks } from '@/app/constants'
 
+// making this temporary until we add in lisk chain
+// eslint-disable-next-line  @typescript-eslint/no-explicit-any
+const renderChainButton = (item: any) => {
+  return (
+    <>
+      <Image
+        src={item.logo}
+        alt={`${item.label} logo`}
+        width={40}
+        height={40}
+        className="rounded-full"
+      />
+      <Text as="span" className="text-base">
+        {item.label}
+      </Text>
+    </>
+  )
+}
+
 const SuperchainSafeModalContent = () => {
   const [currentModalStep, setCurrentModalStep] = useState<0 | 1>(0)
 
@@ -40,23 +59,20 @@ const SuperchainSafeModalContent = () => {
             variant="secondary"
             className="justify-start py-8"
           >
-            <a
-              href={item.path}
-              target="_blank"
-              className="flex items-center gap-4"
-              rel="noreferrer noopener"
-            >
-              <Image
-                src={item.logo}
-                alt={`${item.label} logo`}
-                width={40}
-                height={40}
-                className="rounded-full"
-              />
-              <Text as="span" className="text-base">
-                {item.label}
-              </Text>
-            </a>
+            {!item.path ? (
+              <div className="flex items-center gap-4">
+                {renderChainButton(item)}
+              </div>
+            ) : (
+              <a
+                href={item.path}
+                target="_blank"
+                className="flex items-center gap-4"
+                rel="noreferrer noopener"
+              >
+                {renderChainButton(item)}
+              </a>
+            )}
           </Button>
         ))}
       </div>

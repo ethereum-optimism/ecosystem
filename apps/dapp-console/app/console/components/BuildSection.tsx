@@ -30,7 +30,7 @@ const BuildSection = () => {
         <TileGrid>
           <Tile
             title="Superchain Faucet"
-            description="Get test ETH tokens to build your dapp on the Superchain."
+            description="Get test ETH tokens to build your app on the Superchain."
             onClick={() => {
               trackCardClick('Superchain Faucet')
               openWindow(externalRoutes.SUPERCHAIN_FAUCET.path)
@@ -39,7 +39,7 @@ const BuildSection = () => {
           <DialogTrigger asChild>
             <Tile
               title="Testnet Paymaster"
-              description="Get your testnet transactions sponsored to remove friction from your dapp experience."
+              description="Get your testnet transactions sponsored to remove friction from your app experience."
               onClick={() => {
                 trackCardClick('Testnet Paymaster')
                 setDialogContent(testnetPaymasterContent)
@@ -49,7 +49,7 @@ const BuildSection = () => {
           <DialogTrigger asChild>
             <Tile
               title="UX Review"
-              description="Get actionable feedback from Superchain pros to get your dapp ready for launch."
+              description="Get actionable feedback from Superchain pros to get your app ready for launch."
               onClick={() => {
                 trackCardClick('UX Review')
                 setDialogContent(uxReviewContent)
@@ -71,7 +71,7 @@ const BuildSection = () => {
           <DialogTrigger asChild>
             <Tile
               title="Quick Start"
-              description="Deploy a dapp on the Superchain in under 15 minutes."
+              description="Deploy a app on the Superchain in under 15 minutes."
               onClick={() => {
                 trackCardClick('Quick start')
                 setDialogContent(quickStartContent)

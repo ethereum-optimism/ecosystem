@@ -72,10 +72,10 @@ const LaunchSection = () => {
             />
           </DialogTrigger>
           <Tile
-            title="RetroPGF"
+            title="Retro Funding"
             description="Get funded for adding value to the Superchain ecosystem."
             onClick={() => {
-              trackCardClick('RetroPGF')
+              trackCardClick('Retro Funding')
               openWindow(externalRoutes.RETRO_PGF.path)
             }}
           />

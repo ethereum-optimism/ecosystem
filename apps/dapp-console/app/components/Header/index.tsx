@@ -58,7 +58,7 @@ const HeaderLogo = () => {
         {logoSrc && (
           <Image
             src={logoSrc}
-            alt="Superchain dapp developer logo"
+            alt="Superchain app developer logo"
             width={142}
             height={24}
           />
