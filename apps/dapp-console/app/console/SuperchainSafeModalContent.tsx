@@ -7,6 +7,8 @@ import { DialogHeader } from '@eth-optimism/ui-components/src/components/ui/dial
 import Image from 'next/image'
 import { superchainSafeNetworks } from '@/app/constants'
 
+// making this temporary until we add in lisk chain
+// eslint-disable-next-line  @typescript-eslint/no-explicit-any
 const renderChainButton = (item: any) => {
   return (
     <>
