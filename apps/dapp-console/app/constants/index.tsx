@@ -247,4 +247,14 @@ export const superchainSafeNetworks = [
     path: 'https://safe.optimism.io/welcome?chain=zsep',
     logo: '/logos/zora-logo.png',
   },
+  {
+    label: 'Lisk (soon)',
+    path: null,
+    logo: '/logos/lisk-logo.png',
+  },
+  {
+    label: 'Lisk Sepolia',
+    path: 'https://safe.optimism.io/welcome?chain=lisksep',
+    logo: '/logos/lisk-logo.png',
+  },
 ]
