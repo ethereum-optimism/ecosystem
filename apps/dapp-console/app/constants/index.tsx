@@ -86,7 +86,7 @@ export const externalRoutes: Routes = {
   },
   RETRO_PGF: {
     path: 'https://app.optimism.io/retropgf',
-    label: 'Retro PGF',
+    label: 'Retro Funding',
   },
 
   // Misc links
