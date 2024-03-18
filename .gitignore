@@ -32,3 +32,4 @@ npm-debug.log*
 *.crt
 *.pem
 *.key
+*storybook.log

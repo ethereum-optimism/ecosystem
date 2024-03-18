@@ -1,0 +1,28 @@
+{
+  "name": "@eth-optimism/ui-components-storybook",
+  "version": "0.0.0",
+  "main": "index.js",
+  "scripts": {
+    "storybook": "storybook dev -p 6006",
+    "build": "storybook build",
+    "clean": "rm -rf ./storybook-static",
+    "typecheck": "tsc --noEmit"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "@eth-optimism/ui-components": "*"
+  },
+  "devDependencies": {
+    "@chromatic-com/storybook": "^1.2.22",
+    "@storybook/addon-essentials": "^8.0.1",
+    "@storybook/addon-interactions": "^8.0.1",
+    "@storybook/addon-links": "^8.0.1",
+    "@storybook/addon-onboarding": "^8.0.1",
+    "@storybook/blocks": "^8.0.1",
+    "@storybook/react": "^8.0.1",
+    "@storybook/react-vite": "^8.0.1",
+    "@storybook/test": "^8.0.1",
+    "prop-types": "^15.8.1",
+    "storybook": "^8.0.1"
+  }
+}
