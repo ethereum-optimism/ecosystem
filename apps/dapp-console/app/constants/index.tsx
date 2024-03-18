@@ -98,9 +98,9 @@ export const externalRoutes: Routes = {
     path: 'https://optimism.io/terms',
     label: 'Terms',
   },
-  PRIVACY_POLICY: {
-    path: 'https://optimism.io/data-privacy-policy',
-    label: 'Privacy Policy',
+  COMMUNITY_AGREEMENT: {
+    path: 'https://optimism.io/community-agreement',
+    label: 'Community Agreement',
   },
 
   // Build links
