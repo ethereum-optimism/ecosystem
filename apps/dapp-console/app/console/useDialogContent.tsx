@@ -166,7 +166,7 @@ const useDialogContent = () => {
   }
 }
 
-const renderDialog = (dialogMetadata: DialogMetadata) => (
+export const renderDialog = (dialogMetadata: DialogMetadata) => (
   <StandardDialogContent dialogMetadata={dialogMetadata} />
 )
 
