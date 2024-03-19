@@ -126,31 +126,7 @@ export class Service {
   }
 
   public async run(): Promise<void> {
-    if (envVars.MIGRATE_DB_USER) {
-      try {
-        await retryWithBackoff(
-          () =>
-            runMigrations({
-              user: envVars.MIGRATE_DB_USER,
-              password: envVars.MIGRATE_DB_PASSWORD,
-              database: envVars.DB_NAME,
-              host: envVars.DB_HOST,
-              port: envVars.DB_PORT,
-            }),
-          envVars.MIGRATE_MAX_RETRIES,
-          envVars.MIGRATE_INITIAL_RETRY_DELAY,
-          envVars.MIGRATE_MAX_RETRY_DELAY,
-        )
-        this.logger.info('successfully ran migrations')
-      } catch (e) {
-        this.logger.error(
-          `${Service.LOG_TAG} migrations failed: ${e.message}`,
-          e,
-        )
-        throw e
-      }
-    }
-
+    let serviceInitialized = false
     // Start the app server if not yet running.
     if (!this.server) {
       this.logger.info('starting server')
@@ -225,8 +201,12 @@ export class Service {
       })
 
       app.get(readyPath, (req, res) => {
-        // TODO: add check for whether underlying services are ready
-        res.json({ ok: true })
+        if (serviceInitialized) {
+          return res.json({ ok: true })
+        }
+
+        // return a 500 if the service isn't initialized yet
+        res.status(500).send()
       })
 
       // Default error handler
@@ -258,6 +238,33 @@ export class Service {
         `app server started`,
       )
     }
+
+    if (envVars.MIGRATE_DB_USER) {
+      try {
+        await retryWithBackoff(
+          () =>
+            runMigrations({
+              user: envVars.MIGRATE_DB_USER,
+              password: envVars.MIGRATE_DB_PASSWORD,
+              database: envVars.DB_NAME,
+              host: envVars.DB_HOST,
+              port: envVars.DB_PORT,
+            }),
+          envVars.MIGRATE_MAX_RETRIES,
+          envVars.MIGRATE_INITIAL_RETRY_DELAY,
+          envVars.MIGRATE_MAX_RETRY_DELAY,
+        )
+        this.logger.info('successfully ran migrations')
+      } catch (e) {
+        this.logger.error(
+          `${Service.LOG_TAG} migrations failed: ${e.message}`,
+          e,
+        )
+        throw e
+      }
+    }
+
+    serviceInitialized = true
   }
 
   /**
