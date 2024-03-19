@@ -31,7 +31,7 @@ function PrivyProviderWrapper({ children }: { children: React.ReactNode }) {
         },
         legal: {
           termsAndConditionsUrl: externalRoutes.TERMS.path,
-          privacyPolicyUrl: externalRoutes.PRIVACY_POLICY.path,
+          privacyPolicyUrl: externalRoutes.COMMUNITY_AGREEMENT.path,
         },
       }}
       onSuccess={handleSuccess}
