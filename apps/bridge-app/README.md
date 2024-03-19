@@ -6,10 +6,10 @@ This is still a WIP as we are waiting for more libraries to support Wagmi v2
 
 ### Setup
 
-Create an `.env` and add `VITE_WALLECT_CONNECT_PROJECT_ID` to it.
+Create an `.env` and add `VITE_WALLET_CONNECT_PROJECT_ID` to it.
 
 ```
-VITE_WALLECT_CONNECT_PROJECT_ID=<youe wallet connect project id>
+VITE_WALLET_CONNECT_PROJECT_ID=<youe wallet connect project id>
 ```
 
 ### Installation
