@@ -7,7 +7,7 @@ export type DialogMetadata = {
   label: string
   title: string
   description: React.ReactNode
-  primaryButton: React.ReactNode
+  primaryButton?: React.ReactNode
   secondaryButton?: React.ReactNode
   bannerImage?: string
 }
@@ -40,7 +40,7 @@ export const StandardDialogContent = ({
         {dialogMetadata.description}
       </div>
     </div>
-    <div className="flex flex-col gap-2.5">
+    <div className="flex flex-col gap-2.5 w-full">
       {dialogMetadata.primaryButton}
       {dialogMetadata.secondaryButton}
     </div>

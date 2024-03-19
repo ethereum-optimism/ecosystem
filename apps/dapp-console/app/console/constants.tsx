@@ -1,8 +1,9 @@
 import { Button } from '@eth-optimism/ui-components/src/components/ui/button'
 import { Text } from '@eth-optimism/ui-components/src/components/ui/text'
-import { DialogMetadata } from '@/app/console/useDialogContent'
 import { trackOfferEngaged } from '@/app/event-tracking/mixpanel'
-import { externalRoutes, forms } from '@/app/constants'
+import { externalRoutes, forms, routes } from '@/app/constants'
+import Link from 'next/link'
+import { DialogMetadata } from '@/app/components/StandardDialogContent'
 
 function generatePrimaryButton(
   label: string,
@@ -112,6 +113,56 @@ export const deploymentRebateMetadata: DialogMetadata = {
   primaryButton: (
     <Button disabled size="lg">
       <Text as="span">Coming soon</Text>
+    </Button>
+  ),
+}
+
+export const deploymentRebateM2Metadata: DialogMetadata = {
+  label: 'Deployment Rebate',
+  title:
+    'Launch on the Superchain and get your deployment costs covered up to 0.05 ETH',
+  description: (
+    <>
+      <Text as="p">
+        Get your app up and running without having to worry about deployment
+        fees.
+      </Text>
+      <Text as="p" className="mt-6">
+        Details:
+      </Text>
+      <ul className="list-disc pl-6 mb-2">
+        <li>
+          <Text as="p">
+            You must have signed up to Dapp Console before launching contracts
+          </Text>
+        </li>
+        <li>
+          <Text as="p">Contracts must be added to Dapp Console</Text>
+        </li>
+        <li>
+          <Text as="p">
+            Your onchain identity must be verified through Coinbase Verification
+          </Text>
+        </li>
+      </ul>
+    </>
+  ),
+  primaryButton: (
+    <Button size="lg" asChild>
+      <Link href={routes.CONTRACTS.path}>
+        <Text as="span">Add Contracts</Text>
+      </Link>
+    </Button>
+  ),
+  secondaryButton: (
+    <Button size="lg" variant="outline" asChild>
+      <Link
+        href={externalRoutes.TERMS.path}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <Text as="span">See Terms</Text>
+      </Link>
     </Button>
   ),
 }

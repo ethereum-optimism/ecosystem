@@ -1,4 +1,3 @@
-import { Badge } from '@eth-optimism/ui-components/src/components/ui/badge'
 import { Button } from '@eth-optimism/ui-components/src/components/ui/button'
 import { Text } from '@eth-optimism/ui-components/src/components/ui/text'
 import { usePrivy } from '@privy-io/react-auth'
@@ -7,6 +6,7 @@ import {
   testnetPaymasterMetadata,
   uxReviewMetadata,
   deploymentRebateMetadata,
+  deploymentRebateM2Metadata,
   mainnetPaymasterMetadata,
   megaphoneMetadata,
   userFeedbackMetadata,
@@ -17,20 +17,16 @@ import {
   alchemySubgraphMetadata,
   quickStartMetadata,
 } from '@/app/console/constants'
-import Image from 'next/image'
 import { DialogClose } from '@eth-optimism/ui-components/src/components/ui/dialog'
-
-export type DialogMetadata = {
-  label: string
-  title: string
-  description: React.ReactNode
-  primaryButton?: React.ReactNode
-  secondaryButton?: React.ReactNode
-  bannerImage?: string
-}
+import { useFeature } from '@/app/hooks/useFeatureFlag'
+import {
+  DialogMetadata,
+  StandardDialogContent,
+} from '@/app/components/StandardDialogContent'
 
 const useDialogContent = () => {
   const { authenticated, login } = usePrivy()
+  const isSettingsEnabled = useFeature('enable_console_settings')
 
   const loginButton = (label: string) => {
     return (
@@ -65,9 +61,11 @@ const useDialogContent = () => {
 
   const deploymentRebateContent = useMemo(() => {
     return renderDialog({
-      ...deploymentRebateMetadata,
+      ...(isSettingsEnabled
+        ? deploymentRebateM2Metadata
+        : deploymentRebateMetadata),
     })
-  }, [authenticated, login])
+  }, [authenticated, login, isSettingsEnabled])
 
   const mainnetPaymasterContent = useMemo(() => {
     return renderDialog({
@@ -168,36 +166,8 @@ const useDialogContent = () => {
   }
 }
 
-export const renderDialog = (dialogMetadata: DialogMetadata) => {
-  return (
-    <div>
-      <Badge variant="secondary">
-        <Text as="p">{dialogMetadata.label}</Text>
-      </Badge>
-      {dialogMetadata.bannerImage && (
-        <Image
-          src={dialogMetadata.bannerImage}
-          alt={`${dialogMetadata.label} banner`}
-          className="w-full rounded-xs mt-6 object-cover"
-          width={450}
-          height={140}
-        />
-      )}
-      <div className="py-6">
-        <Text as="h3" className="text-lg font-semibold mb-2">
-          {dialogMetadata.title}
-        </Text>
-        <div className="text-md text-muted-foreground">
-          {dialogMetadata.description}
-        </div>
-      </div>
-
-      <div className="flex flex-col gap-2.5 w-full">
-        {dialogMetadata.primaryButton}
-        {dialogMetadata.secondaryButton}
-      </div>
-    </div>
-  )
-}
+const renderDialog = (dialogMetadata: DialogMetadata) => (
+  <StandardDialogContent dialogMetadata={dialogMetadata} />
+)
 
 export { useDialogContent }
