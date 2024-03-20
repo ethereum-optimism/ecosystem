@@ -37,7 +37,7 @@ export const testnetPaymasterMetadata: DialogMetadata = {
   ),
   primaryButton: generatePrimaryButton(
     'Testnet Paymaster',
-    'View on Github',
+    'View integration guide',
     externalRoutes.TESTNET_PAYMASTER_GITHUB.path,
   ),
   secondaryButton: (
@@ -47,7 +47,7 @@ export const testnetPaymasterMetadata: DialogMetadata = {
         target="_blank"
         rel="noopener noreferrer"
       >
-        <Text as="span">Learn about paymasters</Text>
+        <Text as="span">View demo apps / tutorials</Text>
       </a>
     </Button>
   ),
