@@ -1,1 +1,13 @@
-{"version":"5","dialect":"pg","entries":[]}
+{
+  "version": "5",
+  "dialect": "pg",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1710893578415,
+      "tag": "0000_nosy_jean_grey",
+      "breakpoints": true
+    }
+  ]
+}
