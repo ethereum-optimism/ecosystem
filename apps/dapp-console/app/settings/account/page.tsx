@@ -1,7 +1,7 @@
 'use client'
 
-import { Input } from '@eth-optimism/ui-components/src/components/ui/input'
-import { Label } from '@eth-optimism/ui-components/src/components/ui/label'
+import { Input } from '@eth-optimism/ui-components/src/components/ui/input/input'
+import { Label } from '@eth-optimism/ui-components/src/components/ui/label/label'
 
 import { usePrivy } from '@privy-io/react-auth'
 

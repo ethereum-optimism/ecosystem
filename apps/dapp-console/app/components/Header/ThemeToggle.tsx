@@ -4,7 +4,7 @@ import * as React from 'react'
 import { RiMoonLine, RiSunLine } from '@remixicon/react'
 import { useTheme } from 'next-themes'
 
-import { Button } from '@eth-optimism/ui-components/src/components/ui/button'
+import { Button } from '@eth-optimism/ui-components/src/components/ui/button/button'
 
 function ThemeToggle() {
   const { theme, setTheme } = useTheme()

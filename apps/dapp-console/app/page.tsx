@@ -4,9 +4,9 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from '@eth-optimism/ui-components/src/components/ui/card'
+} from '@eth-optimism/ui-components/src/components/ui/card/card'
 
-import { Text } from '@eth-optimism/ui-components/src/components/ui/text'
+import { Text } from '@eth-optimism/ui-components/src/components/ui/text/text'
 import { ProjectIconLinks } from '@/app/console/components/ProjectIconLinks'
 import { BuildSection } from '@/app/console/components/BuildSection'
 import { LaunchSection } from '@/app/console/components/LaunchSection'

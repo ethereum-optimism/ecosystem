@@ -1,6 +1,6 @@
 'use client'
 
-import { Button } from '@eth-optimism/ui-components/src/components/ui/button'
+import { Button } from '@eth-optimism/ui-components/src/components/ui/button/button'
 import { useWallets } from '@privy-io/react-auth'
 import { usePrivy } from '@privy-io/react-auth'
 

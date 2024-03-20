@@ -1,13 +1,13 @@
 'use client'
 
 import { Tile, TileGrid } from '@/app/components/Tile/Tile'
-import { Badge } from '@eth-optimism/ui-components/src/components/ui/badge'
+import { Badge } from '@eth-optimism/ui-components/src/components/ui/badge/badge'
 import {
   Dialog,
   DialogContent,
   DialogTrigger,
-} from '@eth-optimism/ui-components/src/components/ui/dialog'
-import { Text } from '@eth-optimism/ui-components/src/components/ui/text'
+} from '@eth-optimism/ui-components/src/components/ui/dialog/dialog'
+import { Text } from '@eth-optimism/ui-components/src/components/ui/text/text'
 import { useState } from 'react'
 import { useDialogContent } from '@/app/console/useDialogContent'
 import { externalRoutes } from '@/app/constants'

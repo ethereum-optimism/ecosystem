@@ -3,7 +3,7 @@
 import { redirect, usePathname } from 'next/navigation'
 import { useEffect, useMemo } from 'react'
 
-import { Text } from '@eth-optimism/ui-components/src/components/ui/text'
+import { Text } from '@eth-optimism/ui-components/src/components/ui/text/text'
 
 import { SettingsMenu } from '@/app/settings/components/SettingsMenu'
 import {
@@ -18,7 +18,7 @@ import {
   Dialog,
   DialogContent,
   DialogTrigger,
-} from '@eth-optimism/ui-components'
+} from '@eth-optimism/ui-components/src/components/ui/dialog/dialog'
 import { deploymentRebateM2Metadata } from '@/app/console/constants'
 import { StandardDialogContent } from '@/app/components/StandardDialogContent'
 

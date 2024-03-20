@@ -1,9 +1,9 @@
 import { useState } from 'react'
 import { renderDialog } from '@/app/console/useDialogContent'
 import { superchainSafeMetadata } from '@/app/console/constants'
-import { Button } from '@eth-optimism/ui-components/src/components/ui/button'
-import { Text } from '@eth-optimism/ui-components/src/components/ui/text'
-import { DialogHeader } from '@eth-optimism/ui-components/src/components/ui/dialog'
+import { Button } from '@eth-optimism/ui-components/src/components/ui/button/button'
+import { Text } from '@eth-optimism/ui-components/src/components/ui/text/text'
+import { DialogHeader } from '@eth-optimism/ui-components/src/components/ui/dialog/dialog'
 import Image from 'next/image'
 import { superchainSafeNetworks } from '@/app/constants'
 

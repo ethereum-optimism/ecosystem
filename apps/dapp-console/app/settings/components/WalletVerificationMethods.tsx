@@ -1,15 +1,14 @@
 import Image from 'next/image'
 
-import { Text } from '@eth-optimism/ui-components/src/components/ui/text'
+import { Text } from '@eth-optimism/ui-components/src/components/ui/text/text'
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-  Button,
-  Separator,
-} from '@eth-optimism/ui-components'
-import Link from 'next/link'
+} from '@eth-optimism/ui-components/src/components/ui/accordian/accordion'
+import { Button } from '@eth-optimism/ui-components/src/components/ui/button/button'
+import { Separator } from '@eth-optimism/ui-components/src/components/ui/separator/separator'
 
 type VerificationMethod = {
   id: string

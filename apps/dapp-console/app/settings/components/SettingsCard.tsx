@@ -4,8 +4,8 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from '@eth-optimism/ui-components/src/components/ui/card'
-import { Text } from '@eth-optimism/ui-components/src/components/ui/text'
+} from '@eth-optimism/ui-components/src/components/ui/card/card'
+import { Text } from '@eth-optimism/ui-components/src/components/ui/text/text'
 
 import { SettingsTab } from '@/app/settings/types'
 

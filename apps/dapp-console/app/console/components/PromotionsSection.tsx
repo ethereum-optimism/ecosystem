@@ -5,8 +5,8 @@ import {
   Dialog,
   DialogContent,
   DialogTrigger,
-} from '@eth-optimism/ui-components/src/components/ui/dialog'
-import { Text } from '@eth-optimism/ui-components/src/components/ui/text'
+} from '@eth-optimism/ui-components/src/components/ui/dialog/dialog'
+import { Text } from '@eth-optimism/ui-components/src/components/ui/text/text'
 
 import Image from 'next/image'
 import { useDialogContent } from '@/app/console/useDialogContent'
