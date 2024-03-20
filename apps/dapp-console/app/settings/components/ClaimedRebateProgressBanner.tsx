@@ -16,7 +16,7 @@ export type ClaimedRebateProgressBannerProps = {
 const maxValue = parseEther('0.05')
 
 export const ClaimedRebateProgressBanner = ({
-  claimedAmount,
+  claimedAmount = parseEther('0.025'),
   totalAmount,
 }: ClaimedRebateProgressBannerProps) => {
   const claimed = useMemo(
@@ -55,12 +55,12 @@ export const ClaimedRebateProgressBanner = ({
 
         <RebateDialog>
           <RiQuestionFill
-            className="ml-1 cursor -pointer text-muted-foreground"
+            className="ml-1 cursor-pointer text-muted-foreground"
             size={16}
           />
         </RebateDialog>
       </div>
-      <Progress value={progress} className="mt-2 rounded" />
+      <Progress value={50} className="mt-2 rounded" />
     </div>
   )
 }
