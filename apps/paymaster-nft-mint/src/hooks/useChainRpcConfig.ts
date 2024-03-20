@@ -1,5 +1,5 @@
 import { envVars } from '@/envVars'
-import { Chain, optimismSepolia, sepolia } from 'viem/chains'
+import { Chain, optimismSepolia, sepolia, zoraSepolia } from 'viem/chains'
 import { useChainId } from 'wagmi'
 
 const aaRpcConfigByChainId: Record<
@@ -16,6 +16,12 @@ const aaRpcConfigByChainId: Record<
     rpcUrl: envVars.VITE_RPC_URL_SEPOLIA,
     paymasterRpcUrl: envVars.VITE_PAYMASTER_RPC_URL_SEPOLIA,
     bundlerRpcUrl: envVars.VITE_BUNDLER_RPC_URL_SEPOLIA,
+  },
+  [zoraSepolia.id]: {
+    chain: zoraSepolia,
+    rpcUrl: envVars.VITE_RPC_URL_ZORA_SEPOLIA,
+    paymasterRpcUrl: envVars.VITE_PAYMASTER_RPC_URL_ZORA_SEPOLIA,
+    bundlerRpcUrl: envVars.VITE_BUNDLER_RPC_URL_ZORA_SEPOLIA,
   },
   [optimismSepolia.id]: {
     chain: optimismSepolia,
