@@ -1,5 +1,12 @@
+import { fraxtalSepolia } from '@/constants/fraxtalSepolia'
 import { envVars } from '@/envVars'
-import { Chain, optimismSepolia, sepolia, zoraSepolia } from 'viem/chains'
+import {
+  Chain,
+  baseSepolia,
+  optimismSepolia,
+  sepolia,
+  zoraSepolia,
+} from 'viem/chains'
 import { useChainId } from 'wagmi'
 
 const aaRpcConfigByChainId: Record<
@@ -28,6 +35,18 @@ const aaRpcConfigByChainId: Record<
     rpcUrl: envVars.VITE_RPC_URL_OP_SEPOLIA,
     paymasterRpcUrl: envVars.VITE_PAYMASTER_RPC_URL_OP_SEPOLIA,
     bundlerRpcUrl: envVars.VITE_BUNDLER_RPC_URL_OP_SEPOLIA,
+  },
+  [fraxtalSepolia.id]: {
+    chain: fraxtalSepolia,
+    rpcUrl: envVars.VITE_RPC_URL_FRAXTAL_SEPOLIA,
+    paymasterRpcUrl: envVars.VITE_PAYMASTER_RPC_URL_FRAXTAL_SEPOLIA,
+    bundlerRpcUrl: envVars.VITE_BUNDLER_RPC_URL_FRAXTAL_SEPOLIA,
+  },
+  [baseSepolia.id]: {
+    chain: baseSepolia,
+    rpcUrl: envVars.VITE_RPC_URL_BASE_SEPOLIA,
+    paymasterRpcUrl: envVars.VITE_PAYMASTER_RPC_URL_BASE_SEPOLIA,
+    bundlerRpcUrl: envVars.VITE_BUNDLER_RPC_URL_BASE_SEPOLIA,
   },
 }
 

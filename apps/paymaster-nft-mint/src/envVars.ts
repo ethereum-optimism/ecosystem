@@ -12,6 +12,14 @@ const schema = z.object({
   VITE_RPC_URL_ZORA_SEPOLIA: z.string(),
   VITE_BUNDLER_RPC_URL_ZORA_SEPOLIA: z.string(),
   VITE_PAYMASTER_RPC_URL_ZORA_SEPOLIA: z.string(),
+
+  VITE_RPC_URL_FRAXTAL_SEPOLIA: z.string(),
+  VITE_BUNDLER_RPC_URL_FRAXTAL_SEPOLIA: z.string(),
+  VITE_PAYMASTER_RPC_URL_FRAXTAL_SEPOLIA: z.string(),
+
+  VITE_RPC_URL_BASE_SEPOLIA: z.string(),
+  VITE_BUNDLER_RPC_URL_BASE_SEPOLIA: z.string(),
+  VITE_PAYMASTER_RPC_URL_BASE_SEPOLIA: z.string(),
 })
 
 export const envVars = schema.parse(import.meta.env)

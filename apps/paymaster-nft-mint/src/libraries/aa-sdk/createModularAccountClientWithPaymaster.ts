@@ -29,17 +29,15 @@ export const createModularAccountClientWithPaymaster = async ({
     chain,
   })
 
-  console.log(rpcUrl, paymasterRpcUrl, bundlerRpcUrl, chain.id)
-
   const modularAccount = await createMultiOwnerModularAccount({
     signer: signer,
     chain: chain,
     transport: http(rpcUrl),
+    factoryAddress: '0x000000e92D78D90000007F0082006FDA09BD5f11',
     entryPoint: getVersion060EntryPoint(
       chain,
       '0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789',
     ),
-    factoryAddress: '0x000000e92D78D90000007F0082006FDA09BD5f11',
   })
 
   return createSmartAccountClient({
