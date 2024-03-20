@@ -36,7 +36,7 @@ export const testnetPaymasterMetadata: DialogMetadata = {
   ),
   primaryButton: generatePrimaryButton(
     'Testnet Paymaster',
-    'View integration guide',
+    'View integration',
     externalRoutes.TESTNET_PAYMASTER_GITHUB.path,
   ),
   secondaryButton: (
