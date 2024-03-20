@@ -47,7 +47,7 @@ export const testnetPaymasterMetadata: DialogMetadata = {
         target="_blank"
         rel="noopener noreferrer"
       >
-        <Text as="span">View demo apps / tutorials</Text>
+        <Text as="span">View demo app</Text>
       </a>
     </Button>
   ),
