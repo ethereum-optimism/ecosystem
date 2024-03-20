@@ -39,7 +39,7 @@ const BuildSection = () => {
           <DialogTrigger asChild>
             <Tile
               title="Testnet Paymaster"
-              description="Get your testnet transactions sponsored to remove friction from your app experience."
+              description="Integrate smart accounts and get your testnet transactions sponsored."
               onClick={() => {
                 trackCardClick('Testnet Paymaster')
                 setDialogContent(testnetPaymasterContent)
