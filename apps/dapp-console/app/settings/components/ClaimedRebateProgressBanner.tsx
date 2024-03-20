@@ -60,7 +60,7 @@ export const ClaimedRebateProgressBanner = ({
           />
         </RebateDialog>
       </div>
-      <Progress value={50} className="mt-2 rounded" />
+      <Progress value={progress} className="mt-2 rounded" />
     </div>
   )
 }
