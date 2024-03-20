@@ -1,5 +1,5 @@
 {
-  "id": "80c8c32c-88ea-4ebd-9999-9b98ae90bfc5",
+  "id": "7dbf8e99-b297-4eca-9579-9a135e90cd1f",
   "prevId": "529ae42b-71a2-443b-9951-aa40171cbc54",
   "version": "5",
   "dialect": "pg",
@@ -33,7 +33,7 @@
           "name": "entity_id",
           "type": "uuid",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "address": {
           "name": "address",
@@ -64,6 +64,13 @@
             "address"
           ],
           "isUnique": true
+        },
+        "addresses_entity_id_index": {
+          "name": "addresses_entity_id_index",
+          "columns": [
+            "entity_id"
+          ],
+          "isUnique": false
         },
         "addresses_address_index": {
           "name": "addresses_address_index",

@@ -29,7 +29,9 @@ export const addresses = pgTable(
       .defaultNow()
       .notNull(),
     id: uuid('id').defaultRandom().primaryKey(),
-    entityId: uuid('entity_id').references(() => entities.id),
+    entityId: uuid('entity_id')
+      .references(() => entities.id)
+      .notNull(),
     address: varchar('address').$type<Address>().notNull(),
     verifications: jsonb('verifications')
       .$type<AddressVerification>()
@@ -42,7 +44,8 @@ export const addresses = pgTable(
   },
   (table) => {
     return {
-      entitiyIdAddressIdx: uniqueIndex().on(table.entityId, table.address),
+      entityIdAddressIdx: uniqueIndex().on(table.entityId, table.address),
+      entityIdx: index().on(table.entityId),
       addressIdx: index().on(table.address),
     }
   },
