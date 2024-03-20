@@ -40,7 +40,7 @@ export const ClaimedRebateProgressBanner = ({
       return 100
     }
 
-    return Number(claimed / total) * 100
+    return (Number(claimed) / Number(total)) * 100
   }, [claimedAmount, totalAmount])
 
   return (
