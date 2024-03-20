@@ -3,12 +3,12 @@ import { Redis } from 'ioredis'
 import pino, { type Logger } from 'pino'
 import { baseSepolia, optimismSepolia, sepolia, zoraSepolia } from 'viem/chains'
 
+import { fraxtalSepolia } from '@/constants/fraxtalSepolia'
 import { envVars } from '@/envVars'
 import { initializeApiServer } from '@/initializeApiServer'
 import { metrics } from '@/monitoring/metrics'
 import { getAlchemyPaymasterConfig } from '@/paymaster/alchemy/getAlchemyPaymasterConfig'
 import type { PaymasterConfig } from '@/paymaster/types'
-import { fraxtalSepolia } from '@/constants/fraxtalSepolia'
 
 const HOST = '0.0.0.0'
 
