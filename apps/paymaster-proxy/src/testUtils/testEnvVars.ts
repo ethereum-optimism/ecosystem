@@ -9,4 +9,13 @@ export const testEnvVars = {
   ALCHEMY_RPC_URL_OP_SEPOLIA:
     'https://eth-mainnet.alchemyapi.io/v2/your-api-key',
   ALCHEMY_GAS_MANAGER_POLICY_ID_OP_SEPOLIA: 'your-policy-id',
+  ALCHEMY_RPC_URL_BASE_SEPOLIA:
+    'https://eth-mainnet.alchemyapi.io/v2/your-api-key',
+  ALCHEMY_GAS_MANAGER_POLICY_ID_BASE_SEPOLIA: 'your-policy-id',
+  ALCHEMY_RPC_URL_ZORA_SEPOLIA:
+    'https://eth-mainnet.alchemyapi.io/v2/your-api-key',
+  ALCHEMY_GAS_MANAGER_POLICY_ID_ZORA_SEPOLIA: 'your-policy-id',
+  ALCHEMY_RPC_URL_FRAXTAL_SEPOLIA:
+    'https://eth-mainnet.alchemyapi.io/v2/your-api-key',
+  ALCHEMY_GAS_MANAGER_POLICY_ID_FRAXTAL_SEPOLIA: 'your-policy-id',
 } as const satisfies EnvVars
