@@ -28,11 +28,10 @@ function generatePrimaryButton(
 export const testnetPaymasterMetadata: DialogMetadata = {
   label: 'Testnet Paymaster',
   title:
-    'Get your testnet transactions sponsored to remove friction from your app experience',
+    'Integrate smart accounts and get your testnet transactions sponsored.',
   description: (
     <Text as="p">
       Testnet Paymaster supports dapps on OP Mainnet, Base, Fraxtal, and Zora.
-      Continue to Github for information on setup.
     </Text>
   ),
   primaryButton: generatePrimaryButton(
