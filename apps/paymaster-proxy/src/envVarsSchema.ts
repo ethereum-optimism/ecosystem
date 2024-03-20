@@ -14,6 +14,24 @@ export const envVarsSchema = z.object({
   ALCHEMY_GAS_MANAGER_POLICY_ID_OP_SEPOLIA: z
     .string()
     .describe('Alchemy Gas Manager policyId for OP Sepolia'),
+  ALCHEMY_RPC_URL_BASE_SEPOLIA: z
+    .string()
+    .describe('Alchemy RPC URL for Base Sepolia'),
+  ALCHEMY_GAS_MANAGER_POLICY_ID_BASE_SEPOLIA: z
+    .string()
+    .describe('Alchemy Gas Manager policyId for Base Sepolia'),
+  ALCHEMY_RPC_URL_ZORA_SEPOLIA: z
+    .string()
+    .describe('Alchemy RPC URL for Zora Sepolia'),
+  ALCHEMY_GAS_MANAGER_POLICY_ID_ZORA_SEPOLIA: z
+    .string()
+    .describe('Alchemy Gas Manager policyId for Zora Sepolia'),
+  ALCHEMY_RPC_URL_FRAXTAL_SEPOLIA: z
+    .string()
+    .describe('Alchemy RPC URL for Fraxtal Sepolia'),
+  ALCHEMY_GAS_MANAGER_POLICY_ID_FRAXTAL_SEPOLIA: z
+    .string()
+    .describe('Alchemy Gas Manager policyId for Fraxtal Sepolia'),
 })
 
 export type EnvVars = z.infer<typeof envVarsSchema>

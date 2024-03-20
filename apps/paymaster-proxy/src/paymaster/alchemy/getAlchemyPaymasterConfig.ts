@@ -1,5 +1,6 @@
-import { createAlchemyPublicRpcClient } from '@alchemy/aa-alchemy'
-import type { Address, Chain, HttpRequestError } from 'viem'
+import type { ClientWithAlchemyMethods } from '@alchemy/aa-alchemy'
+import { createBundlerClient } from '@alchemy/aa-core'
+import { type Address, type Chain, http, type HttpRequestError } from 'viem'
 import { z } from 'zod'
 
 import {
@@ -30,12 +31,10 @@ export const getAlchemyPaymasterConfig = <T extends Chain>({
   rpcUrl: string
   policyId: string
 }): PaymasterConfig<T> => {
-  const client = createAlchemyPublicRpcClient({
-    connectionConfig: {
-      rpcUrl,
-    },
+  const client = createBundlerClient({
     chain,
-  })
+    transport: http(rpcUrl),
+  }) as ClientWithAlchemyMethods
   return {
     chain,
     sponsorUserOperation: async (
