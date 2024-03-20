@@ -1,6 +1,6 @@
 const homeTitle = 'Superchain Dev Console'
 const homeDescription =
-  'Tools to help you build, launch, and grow your app on Superchain'
+  'Tools to help you build, launch, and grow your app on the Superchain'
 const homeImage =
   'https://console.optimism.io/banners/page-banner.png?w=1200&h=630'
 
