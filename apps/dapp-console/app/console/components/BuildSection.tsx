@@ -71,7 +71,7 @@ const BuildSection = () => {
           <DialogTrigger asChild>
             <Tile
               title="Quick Start"
-              description="Deploy a app on the Superchain in under 15 minutes."
+              description="Deploy an app on the Superchain in under 15 minutes."
               onClick={() => {
                 trackCardClick('Quick start')
                 setDialogContent(quickStartContent)
