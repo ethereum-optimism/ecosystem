@@ -28,16 +28,15 @@ function generatePrimaryButton(
 export const testnetPaymasterMetadata: DialogMetadata = {
   label: 'Testnet Paymaster',
   title:
-    'Get your testnet transactions sponsored to remove friction from your app experience',
+    'Integrate smart accounts and get your testnet transactions sponsored.',
   description: (
     <Text as="p">
       Testnet Paymaster supports dapps on OP Mainnet, Base, Fraxtal, and Zora.
-      Continue to Github for information on setup.
     </Text>
   ),
   primaryButton: generatePrimaryButton(
     'Testnet Paymaster',
-    'View on Github',
+    'View integration',
     externalRoutes.TESTNET_PAYMASTER_GITHUB.path,
   ),
   secondaryButton: (
@@ -47,7 +46,7 @@ export const testnetPaymasterMetadata: DialogMetadata = {
         target="_blank"
         rel="noopener noreferrer"
       >
-        <Text as="span">Learn about paymasters</Text>
+        <Text as="span">View demo app</Text>
       </a>
     </Button>
   ),

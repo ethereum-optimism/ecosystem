@@ -109,7 +109,7 @@ export const externalRoutes: Routes = {
     label: 'Testnet paymaster',
   },
   LEARN_ABOUT_PAYMASTER: {
-    path: 'https://www.erc4337.io/docs/paymasters/introduction',
+    path: 'https://superchain-paymaster-nft-mint-example.pages.dev/',
     label: 'Learn about paymasters',
   },
   SUPERCHAIN_SAFE_OP: {
