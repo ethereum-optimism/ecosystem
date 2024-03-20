@@ -1,20 +1,20 @@
 # Example Bridge App
 
-This is an example bridge application demonstrating how to bridge ETH & ERC20 tokens to any OP stack chain. We currently deploy this on every merge to the `main` branch. You can see what it looks like [here](https://main--magnificent-licorice-5d2277.netlify.app/)
+This is an example bridge application demonstrating how to bridge ETH & ERC20 tokens to any OP stack chain. We currently deploy this on every merge to the `main` branch. You can see what it looks like [here](https://main--magnificent-licorice-5d2277.netlify.app/).
 
 This is still a WIP as we are waiting for more libraries to support Wagmi v2
 
 ### Setup
 
-Create an `.env` and add `VITE_WALLECT_CONNECT_PROJECT_ID` to it.
+Create an `.env` and add `VITE_WALLET_CONNECT_PROJECT_ID` to it. You can find it [here](https://cloud.walletconnect.com/app/project).
 
 ```
-VITE_WALLECT_CONNECT_PROJECT_ID=<youe wallet connect project id>
+VITE_WALLET_CONNECT_PROJECT_ID=<your wallet connect project id>
 ```
 
 ### Installation
 
-Install the projects dependcies if you haven't already
+Install the projects dependencies if you haven't already
 
 ```
 pnpm i

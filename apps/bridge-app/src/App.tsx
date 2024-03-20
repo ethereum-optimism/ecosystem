@@ -32,7 +32,7 @@ const opChains = configureOpChains({ type: NETWORK_TYPE })
 
 const wagmiConfig = getDefaultConfig({
   appName: 'Example OP Stack Bridge',
-  projectId: import.meta.env.VITE_WALLECT_CONNECT_PROJECT_ID,
+  projectId: import.meta.env.VITE_WALLET_CONNECT_PROJECT_ID,
   chains: opChains,
   transports: opChains.reduce(
     (acc, chain) => {
