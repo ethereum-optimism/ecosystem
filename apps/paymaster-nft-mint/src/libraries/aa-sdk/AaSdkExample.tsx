@@ -16,7 +16,6 @@ export const AaSdkExample = () => {
     data: modularAccountClient,
     isLoading: isModularAccountClientLoading,
   } = useDefaultModularAccountClientWithPaymaster()
-
   const isLoading = isModularAccountClientLoading || !modularAccountClient
   return (
     <>
