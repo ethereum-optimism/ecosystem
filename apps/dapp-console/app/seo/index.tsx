@@ -1,7 +1,7 @@
 const homeTitle = 'Superchain Dev Console'
 const homeDescription =
   'Tools to help you build, launch, and grow your app on Superchain'
-const homeImage = '/banners/page-banner.png'
+const homeImage = 'https://console.optimism.io/banners/page-banner.png'
 
 export const homeMetadata = {
   title: homeTitle,

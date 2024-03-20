@@ -84,7 +84,7 @@ export const superchainSafeMetadata: DialogMetadata = {
 
 export const quickStartMetadata: DialogMetadata = {
   label: 'Quick Start',
-  title: 'Deploy a app on the Superchain in under 15 minutes.',
+  title: 'Deploy an app on the Superchain in under 15 minutes.',
   description: (
     <Text as="p">
       Follow this three-step tutorial to deploy your first app to any chain in
