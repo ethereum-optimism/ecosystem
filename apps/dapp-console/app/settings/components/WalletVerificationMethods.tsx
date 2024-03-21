@@ -9,12 +9,14 @@ import {
   Button,
   Separator,
 } from '@eth-optimism/ui-components'
+import Link from 'next/link'
 
 type VerificationMethod = {
   id: string
   icon: string
   title: string
   description?: string
+  href: string
 }
 
 const verificationMethods: VerificationMethod[] = [
@@ -23,28 +25,33 @@ const verificationMethods: VerificationMethod[] = [
     icon: '/logos/attestation-logo.png',
     title: 'Attestation',
     description: 'Valid within 7 days',
+    href: 'https://attest.sh/',
   },
   {
     id: 'coinbase',
     icon: '/logos/coinbase-logo.png',
     title: 'Coinbase Verification',
     description: 'Required for Deployment Rebase and Superchain Paymaster',
+    href: 'https://www.coinbase.com/onchain-verify',
   },
   {
     id: 'gitcoin',
     icon: '/logos/gitcoin-logo.png',
     title: 'Gitcoin',
     description: 'Passport score > 25',
+    href: 'https://passport.gitcoin.co/',
   },
   {
     id: 'optimist',
     icon: '/logos/optimist-nft-logo.png',
     title: 'Optimist NFT',
+    href: 'https://app.optimism.io/optimist-nft',
   },
   {
     id: 'worldid',
     icon: '/logos/worldid-logo.png',
     title: 'WorldID Orb',
+    href: 'https://worldcoin.org/world-id',
   },
 ]
 
@@ -88,7 +95,13 @@ export const WalletVerificationMethods = () => {
                   </div>
 
                   <Button className="rounded" variant="outline">
-                    Learn more
+                    <Link
+                      href={method.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      Learn more
+                    </Link>
                   </Button>
                 </div>
                 <Separator />
