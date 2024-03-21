@@ -9,6 +9,7 @@ import {
 } from '@eth-optimism/ui-components/src/components/ui/accordian/accordion'
 import { Button } from '@eth-optimism/ui-components/src/components/ui/button/button'
 import { Separator } from '@eth-optimism/ui-components/src/components/ui/separator/separator'
+import Link from 'next/link'
 
 type VerificationMethod = {
   id: string
