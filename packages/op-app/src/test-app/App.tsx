@@ -19,7 +19,9 @@ const connectors = [
 const queryClient = new QueryClient()
 
 const App = () => {
-  const [networkType, setNetworkType] = useState<NetworkType>('op')
+  const [networkType, setNetworkType] = useState<NetworkType>(
+    () => (localStorage.getItem('chain') || 'op') as NetworkType,
+  )
 
   const opChains = useMemo<[Chain, ...Chain[]]>(() => {
     return configureOpChains({ type: networkType })
@@ -43,6 +45,7 @@ const App = () => {
     (type: NetworkType) => {
       setNetworkType(type)
       localStorage.clear()
+      localStorage.setItem('chain', type)
     },
     [setNetworkType],
   )
