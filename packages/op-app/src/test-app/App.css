@@ -12,6 +12,19 @@ body {
     margin: 0;
 }
 
+button {
+    display: flex;
+    border-radius: 8px;
+    padding: 4px 8px;
+    border: none;
+    transition: background-color 0.1s ease;
+}
+
+button:hover {
+    cursor: pointer;
+    background-color: #cccccc;
+}
+
 .app {
     display: flex;
     align-items: center;
