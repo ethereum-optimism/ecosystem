@@ -29,7 +29,7 @@ export default function Wallets() {
       ))}
       <Button
         onClick={linkWallet}
-        className="font-medium rounded mt-8 px-14 py-2 gap-2 w-[88px]"
+        className="font-medium mt-8 px-14 py-2 gap-2 w-[88px]"
       >
         Link Wallet
       </Button>

@@ -1,6 +1,6 @@
 'use client'
 
-import { Text } from '@eth-optimism/ui-components/src/components/ui/text'
+import { Text } from '@eth-optimism/ui-components/src/components/ui/text/text'
 import { Button } from '@eth-optimism/ui-components'
 
 import { ClaimedRebateProgressBanner } from '@/app/settings/components/ClaimedRebateProgressBanner'
@@ -19,7 +19,7 @@ export default function Contracts() {
 
         <Button
           variant="outline"
-          className="flex justify-between w-[120px] mb-8 rounded"
+          className="flex justify-between w-[120px] mb-8"
         >
           <RiAddLine /> App app
         </Button>

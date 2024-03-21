@@ -7,7 +7,7 @@ import {
 } from '@eth-optimism/ui-components'
 import { Address, Chain, Hash, formatEther, parseEther } from 'viem'
 
-import { Text } from '@eth-optimism/ui-components/src/components/ui/text'
+import { Text } from '@eth-optimism/ui-components/src/components/ui/text/text'
 import { shortenAddress } from '@eth-optimism/op-app'
 import { RiArrowRightSLine } from '@remixicon/react'
 import Link from 'next/link'

@@ -1,9 +1,9 @@
 import Image from 'next/image'
 
-import { Text } from '@eth-optimism/ui-components/src/components/ui/text'
+import { Text } from '@eth-optimism/ui-components/src/components/ui/text/text'
 
 export const CoinbaseVerificationBanner = () => (
-  <div className="flex flex-row bg-[#d6e4ff] w-full p-8 rounded-xl items-center">
+  <div className="flex flex-row bg-blue-500/20 w-full p-8 rounded-xl items-center">
     <Image
       className="h-[40px] rounded-full mr-4"
       src="/logos/coinbase-logo.png"
@@ -12,10 +12,10 @@ export const CoinbaseVerificationBanner = () => (
       alt="Coinbase Logo"
     />
     <div className="flex flex-col">
-      <Text as="p" className="text-base text-[#3374DB] font-semibold">
+      <Text as="p" className="text-base text-blue-500 font-semibold">
         Coinbase Verification is required for rebates
       </Text>
-      <Text as="p" className="text-sm text-[#3374DB]">
+      <Text as="p" className="text-sm text-blue-500">
         You can verify any of your linked wallets.
       </Text>
     </div>

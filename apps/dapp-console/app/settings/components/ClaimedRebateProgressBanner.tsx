@@ -2,9 +2,9 @@
 
 import { formatEther, parseEther } from 'viem'
 
-import { Text } from '@eth-optimism/ui-components/src/components/ui/text'
+import { Text } from '@eth-optimism/ui-components/src/components/ui/text/text'
 import { useMemo } from 'react'
-import { Progress } from '@eth-optimism/ui-components/src/components/ui/progress'
+import { Progress } from '@eth-optimism/ui-components/src/components/ui/progress/progress'
 import { RiQuestionFill } from '@remixicon/react'
 import { RebateDialog } from '@/app/settings/components/RebateDialog'
 
@@ -60,7 +60,7 @@ export const ClaimedRebateProgressBanner = ({
           />
         </RebateDialog>
       </div>
-      <Progress value={progress} className="mt-2 rounded" />
+      <Progress value={progress} className="mt-2" />
     </div>
   )
 }
