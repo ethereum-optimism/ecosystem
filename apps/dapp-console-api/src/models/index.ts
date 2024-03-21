@@ -1,5 +1,6 @@
 export * from './addresses'
 export * from './apps'
+export * from './challenges'
 export * from './contracts'
 export * from './deploymentRebates'
 export * from './entities'
