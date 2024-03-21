@@ -1,28 +1,23 @@
-import type { Meta, StoryObj } from "@storybook/react"
+import type { Meta, StoryObj } from '@storybook/react'
 
-import type {
-  ToastActionElement,
-  ToastProps} from "./toast";
-import {
-  Toast,
-  ToastAction
-} from "./toast"
-import { Toaster } from "./toaster"
-import { useToast } from "./use-toast"
+import type { ToastActionElement, ToastProps } from './toast'
+import { Toast, ToastAction } from './toast'
+import { Toaster } from './toaster'
+import { useToast } from './use-toast'
 
 /**
  * A succinct message that is displayed temporarily.
  */
 const meta = {
-  title: "ui/Toast",
+  title: 'ui/Toast',
   component: Toast,
-  tags: ["autodocs"],
+  tags: ['autodocs'],
   argTypes: {},
   parameters: {
-    layout: "centered",
+    layout: 'centered',
   },
   render: function ToastRenderer(args) {
-    const { toast } = useToast();
+    const { toast } = useToast()
     return (
       <div>
         <button
@@ -40,8 +35,8 @@ const meta = {
 
 export default meta
 
-type Story = Omit<StoryObj<typeof meta>, "args"> & {
-  args: Omit<ToasterToast, "id">
+type Story = Omit<StoryObj<typeof meta>, 'args'> & {
+  args: Omit<ToasterToast, 'id'>
 }
 
 type ToasterToast = ToastProps & {
@@ -56,7 +51,7 @@ type ToasterToast = ToastProps & {
  */
 export const Default: Story = {
   args: {
-    description: "Your message has been sent.",
+    description: 'Your message has been sent.',
   },
 }
 
@@ -65,8 +60,8 @@ export const Default: Story = {
  */
 export const WithTitle: Story = {
   args: {
-    title: "Uh oh! Something went wrong.",
-    description: "There was a problem with your request.",
+    title: 'Uh oh! Something went wrong.',
+    description: 'There was a problem with your request.',
   },
 }
 
@@ -75,8 +70,8 @@ export const WithTitle: Story = {
  */
 export const WithAction: Story = {
   args: {
-    title: "Uh oh! Something went wrong.",
-    description: "There was a problem with your request.",
+    title: 'Uh oh! Something went wrong.',
+    description: 'There was a problem with your request.',
     action: <ToastAction altText="Try again">Try again</ToastAction>,
   },
 }
@@ -86,9 +81,9 @@ export const WithAction: Story = {
  */
 export const Destructive: Story = {
   args: {
-    variant: "destructive",
-    title: "Uh oh! Something went wrong.",
-    description: "There was a problem with your request.",
+    variant: 'destructive',
+    title: 'Uh oh! Something went wrong.',
+    description: 'There was a problem with your request.',
     action: <ToastAction altText="Try again">Try again</ToastAction>,
   },
 }

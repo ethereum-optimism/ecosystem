@@ -1,19 +1,23 @@
-import type { AspectRatioProps } from "@radix-ui/react-aspect-ratio"
-import type { Meta, StoryObj } from "@storybook/react"
-import type { RefAttributes } from "react"
-import type { JSX } from "react/jsx-runtime"
+import type { AspectRatioProps } from '@radix-ui/react-aspect-ratio'
+import type { Meta, StoryObj } from '@storybook/react'
+import type { RefAttributes } from 'react'
+import type { JSX } from 'react/jsx-runtime'
 
-import { AspectRatio } from "./aspect-ratio"
+import { AspectRatio } from './aspect-ratio'
 
 /**
  * Displays content within a desired ratio.
  */
 const meta: Meta<typeof AspectRatio> = {
-  title: "ui/AspectRatio",
+  title: 'ui/AspectRatio',
   component: AspectRatio,
-  tags: ["autodocs"],
+  tags: ['autodocs'],
   argTypes: {},
-  render: (args: JSX.IntrinsicAttributes & AspectRatioProps & RefAttributes<HTMLDivElement>) => (
+  render: (
+    args: JSX.IntrinsicAttributes &
+      AspectRatioProps &
+      RefAttributes<HTMLDivElement>,
+  ) => (
     <AspectRatio {...args} className="bg-slate-50 dark:bg-slate-800">
       <img
         src="https://images.unsplash.com/photo-1576075796033-848c2a5f3696?w=800&dpr=2&q=80"

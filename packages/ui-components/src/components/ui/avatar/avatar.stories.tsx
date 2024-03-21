@@ -1,18 +1,14 @@
-import type { Meta, StoryObj } from "@storybook/react"
+import type { Meta, StoryObj } from '@storybook/react'
 
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from "./avatar"
+import { Avatar, AvatarFallback, AvatarImage } from './avatar'
 
 /**
  * An image element with a fallback for representing the user.
  */
 const meta = {
-  title: "ui/Avatar",
+  title: 'ui/Avatar',
   component: Avatar,
-  tags: ["autodocs"],
+  tags: ['autodocs'],
   argTypes: {},
   render: (args) => (
     <Avatar {...args}>
@@ -21,7 +17,7 @@ const meta = {
     </Avatar>
   ),
   parameters: {
-    layout: "centered",
+    layout: 'centered',
   },
 } satisfies Meta<typeof Avatar>
 

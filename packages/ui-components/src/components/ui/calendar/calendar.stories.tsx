@@ -1,25 +1,25 @@
-import { action } from "@storybook/addon-actions"
-import type { Meta, StoryObj } from "@storybook/react"
-import { addDays } from "date-fns"
+import { action } from '@storybook/addon-actions'
+import type { Meta, StoryObj } from '@storybook/react'
+import { addDays } from 'date-fns'
 
-import { Calendar } from "./calendar"
+import { Calendar } from './calendar'
 
 /**
  * A date field component that allows users to enter and edit date.
  */
 const meta = {
-  title: "ui/Calendar",
+  title: 'ui/Calendar',
   component: Calendar,
-  tags: ["autodocs"],
+  tags: ['autodocs'],
   argTypes: {},
   args: {
-    mode: "single",
+    mode: 'single',
     selected: new Date(),
-    onSelect: action("onDayClick"),
-    className: "rounded-md border w-fit",
+    onSelect: action('onDayClick'),
+    className: 'rounded-md border w-fit',
   },
   parameters: {
-    layout: "centered",
+    layout: 'centered',
   },
 } satisfies Meta<typeof Calendar>
 
@@ -39,7 +39,7 @@ export const Multiple: Story = {
   args: {
     min: 1,
     selected: [new Date(), addDays(new Date(), 2), addDays(new Date(), 8)],
-    mode: "multiple",
+    mode: 'multiple',
   },
 }
 
@@ -52,7 +52,7 @@ export const Range: Story = {
       from: new Date(),
       to: addDays(new Date(), 7),
     },
-    mode: "range",
+    mode: 'range',
   },
 }
 

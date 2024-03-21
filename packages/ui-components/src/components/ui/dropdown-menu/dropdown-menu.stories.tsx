@@ -4,8 +4,8 @@ import {
   RiMailLine,
   RiSearchLine,
   RiUserAddLine,
-} from "@remixicon/react"
-import type { Meta, StoryObj } from "@storybook/react"
+} from '@remixicon/react'
+import type { Meta, StoryObj } from '@storybook/react'
 
 import {
   DropdownMenu,
@@ -23,16 +23,16 @@ import {
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
-} from "./dropdown-menu"
+} from './dropdown-menu'
 
 /**
  * Displays a menu to the user — such as a set of actions or functions —
  * triggered by a button.
  */
 const meta = {
-  title: "ui/DropdownMenu",
+  title: 'ui/DropdownMenu',
   component: DropdownMenu,
-  tags: ["autodocs"],
+  tags: ['autodocs'],
   argTypes: {},
   render: (args) => (
     <DropdownMenu {...args}>
@@ -48,7 +48,7 @@ const meta = {
     </DropdownMenu>
   ),
   parameters: {
-    layout: "centered",
+    layout: 'centered',
   },
 } satisfies Meta<typeof DropdownMenu>
 

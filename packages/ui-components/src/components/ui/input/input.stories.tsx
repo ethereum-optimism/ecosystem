@@ -1,23 +1,23 @@
-import type { Meta, StoryObj } from "@storybook/react"
+import type { Meta, StoryObj } from '@storybook/react'
 
-import { Input } from "./input"
+import { Input } from './input'
 
 /**
  * Displays a form input field or a component that looks like an input field.
  */
 const meta = {
-  title: "ui/Input",
+  title: 'ui/Input',
   component: Input,
-  tags: ["autodocs"],
+  tags: ['autodocs'],
   argTypes: {},
   args: {
-    className: "w-96",
-    type: "email",
-    placeholder: "Email",
+    className: 'w-96',
+    type: 'email',
+    placeholder: 'Email',
     disabled: false,
   },
   parameters: {
-    layout: "centered",
+    layout: 'centered',
   },
 } satisfies Meta<typeof Input>
 

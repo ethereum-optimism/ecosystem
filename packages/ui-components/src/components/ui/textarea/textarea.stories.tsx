@@ -1,17 +1,17 @@
-import type { Meta, StoryObj } from "@storybook/react"
+import type { Meta, StoryObj } from '@storybook/react'
 
-import { Textarea } from "./textarea"
+import { Textarea } from './textarea'
 
 /**
  * Displays a form textarea or a component that looks like a textarea.
  */
 const meta = {
-  title: "ui/Textarea",
+  title: 'ui/Textarea',
   component: Textarea,
-  tags: ["autodocs"],
+  tags: ['autodocs'],
   argTypes: {},
   args: {
-    placeholder: "Type your message here.",
+    placeholder: 'Type your message here.',
     disabled: false,
   },
 } satisfies Meta<typeof Textarea>

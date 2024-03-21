@@ -1,17 +1,17 @@
-import type { Meta, StoryObj } from "@storybook/react"
+import type { Meta, StoryObj } from '@storybook/react'
 
-import { Skeleton } from "./skeleton"
+import { Skeleton } from './skeleton'
 
 /**
  * Use to show a placeholder while content is loading.
  */
 const meta = {
-  title: "ui/Skeleton",
+  title: 'ui/Skeleton',
   component: Skeleton,
-  tags: ["autodocs"],
+  tags: ['autodocs'],
   argTypes: {},
   parameters: {
-    layout: "centered",
+    layout: 'centered',
   },
 } satisfies Meta<typeof Skeleton>
 

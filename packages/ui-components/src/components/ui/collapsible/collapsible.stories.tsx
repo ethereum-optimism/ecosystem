@@ -1,22 +1,22 @@
-import { RiInformation2Fill } from "@remixicon/react"
-import type { Meta, StoryObj } from "@storybook/react"
+import { RiInformation2Fill } from '@remixicon/react'
+import type { Meta, StoryObj } from '@storybook/react'
 
 import {
   Collapsible,
   CollapsibleContent,
   CollapsibleTrigger,
-} from "./collapsible"
+} from './collapsible'
 
 /**
  * An interactive component which expands/collapses a panel.
  */
 const meta = {
-  title: "ui/Collapsible",
+  title: 'ui/Collapsible',
   component: Collapsible,
-  tags: ["autodocs"],
+  tags: ['autodocs'],
   argTypes: {},
   args: {
-    className: "w-96",
+    className: 'w-96',
     disabled: false,
   },
   render: (args) => (
@@ -32,7 +32,7 @@ const meta = {
     </Collapsible>
   ),
   parameters: {
-    layout: "centered",
+    layout: 'centered',
   },
 } satisfies Meta<typeof Collapsible>
 

@@ -1,24 +1,24 @@
-import type { Meta, StoryObj } from "@storybook/react"
+import type { Meta, StoryObj } from '@storybook/react'
 
-import { Badge } from "./badge"
+import { Badge } from './badge'
 
 /**
  * Displays a badge or a component that looks like a badge.
  */
 const meta = {
-  title: "ui/Badge",
+  title: 'ui/Badge',
   component: Badge,
-  tags: ["autodocs"],
+  tags: ['autodocs'],
   argTypes: {
     children: {
-      control: "text",
+      control: 'text',
     },
   },
   args: {
-    children: "Badge",
+    children: 'Badge',
   },
   parameters: {
-    layout: "centered",
+    layout: 'centered',
   },
 } satisfies Meta<typeof Badge>
 
@@ -37,7 +37,7 @@ export const Default: Story = {}
  */
 export const Secondary: Story = {
   args: {
-    variant: "secondary",
+    variant: 'secondary',
   },
 }
 
@@ -47,7 +47,7 @@ export const Secondary: Story = {
  */
 export const Destructive: Story = {
   args: {
-    variant: "destructive",
+    variant: 'destructive',
   },
 }
 
@@ -57,6 +57,6 @@ export const Destructive: Story = {
  */
 export const Outline: Story = {
   args: {
-    variant: "outline",
+    variant: 'outline',
   },
 }

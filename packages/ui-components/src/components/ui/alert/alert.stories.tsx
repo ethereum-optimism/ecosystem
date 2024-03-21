@@ -1,26 +1,22 @@
-import type { Meta, StoryObj } from "@storybook/react"
+import type { Meta, StoryObj } from '@storybook/react'
 
-import {
-  Alert,
-  AlertDescription,
-  AlertTitle,
-} from "./alert"
+import { Alert, AlertDescription, AlertTitle } from './alert'
 
 /**
  * Displays a callout for user attention.
  */
 const meta = {
-  title: "ui/Alert",
+  title: 'ui/Alert',
   component: Alert,
-  tags: ["autodocs"],
+  tags: ['autodocs'],
   argTypes: {
     variant: {
-      options: ["default", "destructive"],
-      control: { type: "radio" },
+      options: ['default', 'destructive'],
+      control: { type: 'radio' },
     },
   },
   args: {
-    variant: "default",
+    variant: 'default',
   },
   render: (args) => (
     <Alert {...args}>
@@ -53,6 +49,6 @@ export const Destructive: Story = {
     </Alert>
   ),
   args: {
-    variant: "destructive",
+    variant: 'destructive',
   },
 }

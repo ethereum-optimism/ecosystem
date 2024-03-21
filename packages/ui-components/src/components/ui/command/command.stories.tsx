@@ -1,5 +1,5 @@
-import type { Meta, StoryObj } from "@storybook/react"
-import { Command as CommandProps, CommandSeparator } from "cmdk";
+import type { Meta, StoryObj } from '@storybook/react'
+import { Command as CommandProps, CommandSeparator } from 'cmdk'
 
 import {
   Command,
@@ -8,18 +8,18 @@ import {
   CommandInput,
   CommandItem,
   CommandList,
-} from "./command"
+} from './command'
 
 /**
  * Fast, composable, unstyled command menu for React.
  */
 const meta: Meta<typeof CommandProps> = {
-  title: "ui/Command",
+  title: 'ui/Command',
   component: CommandProps,
-  tags: ["autodocs"],
+  tags: ['autodocs'],
   argTypes: {},
   args: {
-    className: "rounded-lg w-96 border shadow-md",
+    className: 'rounded-lg w-96 border shadow-md',
   },
   render: (args) => (
     <Command {...args}>
@@ -41,7 +41,7 @@ const meta: Meta<typeof CommandProps> = {
     </Command>
   ),
   parameters: {
-    layout: "centered",
+    layout: 'centered',
   },
 } satisfies Meta<typeof Command>
 

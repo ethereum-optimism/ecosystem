@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react"
+import type { Meta, StoryObj } from '@storybook/react'
 
 import {
   Carousel,
@@ -6,18 +6,18 @@ import {
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
-} from "./carousel"
+} from './carousel'
 
 /**
  * A carousel with motion and swipe built using Embla.
  */
 const meta: Meta<typeof Carousel> = {
-  title: "ui/Carousel",
+  title: 'ui/Carousel',
   component: Carousel,
-  tags: ["autodocs"],
+  tags: ['autodocs'],
   argTypes: {},
   args: {
-    className: "w-full max-w-xs",
+    className: 'w-full max-w-xs',
   },
   render: (args) => (
     <Carousel {...args}>
@@ -35,7 +35,7 @@ const meta: Meta<typeof Carousel> = {
     </Carousel>
   ),
   parameters: {
-    layout: "centered",
+    layout: 'centered',
   },
 } satisfies Meta<typeof Carousel>
 
@@ -68,6 +68,6 @@ export const Size: Story = {
     </Carousel>
   ),
   args: {
-    className: "mx-12 w-full max-w-xs",
+    className: 'mx-12 w-full max-w-xs',
   },
 }

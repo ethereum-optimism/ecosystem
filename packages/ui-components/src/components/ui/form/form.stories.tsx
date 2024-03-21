@@ -1,8 +1,8 @@
-import { zodResolver } from "@hookform/resolvers/zod"
-import { action } from "@storybook/addon-actions"
-import type { Meta, StoryObj } from "@storybook/react"
-import { useForm } from "react-hook-form"
-import * as z from "zod"
+import { zodResolver } from '@hookform/resolvers/zod'
+import { action } from '@storybook/addon-actions'
+import type { Meta, StoryObj } from '@storybook/react'
+import { useForm } from 'react-hook-form'
+import * as z from 'zod'
 
 import {
   Form,
@@ -12,15 +12,15 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "./form"
+} from './form'
 
 /**
  * Building forms with React Hook Form and Zod.
  */
 const meta: Meta<typeof Form> = {
-  title: "ui/Form",
+  title: 'ui/Form',
   component: Form,
-  tags: ["autodocs"],
+  tags: ['autodocs'],
   argTypes: {},
   render: (args) => <ProfileForm {...args} />,
 } satisfies Meta<typeof Form>
@@ -31,19 +31,19 @@ type Story = StoryObj<typeof meta>
 
 const formSchema = z.object({
   username: z.string().min(2, {
-    message: "Username must be at least 2 characters.",
+    message: 'Username must be at least 2 characters.',
   }),
 })
 
-const ProfileForm = (args: Story["args"]) => {
+const ProfileForm = (args: Story['args']) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      username: "",
+      username: '',
     },
   })
   function onSubmit(values: z.infer<typeof formSchema>) {
-    action("onSubmit")(values)
+    action('onSubmit')(values)
   }
   return (
     <Form {...args} {...form}>

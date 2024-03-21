@@ -1,38 +1,38 @@
-import { RiAddLine } from "@remixicon/react"
-import type { Meta, StoryObj } from "@storybook/react"
+import { RiAddLine } from '@remixicon/react'
+import type { Meta, StoryObj } from '@storybook/react'
 
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "./tooltip"
+} from './tooltip'
 
 /**
  * A popup that displays information related to an element when the element
  * receives keyboard focus or the mouse hovers over it.
  */
 const meta: Meta<typeof TooltipContent> = {
-  title: "ui/Tooltip",
+  title: 'ui/Tooltip',
   component: TooltipContent,
-  tags: ["autodocs"],
+  tags: ['autodocs'],
   argTypes: {
     side: {
-      options: ["top", "bottom", "left", "right"],
+      options: ['top', 'bottom', 'left', 'right'],
       control: {
-        type: "radio",
+        type: 'radio',
       },
     },
     children: {
-      control: "text",
+      control: 'text',
     },
   },
   args: {
-    side: "top",
-    children: "Add to library",
+    side: 'top',
+    children: 'Add to library',
   },
   parameters: {
-    layout: "centered",
+    layout: 'centered',
   },
   render: (args) => (
     <TooltipProvider>
@@ -61,7 +61,7 @@ export const Default: Story = {}
  */
 export const Bottom: Story = {
   args: {
-    side: "bottom",
+    side: 'bottom',
   },
 }
 
@@ -70,7 +70,7 @@ export const Bottom: Story = {
  */
 export const Left: Story = {
   args: {
-    side: "left",
+    side: 'left',
   },
 }
 
@@ -79,6 +79,6 @@ export const Left: Story = {
  */
 export const Right: Story = {
   args: {
-    side: "right",
+    side: 'right',
   },
 }

@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from "@storybook/react"
+import type { Meta, StoryObj } from '@storybook/react'
 
 import {
   Select,
@@ -9,15 +9,15 @@ import {
   SelectSeparator,
   SelectTrigger,
   SelectValue,
-} from "./select"
+} from './select'
 
 /**
  * Displays a list of options for the user to pick from—triggered by a button.
  */
 const meta: Meta<typeof Select> = {
-  title: "ui/Select",
+  title: 'ui/Select',
   component: Select,
-  tags: ["autodocs"],
+  tags: ['autodocs'],
   argTypes: {},
   render: (args) => (
     <Select {...args}>
@@ -56,7 +56,7 @@ const meta: Meta<typeof Select> = {
     </Select>
   ),
   parameters: {
-    layout: "centered",
+    layout: 'centered',
   },
 } satisfies Meta<typeof Select>
 

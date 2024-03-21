@@ -1,6 +1,6 @@
-import type { AlertDialogProps } from "@radix-ui/react-alert-dialog"
-import type { Meta, StoryObj } from "@storybook/react"
-import type { JSX } from "react/jsx-runtime"
+import type { AlertDialogProps } from '@radix-ui/react-alert-dialog'
+import type { Meta, StoryObj } from '@storybook/react'
+import type { JSX } from 'react/jsx-runtime'
 
 import {
   AlertDialog,
@@ -12,16 +12,16 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "./alert-dialog"
+} from './alert-dialog'
 
 /**
  * A modal dialog that interrupts the user with important content and expects
  * a response.
  */
 const meta = {
-  title: "ui/AlertDialog",
+  title: 'ui/AlertDialog',
   component: AlertDialog,
-  tags: ["autodocs"],
+  tags: ['autodocs'],
   argTypes: {},
   render: (args: JSX.IntrinsicAttributes & AlertDialogProps) => (
     <AlertDialog {...args}>
@@ -42,7 +42,7 @@ const meta = {
     </AlertDialog>
   ),
   parameters: {
-    layout: "centered",
+    layout: 'centered',
   },
 } satisfies Meta<typeof AlertDialog>
 

@@ -1,15 +1,15 @@
-import type { Meta, StoryObj } from "@storybook/react"
+import type { Meta, StoryObj } from '@storybook/react'
 
-import { Progress } from "./progress"
+import { Progress } from './progress'
 
 /**
  * Displays an indicator showing the completion progress of a task, typically
  * displayed as a progress bar.
  */
 const meta = {
-  title: "ui/Progress",
+  title: 'ui/Progress',
   component: Progress,
-  tags: ["autodocs"],
+  tags: ['autodocs'],
   argTypes: {},
   args: {
     value: 30,
