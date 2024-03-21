@@ -1,5 +1,5 @@
 {
-  "name": "ui-component-storybook",
+  "name": "@eth-optimism/ui-component-storybook",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
