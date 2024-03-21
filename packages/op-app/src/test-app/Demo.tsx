@@ -71,16 +71,20 @@ export const Demo = ({ type, onNetworkTypeChange }: DemoProps) => {
 
   const networkInfo = (
     <div>
-      <h2>
-        Network Pair
-        <div>L1: {networkPair?.l1.name}</div>
-        <div>L2: {networkPair?.l2.name}</div>
-      </h2>
-      <h2>
-        <div>Account: {address}</div>
-        <div>L1 Balance: {l1Balance ? formatEther(l1Balance) : '0.0'}</div>
-        <div>L2 Balance: {l2Balance ? formatEther(l2Balance) : '0.0'}</div>
-      </h2>
+      <h4>Network Pair</h4>
+      <h3>
+        L1: {networkPair?.l1.name} - L2: {networkPair?.l2.name}
+      </h3>
+      <hr />
+      <h4>Account: {address}</h4>
+      <h3>
+        L1 Balance: {l1Balance ? formatEther(l1Balance) : '0.0'}{' '}
+        {networkPair?.l1.nativeCurrency.symbol}
+      </h3>
+      <h3>
+        L2 Balance: {l2Balance ? formatEther(l2Balance) : '0.0'}{' '}
+        {networkPair?.l2.nativeCurrency.symbol}
+      </h3>
     </div>
   )
 

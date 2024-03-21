@@ -36,7 +36,9 @@ button:hover {
 .row {
     display: flex;
     flex-direction: row;
+    align-items: center;
     margin-bottom: 10px;
+    gap: 4px;
 }
 
 .column {
