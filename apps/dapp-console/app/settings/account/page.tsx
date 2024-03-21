@@ -41,11 +41,11 @@ export default function Account() {
       <div className="flex flex-row mb-10">
         <Input
           type="email"
-          className="bg-secondary rounded cursor-default mr-2"
+          className="bg-secondary cursor-default mr-2"
           value={user.email?.address ?? ''}
           disabled={true}
         />
-        <Button variant="secondary" className="rounded" onClick={updateEmail}>
+        <Button variant="secondary" onClick={updateEmail}>
           <Text as="span" className="hidden md:flex">
             Edit
           </Text>
@@ -73,14 +73,10 @@ export default function Account() {
           >
             Are you sure you want to delete your account?
           </Text>
-          <Button className="rounded w-full" onClick={handleDeleteAccount}>
+          <Button className="w-full" onClick={handleDeleteAccount}>
             Delete account
           </Button>
-          <Button
-            className="rounded w-full"
-            variant="outline"
-            onClick={handleCancel}
-          >
+          <Button className="w-full" variant="outline" onClick={handleCancel}>
             Cancel
           </Button>
         </DialogContent>
