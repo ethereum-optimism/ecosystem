@@ -26,6 +26,11 @@
     "postcss": "^8.4.37",
     "prop-types": "^15.8.1",
     "storybook": "^8.0.1",
+    "storybook-dark-mode": "^4.0.1",
     "tailwindcss": "^3.4.1"
+  },
+  "dependencies": {
+    "@storybook/addons": "^7.6.17",
+    "@storybook/theming": "^8.0.2"
   }
 }
