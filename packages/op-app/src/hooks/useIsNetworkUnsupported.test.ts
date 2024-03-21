@@ -8,7 +8,7 @@ import {
 } from '../test-utils/react'
 import { useIsNetworkUnsupported } from '.'
 
-describe('useIsNetowrkUnsupported', () => {
+describe('useIsNetworkUnsupported', () => {
   it('should return supported', async () => {
     await connectToNetwork()
 
