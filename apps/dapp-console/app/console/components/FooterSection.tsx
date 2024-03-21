@@ -1,6 +1,6 @@
 import { forms } from '@/app/constants'
-import { Button } from '@eth-optimism/ui-components/src/components/ui/button'
-import { Text } from '@eth-optimism/ui-components/src/components/ui/text'
+import { Button } from '@eth-optimism/ui-components/src/components/ui/button/button'
+import { Text } from '@eth-optimism/ui-components/src/components/ui/text/text'
 
 import Image from 'next/image'
 

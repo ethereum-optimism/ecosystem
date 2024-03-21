@@ -2,13 +2,13 @@
 
 import { Tile, TileGrid } from '@/app/components/Tile/Tile'
 import { externalRoutes } from '@/app/constants'
-import { Badge } from '@eth-optimism/ui-components/src/components/ui/badge'
-import { Text } from '@eth-optimism/ui-components/src/components/ui/text'
+import { Badge } from '@eth-optimism/ui-components/src/components/ui/badge/badge'
+import { Text } from '@eth-optimism/ui-components/src/components/ui/text/text'
 import {
   Dialog,
   DialogContent,
   DialogTrigger,
-} from '@eth-optimism/ui-components/src/components/ui/dialog'
+} from '@eth-optimism/ui-components/src/components/ui/dialog/dialog'
 import { useState } from 'react'
 import { useDialogContent } from '@/app/console/useDialogContent'
 import { openWindow } from '@/app/helpers'

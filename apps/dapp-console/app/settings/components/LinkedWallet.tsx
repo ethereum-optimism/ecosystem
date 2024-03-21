@@ -1,12 +1,12 @@
 import { shortenAddress } from '@eth-optimism/op-app'
 import {
-  Button,
   Dialog,
   DialogContent,
   DialogTrigger,
-  Input,
-} from '@eth-optimism/ui-components'
-import { Text } from '@eth-optimism/ui-components/src/components/ui/text'
+} from '@eth-optimism/ui-components/src/components/ui/dialog/dialog'
+import { Input } from '@eth-optimism/ui-components/src/components/ui/input/input'
+import { Button } from '@eth-optimism/ui-components/src/components/ui/button/button'
+import { Text } from '@eth-optimism/ui-components/src/components/ui/text/text'
 import { WalletWithMetadata } from '@privy-io/react-auth'
 import { RiAlertFill, RiCloseLine } from '@remixicon/react'
 import { useCallback, useState } from 'react'

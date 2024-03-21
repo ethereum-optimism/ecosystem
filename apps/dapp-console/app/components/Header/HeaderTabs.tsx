@@ -1,7 +1,7 @@
 import { docsItems, routes, supportItems } from '@/app/constants'
 import { cn } from '@/app/lib/utils'
 import Link from 'next/link'
-import { Text } from '@eth-optimism/ui-components/src/components/ui/text'
+import { Text } from '@eth-optimism/ui-components/src/components/ui/text/text'
 import Image from 'next/image'
 import {
   DropdownMenu,
@@ -10,7 +10,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
   DropdownMenuItem,
-} from '@eth-optimism/ui-components/src/components/ui/dropdown-menu'
+} from '@eth-optimism/ui-components/src/components/ui/dropdown-menu/dropdown-menu'
 
 import { RiArrowDownSLine } from '@remixicon/react'
 import { useCallback, useState } from 'react'

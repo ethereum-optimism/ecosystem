@@ -1,5 +1,5 @@
-import { Button } from '@eth-optimism/ui-components/src/components/ui/button'
-import { Text } from '@eth-optimism/ui-components/src/components/ui/text'
+import { Button } from '@eth-optimism/ui-components/src/components/ui/button/button'
+import { Text } from '@eth-optimism/ui-components/src/components/ui/text/text'
 import { usePrivy } from '@privy-io/react-auth'
 import { useMemo } from 'react'
 import {
@@ -17,7 +17,7 @@ import {
   alchemySubgraphMetadata,
   quickStartMetadata,
 } from '@/app/console/constants'
-import { DialogClose } from '@eth-optimism/ui-components/src/components/ui/dialog'
+import { DialogClose } from '@eth-optimism/ui-components/src/components/ui/dialog/dialog'
 import { useFeature } from '@/app/hooks/useFeatureFlag'
 import {
   DialogMetadata,

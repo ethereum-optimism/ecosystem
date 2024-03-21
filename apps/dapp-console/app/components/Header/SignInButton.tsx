@@ -6,13 +6,13 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
   DropdownMenuItem,
-} from '@eth-optimism/ui-components/src/components/ui/dropdown-menu'
-import { Button } from '@eth-optimism/ui-components/src/components/ui/button'
-import { Separator } from '@eth-optimism/ui-components/src/components/ui/separator'
+} from '@eth-optimism/ui-components/src/components/ui/dropdown-menu/dropdown-menu'
+import { Button } from '@eth-optimism/ui-components/src/components/ui/button/button'
+import { Separator } from '@eth-optimism/ui-components/src/components/ui/separator/separator'
 import { usePrivy } from '@privy-io/react-auth'
 import { useState } from 'react'
 import { cn } from '@eth-optimism/ui-components/src/lib/utils'
-import { Text } from '@eth-optimism/ui-components/src/components/ui/text'
+import { Text } from '@eth-optimism/ui-components/src/components/ui/text/text'
 import { RiArrowDownSLine, RiUser3Fill } from '@remixicon/react'
 import { trackSignInClick } from '@/app/event-tracking/mixpanel'
 import { routes } from '@/app/constants'

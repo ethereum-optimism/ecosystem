@@ -1,7 +1,7 @@
 import Image from 'next/image'
 
-import { Text } from '@eth-optimism/ui-components/src/components/ui/text'
-import { Badge } from '@eth-optimism/ui-components/src/components/ui/badge'
+import { Text } from '@eth-optimism/ui-components/src/components/ui/text/text'
+import { Badge } from '@eth-optimism/ui-components/src/components/ui/badge/badge'
 
 export type DialogMetadata = {
   label: string

@@ -17,6 +17,7 @@
     "react": "^18.2.0"
   },
   "devDependencies": {
+    "@storybook/react": "^8.0.1",
     "@types/node": "^20.10.0",
     "@types/react": "^18.2.47",
     "@vitejs/plugin-react": "^4.2.1",
@@ -59,6 +60,7 @@
     "@radix-ui/react-toggle-group": "^1.0.4",
     "@radix-ui/react-tooltip": "^1.0.7",
     "@remixicon/react": "^4.1.1",
+    "@storybook/addon-actions": "^8.0.2",
     "@tanstack/react-table": "^8.11.6",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.0.0",

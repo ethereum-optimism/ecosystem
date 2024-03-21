@@ -5,14 +5,14 @@ import { docsItems, externalRoutes } from '@/app/constants'
 import { trackCardClick } from '@/app/event-tracking/mixpanel'
 import { openWindow } from '@/app/helpers'
 import { FarcasterIcon } from '@/app/icons/FarcasterIcon'
-import { Button } from '@eth-optimism/ui-components/src/components/ui/button'
+import { Button } from '@eth-optimism/ui-components/src/components/ui/button/button'
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTrigger,
-} from '@eth-optimism/ui-components/src/components/ui/dialog'
-import { Text } from '@eth-optimism/ui-components/src/components/ui/text'
+} from '@eth-optimism/ui-components/src/components/ui/dialog/dialog'
+import { Text } from '@eth-optimism/ui-components/src/components/ui/text/text'
 import { RiDiscordFill, RiGitForkFill, RiGithubFill } from '@remixicon/react'
 import Image from 'next/image'
 

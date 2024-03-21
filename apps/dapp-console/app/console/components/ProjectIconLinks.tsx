@@ -8,16 +8,16 @@ import {
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from '@eth-optimism/ui-components/src/components/ui/tooltip'
+} from '@eth-optimism/ui-components/src/components/ui/tooltip/tooltip'
 
 import {
   Dialog,
   DialogContent,
   DialogFooter,
   DialogTrigger,
-} from '@eth-optimism/ui-components/src/components/ui/dialog'
-import { Button } from '@eth-optimism/ui-components/src/components/ui/button'
-import { Text } from '@eth-optimism/ui-components/src/components/ui/text'
+} from '@eth-optimism/ui-components/src/components/ui/dialog/dialog'
+import { Button } from '@eth-optimism/ui-components/src/components/ui/button/button'
+import { Text } from '@eth-optimism/ui-components/src/components/ui/text/text'
 
 const joinedDescription = (joined: string) => {
   return `Joined the Superchain on ${joined}.`

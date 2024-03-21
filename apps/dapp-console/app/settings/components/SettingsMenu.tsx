@@ -1,7 +1,7 @@
 import Link from 'next/link'
-import { Text } from '@eth-optimism/ui-components/src/components/ui/text'
+import { Text } from '@eth-optimism/ui-components/src/components/ui/text/text'
 import { cn } from '@eth-optimism/ui-components/src/lib/utils'
-import { Separator } from '@eth-optimism/ui-components/src/components/ui/separator'
+import { Separator } from '@eth-optimism/ui-components/src/components/ui/separator/separator'
 
 import { routes } from '@/app/constants'
 import { SettingsTabType } from '@/app/settings/types'

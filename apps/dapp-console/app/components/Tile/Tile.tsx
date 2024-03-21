@@ -3,8 +3,8 @@ import {
   CardContent,
   CardFooter,
   CardHeader,
-} from '@eth-optimism/ui-components/src/components/ui/card'
-import { Text } from '@eth-optimism/ui-components/src/components/ui/text'
+} from '@eth-optimism/ui-components/src/components/ui/card/card'
+import { Text } from '@eth-optimism/ui-components/src/components/ui/text/text'
 import { cn } from '@eth-optimism/ui-components/src/lib/utils'
 
 import { cva, type VariantProps } from 'class-variance-authority'

@@ -1,15 +1,15 @@
 import { motion } from 'framer-motion'
 import React, { useEffect } from 'react'
 import Link from 'next/link'
-import { Button } from '@eth-optimism/ui-components/src/components/ui/button'
+import { Button } from '@eth-optimism/ui-components/src/components/ui/button/button'
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from '@eth-optimism/ui-components/src/components/ui/accordion'
+} from '@eth-optimism/ui-components/src/components/ui/accordian/accordion'
 
-import { Text } from '@eth-optimism/ui-components/src/components/ui/text'
+import { Text } from '@eth-optimism/ui-components/src/components/ui/text/text'
 import Image from 'next/image'
 import { docsItems, routes, supportItems } from '@/app/constants'
 
