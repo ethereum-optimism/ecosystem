@@ -50,7 +50,7 @@ Documentation for the components in the `ui-components` package can be found on 
 
 In order to see a live representation of the component library, see our storybook site here:
 
-https://storybook-component-library.netlify.app
+https://storybook-component-library.netlify.app/
 
 If you need help adding stories to components:
 
