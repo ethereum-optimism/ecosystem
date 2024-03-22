@@ -6,7 +6,7 @@ This is a simple Storybook setup for developing UI components in isolation that 
 
 You can see all the components in the design system here:
 
-https://storybook-component-library.netlify.app/?path=/docs/ui-accordion--docs
+https://storybook-component-library.netlify.app
 
 ### Run storybook locally
 
