@@ -1,9 +1,12 @@
+'use client'
+
 import { Inter } from 'next/font/google'
 import '@/app/globals.css'
 import { PrivyProviderWrapper } from '@/app/providers/PrivyProviderWrapper'
 import { Header } from '@/app/components/Header'
 import { ThemeProvider } from '@/app/providers/ThemeProvider'
 import { FeatureFlagProvider } from '@/app/providers/FeatureFlagProvider'
+import { Toaster } from '@eth-optimism/ui-components'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -23,6 +26,7 @@ export default function RootLayout({
             </PrivyProviderWrapper>
           </ThemeProvider>
         </FeatureFlagProvider>
+        <Toaster />
       </body>
     </html>
   )
