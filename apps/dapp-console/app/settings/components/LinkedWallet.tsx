@@ -8,8 +8,9 @@ import { Input } from '@eth-optimism/ui-components/src/components/ui/input/input
 import { Button } from '@eth-optimism/ui-components/src/components/ui/button/button'
 import { Text } from '@eth-optimism/ui-components/src/components/ui/text/text'
 import { WalletWithMetadata } from '@privy-io/react-auth'
-import { RiAlertFill, RiCloseLine } from '@remixicon/react'
+import { RiAlertFill, RiCloseLine, RiFileCopyLine } from '@remixicon/react'
 import { useCallback, useState } from 'react'
+import { useToast } from '@eth-optimism/ui-components'
 
 export type LinkedWalletProps = {
   wallet: WalletWithMetadata
@@ -17,6 +18,7 @@ export type LinkedWalletProps = {
 }
 
 export const LinkedWallet = ({ wallet, onUnlink }: LinkedWalletProps) => {
+  const { toast } = useToast()
   const [isDialogOpen, setIsDialogOpen] = useState(false)
 
   const handleUnlink = useCallback(() => onUnlink(wallet), [wallet, onUnlink])
@@ -25,13 +27,29 @@ export const LinkedWallet = ({ wallet, onUnlink }: LinkedWalletProps) => {
     [setIsDialogOpen],
   )
 
+  const handleCopy = useCallback(() => {
+    navigator.clipboard.writeText(wallet.address)
+    toast({
+      description: 'Address Copied',
+      duration: 1000,
+    })
+  }, [wallet, toast])
+
   return (
     <div className="flex flex-row gap-2">
       <Input value={wallet.address} disabled />
+      <Button
+        variant="secondary"
+        size="icon"
+        aria-label="Unlink Wallet"
+        onClick={handleCopy}
+      >
+        <RiFileCopyLine size={20} />
+      </Button>
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <DialogTrigger asChild>
           <Button variant="secondary" size="icon" aria-label="Unlink Wallet">
-            <RiCloseLine />
+            <RiCloseLine size={20} />
           </Button>
         </DialogTrigger>
         <DialogContent>
