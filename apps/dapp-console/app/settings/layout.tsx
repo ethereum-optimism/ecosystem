@@ -14,13 +14,7 @@ import {
 import { SettingsTabType, SettingsTab } from '@/app/settings/types'
 import { useFeature } from '@/app/hooks/useFeatureFlag'
 import { WalletVerificationMethods } from '@/app/settings/components/WalletVerificationMethods'
-import {
-  Dialog,
-  DialogContent,
-  DialogTrigger,
-} from '@eth-optimism/ui-components/src/components/ui/dialog/dialog'
-import { deploymentRebateM2Metadata } from '@/app/console/constants'
-import { StandardDialogContent } from '@/app/components/StandardDialogContent'
+import { RebateDialog } from '@/app/settings/components/RebateDialog'
 
 const tabs: Record<SettingsTabType, SettingsTab> = {
   account: {
@@ -34,18 +28,11 @@ const tabs: Record<SettingsTabType, SettingsTab> = {
       <SettingsCardDescription>
         Add your app contracts here. In the future, we’ll scan them for
         insights. For now, we’ll check if they’re eligible for the{' '}
-        <Dialog>
-          <DialogTrigger>
-            <Text as="span" className="font-semibold">
-              Deployment Rebate.
-            </Text>
-          </DialogTrigger>
-          <DialogContent>
-            <StandardDialogContent
-              dialogMetadata={deploymentRebateM2Metadata}
-            />
-          </DialogContent>
-        </Dialog>
+        <RebateDialog>
+          <Text as="span" className="font-semibold">
+            Deployment Rebate.
+          </Text>
+        </RebateDialog>
       </SettingsCardDescription>
     ),
   },

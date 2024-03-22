@@ -94,7 +94,7 @@ export const WalletVerificationMethods = () => {
                     </div>
                   </div>
 
-                  <Button className="rounded" variant="outline">
+                  <Button variant="outline">
                     <Link
                       href={method.href}
                       target="_blank"

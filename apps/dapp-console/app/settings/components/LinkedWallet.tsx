@@ -27,15 +27,10 @@ export const LinkedWallet = ({ wallet, onUnlink }: LinkedWalletProps) => {
 
   return (
     <div className="flex flex-row gap-2">
-      <Input className="rounded" value={wallet.address} disabled />
+      <Input value={wallet.address} disabled />
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <DialogTrigger asChild>
-          <Button
-            className="rounded"
-            variant="secondary"
-            size="icon"
-            aria-label="Unlink Wallet"
-          >
+          <Button variant="secondary" size="icon" aria-label="Unlink Wallet">
             <RiCloseLine />
           </Button>
         </DialogTrigger>
@@ -55,14 +50,10 @@ export const LinkedWallet = ({ wallet, onUnlink }: LinkedWalletProps) => {
               {shortenAddress(wallet.address)}
             </Text>
 
-            <Button className="rounded w-full mb-2" onClick={handleUnlink}>
+            <Button className="w-full mb-2" onClick={handleUnlink}>
               Unlink
             </Button>
-            <Button
-              className="rounded w-full"
-              variant="outline"
-              onClick={handleCancel}
-            >
+            <Button className="w-full" variant="outline" onClick={handleCancel}>
               Cancel
             </Button>
           </div>

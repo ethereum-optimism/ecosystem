@@ -147,7 +147,7 @@ export const deploymentRebateM2Metadata: DialogMetadata = {
     </>
   ),
   primaryButton: (
-    <Button size="lg" asChild>
+    <Button id="deployment-rebate-add-contracts" size="lg" asChild>
       <Link href={routes.CONTRACTS.path}>
         <Text as="span">Add Contracts</Text>
       </Link>
@@ -157,6 +157,7 @@ export const deploymentRebateM2Metadata: DialogMetadata = {
     <Button size="lg" variant="outline" asChild>
       <Link
         href={externalRoutes.TERMS.path}
+        replace={true}
         target="_blank"
         rel="noopener noreferrer"
       >

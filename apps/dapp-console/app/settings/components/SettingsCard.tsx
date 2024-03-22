@@ -44,7 +44,7 @@ export const SettingsCard = ({
   tab,
 }: SettingsCardProps) => (
   <Card className={className}>
-    <CardHeader className="md:p-10 lg:p-16">
+    <CardHeader className="md:px-10 lg:px-16 md:pt-10 lg:pt-16 pb-8">
       <CardTitle>
         <div className="flex">{tab.title}</div>
       </CardTitle>
