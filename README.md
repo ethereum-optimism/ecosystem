@@ -38,7 +38,7 @@ Governance discussion can also be found on the [Optimism Governance Forum](https
 │   ├── <a href="./apps/paymaster-proxy">paymaster-proxy</a>: Paymaster proxy service
 ├── <a href="./packages">packages</a>
 │   ├── <a href="./packages/api-plugin">api-plugin</a>: Nx generators for api apps
-│   ├── <a href="./packages/contracts-ecosystem">api-plugin</a>: Ecosystem contracts
+│   ├── <a href="./packages/contracts-ecosystem">contracts-ecosystem</a>: Ecosystem contracts
 │   ├── <a href="./packages/op-app">op-app</a>: Optimism Stack App Utils
 │   ├── <a href="./packages/screening">screening</a>: Utils for integrating app with screening service
 │   ├── <a href="./packages/ui-components">ui-components</a>: Shared ui components
