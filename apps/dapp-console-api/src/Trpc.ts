@@ -1,11 +1,14 @@
+import type { PrivyClient } from '@privy-io/server-auth'
 import type { inferAsyncReturnType } from '@trpc/server'
 import { initTRPC, TRPCError } from '@trpc/server'
 import type * as trpcExpress from '@trpc/server/adapters/express'
 import { getIronSession } from 'iron-session'
+import type { Logger } from 'pino'
 import superjson from 'superjson'
 
 import type { SessionData } from './constants'
 import { sessionOptions } from './constants'
+import type { Database } from './db'
 
 const createContext = async ({
   req,
@@ -42,6 +45,9 @@ export class Trpc {
   public readonly middleware = this.trpc.middleware
 
   constructor(
+    public readonly privy: PrivyClient,
+    public readonly logger: Logger,
+    public readonly database: Database,
     private readonly trpc = initTRPC
       // @see https://trpc.io/docs/server/context
       .context<inferAsyncReturnType<typeof createContext>>()

@@ -18,6 +18,14 @@ export type SessionData = {
     isActive: boolean
     createdAt: string
   }
+  user?: {
+    // bcrypt hash of privy access token
+    privyAccessToken: string
+    // UTC milliseconds at which the token expires
+    privyAccessTokenExpiration: number
+    privyDid: string
+    entityId: string
+  }
 }
 
 export type Session = IronSession<SessionData>

@@ -21,8 +21,6 @@ export class Middleware {
     },
   })
 
-  // TODO add cookie middleware
-
   /**
    * @param corsAllowlist - regex array of allowlist
    */
