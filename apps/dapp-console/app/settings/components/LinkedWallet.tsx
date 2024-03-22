@@ -40,22 +40,16 @@ export const LinkedWallet = ({ wallet, onUnlink }: LinkedWalletProps) => {
       <Input value={wallet.address} disabled />
       <Button
         variant="secondary"
-        className="px-3"
         size="icon"
         aria-label="Unlink Wallet"
         onClick={handleCopy}
       >
-        <RiFileCopyLine />
+        <RiFileCopyLine size={20} />
       </Button>
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <DialogTrigger asChild>
-          <Button
-            variant="secondary"
-            className="px-3"
-            size="icon"
-            aria-label="Unlink Wallet"
-          >
-            <RiCloseLine />
+          <Button variant="secondary" size="icon" aria-label="Unlink Wallet">
+            <RiCloseLine size={20} />
           </Button>
         </DialogTrigger>
         <DialogContent>
