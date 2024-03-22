@@ -30,11 +30,7 @@ export const LinkedWallet = ({ wallet, onUnlink }: LinkedWalletProps) => {
       <Input value={wallet.address} disabled />
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <DialogTrigger asChild>
-          <Button
-            variant="secondary"
-            size="icon"
-            aria-label="Unlink Wallet"
-          >
+          <Button variant="secondary" size="icon" aria-label="Unlink Wallet">
             <RiCloseLine />
           </Button>
         </DialogTrigger>
@@ -57,11 +53,7 @@ export const LinkedWallet = ({ wallet, onUnlink }: LinkedWalletProps) => {
             <Button className="w-full mb-2" onClick={handleUnlink}>
               Unlink
             </Button>
-            <Button
-              className="w-full"
-              variant="outline"
-              onClick={handleCancel}
-            >
+            <Button className="w-full" variant="outline" onClick={handleCancel}>
               Cancel
             </Button>
           </div>
