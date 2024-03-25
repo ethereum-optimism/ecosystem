@@ -1,16 +1,44 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+
+*,
+:after,
+:before {
+  box-sizing: border-box;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'San Francisco', 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+}
+
+body {
+    padding: 0;
+    margin: 0;
+}
+
+button {
+    display: flex;
+    border-radius: 8px;
+    padding: 4px 8px;
+    border: none;
+    transition: background-color 0.1s ease;
+}
+
+button:hover {
+    cursor: pointer;
+    background-color: #cccccc;
+}
+
 .app {
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    width: 100%;
-    height: 100vh;
+    height: 100dvh;
 }
 
 .row {
     display: flex;
     flex-direction: row;
+    align-items: center;
     margin-bottom: 10px;
+    gap: 4px;
 }
 
 .column {
