@@ -23,6 +23,7 @@ import { ensureAdmin } from './auth'
 import { corsAllowlist, envVars } from './constants'
 import { connectToDatabase, runMigrations } from './db'
 import { metrics } from './monitoring/metrics'
+import { AuthRoute } from './routes/auth'
 import { Trpc } from './Trpc'
 import { retryWithBackoff } from './utils'
 
@@ -121,12 +122,16 @@ export class Service {
      */
     const trpc = new Trpc(privy, logger, appDB)
 
+    const authRoute = new AuthRoute(trpc)
+
     /**
      * The apiServer simply assmbles the routes into a TRPC Server
      */
-    const apiServer = new ApiV0(trpc, {})
+    const apiServer = new ApiV0(trpc, { authRoute })
+    apiServer.setLoggingServer(logger)
 
     const adminServer = new AdminApi(trpc, {})
+    adminServer.setLoggingServer(logger)
 
     const service = new Service(apiServer, middleware, logger, adminServer)
 

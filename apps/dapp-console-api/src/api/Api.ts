@@ -2,6 +2,8 @@ import * as trpcExpress from '@trpc/server/adapters/express'
 import type { Logger } from 'pino'
 import * as trpcPlayground from 'trpc-playground/handlers/express'
 
+import { metrics } from '@/monitoring/metrics'
+
 import type { MajorApiVersion } from '../constants'
 import { Route } from '../routes'
 
@@ -68,9 +70,20 @@ export abstract class Api extends Route {
     trpcExpress.createExpressMiddleware({
       router: this.handler,
       createContext: this.trpc.createContext,
+      onError: ({ error, type, path }) => {
+        const { cause, message, name, code, stack } = error
+        this.logger?.error(
+          { cause, message, name, code, stack, type, path },
+          'express middleware error handler',
+        )
+        metrics.trpcServerErrorCount.inc({
+          apiVersion: this.version,
+        })
+      },
     })
 
   public readonly setLoggingServer = (logger: Logger) => {
+    this.logger = logger
     Object.values(this.routes).forEach((route) => {
       route.setLoggingServer(logger)
     })

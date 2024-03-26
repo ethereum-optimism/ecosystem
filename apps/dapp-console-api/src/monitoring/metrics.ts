@@ -8,4 +8,13 @@ export const metrics = {
     help: 'Number of unhandled API server errors',
     labelNames: ['apiVersion'] as const,
   }),
+  trpcServerErrorCount: new Counter({
+    name: 'trpc_server_total_error_count',
+    help: 'Total number of errors encounterted in trpc server',
+    labelNames: ['apiVersion'] as const,
+  }),
+  logoutUserErrorCount: new Counter({
+    name: 'logout_user_error_count',
+    help: 'Total number of errors encountered while logging user out',
+  }),
 }
