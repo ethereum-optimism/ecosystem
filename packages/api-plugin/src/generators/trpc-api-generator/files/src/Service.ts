@@ -95,16 +95,18 @@ export class Service {
      */
     const trpc = new Trpc()
 
+    const logger = pino().child({
+      namespace: '<%= name %>-server',
+    })
+
     /**
      * The apiServer simply assmbles the routes into a TRPC Server
      */
     const apiServer = new ApiV0(trpc, {})
-
-    const logger = pino().child({
-      namespace: 'api-server',
-    })
+    apiServer.setLoggingServer(logger)
 
     const adminServer = new AdminApi(trpc, {})
+    adminServer.setLoggingServer(logger)
 
     const service = new Service(apiServer, middleware, logger, adminServer)
 

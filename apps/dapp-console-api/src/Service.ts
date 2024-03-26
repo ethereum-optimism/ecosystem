@@ -1,4 +1,6 @@
+import { PrivyClient } from '@privy-io/server-auth'
 import bodyParser from 'body-parser'
+import cookieParser from 'cookie-parser'
 import type {
   ErrorRequestHandler,
   NextFunction,
@@ -21,6 +23,7 @@ import { ensureAdmin } from './auth'
 import { corsAllowlist, envVars } from './constants'
 import { connectToDatabase, runMigrations } from './db'
 import { metrics } from './monitoring/metrics'
+import { AuthRoute } from './routes/auth'
 import { Trpc } from './Trpc'
 import { retryWithBackoff } from './utils'
 
@@ -104,21 +107,31 @@ export class Service {
      * middleware used by the express server
      */
     const middleware = new Middleware(corsAllowlist)
+
+    const privy = new PrivyClient(
+      envVars.PRIVY_APP_ID,
+      envVars.PRIVY_APP_SECRET,
+    )
+
+    const logger = pino().child({
+      namespace: 'dapp-console-api-server',
+    })
+
     /**
      * Routes and controllers are created with trpc
      */
-    const trpc = new Trpc()
+    const trpc = new Trpc(privy, logger, appDB)
+
+    const authRoute = new AuthRoute(trpc)
 
     /**
      * The apiServer simply assmbles the routes into a TRPC Server
      */
-    const apiServer = new ApiV0(trpc, {})
-
-    const logger = pino().child({
-      namespace: 'api-server',
-    })
+    const apiServer = new ApiV0(trpc, { authRoute })
+    apiServer.setLoggingServer(logger)
 
     const adminServer = new AdminApi(trpc, {})
+    adminServer.setLoggingServer(logger)
 
     const service = new Service(apiServer, middleware, logger, adminServer)
 
@@ -135,6 +148,8 @@ export class Service {
 
       // Body parsing.
       app.use(bodyParser.urlencoded({ extended: true }))
+
+      app.use(cookieParser())
 
       // Keep the raw body around in case the application needs it.
       app.use(
