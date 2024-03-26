@@ -1,29 +1,24 @@
 import type { PrivyClient } from '@privy-io/server-auth'
 import type { RouterCaller } from '@trpc/server'
-import { createCallerFactory } from '@trpc/server'
 import bcrypt from 'bcrypt'
-import type { Request, Response } from 'express'
-import type { getIronSession } from 'iron-session'
 import type { Mock } from 'vitest'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
-import type { SessionData } from '@/constants'
-import { envVars, PRIVY_TOKEN_COOKIE_KEY } from '@/constants'
-import type { Session } from '@/constants/session'
-import { getEntity, insertEntity } from '@/models'
+import { envVars } from '@/constants'
 import { Route } from '@/routes'
-import { mockDB, mockLogger } from '@/testhelpers'
+import {
+  configureAuthMocks,
+  createSignedInCaller,
+  createSignedOutCaller,
+  mockDB,
+  mockLogger,
+  mockPrivyAccessToken,
+  mockUserSession,
+} from '@/testhelpers'
 import { mockPrivyClient } from '@/testhelpers/MockPrivyClient'
 import { Trpc } from '@/Trpc'
 
 import { isPrivyAuthed } from './isPrivyAuthed'
-
-vi.mock('../models', async () => ({
-  // @ts-ignore - importActual returns unknown
-  ...(await vi.importActual('../models')),
-  getEntity: vi.fn().mockImplementation(async () => undefined),
-  insertEntity: vi.fn().mockImplementation(async () => undefined),
-}))
 
 describe('isPrivyAuthed', () => {
   let privyClient: PrivyClient
@@ -31,39 +26,10 @@ describe('isPrivyAuthed', () => {
   let handler: TestRoute['handler']
   let signedOutCaller: ReturnType<RouterCaller<TestRoute['handler']['_def']>>
   let signedInCaller: ReturnType<RouterCaller<TestRoute['handler']['_def']>>
-  const mockPrivyAccessToken = 'privy_token'
   let hashedAccessToken: string
   let verifyAuthTokenMock: Mock
   let getEntityMock: Mock
   let insertEntityMock: Mock
-
-  const mockSession = (user?: SessionData['user']) => ({
-    ...(user && {
-      user: {
-        ...user,
-      },
-    }),
-    save: vi.fn(),
-    destroy: vi.fn(),
-    updateConfig: vi.fn(),
-  })
-
-  const createSignedInCallerWithSession = (
-    session: Awaited<ReturnType<typeof getIronSession<SessionData>>>,
-    privyAccessToken?: string,
-  ) => {
-    const callerFactory = createCallerFactory()
-    const createCaller = callerFactory(handler)
-    return createCaller({
-      req: {
-        cookies: {
-          [PRIVY_TOKEN_COOKIE_KEY]: privyAccessToken || mockPrivyAccessToken,
-        } as any,
-      } as Request,
-      res: {} as Response,
-      session: session,
-    })
-  }
 
   beforeEach(async () => {
     hashedAccessToken = await bcrypt.hash(
@@ -73,40 +39,15 @@ describe('isPrivyAuthed', () => {
     privyClient = mockPrivyClient()
     trpc = new Trpc(privyClient, mockLogger, mockDB)
     handler = new TestRoute(trpc).handler
-    const callerFactory = createCallerFactory()
-    const createCaller = callerFactory(handler)
-    signedOutCaller = createCaller({
-      req: {
-        cookies: {},
-      } as Request,
-      res: {} as Response,
-      session: {} as Session,
-    })
-    signedInCaller = createSignedInCallerWithSession(mockSession())
     ;({ verifyAuthTokenMock, getEntityMock, insertEntityMock } =
-      configureMocks())
+      configureAuthMocks(privyClient))
+    signedInCaller = createSignedInCaller(handler, mockUserSession())
+    signedOutCaller = createSignedOutCaller(handler)
   })
 
   afterEach(() => {
     vi.clearAllMocks()
   })
-
-  const configureMocks = () => {
-    const verifyAuthTokenMock = privyClient.verifyAuthToken as Mock
-    verifyAuthTokenMock.mockImplementation(async () => ({
-      expiration: Date.now() / 1000,
-      userId: 'privy:did',
-    }))
-    const getEntityMock = getEntity as Mock
-    getEntityMock.mockImplementation((async) => ({}))
-    const insertEntityMock = insertEntity as Mock
-    insertEntityMock.mockImplementation((async) => {})
-    return {
-      verifyAuthTokenMock,
-      getEntityMock,
-      insertEntityMock,
-    }
-  }
 
   it('should throw if privy-token cookie is not on request', async () => {
     await expect(signedOutCaller.test()).rejects.toEqual(Trpc.handleStatus(401))
@@ -129,8 +70,9 @@ describe('isPrivyAuthed', () => {
   })
 
   it('should call to privy to verify token when access token changes', async () => {
-    signedInCaller = createSignedInCallerWithSession(
-      mockSession({
+    signedInCaller = createSignedInCaller(
+      handler,
+      mockUserSession({
         privyAccessToken: hashedAccessToken,
         privyAccessTokenExpiration: Date.now() + 1000,
         entityId: '1',
@@ -145,8 +87,9 @@ describe('isPrivyAuthed', () => {
   })
 
   it('should call to privy if access token on session is expired', async () => {
-    signedInCaller = createSignedInCallerWithSession(
-      mockSession({
+    signedInCaller = createSignedInCaller(
+      handler,
+      mockUserSession({
         privyAccessToken: hashedAccessToken,
         privyAccessTokenExpiration: Date.now() - 1000,
         entityId: '1',
@@ -163,8 +106,8 @@ describe('isPrivyAuthed', () => {
     const expectedEntityId = 'entityId1'
     const expectedExpirationTimeSeconds = Date.now() / 1000
     const expectedPrivyDid = 'privy:did'
-    const session = mockSession()
-    const caller = createSignedInCallerWithSession(session)
+    const session = mockUserSession()
+    const caller = createSignedInCaller(handler, session)
     getEntityMock.mockImplementation(async () => ({ id: expectedEntityId }))
     verifyAuthTokenMock.mockImplementation(async () => ({
       expiration: expectedExpirationTimeSeconds,
@@ -186,8 +129,8 @@ describe('isPrivyAuthed', () => {
     const expectedEntityId = 'entityId1'
     const expectedExpirationTimeSeconds = Date.now() / 1000
     const expectedPrivyDid = 'privy:did'
-    const session = mockSession()
-    const caller = createSignedInCallerWithSession(session)
+    const session = mockUserSession()
+    const caller = createSignedInCaller(handler, session)
     getEntityMock.mockImplementation(async () => undefined)
     insertEntityMock.mockImplementation(async () => ({ id: expectedEntityId }))
     verifyAuthTokenMock.mockImplementation(async () => ({
@@ -213,8 +156,8 @@ describe('isPrivyAuthed', () => {
     const expectedEntityId = 'entityId1'
     const expectedExpirationTimeSeconds = Date.now() / 1000
     const expectedPrivyDid = 'privy:did'
-    const session = mockSession()
-    const caller = createSignedInCallerWithSession(session)
+    const session = mockUserSession()
+    const caller = createSignedInCaller(handler, session)
     getEntityMock.mockImplementation(async () => ({ id: expectedEntityId }))
     verifyAuthTokenMock.mockImplementation(async () => ({
       expiration: expectedExpirationTimeSeconds,
@@ -228,13 +171,13 @@ describe('isPrivyAuthed', () => {
   })
 
   it('should not call privy and should not fetch entity if session is valid', async () => {
-    const session = mockSession({
+    const session = mockUserSession({
       privyAccessToken: hashedAccessToken,
       privyAccessTokenExpiration: Date.now() + 1000,
       entityId: 'id1',
       privyDid: 'privy:did',
     })
-    const caller = createSignedInCallerWithSession(session)
+    const caller = createSignedInCaller(handler, session)
 
     await caller.test()
 
