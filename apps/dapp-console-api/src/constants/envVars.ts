@@ -22,6 +22,7 @@ const envVarSchema = z.object({
     .describe('32 character iron session secret'),
   ADMIN_API_PASSWORD: z.string().optional(),
   ADMIN_API_SALT: z.string().optional(),
+  PRIVY_ACCESS_TOKEN_SALT: z.string(),
   DB_USER: z.string(),
   MIGRATE_DB_USER: z.string(),
   DB_PASSWORD: z.string().optional(),
@@ -33,6 +34,8 @@ const envVarSchema = z.object({
   DB_PORT: z.number().optional(),
   DB_NAME: z.string().optional(),
   DB_MAX_CONNECTIONS: z.number().int().min(1).optional(),
+  PRIVY_APP_ID: z.string(),
+  PRIVY_APP_SECRET: z.string(),
 })
 
 const isTest = process.env.NODE_ENV === 'test'
@@ -72,6 +75,9 @@ export const envVars = envVarSchema.parse(
         MIGRATE_INITIAL_RETRY_DELAY: 1,
         MIGRATE_MAX_RETRY_DELAY: 1,
         MIGRATE_MAX_RETRIES: 1,
+        PRIVY_APP_ID: 'PRIVY_APP_ID',
+        PRIVY_APP_SECRET: 'PRIVY_APP_SECRET',
+        PRIVY_ACCESS_TOKEN_SALT: '$2b$10$Kd085thA56nZmQiRHh2XHu',
       }
     : {
         PORT: process.env.PORT
@@ -103,5 +109,8 @@ export const envVars = envVarSchema.parse(
           process.env.MIGRATE_INITIAL_RETRY_DELAY ?? 30000,
         MIGRATE_MAX_RETRY_DELAY: process.env.MIGRATE_MAX_RETRY_DELAY ?? 120000,
         MIGRATE_MAX_RETRIES: process.env.MIGRATE_MAX_RETRIES ?? 3,
+        PRIVY_APP_ID: process.env.PRIVY_APP_ID,
+        PRIVY_APP_SECRET: process.env.PRIVY_APP_SECRET,
+        PRIVY_ACCESS_TOKEN_SALT: process.env.PRIVY_ACCESS_TOKEN_SALT,
       },
 )
