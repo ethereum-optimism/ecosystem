@@ -28,7 +28,7 @@ export const entities = pgTable('entities', {
 export type Entity = InferSelectModel<typeof entities>
 export type InsertEntity = InferInsertModel<typeof entities>
 
-export const getEntity = async (
+export const getEntityByPrivyDid = async (
   db: Database,
   privyDid: Entity['privyDid'],
 ): Promise<Entity | null> => {

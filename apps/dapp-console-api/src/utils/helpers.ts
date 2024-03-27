@@ -1,3 +1,5 @@
+import type { Address } from 'viem'
+
 export const retryWithBackoff = <T>(
   operation: () => Promise<T>,
   maxRetries: number,
@@ -33,3 +35,7 @@ export const retryWithBackoff = <T>(
     attempt()
   })
 }
+
+/** Checks to see if two addresses have the same value */
+export const addressEqualityCheck = (address1: Address, address2: Address) =>
+  address1.toLowerCase() === address2.toLowerCase()

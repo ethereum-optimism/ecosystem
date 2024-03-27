@@ -4,4 +4,5 @@ import { vi } from 'vitest'
 export const mockPrivyClient: () => PrivyClient = () =>
   ({
     verifyAuthToken: vi.fn().mockImplementation(async () => undefined),
+    getUser: vi.fn(),
   }) as any

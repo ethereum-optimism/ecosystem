@@ -5,9 +5,9 @@ import type { Mock } from 'vitest'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 import { envVars } from '@/constants'
+import { getEntityByPrivyDid, insertEntity } from '@/models'
 import { Route } from '@/routes'
 import {
-  configureAuthMocks,
   createSignedInCaller,
   createSignedOutCaller,
   mockDB,
@@ -20,6 +20,13 @@ import { Trpc } from '@/Trpc'
 
 import { isPrivyAuthed } from './isPrivyAuthed'
 
+vi.mock('@/models', async () => ({
+  // @ts-ignore - importActual returns unknown
+  ...(await vi.importActual('@/models')),
+  getEntityByPrivyDid: vi.fn(),
+  insertEntity: vi.fn(),
+}))
+
 describe('isPrivyAuthed', () => {
   let privyClient: PrivyClient
   let trpc: Trpc
@@ -28,8 +35,8 @@ describe('isPrivyAuthed', () => {
   let signedInCaller: ReturnType<RouterCaller<TestRoute['handler']['_def']>>
   let hashedAccessToken: string
   let verifyAuthTokenMock: Mock
-  let getEntityMock: Mock
-  let insertEntityMock: Mock
+  const getEntityByPrivyDidMock = getEntityByPrivyDid as Mock
+  const insertEntityMock = insertEntity as Mock
 
   beforeEach(async () => {
     hashedAccessToken = await bcrypt.hash(
@@ -39,8 +46,10 @@ describe('isPrivyAuthed', () => {
     privyClient = mockPrivyClient()
     trpc = new Trpc(privyClient, mockLogger, mockDB)
     handler = new TestRoute(trpc).handler
-    ;({ verifyAuthTokenMock, getEntityMock, insertEntityMock } =
-      configureAuthMocks(privyClient))
+    getEntityByPrivyDidMock.mockImplementation(async () => ({}))
+    verifyAuthTokenMock = (
+      privyClient.verifyAuthToken as Mock
+    ).mockImplementation(async () => ({}))
     signedInCaller = createSignedInCaller(handler, mockUserSession())
     signedOutCaller = createSignedOutCaller(handler)
   })
@@ -108,7 +117,9 @@ describe('isPrivyAuthed', () => {
     const expectedPrivyDid = 'privy:did'
     const session = mockUserSession()
     const caller = createSignedInCaller(handler, session)
-    getEntityMock.mockImplementation(async () => ({ id: expectedEntityId }))
+    getEntityByPrivyDidMock.mockImplementation(async () => ({
+      id: expectedEntityId,
+    }))
     verifyAuthTokenMock.mockImplementation(async () => ({
       expiration: expectedExpirationTimeSeconds,
       userId: expectedPrivyDid,
@@ -131,7 +142,7 @@ describe('isPrivyAuthed', () => {
     const expectedPrivyDid = 'privy:did'
     const session = mockUserSession()
     const caller = createSignedInCaller(handler, session)
-    getEntityMock.mockImplementation(async () => undefined)
+    getEntityByPrivyDidMock.mockImplementation(async () => undefined)
     insertEntityMock.mockImplementation(async () => ({ id: expectedEntityId }))
     verifyAuthTokenMock.mockImplementation(async () => ({
       expiration: expectedExpirationTimeSeconds,
@@ -158,7 +169,9 @@ describe('isPrivyAuthed', () => {
     const expectedPrivyDid = 'privy:did'
     const session = mockUserSession()
     const caller = createSignedInCaller(handler, session)
-    getEntityMock.mockImplementation(async () => ({ id: expectedEntityId }))
+    getEntityByPrivyDidMock.mockImplementation(async () => ({
+      id: expectedEntityId,
+    }))
     verifyAuthTokenMock.mockImplementation(async () => ({
       expiration: expectedExpirationTimeSeconds,
       userId: expectedPrivyDid,
@@ -167,7 +180,7 @@ describe('isPrivyAuthed', () => {
     await caller.test()
 
     expect(insertEntityMock).not.toBeCalled()
-    expect(getEntityMock).toBeCalledWith(mockDB, expectedPrivyDid)
+    expect(getEntityByPrivyDidMock).toBeCalledWith(mockDB, expectedPrivyDid)
   })
 
   it('should not call privy and should not fetch entity if session is valid', async () => {
@@ -182,7 +195,7 @@ describe('isPrivyAuthed', () => {
     await caller.test()
 
     expect(verifyAuthTokenMock).not.toBeCalled()
-    expect(getEntityMock).not.toBeCalled()
+    expect(getEntityByPrivyDidMock).not.toBeCalled()
     expect(insertEntityMock).not.toBeCalled()
     expect(session.save).not.toBeCalled()
   })

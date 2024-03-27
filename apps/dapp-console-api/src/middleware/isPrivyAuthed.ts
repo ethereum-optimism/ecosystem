@@ -1,7 +1,7 @@
 import bcrypt from 'bcrypt'
 
 import { envVars, PRIVY_TOKEN_COOKIE_KEY } from '@/constants'
-import { getEntity, insertEntity } from '@/models'
+import { getEntityByPrivyDid, insertEntity } from '@/models'
 import { Trpc } from '@/Trpc'
 
 /** Middleware used for checking if the request has a valid privy token associated with it. */
@@ -24,9 +24,11 @@ export const isPrivyAuthed = (trpc: Trpc) => {
       try {
         const verifiedPrivy =
           await trpc.privy.verifyAuthToken(cookieAccessToken)
-        // TODO: sync privy linked accounts
 
-        let entity = await getEntity(trpc.database, verifiedPrivy.userId)
+        let entity = await getEntityByPrivyDid(
+          trpc.database,
+          verifiedPrivy.userId,
+        )
         if (!entity) {
           entity = await insertEntity(trpc.database, {
             privyDid: verifiedPrivy.userId,
