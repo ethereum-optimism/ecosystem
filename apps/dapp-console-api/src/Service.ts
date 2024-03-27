@@ -26,6 +26,7 @@ import { metrics } from './monitoring/metrics'
 import { AuthRoute } from './routes/auth'
 import { Trpc } from './Trpc'
 import { retryWithBackoff } from './utils'
+import { WalletsRoute } from './routes/wallets'
 
 const API_PATH = '/api'
 
@@ -123,11 +124,12 @@ export class Service {
     const trpc = new Trpc(privy, logger, appDB)
 
     const authRoute = new AuthRoute(trpc)
+    const walletsRoute = new WalletsRoute(trpc)
 
     /**
      * The apiServer simply assmbles the routes into a TRPC Server
      */
-    const apiServer = new ApiV0(trpc, { authRoute })
+    const apiServer = new ApiV0(trpc, { authRoute, walletsRoute })
     apiServer.setLoggingServer(logger)
 
     const adminServer = new AdminApi(trpc, {})

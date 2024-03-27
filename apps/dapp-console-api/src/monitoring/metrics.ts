@@ -17,4 +17,8 @@ export const metrics = {
     name: 'logout_user_error_count',
     help: 'Total number of errors encountered while logging user out',
   }),
+  privySyncWalletsErrorCount: new Counter({
+    name: 'privy_sync_wallets_error_count',
+    help: 'Total number of errors encountered while attempting to sync linked privy wallets',
+  }),
 }
