@@ -11,7 +11,6 @@
     "dev": "tsup --watch --onSuccess 'node dist/run.js'",
     "build": "tsup",
     "start": "node dist/run.js",
-    "docker:services:up": "docker compose up -d redis",
     "docker:up": "docker compose up -d",
     "docker:down": "docker compose down",
     "lint": "eslint \"**/*.{ts,tsx}\" && pnpm prettier --check \"**/*.{ts,tsx}\"",
