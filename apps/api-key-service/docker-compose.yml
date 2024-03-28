@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  api-key-service:
+    build:
+      context: ../../
+      dockerfile: Dockerfile
+      target: api-key-service
+    env_file: .env
+    healthcheck:
+      test: wget localhost:7330/healthz -q -O - > /dev/null 2>&1
+    ports:
+      - 7330:7330

@@ -40,6 +40,8 @@ RUN pnpm deploy --filter=paymaster-proxy --prod /prod/paymaster-proxy
 # copy built dapp-console-api app & isolated node_modules to prod/dapp-console-api
 RUN pnpm deploy --filter=dapp-console-api --prod /prod/dapp-console-api
 
+RUN pnpm deploy --filter=api-key-service --prod /prod/api-key-service 
+
 ########################################
 # STEP 2: PAYMASTER-PROXY
 ########################################
@@ -89,6 +91,20 @@ COPY  --from=builder /prod/dapp-console-api /prod/dapp-console-api
 WORKDIR /prod/dapp-console-api
 
 ENV NODE_EXTRA_CA_CERTS=/usr/local/share/ca-certificates/extra-ca-certificates.crt
+
+EXPOSE 7300
+
+CMD [ "pnpm", "start" ]
+
+
+########################################
+# STEP 4: API-KEY-SERVICE
+########################################
+
+FROM base AS api-key-service
+
+COPY  --from=builder /prod/api-key-service /prod/api-key-service
+WORKDIR /prod/api-key-service
 
 EXPOSE 7300
 
