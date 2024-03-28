@@ -5,8 +5,6 @@ packages/*/.env
 app/*/.env
 .npmrc
 
-.vscode
-
 # testing
 /coverage
 
