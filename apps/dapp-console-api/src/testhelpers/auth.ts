@@ -8,12 +8,12 @@ import { type Mock, vi } from 'vitest'
 import type { SessionData } from '@/constants'
 import { PRIVY_TOKEN_COOKIE_KEY } from '@/constants'
 import type { Session } from '@/constants/session'
-import { getEntity, insertEntity } from '@/models'
+import { getEntityByPrivyDid, insertEntity } from '@/models'
 
 vi.mock('../models', async () => ({
   // @ts-ignore - importActual returns unknown
   ...(await vi.importActual('../models')),
-  getEntity: vi.fn().mockImplementation(async () => undefined),
+  getEntityByPrivyDid: vi.fn().mockImplementation(async () => undefined),
   insertEntity: vi.fn().mockImplementation(async () => undefined),
 }))
 
@@ -53,13 +53,13 @@ export const createSignedOutCaller = <T extends AnyRouter>(router: T) => {
 export const configureAuthMocks = (privyClient: PrivyClient) => {
   const verifyAuthTokenMock = privyClient.verifyAuthToken as Mock
   verifyAuthTokenMock.mockImplementation(async () => ({}))
-  const getEntityMock = getEntity as Mock
-  getEntityMock.mockImplementation(async () => ({}))
+  const getEntityByPrivyDidMock = getEntityByPrivyDid as Mock
+  getEntityByPrivyDidMock.mockImplementation(async () => ({}))
   const insertEntityMock = insertEntity as Mock
   insertEntityMock.mockImplementation(async () => ({}))
   return {
     verifyAuthTokenMock,
-    getEntityMock,
+    getEntityByPrivyDidMock,
     insertEntityMock,
   }
 }
