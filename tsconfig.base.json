@@ -14,7 +14,9 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "paths": {
-      "@eth-optimism/api-plugin": ["packages/api-plugin/src/index.ts"]
+      "@eth-optimism/api-plugin": [
+        "packages/api-plugin/src/index.ts"
+      ]
     }
   }
 }

@@ -5,7 +5,10 @@ import { useEffect, useMemo } from 'react'
 
 import { Text } from '@eth-optimism/ui-components/src/components/ui/text/text'
 
-import { SettingsMenu } from '@/app/settings/components/SettingsMenu'
+import {
+  MobileSettingsMenu,
+  SettingsMenu,
+} from '@/app/settings/components/SettingsMenu'
 import {
   SettingsCard,
   SettingsCardDescription,
@@ -73,15 +76,21 @@ export default function SettingsLayout({
 
   return shouldShowSettings ? (
     <main className="flex justify-center bg-secondary min-h-screen">
-      <div className="flex flex-row w-full max-w-7xl mt-36 mb-16">
+      <div className="flex flex-row w-full max-w-7xl mt-6 md:mt-36 md:mb-16">
         <SettingsMenu
           activeTabType={tab.type}
           className="hidden w-[246px] pl-10 md:block xl:pl-0"
         />
 
-        <SettingsCard className="w-full mx-8 z-10" tab={tab}>
-          {children}
-        </SettingsCard>
+        <div className="flex flex-col w-full items-center md:mx-8">
+          <MobileSettingsMenu
+            activeTabType={tab.type}
+            className="flex md:hidden mb-6"
+          />
+          <SettingsCard className="w-full z-10 min-h-full md:min-h-0" tab={tab}>
+            {children}
+          </SettingsCard>
+        </div>
       </div>
     </main>
   ) : null
