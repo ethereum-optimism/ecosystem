@@ -1,21 +1,16 @@
-import type { PrivyClient } from '@privy-io/server-auth'
 import type { AnyRouter } from '@trpc/server'
 import { createCallerFactory } from '@trpc/server'
+import bcrypt from 'bcrypt'
 import type { Request, Response } from 'express'
 import type { getIronSession } from 'iron-session'
-import { type Mock, vi } from 'vitest'
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import type { Mock } from 'vitest'
 
 import type { SessionData } from '@/constants'
-import { PRIVY_TOKEN_COOKIE_KEY } from '@/constants'
+import { envVars, PRIVY_TOKEN_COOKIE_KEY } from '@/constants'
 import type { Session } from '@/constants/session'
-import { getEntity, insertEntity } from '@/models'
 
-vi.mock('../models', async () => ({
-  // @ts-ignore - importActual returns unknown
-  ...(await vi.importActual('../models')),
-  getEntity: vi.fn().mockImplementation(async () => undefined),
-  insertEntity: vi.fn().mockImplementation(async () => undefined),
-}))
+import { mockUserSession } from './session'
 
 export const mockPrivyAccessToken = 'privy_token'
 
@@ -49,17 +44,17 @@ export const createSignedOutCaller = <T extends AnyRouter>(router: T) => {
   })
 }
 
-/** Sets up the mocks required for authentication. */
-export const configureAuthMocks = (privyClient: PrivyClient) => {
-  const verifyAuthTokenMock = privyClient.verifyAuthToken as Mock
-  verifyAuthTokenMock.mockImplementation(async () => ({}))
-  const getEntityMock = getEntity as Mock
-  getEntityMock.mockImplementation(async () => ({}))
-  const insertEntityMock = insertEntity as Mock
-  insertEntityMock.mockImplementation(async () => ({}))
-  return {
-    verifyAuthTokenMock,
-    getEntityMock,
-    insertEntityMock,
-  }
+/** Creates a valid session that passes the isPrivyAuthed middleware */
+export const validSession = async () => {
+  const hashedAccessToken = await bcrypt.hash(
+    mockPrivyAccessToken,
+    envVars.PRIVY_ACCESS_TOKEN_SALT,
+  )
+
+  return mockUserSession({
+    entityId: 'id1',
+    privyAccessTokenExpiration: Date.now() + 1000,
+    privyAccessToken: hashedAccessToken,
+    privyDid: 'privy:did',
+  })
 }

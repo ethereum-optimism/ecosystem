@@ -24,6 +24,7 @@ import { corsAllowlist, envVars } from './constants'
 import { connectToDatabase, runMigrations } from './db'
 import { metrics } from './monitoring/metrics'
 import { AuthRoute } from './routes/auth'
+import { WalletsRoute } from './routes/wallets'
 import { Trpc } from './Trpc'
 import { retryWithBackoff } from './utils'
 
@@ -123,11 +124,12 @@ export class Service {
     const trpc = new Trpc(privy, logger, appDB)
 
     const authRoute = new AuthRoute(trpc)
+    const walletsRoute = new WalletsRoute(trpc)
 
     /**
      * The apiServer simply assmbles the routes into a TRPC Server
      */
-    const apiServer = new ApiV0(trpc, { authRoute })
+    const apiServer = new ApiV0(trpc, { authRoute, walletsRoute })
     apiServer.setLoggingServer(logger)
 
     const adminServer = new AdminApi(trpc, {})
