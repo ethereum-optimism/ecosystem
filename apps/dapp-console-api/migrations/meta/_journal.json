@@ -57,6 +57,13 @@
       "when": 1711665770252,
       "tag": "0007_even_sharon_ventura",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "5",
+      "when": 1712689795795,
+      "tag": "0008_absurd_magdalene",
+      "breakpoints": true
     }
   ]
 }
