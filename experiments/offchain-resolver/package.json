@@ -1,0 +1,26 @@
+{
+  "name": "@ensdomains/offchain-resolver",
+  "version": "0.0.1",
+  "description": "Packages for an ENS offchain resolver",
+  "main": "index.js",
+  "repository": "git@github.com:ensdomains/offchain-resolver.git",
+  "author": "Nick Johnson <arachnid@notdot.net>",
+  "license": "MIT",
+  "workspaces": [
+    "packages/contracts",
+    "packages/gateway",
+    "packages/gateway-worker",
+    "packages/client"
+  ],
+  "private": true,
+  "scripts": {
+    "start:node": "yarn workspace @ensdomains/offchain-resolver-contracts start",
+    "start:gateway": "yarn workspace @ensdomains/offchain-resolver-gateway start",
+    "start:client": "yarn workspace @ensdomains/offchain-resolver-client start",
+    "test": "yarn workspaces run test",
+    "lint": "yarn workspaces run lint",
+    "build": "yarn workspaces run build",
+    "docs": "typedoc --entryPointStrategy packages packages/server packages/ethers-ccip-read-provider",
+    "clean": "rm -fr node_modules && yarn workspaces run clean"
+  }
+}
