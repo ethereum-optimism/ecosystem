@@ -1,0 +1,7 @@
+{
+  "name": "naming-service",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "library",
+  "sourceRoot": "experiments/naming-service/src",
+  "targets": {}
+}

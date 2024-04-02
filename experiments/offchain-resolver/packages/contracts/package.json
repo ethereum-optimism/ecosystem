@@ -1,0 +1,34 @@
+{
+  "name": "@ensdomains/offchain-resolver-contracts",
+  "version": "0.2.1",
+  "repository": "git@github.com:ensdomains/offchain-resolver.git",
+  "author": "Nick Johnson <arachnid@notdot.net>",
+  "license": "MIT",
+  "files": [
+    "contracts/*.sol",
+    "artifacts/contracts/**/*.json"
+  ],
+  "scripts": {
+    "test": "run() { npx hardhat test; }; run",
+    "lint": "npx hardhat check",
+    "start": "npx hardhat node",
+    "build": "npx hardhat compile",
+    "prepublishOnly": "yarn build",
+    "pub": "yarn publish --access public",
+    "clean": "rm -fr node_modules artifacts cache"
+  },
+  "devDependencies": {
+    "@nomiclabs/hardhat-ethers": "^2.0.3",
+    "@nomiclabs/hardhat-waffle": "^2.0.1",
+    "chai": "^4.3.4",
+    "ethereum-waffle": "^3.4.0",
+    "ethers": "^5.7.2",
+    "hardhat": "^2.12.1",
+    "hardhat-deploy": "^0.11.19"
+  },
+  "dependencies": {
+    "@ensdomains/ens-contracts": "^0.0.8",
+    "@nomiclabs/hardhat-etherscan": "^3.0.0",
+    "hardhat-deploy-ethers": "^0.3.0-beta.13"
+  }
+}
