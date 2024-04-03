@@ -1,3 +1,6 @@
+import type { AuthRoute } from '@/routes/auth'
+import type { WalletsRoute } from '@/routes/wallets'
+
 import { MajorApiVersion } from '../constants'
 import type { Trpc } from '../Trpc'
 import { Api } from './Api'
@@ -27,7 +30,8 @@ export class ApiV0 extends Api {
      * from time to time we will delete old api versions if they are no longer used
      */
     ...this.commonRoutes,
-    // TODO add screening route
+    [this.routes.authRoute.name]: this.routes.authRoute.handler,
+    [this.routes.walletsRoute.name]: this.routes.walletsRoute.handler,
   })
 
   /**
@@ -35,7 +39,10 @@ export class ApiV0 extends Api {
    */
   constructor(
     trpc: Trpc,
-    protected readonly routes: {},
+    protected readonly routes: {
+      authRoute: AuthRoute
+      walletsRoute: WalletsRoute
+    },
   ) {
     super(trpc)
   }

@@ -202,3 +202,29 @@ workflows:
             - oplabs-gcr-internal
           requires:
             - dapp-console-api-docker-build
+
+  build-and-publish-api-key-service:
+    jobs:
+      - docker-build:
+          filters:
+            branches:
+              only:
+                - main
+          name: api-key-service-docker-build
+          docker_file: ./Dockerfile
+          docker_name: api-key-service
+          docker_tags: <<pipeline.git.revision>>,<<pipeline.git.branch>>
+          docker_context: .
+          docker_target: api-key-service
+      - docker-publish:
+          filters:
+            branches:
+              only:
+                - main
+          name: api-key-service-docker-publish
+          docker_name: api-key-service
+          docker_tags: <<pipeline.git.revision>>,<<pipeline.git.branch>>
+          context:
+            - oplabs-gcr-internal
+          requires:
+            - api-key-service-docker-build

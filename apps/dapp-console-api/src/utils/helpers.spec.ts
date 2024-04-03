@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
-import { retryWithBackoff } from './helpers'
+import { addressEqualityCheck, retryWithBackoff } from './helpers'
 
 describe('helpers', () => {
   describe('retryWithBackoff', () => {
@@ -44,5 +44,21 @@ describe('helpers', () => {
       await vi.advanceTimersByTimeAsync(200)
       expect(operation).toBeCalledTimes(4)
     })
+  })
+
+  describe('addressEqualityCheck', async () => {
+    it(
+      'returns true when comparing a checksummed version of an address to a ' +
+        'non-checksummed version of the same address',
+      () => {
+        const checkSummedAddress = '0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045'
+        const nonCheckSummedAddress =
+          '0xd8da6bf26964af9d7eed9e03e53415d37aa96045'
+
+        expect(
+          addressEqualityCheck(checkSummedAddress, nonCheckSummedAddress),
+        ).toBe(true)
+      },
+    )
   })
 })
