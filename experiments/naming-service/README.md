@@ -1,6 +1,6 @@
-# Service
+# Naming Service
 
-A barebones trpc server.
+A trpc server that can be used for resolving ens addresses offchain. In order to set this up host this server and then deploy a [OffChainResolver](https://github.com/ensdomains/offchain-resolver/blob/099b7e9827899efcf064e71b7125f7b4fc2e342f/packages/contracts/contracts/OffchainResolver.sol) contract and set the `_url` argument to: `https://<address of this server>/{sender}/{data}.json`. Then set the address of the deployed `OffChainResolver` contract as the resolver on the subdomain you would like to register names on.
 
 ## Getting started
 
