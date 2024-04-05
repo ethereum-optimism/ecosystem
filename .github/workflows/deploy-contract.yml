@@ -1,0 +1,22 @@
+name: Deploy Contracts
+
+jobs:
+  deploy-erc20:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Build Action
+        uses: ./.github/actions/build-action
+      - name: Set up foundry
+        uses: foundry-rs/foundry-toolchain@v1
+      - name: Build Contract Artifacts
+        run: pnpm nx run @eth-optimism/contracts-ecosystem:compile
+        shell: bash
+      - name: Deploy Simple ERC20
+        uses: ./apps/dapp-console-api/src/actions   
+        with:
+          args: Example,exa,18
+          target: ./packages/contracts-ecosystem/src/SimpleERC20.sol:SimpleERC20
+          buildDir: ./packages/contracts-ecosystem/out
+          version: 1.0

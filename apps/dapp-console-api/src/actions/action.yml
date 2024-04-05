@@ -1,0 +1,17 @@
+name: 'Deploy Contract'
+description: 'Create2 Factory'
+inputs:
+  args:
+    description: 'Contract constructor arguments comma seperated'
+  target:
+    description: 'Path and contract to deploy <path>/<to>/<contract>.sol:<contract name>'
+    required: true
+  version:
+    description: 'Verision of contract that will be deployed'
+    required: true  
+outputs:
+  deployment:
+    description: 'Deployment data'
+runs:
+  using: 'node20'
+  main: '../../build/actions/index.js'
