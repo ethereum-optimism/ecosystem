@@ -9,7 +9,7 @@ import type { Transport } from 'viem'
 import { Layout } from './components/Layout'
 import { HeaderRight } from './components/header/HeaderRight'
 import { ThemeProvider } from './providers/ThemeProvider'
-import { ApiProvider } from './apiClient'
+import { ApiProvider } from './providers/ApiProvider'
 import { NameCard } from './components/NameCard/NameCard'
 import { CheckNameCard } from './components/CheckNameCard/CheckNameCard'
 

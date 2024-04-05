@@ -31,17 +31,18 @@ export const NameCard = () => {
   })
   const onSignedMessageSuccess = useCallback(
     (data: Hex) => {
-      setNameMutate({
-        name: `${newName}.ecopod.eth`,
-        owner: address,
-        addresses: {
-          [60]: address,
-        },
-        signature: {
-          hash: data,
-          message: `Sign a message to prove you are the owner of this account`,
-        },
-      })
+      address &&
+        setNameMutate({
+          name: `${newName}.ecopod.eth`,
+          owner: address,
+          addresses: {
+            [60]: address,
+          },
+          signature: {
+            hash: data,
+            message: `Sign a message to prove you are the owner of this account`,
+          },
+        })
     },
     [address, newName, setNameMutate],
   )

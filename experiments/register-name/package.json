@@ -7,6 +7,7 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
+    "typecheck": "tsc --noEmit --emitDeclarationOnly false",
     "lint": "eslint \"**/*.{ts,tsx}\" && pnpm prettier --check \"**/*.{ts,tsx}\"",
     "lint:fix": "eslint \"**/*.{ts,tsx}\" --fix --quiet && pnpm prettier \"**/*.{ts,tsx}\" --write --loglevel=warn"
   },
@@ -21,7 +22,7 @@
     "@trpc/react-query": "^10.45.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "superjson": "1.12.2",
+    "superjson": "1.13.3",
     "tailwind-merge": "^2.1.0",
     "tailwindcss-animate": "^1.0.7",
     "viem": "2.0.3",
