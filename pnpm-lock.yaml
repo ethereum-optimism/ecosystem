@@ -709,8 +709,8 @@ importers:
         specifier: ^0.2.1
         version: 0.2.1(@nomiclabs/hardhat-web3@2.0.0)(ethers@5.7.2)(hardhat@2.22.2)(web3-core-helpers@1.10.3)(web3-core-promievent@1.10.3)(web3-eth-abi@1.10.4)(web3-utils@1.10.4)(web3@1.10.4)
       '@trpc/server':
-        specifier: ^10.45.1
-        version: 10.45.1
+        specifier: ^10.45.2
+        version: 10.45.2
       bcrypt:
         specifier: ^5.1.1
         version: 5.1.1
@@ -755,7 +755,7 @@ importers:
         version: 1.13.3
       trpc-playground:
         specifier: ^1.0.4
-        version: 1.0.4(@trpc/server@10.45.1)(@types/node@20.11.24)(express@4.19.2)(typescript@5.3.2)(zod@3.22.4)
+        version: 1.0.4(@trpc/server@10.45.2)(@types/node@20.11.24)(express@4.19.2)(typescript@5.3.2)(zod@3.22.4)
       viem:
         specifier: ^2.7.20
         version: 2.8.16(typescript@5.3.2)(zod@3.22.4)
@@ -854,8 +854,8 @@ importers:
         specifier: ^18.2.0
         version: 18.2.0(react@18.2.0)
       superjson:
-        specifier: 1.12.2
-        version: 1.12.2
+        specifier: 1.13.3
+        version: 1.13.3
       tailwind-merge:
         specifier: ^2.1.0
         version: 2.1.0
@@ -12082,17 +12082,6 @@ packages:
       - terser
     dev: false
 
-  /@trpc-playground/types@1.0.0(@trpc/server@10.45.1)(typescript@5.3.2):
-    resolution: {integrity: sha512-Ap5aNaVlglfM9WLkPLKF2rHDZ8CwHcqK32A8YaqTyHUuoEFTSOh6oSgVU6Cv8toxClKiTXFvbWmE4aZxIoh4Zg==}
-    peerDependencies:
-      '@trpc/server': ^10
-    dependencies:
-      '@trpc/server': 10.45.1
-      ts-essentials: 9.4.1(typescript@5.3.2)
-    transitivePeerDependencies:
-      - typescript
-    dev: false
-
   /@trpc-playground/types@1.0.0(@trpc/server@10.45.1)(typescript@5.4.2):
     resolution: {integrity: sha512-Ap5aNaVlglfM9WLkPLKF2rHDZ8CwHcqK32A8YaqTyHUuoEFTSOh6oSgVU6Cv8toxClKiTXFvbWmE4aZxIoh4Zg==}
     peerDependencies:
@@ -12100,6 +12089,17 @@ packages:
     dependencies:
       '@trpc/server': 10.45.1
       ts-essentials: 9.4.1(typescript@5.4.2)
+    transitivePeerDependencies:
+      - typescript
+    dev: false
+
+  /@trpc-playground/types@1.0.0(@trpc/server@10.45.2)(typescript@5.3.2):
+    resolution: {integrity: sha512-Ap5aNaVlglfM9WLkPLKF2rHDZ8CwHcqK32A8YaqTyHUuoEFTSOh6oSgVU6Cv8toxClKiTXFvbWmE4aZxIoh4Zg==}
+    peerDependencies:
+      '@trpc/server': ^10
+    dependencies:
+      '@trpc/server': 10.45.2
+      ts-essentials: 9.4.1(typescript@5.3.2)
     transitivePeerDependencies:
       - typescript
     dev: false
@@ -13761,7 +13761,7 @@ packages:
       '@babel/plugin-transform-react-jsx-source': 7.24.1(@babel/core@7.24.1)
       '@types/babel__core': 7.20.5
       react-refresh: 0.14.0
-      vite: 5.2.0(@types/node@20.11.24)
+      vite: 5.2.0(@types/node@20.11.30)
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -26548,13 +26548,6 @@ packages:
   /sudo-prompt@9.2.1:
     resolution: {integrity: sha512-Mu7R0g4ig9TUuGSxJavny5Rv0egCEtpZRNMrZaYS1vxkiIxGiGUwoezU3LazIQ+KE04hTrTfNPgxU5gzi7F5Pw==}
 
-  /superjson@1.12.2:
-    resolution: {integrity: sha512-ugvUo9/WmvWOjstornQhsN/sR9mnGtWGYeTxFuqLb4AiT4QdUavjGFRALCPKWWnAiUJ4HTpytj5e0t5HoMRkXg==}
-    engines: {node: '>=10'}
-    dependencies:
-      copy-anything: 3.0.5
-    dev: false
-
   /superjson@1.13.3:
     resolution: {integrity: sha512-mJiVjfd2vokfDxsQPOwJ/PtanO87LhpYY88ubI5dUB1Ab58Txbyje3+jpm+/83R/fevaq/107NNhtYBLuoTrFg==}
     engines: {node: '>=10'}
@@ -26980,34 +26973,6 @@ packages:
     resolution: {integrity: sha512-L0Orpi8qGpRG//Nd+H90vFB+3iHnue1zSSGmNOOCh1GLJ7rUKVwV2HvijphGQS2UmhUZewS9VgvxYIdgr+fG1A==}
     hasBin: true
 
-  /trpc-playground@1.0.4(@trpc/server@10.45.1)(@types/node@20.11.24)(express@4.19.2)(typescript@5.3.2)(zod@3.22.4):
-    resolution: {integrity: sha512-6nVf1o2LNoo1g6oTS24yajoH7xV4CFjxGAbAH7qLXqa3yo9qB5QHsWLbrm1hNt51SyCG++P0zHJaCdVfgvEVDg==}
-    peerDependencies:
-      '@trpc/server': ^10
-      zod: ^3
-    dependencies:
-      '@trpc-playground/html': 1.0.4(@types/node@20.11.24)
-      '@trpc-playground/types': 1.0.0(@trpc/server@10.45.1)(typescript@5.3.2)
-      '@trpc/server': 10.45.1
-      lodash: 4.17.21
-      uttp: 0.1.3(express@4.19.2)
-      zod: 3.22.4
-      zod-to-ts: 1.2.0(typescript@5.3.2)(zod@3.22.4)
-    transitivePeerDependencies:
-      - '@types/node'
-      - express
-      - fastify
-      - h3
-      - koa
-      - less
-      - lightningcss
-      - sass
-      - stylus
-      - sugarss
-      - terser
-      - typescript
-    dev: false
-
   /trpc-playground@1.0.4(@trpc/server@10.45.1)(@types/node@20.11.25)(express@4.19.2)(typescript@5.4.2)(zod@3.22.4):
     resolution: {integrity: sha512-6nVf1o2LNoo1g6oTS24yajoH7xV4CFjxGAbAH7qLXqa3yo9qB5QHsWLbrm1hNt51SyCG++P0zHJaCdVfgvEVDg==}
     peerDependencies:
@@ -27049,6 +27014,34 @@ packages:
       uttp: 0.1.3(express@4.19.2)
       zod: 3.22.4
       zod-to-ts: 1.2.0(typescript@5.4.2)(zod@3.22.4)
+    transitivePeerDependencies:
+      - '@types/node'
+      - express
+      - fastify
+      - h3
+      - koa
+      - less
+      - lightningcss
+      - sass
+      - stylus
+      - sugarss
+      - terser
+      - typescript
+    dev: false
+
+  /trpc-playground@1.0.4(@trpc/server@10.45.2)(@types/node@20.11.24)(express@4.19.2)(typescript@5.3.2)(zod@3.22.4):
+    resolution: {integrity: sha512-6nVf1o2LNoo1g6oTS24yajoH7xV4CFjxGAbAH7qLXqa3yo9qB5QHsWLbrm1hNt51SyCG++P0zHJaCdVfgvEVDg==}
+    peerDependencies:
+      '@trpc/server': ^10
+      zod: ^3
+    dependencies:
+      '@trpc-playground/html': 1.0.4(@types/node@20.11.24)
+      '@trpc-playground/types': 1.0.0(@trpc/server@10.45.2)(typescript@5.3.2)
+      '@trpc/server': 10.45.2
+      lodash: 4.17.21
+      uttp: 0.1.3(express@4.19.2)
+      zod: 3.22.4
+      zod-to-ts: 1.2.0(typescript@5.3.2)(zod@3.22.4)
     transitivePeerDependencies:
       - '@types/node'
       - express
@@ -28923,7 +28916,7 @@ packages:
       strip-literal: 1.3.0
       tinybench: 2.5.1
       tinypool: 0.8.1
-      vite: 5.1.6(@types/node@20.11.30)
+      vite: 5.2.0(@types/node@20.11.30)
       vite-node: 1.1.3(@types/node@20.11.30)
       why-is-node-running: 2.2.2
     transitivePeerDependencies:
