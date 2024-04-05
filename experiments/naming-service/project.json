@@ -1,5 +1,5 @@
 {
-  "name": "naming-service",
+  "name": "@eth-optimism/naming-service",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "projectType": "library",
   "sourceRoot": "experiments/naming-service/src",
