@@ -1,5 +1,6 @@
 import type { AuthRoute } from '@/routes/auth'
 import type { WalletsRoute } from '@/routes/wallets'
+import type { DeploymentRoute } from '@/routes/Deployments'
 
 import { MajorApiVersion } from '../constants'
 import type { Trpc } from '../Trpc'
@@ -32,6 +33,7 @@ export class ApiV0 extends Api {
     ...this.commonRoutes,
     [this.routes.authRoute.name]: this.routes.authRoute.handler,
     [this.routes.walletsRoute.name]: this.routes.walletsRoute.handler,
+    [this.routes.deploymentRoute.name]: this.routes.deploymentRoute.handler,
   })
 
   /**
@@ -42,6 +44,7 @@ export class ApiV0 extends Api {
     protected readonly routes: {
       authRoute: AuthRoute
       walletsRoute: WalletsRoute
+      deploymentRoute: DeploymentRoute
     },
   ) {
     super(trpc)

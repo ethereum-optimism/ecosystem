@@ -25,6 +25,7 @@ import { connectToDatabase, runMigrations } from './db'
 import { metrics } from './monitoring/metrics'
 import { AuthRoute } from './routes/auth'
 import { WalletsRoute } from './routes/wallets'
+import { DeploymentRoute } from './routes/Deployments'
 import { Trpc } from './Trpc'
 import { retryWithBackoff } from './utils'
 
@@ -125,11 +126,12 @@ export class Service {
 
     const authRoute = new AuthRoute(trpc)
     const walletsRoute = new WalletsRoute(trpc)
+    const deploymentRoute = new DeploymentRoute(trpc)
 
     /**
      * The apiServer simply assmbles the routes into a TRPC Server
      */
-    const apiServer = new ApiV0(trpc, { authRoute, walletsRoute })
+    const apiServer = new ApiV0(trpc, { authRoute, deploymentRoute, walletsRoute })
     apiServer.setLoggingServer(logger)
 
     const adminServer = new AdminApi(trpc, {})
@@ -302,7 +304,6 @@ export class Service {
   }
 
   private readonly routes = async (router: Router) => {
-    router.use(this.middleware.cors)
     // These handlers do nothing. they pass on the request to the next handler.
     // They are a hack I added because our trpc middleware does not expose the supported routes
     // in the canonical way and we need a way to filter invalid request paths from being logged to
