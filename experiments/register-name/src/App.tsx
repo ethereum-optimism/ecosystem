@@ -4,7 +4,6 @@ import '@rainbow-me/rainbowkit/styles.css'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { http, WagmiProvider } from 'wagmi'
 import { getDefaultConfig, RainbowKitProvider } from '@rainbow-me/rainbowkit'
-import { configureOpChains } from '@eth-optimism/op-app'
 import type { Transport } from 'viem'
 import { Layout } from './components/Layout'
 import { HeaderRight } from './components/header/HeaderRight'
@@ -12,6 +11,7 @@ import { ThemeProvider } from './providers/ThemeProvider'
 import { ApiProvider } from './providers/ApiProvider'
 import { NameCard } from './components/NameCard/NameCard'
 import { CheckNameCard } from './components/CheckNameCard/CheckNameCard'
+import { mainnet, optimism, optimismSepolia, sepolia } from 'viem/chains'
 
 type ProviderProps = {
   children: React.ReactNode
@@ -24,12 +24,12 @@ const classNames = {
 
 const queryClient = new QueryClient()
 
-const opChains = configureOpChains({ type: 'op' })
+const opChains = [optimism, mainnet, sepolia, optimismSepolia]
 
 const wagmiConfig = getDefaultConfig({
   appName: 'Example OP Stack Bridge',
   projectId: import.meta.env.VITE_WALLET_CONNECT_PROJECT_ID,
-  chains: opChains,
+  chains: [optimism, mainnet, sepolia, optimismSepolia],
   transports: opChains.reduce(
     (acc, chain) => {
       acc[chain.id] = http()
