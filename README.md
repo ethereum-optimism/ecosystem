@@ -9,7 +9,7 @@
 
 ## Ecosystem
 
-In this repository, you'll find numerous code references for applications & packages to help app developers build on top of the OP Stack with ease. 
+In this repository, you'll find numerous code references for applications & packages to help app developers build on top of the OP Stack with ease.
 
 If the [Optimism Repository](https://github.com/ethereum-optimism/ecosystem) is a place where the protocol and its infrastructure gets built. The Ecosystem Repository is a place where utilities, applications, and examples get built to interact with the protocols and its infrastructure.
 
@@ -42,6 +42,9 @@ Governance discussion can also be found on the [Optimism Governance Forum](https
 │   ├── <a href="./packages/op-app">op-app</a>: Optimism Stack App Utils
 │   ├── <a href="./packages/screening">screening</a>: Utils for integrating app with screening service
 │   ├── <a href="./packages/ui-components">ui-components</a>: Shared ui components
+├── <a href="./experiments">experiments</a>
+│   ├── <a href="./experiments/naming-service">naming-service</a>: Api service for registering subdomain names offchain
+│   ├── <a href="./experiments/register-name">register-namee</a>: Simple frontend app for registering subdomain names with `naming-service`
 </pre>
 
 ## Development Quick Start
@@ -50,10 +53,10 @@ Governance discussion can also be found on the [Optimism Governance Forum](https
 
 You'll need the following:
 
-* [Git](https://git-scm.com/downloads)
-* [NodeJS](https://nodejs.org/en/download/)
-* [Node Version Manager](https://github.com/nvm-sh/nvm)
-* [pnpm](https://pnpm.io/installation)
+- [Git](https://git-scm.com/downloads)
+- [NodeJS](https://nodejs.org/en/download/)
+- [Node Version Manager](https://github.com/nvm-sh/nvm)
+- [pnpm](https://pnpm.io/installation)
 
 ### Setup
 
@@ -91,31 +94,34 @@ pnpm nx run <npm package name>:<target>
 ```
 
 For example if we wanted to run the `bridge-app` for development we could run this
+
 ```bash
 pnpm nx run @eth-optimism/bridge-app:dev
 ```
 
 If we wanted to build the `op-app` package we could run this
+
 ```bash
 pnpm nx run @eth-optimism/op-app:build
 ```
 
 There will be a few common targets that you will most likely see across all applications and packages in the repo.
 
-* `build`
-* `clean`
-* `dev`
-* `typecheck`
-* `lint`
-* `lint:fix`
+- `build`
+- `clean`
+- `dev`
+- `typecheck`
+- `lint`
+- `lint:fix`
 
 ### Codegen
 
 #### Nx generateors
 
-* `trpc-api-generator`: generates the boiler plate code for creating a trpc api server
+- `trpc-api-generator`: generates the boiler plate code for creating a trpc api server
 
 To run a generator run this command:
+
 ```bash
 pnpm nx generate <name of generator> <name of new project>
 ```
