@@ -26,7 +26,7 @@ export type AddContractFormProps = {
 
 const zodAddress = z
   .string({ required_error: '' })
-  .refine(isAddress, { message: 'Invalid Etheruem Address' })
+  .refine(isAddress, { message: 'Invalid Ethereum Address' })
 const zodHash = z
   .string({ required_error: '' })
   .refine(isHash, { message: 'Invalid Transaction Hash' })
