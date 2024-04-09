@@ -23,15 +23,21 @@ import {
   DialogMetadata,
   StandardDialogContent,
 } from '@/app/components/StandardDialogContent'
+import { trackSignInModalClick } from '@/app/event-tracking/mixpanel'
 
 const useDialogContent = () => {
   const { authenticated, login } = usePrivy()
   const isSettingsEnabled = useFeature('enable_console_settings')
 
-  const loginButton = (label: string) => {
+  const loginButton = (label: string, trackingLabel: string) => {
     return (
       <DialogClose asChild>
-        <Button onClick={login}>
+        <Button
+          onClick={() => {
+            login()
+            trackSignInModalClick(trackingLabel)
+          }}
+        >
           <Text as="span">{label}</Text>
         </Button>
       </DialogClose>
@@ -48,7 +54,7 @@ const useDialogContent = () => {
     return renderDialog({
       ...uxReviewMetadata,
       primaryButton: !authenticated
-        ? loginButton('Sign in to apply')
+        ? loginButton('Sign in to apply', uxReviewMetadata.label)
         : uxReviewMetadata.primaryButton,
     })
   }, [authenticated, login])
@@ -71,7 +77,10 @@ const useDialogContent = () => {
     return renderDialog({
       ...mainnetPaymasterMetadata,
       primaryButton: !authenticated
-        ? loginButton('Sign in to join waitlist')
+        ? loginButton(
+            'Sign in to join waitlist',
+            mainnetPaymasterMetadata.label,
+          )
         : mainnetPaymasterMetadata.primaryButton,
     })
   }, [authenticated, login])
@@ -80,7 +89,7 @@ const useDialogContent = () => {
     return renderDialog({
       ...megaphoneMetadata,
       primaryButton: !authenticated
-        ? loginButton('Sign in to apply')
+        ? loginButton('Sign in to apply', megaphoneMetadata.label)
         : megaphoneMetadata.primaryButton,
     })
   }, [authenticated, login])
@@ -89,7 +98,7 @@ const useDialogContent = () => {
     return renderDialog({
       ...userFeedbackMetadata,
       primaryButton: !authenticated
-        ? loginButton('Sign in to apply')
+        ? loginButton('Sign in to apply', userFeedbackMetadata.label)
         : userFeedbackMetadata.primaryButton,
     })
   }, [authenticated, login])
@@ -98,7 +107,7 @@ const useDialogContent = () => {
     return renderDialog({
       ...gelatoMetadata,
       primaryButton: !authenticated
-        ? loginButton('Sign in to apply')
+        ? loginButton('Sign in to apply', gelatoMetadata.label)
         : gelatoMetadata.primaryButton,
       secondaryButton: !authenticated ? null : gelatoMetadata.secondaryButton,
     })
@@ -108,7 +117,7 @@ const useDialogContent = () => {
     return renderDialog({
       ...alchemyGrowthMetadata,
       primaryButton: !authenticated
-        ? loginButton('Sign in to apply')
+        ? loginButton('Sign in to apply', alchemyGrowthMetadata.label)
         : alchemyGrowthMetadata.primaryButton,
       secondaryButton: !authenticated
         ? null
@@ -120,7 +129,7 @@ const useDialogContent = () => {
     return renderDialog({
       ...alchemySubgraphMetadata,
       primaryButton: !authenticated
-        ? loginButton('Sign in to apply')
+        ? loginButton('Sign in to apply', alchemySubgraphMetadata.label)
         : alchemySubgraphMetadata.primaryButton,
       secondaryButton: !authenticated
         ? null
@@ -132,7 +141,7 @@ const useDialogContent = () => {
     return renderDialog({
       ...quicknodeMetadata,
       primaryButton: !authenticated
-        ? loginButton('Sign in to apply')
+        ? loginButton('Sign in to apply', quicknodeMetadata.label)
         : quicknodeMetadata.primaryButton,
       secondaryButton: !authenticated
         ? null
@@ -144,7 +153,7 @@ const useDialogContent = () => {
     return renderDialog({
       ...thirdWebMetadata,
       primaryButton: !authenticated
-        ? loginButton('Sign in to apply')
+        ? loginButton('Sign in to apply', thirdWebMetadata.label)
         : thirdWebMetadata.primaryButton,
       secondaryButton: !authenticated ? null : thirdWebMetadata.secondaryButton,
     })

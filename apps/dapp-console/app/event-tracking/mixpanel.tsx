@@ -20,6 +20,7 @@ enum TRACKING_EVENT_NAME {
   TopBarClick = 'Top Bar Click',
   SupportDocsClick = 'Support Docs Click',
   OfferEngaged = 'Offer Engaged',
+  SignInModal = 'Sign In Modal',
 }
 
 enum CUSTOM_TRACKING_PROPERTY {
@@ -65,5 +66,11 @@ export const trackSupportDocsClick = (chainName: string) => {
 export const trackOfferEngaged = (offeringName: string) => {
   mixpanel?.track(TRACKING_EVENT_NAME.OfferEngaged, {
     [CUSTOM_TRACKING_PROPERTY.OfferingName]: offeringName,
+  })
+}
+
+export const trackSignInModalClick = (cardName: string) => {
+  mixpanel?.track(TRACKING_EVENT_NAME.SignInModal, {
+    [CUSTOM_TRACKING_PROPERTY.CardName]: cardName,
   })
 }
