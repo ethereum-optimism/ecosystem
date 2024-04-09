@@ -2,6 +2,9 @@ import type { inferAsyncReturnType } from '@trpc/server'
 import { initTRPC, TRPCError } from '@trpc/server'
 import type * as trpcExpress from '@trpc/server/adapters/express'
 import superjson from 'superjson'
+import { ZodError } from 'zod'
+
+import { castZodToTrpcError } from '@/helpers/castZodToTrpcError'
 
 const createContext = async ({
   req,
@@ -44,6 +47,15 @@ export class Trpc {
          * @see https://trpc.io/docs/v10/data-transformers
          */
         transformer: superjson,
+        errorFormatter: (opts) => {
+          const { shape, error } = opts
+
+          if (error.code === 'BAD_REQUEST' && error.cause instanceof ZodError) {
+            return castZodToTrpcError(error.cause, shape)
+          }
+
+          return shape
+        },
       }),
   ) {}
 

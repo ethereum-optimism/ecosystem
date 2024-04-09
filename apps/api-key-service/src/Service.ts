@@ -17,8 +17,10 @@ import prometheus from 'prom-client'
 
 import { ApiV0, Middleware } from '@/api'
 import { corsAllowlist, envVars } from '@/constants'
+import { connectToDatabase } from '@/db/Database'
 import type { Metrics } from '@/monitoring/metrics'
 import { metrics as metricsSingleton } from '@/monitoring/metrics'
+import { KeysRoute } from '@/routes/keys/KeysRoute'
 import { Trpc } from '@/Trpc'
 
 const API_PATH = '/api'
@@ -91,6 +93,15 @@ export class Service {
 
     const metrics = metricsSingleton
 
+    const appDB = connectToDatabase({
+      user: envVars.DB_USER,
+      password: envVars.DB_PASSWORD,
+      database: envVars.DB_NAME,
+      host: envVars.DB_HOST,
+      port: envVars.DB_PORT,
+      max: envVars.DB_MAX_CONNECTIONS,
+    })
+
     /**
      * middleware used by the express server
      */
@@ -100,10 +111,12 @@ export class Service {
      */
     const trpc = new Trpc()
 
+    const keysRoute = new KeysRoute(trpc, logger, metrics, appDB)
+
     /**
      * The apiServer simply assembles the routes into a TRPC Server
      */
-    const apiServer = new ApiV0(trpc, logger, metrics, {})
+    const apiServer = new ApiV0(trpc, logger, metrics, { keysRoute })
 
     const service = new Service(apiServer, middleware, logger, metrics)
 
