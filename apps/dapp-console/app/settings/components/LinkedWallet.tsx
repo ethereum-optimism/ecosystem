@@ -11,6 +11,7 @@ import { WalletWithMetadata } from '@privy-io/react-auth'
 import { RiAlertFill, RiCloseLine, RiFileCopyLine } from '@remixicon/react'
 import { useCallback, useState } from 'react'
 import { useToast } from '@eth-optimism/ui-components'
+import { LONG_DURATION } from '@/app/constants/toast'
 
 export type LinkedWalletProps = {
   wallet: WalletWithMetadata
@@ -31,7 +32,7 @@ export const LinkedWallet = ({ wallet, onUnlink }: LinkedWalletProps) => {
     navigator.clipboard.writeText(wallet.address)
     toast({
       description: 'Address Copied',
-      duration: 1000,
+      duration: LONG_DURATION,
     })
   }, [wallet, toast])
 
