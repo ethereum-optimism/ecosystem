@@ -234,7 +234,7 @@ importers:
         version: 3.3.4(react-hook-form@7.49.3)
       '@privy-io/react-auth':
         specifier: ^1.59.5
-        version: 1.59.5(@babel/core@7.24.1)(@types/react@18.2.47)(react-dom@18.2.0)(react-is@18.2.0)(react@18.2.0)(typescript@5.3.2)
+        version: 1.59.5(@babel/core@7.24.1)(@types/react@18.2.47)(react-dom@18.2.0)(react-is@18.2.0)(react@18.2.0)(typescript@5.3.2)(zod@3.22.4)
       '@remixicon/react':
         specifier: ^4.1.1
         version: 4.1.1(react@18.2.0)
@@ -273,7 +273,7 @@ importers:
         version: 2.1.0
       viem:
         specifier: ^2.8.16
-        version: 2.8.16(typescript@5.3.2)
+        version: 2.8.16(typescript@5.3.2)(zod@3.22.4)
       zod:
         specifier: ^3.22.4
         version: 3.22.4
@@ -960,7 +960,7 @@ importers:
     devDependencies:
       '@eth-optimism/superchain-registry':
         specifier: github:ethereum-optimism/superchain-registry
-        version: github.com/ethereum-optimism/superchain-registry/4c005f16ee1b100afc08a35a2e418d849bea044a
+        version: github.com/ethereum-optimism/superchain-registry/bf3ec587a2d5458c4dc3962057ffe35e3505722e
       '@tanstack/react-query':
         specifier: ^5.10.0
         version: 5.10.0(react@18.2.0)
@@ -8889,7 +8889,7 @@ packages:
       - zod
     dev: false
 
-  /@privy-io/react-auth@1.59.5(@babel/core@7.24.1)(@types/react@18.2.47)(react-dom@18.2.0)(react-is@18.2.0)(react@18.2.0)(typescript@5.3.2):
+  /@privy-io/react-auth@1.59.5(@babel/core@7.24.1)(@types/react@18.2.47)(react-dom@18.2.0)(react-is@18.2.0)(react@18.2.0)(typescript@5.3.2)(zod@3.22.4):
     resolution: {integrity: sha512-bLuzvPmqOJhw5H9hVyXqpDVjc6rvm0l5zEWCC8paoq+8jfVL6WMGIV23juCB8A4SOu/1v42IL3LSTGru0zT9MQ==}
     peerDependencies:
       react: ^18
@@ -28823,7 +28823,7 @@ packages:
       - zod
     dev: false
 
-  /viem@2.8.16(typescript@5.3.2):
+  /viem@2.8.16(typescript@5.3.2)(zod@3.22.4):
     resolution: {integrity: sha512-J8tu1aP7TfI2HT/IEmyJ+n+WInrA/cuMuJtfgvYhYgHBobxhYGc2SojHm5lZBWcWgErN1Ld7VcKUwTmPh4ToQA==}
     peerDependencies:
       typescript: '>=5.0.4'
@@ -31005,8 +31005,8 @@ packages:
       use-sync-external-store: 1.2.0(react@18.2.0)
     dev: false
 
-  github.com/ethereum-optimism/superchain-registry/4c005f16ee1b100afc08a35a2e418d849bea044a:
-    resolution: {tarball: https://codeload.github.com/ethereum-optimism/superchain-registry/tar.gz/4c005f16ee1b100afc08a35a2e418d849bea044a}
+  github.com/ethereum-optimism/superchain-registry/bf3ec587a2d5458c4dc3962057ffe35e3505722e:
+    resolution: {tarball: https://codeload.github.com/ethereum-optimism/superchain-registry/tar.gz/bf3ec587a2d5458c4dc3962057ffe35e3505722e}
     name: '@eth-optimism/superchain-registry'
     version: 0.0.1-alpha.1
     dev: true
