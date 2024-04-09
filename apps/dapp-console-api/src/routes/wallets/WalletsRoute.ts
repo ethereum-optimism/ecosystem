@@ -1,4 +1,4 @@
-import { generateListResponse, zodListRequest } from '@/api'
+import { generateListResponse, zodCreatedAtCursor, zodListRequest } from '@/api'
 import { isPrivyAuthed } from '@/middleware'
 import { getActiveWalletsForEntityByCursor } from '@/models'
 import { metrics } from '@/monitoring/metrics'
@@ -46,7 +46,7 @@ export class WalletsRoute extends Route {
    */
   public readonly listWalletsController = this.trpc.procedure
     .use(isPrivyAuthed(this.trpc))
-    .input(zodListRequest())
+    .input(zodListRequest(zodCreatedAtCursor))
     .query(async ({ ctx, input }) => {
       try {
         const { user } = ctx.session

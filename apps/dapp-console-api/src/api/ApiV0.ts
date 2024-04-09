@@ -1,3 +1,4 @@
+import type { AppsRoute } from '@/routes/apps'
 import type { AuthRoute } from '@/routes/auth'
 import type { WalletsRoute } from '@/routes/wallets'
 
@@ -32,6 +33,7 @@ export class ApiV0 extends Api {
     ...this.commonRoutes,
     [this.routes.authRoute.name]: this.routes.authRoute.handler,
     [this.routes.walletsRoute.name]: this.routes.walletsRoute.handler,
+    [this.routes.appsRoute.name]: this.routes.appsRoute.handler,
   })
 
   /**
@@ -42,6 +44,7 @@ export class ApiV0 extends Api {
     protected readonly routes: {
       authRoute: AuthRoute
       walletsRoute: WalletsRoute
+      appsRoute: AppsRoute
     },
   ) {
     super(trpc)

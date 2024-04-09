@@ -1,3 +1,5 @@
+import type { InferSelectModel } from 'drizzle-orm'
+import { eq } from 'drizzle-orm'
 import {
   index,
   integer,
@@ -7,9 +9,13 @@ import {
   varchar,
 } from 'drizzle-orm/pg-core'
 
-import { entities } from './entities'
+import type { NameCursor } from '@/api'
+import type { Database } from '@/db'
 
-enum AppState {
+import { entities } from './entities'
+import { generateCursorSelect } from './utils'
+
+export enum AppState {
   ACTIVE = 'active',
   DISABLED = 'disabled',
 }
@@ -37,6 +43,28 @@ export const apps = pgTable(
   (table) => {
     return {
       entityIdx: index().on(table.entityId),
+      nameIdx: index().on(table.name),
     }
   },
 )
+
+export type App = InferSelectModel<typeof apps>
+
+export const getActiveAppsForEntityByCursor = async (input: {
+  db: Database
+  entityId: App['entityId']
+  limit: number
+  cursor?: NameCursor
+}) => {
+  const { db, entityId, limit, cursor } = input
+
+  return generateCursorSelect({
+    db,
+    table: apps,
+    filters: [eq(apps.entityId, entityId), eq(apps.state, AppState.ACTIVE)],
+    limit,
+    orderBy: { direction: 'asc', column: 'name' },
+    idColumnKey: 'id',
+    cursor,
+  })
+}
