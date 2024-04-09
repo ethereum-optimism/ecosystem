@@ -12,10 +12,12 @@ import {
 import type { Address } from 'viem'
 import { getAddress, isAddress } from 'viem'
 
+import type { Cursor } from '@/api'
 import type { Database } from '@/db'
 
 import type { Entity } from './entities'
 import { entities } from './entities'
+import { generateCursorSelect } from './utils'
 
 export enum WalletState {
   ACTIVE = 'active',
@@ -62,6 +64,7 @@ export const wallets = pgTable(
   (table) => {
     return {
       entityIdAddressIdx: uniqueIndex().on(table.entityId, table.address),
+      createdAtIdx: index().on(table.createdAt),
       entityIdx: index().on(table.entityId),
       addressIdx: index().on(table.address),
     }
@@ -90,6 +93,26 @@ export const getWalletsByEntityId = async (
     .select()
     .from(wallets)
     .where(and(eq(wallets.entityId, entityId)))
+}
+
+export const getActiveWalletsForEntityByCursor = async (
+  db: Database,
+  entityId: Entity['id'],
+  limit: number,
+  cursor?: Cursor,
+) => {
+  return generateCursorSelect({
+    db,
+    table: wallets,
+    filters: [
+      eq(wallets.entityId, entityId),
+      eq(wallets.state, WalletState.ACTIVE),
+    ],
+    limit,
+    orderBy: { direction: 'desc', column: 'createdAt' },
+    idColumnKey: 'id',
+    cursor,
+  })
 }
 
 export const insertWallet = async (db: Database, newWallet: InsertWallet) => {

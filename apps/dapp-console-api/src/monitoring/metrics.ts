@@ -21,4 +21,8 @@ export const metrics = {
     name: 'privy_sync_wallets_error_count',
     help: 'Total number of errors encountered while attempting to sync linked privy wallets',
   }),
+  listWalletsErrorCount: new Counter({
+    name: 'list_wallets_error_count',
+    help: 'Total number of errors encountered while attempting to fetch wallets from db',
+  }),
 }

@@ -7,6 +7,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 import type { SessionData } from '@/constants'
 import {
+  getActiveWalletsForEntityByCursor,
   getWalletsByEntityId,
   insertWallet,
   updateWallet,
@@ -32,6 +33,7 @@ vi.mock('@/models', async () => ({
   getWalletsByEntityId: vi.fn(),
   insertWallet: vi.fn(),
   updateWallet: vi.fn(),
+  getActiveWalletsForEntityByCursor: vi.fn().mockImplementation(async () => []),
 }))
 
 describe(WalletsRoute.name, () => {
@@ -218,6 +220,64 @@ describe(WalletsRoute.name, () => {
           expect(updateWallet).not.toBeCalled()
         },
       )
+    })
+  })
+
+  describe('listWallets', () => {
+    it('fetches wallets with correct limit and cursor', async () => {
+      const expectedLimit = 30
+      const expectedCursor = { createdAt: new Date(), id: 'walletId1' }
+      await caller.listWallets({ limit: expectedLimit, cursor: expectedCursor })
+
+      expect(getActiveWalletsForEntityByCursor as Mock).toBeCalledWith(
+        mockDB,
+        session.user?.entityId,
+        expectedLimit,
+        expectedCursor,
+      )
+    })
+
+    it('does not allow limit greater than 100', async () => {
+      await expect(caller.listWallets({ limit: 101 })).rejects.toThrow()
+    })
+
+    it('returns undefined nextCursor if all results are fetched', async () => {
+      ;(getActiveWalletsForEntityByCursor as Mock).mockImplementation(
+        async () => [{}],
+      )
+
+      const response = await caller.listWallets({})
+
+      expect(response.nextCursor).toBeUndefined()
+    })
+
+    it('returns up to the limit of wallets', async () => {
+      const mockWallet1 = { id: 'wallet1', createdAt: new Date() }
+      const mockWallet2 = { id: 'wallet2', createdAt: new Date('01/01/2020') }
+      ;(getActiveWalletsForEntityByCursor as Mock).mockImplementation(
+        async () => [mockWallet1, mockWallet2],
+      )
+
+      const response = await caller.listWallets({ limit: 1 })
+
+      expect(response.nextCursor).toEqual(mockWallet2)
+      expect(response.records).toEqual([mockWallet1])
+      expect(response.prevCursor).toBeUndefined()
+    })
+
+    it('includes previous cursor in response', async () => {
+      const expectedCursor = { createdAt: new Date(), id: 'wallet1' }
+
+      const mockWallet1 = { id: 'wallet1', createdAt: new Date() }
+      const mockWallet2 = { id: 'wallet2', createdAt: new Date('01/01/2020') }
+      ;(getActiveWalletsForEntityByCursor as Mock).mockImplementation(
+        async () => [mockWallet1, mockWallet2],
+      )
+
+      const response = await caller.listWallets({ cursor: expectedCursor })
+
+      expect(response.records).toEqual([mockWallet1, mockWallet2])
+      expect(response.prevCursor).toEqual(expectedCursor)
     })
   })
 })
