@@ -7,7 +7,7 @@ import { Header } from '@/app/components/Header'
 import { ThemeProvider } from '@/app/providers/ThemeProvider'
 import { FeatureFlagProvider } from '@/app/providers/FeatureFlagProvider'
 import { Toaster } from '@eth-optimism/ui-components'
-import { apiClient } from './helpers/apiClient'
+import { apiClient } from '@/app/helpers/apiClient'
 
 const inter = Inter({ subsets: ['latin'] })
 
