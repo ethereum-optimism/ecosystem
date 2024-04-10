@@ -25,4 +25,12 @@ export const metrics = {
     name: 'list_wallets_error_count',
     help: 'Total number of errors encountered while attempting to fetch wallets from db',
   }),
+  listAppsErrorCount: new Counter({
+    name: 'list_apps_error_count',
+    help: 'Total number of errors encountered while attempting to fetch apps from db',
+  }),
+  listContractsErrorCount: new Counter({
+    name: 'list_contracts_error_count',
+    help: 'Total number of errors encountered while attempting to fetch contracts from db',
+  }),
 }

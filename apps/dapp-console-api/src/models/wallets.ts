@@ -12,7 +12,7 @@ import {
 import type { Address } from 'viem'
 import { getAddress, isAddress } from 'viem'
 
-import type { Cursor } from '@/api'
+import type { CreatedAtCursor } from '@/api'
 import type { Database } from '@/db'
 
 import type { Entity } from './entities'
@@ -99,7 +99,7 @@ export const getActiveWalletsForEntityByCursor = async (
   db: Database,
   entityId: Entity['id'],
   limit: number,
-  cursor?: Cursor,
+  cursor?: CreatedAtCursor,
 ) => {
   return generateCursorSelect({
     db,

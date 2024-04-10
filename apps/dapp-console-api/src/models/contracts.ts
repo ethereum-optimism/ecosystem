@@ -1,3 +1,4 @@
+import { and, asc, eq, type InferSelectModel } from 'drizzle-orm'
 import {
   index,
   integer,
@@ -8,10 +9,12 @@ import {
 } from 'drizzle-orm/pg-core'
 import type { Address } from 'viem'
 
+import type { Database } from '@/db'
+
 import { apps } from './apps'
 import { entities } from './entities'
 
-enum ContractState {
+export enum ContractState {
   NOT_VERIFIED = 'not_verified',
   VERIFIED = 'verified',
 }
@@ -47,6 +50,23 @@ export const contracts = pgTable(
       appIdx: index().on(table.appId),
       contractAddressIdx: index().on(table.contractAddress),
       deployerAddress: index().on(table.deployerAddress),
+      createdAtIdx: index().on(table.createdAt),
     }
   },
 )
+
+export type Contract = InferSelectModel<typeof contracts>
+
+export const getContractsForApp = async (input: {
+  db: Database
+  entityId: Contract['entityId']
+  appId: Contract['appId']
+}) => {
+  const { db, appId, entityId } = input
+
+  return db
+    .select()
+    .from(contracts)
+    .where(and(eq(contracts.appId, appId), eq(contracts.entityId, entityId)))
+    .orderBy(asc(contracts.createdAt))
+}
