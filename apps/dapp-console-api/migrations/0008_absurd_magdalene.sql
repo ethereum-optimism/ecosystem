@@ -1,0 +1,1 @@
+CREATE INDEX IF NOT EXISTS "wallets_created_at_index" ON "wallets" ("created_at");
