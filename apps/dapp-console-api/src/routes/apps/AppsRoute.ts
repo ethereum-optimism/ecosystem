@@ -1,3 +1,5 @@
+import { z } from 'zod'
+
 import { generateListResponse, zodListRequest, zodNameCursor } from '@/api'
 import { envVars } from '@/constants'
 import { isPrivyAuthed } from '@/middleware'
@@ -7,12 +9,15 @@ import {
   getActiveAppsForEntityByCursor,
   getContractsForApp,
   insertApp,
+  updateApp,
 } from '@/models'
 import { metrics } from '@/monitoring/metrics'
 import { Trpc } from '@/Trpc'
 
 import { DEFAULT_PAGE_LIMIT } from '../constants'
 import { Route } from '../Route'
+
+const zodAppName = z.string().min(1).max(120)
 
 export class AppsRoute extends Route {
   public readonly name = 'apps' as const
@@ -78,7 +83,7 @@ export class AppsRoute extends Route {
     .use(isPrivyAuthed(this.trpc))
     .input(
       this.z.object({
-        name: this.z.string().min(1).max(120),
+        name: zodAppName,
       }),
     )
     .mutation(async ({ ctx, input }) => {
@@ -126,8 +131,46 @@ export class AppsRoute extends Route {
       return { result }
     })
 
+  public readonly editApp = 'editApp' as const
+  public readonly editAppController = this.trpc.procedure
+    .use(isPrivyAuthed(this.trpc))
+    .input(
+      this.z.object({
+        appId: this.z.string(),
+        name: zodAppName,
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const { user } = ctx.session
+      const { name, appId } = input
+
+      if (!user) {
+        throw Trpc.handleStatus(401, 'user not authenticated')
+      }
+
+      await updateApp({
+        db: this.trpc.database,
+        entityId: user.entityId,
+        appId,
+        update: { name },
+      }).catch((err) => {
+        metrics.editAppErrorCount.inc()
+        this.logger?.error(
+          {
+            error: err,
+            entityId: ctx.session.user?.entityId,
+          },
+          'error updating app in db',
+        )
+        throw Trpc.handleStatus(500, 'unable to edit app')
+      })
+
+      return { success: true }
+    })
+
   public readonly handler = this.trpc.router({
     [this.listApps]: this.listAppsController,
     [this.createApp]: this.createAppController,
+    [this.editApp]: this.editAppController,
   })
 }

@@ -41,4 +41,8 @@ export const metrics = {
     name: 'create_app_error_count',
     help: 'Total number of errors encountered while creating an app',
   }),
+  editAppErrorCount: new Counter({
+    name: 'edit_app_error_count',
+    help: 'Total number of errors encountered while editing an app',
+  }),
 }

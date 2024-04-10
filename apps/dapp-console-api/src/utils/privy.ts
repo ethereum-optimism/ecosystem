@@ -48,7 +48,7 @@ const syncPrivyWallets = async (
   privyAddresses: Address[],
 ) => {
   const entityWallets = await getWalletsByEntityId(db, entityId)
-  await updateExistingPrivyWallets(db, entityWallets, privyAddresses)
+  await updateExistingPrivyWallets(db, entityId, entityWallets, privyAddresses)
   return addNewPrivyWallets(db, entityId, entityWallets, privyAddresses)
 }
 
@@ -87,6 +87,7 @@ const addNewPrivyWallets = async (
  */
 const updateExistingPrivyWallets = async (
   db: Database,
+  entityId: Wallet['entityId'],
   entityWallets: Wallet[],
   privyAddresses: Address[],
 ) => {
@@ -102,9 +103,14 @@ const updateExistingPrivyWallets = async (
           addressEqualityCheck(entityWallet.address, privyAddress),
         )
       ) {
-        return updateWallet(db, entityWallet.id, {
-          state: WalletState.UNLINKED,
-          unlinkedAt: new Date(),
+        return updateWallet({
+          db,
+          walletId: entityWallet.id,
+          entityId,
+          update: {
+            state: WalletState.UNLINKED,
+            unlinkedAt: new Date(),
+          },
         })
       }
 
@@ -114,9 +120,14 @@ const updateExistingPrivyWallets = async (
           addressEqualityCheck(entityWallet.address, privyAddress),
         )
       ) {
-        return updateWallet(db, entityWallet.id, {
-          state: WalletState.ACTIVE,
-          unlinkedAt: null,
+        return updateWallet({
+          db,
+          entityId,
+          walletId: entityWallet.id,
+          update: {
+            state: WalletState.ACTIVE,
+            unlinkedAt: null,
+          },
         })
       }
 

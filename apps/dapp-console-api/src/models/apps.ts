@@ -50,6 +50,7 @@ export const apps = pgTable(
 
 export type App = InferSelectModel<typeof apps>
 export type InsertApp = InferInsertModel<typeof apps>
+export type UpdateApp = Partial<Pick<App, 'name' | 'state'>>
 
 export const getActiveAppsForEntityByCursor = async (input: {
   db: Database
@@ -89,4 +90,18 @@ export const insertApp = async (input: { db: Database; newApp: InsertApp }) => {
   const result = await db.insert(apps).values(newApp).returning()
 
   return result[0]
+}
+
+export const updateApp = async (input: {
+  db: Database
+  entityId: App['entityId']
+  appId: App['id']
+  update: UpdateApp
+}) => {
+  const { entityId, appId, db, update } = input
+
+  return db
+    .update(apps)
+    .set({ ...update, updatedAt: new Date() })
+    .where(and(eq(apps.id, appId), eq(apps.entityId, entityId)))
 }

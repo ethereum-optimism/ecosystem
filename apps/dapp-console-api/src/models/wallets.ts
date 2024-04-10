@@ -130,10 +130,15 @@ export const insertWallet = async (db: Database, newWallet: InsertWallet) => {
   return result[0]
 }
 
-export const updateWallet = async (
-  db: Database,
-  walletId: Wallet['id'],
-  update: UpdateWallet,
-) => {
-  return db.update(wallets).set(update).where(eq(wallets.id, walletId))
+export const updateWallet = async (input: {
+  db: Database
+  entityId: Wallet['entityId']
+  walletId: Wallet['id']
+  update: UpdateWallet
+}) => {
+  const { db, walletId, entityId, update } = input
+  return db
+    .update({ ...wallets, updatedAt: new Date() })
+    .set(update)
+    .where(and(eq(wallets.id, walletId), eq(wallets.entityId, entityId)))
 }
