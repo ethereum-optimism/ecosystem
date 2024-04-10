@@ -36,6 +36,7 @@ const envVarSchema = z.object({
   DB_MAX_CONNECTIONS: z.number().int().min(1).optional(),
   PRIVY_APP_ID: z.string(),
   PRIVY_APP_SECRET: z.string(),
+  MAX_APPS_COUNT: z.number().min(1).default(20),
 })
 
 const isTest = process.env.NODE_ENV === 'test'
@@ -112,5 +113,6 @@ export const envVars = envVarSchema.parse(
         PRIVY_APP_ID: process.env.PRIVY_APP_ID,
         PRIVY_APP_SECRET: process.env.PRIVY_APP_SECRET,
         PRIVY_ACCESS_TOKEN_SALT: process.env.PRIVY_ACCESS_TOKEN_SALT,
+        MAX_APPS_COUNT: process.env.MAX_APPS_COUNT,
       },
 )

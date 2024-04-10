@@ -1,5 +1,5 @@
-import type { InferSelectModel } from 'drizzle-orm'
-import { eq } from 'drizzle-orm'
+import type { InferInsertModel, InferSelectModel } from 'drizzle-orm'
+import { and, count, eq } from 'drizzle-orm'
 import {
   index,
   integer,
@@ -49,6 +49,7 @@ export const apps = pgTable(
 )
 
 export type App = InferSelectModel<typeof apps>
+export type InsertApp = InferInsertModel<typeof apps>
 
 export const getActiveAppsForEntityByCursor = async (input: {
   db: Database
@@ -67,4 +68,25 @@ export const getActiveAppsForEntityByCursor = async (input: {
     idColumnKey: 'id',
     cursor,
   })
+}
+
+export const getActiveAppsCount = async (input: {
+  db: Database
+  entityId: App['entityId']
+}) => {
+  const { db, entityId } = input
+
+  const results = await db
+    .select({ count: count() })
+    .from(apps)
+    .where(and(eq(apps.entityId, entityId), eq(apps.state, AppState.ACTIVE)))
+
+  return results[0]?.count || 0
+}
+
+export const insertApp = async (input: { db: Database; newApp: InsertApp }) => {
+  const { db, newApp } = input
+  const result = await db.insert(apps).values(newApp).returning()
+
+  return result[0]
 }
