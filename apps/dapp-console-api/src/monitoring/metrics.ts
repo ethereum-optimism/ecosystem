@@ -33,6 +33,10 @@ export const metrics = {
     name: 'list_contracts_error_count',
     help: 'Total number of errors encountered while attempting to fetch contracts from db',
   }),
+  fetchContractErrorCount: new Counter({
+    name: 'fetch_contract_error_count',
+    help: 'Total number of errors encountered while attempting to fetch a single contract from db',
+  }),
   fetchActiveAppsCountErrorCount: new Counter({
     name: 'fetch_active_apps_count_error_count',
     help: 'Total number of errors encountered while fetching count of active apps',
@@ -53,5 +57,13 @@ export const metrics = {
   insertContractErrorCount: new Counter({
     name: 'insert_contract_error_count',
     help: 'Total number of errors encountered while inserting a new contract',
+  }),
+  fetchChallengeErrorCount: new Counter({
+    name: 'fetch_challenge_error_count',
+    help: 'Total number of errors encountered while attempting to fetch a single challenge from db',
+  }),
+  insertChallengeErrorCount: new Counter({
+    name: 'insert_challenge_error_count',
+    help: 'Total number of errors encountered while inserting a new challenge',
   }),
 }
