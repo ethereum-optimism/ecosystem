@@ -68,6 +68,8 @@ export const transactions = pgTable(
     value: bigint('value', { mode: 'bigint' }),
     /** `success` if this transaction was successful or `reverted` if it failed */
     status: varchar('status').$type<'success' | 'reverted'>().notNull(),
+    /** Unix timestamp of when this block was collated */
+    blockTimestamp: integer('block_timestamp').notNull(),
   },
   (table) => {
     return {
@@ -78,6 +80,7 @@ export const transactions = pgTable(
       fromAddressIdx: index().on(table.fromAddress),
       toAddressIdx: index().on(table.toAddress),
       contractAddressIdx: index().on(table.contractAddress),
+      entityBlockTimestampIdx: index().on(table.entityId, table.blockTimestamp),
     }
   },
 )
