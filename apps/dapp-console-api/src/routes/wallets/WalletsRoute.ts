@@ -108,7 +108,8 @@ export class WalletsRoute extends Route {
           input.cursor,
         )
 
-        return generateListResponse(activeWallets, limit, input.cursor)
+        const res = generateListResponse(activeWallets, limit, input.cursor)
+        return { ...res }
       } catch (err) {
         metrics.listWalletsErrorCount.inc()
         this.logger?.error(
