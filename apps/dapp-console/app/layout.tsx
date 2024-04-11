@@ -7,14 +7,15 @@ import { Header } from '@/app/components/Header'
 import { ThemeProvider } from '@/app/providers/ThemeProvider'
 import { FeatureFlagProvider } from '@/app/providers/FeatureFlagProvider'
 import { Toaster } from '@eth-optimism/ui-components'
+import { apiClient } from '@/app/helpers/apiClient'
 
 const inter = Inter({ subsets: ['latin'] })
 
-export default function RootLayout({
+export const RootLayout = ({
   children,
 }: Readonly<{
   children: React.ReactNode
-}>) {
+}>) => {
   return (
     <html lang="en">
       <body className={inter.className}>
@@ -31,3 +32,5 @@ export default function RootLayout({
     </html>
   )
 }
+
+export default apiClient.withTRPC(RootLayout)
