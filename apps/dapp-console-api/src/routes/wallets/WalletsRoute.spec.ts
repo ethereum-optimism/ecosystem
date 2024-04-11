@@ -121,9 +121,14 @@ describe(WalletsRoute.name, () => {
 
         expect(insertWallet).not.toBeCalled()
         expect(updateWallet).toHaveBeenCalledTimes(1)
-        expect(updateWallet).toHaveBeenCalledWith(mockDB, oldWallet.id, {
-          state: WalletState.UNLINKED,
-          unlinkedAt: new Date(),
+        expect(updateWallet).toHaveBeenCalledWith({
+          db: mockDB,
+          entityId: session.user?.entityId,
+          walletId: oldWallet.id,
+          update: {
+            state: WalletState.UNLINKED,
+            unlinkedAt: new Date(),
+          },
         })
       })
 
@@ -153,14 +158,15 @@ describe(WalletsRoute.name, () => {
 
         expect(insertWallet).not.toBeCalled()
         expect(updateWallet).toHaveBeenCalledTimes(1)
-        expect(updateWallet).toHaveBeenCalledWith(
-          mockDB,
-          previouslyUnlinkedWallet.id,
-          {
+        expect(updateWallet).toHaveBeenCalledWith({
+          db: mockDB,
+          entityId: session.user?.entityId,
+          walletId: previouslyUnlinkedWallet.id,
+          update: {
             state: WalletState.ACTIVE,
             unlinkedAt: null,
           },
-        )
+        })
       })
 
       it('updates and inserts wallets when needed', async () => {
@@ -187,14 +193,15 @@ describe(WalletsRoute.name, () => {
           linkType: WalletLinkType.PRIVY,
         })
         expect(updateWallet).toHaveBeenCalledTimes(1)
-        expect(updateWallet).toHaveBeenCalledWith(
-          mockDB,
-          previouslyUnlinkedWallet.id,
-          {
+        expect(updateWallet).toHaveBeenCalledWith({
+          db: mockDB,
+          entityId: session.user?.entityId,
+          walletId: previouslyUnlinkedWallet.id,
+          update: {
             state: WalletState.ACTIVE,
             unlinkedAt: null,
           },
-        )
+        })
       })
 
       it(
