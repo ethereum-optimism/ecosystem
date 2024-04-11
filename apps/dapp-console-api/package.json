@@ -51,6 +51,7 @@
   "dependencies": {
     "@privy-io/server-auth": "^1.7.2",
     "@trpc/server": "^10.45.2",
+    "abitype": "^1.0.0",
     "bcrypt": "^5.1.1",
     "body-parser": "^1.20.2",
     "cookie-parser": "^1.4.6",

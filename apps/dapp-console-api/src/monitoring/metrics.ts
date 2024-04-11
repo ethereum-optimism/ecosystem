@@ -45,4 +45,13 @@ export const metrics = {
     name: 'edit_app_error_count',
     help: 'Total number of errors encountered while editing an app',
   }),
+  fetchingTxErrorCount: new Counter({
+    name: 'fetching_tx_error_count',
+    help: 'Total number of errors encountered while fetching tx',
+    labelNames: ['chainId'] as const,
+  }),
+  insertContractErrorCount: new Counter({
+    name: 'insert_contract_error_count',
+    help: 'Total number of errors encountered while inserting a new contract',
+  }),
 }
