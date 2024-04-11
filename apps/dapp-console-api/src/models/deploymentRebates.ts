@@ -1,7 +1,7 @@
 import {
-  bigint,
   index,
   integer,
+  numeric,
   pgTable,
   timestamp,
   uuid,
@@ -11,6 +11,7 @@ import type { Address, Hash } from 'viem'
 
 import { contracts } from './contracts'
 import { entities } from './entities'
+import { UINT256_PRECISION } from './utils'
 
 enum DeploymentRebateState {
   APPROVED = 'approved',
@@ -46,7 +47,10 @@ export const deploymentRebates = pgTable(
       .notNull(),
     rejectionReason: varchar('rejection_reason').$type<RejectionReason>(),
     rebateTxHash: varchar('rebate_tx_hash').$type<Hash>(),
-    rebateAmount: bigint('rebate_amount', { mode: 'bigint' }),
+    rebateAmount: numeric('rebate_amount', {
+      precision: UINT256_PRECISION,
+      scale: 0,
+    }),
     recipientAddress: varchar('recipient_address').$type<Address>(),
   },
   (table) => {
