@@ -1,13 +1,15 @@
-import { and, asc, eq, type InferSelectModel } from 'drizzle-orm'
+import type { InferInsertModel, InferSelectModel } from 'drizzle-orm'
+import { and, asc, eq } from 'drizzle-orm'
 import {
   index,
   integer,
   pgTable,
   timestamp,
+  uniqueIndex,
   uuid,
   varchar,
 } from 'drizzle-orm/pg-core'
-import type { Address } from 'viem'
+import { type Address, getAddress, type Hash } from 'viem'
 
 import type { Database } from '@/db'
 
@@ -32,13 +34,14 @@ export const contracts = pgTable(
     entityId: uuid('entity_id')
       .references(() => entities.id)
       .notNull(),
-    chainId: integer('chain_id'),
+    chainId: integer('chain_id').notNull(),
     appId: uuid('app_id')
       .references(() => apps.id)
       .notNull(),
-    name: varchar('name').notNull(),
-    contractAddress: varchar('contract_address').$type<Address>(),
-    deployerAddress: varchar('deployer_address').$type<Address>(),
+    name: varchar('name'),
+    contractAddress: varchar('contract_address').$type<Address>().notNull(),
+    deployerAddress: varchar('deployer_address').$type<Address>().notNull(),
+    deploymentTxHash: varchar('deployment_tx_hash').$type<Hash>().notNull(),
     state: varchar('state')
       .$type<ContractState>()
       .default(ContractState.NOT_VERIFIED)
@@ -46,16 +49,22 @@ export const contracts = pgTable(
   },
   (table) => {
     return {
+      entityChainContractIdx: uniqueIndex().on(
+        table.entityId,
+        table.chainId,
+        table.contractAddress,
+      ),
       entityIdx: index().on(table.entityId),
       appIdx: index().on(table.appId),
       contractAddressIdx: index().on(table.contractAddress),
       deployerAddress: index().on(table.deployerAddress),
-      createdAtIdx: index().on(table.createdAt),
+      entityIdcreatedAtIdx: index().on(table.entityId, table.createdAt),
     }
   },
 )
 
 export type Contract = InferSelectModel<typeof contracts>
+export type InsertContract = InferInsertModel<typeof contracts>
 
 export const getContractsForApp = async (input: {
   db: Database
@@ -69,4 +78,22 @@ export const getContractsForApp = async (input: {
     .from(contracts)
     .where(and(eq(contracts.appId, appId), eq(contracts.entityId, entityId)))
     .orderBy(asc(contracts.createdAt))
+}
+
+export const insertContract = async (input: {
+  db: Database
+  contract: InsertContract
+}) => {
+  const { contract, db } = input
+  const normalizedContract = {
+    ...contract,
+    contractAddress: getAddress(contract.contractAddress),
+    deployerAddress: getAddress(contract.deployerAddress),
+  }
+  const results = await db
+    .insert(contracts)
+    .values(normalizedContract)
+    .returning()
+
+  return results[0]
 }
