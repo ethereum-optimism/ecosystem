@@ -66,4 +66,8 @@ export const metrics = {
     name: 'insert_challenge_error_count',
     help: 'Total number of errors encountered while inserting a new challenge',
   }),
+  completeChallengeErrorCount: new Counter({
+    name: 'complete_challenge_error_count',
+    help: 'Total number of times the server failed to mark a challenge as complete',
+  }),
 }

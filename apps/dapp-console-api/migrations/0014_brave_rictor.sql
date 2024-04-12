@@ -1,0 +1,1 @@
+ALTER TABLE "challenges" ADD COLUMN "chain_id" integer NOT NULL;
