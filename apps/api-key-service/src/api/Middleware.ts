@@ -26,5 +26,5 @@ export class Middleware {
   /**
    * @param corsAllowlist - regex array of allowlist
    */
-  constructor(private readonly corsAllowlist: RegExp[]) {}
+  constructor(private readonly corsAllowlist: readonly RegExp[]) {}
 }
