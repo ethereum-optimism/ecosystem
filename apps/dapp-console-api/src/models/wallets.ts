@@ -12,7 +12,7 @@ import {
 import type { Address } from 'viem'
 import { getAddress, isAddress } from 'viem'
 
-import type { Cursor } from '@/api'
+import type { CreatedAtCursor } from '@/api'
 import type { Database } from '@/db'
 
 import type { Entity } from './entities'
@@ -99,7 +99,7 @@ export const getActiveWalletsForEntityByCursor = async (
   db: Database,
   entityId: Entity['id'],
   limit: number,
-  cursor?: Cursor,
+  cursor?: CreatedAtCursor,
 ) => {
   return generateCursorSelect({
     db,
@@ -130,10 +130,15 @@ export const insertWallet = async (db: Database, newWallet: InsertWallet) => {
   return result[0]
 }
 
-export const updateWallet = async (
-  db: Database,
-  walletId: Wallet['id'],
-  update: UpdateWallet,
-) => {
-  return db.update(wallets).set(update).where(eq(wallets.id, walletId))
+export const updateWallet = async (input: {
+  db: Database
+  entityId: Wallet['entityId']
+  walletId: Wallet['id']
+  update: UpdateWallet
+}) => {
+  const { db, walletId, entityId, update } = input
+  return db
+    .update({ ...wallets, updatedAt: new Date() })
+    .set(update)
+    .where(and(eq(wallets.id, walletId), eq(wallets.entityId, entityId)))
 }

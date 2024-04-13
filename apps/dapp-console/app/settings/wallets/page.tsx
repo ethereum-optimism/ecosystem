@@ -1,12 +1,28 @@
 'use client'
 
-import { WalletWithMetadata, usePrivy } from '@privy-io/react-auth'
+import {
+  WalletWithMetadata,
+  useLinkAccount,
+  usePrivy,
+} from '@privy-io/react-auth'
 import { Button } from '@eth-optimism/ui-components/src/components/ui/button/button'
 import { Text } from '@eth-optimism/ui-components/src/components/ui/text/text'
 import { LinkedWallet } from '@/app/settings/components/LinkedWallet'
+import { useCallback } from 'react'
+import { apiClient } from '@/app/helpers/apiClient'
 
 export default function Wallets() {
-  const { ready, linkWallet, unlinkWallet, user } = usePrivy()
+  const { ready, unlinkWallet, user } = usePrivy()
+  const { mutateAsync: syncWallets } =
+    apiClient.wallets.syncWallets.useMutation()
+
+  const handleLinkWallet = useCallback(async () => {
+    await syncWallets()
+  }, [syncWallets])
+
+  const { linkWallet } = useLinkAccount({
+    onSuccess: handleLinkWallet,
+  })
 
   if (!ready) {
     // TODO: Add skeleton

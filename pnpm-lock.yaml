@@ -220,6 +220,9 @@ importers:
 
   apps/dapp-console:
     dependencies:
+      '@eth-optimism/dapp-console-api':
+        specifier: workspace:^
+        version: link:../dapp-console-api
       '@eth-optimism/op-app':
         specifier: workspace:*
         version: link:../../packages/op-app
@@ -234,13 +237,19 @@ importers:
         version: 3.3.4(react-hook-form@7.49.3)
       '@privy-io/react-auth':
         specifier: ^1.59.5
-        version: 1.59.5(@babel/core@7.24.1)(@types/react@18.2.47)(react-dom@18.2.0)(react-is@18.2.0)(react@18.2.0)(typescript@5.3.2)
+        version: 1.59.5(@babel/core@7.24.1)(@types/react@18.2.47)(react-dom@18.2.0)(react-is@18.2.0)(react@18.2.0)(typescript@5.3.2)(zod@3.22.4)
       '@remixicon/react':
         specifier: ^4.1.1
         version: 4.1.1(react@18.2.0)
       '@sentry/nextjs':
         specifier: ^7.106.0
         version: 7.106.0(next@14.1.0)(react@18.2.0)
+      '@trpc/client':
+        specifier: ^10.45.2
+        version: 10.45.2(@trpc/server@10.45.2)
+      '@trpc/next':
+        specifier: ^10.45.2
+        version: 10.45.2(@tanstack/react-query@4.36.1)(@trpc/client@10.45.2)(@trpc/react-query@10.45.2)(@trpc/server@10.45.2)(next@14.1.0)(react-dom@18.2.0)(react@18.2.0)
       class-variance-authority:
         specifier: ^0.7.0
         version: 0.7.0
@@ -268,12 +277,15 @@ importers:
       react-hook-form:
         specifier: ^7.49.3
         version: 7.49.3(react@18.2.0)
+      superjson:
+        specifier: ^1.12.2
+        version: 1.13.3
       tailwind-merge:
         specifier: ^2.1.0
         version: 2.1.0
       viem:
         specifier: ^2.8.16
-        version: 2.8.16(typescript@5.3.2)
+        version: 2.8.16(typescript@5.3.2)(zod@3.22.4)
       zod:
         specifier: ^3.22.4
         version: 3.22.4
@@ -318,8 +330,11 @@ importers:
         specifier: ^1.7.2
         version: 1.7.2
       '@trpc/server':
-        specifier: ^10.45.1
-        version: 10.45.1
+        specifier: ^10.45.2
+        version: 10.45.2
+      abitype:
+        specifier: ^1.0.0
+        version: 1.0.0(typescript@5.4.2)(zod@3.22.4)
       bcrypt:
         specifier: ^5.1.1
         version: 5.1.1
@@ -364,7 +379,7 @@ importers:
         version: 1.13.3
       trpc-playground:
         specifier: ^1.0.4
-        version: 1.0.4(@trpc/server@10.45.1)(@types/node@20.11.25)(express@4.19.2)(typescript@5.4.2)(zod@3.22.4)
+        version: 1.0.4(@trpc/server@10.45.2)(@types/node@20.11.25)(express@4.19.2)(typescript@5.4.2)(zod@3.22.4)
       viem:
         specifier: ^2.7.20
         version: 2.7.22(typescript@5.4.2)(zod@3.22.4)
@@ -420,6 +435,9 @@ importers:
       prettier:
         specifier: ^3.1.0
         version: 3.1.0
+      resolve-tspaths:
+        specifier: ^0.8.18
+        version: 0.8.18(typescript@5.4.2)
       ts-node:
         specifier: ^10.9.1
         version: 10.9.1(@types/node@20.11.25)(typescript@5.4.2)
@@ -748,7 +766,7 @@ importers:
     devDependencies:
       '@eth-optimism/superchain-registry':
         specifier: github:ethereum-optimism/superchain-registry
-        version: github.com/ethereum-optimism/superchain-registry/77a930120ec63dd50c43483c82b1a0a29939ed27
+        version: github.com/ethereum-optimism/superchain-registry/bf3ec587a2d5458c4dc3962057ffe35e3505722e
       '@tanstack/react-query':
         specifier: ^5.10.0
         version: 5.10.0(react@18.2.0)
@@ -8231,7 +8249,7 @@ packages:
       - zod
     dev: false
 
-  /@privy-io/react-auth@1.59.5(@babel/core@7.24.1)(@types/react@18.2.47)(react-dom@18.2.0)(react-is@18.2.0)(react@18.2.0)(typescript@5.3.2):
+  /@privy-io/react-auth@1.59.5(@babel/core@7.24.1)(@types/react@18.2.47)(react-dom@18.2.0)(react-is@18.2.0)(react@18.2.0)(typescript@5.3.2)(zod@3.22.4):
     resolution: {integrity: sha512-bLuzvPmqOJhw5H9hVyXqpDVjc6rvm0l5zEWCC8paoq+8jfVL6WMGIV23juCB8A4SOu/1v42IL3LSTGru0zT9MQ==}
     peerDependencies:
       react: ^18
@@ -11455,8 +11473,30 @@ packages:
       defer-to-connect: 2.0.1
     dev: true
 
+  /@tanstack/query-core@4.36.1:
+    resolution: {integrity: sha512-DJSilV5+ytBP1FbFcEJovv4rnnm/CokuVvrBEtW/Va9DvuJ3HksbXUJEpI0aV1KtuL4ZoO9AVE6PyNLzF7tLeA==}
+    dev: false
+
   /@tanstack/query-core@5.10.0:
     resolution: {integrity: sha512-wlw/l2E+U70iABaJnOtZIJN/5VMhuj4RPViafwUYiIGoqw1VqqqaxBnBL90qLhWswoOaK8RAj3+NiG0duk+cRg==}
+
+  /@tanstack/react-query@4.36.1(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-y7ySVHFyyQblPl3J3eQBWpXZkliroki3ARnBKsdJchlgt7yJLRDUcf4B8soufgiYt3pEQIkBWBx1N9/ZPIeUWw==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0
+      react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
+      react-native: '*'
+    peerDependenciesMeta:
+      react-dom:
+        optional: true
+      react-native:
+        optional: true
+    dependencies:
+      '@tanstack/query-core': 4.36.1
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+      use-sync-external-store: 1.2.0(react@18.2.0)
+    dev: false
 
   /@tanstack/react-query@5.10.0(react@18.2.0):
     resolution: {integrity: sha512-LeJsyXUvhq1TBsEbt3SSEaxP2Att1sv/qW588GL/bvjxPxsLUBWKGuFJ5Z1YP+/nJqVmcXJE8AtvZaaxE9rsKQ==}
@@ -11619,8 +11659,67 @@ packages:
       - typescript
     dev: false
 
+  /@trpc-playground/types@1.0.0(@trpc/server@10.45.2)(typescript@5.4.2):
+    resolution: {integrity: sha512-Ap5aNaVlglfM9WLkPLKF2rHDZ8CwHcqK32A8YaqTyHUuoEFTSOh6oSgVU6Cv8toxClKiTXFvbWmE4aZxIoh4Zg==}
+    peerDependencies:
+      '@trpc/server': ^10
+    dependencies:
+      '@trpc/server': 10.45.2
+      ts-essentials: 9.4.1(typescript@5.4.2)
+    transitivePeerDependencies:
+      - typescript
+    dev: false
+
+  /@trpc/client@10.45.2(@trpc/server@10.45.2):
+    resolution: {integrity: sha512-ykALM5kYWTLn1zYuUOZ2cPWlVfrXhc18HzBDyRhoPYN0jey4iQHEFSEowfnhg1RvYnrAVjNBgHNeSAXjrDbGwg==}
+    peerDependencies:
+      '@trpc/server': 10.45.2
+    dependencies:
+      '@trpc/server': 10.45.2
+    dev: false
+
+  /@trpc/next@10.45.2(@tanstack/react-query@4.36.1)(@trpc/client@10.45.2)(@trpc/react-query@10.45.2)(@trpc/server@10.45.2)(next@14.1.0)(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-RSORmfC+/nXdmRY1pQ0AalsVgSzwNAFbZLYHiTvPM5QQ8wmMEHilseCYMXpu0se/TbPt9zVR6Ka2d7O6zxKkXg==}
+    peerDependencies:
+      '@tanstack/react-query': ^4.18.0
+      '@trpc/client': 10.45.2
+      '@trpc/react-query': 10.45.2
+      '@trpc/server': 10.45.2
+      next: '*'
+      react: '>=16.8.0'
+      react-dom: '>=16.8.0'
+    dependencies:
+      '@tanstack/react-query': 4.36.1(react-dom@18.2.0)(react@18.2.0)
+      '@trpc/client': 10.45.2(@trpc/server@10.45.2)
+      '@trpc/react-query': 10.45.2(@tanstack/react-query@4.36.1)(@trpc/client@10.45.2)(@trpc/server@10.45.2)(react-dom@18.2.0)(react@18.2.0)
+      '@trpc/server': 10.45.2
+      next: 14.1.0(@babel/core@7.24.1)(react-dom@18.2.0)(react@18.2.0)
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+    dev: false
+
+  /@trpc/react-query@10.45.2(@tanstack/react-query@4.36.1)(@trpc/client@10.45.2)(@trpc/server@10.45.2)(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-BAqb9bGZIscroradlNx+Cc9522R+idY3BOSf5z0jHUtkxdMbjeGKxSSMxxu7JzoLqSIEC+LVzL3VvF8sdDWaZQ==}
+    peerDependencies:
+      '@tanstack/react-query': ^4.18.0
+      '@trpc/client': 10.45.2
+      '@trpc/server': 10.45.2
+      react: '>=16.8.0'
+      react-dom: '>=16.8.0'
+    dependencies:
+      '@tanstack/react-query': 4.36.1(react-dom@18.2.0)(react@18.2.0)
+      '@trpc/client': 10.45.2(@trpc/server@10.45.2)
+      '@trpc/server': 10.45.2
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+    dev: false
+
   /@trpc/server@10.45.1:
     resolution: {integrity: sha512-KOzBEVaHW9IxEedUP9E50y0tYxAuvlzyjn80Bpemw4rcNbT4WtJnhkFPUY+qDJl7Crt3B/oY2qMgSxVWi9toLg==}
+    dev: false
+
+  /@trpc/server@10.45.2:
+    resolution: {integrity: sha512-wOrSThNNE4HUnuhJG6PfDRp4L2009KDVxsd+2VYH8ro6o/7/jwYZ8Uu5j+VaW+mOmc8EHerHzGcdbGNQSAUPgg==}
     dev: false
 
   /@tsconfig/node10@1.0.9:
@@ -15496,6 +15595,11 @@ packages:
     engines: {node: '>=14'}
     dev: true
 
+  /commander@11.1.0:
+    resolution: {integrity: sha512-yPVavfyCcRhmorC7rWlkHn15b4wDVgVmBA7kV4QVBsF7kv/9TKJAbAXVTxvTnwP8HHKjRCJDClKbciiYS7p0DQ==}
+    engines: {node: '>=16'}
+    dev: true
+
   /commander@2.20.3:
     resolution: {integrity: sha512-GpVkmM8vF2vQUkj2LvZmD35JxeJOLCwJ9cUkugyk2nuhbv3+mJvpLYYt+0+USMxE+oj+ey/lJEnhZw75x/OMcQ==}
 
@@ -17781,6 +17885,17 @@ packages:
   /fast-glob@3.2.7:
     resolution: {integrity: sha512-rYGMRwip6lUMvYD3BTScMwT1HtAs2d71SMv66Vrxs0IekGZEjhM0pcMfjQPnknBt2zeCwQMEupiN02ZP4DiT1Q==}
     engines: {node: '>=8'}
+    dependencies:
+      '@nodelib/fs.stat': 2.0.5
+      '@nodelib/fs.walk': 1.2.8
+      glob-parent: 5.1.2
+      merge2: 1.4.1
+      micromatch: 4.0.5
+    dev: true
+
+  /fast-glob@3.3.1:
+    resolution: {integrity: sha512-kNFPyjhh5cKjrUltxs+wFx+ZkbRaxxmZ+X0ZU31SOsxCEtP9VPgtq2teZw1DebupL5GmDaNQ6yKMMVcM41iqDg==}
+    engines: {node: '>=8.6.0'}
     dependencies:
       '@nodelib/fs.stat': 2.0.5
       '@nodelib/fs.walk': 1.2.8
@@ -23050,6 +23165,18 @@ packages:
     resolution: {integrity: sha512-seS2Tj26TBVOC2NIc2rOe2y2ZO7efxITtLZcGSOnHHNOQ7CkiUBfw0Iw2ck6xkIhPwLhKNLS8BO+hEpngQlqzw==}
     dev: true
 
+  /resolve-tspaths@0.8.18(typescript@5.4.2):
+    resolution: {integrity: sha512-68fFbsR+m8l1KLQxcUp+yd6H5QWtaORIXnC9iln5rfex5RzBTXqJ/I9Cgi6nr2fVODYI5ptcGv/CmcLCoaChVg==}
+    hasBin: true
+    peerDependencies:
+      typescript: '>=3.0.3'
+    dependencies:
+      ansi-colors: 4.1.3
+      commander: 11.1.0
+      fast-glob: 3.3.1
+      typescript: 5.4.2
+    dev: true
+
   /resolve.exports@1.1.0:
     resolution: {integrity: sha512-J1l+Zxxp4XK3LUDZ9m60LRJF/mAe4z6a4xyabPHk7pvK5t35dACV32iIjJDFeWZFfZlO29w6SZ67knR0tHzJtQ==}
     engines: {node: '>=10'}
@@ -24358,13 +24485,13 @@ packages:
     resolution: {integrity: sha512-L0Orpi8qGpRG//Nd+H90vFB+3iHnue1zSSGmNOOCh1GLJ7rUKVwV2HvijphGQS2UmhUZewS9VgvxYIdgr+fG1A==}
     hasBin: true
 
-  /trpc-playground@1.0.4(@trpc/server@10.45.1)(@types/node@20.11.25)(express@4.19.2)(typescript@5.4.2)(zod@3.22.4):
+  /trpc-playground@1.0.4(@trpc/server@10.45.1)(@types/node@20.11.30)(express@4.19.2)(typescript@5.4.2)(zod@3.22.4):
     resolution: {integrity: sha512-6nVf1o2LNoo1g6oTS24yajoH7xV4CFjxGAbAH7qLXqa3yo9qB5QHsWLbrm1hNt51SyCG++P0zHJaCdVfgvEVDg==}
     peerDependencies:
       '@trpc/server': ^10
       zod: ^3
     dependencies:
-      '@trpc-playground/html': 1.0.4(@types/node@20.11.25)
+      '@trpc-playground/html': 1.0.4(@types/node@20.11.30)
       '@trpc-playground/types': 1.0.0(@trpc/server@10.45.1)(typescript@5.4.2)
       '@trpc/server': 10.45.1
       lodash: 4.17.21
@@ -24386,15 +24513,15 @@ packages:
       - typescript
     dev: false
 
-  /trpc-playground@1.0.4(@trpc/server@10.45.1)(@types/node@20.11.30)(express@4.19.2)(typescript@5.4.2)(zod@3.22.4):
+  /trpc-playground@1.0.4(@trpc/server@10.45.2)(@types/node@20.11.25)(express@4.19.2)(typescript@5.4.2)(zod@3.22.4):
     resolution: {integrity: sha512-6nVf1o2LNoo1g6oTS24yajoH7xV4CFjxGAbAH7qLXqa3yo9qB5QHsWLbrm1hNt51SyCG++P0zHJaCdVfgvEVDg==}
     peerDependencies:
       '@trpc/server': ^10
       zod: ^3
     dependencies:
-      '@trpc-playground/html': 1.0.4(@types/node@20.11.30)
-      '@trpc-playground/types': 1.0.0(@trpc/server@10.45.1)(typescript@5.4.2)
-      '@trpc/server': 10.45.1
+      '@trpc-playground/html': 1.0.4(@types/node@20.11.25)
+      '@trpc-playground/types': 1.0.0(@trpc/server@10.45.2)(typescript@5.4.2)
+      '@trpc/server': 10.45.2
       lodash: 4.17.21
       uttp: 0.1.3(express@4.19.2)
       zod: 3.22.4
@@ -25530,7 +25657,7 @@ packages:
       - zod
     dev: false
 
-  /viem@2.8.16(typescript@5.3.2):
+  /viem@2.8.16(typescript@5.3.2)(zod@3.22.4):
     resolution: {integrity: sha512-J8tu1aP7TfI2HT/IEmyJ+n+WInrA/cuMuJtfgvYhYgHBobxhYGc2SojHm5lZBWcWgErN1Ld7VcKUwTmPh4ToQA==}
     peerDependencies:
       typescript: '>=5.0.4'
@@ -26815,8 +26942,8 @@ packages:
       use-sync-external-store: 1.2.0(react@18.2.0)
     dev: false
 
-  github.com/ethereum-optimism/superchain-registry/77a930120ec63dd50c43483c82b1a0a29939ed27:
-    resolution: {tarball: https://codeload.github.com/ethereum-optimism/superchain-registry/tar.gz/77a930120ec63dd50c43483c82b1a0a29939ed27}
+  github.com/ethereum-optimism/superchain-registry/bf3ec587a2d5458c4dc3962057ffe35e3505722e:
+    resolution: {tarball: https://codeload.github.com/ethereum-optimism/superchain-registry/tar.gz/bf3ec587a2d5458c4dc3962057ffe35e3505722e}
     name: '@eth-optimism/superchain-registry'
     version: 0.0.1-alpha.1
     dev: true
