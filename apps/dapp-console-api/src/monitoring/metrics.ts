@@ -25,4 +25,33 @@ export const metrics = {
     name: 'list_wallets_error_count',
     help: 'Total number of errors encountered while attempting to fetch wallets from db',
   }),
+  listAppsErrorCount: new Counter({
+    name: 'list_apps_error_count',
+    help: 'Total number of errors encountered while attempting to fetch apps from db',
+  }),
+  listContractsErrorCount: new Counter({
+    name: 'list_contracts_error_count',
+    help: 'Total number of errors encountered while attempting to fetch contracts from db',
+  }),
+  fetchActiveAppsCountErrorCount: new Counter({
+    name: 'fetch_active_apps_count_error_count',
+    help: 'Total number of errors encountered while fetching count of active apps',
+  }),
+  createAppErrorCount: new Counter({
+    name: 'create_app_error_count',
+    help: 'Total number of errors encountered while creating an app',
+  }),
+  editAppErrorCount: new Counter({
+    name: 'edit_app_error_count',
+    help: 'Total number of errors encountered while editing an app',
+  }),
+  fetchingTxErrorCount: new Counter({
+    name: 'fetching_tx_error_count',
+    help: 'Total number of errors encountered while fetching tx',
+    labelNames: ['chainId'] as const,
+  }),
+  insertContractErrorCount: new Counter({
+    name: 'insert_contract_error_count',
+    help: 'Total number of errors encountered while inserting a new contract',
+  }),
 }

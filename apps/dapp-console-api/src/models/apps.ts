@@ -1,3 +1,5 @@
+import type { InferInsertModel, InferSelectModel } from 'drizzle-orm'
+import { and, count, eq } from 'drizzle-orm'
 import {
   index,
   integer,
@@ -7,9 +9,13 @@ import {
   varchar,
 } from 'drizzle-orm/pg-core'
 
-import { entities } from './entities'
+import type { NameCursor } from '@/api'
+import type { Database } from '@/db'
 
-enum AppState {
+import { entities } from './entities'
+import { generateCursorSelect } from './utils'
+
+export enum AppState {
   ACTIVE = 'active',
   DISABLED = 'disabled',
 }
@@ -37,6 +43,65 @@ export const apps = pgTable(
   (table) => {
     return {
       entityIdx: index().on(table.entityId),
+      nameIdx: index().on(table.name),
     }
   },
 )
+
+export type App = InferSelectModel<typeof apps>
+export type InsertApp = InferInsertModel<typeof apps>
+export type UpdateApp = Partial<Pick<App, 'name' | 'state'>>
+
+export const getActiveAppsForEntityByCursor = async (input: {
+  db: Database
+  entityId: App['entityId']
+  limit: number
+  cursor?: NameCursor
+}) => {
+  const { db, entityId, limit, cursor } = input
+
+  return generateCursorSelect({
+    db,
+    table: apps,
+    filters: [eq(apps.entityId, entityId), eq(apps.state, AppState.ACTIVE)],
+    limit,
+    orderBy: { direction: 'asc', column: 'name' },
+    idColumnKey: 'id',
+    cursor,
+  })
+}
+
+export const getActiveAppsCount = async (input: {
+  db: Database
+  entityId: App['entityId']
+}) => {
+  const { db, entityId } = input
+
+  const results = await db
+    .select({ count: count() })
+    .from(apps)
+    .where(and(eq(apps.entityId, entityId), eq(apps.state, AppState.ACTIVE)))
+
+  return results[0]?.count || 0
+}
+
+export const insertApp = async (input: { db: Database; newApp: InsertApp }) => {
+  const { db, newApp } = input
+  const result = await db.insert(apps).values(newApp).returning()
+
+  return result[0]
+}
+
+export const updateApp = async (input: {
+  db: Database
+  entityId: App['entityId']
+  appId: App['id']
+  update: UpdateApp
+}) => {
+  const { entityId, appId, db, update } = input
+
+  return db
+    .update(apps)
+    .set({ ...update, updatedAt: new Date() })
+    .where(and(eq(apps.id, appId), eq(apps.entityId, entityId)))
+}

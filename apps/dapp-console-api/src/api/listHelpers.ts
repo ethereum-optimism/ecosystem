@@ -1,16 +1,16 @@
 import type { Cursor, ListResponse } from './types'
 
 export const generateListResponse = <
-  TRecord extends { [key in keyof Cursor]: Cursor[key] },
+  TCursor extends Cursor,
+  TRecord extends { [key in keyof TCursor]: TCursor[key] },
 >(
   records: TRecord[],
   limit: number,
-  prevCursor?: Cursor,
+  prevCursor?: TCursor,
 ): ListResponse<TRecord> => {
-  let nextCursor: Cursor | undefined
+  let nextCursor: TCursor | undefined
   if (records.length > limit) {
-    const { createdAt, id } = records.pop()!
-    nextCursor = { createdAt, id }
+    nextCursor = records.pop()!
   }
   return {
     nextCursor,
