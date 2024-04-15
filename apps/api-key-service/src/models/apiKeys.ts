@@ -57,9 +57,7 @@ export const getApiKey = async (db: Database, id: string) => {
 
 export const createApiKey = async (
   db: Database,
-  newApiKey: InsertApiKey & {
-    state: 'enabled' | 'disabled'
-  }, // Ensures that state is either 'enabled' or 'disabled' on creation
+  newApiKey: InsertApiKey, // Ensures that state is either 'enabled' or 'disabled' on creation
 ) => {
   const currentTime = new Date()
   const insertValues = {
@@ -72,4 +70,66 @@ export const createApiKey = async (
   const result = await db.insert(apiKeys).values(insertValues).returning()
 
   return result[0]
+}
+
+export const deleteApiKey = async (db: Database, apiKeyId: string) => {
+  const currentTime = new Date()
+
+  await db
+    .update(apiKeys)
+    .set({
+      deletedAt: currentTime,
+      updatedAt: currentTime,
+    })
+    .where(eq(apiKeys.id, apiKeyId))
+}
+
+export const updateApiKeyState = async (
+  db: Database,
+  apiKeyId: string,
+  newState: ApiKeyState,
+) => {
+  const currentTime = new Date()
+
+  const updatedApiKeys = await db
+    .update(apiKeys)
+    .set({
+      state: newState,
+      updatedAt: currentTime,
+      stateUpdatedAt: currentTime,
+    })
+    .where(and(eq(apiKeys.id, apiKeyId), isNull(apiKeys.deletedAt)))
+    .returning()
+
+  if (updatedApiKeys.length === 0) {
+    return null
+  }
+
+  // guaranteed to only be 1 max because of the primaryKey filter
+  return updatedApiKeys[0]
+}
+
+const MAX_FETCH_LIMIT = 100
+
+export const listApiKeysForEntity = async (db: Database, entityId: string) => {
+  return await db
+    .select()
+    .from(apiKeys)
+    .where(and(eq(apiKeys.entityId, entityId), isNull(apiKeys.deletedAt)))
+    .limit(MAX_FETCH_LIMIT)
+  // TODO: consider adding pagination support
+}
+
+export const getApiKeyByKey = async (db: Database, key: string) => {
+  const keys = await db
+    .select()
+    .from(apiKeys)
+    .where(and(eq(apiKeys.key, key), isNull(apiKeys.deletedAt)))
+
+  if (keys.length === 0) {
+    return null
+  }
+
+  // guaranteed to only be 1 max because of the unique index on key
+  return keys[0]
 }

@@ -3,7 +3,15 @@ import crypto from 'crypto'
 import type e from 'express'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
-import { createApiKey, getApiKey } from '@/models/apiKeys'
+import type { ApiKeyState } from '@/models/apiKeys'
+import {
+  createApiKey,
+  deleteApiKey,
+  getApiKey,
+  getApiKeyByKey,
+  listApiKeysForEntity,
+  updateApiKeyState,
+} from '@/models/apiKeys'
 import { metrics } from '@/monitoring/metrics'
 import { KeysRoute } from '@/routes/keys/KeysRoute'
 import { createRandomString } from '@/testUtils/createRandomString'
@@ -20,12 +28,17 @@ vi.mock('@/models/apiKeys', () => ({
   createApiKey: vi.fn(async (db, newApiKey) => {
     return toApiKeyObj(newApiKey)
   }),
+  updateApiKeyState: vi.fn(
+    async (db, id: string, newApiKeyState: ApiKeyState) =>
+      toApiKeyObj({ id, state: newApiKeyState }),
+  ),
+  getApiKeyByKey: vi.fn(async (db, key) => toApiKeyObj({ key })),
+
+  deleteApiKey: vi.fn(async () => {}),
+  listApiKeysForEntity: vi.fn(),
 }))
 
 describe(KeysRoute.name, () => {
-  const mockedCreateApiKey = vi.mocked(createApiKey)
-  const mockedGetApiKey = vi.mocked(getApiKey)
-
   const trpc = new Trpc()
 
   const route = new KeysRoute(trpc, mockLogger, metrics, mockDb)
@@ -42,6 +55,8 @@ describe(KeysRoute.name, () => {
   })
 
   describe('createApiKey', () => {
+    const mockedCreateApiKey = vi.mocked(createApiKey)
+
     it('rejects if entityId is missing', async () => {
       await expect(
         // @ts-expect-error - testing invalid input
@@ -70,7 +85,7 @@ describe(KeysRoute.name, () => {
         state: 'disabled',
       })
 
-      expect(resopnse).toMatchObject({ apiKey: apiKeyObj })
+      expect(resopnse).toEqual({ apiKey: apiKeyObj })
     })
 
     it('rejects empty string key', async () => {
@@ -137,6 +152,8 @@ describe(KeysRoute.name, () => {
   })
 
   describe('getApiKey', () => {
+    const mockedGetApiKey = vi.mocked(getApiKey)
+
     it('rejects if id is missing', async () => {
       await expect(
         // @ts-expect-error - testing invalid input
@@ -167,6 +184,249 @@ describe(KeysRoute.name, () => {
       const response = await caller.getApiKey({ id: apiKeyObject.id })
 
       expect(response).toMatchObject({ apiKey: apiKeyObject })
+    })
+  })
+
+  describe('updateApiKey', () => {
+    const mockedUpdateApiKeyState = vi.mocked(updateApiKeyState)
+
+    it('rejects if id is missing', async () => {
+      await expect(
+        // @ts-expect-error - testing invalid input
+        caller.updateApiKey(),
+      ).rejects.toThrowError(/invalid_type/)
+      expect(mockedUpdateApiKeyState).not.toHaveBeenCalled()
+    })
+
+    it('rejects if state is missing', async () => {
+      await expect(
+        // @ts-expect-error - testing invalid input
+        caller.updateApiKey({
+          id: crypto.randomUUID(),
+        }),
+      ).rejects.toThrowError(/Invalid input/)
+      expect(mockedUpdateApiKeyState).not.toHaveBeenCalled()
+    })
+
+    it('rejects if state is unsupported', async () => {
+      await expect(
+        caller.updateApiKey({
+          id: crypto.randomUUID(),
+          // @ts-expect-error - testing invalid input
+          state: 'something-unsupported',
+        }),
+      ).rejects.toThrowError(/Invalid input/)
+      expect(mockedUpdateApiKeyState).not.toHaveBeenCalled()
+    })
+
+    it('errors with INTERNAL_SERVER_ERROR if db update fails', async () => {
+      const updateParams = {
+        id: crypto.randomUUID(),
+        state: 'enabled' as const,
+      }
+      mockedUpdateApiKeyState.mockRejectedValueOnce(new Error('some db error'))
+
+      await expect(caller.updateApiKey(updateParams)).rejects.toThrowError(
+        'Internal server error',
+      )
+      expect(mockedUpdateApiKeyState).toHaveBeenCalledOnce()
+      expect(mockedUpdateApiKeyState).toHaveBeenCalledWith(
+        mockDb,
+        updateParams.id,
+        updateParams.state,
+      )
+    })
+
+    it('errors with NOT_FOUND if no rows are found', async () => {
+      const updateParams = {
+        id: crypto.randomUUID(),
+        state: 'enabled' as const,
+      }
+
+      mockedUpdateApiKeyState.mockResolvedValueOnce(null)
+
+      await expect(caller.updateApiKey(updateParams)).rejects.toThrowError(
+        /Not found/,
+      )
+
+      expect(mockedUpdateApiKeyState).toHaveBeenCalledOnce()
+      expect(mockedUpdateApiKeyState).toHaveBeenCalledWith(
+        mockDb,
+        updateParams.id,
+        updateParams.state,
+      )
+    })
+
+    it('updates and returns updated value', async () => {
+      const updateParams = {
+        id: crypto.randomUUID(),
+        state: 'enabled' as const,
+      }
+      const updateApiKeyStateResponse = await caller.updateApiKey(updateParams)
+
+      expect(mockedUpdateApiKeyState).toHaveBeenCalledOnce()
+      expect(mockedUpdateApiKeyState).toHaveBeenCalledWith(
+        mockDb,
+        updateParams.id,
+        updateParams.state,
+      )
+
+      expect(updateApiKeyStateResponse).toMatchObject({
+        updatedApiKey: updateParams,
+      })
+    })
+  })
+
+  describe('deleteApiKey', async () => {
+    const mockedDeleteApiKey = vi.mocked(deleteApiKey)
+
+    it('rejects if id is missing', async () => {
+      await expect(
+        // @ts-expect-error - testing invalid input
+        caller.deleteApiKey(),
+      ).rejects.toThrowError(/invalid_type/)
+    })
+
+    it('errors with INTERNAL_SERVER_ERROR if db update fails', async () => {
+      mockedDeleteApiKey.mockRejectedValueOnce(new Error('some db error'))
+
+      await expect(
+        caller.deleteApiKey({ id: crypto.randomUUID() }),
+      ).rejects.toThrowError('Internal server error')
+    })
+
+    it('deletes key and returns nothing', async () => {
+      const id = crypto.randomUUID()
+      const result = await caller.deleteApiKey({ id })
+      expect(mockedDeleteApiKey).toHaveBeenCalledOnce()
+      expect(mockedDeleteApiKey).toHaveBeenCalledWith(mockDb, id)
+      expect(result).toBeUndefined()
+    })
+  })
+
+  describe('verifyApiKey', async () => {
+    const mockedGetApiKeyByKey = vi.mocked(getApiKeyByKey)
+
+    it('rejects if key is missing', async () => {
+      await expect(
+        // @ts-expect-error - testing invalid input
+        caller.verifyApiKey(),
+      ).rejects.toThrowError(/invalid_type/)
+    })
+
+    it('errors with INTERNAL_SERVER_ERROR if db select fails', async () => {
+      mockedGetApiKeyByKey.mockRejectedValueOnce(new Error('some db error'))
+
+      const key = crypto.randomUUID()
+
+      await expect(caller.verifyApiKey({ key })).rejects.toThrowError(
+        /Internal server error/,
+      )
+
+      expect(mockedGetApiKeyByKey).toHaveBeenCalledOnce()
+      expect(mockedGetApiKeyByKey).toHaveBeenCalledWith(mockDb, key)
+    })
+
+    it('returns false if key is not found', async () => {
+      const key = crypto.randomUUID()
+      mockedGetApiKeyByKey.mockResolvedValueOnce(null)
+
+      const response = await caller.verifyApiKey({ key })
+
+      expect(response).toEqual({ isVerified: false, apiKey: null })
+
+      expect(mockedGetApiKeyByKey).toHaveBeenCalledOnce()
+      expect(mockedGetApiKeyByKey).toHaveBeenCalledWith(mockDb, key)
+    })
+
+    it('returns false if key is disabled', async () => {
+      const id = crypto.randomUUID()
+      const key = crypto.randomUUID()
+
+      mockedGetApiKeyByKey.mockResolvedValueOnce(
+        toApiKeyObj({ id, key, state: 'disabled' }),
+      )
+
+      const response = await caller.verifyApiKey({ key })
+
+      expect(response).toEqual({ isVerified: false, apiKey: { id } })
+
+      expect(mockedGetApiKeyByKey).toHaveBeenCalledOnce()
+      expect(mockedGetApiKeyByKey).toHaveBeenCalledWith(mockDb, key)
+    })
+
+    it('returns true if key is enabled', async () => {
+      const id = crypto.randomUUID()
+      const key = crypto.randomUUID()
+
+      mockedGetApiKeyByKey.mockResolvedValueOnce(
+        toApiKeyObj({ id, key, state: 'enabled' }),
+      )
+
+      const response = await caller.verifyApiKey({ key })
+
+      expect(response).toEqual({
+        isVerified: true,
+        apiKey: { id },
+      })
+
+      expect(mockedGetApiKeyByKey).toHaveBeenCalledOnce()
+      expect(mockedGetApiKeyByKey).toHaveBeenCalledWith(mockDb, key)
+    })
+  })
+
+  describe('listApiKeysForEntity', async () => {
+    const mockedListApiKeysForEntity = vi.mocked(listApiKeysForEntity)
+    it('rejects if input is missing', async () => {
+      await expect(
+        // @ts-expect-error - testing invalid input
+        caller.listApiKeysForEntity(),
+      ).rejects.toThrowError(/invalid_type/)
+
+      expect(mockedListApiKeysForEntity).not.toHaveBeenCalled()
+    })
+
+    it('rejects if entityId is missing', async () => {
+      await expect(
+        // @ts-expect-error - testing invalid input
+        caller.listApiKeysForEntity({}),
+      ).rejects.toThrowError(/invalid_type/)
+      expect(mockedListApiKeysForEntity).not.toHaveBeenCalled()
+    })
+
+    it('errors with INTERNAL_SERVER_ERROR if db select fails', async () => {
+      const entityId = crypto.randomUUID()
+
+      mockedListApiKeysForEntity.mockRejectedValueOnce(
+        new Error('some db error'),
+      )
+
+      await expect(
+        caller.listApiKeysForEntity({ entityId }),
+      ).rejects.toThrowError(/Internal server error/)
+
+      expect(mockedListApiKeysForEntity).toHaveBeenCalledOnce()
+      expect(mockedListApiKeysForEntity).toHaveBeenCalledWith(mockDb, entityId)
+    })
+
+    it('returns list of keys', async () => {
+      const entityId = crypto.randomUUID()
+
+      const mockedResult = Array.from({ length: 3 }, () =>
+        toApiKeyObj({ entityId }),
+      )
+
+      mockedListApiKeysForEntity.mockResolvedValueOnce(mockedResult)
+
+      const listApiKeysForEntityResult = await caller.listApiKeysForEntity({
+        entityId,
+      })
+      expect(listApiKeysForEntityResult).toEqual({
+        apiKeys: mockedResult,
+      })
+
+      expect(mockedListApiKeysForEntity).toHaveBeenCalledOnce()
+      expect(mockedListApiKeysForEntity).toHaveBeenCalledWith(mockDb, entityId)
     })
   })
 })
