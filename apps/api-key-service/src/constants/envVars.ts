@@ -15,6 +15,12 @@ const envVarSchema = z.object({
   DEPLOYMENT_ENV: z.enum(['production', 'staging', 'development']),
   DEV_CORS_ALLOWLIST_REG_EXP: z.custom<RegExp>().array(),
   CORS_ALLOWLIST_REG_EXP: z.custom<RegExp>().array(),
+  DB_USER: z.string(),
+  DB_PASSWORD: z.string().optional(),
+  DB_HOST: z.string().optional(),
+  DB_PORT: z.number().optional(),
+  DB_NAME: z.string().optional(),
+  DB_MAX_CONNECTIONS: z.number().int().min(1).optional(),
 })
 
 const isTest = process.env.NODE_ENV === 'test'
@@ -43,6 +49,11 @@ export const envVars = envVarSchema.parse(
         CORS_ALLOWLIST_REG_EXP: getCommaSeparatedValues(
           'CORS_ALLOWLIST_REG_EXP',
         ).map((regExp) => new RegExp(regExp)),
+        DB_USER: 'api-key-service@oplabs-local-web.iam',
+        DB_PASSWORD: 'DB_PASSWORD',
+        DB_HOST: '0.0.0.0',
+        DB_PORT: 5432,
+        DB_NAME: 'api-key-service',
       }
     : {
         PORT: process.env.PORT
@@ -57,5 +68,12 @@ export const envVars = envVarSchema.parse(
         CORS_ALLOWLIST_REG_EXP: getCommaSeparatedValues(
           'CORS_ALLOWLIST_REG_EXP',
         ).map((regExp) => new RegExp(regExp)),
+        DB_USER: process.env.DB_USER,
+        DB_HOST: process.env.DB_HOST ?? 'localhost',
+        DB_PORT: process.env.DB_PORT ? Number(process.env.DB_PORT) : 5432,
+        DB_MAX_CONNECTIONS:
+          process.env.DB_MAX_CONNECTIONS &&
+          Number(process.env.DB_MAX_CONNECTIONS),
+        DB_NAME: process.env.DB_NAME ?? 'api-key-service',
       },
 )
