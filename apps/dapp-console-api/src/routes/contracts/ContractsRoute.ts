@@ -23,6 +23,7 @@ import { Trpc } from '@/Trpc'
 import { generateChallenge } from '@/utils'
 
 import { Route } from '../Route'
+import { assertUserAuthenticated } from '../utils'
 
 export class ContractsRoute extends Route {
   public readonly name = 'Contracts' as const
@@ -42,9 +43,7 @@ export class ContractsRoute extends Route {
       try {
         const { user } = ctx.session
 
-        if (!user) {
-          throw Trpc.handleStatus(401, 'user not authenticated')
-        }
+        assertUserAuthenticated(user)
 
         const contracts = await getContractsForApp({
           db: this.trpc.database,
@@ -89,9 +88,7 @@ export class ContractsRoute extends Route {
         appId,
       } = input
 
-      if (!user) {
-        throw Trpc.handleStatus(401, 'user not authenticated')
-      }
+      assertUserAuthenticated(user)
 
       const publicClient = supportedChainsPublicClientsMap[chainId]
 
@@ -171,9 +168,7 @@ export class ContractsRoute extends Route {
       const { contractId } = input
       const { user } = ctx.session
 
-      if (!user) {
-        throw Trpc.handleStatus(401, 'user not authenticated')
-      }
+      assertUserAuthenticated(user)
 
       const contract = await getContract({
         db: this.trpc.database,
@@ -191,6 +186,10 @@ export class ContractsRoute extends Route {
         )
         throw Trpc.handleStatus(500, 'error fetching contract')
       })
+
+      if (!contract) {
+        throw Trpc.handleStatus(400, 'contract does not exist')
+      }
 
       if (contract.state === ContractState.VERIFIED) {
         throw Trpc.handleStatus(400, 'contract is already verified')
@@ -260,9 +259,7 @@ export class ContractsRoute extends Route {
       const { challengeId, signature } = input
       const { user } = ctx.session
 
-      if (!user) {
-        throw Trpc.handleStatus(401, 'user not authenticated')
-      }
+      assertUserAuthenticated(user)
 
       const challenge = await getChallengeByChallengeId({
         db: this.trpc.database,
@@ -334,6 +331,44 @@ export class ContractsRoute extends Route {
         })
 
       return { success: true }
+    })
+
+  public readonly getContract = 'getContract' as const
+  public readonly getContractController = this.trpc.procedure
+    .use(isPrivyAuthed(this.trpc))
+    .input(
+      this.z.object({
+        contractId: this.z.string(),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      const { contractId } = input
+      const { user } = ctx.session
+
+      assertUserAuthenticated(user)
+
+      const contract = await getContract({
+        db: this.trpc.database,
+        contractId,
+        entityId: user.entityId,
+      }).catch((err) => {
+        metrics.fetchContractErrorCount.inc()
+        this.logger?.error(
+          {
+            error: err,
+            entityId: user.entityId,
+            contractId,
+          },
+          'error fetching contract',
+        )
+        throw Trpc.handleStatus(500, 'error fetching contract')
+      })
+
+      if (!contract) {
+        throw Trpc.handleStatus(400, 'contract does not exist')
+      }
+
+      return contract
     })
 
   public readonly handler = this.trpc.router({

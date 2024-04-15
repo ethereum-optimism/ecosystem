@@ -7,6 +7,7 @@ import { fetchAndSyncPrivyWallets } from '@/utils'
 
 import { DEFAULT_PAGE_LIMIT } from '../constants'
 import { Route } from '../Route'
+import { assertUserAuthenticated } from '../utils'
 
 export class WalletsRoute extends Route {
   public readonly name = 'wallets' as const
@@ -52,9 +53,7 @@ export class WalletsRoute extends Route {
         const { user } = ctx.session
         const limit = input.limit ?? DEFAULT_PAGE_LIMIT
 
-        if (!user) {
-          throw Trpc.handleStatus(401, 'user not authenticated')
-        }
+        assertUserAuthenticated(user)
 
         const activeWallets = await getActiveWalletsForEntityByCursor(
           this.trpc.database,
