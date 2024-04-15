@@ -12,7 +12,7 @@ import Image from 'next/image'
 import { useDialogContent } from '@/app/console/useDialogContent'
 import { useState } from 'react'
 import { trackCardClick } from '@/app/event-tracking/mixpanel'
-import { spearbitMetadata } from '../constants'
+import { spearbitMetadata } from '@/app/console/constants'
 
 const PromotionsSection = () => {
   const {
