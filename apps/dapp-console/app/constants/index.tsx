@@ -146,6 +146,10 @@ export const externalRoutes: Routes = {
     path: 'https://quicknode.notion.site/OP-Labs-x-QuickNode-f11ee23df47b4107a70c5cbfcb0b1e38',
     label: 'Learn more',
   },
+  SPEARBIT_LEARN_MORE: {
+    path: 'https://spearbit.com/branding',
+    label: 'Learn more',
+  },
 }
 
 export const forms = {
@@ -162,6 +166,7 @@ export const forms = {
   THIRDWEB: 'https://share.hsforms.com/1WCgMOvmuQqmCjdEqtu1NdAea58c',
   GELATO: 'https://share-eu1.hsforms.com/1kaQ2KRLYRym3mZNOF2aEVQ2bmmck',
   QUICKNODE: 'https://quiknode.typeform.com/to/sWxlcYV4#cd=H7qNVcJb',
+  SPEARBIT: 'https://spearbit.com/contact',
 }
 
 export const supportItems = [
