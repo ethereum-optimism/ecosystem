@@ -16,12 +16,8 @@ import { trackCardClick } from '@/app/event-tracking/mixpanel'
 
 const LaunchSection = () => {
   const [dialogContent, setDialogContent] = useState<React.ReactNode>()
-  const {
-    deploymentRebateContent,
-    mainnetPaymasterContent,
-    megaphoneContent,
-    userFeedbackContent,
-  } = useDialogContent()
+  const { deploymentRebateContent, mainnetPaymasterContent, megaphoneContent } =
+    useDialogContent()
   return (
     <div>
       <Text as="h3" className="text-2xl font-semibold mb-4">
