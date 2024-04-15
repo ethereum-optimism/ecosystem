@@ -3,6 +3,8 @@ import { and, asc, desc, eq, gte, lte, or } from 'drizzle-orm'
 
 import type { Database } from '@/db'
 
+export const UINT256_PRECISION = 78
+
 /**
  * Queries the next set of results using @param cursor.
  * @param db database to query
