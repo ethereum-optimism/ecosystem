@@ -84,7 +84,7 @@ export const getContract = async (input: {
   db: Database
   contractId: Contract['id']
   entityId: Contract['entityId']
-}) => {
+}): Promise<Contract | null> => {
   const { db, contractId, entityId } = input
 
   const results = await db

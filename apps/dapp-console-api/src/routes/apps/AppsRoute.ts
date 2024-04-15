@@ -16,6 +16,7 @@ import { Trpc } from '@/Trpc'
 
 import { DEFAULT_PAGE_LIMIT } from '../constants'
 import { Route } from '../Route'
+import { assertUserAuthenticated } from '../utils'
 
 const zodAppName = z.string().min(1).max(120)
 
@@ -34,9 +35,7 @@ export class AppsRoute extends Route {
         const { user } = ctx.session
         const limit = input.limit ?? DEFAULT_PAGE_LIMIT
 
-        if (!user) {
-          throw Trpc.handleStatus(401, 'user not authenticated')
-        }
+        assertUserAuthenticated(user)
 
         const activeApps = await getActiveAppsForEntityByCursor({
           db: this.trpc.database,
@@ -90,9 +89,7 @@ export class AppsRoute extends Route {
       const { user } = ctx.session
       const { name } = input
 
-      if (!user) {
-        throw Trpc.handleStatus(401, 'user not authenticated')
-      }
+      assertUserAuthenticated(user)
 
       const activeAppsCount = await getActiveAppsCount({
         db: this.trpc.database,
@@ -144,9 +141,7 @@ export class AppsRoute extends Route {
       const { user } = ctx.session
       const { name, appId } = input
 
-      if (!user) {
-        throw Trpc.handleStatus(401, 'user not authenticated')
-      }
+      assertUserAuthenticated(user)
 
       await updateApp({
         db: this.trpc.database,
