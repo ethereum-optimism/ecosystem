@@ -28,7 +28,9 @@ export enum WalletLinkType {
   PRIVY = 'privy',
 }
 
-type AddressVerification = {}
+type AddressVerifications = {
+  isCbVerified?: boolean
+}
 
 export const wallets = pgTable(
   'wallets',
@@ -50,7 +52,7 @@ export const wallets = pgTable(
       .default(WalletLinkType.PRIVY)
       .notNull(),
     verifications: jsonb('verifications')
-      .$type<AddressVerification>()
+      .$type<AddressVerifications>()
       .default({})
       .notNull(),
     state: varchar('state')
