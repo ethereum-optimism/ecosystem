@@ -1,3 +1,4 @@
+import { and, eq, sum } from 'drizzle-orm'
 import {
   index,
   integer,
@@ -9,7 +10,10 @@ import {
 } from 'drizzle-orm/pg-core'
 import type { Address, Hash } from 'viem'
 
+import type { Database } from '@/db'
+
 import { contracts } from './contracts'
+import type { Entity } from './entities'
 import { entities } from './entities'
 import { UINT256_PRECISION } from './utils'
 
@@ -64,3 +68,21 @@ export const deploymentRebates = pgTable(
     }
   },
 )
+
+export const getTotalRebatesClaimedByEntity = async (input: {
+  db: Database
+  entityId: Entity['id']
+}) => {
+  const { db, entityId } = input
+  const result = await db
+    .select({ value: sum(deploymentRebates.rebateAmount).mapWith(BigInt) })
+    .from(deploymentRebates)
+    .where(
+      and(
+        eq(deploymentRebates.entityId, entityId),
+        eq(deploymentRebates.state, DeploymentRebateState.REBATE_SENT),
+      ),
+    )
+
+  return result[0]?.value || BigInt(0)
+}

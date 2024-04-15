@@ -70,4 +70,8 @@ export const metrics = {
     name: 'complete_challenge_error_count',
     help: 'Total number of times the server failed to mark a challenge as complete',
   }),
+  fetchTotalRebatesClaimedErrorCount: new Counter({
+    name: 'fetch_total_rebates_claimed_error_count',
+    help: 'Total number of errors encountered while fetching total rebates claimed',
+  }),
 }

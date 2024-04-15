@@ -1,6 +1,7 @@
 import type { AppsRoute } from '@/routes/apps'
 import type { AuthRoute } from '@/routes/auth'
 import type { ContractsRoute } from '@/routes/contracts'
+import type { RebatesRoute } from '@/routes/rebates'
 import type { WalletsRoute } from '@/routes/wallets'
 
 import { MajorApiVersion } from '../constants'
@@ -36,6 +37,7 @@ export class ApiV0 extends Api {
     [this.routes.walletsRoute.name]: this.routes.walletsRoute.handler,
     [this.routes.appsRoute.name]: this.routes.appsRoute.handler,
     [this.routes.contractsRoute.name]: this.routes.contractsRoute.handler,
+    [this.routes.rebatesRoute.name]: this.routes.rebatesRoute.handler,
   })
 
   /**
@@ -48,6 +50,7 @@ export class ApiV0 extends Api {
       walletsRoute: WalletsRoute
       appsRoute: AppsRoute
       contractsRoute: ContractsRoute
+      rebatesRoute: RebatesRoute
     },
   ) {
     super(trpc)
