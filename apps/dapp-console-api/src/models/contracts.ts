@@ -80,6 +80,21 @@ export const getContractsForApp = async (input: {
     .orderBy(asc(contracts.createdAt))
 }
 
+export const getContract = async (input: {
+  db: Database
+  contractId: Contract['id']
+  entityId: Contract['entityId']
+}) => {
+  const { db, contractId, entityId } = input
+
+  const results = await db
+    .select()
+    .from(contracts)
+    .where(and(eq(contracts.id, contractId), eq(contracts.entityId, entityId)))
+
+  return results[0] || null
+}
+
 export const insertContract = async (input: {
   db: Database
   contract: InsertContract

@@ -5,9 +5,18 @@ import {
 } from '@/api'
 import { supportedChainsPublicClientsMap } from '@/constants'
 import { isPrivyAuthed } from '@/middleware'
-import { ContractState, getContractsForApp, insertContract } from '@/models'
+import {
+  ChallengeState,
+  ContractState,
+  getContract,
+  getContractsForApp,
+  getUnexpiredChallenge,
+  insertChallenge,
+  insertContract,
+} from '@/models'
 import { metrics } from '@/monitoring/metrics'
 import { Trpc } from '@/Trpc'
+import { generateChallenge } from '@/utils'
 
 import { Route } from '../Route'
 
@@ -146,7 +155,96 @@ export class ContractsRoute extends Route {
       return { result }
     })
 
+  public readonly startVerification = 'startVerification' as const
+  public readonly startVerificationController = this.trpc.procedure
+    .use(isPrivyAuthed(this.trpc))
+    .input(
+      this.z.object({
+        contractId: this.z.string(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const { contractId } = input
+      const { user } = ctx.session
+
+      if (!user) {
+        throw Trpc.handleStatus(401, 'user not authenticated')
+      }
+
+      const contract = await getContract({
+        db: this.trpc.database,
+        contractId,
+        entityId: user.entityId,
+      }).catch((err) => {
+        metrics.fetchContractErrorCount.inc()
+        this.logger?.error(
+          {
+            error: err,
+            entityId: user.entityId,
+            contractId,
+          },
+          'error fetching contract',
+        )
+        throw Trpc.handleStatus(500, 'error fetching contract')
+      })
+
+      if (contract.state === ContractState.VERIFIED) {
+        throw Trpc.handleStatus(400, 'contract is already verified')
+      }
+
+      const challenge = await getUnexpiredChallenge({
+        db: this.trpc.database,
+        entityId: user.entityId,
+        contractId,
+      }).catch((err) => {
+        metrics.fetchChallengeErrorCount.inc()
+        this.logger?.error(
+          {
+            error: err,
+            entityId: user.entityId,
+            contractId,
+          },
+          'error fetching unexpired challenge',
+        )
+        throw Trpc.handleStatus(500, 'error fetching challenge')
+      })
+
+      const challengeToComplete = generateChallenge(contract.deployerAddress)
+
+      if (challenge) {
+        return {
+          ...challenge,
+          challenge: challengeToComplete,
+        }
+      }
+
+      const result = await insertChallenge({
+        db: this.trpc.database,
+        challenge: {
+          entityId: user.entityId,
+          contractId,
+          address: contract.deployerAddress,
+          state: ChallengeState.PENDING,
+        },
+      }).catch((err) => {
+        metrics.insertChallengeErrorCount.inc()
+        this.logger?.error(
+          {
+            error: err,
+            entityId: user.entityId,
+            contractId,
+          },
+          'error inserting challenge',
+        )
+        throw Trpc.handleStatus(500, 'error creating challenge')
+      })
+
+      return { ...result, challenge: challengeToComplete }
+    })
+
   public readonly handler = this.trpc.router({
     [this.listContractsForApp]: this.listContractsForAppController,
+    [this.createContract]: this.createContractController,
+    [this.startVerification]: this.startVerificationController,
   })
 }
