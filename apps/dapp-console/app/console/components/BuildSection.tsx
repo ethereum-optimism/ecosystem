@@ -48,17 +48,6 @@ const BuildSection = () => {
           </DialogTrigger>
           <DialogTrigger asChild>
             <Tile
-              title="UX Review"
-              description="Get actionable feedback from Superchain pros to get your app ready for launch."
-              onClick={() => {
-                trackCardClick('UX Review')
-                setDialogContent(uxReviewContent)
-              }}
-              badge={<Badge variant="success">Featured</Badge>}
-            />
-          </DialogTrigger>
-          <DialogTrigger asChild>
-            <Tile
               title="Superchain Safe"
               description="Get multisig support on any OP Chain in the Superchain."
               onClick={() => {

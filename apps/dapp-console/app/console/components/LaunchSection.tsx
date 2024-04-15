@@ -61,16 +61,6 @@ const LaunchSection = () => {
               }}
             />
           </DialogTrigger>
-          <DialogTrigger asChild>
-            <Tile
-              title="User Feedback"
-              description="Get actionable feedback from Superchain contributors to improve your app."
-              onClick={() => {
-                trackCardClick('User Feedback')
-                setDialogContent(userFeedbackContent)
-              }}
-            />
-          </DialogTrigger>
           <Tile
             title="Retro Funding"
             description="Get rewarded for adding value to the Superchain ecosystem."
