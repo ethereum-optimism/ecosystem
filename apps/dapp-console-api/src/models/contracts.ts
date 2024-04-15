@@ -112,3 +112,19 @@ export const insertContract = async (input: {
 
   return results[0]
 }
+
+export const verifyContract = async (input: {
+  db: Database
+  entityId: Contract['entityId']
+  contractId: Contract['id']
+}) => {
+  const { db, entityId, contractId } = input
+
+  const results = await db
+    .update(contracts)
+    .set({ state: ContractState.VERIFIED, updatedAt: new Date() })
+    .where(and(eq(contracts.entityId, entityId), eq(contracts.id, contractId)))
+    .returning()
+
+  return results[0]
+}

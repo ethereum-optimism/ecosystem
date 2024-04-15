@@ -1,5 +1,6 @@
 import {
   zodEthereumAddress,
+  zodEthereumSignature,
   zodEthereumTransactionHash,
   zodSupportedChainId,
 } from '@/api'
@@ -7,12 +8,15 @@ import { supportedChainsPublicClientsMap } from '@/constants'
 import { isPrivyAuthed } from '@/middleware'
 import {
   ChallengeState,
+  completeChallenge,
   ContractState,
+  getChallengeByChallengeId,
   getContract,
   getContractsForApp,
   getUnexpiredChallenge,
   insertChallenge,
   insertContract,
+  verifyContract,
 } from '@/models'
 import { metrics } from '@/monitoring/metrics'
 import { Trpc } from '@/Trpc'
@@ -224,6 +228,7 @@ export class ContractsRoute extends Route {
           entityId: user.entityId,
           contractId,
           address: contract.deployerAddress,
+          chainId: contract.chainId,
           state: ChallengeState.PENDING,
         },
       }).catch((err) => {
@@ -242,9 +247,99 @@ export class ContractsRoute extends Route {
       return { ...result, challenge: challengeToComplete }
     })
 
+  public readonly completeVerification = 'completeVerification' as const
+  public readonly completeVerificationController = this.trpc.procedure
+    .use(isPrivyAuthed(this.trpc))
+    .input(
+      this.z.object({
+        challengeId: this.z.string(),
+        signature: zodEthereumSignature,
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const { challengeId, signature } = input
+      const { user } = ctx.session
+
+      if (!user) {
+        throw Trpc.handleStatus(401, 'user not authenticated')
+      }
+
+      const challenge = await getChallengeByChallengeId({
+        db: this.trpc.database,
+        entityId: user.entityId,
+        challengeId,
+      }).catch((err) => {
+        metrics.fetchChallengeErrorCount.inc()
+        this.logger?.error(
+          {
+            error: err,
+            entityId: user.entityId,
+            challengeId,
+          },
+          'error fetching challenge',
+        )
+        throw Trpc.handleStatus(500, 'error fetching challenge')
+      })
+
+      if (!challenge || challenge?.state === ChallengeState.EXPIRED) {
+        throw Trpc.handleStatus(400, 'challenge does not exist or is expired')
+      }
+
+      const publicClient = supportedChainsPublicClientsMap[challenge.chainId]
+
+      if (!publicClient) {
+        throw Trpc.handleStatus(
+          500,
+          `challenge is on invalid chain id: ${challenge.chainId}`,
+        )
+      }
+
+      const result = await publicClient.verifyMessage({
+        address: challenge.address,
+        message: generateChallenge(challenge.address),
+        signature,
+      })
+
+      if (!result) {
+        throw Trpc.handleStatus(400, 'challenge was not completed successfully')
+      }
+
+      await this.trpc.database
+        .transaction(async (tx) => {
+          await completeChallenge({
+            db: tx,
+            entityId: user.entityId,
+            challengeId,
+          })
+          await verifyContract({
+            db: tx,
+            entityId: user.entityId,
+            contractId: challenge.contractId,
+          })
+        })
+        .catch((err) => {
+          metrics.completeChallengeErrorCount.inc()
+          this.logger?.error(
+            {
+              error: err,
+              entityId: user.entityId,
+              challengeId,
+            },
+            'error updating challenge to complete',
+          )
+          throw Trpc.handleStatus(
+            500,
+            'server failed to mark challenge as complete',
+          )
+        })
+
+      return { success: true }
+    })
+
   public readonly handler = this.trpc.router({
     [this.listContractsForApp]: this.listContractsForAppController,
     [this.createContract]: this.createContractController,
     [this.startVerification]: this.startVerificationController,
+    [this.completeVerification]: this.completeVerificationController,
   })
 }

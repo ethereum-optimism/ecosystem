@@ -38,6 +38,13 @@ export const zodEthereumTransactionHash = z
   })
   .describe('Any valid ethereum transaction hash')
 
+export const zodEthereumSignature = z
+  .custom<Hash>()
+  .refine((arg) => isHex(arg, { strict: true }), {
+    message: 'Invalid signature',
+  })
+  .describe('Any valid ethereum signature')
+
 export const zodSupportedChainId = z
   .number()
   .refine((chainId) => SUPPORTED_CHAINS.some(({ id }) => id === chainId))

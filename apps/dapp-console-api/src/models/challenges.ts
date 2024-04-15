@@ -1,6 +1,13 @@
 import type { InferInsertModel, InferSelectModel } from 'drizzle-orm'
 import { and, eq, ne } from 'drizzle-orm'
-import { index, pgTable, timestamp, uuid, varchar } from 'drizzle-orm/pg-core'
+import {
+  index,
+  integer,
+  pgTable,
+  timestamp,
+  uuid,
+  varchar,
+} from 'drizzle-orm/pg-core'
 import { type Address, getAddress } from 'viem'
 
 import type { Database } from '@/db'
@@ -27,6 +34,7 @@ export const challenges = pgTable(
     entityId: uuid('entity_id')
       .references(() => entities.id)
       .notNull(),
+    chainId: integer('chain_id').notNull(),
     contractId: uuid('contract_id')
       .references(() => contracts.id)
       .notNull(),
@@ -71,6 +79,23 @@ export const getUnexpiredChallenge = async (input: {
   return results[0] || null
 }
 
+export const getChallengeByChallengeId = async (input: {
+  db: Database
+  challengeId: Challenge['id']
+  entityId: Challenge['entityId']
+}): Promise<Challenge | null> => {
+  const { db, challengeId, entityId } = input
+
+  const results = await db
+    .select()
+    .from(challenges)
+    .where(
+      and(eq(challenges.id, challengeId), eq(challenges.entityId, entityId)),
+    )
+
+  return results[0] || null
+}
+
 export const insertChallenge = async (input: {
   db: Database
   challenge: InsertChallenge
@@ -84,6 +109,23 @@ export const insertChallenge = async (input: {
   const results = await db
     .insert(challenges)
     .values(normalizedChallenge)
+    .returning()
+
+  return results[0]
+}
+
+export const completeChallenge = async (input: {
+  db: Database
+  challengeId: Challenge['id']
+  entityId: Challenge['entityId']
+}) => {
+  const { db, challengeId, entityId } = input
+  const results = await db
+    .update(challenges)
+    .set({ state: ChallengeState.VERIFIED, updatedAt: new Date() })
+    .where(
+      and(eq(challenges.entityId, entityId), eq(challenges.id, challengeId)),
+    )
     .returning()
 
   return results[0]
