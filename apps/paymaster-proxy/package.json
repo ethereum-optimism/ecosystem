@@ -17,6 +17,7 @@
     "docker:down": "docker compose down"
   },
   "devDependencies": {
+    "@eth-optimism/api-key-service": "workspace:*",
     "@types/cors": "^2.8.17",
     "@types/express": "^4.17.21",
     "@types/morgan": "^1.9.9",
@@ -34,6 +35,7 @@
   "dependencies": {
     "@alchemy/aa-alchemy": "^3.6.1",
     "@alchemy/aa-core": "^3.2.0",
+    "@trpc/client": "^10.45.2",
     "abitype": "^1.0.0",
     "cors": "^2.8.5",
     "dotenv": "^16.4.1",
@@ -45,6 +47,7 @@
     "pino": "^8.19.0",
     "prom-client": "^15.1.0",
     "rate-limit-redis": "^4.2.0",
+    "superjson": "^1.12.2",
     "viem": "^2.7.22",
     "zod": "^3.22.4",
     "zod-validation-error": "^3.0.2"

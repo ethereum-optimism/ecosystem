@@ -26,3 +26,6 @@ services:
       test: wget localhost:7330/healthz -q -O - > /dev/null 2>&1
     ports:
       - 7330:7330
+    depends_on:
+      postgres:
+        condition: service_healthy
