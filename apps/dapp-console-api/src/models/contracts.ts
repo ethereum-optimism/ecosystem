@@ -17,7 +17,9 @@ import type { Database } from '@/db'
 import { apps } from './apps'
 import { challenges } from './challenges'
 import { deploymentRebates } from './deploymentRebates'
+import type { Entity } from './entities'
 import { entities } from './entities'
+import type { Transaction } from './transactions'
 import { transactions } from './transactions'
 
 export enum ContractState {
@@ -84,24 +86,27 @@ export const getContractsForApp = async (input: {
 }) => {
   const { db, appId, entityId } = input
 
-  return db
-    .select()
-    .from(contracts)
-    .where(and(eq(contracts.appId, appId), eq(contracts.entityId, entityId)))
-    .orderBy(asc(contracts.createdAt))
+  return db.query.contracts.findMany({
+    with: { entity: true, transaction: true },
+    where: and(eq(contracts.appId, appId), eq(contracts.entityId, entityId)),
+    orderBy: asc(contracts.createdAt),
+  })
 }
 
 export const getContract = async (input: {
   db: Database
   contractId: Contract['id']
   entityId: Contract['entityId']
-}): Promise<Contract | null> => {
+}): Promise<
+  | (Contract & { transaction: Transaction | null } & { entity: Entity | null })
+  | null
+> => {
   const { db, contractId, entityId } = input
 
-  const results = await db
-    .select()
-    .from(contracts)
-    .where(and(eq(contracts.id, contractId), eq(contracts.entityId, entityId)))
+  const results = await db.query.contracts.findMany({
+    with: { entity: true, transaction: true },
+    where: and(eq(contracts.id, contractId), eq(contracts.entityId, entityId)),
+  })
 
   return results[0] || null
 }

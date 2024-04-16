@@ -12,6 +12,7 @@ import {
 } from '@/models'
 import { metrics } from '@/monitoring/metrics'
 import { Trpc } from '@/Trpc'
+import { addRebateEligibilityToContract } from '@/utils'
 
 import { DEFAULT_PAGE_LIMIT } from '../constants'
 import { Route } from '../Route'
@@ -43,7 +44,18 @@ export class AppsRoute extends Route {
           cursor: input.cursor,
         })
 
-        return generateListResponse(activeApps, limit, input.cursor)
+        const activeAppsWithRebateEligiblity = activeApps.map((app) => ({
+          ...app,
+          contracts: app.contracts.map((contract) =>
+            addRebateEligibilityToContract(contract, app.entity?.createdAt),
+          ),
+        }))
+
+        return generateListResponse(
+          activeAppsWithRebateEligiblity,
+          limit,
+          input.cursor,
+        )
       } catch (err) {
         metrics.listAppsErrorCount.inc()
         this.logger?.error(
