@@ -80,6 +80,21 @@ export const getContractsForApp = async (input: {
     .orderBy(asc(contracts.createdAt))
 }
 
+export const getContract = async (input: {
+  db: Database
+  contractId: Contract['id']
+  entityId: Contract['entityId']
+}): Promise<Contract | null> => {
+  const { db, contractId, entityId } = input
+
+  const results = await db
+    .select()
+    .from(contracts)
+    .where(and(eq(contracts.id, contractId), eq(contracts.entityId, entityId)))
+
+  return results[0] || null
+}
+
 export const insertContract = async (input: {
   db: Database
   contract: InsertContract
@@ -93,6 +108,22 @@ export const insertContract = async (input: {
   const results = await db
     .insert(contracts)
     .values(normalizedContract)
+    .returning()
+
+  return results[0]
+}
+
+export const verifyContract = async (input: {
+  db: Database
+  entityId: Contract['entityId']
+  contractId: Contract['id']
+}) => {
+  const { db, entityId, contractId } = input
+
+  const results = await db
+    .update(contracts)
+    .set({ state: ContractState.VERIFIED, updatedAt: new Date() })
+    .where(and(eq(contracts.entityId, entityId), eq(contracts.id, contractId)))
     .returning()
 
   return results[0]

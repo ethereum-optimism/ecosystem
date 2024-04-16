@@ -1,6 +1,7 @@
 import type { Logger } from 'pino'
 
 import type { Metrics } from '@/monitoring/metrics'
+import type { KeysRoute } from '@/routes/keys/KeysRoute'
 
 import { MajorApiVersion } from '../constants'
 import type { Trpc } from '../Trpc'
@@ -31,7 +32,8 @@ export class ApiV0 extends Api {
      * from time to time we will delete old api versions if they are no longer used
      */
     ...this.commonRoutes,
-    // TODO add screening route
+
+    [this.routes.keysRoute.name]: this.routes.keysRoute.handler,
   })
 
   /**
@@ -41,7 +43,9 @@ export class ApiV0 extends Api {
     trpc: Trpc,
     logger: Logger,
     metrics: Metrics,
-    protected readonly routes: {},
+    protected readonly routes: {
+      keysRoute: KeysRoute
+    },
   ) {
     super(trpc, logger, metrics)
   }

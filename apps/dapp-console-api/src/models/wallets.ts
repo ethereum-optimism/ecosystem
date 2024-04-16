@@ -138,7 +138,7 @@ export const updateWallet = async (input: {
 }) => {
   const { db, walletId, entityId, update } = input
   return db
-    .update({ ...wallets, updatedAt: new Date() })
-    .set(update)
+    .update(wallets)
+    .set({ ...update, updatedAt: new Date() })
     .where(and(eq(wallets.id, walletId), eq(wallets.entityId, entityId)))
 }

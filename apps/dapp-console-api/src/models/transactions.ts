@@ -1,7 +1,7 @@
 import {
-  bigint,
   index,
   integer,
+  numeric,
   pgTable,
   timestamp,
   uniqueIndex,
@@ -12,6 +12,7 @@ import type { Address, Hash } from 'viem'
 
 import { contracts } from './contracts'
 import { entities } from './entities'
+import { UINT256_PRECISION } from './utils'
 
 enum TransactionEvent {
   CONTRACT_DEPLOYMENT = 'contract_deployment',
@@ -37,7 +38,10 @@ export const transactions = pgTable(
     /** Hash of this transaction */
     transactionHash: varchar('transaction_hash').$type<Hash>().notNull(),
     /** Number of block containing this transaction */
-    blockNumber: bigint('block_number', { mode: 'bigint' }).notNull(),
+    blockNumber: numeric('block_number', {
+      precision: UINT256_PRECISION,
+      scale: 0,
+    }).notNull(),
     /** Transaction sender */
     fromAddress: varchar('from_address').$type<Address>().notNull(),
     /** Transaction recipient or `null` if deploying a contract */
@@ -45,13 +49,25 @@ export const transactions = pgTable(
     /** Address of new contract or `null` if no contract was created */
     contractAddress: varchar('contract_address').$type<Address>(),
     /** Gas used by this transaction */
-    gasUsed: bigint('gas_used', { mode: 'bigint' }).notNull(),
+    gasUsed: numeric('gas_used', {
+      precision: UINT256_PRECISION,
+      scale: 0,
+    }).notNull(),
     /** Equal to the actual gas price paid for inclusion. */
-    gasPrice: bigint('gas_price', { mode: 'bigint' }).notNull(),
+    gasPrice: numeric('gas_price', {
+      precision: UINT256_PRECISION,
+      scale: 0,
+    }).notNull(),
     /** The actual value per gas deducted from the sender's account for blob gas. Only specified for blob transactions as defined by EIP-4844. */
-    blobGasPrice: bigint('blob_gas_price', { mode: 'bigint' }),
+    blobGasPrice: numeric('blob_gas_price', {
+      precision: UINT256_PRECISION,
+      scale: 0,
+    }),
     /** The amount of blob gas used. Only specified for blob transactions as defined by EIP-4844. */
-    blobGasUsed: bigint('blob_gas_used', { mode: 'bigint' }),
+    blobGasUsed: numeric('blob_gas_used', {
+      precision: UINT256_PRECISION,
+      scale: 0,
+    }),
     /** Transaction type */
     transactionType: varchar('transaction_type')
       .$type<'legacy' | 'eip2930' | 'eip1559' | 'eip4844'>()
@@ -59,13 +75,25 @@ export const transactions = pgTable(
     /** Used for tracking the kind of transaction this was */
     transactionEvent: varchar('transaction_event').$type<TransactionEvent>(),
     /** The maximum total fee per gas the sender is willing to pay for blob gas (in wei). */
-    maxFeePerBlobGas: bigint('max_fee_per_blob_gas', { mode: 'bigint' }),
+    maxFeePerBlobGas: numeric('max_fee_per_blob_gas', {
+      precision: UINT256_PRECISION,
+      scale: 0,
+    }),
     /** Total fee per gas in wei (gasPrice/baseFeePerGas + maxPriorityFeePerGas). */
-    maxFeePerGas: bigint('max_fee_per_blob_gas', { mode: 'bigint' }),
+    maxFeePerGas: numeric('max_fee_per_blob_gas', {
+      precision: UINT256_PRECISION,
+      scale: 0,
+    }),
     /** Max priority fee per gas (in wei). */
-    maxPriorityFeePerGas: bigint('max_fee_per_blob_gas', { mode: 'bigint' }),
+    maxPriorityFeePerGas: numeric('max_fee_per_blob_gas', {
+      precision: UINT256_PRECISION,
+      scale: 0,
+    }),
     /** Value in wei sent with this transaction */
-    value: bigint('value', { mode: 'bigint' }),
+    value: numeric('value', {
+      precision: UINT256_PRECISION,
+      scale: 0,
+    }),
     /** `success` if this transaction was successful or `reverted` if it failed */
     status: varchar('status').$type<'success' | 'reverted'>().notNull(),
     /** Unix timestamp of when this block was collated */
