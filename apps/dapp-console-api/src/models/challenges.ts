@@ -1,5 +1,5 @@
 import type { InferInsertModel, InferSelectModel } from 'drizzle-orm'
-import { and, eq, ne } from 'drizzle-orm'
+import { and, eq, ne, relations } from 'drizzle-orm'
 import {
   index,
   integer,
@@ -54,6 +54,11 @@ export const challenges = pgTable(
     }
   },
 )
+
+export const challengesRelations = relations(challenges, ({ one }) => ({
+  entity: one(entities),
+  contract: one(contracts),
+}))
 
 export type Challenge = InferSelectModel<typeof challenges>
 export type InsertChallenge = InferInsertModel<typeof challenges>

@@ -1,7 +1,14 @@
-import type { Column, SQLWrapper, Table } from 'drizzle-orm'
+import type {
+  Column,
+  ExtractTablesWithRelations,
+  SQLWrapper,
+  Table,
+  TableRelationalConfig,
+} from 'drizzle-orm'
 import { and, asc, desc, eq, gte, lte, or } from 'drizzle-orm'
+import type { RelationalQueryBuilder } from 'drizzle-orm/pg-core/query-builders/query'
 
-import type { Database } from '@/db'
+import type * as schema from './schema'
 
 export const UINT256_PRECISION = 78
 
@@ -18,10 +25,17 @@ export const UINT256_PRECISION = 78
  */
 export const generateCursorSelect = async <
   TTable extends Table,
+  TFields extends TableRelationalConfig,
+  TSchema extends ExtractTablesWithRelations<typeof schema>,
+  TQueryBuilder extends RelationalQueryBuilder<TSchema, TFields>,
   OrderKey extends keyof TTable['$inferSelect'],
   IdKey extends keyof TTable['$inferSelect'],
+  TWithSelector extends NonNullable<
+    Parameters<TQueryBuilder['findMany']>[0]
+  >['with'],
 >(input: {
-  db: Database
+  queryBuilder: TQueryBuilder
+  withSelector: TWithSelector
   table: TTable
   filters: Array<SQLWrapper | undefined>
   limit: number
@@ -36,7 +50,16 @@ export const generateCursorSelect = async <
       : TTable['$inferSelect'][IdKey]
   }
 }) => {
-  const { db, table, filters, limit, orderBy, idColumnKey, cursor } = input
+  const {
+    queryBuilder,
+    table,
+    filters,
+    limit,
+    orderBy,
+    idColumnKey,
+    cursor,
+    withSelector,
+  } = input
   const tableOrderByColumn = table[orderBy.column] as Column
   const tableIdColumn = table[idColumnKey] as Column
 
@@ -52,20 +75,15 @@ export const generateCursorSelect = async <
       )
     : undefined
 
-  return (
-    db
-      .select()
-      .from(table)
-      .where(and(...filters, cursorFilter))
-      // Get one above the page size in order to retrieve the next cursor.
-      .limit(limit + 1)
-      .orderBy(
-        ...[
-          orderBy.direction === 'desc'
-            ? desc(tableOrderByColumn)
-            : asc(tableOrderByColumn),
-          asc(tableIdColumn),
-        ],
-      )
-  )
+  return queryBuilder.findMany({
+    with: withSelector,
+    where: and(...filters, cursorFilter),
+    limit: limit + 1,
+    orderBy: [
+      orderBy.direction === 'desc'
+        ? desc(tableOrderByColumn)
+        : asc(tableOrderByColumn),
+      asc(tableIdColumn),
+    ],
+  })
 }

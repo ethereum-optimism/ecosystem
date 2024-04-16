@@ -1,5 +1,5 @@
 import type { InferInsertModel, InferSelectModel } from 'drizzle-orm'
-import { and, asc, eq } from 'drizzle-orm'
+import { and, asc, eq, relations } from 'drizzle-orm'
 import {
   index,
   integer,
@@ -9,12 +9,16 @@ import {
   uuid,
   varchar,
 } from 'drizzle-orm/pg-core'
-import { type Address, getAddress, type Hash } from 'viem'
+import type { Address, Hash } from 'viem'
+import { getAddress } from 'viem'
 
 import type { Database } from '@/db'
 
 import { apps } from './apps'
+import { challenges } from './challenges'
+import { deploymentRebates } from './deploymentRebates'
 import { entities } from './entities'
+import { transactions } from './transactions'
 
 export enum ContractState {
   NOT_VERIFIED = 'not_verified',
@@ -62,6 +66,13 @@ export const contracts = pgTable(
     }
   },
 )
+
+export const contractsRelations = relations(contracts, ({ one }) => ({
+  transaction: one(transactions),
+  entity: one(entities),
+  deploymentRebate: one(deploymentRebates),
+  challenge: one(challenges),
+}))
 
 export type Contract = InferSelectModel<typeof contracts>
 export type InsertContract = InferInsertModel<typeof contracts>

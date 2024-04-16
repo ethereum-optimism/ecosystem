@@ -1,4 +1,5 @@
-import type { InferInsertModel, InferSelectModel } from 'drizzle-orm'
+import { type InferInsertModel, type InferSelectModel } from 'drizzle-orm'
+import { relations } from 'drizzle-orm'
 import {
   index,
   integer,
@@ -22,7 +23,7 @@ import { contracts } from './contracts'
 import { entities } from './entities'
 import { UINT256_PRECISION } from './utils'
 
-enum TransactionEvent {
+export enum TransactionEvent {
   CONTRACT_DEPLOYMENT = 'contract_deployment',
 }
 
@@ -118,6 +119,11 @@ export const transactions = pgTable(
     }
   },
 )
+
+export const transactionsRelations = relations(transactions, ({ one }) => ({
+  contract: one(contracts),
+  entity: one(entities),
+}))
 
 export type Transaction = InferSelectModel<typeof transactions>
 export type InsertTransaction = InferInsertModel<typeof transactions>

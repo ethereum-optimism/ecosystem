@@ -1,5 +1,9 @@
-import type { InferInsertModel, InferSelectModel } from 'drizzle-orm'
-import { and, eq } from 'drizzle-orm'
+import type {
+  ExtractTablesWithRelations,
+  InferInsertModel,
+  InferSelectModel,
+} from 'drizzle-orm'
+import { and, eq, relations } from 'drizzle-orm'
 import {
   index,
   jsonb,
@@ -17,6 +21,7 @@ import type { Database } from '@/db'
 
 import type { Entity } from './entities'
 import { entities } from './entities'
+import type * as schema from './schema'
 import { generateCursorSelect } from './utils'
 
 export enum WalletState {
@@ -73,6 +78,10 @@ export const wallets = pgTable(
   },
 )
 
+export const walletsRelations = relations(wallets, ({ one }) => ({
+  entity: one(entities),
+}))
+
 export type Wallet = InferSelectModel<typeof wallets>
 export type InsertWallet = InferInsertModel<typeof wallets>
 export type UpdateWallet = Partial<
@@ -103,8 +112,17 @@ export const getActiveWalletsForEntityByCursor = async (
   limit: number,
   cursor?: CreatedAtCursor,
 ) => {
-  return generateCursorSelect({
-    db,
+  return generateCursorSelect<
+    typeof wallets,
+    ExtractTablesWithRelations<typeof schema>['wallets'],
+    ExtractTablesWithRelations<typeof schema>,
+    typeof db.query.apps,
+    'createdAt',
+    'id',
+    {}
+  >({
+    queryBuilder: db.query.wallets,
+    withSelector: {},
     table: wallets,
     filters: [
       eq(wallets.entityId, entityId),
