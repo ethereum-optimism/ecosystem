@@ -1,5 +1,9 @@
-import type { InferInsertModel, InferSelectModel } from 'drizzle-orm'
-import { and, count, eq } from 'drizzle-orm'
+import type {
+  ExtractTablesWithRelations,
+  InferInsertModel,
+  InferSelectModel,
+} from 'drizzle-orm'
+import { and, count, eq, relations } from 'drizzle-orm'
 import {
   index,
   integer,
@@ -12,7 +16,9 @@ import {
 import type { NameCursor } from '@/api'
 import type { Database } from '@/db'
 
+import { contracts } from './contracts'
 import { entities } from './entities'
+import type * as schema from './schema'
 import { generateCursorSelect } from './utils'
 
 export enum AppState {
@@ -48,6 +54,11 @@ export const apps = pgTable(
   },
 )
 
+export const appsRelations = relations(apps, ({ one, many }) => ({
+  entity: one(entities),
+  contracts: many(contracts),
+}))
+
 export type App = InferSelectModel<typeof apps>
 export type InsertApp = InferInsertModel<typeof apps>
 export type UpdateApp = Partial<Pick<App, 'name' | 'state'>>
@@ -60,8 +71,17 @@ export const getActiveAppsForEntityByCursor = async (input: {
 }) => {
   const { db, entityId, limit, cursor } = input
 
-  return generateCursorSelect({
-    db,
+  return generateCursorSelect<
+    typeof apps,
+    ExtractTablesWithRelations<typeof schema>['apps'],
+    ExtractTablesWithRelations<typeof schema>,
+    typeof db.query.apps,
+    'name',
+    'id',
+    { contracts: true }
+  >({
+    queryBuilder: db.query.apps,
+    withSelector: { contracts: true },
     table: apps,
     filters: [eq(apps.entityId, entityId), eq(apps.state, AppState.ACTIVE)],
     limit,

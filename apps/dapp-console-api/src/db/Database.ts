@@ -1,9 +1,10 @@
-import type { NodePgDatabase } from 'drizzle-orm/node-postgres'
 import { drizzle } from 'drizzle-orm/node-postgres'
 import { migrate } from 'drizzle-orm/node-postgres/migrator'
 import { Pool } from 'pg'
 
-export type Database = NodePgDatabase
+import * as schema from '@/models/schema'
+
+export type Database = ReturnType<typeof connectToDatabase>
 
 export type DatabaseOptions = {
   user: string | undefined
@@ -20,9 +21,11 @@ export type MigrationOptions = {
 
 const DEFAULT_DATABASE_MIGRATION_FOLDER = 'migrations'
 
-export function connectToDatabase(options: DatabaseOptions): Database {
+export function connectToDatabase(options: DatabaseOptions) {
   const pool = new Pool(options)
-  return drizzle(pool)
+  return drizzle(pool, {
+    schema,
+  })
 }
 
 /**

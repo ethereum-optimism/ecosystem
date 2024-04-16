@@ -7,7 +7,6 @@ import {
   AppState,
   getActiveAppsCount,
   getActiveAppsForEntityByCursor,
-  getContractsForApp,
   insertApp,
   updateApp,
 } from '@/models'
@@ -44,25 +43,7 @@ export class AppsRoute extends Route {
           cursor: input.cursor,
         })
 
-        const activeAppsWithContracts = await Promise.all(
-          activeApps.map(async (app) => {
-            const contracts = await getContractsForApp({
-              db: this.trpc.database,
-              entityId: user.entityId,
-              appId: app.id,
-            })
-            return {
-              ...app,
-              contracts,
-            }
-          }),
-        )
-
-        return generateListResponse(
-          activeAppsWithContracts,
-          limit,
-          input.cursor,
-        )
+        return generateListResponse(activeApps, limit, input.cursor)
       } catch (err) {
         metrics.listAppsErrorCount.inc()
         this.logger?.error(
