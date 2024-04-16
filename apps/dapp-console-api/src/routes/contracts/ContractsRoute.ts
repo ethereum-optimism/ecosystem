@@ -1,3 +1,5 @@
+import { getAddress } from 'viem'
+
 import {
   zodEthereumAddress,
   zodEthereumSignature,
@@ -16,11 +18,13 @@ import {
   getUnexpiredChallenge,
   insertChallenge,
   insertContract,
+  insertTransaction,
   verifyContract,
+  viemContractDeploymentTransactionToDbTransaction,
 } from '@/models'
 import { metrics } from '@/monitoring/metrics'
 import { Trpc } from '@/Trpc'
-import { generateChallenge } from '@/utils'
+import { addressEqualityCheck, generateChallenge } from '@/utils'
 
 import { Route } from '../Route'
 import { assertUserAuthenticated } from '../utils'
@@ -80,13 +84,9 @@ export class ContractsRoute extends Route {
     )
     .mutation(async ({ ctx, input }) => {
       const { user } = ctx.session
-      const {
-        deployerAddress,
-        contractAddress,
-        deploymentTxHash,
-        chainId,
-        appId,
-      } = input
+      const { deploymentTxHash, chainId, appId } = input
+      const contractAddress = getAddress(input.contractAddress)
+      const deployerAddress = getAddress(input.deployerAddress)
 
       assertUserAuthenticated(user)
 
@@ -95,9 +95,8 @@ export class ContractsRoute extends Route {
       if (!publicClient) {
         throw Trpc.handleStatus(400, 'chain not supported')
       }
-
       const deploymentTx = await publicClient
-        .getTransactionReceipt({
+        .getTransaction({
           hash: deploymentTxHash,
         })
         .catch((err) => {
@@ -113,45 +112,102 @@ export class ContractsRoute extends Route {
           )
           throw Trpc.handleStatus(400, 'error fetching deployment transaction')
         })
+      const deploymentTxReceipt = await publicClient
+        .getTransactionReceipt({
+          hash: deploymentTxHash,
+        })
+        .catch((err) => {
+          metrics.fetchingTxErrorCount.inc({ chainId })
+          this.logger?.error(
+            {
+              error: err,
+              entityId: user.entityId,
+              txHash: deploymentTxHash,
+              chainId,
+            },
+            'error fetching tx receipt',
+          )
+          throw Trpc.handleStatus(400, 'error fetching deployment transaction')
+        })
+      const deploymentBlock = await publicClient
+        .getBlock({
+          blockHash: deploymentTx.blockHash,
+        })
+        .catch((err) => {
+          metrics.fetchingTxErrorCount.inc({ chainId })
+          this.logger?.error(
+            {
+              error: err,
+              entityId: user.entityId,
+              txHash: deploymentTxHash,
+              chainId,
+            },
+            'error fetching tx deployment block',
+          )
+          throw Trpc.handleStatus(400, 'error fetching deployment transaction')
+        })
 
-      if (deploymentTx.from !== deployerAddress) {
+      if (!addressEqualityCheck(deploymentTxReceipt.from, deployerAddress)) {
         throw Trpc.handleStatus(
           400,
           'deployer address does not match deployment transaction',
         )
       }
 
-      if (deploymentTx.contractAddress !== contractAddress) {
+      if (
+        !deploymentTxReceipt.contractAddress ||
+        !addressEqualityCheck(
+          deploymentTxReceipt.contractAddress,
+          contractAddress,
+        )
+      ) {
         throw Trpc.handleStatus(
           400,
           'contract was not created by deployment transaction',
         )
       }
 
-      const result = await insertContract({
-        db: this.trpc.database,
-        contract: {
-          contractAddress,
-          deploymentTxHash,
-          deployerAddress,
-          chainId,
-          appId,
-          state: ContractState.NOT_VERIFIED,
-          entityId: user.entityId,
-        },
-      }).catch((err) => {
-        metrics.insertContractErrorCount.inc()
-        this.logger?.error(
-          {
-            error: err,
-            entityId: user.entityId,
-            contractAddress,
-            chainId,
-          },
-          'error inserting new contract',
-        )
-        throw Trpc.handleStatus(500, 'error creating contract')
-      })
+      const result = await this.trpc.database
+        .transaction(async (tx) => {
+          const contract = await insertContract({
+            db: this.trpc.database,
+            contract: {
+              contractAddress,
+              deploymentTxHash,
+              deployerAddress,
+              chainId,
+              appId,
+              state: ContractState.NOT_VERIFIED,
+              entityId: user.entityId,
+            },
+          })
+          await insertTransaction({
+            db: this.trpc.database,
+            transaction: viemContractDeploymentTransactionToDbTransaction({
+              transactionReceipt: deploymentTxReceipt,
+              transaction: deploymentTx,
+              entityId: user.entityId,
+              chainId,
+              contractId: contract.id,
+              deploymentTimestamp: deploymentBlock.timestamp,
+            }),
+          })
+
+          return contract
+        })
+        .catch((err) => {
+          metrics.insertContractErrorCount.inc()
+          this.logger?.error(
+            {
+              error: err,
+              entityId: user.entityId,
+              contractAddress,
+              chainId,
+            },
+            'error inserting new contract',
+          )
+          throw Trpc.handleStatus(500, 'error creating contract')
+        })
 
       return { result }
     })
