@@ -262,4 +262,14 @@ export const superchainSafeNetworks = [
     path: 'https://safe.optimism.io/welcome?chain=lisksep',
     logo: '/logos/lisk-logo.png',
   },
+  {
+    label: 'Fraxtal',
+    path: 'https://safe.optimism.io/welcome?chain=fraxtal',
+    logo: '/logos/frax-logo.png',
+  },
+  {
+    label: 'Testnet (soon)',
+    path: null,
+    logo: '/logos/frax-logo.png',
+  },
 ]
