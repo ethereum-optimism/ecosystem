@@ -82,4 +82,8 @@ export const metrics = {
     name: 'update_wallet_verifications_error_count',
     help: 'Total number of errors encountered when updating wallet verifications',
   }),
+  fetchWalletVerificationsErrorCount: new Counter({
+    name: 'fetch_wallet_verifications_error_count',
+    help: 'Total number of errors encountered while fetching wallet verifications',
+  }),
 }

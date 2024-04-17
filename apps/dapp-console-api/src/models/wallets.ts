@@ -162,3 +162,25 @@ export const updateWallet = async (input: {
     .set({ ...update, updatedAt: new Date() })
     .where(and(eq(wallets.id, walletId), eq(wallets.entityId, entityId)))
 }
+
+export const getWalletVerifications = async (input: {
+  db: Database
+  entityId: Wallet['entityId']
+}) => {
+  const { db, entityId } = input
+  const entityWallets = await db
+    .select()
+    .from(wallets)
+    .where(
+      and(
+        eq(wallets.entityId, entityId),
+        eq(wallets.state, WalletState.ACTIVE),
+      ),
+    )
+
+  return {
+    cbVerifiedWallets: entityWallets.filter(
+      (wallet) => !!wallet.verifications.isCbVerified,
+    ),
+  }
+}
