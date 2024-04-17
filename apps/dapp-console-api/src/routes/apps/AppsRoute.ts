@@ -7,12 +7,12 @@ import {
   AppState,
   getActiveAppsCount,
   getActiveAppsForEntityByCursor,
-  getContractsForApp,
   insertApp,
   updateApp,
 } from '@/models'
 import { metrics } from '@/monitoring/metrics'
 import { Trpc } from '@/Trpc'
+import { addRebateEligibilityToContract } from '@/utils'
 
 import { DEFAULT_PAGE_LIMIT } from '../constants'
 import { Route } from '../Route'
@@ -44,22 +44,15 @@ export class AppsRoute extends Route {
           cursor: input.cursor,
         })
 
-        const activeAppsWithContracts = await Promise.all(
-          activeApps.map(async (app) => {
-            const contracts = await getContractsForApp({
-              db: this.trpc.database,
-              entityId: user.entityId,
-              appId: app.id,
-            })
-            return {
-              ...app,
-              contracts,
-            }
-          }),
-        )
+        const activeAppsWithRebateEligiblity = activeApps.map((app) => ({
+          ...app,
+          contracts: app.contracts.map((contract) =>
+            addRebateEligibilityToContract(contract, app.entity?.createdAt),
+          ),
+        }))
 
         return generateListResponse(
-          activeAppsWithContracts,
+          activeAppsWithRebateEligiblity,
           limit,
           input.cursor,
         )

@@ -20,7 +20,8 @@
     "drizzle:studio": "pnpm drizzle-kit studio",
     "migrations:generate": "drizzle-kit generate:pg",
     "migrations:execute": "pnpm ts-node ./scripts/db-migrate",
-    "migrations:dev": "pnpm migrations:generate && pnpm migrations:execute"
+    "migrations:dev": "pnpm migrations:generate && pnpm migrations:execute",
+    "env:example:generate": "NODE_ENV=test ts-node scripts/generate-example-env.ts"
   },
   "devDependencies": {
     "@types/body-parser": "^1.19.5",
@@ -56,6 +57,7 @@
     "prom-client": "^15.1.0",
     "superjson": "^1.12.2",
     "trpc-playground": "^1.0.4",
+    "znv": "^0.4.0",
     "zod": "^3.22.4",
     "zod-validation-error": "^3.0.2"
   },

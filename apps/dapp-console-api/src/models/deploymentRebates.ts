@@ -1,4 +1,4 @@
-import { and, eq, sum } from 'drizzle-orm'
+import { and, eq, relations, sum } from 'drizzle-orm'
 import {
   index,
   integer,
@@ -67,6 +67,14 @@ export const deploymentRebates = pgTable(
       ),
     }
   },
+)
+
+export const deploymentRebatesRelations = relations(
+  deploymentRebates,
+  ({ one }) => ({
+    entity: one(entities),
+    contract: one(contracts),
+  }),
 )
 
 export const getTotalRebatesClaimedByEntity = async (input: {

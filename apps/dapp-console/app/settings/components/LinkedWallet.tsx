@@ -7,38 +7,39 @@ import {
 import { Input } from '@eth-optimism/ui-components/src/components/ui/input/input'
 import { Button } from '@eth-optimism/ui-components/src/components/ui/button/button'
 import { Text } from '@eth-optimism/ui-components/src/components/ui/text/text'
-import { WalletWithMetadata } from '@privy-io/react-auth'
 import { RiAlertFill, RiCloseLine, RiFileCopyLine } from '@remixicon/react'
 import { useCallback, useState } from 'react'
 import { useToast } from '@eth-optimism/ui-components'
 import { LONG_DURATION } from '@/app/constants/toast'
+import { Address } from 'viem'
 
 export type LinkedWalletProps = {
-  wallet: WalletWithMetadata
-  onUnlink: (wallet: WalletWithMetadata) => void
+  id: string
+  address: Address
+  onUnlink: () => void
 }
 
-export const LinkedWallet = ({ wallet, onUnlink }: LinkedWalletProps) => {
+export const LinkedWallet = ({ address, onUnlink }: LinkedWalletProps) => {
   const { toast } = useToast()
   const [isDialogOpen, setIsDialogOpen] = useState(false)
 
-  const handleUnlink = useCallback(() => onUnlink(wallet), [wallet, onUnlink])
+  const handleUnlink = useCallback(() => onUnlink(), [onUnlink])
   const handleCancel = useCallback(
     () => setIsDialogOpen(false),
     [setIsDialogOpen],
   )
 
   const handleCopy = useCallback(() => {
-    navigator.clipboard.writeText(wallet.address)
+    navigator.clipboard.writeText(address)
     toast({
       description: 'Address Copied',
       duration: LONG_DURATION,
     })
-  }, [wallet, toast])
+  }, [address, toast])
 
   return (
     <div className="flex flex-row gap-2">
-      <Input value={wallet.address} disabled />
+      <Input value={address} disabled />
       <Button
         variant="secondary"
         size="icon"
@@ -66,7 +67,7 @@ export const LinkedWallet = ({ wallet, onUnlink }: LinkedWalletProps) => {
               as="p"
               className="cursor-default mb-4 text-muted-foreground text-base"
             >
-              {shortenAddress(wallet.address)}
+              {shortenAddress(address)}
             </Text>
 
             <Button className="w-full mb-2" onClick={handleUnlink}>

@@ -1,3 +1,5 @@
+import { type InferInsertModel, type InferSelectModel } from 'drizzle-orm'
+import { relations } from 'drizzle-orm'
 import {
   index,
   integer,
@@ -8,13 +10,20 @@ import {
   uuid,
   varchar,
 } from 'drizzle-orm/pg-core'
-import type { Address, Hash } from 'viem'
+import type {
+  Address,
+  Hash,
+  Transaction as ViemTransaction,
+  TransactionReceipt,
+} from 'viem'
+
+import type { Database } from '@/db'
 
 import { contracts } from './contracts'
 import { entities } from './entities'
 import { UINT256_PRECISION } from './utils'
 
-enum TransactionEvent {
+export enum TransactionEvent {
   CONTRACT_DEPLOYMENT = 'contract_deployment',
 }
 
@@ -69,9 +78,7 @@ export const transactions = pgTable(
       scale: 0,
     }),
     /** Transaction type */
-    transactionType: varchar('transaction_type')
-      .$type<'legacy' | 'eip2930' | 'eip1559' | 'eip4844'>()
-      .notNull(),
+    transactionType: varchar('transaction_type').notNull(),
     /** Used for tracking the kind of transaction this was */
     transactionEvent: varchar('transaction_event').$type<TransactionEvent>(),
     /** The maximum total fee per gas the sender is willing to pay for blob gas (in wei). */
@@ -112,3 +119,61 @@ export const transactions = pgTable(
     }
   },
 )
+
+export const transactionsRelations = relations(transactions, ({ one }) => ({
+  contract: one(contracts),
+  entity: one(entities),
+}))
+
+export type Transaction = InferSelectModel<typeof transactions>
+export type InsertTransaction = InferInsertModel<typeof transactions>
+
+export const insertTransaction = async (input: {
+  db: Database
+  transaction: InsertTransaction
+}) => {
+  const { db, transaction } = input
+
+  const results = await db.insert(transactions).values(transaction).returning()
+
+  return results[0]
+}
+
+export const viemContractDeploymentTransactionToDbTransaction = (input: {
+  transactionReceipt: TransactionReceipt
+  transaction: ViemTransaction
+  entityId: Transaction['entityId']
+  chainId: Transaction['chainId']
+  contractId: Transaction['contractId']
+  deploymentTimestamp: bigint
+}): InsertTransaction => {
+  const {
+    entityId,
+    chainId,
+    contractId,
+    transactionReceipt,
+    transaction,
+    deploymentTimestamp,
+  } = input
+  return {
+    entityId,
+    chainId,
+    contractId,
+    transactionHash: transactionReceipt.transactionHash,
+    blockNumber: `${transactionReceipt.blockNumber}`,
+    fromAddress: transactionReceipt.from,
+    toAddress: transactionReceipt.to,
+    contractAddress: transactionReceipt.contractAddress,
+    gasUsed: `${transactionReceipt.gasUsed}`,
+    gasPrice: `${transaction.gasPrice}`,
+    blobGasPrice: `${transactionReceipt.blobGasPrice}`,
+    blobGasUsed: `${transactionReceipt.blobGasUsed}`,
+    transactionType: transactionReceipt.type,
+    transactionEvent: TransactionEvent.CONTRACT_DEPLOYMENT,
+    maxFeePerBlobGas: `${transaction.maxFeePerBlobGas}`,
+    maxPriorityFeePerGas: `${transaction.maxPriorityFeePerGas}`,
+    value: `${transaction.value}`,
+    status: transactionReceipt.status,
+    blockTimestamp: Number(deploymentTimestamp),
+  }
+}

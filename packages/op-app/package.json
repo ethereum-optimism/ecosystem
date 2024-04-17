@@ -25,7 +25,6 @@
     "tsup": "^8.0.1"
   },
   "devDependencies": {
-    "@eth-optimism/superchain-registry": "github:ethereum-optimism/superchain-registry",
     "@tanstack/react-query": "^5.10.0",
     "@testing-library/react": "^14.1.2",
     "@types/js-yaml": "^4.0.9",

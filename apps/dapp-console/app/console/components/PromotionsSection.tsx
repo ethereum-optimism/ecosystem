@@ -12,6 +12,7 @@ import Image from 'next/image'
 import { useDialogContent } from '@/app/console/useDialogContent'
 import { useState } from 'react'
 import { trackCardClick } from '@/app/event-tracking/mixpanel'
+import { spearbitMetadata } from '@/app/console/constants'
 
 const PromotionsSection = () => {
   const {
@@ -20,6 +21,7 @@ const PromotionsSection = () => {
     thirdWebContent,
     alchemyGrowthContent,
     alchemySubgraphContent,
+    spearbitContent,
   } = useDialogContent()
 
   const [dialogContent, setDialogContent] = useState<React.ReactNode>()
@@ -115,6 +117,24 @@ const PromotionsSection = () => {
                 <Image
                   src="/logos/thirdweb-logo.png"
                   alt="Gelato logo"
+                  width={64}
+                  height={64}
+                />
+              }
+            />
+          </DialogTrigger>
+          <DialogTrigger asChild>
+            <Tile
+              title={spearbitMetadata.title}
+              onClick={() => {
+                trackCardClick('Spearbit')
+                setDialogContent(spearbitContent)
+              }}
+              variant="secondary"
+              image={
+                <Image
+                  src="/logos/spearbit-logo.png"
+                  alt="Spearbit logo"
                   width={64}
                   height={64}
                 />

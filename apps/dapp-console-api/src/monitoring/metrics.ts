@@ -74,4 +74,16 @@ export const metrics = {
     name: 'fetch_total_rebates_claimed_error_count',
     help: 'Total number of errors encountered while fetching total rebates claimed',
   }),
+  fetchCbVerificationFromEasErrorCount: new Counter({
+    name: 'fetch_cb_verification_from_eas_error_count',
+    help: 'Total number of errors encountered when using eas to fetch cb verification status',
+  }),
+  updateWalletVerificationsErrorCount: new Counter({
+    name: 'update_wallet_verifications_error_count',
+    help: 'Total number of errors encountered when updating wallet verifications',
+  }),
+  fetchWalletVerificationsErrorCount: new Counter({
+    name: 'fetch_wallet_verifications_error_count',
+    help: 'Total number of errors encountered while fetching wallet verifications',
+  }),
 }

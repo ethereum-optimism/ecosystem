@@ -1,5 +1,5 @@
 import type { InferInsertModel, InferSelectModel } from 'drizzle-orm'
-import { and, asc, eq } from 'drizzle-orm'
+import { and, asc, eq, relations } from 'drizzle-orm'
 import {
   index,
   integer,
@@ -9,12 +9,18 @@ import {
   uuid,
   varchar,
 } from 'drizzle-orm/pg-core'
-import { type Address, getAddress, type Hash } from 'viem'
+import type { Address, Hash } from 'viem'
+import { getAddress } from 'viem'
 
 import type { Database } from '@/db'
 
 import { apps } from './apps'
+import { challenges } from './challenges'
+import { deploymentRebates } from './deploymentRebates'
+import type { Entity } from './entities'
 import { entities } from './entities'
+import type { Transaction } from './transactions'
+import { transactions } from './transactions'
 
 export enum ContractState {
   NOT_VERIFIED = 'not_verified',
@@ -63,6 +69,13 @@ export const contracts = pgTable(
   },
 )
 
+export const contractsRelations = relations(contracts, ({ one }) => ({
+  transaction: one(transactions),
+  entity: one(entities),
+  deploymentRebate: one(deploymentRebates),
+  challenge: one(challenges),
+}))
+
 export type Contract = InferSelectModel<typeof contracts>
 export type InsertContract = InferInsertModel<typeof contracts>
 
@@ -73,26 +86,51 @@ export const getContractsForApp = async (input: {
 }) => {
   const { db, appId, entityId } = input
 
-  return db
-    .select()
-    .from(contracts)
-    .where(and(eq(contracts.appId, appId), eq(contracts.entityId, entityId)))
-    .orderBy(asc(contracts.createdAt))
+  return db.query.contracts.findMany({
+    with: { entity: true, transaction: true },
+    where: and(eq(contracts.appId, appId), eq(contracts.entityId, entityId)),
+    orderBy: asc(contracts.createdAt),
+  })
 }
 
 export const getContract = async (input: {
   db: Database
   contractId: Contract['id']
   entityId: Contract['entityId']
-}): Promise<Contract | null> => {
+}): Promise<
+  | (Contract & { transaction: Transaction | null } & { entity: Entity | null })
+  | null
+> => {
   const { db, contractId, entityId } = input
+
+  const results = await db.query.contracts.findMany({
+    with: { entity: true, transaction: true },
+    where: and(eq(contracts.id, contractId), eq(contracts.entityId, entityId)),
+  })
+
+  return results[0] || null
+}
+
+export const hasAlreadyVerifiedDeployer = async (input: {
+  db: Database
+  entityId: Contract['entityId']
+  deployerAddress: Address
+}) => {
+  const { db, entityId, deployerAddress } = input
 
   const results = await db
     .select()
     .from(contracts)
-    .where(and(eq(contracts.id, contractId), eq(contracts.entityId, entityId)))
+    .where(
+      and(
+        eq(contracts.entityId, entityId),
+        eq(contracts.state, ContractState.VERIFIED),
+        eq(contracts.deployerAddress, getAddress(deployerAddress)),
+      ),
+    )
+    .limit(1)
 
-  return results[0] || null
+  return results.length > 0
 }
 
 export const insertContract = async (input: {
