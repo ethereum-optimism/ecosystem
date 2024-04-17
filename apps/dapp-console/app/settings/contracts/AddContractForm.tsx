@@ -3,7 +3,7 @@
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
-import { isAddress, isHash } from 'viem'
+import { getAddress, isAddress, isHash } from 'viem'
 import {
   Button,
   Form,
@@ -16,11 +16,19 @@ import {
 } from '@eth-optimism/ui-components'
 import { Text } from '@eth-optimism/ui-components/src/components/ui/text/text'
 import { useCallback } from 'react'
+import { apiClient } from '@/app/helpers/apiClient'
+import { optimismSepolia } from 'viem/chains'
+import { Contract } from '@/app/types/api'
+import { captureError } from '@/app/helpers/errorReporting'
 
-export type StartVerificationHandler = (isVerified: boolean) => void
+export type StartVerificationHandler = (
+  contract: Contract,
+  isVerified: boolean,
+) => void
 
 export type AddContractFormProps = {
   appId: string
+  unverifiedContract?: Contract
   onStartVerification: StartVerificationHandler
 }
 
@@ -39,20 +47,46 @@ const addContractSchema = z.object({
 
 export const AddContractForm = ({
   appId,
+  unverifiedContract,
   onStartVerification,
 }: AddContractFormProps) => {
+  const { mutateAsync: createContract } =
+    apiClient.Contracts.createContract.useMutation()
+
   const form = useForm<z.infer<typeof addContractSchema>>({
     resolver: zodResolver(addContractSchema),
     mode: 'onBlur',
+    defaultValues: unverifiedContract
+      ? {
+          contract: unverifiedContract.contractAddress,
+          deploymentTransactionHash: unverifiedContract.deploymentTxHash,
+          deployerAddress: unverifiedContract.deployerAddress,
+        }
+      : undefined,
   })
 
-  const handleStartVerification = useCallback(() => {
-    // TODO:
-    // - add create contract call here
-    // - handle api error validations
-    // - make call to start verification, only if create contract call returns unverified
-    onStartVerification(false)
-  }, [onStartVerification])
+  const handleCreateContract = useCallback(async () => {
+    try {
+      const formValues = form.getValues()
+
+      let contractToVerifiy = unverifiedContract
+
+      if (!contractToVerifiy) {
+        const { result } = await createContract({
+          appId,
+          chainId: optimismSepolia.id,
+          contractAddress: getAddress(formValues.contract),
+          deployerAddress: getAddress(formValues.deployerAddress),
+          deploymentTxHash: formValues.deploymentTransactionHash,
+        })
+        contractToVerifiy = result
+      }
+
+      onStartVerification(contractToVerifiy, false)
+    } catch (e) {
+      captureError(e, 'createContract')
+    }
+  }, [appId, createContract, form, unverifiedContract, onStartVerification])
 
   return (
     <div className="flex flex-col w-full">
@@ -118,7 +152,7 @@ export const AddContractForm = ({
       <div className="mt-3 flex flex-row justify-end w-full">
         <Button
           disabled={!form.formState.isValid}
-          onClick={handleStartVerification}
+          onClick={handleCreateContract}
         >
           <Text as="span">Verify</Text>
         </Button>

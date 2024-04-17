@@ -16,6 +16,7 @@ import {
   getContract,
   getContractsForApp,
   getUnexpiredChallenge,
+  hasAlreadyVerifiedDeployer,
   insertChallenge,
   insertContract,
   insertTransaction,
@@ -175,6 +176,12 @@ export class ContractsRoute extends Route {
 
       const result = await this.trpc.database
         .transaction(async (tx) => {
+          const isDeployerVerified = await hasAlreadyVerifiedDeployer({
+            db: this.trpc.database,
+            entityId: user.entityId,
+            deployerAddress,
+          })
+
           const contract = await insertContract({
             db: this.trpc.database,
             contract: {
@@ -183,7 +190,9 @@ export class ContractsRoute extends Route {
               deployerAddress,
               chainId,
               appId,
-              state: ContractState.NOT_VERIFIED,
+              state: isDeployerVerified
+                ? ContractState.VERIFIED
+                : ContractState.NOT_VERIFIED,
               entityId: user.entityId,
             },
           })
