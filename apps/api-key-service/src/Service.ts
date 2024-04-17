@@ -17,11 +17,12 @@ import prometheus from 'prom-client'
 
 import { ApiV0, Middleware } from '@/api'
 import { corsAllowlist, envVars } from '@/constants'
-import { connectToDatabase } from '@/db/Database'
+import { connectToDatabase, runMigrations } from '@/db/Database'
 import type { Metrics } from '@/monitoring/metrics'
 import { metrics as metricsSingleton } from '@/monitoring/metrics'
 import { KeysRoute } from '@/routes/keys/KeysRoute'
 import { Trpc } from '@/Trpc'
+import { retryWithBackoff } from '@/utils/retryWithBackoff'
 
 const API_PATH = '/api'
 
@@ -38,11 +39,8 @@ export class Service {
    */
   private metricsRegistry: Registry
 
-  /**
-   * @param state - the state object that stores cached delegate chain data
-   * @param middleware - The middleware specifying cors
-   * @param apiServerV0 - the api server served at /api/v0
-   */
+  private isServiceReady = false
+
   constructor(
     private readonly apiServerV0: ApiV0,
     private readonly middleware: Middleware,
@@ -88,7 +86,7 @@ export class Service {
    */
   public static readonly init = async () => {
     const logger = pino().child({
-      namespace: 'api-server',
+      namespace: 'api-key-service-api-service',
     })
 
     const metrics = metricsSingleton
@@ -105,7 +103,7 @@ export class Service {
     /**
      * middleware used by the express server
      */
-    const middleware = new Middleware(corsAllowlist)
+    const middleware = new Middleware(corsAllowlist as RegExp[])
     /**
      * Routes and controllers are created with trpc
      */
@@ -198,8 +196,11 @@ export class Service {
       })
 
       app.get(readyPath, (req, res) => {
-        // TODO: add check for whether underlying services are ready
-        res.json({ ok: true })
+        if (this.isServiceReady) {
+          return res.json({ ok: true })
+        }
+
+        return res.status(503).send()
       })
 
       // Default error handler
@@ -231,6 +232,40 @@ export class Service {
         `app server started`,
       )
     }
+
+    if (envVars.MIGRATE_DB_USER) {
+      await retryWithBackoff({
+        fn: () =>
+          runMigrations({
+            user: envVars.MIGRATE_DB_USER,
+            password: envVars.MIGRATE_DB_PASSWORD,
+            database: envVars.DB_NAME,
+            host: envVars.DB_HOST,
+            port: envVars.DB_PORT,
+          }),
+        maxRetries: envVars.MIGRATE_MAX_RETRIES,
+        initialDelayMs: envVars.MIGRATE_INITIAL_RETRY_DELAY,
+        maxDelayMs: envVars.MIGRATE_MAX_RETRY_DELAY,
+        onRetry: (retryCount, error) =>
+          this.logger.error(
+            `migrations failed: ${error.message}, retrying in ${retryCount} seconds`,
+          ),
+      }).catch((e) => {
+        this.logger.error(`migrations failed: ${e.message}`, e)
+        throw e
+      })
+      this.logger.info('successfully ran migrations')
+    }
+
+    this.isServiceReady = true
+
+    this.logger.info(
+      {
+        port: envVars.PORT,
+        hostname: HOST,
+      },
+      `app server ready`,
+    )
   }
 
   /**
