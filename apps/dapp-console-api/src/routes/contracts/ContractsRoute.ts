@@ -24,7 +24,11 @@ import {
 } from '@/models'
 import { metrics } from '@/monitoring/metrics'
 import { Trpc } from '@/Trpc'
-import { addressEqualityCheck, generateChallenge } from '@/utils'
+import {
+  addRebateEligibilityToContract,
+  addressEqualityCheck,
+  generateChallenge,
+} from '@/utils'
 
 import { Route } from '../Route'
 import { assertUserAuthenticated } from '../utils'
@@ -55,7 +59,9 @@ export class ContractsRoute extends Route {
           appId: input.appId,
         })
 
-        return contracts
+        return contracts.map((contract) =>
+          addRebateEligibilityToContract(contract, contract.entity?.createdAt),
+        )
       } catch (err) {
         metrics.listContractsErrorCount.inc()
         this.logger?.error(
@@ -424,7 +430,10 @@ export class ContractsRoute extends Route {
         throw Trpc.handleStatus(400, 'contract does not exist')
       }
 
-      return contract
+      return addRebateEligibilityToContract(
+        contract,
+        contract.entity?.createdAt,
+      )
     })
 
   public readonly handler = this.trpc.router({
