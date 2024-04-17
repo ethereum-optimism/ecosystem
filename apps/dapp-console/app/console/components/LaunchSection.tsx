@@ -16,8 +16,12 @@ import { trackCardClick } from '@/app/event-tracking/mixpanel'
 
 const LaunchSection = () => {
   const [dialogContent, setDialogContent] = useState<React.ReactNode>()
-  const { deploymentRebateContent, mainnetPaymasterContent, megaphoneContent } =
-    useDialogContent()
+  const {
+    deploymentRebateContent,
+    mainnetPaymasterContent,
+    megaphoneContent,
+    userFeedbackContent,
+  } = useDialogContent()
   return (
     <div>
       <Text as="h3" className="text-2xl font-semibold mb-4">
@@ -54,6 +58,16 @@ const LaunchSection = () => {
               onClick={() => {
                 trackCardClick('Megaphone')
                 setDialogContent(megaphoneContent)
+              }}
+            />
+          </DialogTrigger>
+          <DialogTrigger asChild>
+            <Tile
+              title="User Feedback"
+              description="Get actionable feedback from Superchain contributors to improve your app."
+              onClick={() => {
+                trackCardClick('User Feedback')
+                setDialogContent(userFeedbackContent)
               }}
             />
           </DialogTrigger>
