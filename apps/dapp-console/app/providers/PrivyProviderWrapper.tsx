@@ -4,7 +4,7 @@ import { PrivyProvider, User } from '@privy-io/react-auth'
 import { useTheme } from 'next-themes'
 import { trackSuccessfulSignIn } from '@/app/event-tracking/mixpanel'
 import { externalRoutes } from '@/app/constants'
-import { setUser } from '@sentry/nextjs'
+import { setErrorReportingUser } from '@/app/helpers/errorReporting'
 
 // This is a public app_id provided in the privy docs: https://docs.privy.io/guide/quickstart
 const PRIVY_PUBLIC_APP_ID = 'clpispdty00ycl80fpueukbhl'
@@ -17,7 +17,7 @@ function PrivyProviderWrapper({ children }: { children: React.ReactNode }) {
       : '/logos/superchain-developer-logo-light.svg'
 
   const handleSuccess = (user: User, isNewUser: boolean) => {
-    setUser({ id: user.id })
+    setErrorReportingUser(user.id)
     trackSuccessfulSignIn(isNewUser)
   }
 
