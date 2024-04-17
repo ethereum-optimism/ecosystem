@@ -785,9 +785,6 @@ importers:
         specifier: ^8.0.1
         version: 8.0.1(ts-node@10.9.1)(typescript@5.3.2)
     devDependencies:
-      '@eth-optimism/superchain-registry':
-        specifier: github:ethereum-optimism/superchain-registry
-        version: github.com/ethereum-optimism/superchain-registry/7ee6b3cb8f7d27a52705f93997604ad146fbcfdc
       '@tanstack/react-query':
         specifier: ^5.10.0
         version: 5.10.0(react@18.2.0)
@@ -27239,9 +27236,3 @@ packages:
       react: 18.2.0
       use-sync-external-store: 1.2.0(react@18.2.0)
     dev: false
-
-  github.com/ethereum-optimism/superchain-registry/7ee6b3cb8f7d27a52705f93997604ad146fbcfdc:
-    resolution: {tarball: https://codeload.github.com/ethereum-optimism/superchain-registry/tar.gz/7ee6b3cb8f7d27a52705f93997604ad146fbcfdc}
-    name: '@eth-optimism/superchain-registry'
-    version: 0.0.1-alpha.1
-    dev: true
