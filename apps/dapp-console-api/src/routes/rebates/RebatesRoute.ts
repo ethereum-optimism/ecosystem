@@ -1,5 +1,5 @@
 import { isPrivyAuthed } from '@/middleware'
-import { getTotalRebatesClaimedByEntity } from '@/models'
+import { getTotalRebatesClaimed } from '@/models'
 import { metrics } from '@/monitoring/metrics'
 import { Trpc } from '@/Trpc'
 
@@ -17,7 +17,7 @@ export class RebatesRoute extends Route {
 
       assertUserAuthenticated(user)
 
-      return await getTotalRebatesClaimedByEntity({
+      return await getTotalRebatesClaimed({
         db: this.trpc.database,
         entityId: user.entityId,
       }).catch((err) => {

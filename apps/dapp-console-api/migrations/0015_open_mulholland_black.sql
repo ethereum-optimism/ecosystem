@@ -1,0 +1,2 @@
+ALTER TABLE "deploymentRebates" ADD COLUMN "verified_wallets" varchar[] DEFAULT ARRAY[]::varchar[] NOT NULL;--> statement-breakpoint
+CREATE INDEX IF NOT EXISTS "deploymentRebates_verified_wallets_index" ON "deploymentRebates" ("verified_wallets");
