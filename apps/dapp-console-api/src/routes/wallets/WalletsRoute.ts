@@ -1,6 +1,9 @@
 import { generateListResponse, zodCreatedAtCursor, zodListRequest } from '@/api'
 import { isPrivyAuthed } from '@/middleware'
-import { getActiveWalletsForEntityByCursor } from '@/models'
+import {
+  getActiveWalletsForEntityByCursor,
+  getWalletVerifications,
+} from '@/models'
 import { metrics } from '@/monitoring/metrics'
 import { Trpc } from '@/Trpc'
 import {
@@ -120,9 +123,36 @@ export class WalletsRoute extends Route {
       }
     })
 
+  public readonly walletVerifications = 'walletVerifications' as const
+  /** Returns the verifications of the active wallets under an entity. */
+  public readonly walletVerificationsController = this.trpc.procedure
+    .use(isPrivyAuthed(this.trpc))
+    .query(async ({ ctx }) => {
+      const { user } = ctx.session
+      assertUserAuthenticated(user)
+
+      const walletVerifications = await getWalletVerifications({
+        db: this.trpc.database,
+        entityId: user.entityId,
+      }).catch((err) => {
+        metrics.fetchWalletVerificationsErrorCount.inc()
+        this.logger?.error(
+          {
+            error: err,
+            entityId: user.entityId,
+          },
+          'error fetching wallet verifications from db',
+        )
+        throw Trpc.handleStatus(500, 'error fetching wallet verifications')
+      })
+
+      return { ...walletVerifications }
+    })
+
   public readonly handler = this.trpc.router({
     [this.syncWallets]: this.syncWalletsController,
     [this.listWallets]: this.listWalletsController,
     [this.syncCbVerification]: this.syncCbVerificationController,
+    [this.walletVerifications]: this.walletVerificationsController,
   })
 }
