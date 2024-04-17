@@ -1,6 +1,10 @@
 FROM node:18-alpine AS base
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
+
+# corepack depends on packageManager field in package.json
+COPY package.json ./
+
 RUN corepack enable
 
 ########################################
@@ -40,7 +44,7 @@ RUN pnpm deploy --filter=paymaster-proxy --prod /prod/paymaster-proxy
 # copy built dapp-console-api app & isolated node_modules to prod/dapp-console-api
 RUN pnpm deploy --filter=dapp-console-api --prod /prod/dapp-console-api
 
-RUN pnpm deploy --filter=api-key-service --prod /prod/api-key-service 
+RUN pnpm deploy --filter=api-key-service --prod /prod/api-key-service
 
 ########################################
 # STEP 2: PAYMASTER-PROXY

@@ -2,6 +2,11 @@
   "name": "ecosystem",
   "author": "Optimism PBC",
   "license": "MIT",
+  "packageManager": "pnpm@9.0.2",
+  "engines": {
+    "pnpm": "^9.0.0",
+    "node": "^18.0.0"
+  },
   "scripts": {
     "clean": "pnpm recursive run clean",
     "create:app": "cd apps && pnpm create vite --template=react-ts ",
