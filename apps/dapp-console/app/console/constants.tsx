@@ -377,11 +377,11 @@ export const thirdWebMetadata: DialogMetadata = {
 
 export const spearbitMetadata: DialogMetadata = {
   label: 'Deals',
-  title: 'Get subsidies for audits and security services from SpearBit',
+  title: 'Get subsidies for audits and security services from Spearbit',
   description: (
     <>
       <Text as="p" className="mb-4">
-        SpearBit and Optimism Grants Council are offering partial or full
+        Spearbit and Optimism Grants Council are offering partial or full
         subsidies for audits, running an audit competition, or anything
         security-related. Please note: The Optimism Grants Council are the final
         decision-makers in determining the amount subsidized.

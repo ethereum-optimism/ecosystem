@@ -2,7 +2,6 @@
 
 import { Tile, TileGrid } from '@/app/components/Tile/Tile'
 import { externalRoutes } from '@/app/constants'
-import { Badge } from '@eth-optimism/ui-components/src/components/ui/badge/badge'
 import { Text } from '@eth-optimism/ui-components/src/components/ui/text/text'
 import {
   Dialog,
@@ -17,8 +16,7 @@ import { SuperchainSafeModalContent } from '@/app/console/SuperchainSafeModalCon
 
 const BuildSection = () => {
   const [dialogContent, setDialogContent] = useState<React.ReactNode>()
-  const { testnetPaymasterContent, uxReviewContent, quickStartContent } =
-    useDialogContent()
+  const { testnetPaymasterContent, quickStartContent } = useDialogContent()
   const superchainSafeContent = <SuperchainSafeModalContent />
 
   return (
@@ -44,17 +42,6 @@ const BuildSection = () => {
                 trackCardClick('Testnet Paymaster')
                 setDialogContent(testnetPaymasterContent)
               }}
-            />
-          </DialogTrigger>
-          <DialogTrigger asChild>
-            <Tile
-              title="UX Review"
-              description="Get actionable feedback from Superchain pros to get your app ready for launch."
-              onClick={() => {
-                trackCardClick('UX Review')
-                setDialogContent(uxReviewContent)
-              }}
-              badge={<Badge variant="success">Featured</Badge>}
             />
           </DialogTrigger>
           <DialogTrigger asChild>
