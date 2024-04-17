@@ -190,7 +190,9 @@ export class ContractsRoute extends Route {
               deployerAddress,
               chainId,
               appId,
-              state: isDeployerVerified ? ContractState.VERIFIED : ContractState.NOT_VERIFIED,
+              state: isDeployerVerified
+                ? ContractState.VERIFIED
+                : ContractState.NOT_VERIFIED,
               entityId: user.entityId,
             },
           })
