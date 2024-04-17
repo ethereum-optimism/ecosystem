@@ -374,35 +374,3 @@ export const thirdWebMetadata: DialogMetadata = {
     </Button>
   ),
 }
-
-export const spearbitMetadata: DialogMetadata = {
-  label: 'Deals',
-  title: 'Get subsidies for audits and security services from SpearBit',
-  description: (
-    <>
-      <Text as="p" className="mb-4">
-        SpearBit and Optimism Grants Council are offering partial or full
-        subsidies for audits, running an audit competition, or anything
-        security-related. Please note: The Optimism Grants Council are the final
-        decision-makers in determining the amount subsidized.
-      </Text>
-      <Text as="p">
-        Details: In the following form, write Dev Console when asked “how you
-        learned about the program”.
-      </Text>
-    </>
-  ),
-  bannerImage: '/banners/spearbit-banner.png',
-  primaryButton: generatePrimaryButton('Spearbit', 'Apply', forms.SPEARBIT),
-  secondaryButton: (
-    <Button asChild variant="secondary" size="lg">
-      <a
-        href={externalRoutes.SPEARBIT_LEARN_MORE.path}
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        <Text as="span">{externalRoutes.SPEARBIT_LEARN_MORE.label}</Text>
-      </a>
-    </Button>
-  ),
-}

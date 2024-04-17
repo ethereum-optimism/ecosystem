@@ -16,7 +16,6 @@ import {
   alchemyGrowthMetadata,
   alchemySubgraphMetadata,
   quickStartMetadata,
-  spearbitMetadata,
 } from '@/app/console/constants'
 import { DialogClose } from '@eth-optimism/ui-components/src/components/ui/dialog/dialog'
 import { useFeature } from '@/app/hooks/useFeatureFlag'
@@ -150,16 +149,6 @@ const useDialogContent = () => {
     })
   }, [authenticated, login])
 
-  const spearbitContent = useMemo(() => {
-    return renderDialog({
-      ...spearbitMetadata,
-      primaryButton: !authenticated
-        ? loginButton('Sign in to apply', spearbitMetadata.label)
-        : spearbitMetadata.primaryButton,
-      secondaryButton: !authenticated ? null : spearbitMetadata.secondaryButton,
-    })
-  }, [authenticated, login])
-
   const thirdWebContent = useMemo(() => {
     return renderDialog({
       ...thirdWebMetadata,
@@ -183,7 +172,6 @@ const useDialogContent = () => {
     alchemySubgraphContent,
     quicknodeContent,
     thirdWebContent,
-    spearbitContent,
   }
 }
 
