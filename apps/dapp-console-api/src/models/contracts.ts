@@ -111,6 +111,28 @@ export const getContract = async (input: {
   return results[0] || null
 }
 
+export const hasAlreadyVerifiedDeployer = async (input: {
+  db: Database
+  entityId: Contract['entityId']
+  deployerAddress: Address
+}) => {
+  const { db, entityId, deployerAddress } = input
+
+  const results = await db
+    .select()
+    .from(contracts)
+    .where(
+      and(
+        eq(contracts.entityId, entityId),
+        eq(contracts.state, ContractState.VERIFIED),
+        eq(contracts.deployerAddress, getAddress(deployerAddress)),
+      ),
+    )
+    .limit(1)
+
+  return results.length > 0
+}
+
 export const insertContract = async (input: {
   db: Database
   contract: InsertContract
