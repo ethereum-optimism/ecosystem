@@ -64,14 +64,16 @@ export default function Wallets() {
   return (
     <div className="flex flex-col">
       <Text className="font-semibold text-lg">Your Wallets</Text>
-      {walletRes?.records.map((wallet) => (
-        <LinkedWallet
-          key={wallet.id}
-          id={wallet.id}
-          address={wallet.address}
-          onUnlink={() => handleUnlinkWallet(wallet.address)}
-        />
-      ))}
+      <div className="flex flex-col pt-3 space-y-6">
+        {walletRes?.records.map((wallet) => (
+          <LinkedWallet
+            key={wallet.id}
+            id={wallet.id}
+            address={wallet.address}
+            onUnlink={() => handleUnlinkWallet(wallet.address)}
+          />
+        ))}
+      </div>
       <Button
         onClick={linkWallet}
         className="font-medium mt-8 px-14 py-2 gap-2 w-[88px]"
