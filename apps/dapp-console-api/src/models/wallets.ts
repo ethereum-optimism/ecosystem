@@ -1,5 +1,9 @@
-import type { InferInsertModel, InferSelectModel } from 'drizzle-orm'
-import { and, eq } from 'drizzle-orm'
+import type {
+  ExtractTablesWithRelations,
+  InferInsertModel,
+  InferSelectModel,
+} from 'drizzle-orm'
+import { and, eq, relations } from 'drizzle-orm'
 import {
   index,
   jsonb,
@@ -17,6 +21,7 @@ import type { Database } from '@/db'
 
 import type { Entity } from './entities'
 import { entities } from './entities'
+import type * as schema from './schema'
 import { generateCursorSelect } from './utils'
 
 export enum WalletState {
@@ -28,7 +33,9 @@ export enum WalletLinkType {
   PRIVY = 'privy',
 }
 
-type AddressVerification = {}
+type AddressVerifications = {
+  isCbVerified?: boolean
+}
 
 export const wallets = pgTable(
   'wallets',
@@ -50,7 +57,7 @@ export const wallets = pgTable(
       .default(WalletLinkType.PRIVY)
       .notNull(),
     verifications: jsonb('verifications')
-      .$type<AddressVerification>()
+      .$type<AddressVerifications>()
       .default({})
       .notNull(),
     state: varchar('state')
@@ -70,6 +77,10 @@ export const wallets = pgTable(
     }
   },
 )
+
+export const walletsRelations = relations(wallets, ({ one }) => ({
+  entity: one(entities),
+}))
 
 export type Wallet = InferSelectModel<typeof wallets>
 export type InsertWallet = InferInsertModel<typeof wallets>
@@ -101,8 +112,17 @@ export const getActiveWalletsForEntityByCursor = async (
   limit: number,
   cursor?: CreatedAtCursor,
 ) => {
-  return generateCursorSelect({
-    db,
+  return generateCursorSelect<
+    typeof wallets,
+    ExtractTablesWithRelations<typeof schema>['wallets'],
+    ExtractTablesWithRelations<typeof schema>,
+    typeof db.query.apps,
+    'createdAt',
+    'id',
+    {}
+  >({
+    queryBuilder: db.query.wallets,
+    withSelector: {},
     table: wallets,
     filters: [
       eq(wallets.entityId, entityId),
@@ -138,7 +158,29 @@ export const updateWallet = async (input: {
 }) => {
   const { db, walletId, entityId, update } = input
   return db
-    .update({ ...wallets, updatedAt: new Date() })
-    .set(update)
+    .update(wallets)
+    .set({ ...update, updatedAt: new Date() })
     .where(and(eq(wallets.id, walletId), eq(wallets.entityId, entityId)))
+}
+
+export const getWalletVerifications = async (input: {
+  db: Database
+  entityId: Wallet['entityId']
+}) => {
+  const { db, entityId } = input
+  const entityWallets = await db
+    .select()
+    .from(wallets)
+    .where(
+      and(
+        eq(wallets.entityId, entityId),
+        eq(wallets.state, WalletState.ACTIVE),
+      ),
+    )
+
+  return {
+    cbVerifiedWallets: entityWallets.filter(
+      (wallet) => !!wallet.verifications.isCbVerified,
+    ),
+  }
 }

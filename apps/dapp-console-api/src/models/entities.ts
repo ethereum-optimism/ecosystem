@@ -1,8 +1,15 @@
 import type { InferInsertModel, InferSelectModel } from 'drizzle-orm'
-import { and, eq } from 'drizzle-orm'
+import { and, eq, relations } from 'drizzle-orm'
 import { pgTable, timestamp, uuid, varchar } from 'drizzle-orm/pg-core'
 
 import type { Database } from '@/db'
+
+import { apps } from './apps'
+import { challenges } from './challenges'
+import { contracts } from './contracts'
+import { deploymentRebates } from './deploymentRebates'
+import { transactions } from './transactions'
+import { wallets } from './wallets'
 
 export enum EntityState {
   ACTIVE = 'active',
@@ -24,6 +31,15 @@ export const entities = pgTable('entities', {
     .notNull(),
   disabledAt: timestamp('disabled_at', { withTimezone: true }),
 })
+
+export const entitiesRelations = relations(entities, ({ many }) => ({
+  wallets: many(wallets),
+  transactions: many(transactions),
+  contracts: many(contracts),
+  apps: many(apps),
+  challenges: many(challenges),
+  deploymentRebates: many(deploymentRebates),
+}))
 
 export type Entity = InferSelectModel<typeof entities>
 export type InsertEntity = InferInsertModel<typeof entities>

@@ -7,15 +7,16 @@ import {
   AppState,
   getActiveAppsCount,
   getActiveAppsForEntityByCursor,
-  getContractsForApp,
   insertApp,
   updateApp,
 } from '@/models'
 import { metrics } from '@/monitoring/metrics'
 import { Trpc } from '@/Trpc'
+import { addRebateEligibilityToContract } from '@/utils'
 
 import { DEFAULT_PAGE_LIMIT } from '../constants'
 import { Route } from '../Route'
+import { assertUserAuthenticated } from '../utils'
 
 const zodAppName = z.string().min(1).max(120)
 
@@ -34,9 +35,7 @@ export class AppsRoute extends Route {
         const { user } = ctx.session
         const limit = input.limit ?? DEFAULT_PAGE_LIMIT
 
-        if (!user) {
-          throw Trpc.handleStatus(401, 'user not authenticated')
-        }
+        assertUserAuthenticated(user)
 
         const activeApps = await getActiveAppsForEntityByCursor({
           db: this.trpc.database,
@@ -45,22 +44,15 @@ export class AppsRoute extends Route {
           cursor: input.cursor,
         })
 
-        const activeAppsWithContracts = await Promise.all(
-          activeApps.map(async (app) => {
-            const contracts = await getContractsForApp({
-              db: this.trpc.database,
-              entityId: user.entityId,
-              appId: app.id,
-            })
-            return {
-              ...app,
-              contracts,
-            }
-          }),
-        )
+        const activeAppsWithRebateEligiblity = activeApps.map((app) => ({
+          ...app,
+          contracts: app.contracts.map((contract) =>
+            addRebateEligibilityToContract(contract, app.entity?.createdAt),
+          ),
+        }))
 
         return generateListResponse(
-          activeAppsWithContracts,
+          activeAppsWithRebateEligiblity,
           limit,
           input.cursor,
         )
@@ -90,9 +82,7 @@ export class AppsRoute extends Route {
       const { user } = ctx.session
       const { name } = input
 
-      if (!user) {
-        throw Trpc.handleStatus(401, 'user not authenticated')
-      }
+      assertUserAuthenticated(user)
 
       const activeAppsCount = await getActiveAppsCount({
         db: this.trpc.database,
@@ -144,9 +134,7 @@ export class AppsRoute extends Route {
       const { user } = ctx.session
       const { name, appId } = input
 
-      if (!user) {
-        throw Trpc.handleStatus(401, 'user not authenticated')
-      }
+      assertUserAuthenticated(user)
 
       await updateApp({
         db: this.trpc.database,

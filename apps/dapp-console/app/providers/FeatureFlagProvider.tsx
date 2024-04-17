@@ -28,7 +28,6 @@ export const FeatureFlagProvider = ({
       )
 
       if (features) {
-        console.log(features)
         // eslint-disable-next-line  @typescript-eslint/no-explicit-any
         growthbook.setFeatures(features as Record<string, any>)
       }

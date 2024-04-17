@@ -1,61 +1,101 @@
 import 'dotenv/config'
 
+import { inferSchemas, parseEnv } from 'znv'
 import { z } from 'zod'
 
-const getCommaSeparatedValues = (type: string) => {
-  try {
-    return process.env[type]?.split(',') ?? []
-  } catch (e) {
-    throw new Error(`Unable to parse rpc urls: ${e}`)
-  }
-}
+const commaSeparatedRegExpSchema = z
+  .string()
+  .optional()
+  .transform((val) => (val ? val.split(',').map((exp) => new RegExp(exp)) : []))
 
-const envVarSchema = z.object({
-  PORT: z.number(),
-  DEPLOYMENT_ENV: z.enum(['production', 'staging', 'development']),
-  DEV_CORS_ALLOWLIST_REG_EXP: z.custom<RegExp>().array(),
-  CORS_ALLOWLIST_REG_EXP: z.custom<RegExp>().array(),
+export const envVarsSchema = inferSchemas({
+  PORT: {
+    schema: z.number(),
+    defaults: {
+      test: 7330,
+    },
+  },
+  DEPLOYMENT_ENV: {
+    schema: z.enum(['production', 'staging', 'development']),
+    defaults: {
+      test: 'development' as const,
+    },
+  },
+  DEV_CORS_ALLOWLIST_REG_EXP: {
+    schema: commaSeparatedRegExpSchema,
+    defaults: {
+      test: '',
+    },
+  },
+  CORS_ALLOWLIST_REG_EXP: {
+    schema: commaSeparatedRegExpSchema,
+    defaults: {
+      test: '',
+    },
+  },
+  DB_USER: {
+    schema: z.string(),
+    defaults: {
+      test: 'api-key-service@oplabs-local-web.iam',
+    },
+  },
+  DB_PASSWORD: {
+    schema: z.string().optional(),
+    defaults: {
+      test: 'DB_PASSWORD',
+    },
+  },
+  DB_HOST: {
+    schema: z.string(),
+    defaults: {
+      test: '0.0.0.0',
+    },
+  },
+  DB_PORT: {
+    schema: z.number().int().positive(),
+    defaults: {
+      test: 5432,
+    },
+  },
+  DB_NAME: {
+    schema: z.string(),
+    defaults: {
+      test: 'api-key-service',
+    },
+  },
+  DB_MAX_CONNECTIONS: {
+    schema: z.number().int().positive(),
+    defaults: {
+      test: 3,
+    },
+  },
+  MIGRATE_DB_USER: {
+    schema: z.string(),
+    defaults: {
+      test: 'postgres',
+    },
+  },
+  MIGRATE_DB_PASSWORD: {
+    schema: z.string().optional(),
+  },
+  MIGRATE_INITIAL_RETRY_DELAY: {
+    schema: z.number(),
+    defaults: {
+      test: 1,
+    },
+  },
+  MIGRATE_MAX_RETRY_DELAY: {
+    schema: z.number(),
+    defaults: {
+      test: 1,
+    },
+  },
+  MIGRATE_MAX_RETRIES: {
+    schema: z.number(),
+    defaults: {
+      test: 1,
+    },
+  },
 })
 
-const isTest = process.env.NODE_ENV === 'test'
-
-/**
- * A typesafe wrapper around process.env that sets defaults
- */
-export const envVars = envVarSchema.parse(
-  isTest
-    ? {
-        /**
-         * We want the env vars in tests to always be consistent
-         * To change them consider mocking them explicitly in test
-         * rather than using env file
-         * @example
-         * jest.mock('../constants/envVars', () => ({
-         *  envVars: {
-         *      MOCKED_VARIABLE: true
-         * }))
-         */
-        PORT: 7300,
-        DEPLOYMENT_ENV: 'development',
-        DEV_CORS_ALLOWLIST_REG_EXP: getCommaSeparatedValues(
-          'DEV_CORS_ALLOWLIST_REG_EXP',
-        ).map((regExp) => new RegExp(regExp)),
-        CORS_ALLOWLIST_REG_EXP: getCommaSeparatedValues(
-          'CORS_ALLOWLIST_REG_EXP',
-        ).map((regExp) => new RegExp(regExp)),
-      }
-    : {
-        PORT: process.env.PORT
-          ? Number(process.env.PORT)
-          : process.env.SERVER_PORT
-            ? Number(process.env.SERVER_PORT)
-            : 7300,
-        DEPLOYMENT_ENV: process.env.DEPLOYMENT_ENV ?? 'staging',
-        DEV_CORS_ALLOWLIST_REG_EXP: getCommaSeparatedValues(
-          'DEV_CORS_ALLOWLIST_REG_EXP',
-        ).map((regExp) => new RegExp(regExp)),
-        CORS_ALLOWLIST_REG_EXP: getCommaSeparatedValues(
-          'CORS_ALLOWLIST_REG_EXP',
-        ).map((regExp) => new RegExp(regExp)),
-      },
-)
+export const envVars = parseEnv(process.env, envVarsSchema)

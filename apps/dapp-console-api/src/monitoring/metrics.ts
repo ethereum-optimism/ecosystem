@@ -33,6 +33,10 @@ export const metrics = {
     name: 'list_contracts_error_count',
     help: 'Total number of errors encountered while attempting to fetch contracts from db',
   }),
+  fetchContractErrorCount: new Counter({
+    name: 'fetch_contract_error_count',
+    help: 'Total number of errors encountered while attempting to fetch a single contract from db',
+  }),
   fetchActiveAppsCountErrorCount: new Counter({
     name: 'fetch_active_apps_count_error_count',
     help: 'Total number of errors encountered while fetching count of active apps',
@@ -53,5 +57,33 @@ export const metrics = {
   insertContractErrorCount: new Counter({
     name: 'insert_contract_error_count',
     help: 'Total number of errors encountered while inserting a new contract',
+  }),
+  fetchChallengeErrorCount: new Counter({
+    name: 'fetch_challenge_error_count',
+    help: 'Total number of errors encountered while attempting to fetch a single challenge from db',
+  }),
+  insertChallengeErrorCount: new Counter({
+    name: 'insert_challenge_error_count',
+    help: 'Total number of errors encountered while inserting a new challenge',
+  }),
+  completeChallengeErrorCount: new Counter({
+    name: 'complete_challenge_error_count',
+    help: 'Total number of times the server failed to mark a challenge as complete',
+  }),
+  fetchTotalRebatesClaimedErrorCount: new Counter({
+    name: 'fetch_total_rebates_claimed_error_count',
+    help: 'Total number of errors encountered while fetching total rebates claimed',
+  }),
+  fetchCbVerificationFromEasErrorCount: new Counter({
+    name: 'fetch_cb_verification_from_eas_error_count',
+    help: 'Total number of errors encountered when using eas to fetch cb verification status',
+  }),
+  updateWalletVerificationsErrorCount: new Counter({
+    name: 'update_wallet_verifications_error_count',
+    help: 'Total number of errors encountered when updating wallet verifications',
+  }),
+  fetchWalletVerificationsErrorCount: new Counter({
+    name: 'fetch_wallet_verifications_error_count',
+    help: 'Total number of errors encountered while fetching wallet verifications',
   }),
 }
