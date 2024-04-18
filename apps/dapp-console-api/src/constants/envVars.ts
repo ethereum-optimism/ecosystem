@@ -1,5 +1,6 @@
 import 'dotenv/config'
 
+import type { Hex } from 'viem'
 import { z } from 'zod'
 
 const getCommaSeparatedValues = (type: string) => {
@@ -37,6 +38,8 @@ const envVarSchema = z.object({
   PRIVY_APP_ID: z.string(),
   PRIVY_APP_SECRET: z.string(),
   MAX_APPS_COUNT: z.number().min(1).default(20),
+  OP_MAINNET_JSON_RPC_URL: z.string(),
+  DEPLOYMENT_REBATE_WALLET_PK: z.custom<Hex>(),
 })
 
 const isTest = process.env.NODE_ENV === 'test'
@@ -79,6 +82,8 @@ export const envVars = envVarSchema.parse(
         PRIVY_APP_ID: 'PRIVY_APP_ID',
         PRIVY_APP_SECRET: 'PRIVY_APP_SECRET',
         PRIVY_ACCESS_TOKEN_SALT: '$2b$10$Kd085thA56nZmQiRHh2XHu',
+        OP_MAINNET_JSON_RPC_URL: 'OP_MAINNET_JSON_RPC_URL',
+        DEPLOYMENT_REBATE_WALLET_PK: 'DEPLOYMENT_REBATE_WALLET_PK',
       }
     : {
         PORT: process.env.PORT
@@ -114,5 +119,7 @@ export const envVars = envVarSchema.parse(
         PRIVY_APP_SECRET: process.env.PRIVY_APP_SECRET,
         PRIVY_ACCESS_TOKEN_SALT: process.env.PRIVY_ACCESS_TOKEN_SALT,
         MAX_APPS_COUNT: process.env.MAX_APPS_COUNT,
+        OP_MAINNET_JSON_RPC_URL: process.env.OP_MAINNET_JSON_RPC_URL,
+        DEPLOYMENT_REBATE_WALLET_PK: process.env.DEPLOYMENT_REBATE_WALLET_PK,
       },
 )

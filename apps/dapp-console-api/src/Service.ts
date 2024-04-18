@@ -16,6 +16,9 @@ import type { Logger } from 'pino'
 import pino from 'pino'
 import type { Registry } from 'prom-client'
 import prometheus from 'prom-client'
+import { createPublicClient, createWalletClient, http } from 'viem'
+import { privateKeyToAccount } from 'viem/accounts'
+import { optimism } from 'viem/chains'
 
 import { ApiV0, Middleware } from './api'
 import { AdminApi } from './api/AdminApi'
@@ -125,12 +128,25 @@ export class Service {
      * Routes and controllers are created with trpc
      */
     const trpc = new Trpc(privy, logger, appDB)
+    const opMainnetPublicClient = createPublicClient({
+      chain: optimism,
+      transport: http(envVars.OP_MAINNET_JSON_RPC_URL),
+    })
+    const rebateWalletClient = createWalletClient({
+      chain: optimism,
+      transport: http(envVars.OP_MAINNET_JSON_RPC_URL),
+      account: privateKeyToAccount(envVars.DEPLOYMENT_REBATE_WALLET_PK),
+    })
 
     const authRoute = new AuthRoute(trpc)
     const walletsRoute = new WalletsRoute(trpc)
     const appsRoute = new AppsRoute(trpc)
     const contractsRoute = new ContractsRoute(trpc)
-    const rebatesRoute = new RebatesRoute(trpc)
+    const rebatesRoute = new RebatesRoute(
+      trpc,
+      rebateWalletClient,
+      opMainnetPublicClient,
+    )
 
     /**
      * The apiServer simply assmbles the routes into a TRPC Server

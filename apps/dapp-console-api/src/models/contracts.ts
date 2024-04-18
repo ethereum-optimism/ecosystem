@@ -27,6 +27,10 @@ export enum ContractState {
   VERIFIED = 'verified',
 }
 
+export type ContractWithTxAndEntity = Contract & {
+  transaction: Transaction | null
+} & { entity: Entity | null }
+
 export const contracts = pgTable(
   'contracts',
   {
@@ -110,10 +114,7 @@ export const getContract = async (input: {
   db: Database
   contractId: Contract['id']
   entityId: Contract['entityId']
-}): Promise<
-  | (Contract & { transaction: Transaction | null } & { entity: Entity | null })
-  | null
-> => {
+}): Promise<ContractWithTxAndEntity | null> => {
   const { db, contractId, entityId } = input
 
   const results = await db.query.contracts.findMany({

@@ -87,3 +87,16 @@ export const generateCursorSelect = async <
     ],
   })
 }
+
+/**
+ * Drizzle's `numeric` column expects a number cast to a string. This helper
+ * ensures that the value is properly cast
+ */
+export const bigIntToNumeric = <
+  T extends bigint | undefined,
+  R = T extends bigint ? string : undefined,
+>(
+  value: T,
+): R => {
+  return (value ? `${value}` : undefined) as R
+}
