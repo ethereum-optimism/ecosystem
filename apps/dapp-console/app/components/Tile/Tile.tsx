@@ -53,8 +53,8 @@ const Tile = ({
           <CardHeader
             className={cn(
               'pb-1 flex-row items-start',
-              icon && 'pr-0',
-              image && 'pt-0',
+              Boolean(icon) && 'pr-0',
+              Boolean(image) && 'pt-0',
               !description && 'pb-6',
             )}
           >
@@ -63,7 +63,7 @@ const Tile = ({
             </Text>
           </CardHeader>
           {description && (
-            <CardContent className={cn(icon && 'pr-0')}>
+            <CardContent className={cn(Boolean(icon) && 'pr-0')}>
               <Text as="p" className="text-muted-foreground">
                 {description}
               </Text>
