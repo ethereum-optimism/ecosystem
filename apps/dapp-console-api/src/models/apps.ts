@@ -78,10 +78,16 @@ export const getActiveAppsForEntityByCursor = async (input: {
     typeof db.query.apps,
     'name',
     'id',
-    { contracts: { with: { transaction: true } }; entity: true }
+    {
+      contracts: { with: { transaction: true; deploymentRebate: true } }
+      entity: true
+    }
   >({
     queryBuilder: db.query.apps,
-    withSelector: { contracts: { with: { transaction: true } }, entity: true },
+    withSelector: {
+      contracts: { with: { transaction: true, deploymentRebate: true } },
+      entity: true,
+    },
     table: apps,
     filters: [eq(apps.entityId, entityId), eq(apps.state, AppState.ACTIVE)],
     limit,

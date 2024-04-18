@@ -8,13 +8,19 @@ import type {
 import { getAddress } from 'viem'
 import type { optimism } from 'viem/chains'
 
-import { zodEthereumAddress } from '@/api'
+import {
+  generateListResponse,
+  zodCreatedAtCursor,
+  zodEthereumAddress,
+  zodListRequest,
+} from '@/api'
 import { MAX_REBATE_AMOUNT } from '@/constants/rebates'
 import { isPrivyAuthed } from '@/middleware'
 import type { DeploymentRebate } from '@/models'
 import {
   ContractState,
   DeploymentRebateState,
+  getCompletedRebatesForEntityByCursor,
   getContract,
   getDeploymentRebateByContractId,
   getTotalRebatesClaimed,
@@ -29,6 +35,7 @@ import { metrics } from '@/monitoring/metrics'
 import { Trpc } from '@/Trpc'
 import { isContractDeploymentDateEligibleForRebate } from '@/utils'
 
+import { DEFAULT_PAGE_LIMIT } from '../constants'
 import { Route } from '../Route'
 import { assertUserAuthenticated } from '../utils'
 
@@ -57,6 +64,43 @@ export class RebatesRoute extends Route {
         )
         throw Trpc.handleStatus(500, 'error fetching total rebates claimed')
       })
+    })
+
+  /**
+   * Returns a list of completed rebates
+   */
+  public readonly listCompletedRebates = 'listCompletedRebates'
+  public readonly listCompletedRebatesController = this.trpc.procedure
+    .use(isPrivyAuthed(this.trpc))
+    .input(zodListRequest(zodCreatedAtCursor))
+    .query(async ({ ctx, input }) => {
+      const { user } = ctx.session
+      const limit = input.limit ?? DEFAULT_PAGE_LIMIT
+      const { cursor } = input
+
+      assertUserAuthenticated(user)
+
+      const completedRebates = await getCompletedRebatesForEntityByCursor({
+        db: this.trpc.database,
+        entityId: user.entityId,
+        limit,
+        cursor,
+      }).catch((err) => {
+        metrics.fetchCompletedRebatesListErrorCount.inc()
+        this.logger?.error(
+          {
+            error: err,
+            entityId: ctx.session.user?.entityId,
+          },
+          'error fetching completed rebates for entity',
+        )
+        throw Trpc.handleStatus(
+          500,
+          'error fetching completed rebates for entity',
+        )
+      })
+
+      return generateListResponse(completedRebates, limit, cursor)
     })
 
   public readonly claimDeploymentRebate = 'claimDeploymentRebate'
@@ -334,6 +378,7 @@ export class RebatesRoute extends Route {
         update: {
           rebateTxHash: rebateTxReceipt.transactionHash,
           rebateAmount: bigIntToNumeric(amountToSend),
+          rebateTxTimestamp: new Date(),
         },
       }).catch((err) => {
         metrics.updateCompletedDeploymentRebateErrorCount.inc()

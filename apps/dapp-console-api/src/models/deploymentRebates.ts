@@ -1,4 +1,8 @@
-import type { InferInsertModel, InferSelectModel } from 'drizzle-orm'
+import type {
+  ExtractTablesWithRelations,
+  InferInsertModel,
+  InferSelectModel,
+} from 'drizzle-orm'
 import { and, arrayContains, eq, relations, sql, sum } from 'drizzle-orm'
 import {
   index,
@@ -12,12 +16,14 @@ import {
 } from 'drizzle-orm/pg-core'
 import { type Address, getAddress, type Hash } from 'viem'
 
+import type { CreatedAtCursor } from '@/api'
 import type { Database } from '@/db'
 
 import { contracts } from './contracts'
 import type { Entity } from './entities'
 import { entities } from './entities'
-import { UINT256_PRECISION } from './utils'
+import type * as schema from './schema'
+import { generateCursorSelect, UINT256_PRECISION } from './utils'
 import { getWalletVerifications } from './wallets'
 
 export enum DeploymentRebateState {
@@ -26,7 +32,7 @@ export enum DeploymentRebateState {
   REBATE_SENT = 'rebate_sent',
 }
 
-enum RejectionReason {}
+export enum RejectionReason {}
 
 export const deploymentRebates = pgTable(
   'deploymentRebates',
@@ -56,6 +62,7 @@ export const deploymentRebates = pgTable(
       precision: UINT256_PRECISION,
       scale: 0,
     }),
+    rebateTxTimestamp: timestamp('rebate_tx_timestamp', { withTimezone: true }),
     recipientAddress: varchar('recipient_address').$type<Address>(),
     /** The wallets used for verifying that the user is eligible for a rebate. */
     verifiedWallets: varchar('verified_wallets')
@@ -73,6 +80,10 @@ export const deploymentRebates = pgTable(
         table.chainId,
       ),
       verifiedWalletsIdx: index().on(table.verifiedWallets),
+      entityRebateTxTimestampIdx: index().on(
+        table.entityId,
+        table.rebateTxTimestamp,
+      ),
     }
   },
 )
@@ -195,7 +206,10 @@ export const setDeploymentRebateToSent = async (input: {
   db: Database
   entityId: DeploymentRebate['entityId']
   rebateId: DeploymentRebate['id']
-  update: Pick<DeploymentRebate, 'rebateAmount' | 'rebateTxHash'>
+  update: Pick<
+    DeploymentRebate,
+    'rebateAmount' | 'rebateTxHash' | 'rebateTxTimestamp'
+  >
 }) => {
   const { db, update, entityId, rebateId } = input
   const updateResult = await db
@@ -280,4 +294,35 @@ export const getDeploymentRebateByContractId = async (input: {
     )
 
   return results[0] || null
+}
+
+export const getCompletedRebatesForEntityByCursor = async (input: {
+  db: Database
+  entityId: DeploymentRebate['entityId']
+  limit: number
+  cursor?: CreatedAtCursor
+}) => {
+  const { db, entityId, limit, cursor } = input
+
+  return generateCursorSelect<
+    typeof deploymentRebates,
+    ExtractTablesWithRelations<typeof schema>['deploymentRebates'],
+    ExtractTablesWithRelations<typeof schema>,
+    typeof db.query.deploymentRebates,
+    'createdAt',
+    'id',
+    {}
+  >({
+    queryBuilder: db.query.deploymentRebates,
+    withSelector: {},
+    table: deploymentRebates,
+    filters: [
+      eq(deploymentRebates.entityId, entityId),
+      eq(deploymentRebates.state, DeploymentRebateState.REBATE_SENT),
+    ],
+    limit,
+    orderBy: { direction: 'desc', column: 'createdAt' },
+    idColumnKey: 'id',
+    cursor,
+  })
 }

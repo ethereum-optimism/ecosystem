@@ -16,6 +16,7 @@ import type { Database } from '@/db'
 
 import { apps } from './apps'
 import { challenges } from './challenges'
+import type { DeploymentRebate } from './deploymentRebates'
 import { deploymentRebates } from './deploymentRebates'
 import type { Entity } from './entities'
 import { entities } from './entities'
@@ -27,9 +28,9 @@ export enum ContractState {
   VERIFIED = 'verified',
 }
 
-export type ContractWithTxAndEntity = Contract & {
+export type ContractWithTxRebateAndEntity = Contract & {
   transaction: Transaction | null
-} & { entity: Entity | null }
+} & { entity: Entity | null } & { deploymentRebate: DeploymentRebate | null }
 
 export const contracts = pgTable(
   'contracts',
@@ -104,7 +105,7 @@ export const getContractsForApp = async (input: {
   const { db, appId, entityId } = input
 
   return db.query.contracts.findMany({
-    with: { entity: true, transaction: true },
+    with: { entity: true, transaction: true, deploymentRebate: true },
     where: and(eq(contracts.appId, appId), eq(contracts.entityId, entityId)),
     orderBy: asc(contracts.createdAt),
   })
@@ -114,11 +115,11 @@ export const getContract = async (input: {
   db: Database
   contractId: Contract['id']
   entityId: Contract['entityId']
-}): Promise<ContractWithTxAndEntity | null> => {
+}): Promise<ContractWithTxRebateAndEntity | null> => {
   const { db, contractId, entityId } = input
 
   const results = await db.query.contracts.findMany({
-    with: { entity: true, transaction: true },
+    with: { entity: true, transaction: true, deploymentRebate: true },
     where: and(eq(contracts.id, contractId), eq(contracts.entityId, entityId)),
   })
 
