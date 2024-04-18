@@ -70,10 +70,23 @@ export const contracts = pgTable(
 )
 
 export const contractsRelations = relations(contracts, ({ one }) => ({
-  transaction: one(transactions),
-  entity: one(entities),
-  deploymentRebate: one(deploymentRebates),
-  challenge: one(challenges),
+  app: one(apps, { fields: [contracts.appId], references: [apps.id] }),
+  transaction: one(transactions, {
+    fields: [contracts.id],
+    references: [transactions.contractId],
+  }),
+  entity: one(entities, {
+    fields: [contracts.entityId],
+    references: [entities.id],
+  }),
+  deploymentRebate: one(deploymentRebates, {
+    fields: [contracts.id],
+    references: [deploymentRebates.contractId],
+  }),
+  challenge: one(challenges, {
+    fields: [contracts.id],
+    references: [challenges.contractId],
+  }),
 }))
 
 export type Contract = InferSelectModel<typeof contracts>

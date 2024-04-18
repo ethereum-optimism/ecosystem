@@ -55,7 +55,7 @@ export const apps = pgTable(
 )
 
 export const appsRelations = relations(apps, ({ one, many }) => ({
-  entity: one(entities),
+  entity: one(entities, { fields: [apps.entityId], references: [entities.id] }),
   contracts: many(contracts),
 }))
 

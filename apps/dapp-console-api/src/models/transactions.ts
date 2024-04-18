@@ -87,12 +87,12 @@ export const transactions = pgTable(
       scale: 0,
     }),
     /** Total fee per gas in wei (gasPrice/baseFeePerGas + maxPriorityFeePerGas). */
-    maxFeePerGas: numeric('max_fee_per_blob_gas', {
+    maxFeePerGas: numeric('max_fee_per_gas', {
       precision: UINT256_PRECISION,
       scale: 0,
     }),
     /** Max priority fee per gas (in wei). */
-    maxPriorityFeePerGas: numeric('max_fee_per_blob_gas', {
+    maxPriorityFeePerGas: numeric('max_priority_fee_per_gas', {
       precision: UINT256_PRECISION,
       scale: 0,
     }),
@@ -121,8 +121,14 @@ export const transactions = pgTable(
 )
 
 export const transactionsRelations = relations(transactions, ({ one }) => ({
-  contract: one(contracts),
-  entity: one(entities),
+  contract: one(contracts, {
+    fields: [transactions.contractId],
+    references: [contracts.id],
+  }),
+  entity: one(entities, {
+    fields: [transactions.entityId],
+    references: [entities.id],
+  }),
 }))
 
 export type Transaction = InferSelectModel<typeof transactions>

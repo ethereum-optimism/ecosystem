@@ -79,7 +79,10 @@ export const wallets = pgTable(
 )
 
 export const walletsRelations = relations(wallets, ({ one }) => ({
-  entity: one(entities),
+  entity: one(entities, {
+    fields: [wallets.entityId],
+    references: [entities.id],
+  }),
 }))
 
 export type Wallet = InferSelectModel<typeof wallets>
