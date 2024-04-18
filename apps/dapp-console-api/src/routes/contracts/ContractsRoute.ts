@@ -177,13 +177,13 @@ export class ContractsRoute extends Route {
       const result = await this.trpc.database
         .transaction(async (tx) => {
           const isDeployerVerified = await hasAlreadyVerifiedDeployer({
-            db: this.trpc.database,
+            db: tx,
             entityId: user.entityId,
             deployerAddress,
           })
 
           const contract = await insertContract({
-            db: this.trpc.database,
+            db: tx,
             contract: {
               contractAddress,
               deploymentTxHash,
@@ -197,7 +197,7 @@ export class ContractsRoute extends Route {
             },
           })
           await insertTransaction({
-            db: this.trpc.database,
+            db: tx,
             transaction: viemContractDeploymentTransactionToDbTransaction({
               transactionReceipt: deploymentTxReceipt,
               transaction: deploymentTx,

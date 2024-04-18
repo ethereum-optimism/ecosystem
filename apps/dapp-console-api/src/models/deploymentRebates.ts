@@ -80,8 +80,14 @@ export const deploymentRebates = pgTable(
 export const deploymentRebatesRelations = relations(
   deploymentRebates,
   ({ one }) => ({
-    entity: one(entities),
-    contract: one(contracts),
+    entity: one(entities, {
+      fields: [deploymentRebates.entityId],
+      references: [entities.id],
+    }),
+    contract: one(contracts, {
+      fields: [deploymentRebates.contractId],
+      references: [contracts.id],
+    }),
   }),
 )
 

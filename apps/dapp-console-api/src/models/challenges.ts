@@ -56,8 +56,14 @@ export const challenges = pgTable(
 )
 
 export const challengesRelations = relations(challenges, ({ one }) => ({
-  entity: one(entities),
-  contract: one(contracts),
+  entity: one(entities, {
+    fields: [challenges.entityId],
+    references: [entities.id],
+  }),
+  contract: one(contracts, {
+    fields: [challenges.contractId],
+    references: [contracts.id],
+  }),
 }))
 
 export type Challenge = InferSelectModel<typeof challenges>
