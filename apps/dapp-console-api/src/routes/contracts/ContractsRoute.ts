@@ -61,7 +61,7 @@ export class ContractsRoute extends Route {
         })
 
         return contracts.map((contract) =>
-          addRebateEligibilityToContract(contract, contract.entity?.createdAt),
+          addRebateEligibilityToContract(contract),
         )
       } catch (err) {
         metrics.listContractsErrorCount.inc()
@@ -439,10 +439,7 @@ export class ContractsRoute extends Route {
         throw Trpc.handleStatus(400, 'contract does not exist')
       }
 
-      return addRebateEligibilityToContract(
-        contract,
-        contract.entity?.createdAt,
-      )
+      return addRebateEligibilityToContract(contract)
     })
 
   public readonly handler = this.trpc.router({

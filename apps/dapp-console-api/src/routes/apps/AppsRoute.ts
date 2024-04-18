@@ -47,7 +47,10 @@ export class AppsRoute extends Route {
         const activeAppsWithRebateEligiblity = activeApps.map((app) => ({
           ...app,
           contracts: app.contracts.map((contract) =>
-            addRebateEligibilityToContract(contract, app.entity?.createdAt),
+            addRebateEligibilityToContract({
+              ...contract,
+              entity: app.entity,
+            }),
           ),
         }))
 

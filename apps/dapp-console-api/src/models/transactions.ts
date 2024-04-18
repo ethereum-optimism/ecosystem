@@ -21,7 +21,7 @@ import type { Database } from '@/db'
 
 import { contracts } from './contracts'
 import { entities } from './entities'
-import { UINT256_PRECISION } from './utils'
+import { bigIntToNumeric, UINT256_PRECISION } from './utils'
 
 export enum TransactionEvent {
   CONTRACT_DEPLOYMENT = 'contract_deployment',
@@ -166,19 +166,19 @@ export const viemContractDeploymentTransactionToDbTransaction = (input: {
     chainId,
     contractId,
     transactionHash: transactionReceipt.transactionHash,
-    blockNumber: `${transactionReceipt.blockNumber}`,
+    blockNumber: bigIntToNumeric(transactionReceipt.blockNumber),
     fromAddress: transactionReceipt.from,
     toAddress: transactionReceipt.to,
     contractAddress: transactionReceipt.contractAddress,
-    gasUsed: `${transactionReceipt.gasUsed}`,
-    gasPrice: `${transaction.gasPrice}`,
-    blobGasPrice: `${transactionReceipt.blobGasPrice}`,
-    blobGasUsed: `${transactionReceipt.blobGasUsed}`,
+    gasUsed: bigIntToNumeric(transactionReceipt.gasUsed),
+    gasPrice: bigIntToNumeric(transactionReceipt.effectiveGasPrice),
+    blobGasPrice: bigIntToNumeric(transactionReceipt.blobGasPrice),
+    blobGasUsed: bigIntToNumeric(transactionReceipt.blobGasUsed),
     transactionType: transactionReceipt.type,
     transactionEvent: TransactionEvent.CONTRACT_DEPLOYMENT,
-    maxFeePerBlobGas: `${transaction.maxFeePerBlobGas}`,
-    maxPriorityFeePerGas: `${transaction.maxPriorityFeePerGas}`,
-    value: `${transaction.value}`,
+    maxFeePerBlobGas: bigIntToNumeric(transaction.maxFeePerBlobGas),
+    maxPriorityFeePerGas: bigIntToNumeric(transaction.maxPriorityFeePerGas),
+    value: bigIntToNumeric(transaction.value),
     status: transactionReceipt.status,
     blockTimestamp: Number(deploymentTimestamp),
   }

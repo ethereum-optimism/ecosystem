@@ -86,4 +86,32 @@ export const metrics = {
     name: 'fetch_wallet_verifications_error_count',
     help: 'Total number of errors encountered while fetching wallet verifications',
   }),
+  fetchDeploymentRebateErrorCount: new Counter({
+    name: 'fetch_deployment_rebate_error_count',
+    help: 'Total number of errors encountered while fetching a deployment rebate',
+  }),
+  sendRebateTxErrorCount: new Counter({
+    name: 'send_rebate_tx_error_count',
+    help: 'Total number of times the transaction for sending a deployment rebate failed',
+  }),
+  fetchRebateTxReceiptErrorCount: new Counter({
+    name: 'fetch_rebate_tx_receipt_error_count',
+    help: 'Total number of times the transaction receipt for the rebate transaction failed to be fetched',
+  }),
+  fetchPendingRebateErrorCount: new Counter({
+    name: 'fetch_pending_rebate_error_count',
+    help: 'Total number of times the server failed to fetch a pending rebate',
+  }),
+  insertPendingDeploymentRebateErrorCount: new Counter({
+    name: 'insert_pending_deployment_rebate_error_count',
+    help: 'Total number of times the server failed to insert a pending deployment rebate',
+  }),
+  updateCompletedDeploymentRebateErrorCount: new Counter({
+    name: 'update_completed_deployment_rebate_error_count',
+    help: 'Total number of times the server failed to update a pending rebate to completed',
+  }),
+  updateDeploymentRebateToPendingErrorCount: new Counter({
+    name: 'update_deployment_rebate_to_pending_error_count',
+    help: 'Total number of times the server failed to update a rebate to pending',
+  }),
 }

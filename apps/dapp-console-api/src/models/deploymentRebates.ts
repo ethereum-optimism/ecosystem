@@ -1,3 +1,4 @@
+import type { InferInsertModel, InferSelectModel } from 'drizzle-orm'
 import { and, arrayContains, eq, relations, sql, sum } from 'drizzle-orm'
 import {
   index,
@@ -5,10 +6,11 @@ import {
   numeric,
   pgTable,
   timestamp,
+  uniqueIndex,
   uuid,
   varchar,
 } from 'drizzle-orm/pg-core'
-import type { Address, Hash } from 'viem'
+import { type Address, getAddress, type Hash } from 'viem'
 
 import type { Database } from '@/db'
 
@@ -18,12 +20,10 @@ import { entities } from './entities'
 import { UINT256_PRECISION } from './utils'
 import { getWalletVerifications } from './wallets'
 
-enum DeploymentRebateState {
-  APPROVED = 'approved',
-  PENDING_APPROVAL = 'pending_approval',
+export enum DeploymentRebateState {
+  REBATE_FAILED_TO_SEND = 'rebate_failed_to_send',
+  PENDING_SEND = 'pending_send',
   REBATE_SENT = 'rebate_sent',
-  REJECTED = 'rejected',
-  NEEDS_CB_VERIFICATION = 'approved_but_needs_cb_verification',
 }
 
 enum RejectionReason {}
@@ -48,7 +48,7 @@ export const deploymentRebates = pgTable(
     chainId: integer('chain_id').notNull(),
     state: varchar('state')
       .$type<DeploymentRebateState>()
-      .default(DeploymentRebateState.PENDING_APPROVAL)
+      .default(DeploymentRebateState.PENDING_SEND)
       .notNull(),
     rejectionReason: varchar('rejection_reason').$type<RejectionReason>(),
     rebateTxHash: varchar('rebate_tx_hash').$type<Hash>(),
@@ -68,7 +68,7 @@ export const deploymentRebates = pgTable(
     return {
       entityIdx: index().on(table.entityId),
       contractIdx: index().on(table.contractId),
-      contractAddressChainIdIdx: index().on(
+      contractAddressChainIdIdx: uniqueIndex().on(
         table.contractAddress,
         table.chainId,
       ),
@@ -90,6 +90,9 @@ export const deploymentRebatesRelations = relations(
     }),
   }),
 )
+
+export type DeploymentRebate = InferSelectModel<typeof deploymentRebates>
+export type InsertDeploymentRebate = InferInsertModel<typeof deploymentRebates>
 
 export const getTotalRebatesClaimedByEntity = async (input: {
   db: Database
@@ -164,4 +167,117 @@ export const getTotalRebatesClaimed = async (input: {
   return totalClaimedByEntity > amountClaimedFromVerifiedWallets
     ? totalClaimedByEntity
     : amountClaimedFromVerifiedWallets
+}
+
+export const insertDeploymentRebate = async (input: {
+  db: Database
+  newRebate: InsertDeploymentRebate
+}) => {
+  const { db, newRebate } = input
+  const checkSummedRebate = {
+    ...newRebate,
+    contractAddress: getAddress(newRebate.contractAddress),
+    recipientAddress: getAddress(newRebate.recipientAddress!),
+    verifiedWallets: newRebate.verifiedWallets!.map((address) =>
+      getAddress(address),
+    ),
+  }
+
+  const results = await db
+    .insert(deploymentRebates)
+    .values(checkSummedRebate)
+    .returning()
+
+  return results[0]
+}
+
+export const setDeploymentRebateToSent = async (input: {
+  db: Database
+  entityId: DeploymentRebate['entityId']
+  rebateId: DeploymentRebate['id']
+  update: Pick<DeploymentRebate, 'rebateAmount' | 'rebateTxHash'>
+}) => {
+  const { db, update, entityId, rebateId } = input
+  const updateResult = await db
+    .update(deploymentRebates)
+    .set({
+      ...update,
+      state: DeploymentRebateState.REBATE_SENT,
+      updatedAt: new Date(),
+    })
+    .where(
+      and(
+        eq(deploymentRebates.id, rebateId),
+        eq(deploymentRebates.entityId, entityId),
+      ),
+    )
+    .returning()
+
+  return updateResult[0]
+}
+
+export const setDeploymentRebateToPending = async (input: {
+  db: Database
+  entityId: DeploymentRebate['entityId']
+  rebateId: DeploymentRebate['id']
+}) => {
+  const { db, entityId, rebateId } = input
+  const updateResult = await db
+    .update(deploymentRebates)
+    .set({
+      state: DeploymentRebateState.PENDING_SEND,
+      updatedAt: new Date(),
+    })
+    .where(
+      and(
+        eq(deploymentRebates.id, rebateId),
+        eq(deploymentRebates.entityId, entityId),
+      ),
+    )
+    .returning()
+
+  return updateResult[0]
+}
+
+export const setDeploymentRebateToFailed = async (input: {
+  db: Database
+  entityId: DeploymentRebate['entityId']
+  rebateId: DeploymentRebate['id']
+}) => {
+  const { db, entityId, rebateId } = input
+  const updateResult = await db
+    .update(deploymentRebates)
+    .set({
+      state: DeploymentRebateState.REBATE_FAILED_TO_SEND,
+      updatedAt: new Date(),
+    })
+    .where(
+      and(
+        eq(deploymentRebates.id, rebateId),
+        eq(deploymentRebates.entityId, entityId),
+      ),
+    )
+    .returning()
+
+  return updateResult[0]
+}
+
+export const getDeploymentRebateByContractId = async (input: {
+  db: Database
+  contractId: DeploymentRebate['contractId']
+  entityId: DeploymentRebate['entityId']
+}): Promise<DeploymentRebate | null> => {
+  const { db, contractId, entityId } = input
+
+  const results = await db
+    .select()
+    .from(deploymentRebates)
+    .where(
+      and(
+        eq(deploymentRebates.contractId, contractId),
+        eq(deploymentRebates.entityId, entityId),
+      ),
+    )
+
+  return results[0] || null
 }
