@@ -2,6 +2,8 @@ import type {
   ExtractTablesWithRelations,
   InferInsertModel,
   InferSelectModel,
+  ne,
+  SQL,
 } from 'drizzle-orm'
 import { and, count, eq, relations } from 'drizzle-orm'
 import {
@@ -16,7 +18,7 @@ import {
 import type { NameCursor } from '@/api'
 import type { Database } from '@/db'
 
-import { contracts } from './contracts'
+import { contracts, ContractState } from './contracts'
 import { entities } from './entities'
 import type * as schema from './schema'
 import { generateCursorSelect } from './utils'
@@ -79,13 +81,25 @@ export const getActiveAppsForEntityByCursor = async (input: {
     'name',
     'id',
     {
-      contracts: { with: { transaction: true; deploymentRebate: true } }
+      contracts: {
+        where: (
+          contracts: ExtractTablesWithRelations<
+            typeof schema
+          >['contracts']['columns'],
+          selector: { ne: typeof ne },
+        ) => SQL
+        with: { transaction: true; deploymentRebate: true }
+      }
       entity: true
     }
   >({
     queryBuilder: db.query.apps,
     withSelector: {
-      contracts: { with: { transaction: true, deploymentRebate: true } },
+      contracts: {
+        where: (contracts, { ne }) =>
+          ne(contracts.state, ContractState.DELETED),
+        with: { transaction: true, deploymentRebate: true },
+      },
       entity: true,
     },
     table: apps,

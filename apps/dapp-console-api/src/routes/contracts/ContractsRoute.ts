@@ -13,14 +13,17 @@ import {
   ChallengeState,
   completeChallenge,
   ContractState,
+  deleteContract,
+  getActiveContract,
+  getActiveContractsForApp,
   getChallengeByChallengeId,
-  getContract,
-  getContractsForApp,
+  getContractByAddressAndChainId,
   getUnexpiredChallenge,
   hasAlreadyVerifiedDeployer,
   insertChallenge,
   insertContract,
   insertTransaction,
+  restoreDeletedContract,
   verifyContract,
   viemContractDeploymentTransactionToDbTransaction,
 } from '@/models'
@@ -55,7 +58,7 @@ export class ContractsRoute extends Route {
 
         assertUserAuthenticated(user)
 
-        const contracts = await getContractsForApp({
+        const contracts = await getActiveContractsForApp({
           db: this.trpc.database,
           entityId: user.entityId,
           appId: input.appId,
@@ -218,33 +221,70 @@ export class ContractsRoute extends Route {
             deployerAddress: inputDeployerAddress,
           })
 
-          const contract = await insertContract({
+          const existingContract = await getContractByAddressAndChainId({
             db: tx,
-            contract: {
-              contractAddress: inputContractAddress,
-              deploymentTxHash,
-              deployerAddress: inputDeployerAddress,
-              chainId,
+            contractAddress: inputContractAddress,
+            chainId,
+            entityId: user.entityId,
+          })
+          if (
+            existingContract &&
+            existingContract.state !== ContractState.DELETED
+          ) {
+            throw Trpc.handleStatus(400, 'contract already exists')
+          }
+
+          if (existingContract) {
+            const restoredContract = await restoreDeletedContract({
+              db: tx,
+              contractId: existingContract.id,
               appId,
               state: isDeployerVerified
                 ? ContractState.VERIFIED
                 : ContractState.NOT_VERIFIED,
-              entityId: user.entityId,
-            },
-          })
-          await insertTransaction({
-            db: tx,
-            transaction: viemContractDeploymentTransactionToDbTransaction({
-              transactionReceipt: deploymentTxReceipt,
-              transaction: deploymentTx,
-              entityId: user.entityId,
-              chainId,
-              contractId: contract.id,
-              deploymentTimestamp: deploymentBlock.timestamp,
-            }),
-          })
-
-          return contract
+            }).catch((err) => {
+              metrics.restoreDeletedContractErrorCount.inc()
+              this.logger?.error(
+                {
+                  error: err,
+                  entityId: user.entityId,
+                  contractId: existingContract.id,
+                  appId,
+                  chainId,
+                },
+                'error restoring deleted contract',
+              )
+              throw Trpc.handleStatus(500, 'error restoring deleted contract')
+            })
+            return restoredContract
+          } else {
+            const contract = await insertContract({
+              db: tx,
+              contract: {
+                contractAddress: inputContractAddress,
+                deploymentTxHash,
+                deployerAddress: inputDeployerAddress,
+                chainId,
+                appId,
+                state: isDeployerVerified
+                  ? ContractState.VERIFIED
+                  : ContractState.NOT_VERIFIED,
+                entityId: user.entityId,
+              },
+            })
+            await insertTransaction({
+              db: tx,
+              transaction: viemContractDeploymentTransactionToDbTransaction({
+                transactionReceipt: deploymentTxReceipt,
+                transaction: deploymentTx,
+                entityId: user.entityId,
+                chainId,
+                contractId: contract.id,
+                deploymentTimestamp: deploymentBlock.timestamp,
+              }),
+            })
+            return contract
+          }
         })
         .catch((err) => {
           metrics.insertContractErrorCount.inc()
@@ -277,7 +317,7 @@ export class ContractsRoute extends Route {
 
       assertUserAuthenticated(user)
 
-      const contract = await getContract({
+      const contract = await getActiveContract({
         db: this.trpc.database,
         contractId,
         entityId: user.entityId,
@@ -454,7 +494,7 @@ export class ContractsRoute extends Route {
 
       assertUserAuthenticated(user)
 
-      const contract = await getContract({
+      const contract = await getActiveContract({
         db: this.trpc.database,
         contractId,
         entityId: user.entityId,
@@ -476,6 +516,39 @@ export class ContractsRoute extends Route {
       }
 
       return addRebateEligibilityToContract(contract)
+    })
+
+  public readonly deleteContractRoute = 'deleteContract' as const
+  public readonly deleteContractController = this.trpc.procedure
+    .use(isPrivyAuthed(this.trpc))
+    .input(
+      this.z.object({
+        contractId: this.z.string(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const { user } = ctx.session
+      const { contractId } = input
+      assertUserAuthenticated(user)
+
+      await deleteContract({
+        db: this.trpc.database,
+        contractId,
+        entityId: user.entityId,
+      }).catch((err) => {
+        metrics.deleteContractErrorCount.inc()
+        this.logger?.error(
+          {
+            error: err,
+            entityId: user.entityId,
+            contractId,
+          },
+          'error deleting contract',
+        )
+        throw Trpc.handleStatus(500, 'error deleting contract')
+      })
+
+      return { success: true }
     })
 
   public readonly handler = this.trpc.router({

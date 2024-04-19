@@ -1,5 +1,5 @@
 import type { InferInsertModel, InferSelectModel } from 'drizzle-orm'
-import { and, asc, eq, relations } from 'drizzle-orm'
+import { and, asc, eq, ne, relations } from 'drizzle-orm'
 import {
   index,
   integer,
@@ -26,6 +26,7 @@ import { transactions } from './transactions'
 export enum ContractState {
   NOT_VERIFIED = 'not_verified',
   VERIFIED = 'verified',
+  DELETED = 'deleted',
 }
 
 export type ContractWithTxRebateAndEntity = Contract & {
@@ -97,7 +98,7 @@ export const contractsRelations = relations(contracts, ({ one }) => ({
 export type Contract = InferSelectModel<typeof contracts>
 export type InsertContract = InferInsertModel<typeof contracts>
 
-export const getContractsForApp = async (input: {
+export const getActiveContractsForApp = async (input: {
   db: Database
   entityId: Contract['entityId']
   appId: Contract['appId']
@@ -106,12 +107,16 @@ export const getContractsForApp = async (input: {
 
   return db.query.contracts.findMany({
     with: { entity: true, transaction: true, deploymentRebate: true },
-    where: and(eq(contracts.appId, appId), eq(contracts.entityId, entityId)),
+    where: and(
+      eq(contracts.appId, appId),
+      eq(contracts.entityId, entityId),
+      ne(contracts.state, ContractState.DELETED),
+    ),
     orderBy: asc(contracts.createdAt),
   })
 }
 
-export const getContract = async (input: {
+export const getActiveContract = async (input: {
   db: Database
   contractId: Contract['id']
   entityId: Contract['entityId']
@@ -120,10 +125,53 @@ export const getContract = async (input: {
 
   const results = await db.query.contracts.findMany({
     with: { entity: true, transaction: true, deploymentRebate: true },
-    where: and(eq(contracts.id, contractId), eq(contracts.entityId, entityId)),
+    where: and(
+      eq(contracts.id, contractId),
+      eq(contracts.entityId, entityId),
+      ne(contracts.state, ContractState.DELETED),
+    ),
   })
 
   return results[0] || null
+}
+
+export const getContractByAddressAndChainId = async (input: {
+  db: Database
+  contractAddress: Contract['contractAddress']
+  chainId: Contract['chainId']
+  entityId: Contract['entityId']
+}): Promise<Contract | null> => {
+  const { db, contractAddress, chainId, entityId } = input
+
+  const results = await db
+    .select()
+    .from(contracts)
+    .where(
+      and(
+        eq(contracts.entityId, entityId),
+        eq(contracts.contractAddress, getAddress(contractAddress)),
+        eq(contracts.chainId, chainId),
+      ),
+    )
+
+  return results[0] || null
+}
+
+export const restoreDeletedContract = async (input: {
+  db: Database
+  contractId: Contract['id']
+  appId: Contract['appId']
+  state: ContractState.VERIFIED | ContractState.NOT_VERIFIED
+}) => {
+  const { db, contractId, appId, state } = input
+
+  const results = await db
+    .update(contracts)
+    .set({ state, appId, updatedAt: new Date() })
+    .where(eq(contracts.id, contractId))
+    .returning()
+
+  return results[0]
 }
 
 export const hasAlreadyVerifiedDeployer = async (input: {
@@ -176,6 +224,22 @@ export const verifyContract = async (input: {
   const results = await db
     .update(contracts)
     .set({ state: ContractState.VERIFIED, updatedAt: new Date() })
+    .where(and(eq(contracts.entityId, entityId), eq(contracts.id, contractId)))
+    .returning()
+
+  return results[0]
+}
+
+export const deleteContract = async (input: {
+  db: Database
+  entityId: Contract['entityId']
+  contractId: Contract['id']
+}) => {
+  const { db, entityId, contractId } = input
+
+  const results = await db
+    .update(contracts)
+    .set({ state: ContractState.DELETED, updatedAt: new Date() })
     .where(and(eq(contracts.entityId, entityId), eq(contracts.id, contractId)))
     .returning()
 
