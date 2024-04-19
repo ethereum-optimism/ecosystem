@@ -9,7 +9,7 @@ import {
 } from '@eth-optimism/ui-components'
 
 import { AddContractFlow } from '@/app/settings/contracts/AddContractFlow'
-import { RiMoreLine } from '@remixicon/react'
+import { RiAddLine, RiMoreLine } from '@remixicon/react'
 import { EditAppDialog } from '@/app/settings/contracts/EditAppDialog'
 import { useCallback, useState } from 'react'
 import { DeployedApp as ApiDeployedApp, Contract } from '@/app/types/api'
@@ -92,19 +92,22 @@ export const DeployedApp = ({ app }: DeployedAppProps) => {
         </div>
       </CardHeader>
       <CardContent>
-        {contracts.map((contract) => (
-          <DeployedAppContract
-            app={app}
-            contract={contract}
-            onStartVerification={handleStartVerification}
-          />
-        ))}
-        {hasDraftContract && (
-          <AddContractFlow
-            appId={app.id}
-            onStartVerification={handleStartVerification}
-          />
-        )}
+        <div className="flex flex-col space-y-3">
+          {contracts.map((contract) => (
+            <DeployedAppContract
+              key={contract.id}
+              app={app}
+              contract={contract}
+              onStartVerification={handleStartVerification}
+            />
+          ))}
+          {hasDraftContract && (
+            <AddContractFlow
+              appId={app.id}
+              onStartVerification={handleStartVerification}
+            />
+          )}
+        </div>
         {contractToVerifiy && (
           <StartVerificationDialog
             contract={contractToVerifiy}
@@ -117,11 +120,12 @@ export const DeployedApp = ({ app }: DeployedAppProps) => {
           />
         )}
         <Button
+          className="mt-3"
           variant="outline"
           onClick={() => setHasDraftContract(true)}
           disabled={hasDraftContract || pendingContracts.length > 0}
         >
-          Add Contract
+          <RiAddLine /> Add Contract
         </Button>
       </CardContent>
     </Card>

@@ -8,39 +8,50 @@ import {
   DialogTrigger,
 } from '@eth-optimism/ui-components'
 import { Text } from '@eth-optimism/ui-components/src/components/ui/text/text'
-import { Address, Transaction, formatEther } from 'viem'
+import { formatEther } from 'viem'
 import { useCallback, useMemo, useState } from 'react'
 import { MAX_CLAIMABLE_AMOUNT } from '@/app/constants/rebate'
 import { shortenAddress } from '@eth-optimism/op-app'
 import Link from 'next/link'
+import { Contract } from '@/app/types/api'
+import { Network } from '@/app/components/Network'
+import { optimism } from 'viem/chains'
+import { apiClient } from '@/app/helpers/apiClient'
 
 export type ClaimRebateDialogProps = {
-  contractAddress: Address
-  contractDeploymentTransaction: Transaction
-  amountClaimed?: bigint
-  isVerified?: boolean
+  contract: Contract
   children: React.ReactNode
 }
 
 export const ClaimRebateDialog = ({
-  contractAddress,
-  contractDeploymentTransaction,
-  amountClaimed = BigInt(0),
-  isVerified = false,
+  contract,
   children,
 }: ClaimRebateDialogProps) => {
   const [isOpen, setOpen] = useState(false)
 
+  const { data: wallets } = apiClient.wallets.listWallets.useQuery({})
+  const firstVerifiedWallet = useMemo(
+    () => wallets?.records.find((wallet) => wallet.verifications.isCbVerified),
+    [wallets],
+  )
+
+  const { data: totalRebateAmount } =
+    apiClient.Rebates.totalRebatesClaimed.useQuery()
+  const amountClaimed = useMemo(
+    () => totalRebateAmount ?? BigInt(0),
+    [totalRebateAmount],
+  )
+
   const gasFeeToReimburst = useMemo(() => {
-    const gasAmount = contractDeploymentTransaction.gas
+    const gasAmount = BigInt(contract.transaction?.gasUsed ?? 0)
 
     const claimableAmount =
       gasAmount + amountClaimed > MAX_CLAIMABLE_AMOUNT
         ? MAX_CLAIMABLE_AMOUNT - amountClaimed
         : gasAmount
 
-    return formatEther(claimableAmount)
-  }, [contractDeploymentTransaction])
+    return formatEther(claimableAmount, 'gwei')
+  }, [contract])
 
   const handleClaim = useCallback(() => {
     // TODO: add backend call here to claim rebate
@@ -71,7 +82,7 @@ export const ClaimRebateDialog = ({
             <Text as="p" className="text-muted-foreground font-medium">
               Contract
             </Text>
-            <Text as="p">{shortenAddress(contractAddress)}</Text>
+            <Text as="p">{shortenAddress(contract.contractAddress)}</Text>
           </div>
 
           <div className="flex flex-col">
@@ -98,26 +109,14 @@ export const ClaimRebateDialog = ({
             <div className="flex flex-row justify-center">
               <Text
                 as="p"
-                className="text-right text-muted-foreground font-medium"
+                className="text-right text-muted-foreground font-medium mr-1"
               >
                 To
               </Text>
-              <Image
-                className="mx-1"
-                src="/logos/op-logo.svg"
-                width={20}
-                height={20}
-                alt="Optimism Logo"
-              />
-              <Text
-                as="p"
-                className="text-right text-muted-foreground font-medium"
-              >
-                OP Mainnet
-              </Text>
+              <Network chainId={optimism.id} />
             </div>
             <Text as="p" className="text-right">
-              {shortenAddress(contractDeploymentTransaction.from)}
+              {shortenAddress(contract.transaction!.fromAddress)}
             </Text>
           </div>
         </div>
@@ -127,7 +126,7 @@ export const ClaimRebateDialog = ({
         </Text>
 
         <div className="flex flex-col w-full mt-3">
-          {isVerified ? (
+          {firstVerifiedWallet ? (
             <Button className="h-[48px]" onClick={handleClaim}>
               <Text as="span">Claim Rebate</Text>
             </Button>
@@ -138,7 +137,9 @@ export const ClaimRebateDialog = ({
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <Text as="span">Get Verified</Text>
+                <Text className="cursor-pointer" as="span">
+                  Verify your onchain identity with Coinbase
+                </Text>
               </Link>
             </Button>
           )}

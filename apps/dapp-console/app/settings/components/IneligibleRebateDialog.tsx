@@ -1,6 +1,5 @@
 import { User } from '@privy-io/react-auth'
 import { useCallback, useMemo, useState } from 'react'
-import { Transaction } from 'viem'
 
 import { Text } from '@eth-optimism/ui-components/src/components/ui/text/text'
 import {
@@ -10,6 +9,7 @@ import {
   DialogHeader,
   DialogTrigger,
 } from '@eth-optimism/ui-components'
+import { Contract } from '@/app/types/api'
 
 export type IneligibleRebateReason =
   | 'deployed-before-account-creation'
@@ -18,9 +18,7 @@ export type IneligibleRebateReason =
 export type IneligibleRebateDialogProps = {
   reason: IneligibleRebateReason
   user: User | null
-  contractDeploymentTx?: Transaction & {
-    timestamp?: bigint
-  }
+  contract: Contract
   children: React.ReactNode
 }
 
@@ -39,7 +37,7 @@ const metadata = {
 
 export const IneligibleRebateDialog = ({
   reason,
-  contractDeploymentTx,
+  contract,
   user,
   children,
 }: IneligibleRebateDialogProps) => {
@@ -62,14 +60,22 @@ export const IneligibleRebateDialog = ({
         day: '2-digit',
         year: 'numeric',
       })
+
+      const contractDeploymentTimestamp =
+        contract?.transaction?.blockTimestamp ?? 0
+      const contractDeployedDate = new Date(
+        contractDeploymentTimestamp * 1000,
+      ).toLocaleString('default', {
+        month: 'short',
+        day: '2-digit',
+        year: 'numeric',
+      })
+
       return metadata.deployedBeforeAccountCreation.description
         .replace('{signup-date}', signupDate ?? '')
-        .replace(
-          '{deploy-date}',
-          contractDeploymentTx?.timestamp?.toString() ?? 'Feb 25th, 2024',
-        )
+        .replace('{deploy-date}', contractDeployedDate)
     }
-  }, [user, reason, contractDeploymentTx])
+  }, [user, reason, contract])
 
   const handleClose = useCallback(() => setOpen(false), [setOpen])
 
@@ -78,7 +84,7 @@ export const IneligibleRebateDialog = ({
       <DialogTrigger>{children}</DialogTrigger>
       <DialogContent>
         <DialogHeader>
-          <Text as="p" className="text-lg text-center font-semibold">
+          <Text as="p" className="text-lg mt-1 text-center font-semibold">
             {title}
           </Text>
         </DialogHeader>
