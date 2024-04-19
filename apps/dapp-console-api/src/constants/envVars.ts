@@ -40,6 +40,8 @@ const envVarSchema = z.object({
   MAX_APPS_COUNT: z.number().min(1).default(20),
   OP_MAINNET_JSON_RPC_URL: z.string(),
   DEPLOYMENT_REBATE_WALLET_PK: z.custom<Hex>(),
+  /** Max rebate amount in units of ether */
+  MAX_REBATE_AMOUNT: z.string().default('.05'),
 })
 
 const isTest = process.env.NODE_ENV === 'test'
@@ -84,6 +86,7 @@ export const envVars = envVarSchema.parse(
         PRIVY_ACCESS_TOKEN_SALT: '$2b$10$Kd085thA56nZmQiRHh2XHu',
         OP_MAINNET_JSON_RPC_URL: 'OP_MAINNET_JSON_RPC_URL',
         DEPLOYMENT_REBATE_WALLET_PK: 'DEPLOYMENT_REBATE_WALLET_PK',
+        MAX_REBATE_AMOUNT: '.05',
       }
     : {
         PORT: process.env.PORT
@@ -121,5 +124,6 @@ export const envVars = envVarSchema.parse(
         MAX_APPS_COUNT: process.env.MAX_APPS_COUNT,
         OP_MAINNET_JSON_RPC_URL: process.env.OP_MAINNET_JSON_RPC_URL,
         DEPLOYMENT_REBATE_WALLET_PK: process.env.DEPLOYMENT_REBATE_WALLET_PK,
+        MAX_REBATE_AMOUNT: process.env.MAX_REBATE_AMOUNT,
       },
 )
