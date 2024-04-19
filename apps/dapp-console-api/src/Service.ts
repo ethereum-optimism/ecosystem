@@ -18,7 +18,7 @@ import type { Registry } from 'prom-client'
 import prometheus from 'prom-client'
 import { createPublicClient, createWalletClient, http } from 'viem'
 import { privateKeyToAccount } from 'viem/accounts'
-import { optimism } from 'viem/chains'
+import { optimism, optimismSepolia } from 'viem/chains'
 
 import { ApiV0, Middleware } from './api'
 import { AdminApi } from './api/AdminApi'
@@ -132,10 +132,21 @@ export class Service {
       chain: optimism,
       transport: http(envVars.OP_MAINNET_JSON_RPC_URL),
     })
+    const opSepoliaPublicClient = createPublicClient({
+      chain: optimismSepolia,
+      transport: http(envVars.OP_SEPOLIA_JSON_RPC_URL),
+    })
     const rebateWalletClient = createWalletClient({
       chain: optimism,
       transport: http(envVars.OP_MAINNET_JSON_RPC_URL),
       account: privateKeyToAccount(envVars.DEPLOYMENT_REBATE_WALLET_PK),
+    })
+    const opSepoliaRebateWalletClient = createWalletClient({
+      chain: optimismSepolia,
+      transport: http(envVars.OP_SEPOLIA_JSON_RPC_URL),
+      account: privateKeyToAccount(
+        envVars.OP_SEPOLIA_DEPLOYMENT_REBATE_WALLET_PK,
+      ),
     })
 
     const authRoute = new AuthRoute(trpc)
@@ -146,6 +157,8 @@ export class Service {
       trpc,
       rebateWalletClient,
       opMainnetPublicClient,
+      opSepoliaRebateWalletClient,
+      opSepoliaPublicClient,
     )
 
     /**

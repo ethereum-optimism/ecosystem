@@ -6,7 +6,7 @@ import type {
   WalletClient,
 } from 'viem'
 import { getAddress } from 'viem'
-import type { optimism } from 'viem/chains'
+import { type optimism, type optimismSepolia } from 'viem/chains'
 
 import {
   generateListResponse,
@@ -14,6 +14,7 @@ import {
   zodEthereumAddress,
   zodListRequest,
 } from '@/api'
+import { SUPPORTED_L2_CHAINS, SUPPORTED_L2_MAINNET_CHAINS } from '@/constants'
 import { MAX_REBATE_AMOUNT } from '@/constants/rebates'
 import { isPrivyAuthed } from '@/middleware'
 import type { DeploymentRebate } from '@/models'
@@ -162,6 +163,16 @@ export class RebatesRoute extends Route {
         throw Trpc.handleStatus(
           500,
           'no deployment transaction associated with contract',
+        )
+      }
+
+      const isSupportedChain = SUPPORTED_L2_CHAINS.some(
+        ({ chain }) => chain.id === contract.chainId,
+      )
+      if (!isSupportedChain) {
+        throw Trpc.handleStatus(
+          403,
+          `chain id: ${contract.chainId} is not supported`,
         )
       }
 
@@ -322,7 +333,16 @@ export class RebatesRoute extends Route {
         })
       }
 
-      const rebateTxHash = await this.walletClient
+      const isMainnetChain = SUPPORTED_L2_MAINNET_CHAINS.some(
+        ({ chain }) => chain.id === contract.chainId,
+      )
+      const walletClient: WalletClient<
+        Transport,
+        typeof optimism | typeof optimismSepolia,
+        Account
+      > = isMainnetChain ? this.walletClient : this.testnetWalletClient
+
+      const rebateTxHash = await walletClient
         .sendTransaction({
           to: recipientAddress,
           value: amountToSend,
@@ -346,7 +366,12 @@ export class RebatesRoute extends Route {
           })
           throw Trpc.handleStatus(500, 'error sending rebate tx')
         })
-      const rebateTxReceipt = await this.publicClient
+
+      const publicClient = isMainnetChain
+        ? this.publicClient
+        : this.testnetPublicClient
+
+      const rebateTxReceipt = await publicClient
         .waitForTransactionReceipt({
           hash: rebateTxHash,
         })
@@ -413,6 +438,15 @@ export class RebatesRoute extends Route {
       Account
     >,
     private readonly publicClient: PublicClient<HttpTransport, typeof optimism>,
+    private readonly testnetWalletClient: WalletClient<
+      Transport,
+      typeof optimismSepolia,
+      Account
+    >,
+    private readonly testnetPublicClient: PublicClient<
+      HttpTransport,
+      typeof optimismSepolia
+    >,
   ) {
     super(trpc)
   }
