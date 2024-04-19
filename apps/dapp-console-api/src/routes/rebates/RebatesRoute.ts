@@ -397,7 +397,7 @@ export class RebatesRoute extends Route {
         throw Trpc.handleStatus(500, 'unknown server error')
       })
 
-      return { success: true }
+      return { txHash: rebateTxReceipt.transactionHash }
     })
 
   public readonly handler = this.trpc.router({
