@@ -114,4 +114,8 @@ export const metrics = {
     name: 'update_deployment_rebate_to_pending_error_count',
     help: 'Total number of times the server failed to update a rebate to pending',
   }),
+  fetchCompletedRebatesListErrorCount: new Counter({
+    name: 'fetch_completed_rebates_list_error_count',
+    help: 'Total number of times the server failed to fetch the list of completed deployment rebates',
+  }),
 }

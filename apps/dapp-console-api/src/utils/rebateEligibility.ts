@@ -1,7 +1,7 @@
-import type { ContractWithTxAndEntity } from '@/models'
+import type { ContractWithTxRebateAndEntity } from '@/models'
 
 export const addRebateEligibilityToContract = (
-  contract: ContractWithTxAndEntity,
+  contract: ContractWithTxRebateAndEntity,
 ) => {
   return {
     ...contract,
@@ -10,7 +10,7 @@ export const addRebateEligibilityToContract = (
 }
 
 export const isContractDeploymentDateEligibleForRebate = (
-  contract: ContractWithTxAndEntity,
+  contract: ContractWithTxRebateAndEntity,
 ) => {
   return (
     contract.transaction &&
