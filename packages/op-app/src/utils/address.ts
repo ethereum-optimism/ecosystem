@@ -23,7 +23,5 @@ export function shortenHex(str: string) {
 }
 
 export const shortenAddress = (address: string) => {
-  return address.includes('.')
-    ? shortenENSName(address)
-    : shortenHex(address)
+  return address.includes('.') ? shortenENSName(address) : shortenHex(address)
 }
