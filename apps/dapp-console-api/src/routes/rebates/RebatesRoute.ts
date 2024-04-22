@@ -21,8 +21,8 @@ import type { DeploymentRebate } from '@/models'
 import {
   ContractState,
   DeploymentRebateState,
+  getActiveContract,
   getCompletedRebatesForEntityByCursor,
-  getContract,
   getDeploymentRebateByContractId,
   getTotalRebatesClaimed,
   getWalletVerifications,
@@ -120,7 +120,7 @@ export class RebatesRoute extends Route {
 
       assertUserAuthenticated(user)
 
-      const contract = await getContract({
+      const contract = await getActiveContract({
         db: this.trpc.database,
         contractId,
         entityId: user.entityId,

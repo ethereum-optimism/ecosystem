@@ -18,7 +18,7 @@ export type Contract = {
   contractAddress: Address
   createdAt: Date
   updatedAt: Date
-  state: 'not_verified' | 'verified'
+  state: 'not_verified' | 'verified' | 'deleted'
   entityId: string
   appId: string
   deployerAddress: Address

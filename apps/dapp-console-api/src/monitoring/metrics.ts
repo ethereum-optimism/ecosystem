@@ -122,4 +122,12 @@ export const metrics = {
     name: 'trace_tx_error_count',
     help: 'Total number of times the server failed to trace a transaction',
   }),
+  deleteContractErrorCount: new Counter({
+    name: 'delete_contract_error_count',
+    help: 'Total number of times the server failed to delete a contract',
+  }),
+  restoreDeletedContractErrorCount: new Counter({
+    name: 'restore_deleted_contract_error_count',
+    help: 'Total number of times a deleted contract failed to be restored',
+  }),
 }
