@@ -13,7 +13,7 @@ contract DeployConsoleApiTestEnv is Script {
 
         vm.startBroadcast(deployerPrivateKey);
         bytes32 salt = keccak256(bytes("TestSalt"));
-        
+
         console.log("Deploying contracts with create");
         deployContracts();
 
