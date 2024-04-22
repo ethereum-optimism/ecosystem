@@ -56,6 +56,8 @@ const envVarSchema = z.object({
   MODE_SEPOLIA_JSON_RPC_URL: z.string().optional(),
   OP_SEPOLIA_JSON_RPC_URL: z.string().optional(),
   ZORA_SEPOLIA_JSON_RPC_URL: z.string().optional(),
+  REDIS_URL: z.string().describe('URL of Redis instance'),
+  RATE_LIMIT: z.number(),
 })
 
 const isTest = process.env.NODE_ENV === 'test'
@@ -116,6 +118,8 @@ export const envVars = envVarSchema.parse(
         MODE_SEPOLIA_JSON_RPC_URL: 'MODE_SEPOLIA_JSON_RPC_URL',
         OP_SEPOLIA_JSON_RPC_URL: 'OP_SEPOLIA_JSON_RPC_URL',
         ZORA_SEPOLIA_JSON_RPC_URL: 'ZORA_SEPOLIA_JSON_RPC_URL',
+        REDIS_URL: 'REDIS_URL',
+        RATE_LIMIT: 100,
       }
     : {
         PORT: process.env.PORT
@@ -171,5 +175,9 @@ export const envVars = envVarSchema.parse(
         MODE_SEPOLIA_JSON_RPC_URL: process.env.MODE_SEPOLIA_JSON_RPC_URL,
         OP_SEPOLIA_JSON_RPC_URL: process.env.OP_SEPOLIA_JSON_RPC_URL,
         ZORA_SEPOLIA_JSON_RPC_URL: process.env.ZORA_SEPOLIA_JSON_RPC_URL,
+        REDIS_URL: process.env.REDIS_URL,
+        RATE_LIMIT: process.env.RATE_LIMIT
+          ? Number(process.env.RATE_LIMIT)
+          : 100,
       },
 )

@@ -10,6 +10,7 @@ import type {
 } from 'express'
 import express from 'express'
 import promBundle from 'express-prom-bundle'
+import { Redis } from 'ioredis'
 import morgan from 'morgan'
 import type { Server } from 'net'
 import type { Logger } from 'pino'
@@ -25,6 +26,7 @@ import { AdminApi } from './api/AdminApi'
 import { ensureAdmin } from './auth'
 import { corsAllowlist, envVars } from './constants'
 import { connectToDatabase, runMigrations } from './db'
+import { getRateLimiter } from './middleware/getRateLimiter'
 import { metrics } from './monitoring/metrics'
 import { AppsRoute } from './routes/apps'
 import { AuthRoute } from './routes/auth'
@@ -60,6 +62,7 @@ export class Service {
     private readonly middleware: Middleware,
     private readonly logger: Logger,
     private readonly adminServer: AdminApi,
+    private readonly redisClient: Redis,
   ) {
     // Create the metrics server.
     this.metricsRegistry = prometheus.register
@@ -99,9 +102,9 @@ export class Service {
    * @returns service with all dependencies injected
    */
   public static readonly init = async () => {
-    // TODO remove this disable after this variable is used.
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const appDB = connectToDatabase({
+    const redisClient = new Redis(envVars.REDIS_URL)
+
+    const db = connectToDatabase({
       user: envVars.DB_USER,
       password: envVars.DB_PASSWORD,
       database: envVars.DB_NAME,
@@ -127,7 +130,7 @@ export class Service {
     /**
      * Routes and controllers are created with trpc
      */
-    const trpc = new Trpc(privy, logger, appDB)
+    const trpc = new Trpc(privy, logger, db)
     const opMainnetPublicClient = createPublicClient({
       chain: optimism,
       transport: http(envVars.OP_MAINNET_JSON_RPC_URL),
@@ -176,7 +179,13 @@ export class Service {
     const adminServer = new AdminApi(trpc, {})
     adminServer.setLoggingServer(logger)
 
-    const service = new Service(apiServer, middleware, logger, adminServer)
+    const service = new Service(
+      apiServer,
+      middleware,
+      logger,
+      adminServer,
+      redisClient,
+    )
 
     return service
   }
@@ -227,6 +236,21 @@ export class Service {
       const healthzPath = '/healthz'
       const readyPath = '/ready'
 
+      app.get(healthzPath, (req, res) => {
+        res.json({ ok: true })
+      })
+
+      app.get(readyPath, (req, res) => {
+        if (serviceInitialized) {
+          return res.json({ ok: true })
+        }
+
+        // return a 500 if the service isn't initialized yet
+        res.status(500).send()
+      })
+
+      app.use(getRateLimiter(this.redisClient))
+
       // Metrics.
       // Will expose a /metrics endpoint by default.
       app.use(
@@ -253,19 +277,6 @@ export class Service {
       )
 
       app.use(API_PATH, router)
-
-      app.get(healthzPath, (req, res) => {
-        res.json({ ok: true })
-      })
-
-      app.get(readyPath, (req, res) => {
-        if (serviceInitialized) {
-          return res.json({ ok: true })
-        }
-
-        // return a 500 if the service isn't initialized yet
-        res.status(500).send()
-      })
 
       // Default error handler
       app.use(((
