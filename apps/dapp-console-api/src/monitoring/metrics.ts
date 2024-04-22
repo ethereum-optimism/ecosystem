@@ -118,4 +118,8 @@ export const metrics = {
     name: 'fetch_completed_rebates_list_error_count',
     help: 'Total number of times the server failed to fetch the list of completed deployment rebates',
   }),
+  traceTxErrorCount: new Counter({
+    name: 'trace_tx_error_count',
+    help: 'Total number of times the server failed to trace a transaction',
+  }),
 }

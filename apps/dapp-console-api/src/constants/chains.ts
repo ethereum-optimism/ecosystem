@@ -1,4 +1,13 @@
-import type { Chain, PublicClient } from 'viem'
+import type {
+  Account,
+  Address,
+  Chain,
+  Hash,
+  Hex,
+  HttpTransport,
+  PublicClient,
+  PublicRpcSchema,
+} from 'viem'
 import { createPublicClient, http } from 'viem'
 import {
   base,
@@ -35,6 +44,49 @@ export type SuperchainBrand =
   | 'op'
   | 'zora'
 export type NetworkType = 'l1' | 'l2'
+
+type TraceType =
+  | 'CALL'
+  | 'DELEGATECALL'
+  | 'STATICCALL'
+  | 'CREATE'
+  | 'CREATE2'
+  | 'SELFDESTRUCT'
+  | 'REWARD'
+
+type TraceCall = {
+  type: TraceType
+  from: Address
+  to: Address
+  gas?: Hex
+  gasUsed?: Hex
+  input: Hex
+  output: Hex
+  calls?: TraceCall[]
+  value?: Hex
+}
+
+type TraceResult = {
+  type: TraceType
+  from: Address
+  to: Address
+  value: bigint
+  gas: Hex
+  gasUsed: Hex
+  input: Hex
+  output: Hex
+  calls?: TraceCall[]
+}
+
+type DebugTraceTransactionResult = TraceResult
+
+type DebugTraceTransactionRpcSchema = {
+  Method: 'debug_traceTransaction'
+  Parameters: DebugTraceTransactionParams
+  ReturnType: DebugTraceTransactionResult
+}
+
+type DebugTraceTransactionParams = [Hash, { tracer: 'callTracer' }]
 
 export const superchain: Record<SuperchainBrand, SuperchainNetwork> = {
   ethereum: {
@@ -165,11 +217,37 @@ export const SUPPORTED_CHAINS = [...SUPPORTED_L1_CHAINS, ...SUPPORTED_L2_CHAINS]
 
 export const supportedChainsPublicClientsMap = SUPPORTED_CHAINS.reduce(
   (accumulator, { chain, rpcUrl }) => {
-    accumulator[chain.id] = createPublicClient({
+    accumulator[chain.id] = createPublicClient<
+      HttpTransport,
+      Chain,
+      Account,
+      [...PublicRpcSchema, DebugTraceTransactionRpcSchema]
+    >({
       chain,
       transport: http(rpcUrl),
-    })
+    }).extend((client) => ({
+      async traceTransaction(transactionHash: Hash) {
+        return client.request({
+          method: 'debug_traceTransaction',
+          params: [
+            transactionHash,
+            {
+              tracer: 'callTracer',
+            },
+          ],
+        })
+      },
+    }))
     return accumulator
   },
-  {} as Record<number, PublicClient | undefined>,
+  {} as Record<
+    number,
+    | (PublicClient<
+        HttpTransport,
+        Chain,
+        Account,
+        [...PublicRpcSchema, DebugTraceTransactionRpcSchema]
+      > & { traceTransaction: (transactionHash: Hash) => Promise<TraceResult> })
+    | undefined
+  >,
 )
