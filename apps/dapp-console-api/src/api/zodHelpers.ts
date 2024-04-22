@@ -47,4 +47,6 @@ export const zodEthereumSignature = z
 
 export const zodSupportedChainId = z
   .number()
-  .refine((chainId) => SUPPORTED_CHAINS.some(({ id }) => id === chainId))
+  .refine((chainId) =>
+    SUPPORTED_CHAINS.some(({ chain }) => chain.id === chainId),
+  )

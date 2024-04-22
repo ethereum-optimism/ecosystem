@@ -40,8 +40,22 @@ const envVarSchema = z.object({
   MAX_APPS_COUNT: z.number().min(1).default(20),
   OP_MAINNET_JSON_RPC_URL: z.string(),
   DEPLOYMENT_REBATE_WALLET_PK: z.custom<Hex>(),
+  OP_SEPOLIA_DEPLOYMENT_REBATE_WALLET_PK: z.custom<Hex>(),
   /** Max rebate amount in units of ether */
   MAX_REBATE_AMOUNT: z.string().default('.05'),
+  INCLUDE_TESTNETS: z.boolean().default(false),
+  MAINNET_JSON_RPC_URL: z.string(),
+  BASE_JSON_RPC_URL: z.string(),
+  FRAX_JSON_RPC_URL: z.string(),
+  MODE_JSON_RPC_URL: z.string(),
+  ZORA_JSON_RPC_URL: z.string(),
+  SEPOLIA_JSON_RPC_URL: z.string().optional(),
+  BASE_SEPOLIA_JSON_RPC_URL: z.string().optional(),
+  FRAX_SEPOLIA_JSON_RPC_URL: z.string().optional(),
+  LISK_SEPOLIA_JSON_RPC_URL: z.string().optional(),
+  MODE_SEPOLIA_JSON_RPC_URL: z.string().optional(),
+  OP_SEPOLIA_JSON_RPC_URL: z.string().optional(),
+  ZORA_SEPOLIA_JSON_RPC_URL: z.string().optional(),
 })
 
 const isTest = process.env.NODE_ENV === 'test'
@@ -86,7 +100,22 @@ export const envVars = envVarSchema.parse(
         PRIVY_ACCESS_TOKEN_SALT: '$2b$10$Kd085thA56nZmQiRHh2XHu',
         OP_MAINNET_JSON_RPC_URL: 'OP_MAINNET_JSON_RPC_URL',
         DEPLOYMENT_REBATE_WALLET_PK: 'DEPLOYMENT_REBATE_WALLET_PK',
+        OP_SEPOLIA_DEPLOYMENT_REBATE_WALLET_PK:
+          'OP_SEPOLIA_DEPLOYMENT_REBATE_WALLET_PK',
         MAX_REBATE_AMOUNT: '.05',
+        INCLUDE_TESTNETS: false,
+        MAINNET_JSON_RPC_URL: 'MAINNET_JSON_RPC_URL',
+        BASE_JSON_RPC_URL: 'BASE_JSON_RPC_URL',
+        FRAX_JSON_RPC_URL: 'FRAX_JSON_RPC_URL',
+        MODE_JSON_RPC_URL: 'MODE_JSON_RPC_URL',
+        ZORA_JSON_RPC_URL: 'ZORA_JSON_RPC_URL',
+        SEPOLIA_JSON_RPC_URL: 'SEPOLIA_JSON_RPC_URL',
+        BASE_SEPOLIA_JSON_RPC_URL: 'BASE_SEPOLIA_JSON_RPC_URL',
+        FRAX_SEPOLIA_JSON_RPC_URL: 'FRAX_SEPOLIA_JSON_RPC_URL',
+        LISK_SEPOLIA_JSON_RPC_URL: 'LISK_SEPOLIA_JSON_RPC_URL',
+        MODE_SEPOLIA_JSON_RPC_URL: 'MODE_SEPOLIA_JSON_RPC_URL',
+        OP_SEPOLIA_JSON_RPC_URL: 'OP_SEPOLIA_JSON_RPC_URL',
+        ZORA_SEPOLIA_JSON_RPC_URL: 'ZORA_SEPOLIA_JSON_RPC_URL',
       }
     : {
         PORT: process.env.PORT
@@ -124,6 +153,23 @@ export const envVars = envVarSchema.parse(
         MAX_APPS_COUNT: process.env.MAX_APPS_COUNT,
         OP_MAINNET_JSON_RPC_URL: process.env.OP_MAINNET_JSON_RPC_URL,
         DEPLOYMENT_REBATE_WALLET_PK: process.env.DEPLOYMENT_REBATE_WALLET_PK,
+        OP_SEPOLIA_DEPLOYMENT_REBATE_WALLET_PK:
+          process.env.OP_SEPOLIA_DEPLOYMENT_REBATE_WALLET_PK,
         MAX_REBATE_AMOUNT: process.env.MAX_REBATE_AMOUNT,
+        INCLUDE_TESTNETS: process.env.INCLUDE_TESTNETS
+          ? Boolean(process.env.INCLUDE_TESTNETS === 'true')
+          : false,
+        MAINNET_JSON_RPC_URL: process.env.MAINNET_JSON_RPC_URL,
+        BASE_JSON_RPC_URL: process.env.BASE_JSON_RPC_URL,
+        FRAX_JSON_RPC_URL: process.env.FRAX_JSON_RPC_URL,
+        MODE_JSON_RPC_URL: process.env.MODE_JSON_RPC_URL,
+        ZORA_JSON_RPC_URL: process.env.ZORA_JSON_RPC_URL,
+        SEPOLIA_JSON_RPC_URL: process.env.SEPOLIA_JSON_RPC_URL,
+        BASE_SEPOLIA_JSON_RPC_URL: process.env.BASE_SEPOLIA_JSON_RPC_URL,
+        FRAX_SEPOLIA_JSON_RPC_URL: process.env.FRAX_SEPOLIA_JSON_RPC_URL,
+        LISK_SEPOLIA_JSON_RPC_URL: process.env.LISK_SEPOLIA_JSON_RPC_URL,
+        MODE_SEPOLIA_JSON_RPC_URL: process.env.MODE_SEPOLIA_JSON_RPC_URL,
+        OP_SEPOLIA_JSON_RPC_URL: process.env.OP_SEPOLIA_JSON_RPC_URL,
+        ZORA_SEPOLIA_JSON_RPC_URL: process.env.ZORA_SEPOLIA_JSON_RPC_URL,
       },
 )
