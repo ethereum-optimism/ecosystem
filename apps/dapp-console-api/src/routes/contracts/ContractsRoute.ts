@@ -1,3 +1,4 @@
+import type { Address } from 'viem'
 import { getAddress } from 'viem'
 
 import {
@@ -92,8 +93,8 @@ export class ContractsRoute extends Route {
     .mutation(async ({ ctx, input }) => {
       const { user } = ctx.session
       const { deploymentTxHash, chainId, appId } = input
-      const contractAddress = getAddress(input.contractAddress)
-      const deployerAddress = getAddress(input.deployerAddress)
+      const inputContractAddress = getAddress(input.contractAddress)
+      const inputDeployerAddress = getAddress(input.deployerAddress)
 
       assertUserAuthenticated(user)
 
@@ -102,6 +103,7 @@ export class ContractsRoute extends Route {
       if (!publicClient) {
         throw Trpc.handleStatus(400, 'chain not supported')
       }
+
       const deploymentTx = await publicClient
         .getTransaction({
           hash: deploymentTxHash,
@@ -154,20 +156,54 @@ export class ContractsRoute extends Route {
           throw Trpc.handleStatus(400, 'error fetching deployment transaction')
         })
 
-      if (!addressEqualityCheck(deploymentTxReceipt.from, deployerAddress)) {
+      let txContractAddress: Address | null =
+        deploymentTxReceipt.contractAddress || null
+      if (!deploymentTxReceipt.contractAddress) {
+        const tracedTransaction = await publicClient
+          .traceTransaction(deploymentTxHash)
+          .catch((err) => {
+            metrics.traceTxErrorCount.inc({ chainId })
+            this.logger?.error(
+              {
+                error: err,
+                entityId: user.entityId,
+                txHash: deploymentTxHash,
+                chainId,
+              },
+              'unable to trace transaction',
+            )
+            throw Trpc.handleStatus(
+              500,
+              'error fetching deployment transaction',
+            )
+          })
+
+        if (
+          tracedTransaction &&
+          tracedTransaction.calls?.length === 1 &&
+          tracedTransaction.calls[0].type === 'CREATE2'
+        ) {
+          txContractAddress = tracedTransaction.calls[0].to
+        }
+      }
+
+      if (!txContractAddress) {
+        throw Trpc.handleStatus(
+          400,
+          'the provided deployment transaction did not create a contract',
+        )
+      }
+
+      if (
+        !addressEqualityCheck(deploymentTxReceipt.from, inputDeployerAddress)
+      ) {
         throw Trpc.handleStatus(
           400,
           'deployer address does not match deployment transaction',
         )
       }
 
-      if (
-        !deploymentTxReceipt.contractAddress ||
-        !addressEqualityCheck(
-          deploymentTxReceipt.contractAddress,
-          contractAddress,
-        )
-      ) {
+      if (!addressEqualityCheck(txContractAddress, inputContractAddress)) {
         throw Trpc.handleStatus(
           400,
           'contract was not created by deployment transaction',
@@ -179,15 +215,15 @@ export class ContractsRoute extends Route {
           const isDeployerVerified = await hasAlreadyVerifiedDeployer({
             db: tx,
             entityId: user.entityId,
-            deployerAddress,
+            deployerAddress: inputDeployerAddress,
           })
 
           const contract = await insertContract({
             db: tx,
             contract: {
-              contractAddress,
+              contractAddress: inputContractAddress,
               deploymentTxHash,
-              deployerAddress,
+              deployerAddress: inputDeployerAddress,
               chainId,
               appId,
               state: isDeployerVerified
@@ -216,7 +252,7 @@ export class ContractsRoute extends Route {
             {
               error: err,
               entityId: user.entityId,
-              contractAddress,
+              contractAddress: inputContractAddress,
               chainId,
             },
             'error inserting new contract',
