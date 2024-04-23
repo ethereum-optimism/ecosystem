@@ -1,0 +1,11 @@
+name = "bridge-frame"
+compatibility_date = "2023-12-01"
+compatibility_flags = [ "nodejs_compat" ]
+
+kv_namespaces=[
+  { binding = "KV", id = "96fc9888f4b8419f8287351504ae0f43" }
+]
+
+[site]
+bucket = "./public"
+

@@ -1,0 +1,29 @@
+{
+  "name": "bridge-frame",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "frog:dev": "frog dev",
+    "dev": "concurrently -n worker,devtools -c blue,yellow \"pnpm wrangler:dev\" \"pnpm frog dev --ui\"",
+    "wrangler:dev": "wrangler dev src/index.tsx",
+    "wrangler:deploy": "wrangler deploy --minify src/index.tsx",
+    "lint": "eslint \"**/*.{ts,tsx}\" && pnpm prettier --check \"**/*.{ts,tsx}\"",
+    "lint:fix": "eslint \"**/*.{ts,tsx}\" --fix --quiet && pnpm prettier \"**/*.{ts,tsx}\" --write --loglevel=warn"
+  },
+  "dependencies": {
+    "@coinbase/onchainkit": "^0.11.0",
+    "abitype": "^1.0.2",
+    "frog": "latest",
+    "hono": "^4",
+    "viem": "^2.9.5",
+    "zod": "^3.22.4"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20240329.0",
+    "concurrently": "^8.2.2",
+    "prettier": "^3.1.0",
+    "typescript": "^5.4.3",
+    "vite": "^5.1.5",
+    "wrangler": "latest"
+  }
+}
