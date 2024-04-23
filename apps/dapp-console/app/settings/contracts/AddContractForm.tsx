@@ -15,11 +15,15 @@ import {
   Input,
 } from '@eth-optimism/ui-components'
 import { Text } from '@eth-optimism/ui-components/src/components/ui/text/text'
-import { useCallback } from 'react'
+import { useCallback, useState } from 'react'
 import { apiClient } from '@/app/helpers/apiClient'
-import { optimismSepolia } from 'viem/chains'
+import { optimism } from 'viem/chains'
 import { Contract } from '@/app/types/api'
 import { captureError } from '@/app/helpers/errorReporting'
+import {
+  L2NetworkSelect,
+  L2NetworkSelectItem,
+} from '@/app/components/Selects/L2NetworkSelect'
 
 export type StartVerificationHandler = (
   contract: Contract,
@@ -50,6 +54,8 @@ export const AddContractForm = ({
   unverifiedContract,
   onStartVerification,
 }: AddContractFormProps) => {
+  const [selectedChainId, setSelectedChainId] = useState<number>(optimism.id)
+
   const { mutateAsync: createContract } =
     apiClient.Contracts.createContract.useMutation()
 
@@ -65,6 +71,11 @@ export const AddContractForm = ({
       : undefined,
   })
 
+  const handleNetworkChange = useCallback(
+    (item: L2NetworkSelectItem) => setSelectedChainId(item.id),
+    [setSelectedChainId],
+  )
+
   const handleCreateContract = useCallback(async () => {
     try {
       const formValues = form.getValues()
@@ -74,19 +85,26 @@ export const AddContractForm = ({
       if (!contractToVerifiy) {
         const { result } = await createContract({
           appId,
-          chainId: optimismSepolia.id,
+          chainId: selectedChainId,
           contractAddress: getAddress(formValues.contract),
           deployerAddress: getAddress(formValues.deployerAddress),
           deploymentTxHash: formValues.deploymentTransactionHash,
         })
-        contractToVerifiy = result
+        contractToVerifiy = result as Contract
       }
 
       onStartVerification(contractToVerifiy, false)
     } catch (e) {
       captureError(e, 'createContract')
     }
-  }, [appId, createContract, form, unverifiedContract, onStartVerification])
+  }, [
+    appId,
+    createContract,
+    form,
+    unverifiedContract,
+    selectedChainId,
+    onStartVerification,
+  ])
 
   return (
     <div className="flex flex-col w-full">
@@ -149,7 +167,8 @@ export const AddContractForm = ({
           )}
         />
       </Form>
-      <div className="mt-3 flex flex-row justify-end w-full">
+      <div className="mt-3 flex flex-row justify-between w-full">
+        <L2NetworkSelect onNetworkChange={handleNetworkChange} />
         <Button
           disabled={!form.formState.isValid}
           onClick={handleCreateContract}

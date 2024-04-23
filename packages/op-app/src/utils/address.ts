@@ -18,12 +18,10 @@ export const shortenENSName = (
   return `${nonTld.slice(0, 3)}...${nonTld.slice(-3)}.${tld}`
 }
 
-export function shortenETHAddress(str: string) {
+export function shortenHex(str: string) {
   return str.substring(0, 6) + '...' + str.substring(str.length - 4)
 }
 
 export const shortenAddress = (address: string) => {
-  return address.includes('.')
-    ? shortenENSName(address)
-    : shortenETHAddress(address)
+  return address.includes('.') ? shortenENSName(address) : shortenHex(address)
 }

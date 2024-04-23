@@ -1,42 +1,43 @@
 'use client'
 
-import { formatEther, parseEther } from 'viem'
+import { formatEther } from 'viem'
 
 import { Text } from '@eth-optimism/ui-components/src/components/ui/text/text'
 import { useMemo } from 'react'
 import { Progress } from '@eth-optimism/ui-components/src/components/ui/progress/progress'
 import { RiQuestionFill } from '@remixicon/react'
 import { RebateDialog } from '@/app/settings/components/RebateDialog'
+import { apiClient } from '@/app/helpers/apiClient'
+import { MAX_CLAIMABLE_AMOUNT } from '@/app/constants/rebate'
 
 export type ClaimedRebateProgressBannerProps = {
-  claimedAmount?: bigint
   totalAmount?: bigint
 }
 
-const maxValue = parseEther('0.05')
-
 export const ClaimedRebateProgressBanner = ({
-  claimedAmount = parseEther('0.025'),
   totalAmount,
 }: ClaimedRebateProgressBannerProps) => {
+  const { data: claimedAmount } =
+    apiClient.Rebates.totalRebatesClaimed.useQuery()
+
   const claimed = useMemo(
     () => (claimedAmount ? formatEther(claimedAmount) : '0.0'),
     [claimedAmount],
   )
   const total = useMemo(
-    () => formatEther(totalAmount ?? maxValue),
+    () => formatEther(totalAmount ?? MAX_CLAIMABLE_AMOUNT),
     [totalAmount],
   )
 
   const progress = useMemo(() => {
-    if (claimedAmount || totalAmount) {
+    if (!claimedAmount) {
       return 0
     }
 
-    const total = totalAmount as bigint
+    const total = MAX_CLAIMABLE_AMOUNT as bigint
     const claimed = claimedAmount as bigint
 
-    if (total >= claimed) {
+    if (total <= claimed) {
       return 100
     }
 

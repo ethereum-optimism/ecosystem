@@ -1,38 +1,11 @@
-import { Address, Hash } from 'viem'
+import { inferRouterOutputs } from '@trpc/server'
+import { ApiV0 } from '@eth-optimism/dapp-console-api'
 
-export type DeployedApp = {
-  contracts: Contract[]
-  chainId: number | null
-  name: string
-  id: string
-  createdAt: Date
-  updatedAt: Date
-  state: 'active' | 'disabled'
-  entityId: string
-}
+export type ApiV0RouterOutputs = inferRouterOutputs<ApiV0['handler']>
 
-export type Contract = {
-  chainId: number
-  name: string | null
-  id: string
-  contractAddress: Address
-  createdAt: Date
-  updatedAt: Date
-  state: 'not_verified' | 'verified' | 'deleted'
-  entityId: string
-  appId: string
-  deployerAddress: Address
-  deploymentTxHash: Hash
-}
-
-export type Challenge = {
-  challenge: string
-  chainId: number
-  id: string
-  address: Address
-  createdAt: Date
-  updatedAt: Date
-  state: 'pending' | 'verified' | 'expired'
-  entityId: string
-  contractId: string
-}
+export type DeployedApp = ApiV0RouterOutputs['apps']['listApps']['records'][0]
+export type Contract =
+  ApiV0RouterOutputs['apps']['listApps']['records'][0]['contracts'][0]
+export type Challenge = ApiV0RouterOutputs['Contracts']['startVerification']
+export type TotalRebatesClaimedRebate =
+  ApiV0RouterOutputs['Rebates']['totalRebatesClaimed']
