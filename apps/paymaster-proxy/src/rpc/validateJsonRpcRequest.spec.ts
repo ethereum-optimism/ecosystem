@@ -82,7 +82,5 @@ describe('validateJsonRpcRequest', () => {
     expect(result.success).toBe(false)
     expect(result.error).toBeDefined()
     expect(result.error?.errorCode).toEqual(invalidParamsErrorCode)
-
-    console.log(result.error?.message)
   })
 })

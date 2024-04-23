@@ -6,6 +6,8 @@
     "paths": {
       "@/*": ["./src/*"]
     },
-    "strict": true
-  }
+    "strict": true,
+    "module": "commonjs"
+  },
+  "files": ["vitest-extended.d.ts"]
 }
