@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest'
 
-import { screenAddress } from '@/helpers/screenAddress'
-import { getRandomAddress } from '@/testUtils/getRandomAddress'
-import { mockPostSuccessJson } from '@/testUtils/mswServer'
+import { screenAddress } from '../helpers/screenAddress'
+import { getRandomAddress } from '../testUtils/getRandomAddress'
+import { mockPostSuccessJson } from '../testUtils/mswServer'
 
 const SCREENING_SERVICE_URL = 'http://localhost:3001'
 

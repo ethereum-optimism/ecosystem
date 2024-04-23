@@ -130,4 +130,25 @@ export const metrics = {
     name: 'restore_deleted_contract_error_count',
     help: 'Total number of times a deleted contract failed to be restored',
   }),
+  screeningServiceCallErrorCount: new Counter({
+    name: 'screening_service_call_error_count',
+    help: 'Number of failures when calling the screening service',
+  }),
+  sanctionedAddressBlocked: new Counter({
+    name: 'sanctioned_address_blocked',
+    help: 'Number of addresses screened',
+    labelNames: ['entityId'] as const,
+  }),
+  fetchEntityErrorCount: new Counter({
+    name: 'fetch_entity_error_count',
+    help: 'Number of failures when fetching entity from db',
+  }),
+  sanctionEntityErrorCount: new Counter({
+    name: 'sanction_entity_error_count',
+    help: 'Number of times entity failed to be marked as sanctioned',
+  }),
+  getWalletsByEntityIdErrorCount: new Counter({
+    name: 'get_wallets_by_entity_id_error_count',
+    help: 'Number of times server failed to get wallets for an entity id',
+  }),
 }

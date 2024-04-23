@@ -1,8 +1,8 @@
 import type { Address } from 'viem'
 import { z } from 'zod'
 
-import { addressSchema } from '@/schemas/addressSchema'
-import { createJsonRpcResponseSchema } from '@/schemas/createJsonRpcResponseSchema'
+import { addressSchema } from '../schemas/addressSchema'
+import { createJsonRpcResponseSchema } from '../schemas/createJsonRpcResponseSchema'
 
 const screeningServiceResultSchema = z.array(
   z.object({

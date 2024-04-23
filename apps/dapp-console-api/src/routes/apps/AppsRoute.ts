@@ -35,11 +35,14 @@ export class AppsRoute extends Route {
         const { user } = ctx.session
         const limit = input.limit ?? DEFAULT_PAGE_LIMIT
 
-        assertUserAuthenticated(user)
+        const { id: entityId } = await assertUserAuthenticated(
+          this.trpc.database,
+          user,
+        )
 
         const activeApps = await getActiveAppsForEntityByCursor({
           db: this.trpc.database,
-          entityId: user.entityId,
+          entityId,
           limit,
           cursor: input.cursor,
         })
@@ -85,17 +88,20 @@ export class AppsRoute extends Route {
       const { user } = ctx.session
       const { name } = input
 
-      assertUserAuthenticated(user)
+      const { id: entityId } = await assertUserAuthenticated(
+        this.trpc.database,
+        user,
+      )
 
       const activeAppsCount = await getActiveAppsCount({
         db: this.trpc.database,
-        entityId: user.entityId,
+        entityId,
       }).catch((err) => {
         metrics.fetchActiveAppsCountErrorCount.inc()
         this.logger?.error(
           {
             error: err,
-            entityId: ctx.session.user?.entityId,
+            entityId,
           },
           'error fetching active apps count from db',
         )
@@ -108,7 +114,7 @@ export class AppsRoute extends Route {
 
       const result = await insertApp({
         db: this.trpc.database,
-        newApp: { name, entityId: user.entityId, state: AppState.ACTIVE },
+        newApp: { name, entityId, state: AppState.ACTIVE },
       }).catch((err) => {
         metrics.createAppErrorCount.inc()
         this.logger?.error(
@@ -137,11 +143,14 @@ export class AppsRoute extends Route {
       const { user } = ctx.session
       const { name, appId } = input
 
-      assertUserAuthenticated(user)
+      const { id: entityId } = await assertUserAuthenticated(
+        this.trpc.database,
+        user,
+      )
 
       await updateApp({
         db: this.trpc.database,
-        entityId: user.entityId,
+        entityId,
         appId,
         update: { name },
       }).catch((err) => {

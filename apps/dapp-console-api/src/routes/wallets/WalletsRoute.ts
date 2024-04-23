@@ -2,11 +2,13 @@ import { generateListResponse, zodCreatedAtCursor, zodListRequest } from '@/api'
 import { isPrivyAuthed } from '@/middleware'
 import {
   getActiveWalletsForEntityByCursor,
+  getWalletsByEntityId,
   getWalletVerifications,
 } from '@/models'
 import { metrics } from '@/monitoring/metrics'
 import { Trpc } from '@/Trpc'
 import {
+  checkIfSanctionedAddress,
   fetchAndSyncPrivyWallets,
   updateCbVerificationForAllWallets,
 } from '@/utils'
@@ -22,38 +24,85 @@ export class WalletsRoute extends Route {
   public readonly syncWalletsController = this.trpc.procedure
     .use(isPrivyAuthed(this.trpc))
     .mutation(async ({ ctx }) => {
-      try {
-        const { user } = ctx.session
+      const { user } = ctx.session
 
-        assertUserAuthenticated(user)
+      const { id: entityId } = await assertUserAuthenticated(
+        this.trpc.database,
+        user,
+      )
 
-        await fetchAndSyncPrivyWallets(
-          this.trpc.database,
-          this.trpc.privy,
-          user.privyDid,
-          user.entityId,
+      await fetchAndSyncPrivyWallets(
+        this.trpc.database,
+        this.trpc.privy,
+        user!.privyDid,
+        entityId,
+      ).catch((err) => {
+        this.logger?.error(
+          {
+            err,
+            privyDid: user!.privyDid,
+            entityId,
+          },
+          'error fetching and syncing privy wallets',
         )
-        const cbUpdateResults = await updateCbVerificationForAllWallets({
-          db: this.trpc.database,
-          entityId: user.entityId,
-        })
-        const failedCbUpdates = cbUpdateResults.filter(
-          (result) => result.status === 'rejected',
-        ) as PromiseRejectedResult[]
-        if (failedCbUpdates.length > 0) {
-          this.logger?.error(
-            {
-              failureReasons: failedCbUpdates.map((update) => update.reason),
-              entityId: user.entityId,
-            },
-            'error updating cb verification for wallets',
-          )
-        }
-
-        return { success: true }
-      } catch (err) {
         metrics.privySyncWalletsErrorCount.inc()
+        throw Trpc.handleStatus(500, 'error syncing wallets')
+      })
+      const wallets = await getWalletsByEntityId(
+        this.trpc.database,
+        entityId,
+      ).catch((err) => {
+        this.logger?.error(
+          {
+            err,
+            entityId,
+          },
+          'error getting wallets by entity id',
+        )
+        metrics.getWalletsByEntityIdErrorCount.inc()
+        throw Trpc.handleStatus(500, 'error syncing wallets')
+      })
+      const screeningResults = await Promise.all(
+        wallets.map((wallet) =>
+          checkIfSanctionedAddress({
+            db: this.trpc.database,
+            entityId,
+            address: wallet.address,
+          }),
+        ),
+      ).catch((err) => {
+        this.logger?.error(
+          {
+            err,
+            entityId,
+          },
+          'error screening wallets',
+        )
+        throw Trpc.handleStatus(500, 'error screening address')
+      })
+
+      if (screeningResults.some((result) => !!result)) {
+        throw Trpc.handleStatus(401, 'sanctioned address')
       }
+
+      const cbUpdateResults = await updateCbVerificationForAllWallets({
+        db: this.trpc.database,
+        entityId,
+      })
+      const failedCbUpdates = cbUpdateResults.filter(
+        (result) => result.status === 'rejected',
+      ) as PromiseRejectedResult[]
+      if (failedCbUpdates.length > 0) {
+        this.logger?.error(
+          {
+            failureReasons: failedCbUpdates.map((update) => update.reason),
+            entityId,
+          },
+          'error updating cb verification for wallets',
+        )
+      }
+
+      return { success: true }
     })
 
   /** Syncs cb verification status across all active wallets. */
@@ -62,11 +111,14 @@ export class WalletsRoute extends Route {
     .use(isPrivyAuthed(this.trpc))
     .mutation(async ({ ctx }) => {
       const { user } = ctx.session
-      assertUserAuthenticated(user)
+      const { id: entityId } = await assertUserAuthenticated(
+        this.trpc.database,
+        user,
+      )
 
       const updateResults = await updateCbVerificationForAllWallets({
         db: this.trpc.database,
-        entityId: user.entityId,
+        entityId,
       })
 
       const failedUpdates = updateResults.filter(
@@ -77,7 +129,7 @@ export class WalletsRoute extends Route {
         this.logger?.error(
           {
             failureReasons: failedUpdates.map((update) => update.reason),
-            entityId: user.entityId,
+            entityId,
           },
           'error updating cb verification for wallets',
         )
@@ -99,11 +151,14 @@ export class WalletsRoute extends Route {
         const { user } = ctx.session
         const limit = input.limit ?? DEFAULT_PAGE_LIMIT
 
-        assertUserAuthenticated(user)
+        const { id: entityId } = await assertUserAuthenticated(
+          this.trpc.database,
+          user,
+        )
 
         const activeWallets = await getActiveWalletsForEntityByCursor(
           this.trpc.database,
-          user.entityId,
+          entityId,
           limit,
           input.cursor,
         )
@@ -129,17 +184,20 @@ export class WalletsRoute extends Route {
     .use(isPrivyAuthed(this.trpc))
     .query(async ({ ctx }) => {
       const { user } = ctx.session
-      assertUserAuthenticated(user)
+      const { id: entityId } = await assertUserAuthenticated(
+        this.trpc.database,
+        user,
+      )
 
       const walletVerifications = await getWalletVerifications({
         db: this.trpc.database,
-        entityId: user.entityId,
+        entityId,
       }).catch((err) => {
         metrics.fetchWalletVerificationsErrorCount.inc()
         this.logger?.error(
           {
             error: err,
-            entityId: user.entityId,
+            entityId,
           },
           'error fetching wallet verifications from db',
         )

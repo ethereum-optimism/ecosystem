@@ -1,6 +1,6 @@
 import { afterAll, afterEach, beforeAll } from 'vitest'
 
-import { mswServer } from '@/testUtils/mswServer'
+import { mswServer } from '../testUtils/mswServer'
 
 beforeAll(() => mswServer.listen())
 

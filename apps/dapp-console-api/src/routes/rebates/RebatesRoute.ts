@@ -1,5 +1,6 @@
 import type {
   Account,
+  Address,
   HttpTransport,
   PublicClient,
   Transport,
@@ -17,7 +18,7 @@ import {
 import { SUPPORTED_L2_CHAINS, SUPPORTED_L2_MAINNET_CHAINS } from '@/constants'
 import { MAX_REBATE_AMOUNT } from '@/constants/rebates'
 import { isPrivyAuthed } from '@/middleware'
-import type { DeploymentRebate } from '@/models'
+import type { Contract, DeploymentRebate, Entity } from '@/models'
 import {
   ContractState,
   DeploymentRebateState,
@@ -25,6 +26,7 @@ import {
   getCompletedRebatesForEntityByCursor,
   getDeploymentRebateByContractId,
   getTotalRebatesClaimed,
+  getWalletsByEntityId,
   getWalletVerifications,
   insertDeploymentRebate,
   setDeploymentRebateToFailed,
@@ -34,7 +36,10 @@ import {
 import { bigIntToNumeric } from '@/models/utils'
 import { metrics } from '@/monitoring/metrics'
 import { Trpc } from '@/Trpc'
-import { isContractDeploymentDateEligibleForRebate } from '@/utils'
+import {
+  checkIfSanctionedAddress,
+  isContractDeploymentDateEligibleForRebate,
+} from '@/utils'
 
 import { DEFAULT_PAGE_LIMIT } from '../constants'
 import { Route } from '../Route'
@@ -49,17 +54,20 @@ export class RebatesRoute extends Route {
     .query(async ({ ctx }) => {
       const { user } = ctx.session
 
-      assertUserAuthenticated(user)
+      const { id: entityId } = await assertUserAuthenticated(
+        this.trpc.database,
+        user,
+      )
 
       return await getTotalRebatesClaimed({
         db: this.trpc.database,
-        entityId: user.entityId,
+        entityId,
       }).catch((err) => {
         metrics.fetchTotalRebatesClaimedErrorCount.inc()
         this.logger?.error(
           {
             error: err,
-            entityId: user.entityId,
+            entityId,
           },
           'error fetching total rebates claimed from db',
         )
@@ -79,11 +87,14 @@ export class RebatesRoute extends Route {
       const limit = input.limit ?? DEFAULT_PAGE_LIMIT
       const { cursor } = input
 
-      assertUserAuthenticated(user)
+      const { id: entityId } = await assertUserAuthenticated(
+        this.trpc.database,
+        user,
+      )
 
       const completedRebates = await getCompletedRebatesForEntityByCursor({
         db: this.trpc.database,
-        entityId: user.entityId,
+        entityId,
         limit,
         cursor,
       }).catch((err) => {
@@ -118,18 +129,21 @@ export class RebatesRoute extends Route {
       const { contractId } = input
       const recipientAddress = getAddress(input.recipientAddress)
 
-      assertUserAuthenticated(user)
+      const { id: entityId } = await assertUserAuthenticated(
+        this.trpc.database,
+        user,
+      )
 
       const contract = await getActiveContract({
         db: this.trpc.database,
         contractId,
-        entityId: user.entityId,
+        entityId,
       }).catch((err) => {
         metrics.fetchContractErrorCount.inc()
         this.logger?.error(
           {
             error: err,
-            entityId: user.entityId,
+            entityId,
             contractId: contractId,
           },
           'error fetching contract',
@@ -155,7 +169,7 @@ export class RebatesRoute extends Route {
       if (!contract.transaction) {
         this.logger?.error(
           {
-            entityId: user.entityId,
+            entityId,
             contractId: contractId,
           },
           'no deployment transaction associated with contract',
@@ -179,13 +193,13 @@ export class RebatesRoute extends Route {
       const existingRebate = await getDeploymentRebateByContractId({
         db: this.trpc.database,
         contractId,
-        entityId: user.entityId,
+        entityId,
       }).catch((err) => {
         metrics.fetchDeploymentRebateErrorCount.inc()
         this.logger?.error(
           {
             error: err,
-            entityId: user.entityId,
+            entityId,
             contractId: contractId,
           },
           'error fetching deployment rebate status',
@@ -213,13 +227,13 @@ export class RebatesRoute extends Route {
       const cbVerifiedWallets = (
         await getWalletVerifications({
           db: this.trpc.database,
-          entityId: user.entityId,
+          entityId,
         }).catch((err) => {
           metrics.fetchWalletVerificationsErrorCount.inc()
           this.logger?.error(
             {
               error: err,
-              entityId: user.entityId,
+              entityId,
               contractId,
             },
             'error fetching verifications for wallet',
@@ -238,15 +252,17 @@ export class RebatesRoute extends Route {
         )
       }
 
+      await this.screenAddresses({ entityId, recipientAddress, contract })
+
       const totalAmountAlreadyClaimed = await getTotalRebatesClaimed({
         db: this.trpc.database,
-        entityId: user.entityId,
+        entityId,
       }).catch((err) => {
         metrics.fetchTotalRebatesClaimedErrorCount.inc()
         this.logger?.error(
           {
             error: err,
-            entityId: user.entityId,
+            entityId,
           },
           'error fetching total rebates claimed from db',
         )
@@ -281,14 +297,14 @@ export class RebatesRoute extends Route {
       if (existingRebate) {
         pendingRebate = await setDeploymentRebateToPending({
           db: this.trpc.database,
-          entityId: user.entityId,
+          entityId,
           rebateId: existingRebate.id,
         }).catch((err) => {
           metrics.updateDeploymentRebateToPendingErrorCount.inc()
           this.logger?.error(
             {
               error: err,
-              entityId: user.entityId,
+              entityId,
               rebateId: existingRebate.id,
             },
             'error updating rebate to pending',
@@ -299,7 +315,7 @@ export class RebatesRoute extends Route {
         pendingRebate = await insertDeploymentRebate({
           db: this.trpc.database,
           newRebate: {
-            entityId: user.entityId,
+            entityId,
             contractId,
             contractAddress: contract.contractAddress,
             chainId: contract.chainId,
@@ -314,9 +330,9 @@ export class RebatesRoute extends Route {
           this.logger?.error(
             {
               error: err,
-              entityId: user.entityId,
+              entityId,
               newRebate: {
-                entityId: user.entityId,
+                entityId,
                 contractId,
                 contractAddress: contract.contractAddress,
                 chainId: contract.chainId,
@@ -352,7 +368,7 @@ export class RebatesRoute extends Route {
           this.logger?.error(
             {
               error: err,
-              entityId: user.entityId,
+              entityId,
               contractId: contractId,
               rebateAmount: amountToSend,
               recipientAddress,
@@ -361,7 +377,7 @@ export class RebatesRoute extends Route {
           )
           await setDeploymentRebateToFailed({
             db: this.trpc.database,
-            entityId: user.entityId,
+            entityId,
             rebateId: pendingRebate.id,
           })
           throw Trpc.handleStatus(500, 'error sending rebate tx')
@@ -380,7 +396,7 @@ export class RebatesRoute extends Route {
           this.logger?.error(
             {
               error: err,
-              entityId: user.entityId,
+              entityId,
               contractId: contractId,
               rebateAmount: amountToSend,
               recipientAddress,
@@ -390,7 +406,7 @@ export class RebatesRoute extends Route {
           )
           await setDeploymentRebateToFailed({
             db: this.trpc.database,
-            entityId: user.entityId,
+            entityId,
             rebateId: pendingRebate.id,
           })
           throw Trpc.handleStatus(500, 'error fetching rebate tx')
@@ -398,7 +414,7 @@ export class RebatesRoute extends Route {
 
       await setDeploymentRebateToSent({
         db: this.trpc.database,
-        entityId: user.entityId,
+        entityId,
         rebateId: pendingRebate.id,
         update: {
           rebateTxHash: rebateTxReceipt.transactionHash,
@@ -410,7 +426,7 @@ export class RebatesRoute extends Route {
         this.logger?.error(
           {
             error: err,
-            entityId: user.entityId,
+            entityId,
             rebateId: pendingRebate.id,
             update: {
               rebateTxHash: rebateTxReceipt.transactionHash,
@@ -450,5 +466,74 @@ export class RebatesRoute extends Route {
     >,
   ) {
     super(trpc)
+  }
+
+  private async screenAddresses(input: {
+    entityId: Entity['id']
+    recipientAddress: Address
+    contract: Contract
+  }) {
+    const { entityId, recipientAddress, contract } = input
+    const wallets = await getWalletsByEntityId(this.trpc.database, entityId)
+    const walletAddressScreeningResults = await Promise.all(
+      wallets.map((wallet) =>
+        checkIfSanctionedAddress({
+          db: this.trpc.database,
+          entityId,
+          address: wallet.address,
+        }),
+      ),
+    ).catch((err) => {
+      this.logger?.error(
+        {
+          err,
+          entityId,
+        },
+        'error screening wallets',
+      )
+      throw Trpc.handleStatus(500, 'error screening address')
+    })
+
+    if (walletAddressScreeningResults.some((result) => !!result)) {
+      throw Trpc.handleStatus(401, 'sanctioned address')
+    }
+
+    const recipientAddressIsSanctioned = await checkIfSanctionedAddress({
+      db: this.trpc.database,
+      entityId,
+      address: recipientAddress,
+    }).catch((err) => {
+      this.logger?.error(
+        {
+          err,
+          entityId,
+        },
+        'error screening recipient address',
+      )
+      throw Trpc.handleStatus(500, 'error screening recipient address')
+    })
+
+    if (recipientAddressIsSanctioned) {
+      throw Trpc.handleStatus(401, 'sanctioned address')
+    }
+
+    const deployerAddressIsSanctioned = await checkIfSanctionedAddress({
+      db: this.trpc.database,
+      entityId,
+      address: contract.deployerAddress,
+    }).catch((err) => {
+      this.logger?.error(
+        {
+          err,
+          entityId,
+        },
+        'error screening deployer address',
+      )
+      throw Trpc.handleStatus(500, 'error screening deployer address')
+    })
+
+    if (deployerAddressIsSanctioned) {
+      throw Trpc.handleStatus(401, 'sanctioned address')
+    }
   }
 }
