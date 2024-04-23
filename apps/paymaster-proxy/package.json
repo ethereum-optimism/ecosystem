@@ -10,16 +10,16 @@
     "start": "node dist/runProxyService.js",
     "lint": "eslint \"**/*.{ts,tsx}\" && pnpm prettier --check \"**/*.{ts,tsx}\"",
     "lint:fix": "eslint \"**/*.{ts,tsx}\" --fix --quiet && pnpm prettier \"**/*.{ts,tsx}\" --write --loglevel=warn",
-    "generate-example-env": "ts-node scripts/generateExampleEnv.ts",
     "loadtest": "pnpm dlx artillery run loadtest/basic-loadtest.yml",
-    "docker:services:up": "docker compose up -d redis postgres",
-    "docker:up": "docker compose up -d redis postgres paymaster-proxy-app",
+    "docker:services:up": "nx run api-key-service:docker:up && docker compose up -d redis postgres",
+    "docker:up": "nx run api-key-service:docker:up && docker compose up -d redis postgres paymaster-proxy-app",
     "docker:replicas:up": "docker compose up -d redis postgres paymaster-proxy-app-replica reverse-proxy",
     "docker:down": "docker compose down",
     "drizzle:studio": "drizzle-kit studio",
     "migrations:generate": "drizzle-kit generate:pg",
     "migrations:execute": "ts-node ./scripts/db-migrate",
-    "migrations:dev": "pnpm migrations:generate && pnpm migrations:execute"
+    "migrations:dev": "pnpm migrations:generate && pnpm migrations:execute",
+    "env:example:generate": "NODE_ENV=test ts-node scripts/generate-example-env.ts"
   },
   "devDependencies": {
     "@eth-optimism/api-key-service": "workspace:*",
@@ -61,6 +61,7 @@
     "rate-limit-redis": "^4.2.0",
     "superjson": "^1.12.2",
     "viem": "^2.7.22",
+    "znv": "^0.4.0",
     "zod": "^3.22.4",
     "zod-validation-error": "^3.0.2"
   },

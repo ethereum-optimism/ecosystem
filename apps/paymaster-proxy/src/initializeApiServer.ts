@@ -12,6 +12,7 @@ import morgan from 'morgan'
 import { type Logger } from 'pino'
 
 import { getV1ApiRoute, V1_API_BASE_PATH } from '@/api/getV1ApiRoute'
+import type { BackendReadinessState } from '@/helpers/BackendReadinessState'
 import { getPromBaseMetrics } from '@/middlewares/getPromBaseMetrics'
 import { getRateLimiter } from '@/middlewares/getRateLimiter'
 import type { Metrics } from '@/monitoring/metrics'
@@ -22,11 +23,13 @@ export const initializeApiServer = async ({
   paymasterConfigs,
   metrics,
   logger,
+  backendReadinessState,
 }: {
   redisClient: Redis
   paymasterConfigs: PaymasterConfig[]
   metrics: Metrics
   logger: Logger
+  backendReadinessState: BackendReadinessState
 }): Promise<Express> => {
   const app = express()
 
@@ -53,7 +56,10 @@ export const initializeApiServer = async ({
   })
 
   app.get('/ready', (req, res) => {
-    // TODO: add check for whether underlying services are ready
+    if (!backendReadinessState.getIsReady()) {
+      return res.status(503).send()
+    }
+
     res.json({ ok: true })
   })
 
