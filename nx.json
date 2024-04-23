@@ -24,6 +24,13 @@
       "cache": true,
       "dependsOn": ["^build"]
     },
+    "build:types": {
+      "cache": true,
+      "dependsOn": ["^build:types"]
+    },
+    "typecheck": {
+      "dependsOn": ["^build:types"]
+    },
     "lint": {
       "cache": true
     },

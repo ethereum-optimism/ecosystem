@@ -107,6 +107,7 @@ CMD [ "pnpm", "start" ]
 
 FROM base AS api-key-service
 
+COPY ./apps/api-key-service/migrations ./prod/api-key-service/migrations
 COPY  --from=builder /prod/api-key-service /prod/api-key-service
 WORKDIR /prod/api-key-service
 
