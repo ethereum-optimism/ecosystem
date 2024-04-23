@@ -8,6 +8,10 @@ import type { ApiV0 } from '@eth-optimism/dapp-console-api'
 
 import { ENV_VARS } from '@/app/constants/envVars'
 
+function parseAccessToken(accessToken: string) {
+  return JSON.parse(accessToken)
+}
+
 export const apiClient = createTRPCNext<ApiV0['handler']>({
   config: () => {
     return {
@@ -19,7 +23,7 @@ export const apiClient = createTRPCNext<ApiV0['handler']>({
 
             const accessToken = localStorage.getItem('privy:token')
             if (accessToken) {
-              headers['Authorization'] = `Bearer ${accessToken}`
+              headers['Authorization'] = `Bearer ${parseAccessToken(accessToken)}`
             }
 
             return fetch(url, {
