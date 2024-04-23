@@ -19,11 +19,12 @@ export const apiClient = createTRPCNext<ApiV0['handler']>({
         httpBatchLink({
           url: `${ENV_VARS.API_URL}/api/v0`,
           fetch: (url, options) => {
-            let headers: Record<string, string> = {}
+            const headers: Record<string, string> = {}
 
             const accessToken = localStorage.getItem('privy:token')
             if (accessToken) {
-              headers['Authorization'] = `Bearer ${parseAccessToken(accessToken)}`
+              headers['Authorization'] =
+                `Bearer ${parseAccessToken(accessToken)}`
             }
 
             return fetch(url, {
