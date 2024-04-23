@@ -1,3 +1,5 @@
+'use client'
+
 import { createTRPCNext } from '@trpc/next'
 import { httpBatchLink } from '@trpc/client'
 import superjson from 'superjson'
@@ -13,8 +15,16 @@ export const apiClient = createTRPCNext<ApiV0['handler']>({
         httpBatchLink({
           url: `${ENV_VARS.API_URL}/api/v0`,
           fetch: (url, options) => {
+            let headers: Record<string, string> = {}
+
+            const accessToken = localStorage.getItem('privy:token')
+            if (accessToken) {
+              headers['Authorization'] = `Bearer ${accessToken}`
+            }
+
             return fetch(url, {
               ...options,
+              headers,
               credentials: 'include',
             })
           },
