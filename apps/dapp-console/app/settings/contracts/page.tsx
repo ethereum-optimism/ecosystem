@@ -13,6 +13,9 @@ export default function Contracts() {
   const { mutate: syncCbVerification } =
     apiClient.wallets.syncCbVerification.useMutation()
 
+  const { data: walletVerifications } =
+    apiClient.wallets.walletVerifications.useQuery()
+
   useEffect(() => {
     syncCbVerification()
   }, [syncCbVerification])
@@ -27,7 +30,9 @@ export default function Contracts() {
 
       <Text className="text-lg font-semibold">Your Rebates</Text>
       <div className="flex flex-col gap-4">
-        <CoinbaseVerificationBanner />
+        {!walletVerifications?.cbVerifiedWallets && (
+          <CoinbaseVerificationBanner />
+        )}
         <ClaimedRebateProgressBanner />
         <ClaimedRebates />
       </div>

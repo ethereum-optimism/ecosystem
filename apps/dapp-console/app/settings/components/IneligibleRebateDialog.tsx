@@ -10,6 +10,7 @@ import {
   DialogTrigger,
 } from '@eth-optimism/ui-components'
 import { Contract } from '@/app/types/api'
+import { getDateString } from '@/app/lib/utils'
 
 export type IneligibleRebateReason =
   | 'deployed-before-account-creation'
@@ -55,11 +56,7 @@ export const IneligibleRebateDialog = ({
     if (reason === 'max-rebate-amount-claimed') {
       return metadata.maxRebateAmountClaimed.description
     } else {
-      const signupDate = user?.createdAt.toLocaleString('default', {
-        month: 'short',
-        day: '2-digit',
-        year: 'numeric',
-      })
+      const signupDate = user ? getDateString(user?.createdAt) : null
 
       const contractDeploymentTimestamp =
         contract?.transaction?.blockTimestamp ?? 0

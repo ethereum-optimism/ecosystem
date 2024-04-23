@@ -30,14 +30,14 @@ export const ClaimedRebateProgressBanner = ({
   )
 
   const progress = useMemo(() => {
-    if (claimedAmount || totalAmount) {
+    if (!claimedAmount) {
       return 0
     }
 
-    const total = totalAmount as bigint
+    const total = MAX_CLAIMABLE_AMOUNT as bigint
     const claimed = claimedAmount as bigint
 
-    if (total >= claimed) {
+    if (total <= claimed) {
       return 100
     }
 

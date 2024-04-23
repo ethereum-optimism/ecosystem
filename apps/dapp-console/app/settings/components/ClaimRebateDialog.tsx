@@ -8,7 +8,7 @@ import {
   DialogTrigger,
 } from '@eth-optimism/ui-components'
 import { Text } from '@eth-optimism/ui-components/src/components/ui/text/text'
-import { formatEther } from 'viem'
+import { Hash, formatEther } from 'viem'
 import { useCallback, useMemo, useState } from 'react'
 import { MAX_CLAIMABLE_AMOUNT } from '@/app/constants/rebate'
 import { shortenAddress } from '@eth-optimism/op-app'
@@ -21,13 +21,19 @@ import { apiClient } from '@/app/helpers/apiClient'
 export type ClaimRebateDialogProps = {
   contract: Contract
   children: React.ReactNode
+  onRebateClaimed: (contract: Contract) => void
 }
 
 export const ClaimRebateDialog = ({
   contract,
   children,
+  onRebateClaimed,
 }: ClaimRebateDialogProps) => {
   const [isOpen, setOpen] = useState(false)
+  const [rebateTxHash, setRebateTxHash] = useState<Hash | undefined>()
+
+  const { mutateAsync: claimRebate } =
+    apiClient.Rebates.claimDeploymentRebate.useMutation()
 
   const { data: wallets } = apiClient.wallets.listWallets.useQuery({})
   const firstVerifiedWallet = useMemo(
@@ -43,20 +49,36 @@ export const ClaimRebateDialog = ({
   )
 
   const gasFeeToReimburst = useMemo(() => {
-    const gasAmount = BigInt(contract.transaction?.gasUsed ?? 0)
+    if (!contract.transaction) {
+      return '0.0'
+    }
+
+    const { gasPrice, gasUsed } = contract.transaction
+    const gasAmount = BigInt(gasPrice) * BigInt(gasUsed)
 
     const claimableAmount =
       gasAmount + amountClaimed > MAX_CLAIMABLE_AMOUNT
         ? MAX_CLAIMABLE_AMOUNT - amountClaimed
         : gasAmount
 
-    return formatEther(claimableAmount, 'gwei')
+    return formatEther(claimableAmount, 'wei')
   }, [contract])
 
-  const handleClaim = useCallback(() => {
-    // TODO: add backend call here to claim rebate
-    setOpen(false)
-  }, [setOpen])
+  const handleClaim = useCallback(async () => {
+    const { txHash } = await claimRebate({
+      contractId: contract.id,
+      recipientAddress: contract.deployerAddress,
+    })
+    setRebateTxHash(txHash)
+    onRebateClaimed(contract)
+  }, [setOpen, setRebateTxHash, onRebateClaimed])
+
+  const handleViewTransaction = useCallback(() => {
+    window.open(
+      `${optimism.blockExplorers.default.url}/tx/${rebateTxHash}`,
+      '_blank',
+    )
+  }, [rebateTxHash])
 
   const handleCancel = useCallback(() => setOpen(false), [setOpen])
 
@@ -127,8 +149,13 @@ export const ClaimRebateDialog = ({
 
         <div className="flex flex-col w-full mt-3">
           {firstVerifiedWallet ? (
-            <Button className="h-[48px]" onClick={handleClaim}>
-              <Text as="span">Claim Rebate</Text>
+            <Button
+              className="h-[48px]"
+              onClick={rebateTxHash ? handleViewTransaction : handleClaim}
+            >
+              <Text as="span">
+                {rebateTxHash ? 'View Transaction' : 'Claim Rebate'}
+              </Text>
             </Button>
           ) : (
             <Button className="h-[48px]" asChild>

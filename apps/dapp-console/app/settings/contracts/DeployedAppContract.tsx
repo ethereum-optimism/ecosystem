@@ -1,26 +1,27 @@
 import { DeployedApp, Contract } from '@/app/types/api'
-import { AddContractFlow } from '@/app/settings/contracts/AddContractFlow'
 import { Button, Input, toast } from '@eth-optimism/ui-components'
 import { HexBadge } from '@/app/components/Badges/HexBadge'
 import { RiFileCopyLine } from '@remixicon/react'
 import { NetworkBadge } from '@/app/components/Badges/NetworkBadge'
-import { useCallback } from 'react'
+import { useCallback, useMemo } from 'react'
 import { LONG_DURATION } from '@/app/constants/toast'
 import { EligibleForRebateBadge } from '@/app/settings/components/EligibleForRebateBadge'
 import { NotEligibleForRebateBadge } from '@/app/settings/components/NotEligibleForRebateBadge'
 import { shortenAddress } from '@eth-optimism/op-app'
 import { usePrivy } from '@privy-io/react-auth'
+import { NeedsVerificationBadge } from '@/app/settings/components/NeedsVerificationBadge'
 
 export type AppContractProps = {
   app: DeployedApp
   contract: Contract
   onStartVerification: (contract: Contract) => void
+  onRebateClaimed: (contract: Contract) => void
 }
 
 export const DeployedAppContract = ({
-  app,
   contract,
   onStartVerification,
+  onRebateClaimed,
 }: AppContractProps) => {
   const { user } = usePrivy()
 
@@ -33,15 +34,50 @@ export const DeployedAppContract = ({
     })
   }, [contract])
 
-  if (contract.state === 'not_verified') {
-    return (
-      <AddContractFlow
-        appId={app.id}
-        unverifiedContract={contract}
-        onStartVerification={onStartVerification}
-      />
-    )
-  }
+  const badges = useMemo(() => {
+    const items = [
+      <NetworkBadge key="network-badge" chainId={contract.chainId} />,
+      <HexBadge
+        key="deployer-badge"
+        label="Deployer"
+        value={contract.deployerAddress}
+      />,
+      <HexBadge key="tx-badge" label="Tx" value={contract.deploymentTxHash} />,
+    ]
+
+    if (contract.deploymentRebate) {
+      return items
+    }
+
+    if (contract.state === 'verified') {
+      if (contract.isEligibleForRebate) {
+        items.push(
+          <EligibleForRebateBadge
+            key="rebate-badge"
+            contract={contract}
+            onRebateClaimed={onRebateClaimed}
+          />,
+        )
+      } else {
+        items.push(
+          <NotEligibleForRebateBadge
+            key="rebate-badge"
+            user={user}
+            contract={contract}
+          />,
+        )
+      }
+    } else if (contract.state === 'not_verified') {
+      items.push(
+        <NeedsVerificationBadge
+          key="needs-verification"
+          onClick={() => onStartVerification(contract)}
+        />,
+      )
+    }
+
+    return items
+  }, [contract, user, onStartVerification])
 
   return (
     <div className="flex flex-col">
@@ -59,15 +95,7 @@ export const DeployedAppContract = ({
           />
 
           <div className="flex flex-row flex-wrap w-full gap-2 my-2 items-center">
-            <NetworkBadge chainId={contract.chainId} />
-            <HexBadge label="Deployer" value={contract.deployerAddress} />
-            <HexBadge label="Tx" value={contract.deploymentTxHash} />
-
-            {contract.isEligibleForRebate ? (
-              <EligibleForRebateBadge contract={contract} />
-            ) : (
-              <NotEligibleForRebateBadge user={user} contract={contract} />
-            )}
+            {badges}
           </div>
         </div>
 

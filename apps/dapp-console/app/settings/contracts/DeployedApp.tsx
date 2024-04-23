@@ -70,6 +70,11 @@ export const DeployedApp = ({ app }: DeployedAppProps) => {
     [setVerifyDialogOpen],
   )
 
+  const handleRebateClaimed = useCallback(async () => {
+    const { data: contracts } = await fetchContracts()
+    setContracts(contracts as Contract[])
+  }, [setContracts, fetchContracts])
+
   const pendingContracts = contracts.filter(
     (contract) => contract.state === 'not_verified',
   )
@@ -99,6 +104,7 @@ export const DeployedApp = ({ app }: DeployedAppProps) => {
               app={app}
               contract={contract}
               onStartVerification={handleStartVerification}
+              onRebateClaimed={handleRebateClaimed}
             />
           ))}
           {hasDraftContract && (

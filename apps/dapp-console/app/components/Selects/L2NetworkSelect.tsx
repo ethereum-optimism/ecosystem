@@ -34,6 +34,10 @@ export const L2NetworkSelect = ({
 
   const allChains = useMemo(() => {
     return Object.values(superchain).reduce((arr, config) => {
+      if (config.mainnet?.id === 1) {
+        return arr
+      }
+
       if (config.mainnet) {
         arr.push({ id: config.mainnet.id, chain: config.mainnet, config })
       }

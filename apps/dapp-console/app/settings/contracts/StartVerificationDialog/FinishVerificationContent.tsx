@@ -1,7 +1,7 @@
 import { useCallback, useMemo, useState } from 'react'
 import { useContractVerification } from '@/app/settings/contracts/StartVerificationDialog/ContractVerificationProvider'
 import { apiClient } from '@/app/helpers/apiClient'
-import { Hash, isHash } from 'viem'
+import { Hash, isHex } from 'viem'
 import {
   Button,
   DialogDescription,
@@ -32,12 +32,12 @@ export const FinishVerificationContent = () => {
   const handleSignedMessageChange = useCallback(
     (e) => {
       const { value } = e.target
-      const validHash = isHash(value)
+      const validHex = isHex(value, { strict: true })
 
       setSignedMessage(value)
-      setSignedMessageValid(isHash(value))
+      setSignedMessageValid(validHex)
 
-      if (validHash) {
+      if (validHex) {
         setSignature(value as Hash)
       }
     },

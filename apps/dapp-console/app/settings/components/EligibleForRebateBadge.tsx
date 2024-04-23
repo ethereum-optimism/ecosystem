@@ -5,12 +5,14 @@ import { Contract } from '@/app/types/api'
 
 export type EligibleForRebateBadgeProps = {
   contract: Contract
+  onRebateClaimed: (contract: Contract) => void
 }
 
 export const EligibleForRebateBadge = ({
   contract,
+  onRebateClaimed,
 }: EligibleForRebateBadgeProps) => (
-  <ClaimRebateDialog contract={contract}>
+  <ClaimRebateDialog contract={contract} onRebateClaimed={onRebateClaimed}>
     <Badge className="pr-1 max-h-[22px] cursor-pointer" variant="success">
       Eligible for rebate <RiArrowRightSLine size={16} className="mt-0.5" />
     </Badge>
