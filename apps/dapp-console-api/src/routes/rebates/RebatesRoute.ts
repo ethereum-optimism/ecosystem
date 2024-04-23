@@ -428,6 +428,7 @@ export class RebatesRoute extends Route {
   public readonly handler = this.trpc.router({
     [this.totalRebatesClaimed]: this.totalRebatesClaimedController,
     [this.claimDeploymentRebate]: this.claimDeploymentRebateController,
+    [this.listCompletedRebates]: this.listCompletedRebatesController,
   })
 
   constructor(
