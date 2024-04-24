@@ -245,3 +245,16 @@ export const deleteContract = async (input: {
 
   return results[0]
 }
+
+export const deleteAllContractsInApp = async (input: {
+  db: Database
+  entityId: Contract['entityId']
+  appId: Contract['appId']
+}) => {
+  const { db, entityId, appId } = input
+
+  db.update(contracts)
+    .set({ state: ContractState.DELETED, updatedAt: new Date() })
+    .where(and(eq(contracts.entityId, entityId), eq(contracts.appId, appId)))
+    .returning()
+}
