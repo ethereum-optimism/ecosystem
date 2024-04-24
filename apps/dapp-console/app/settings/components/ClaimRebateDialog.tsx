@@ -5,7 +5,6 @@ import {
   Dialog,
   DialogContent,
   DialogHeader,
-  DialogTrigger,
 } from '@eth-optimism/ui-components'
 import { Text } from '@eth-optimism/ui-components/src/components/ui/text/text'
 import { Hash, formatEther } from 'viem'
@@ -19,17 +18,18 @@ import { optimism } from 'viem/chains'
 import { apiClient } from '@/app/helpers/apiClient'
 
 export type ClaimRebateDialogProps = {
+  open: boolean
+  onOpenChange: (isOpen: boolean) => void
   contract: Contract
-  children: React.ReactNode
   onRebateClaimed: (contract: Contract) => void
 }
 
 export const ClaimRebateDialog = ({
+  open,
+  onOpenChange,
   contract,
-  children,
   onRebateClaimed,
 }: ClaimRebateDialogProps) => {
-  const [isOpen, setOpen] = useState(false)
   const [rebateTxHash, setRebateTxHash] = useState<Hash | undefined>()
 
   const { mutateAsync: claimRebate } =
@@ -71,7 +71,7 @@ export const ClaimRebateDialog = ({
     })
     setRebateTxHash(txHash)
     onRebateClaimed(contract)
-  }, [setOpen, setRebateTxHash, onRebateClaimed])
+  }, [setRebateTxHash, onRebateClaimed])
 
   const handleViewTransaction = useCallback(() => {
     window.open(
@@ -80,11 +80,10 @@ export const ClaimRebateDialog = ({
     )
   }, [rebateTxHash])
 
-  const handleCancel = useCallback(() => setOpen(false), [setOpen])
+  const handleCancel = useCallback(() => onOpenChange(false), [onOpenChange])
 
   return (
-    <Dialog open={isOpen} onOpenChange={setOpen}>
-      <DialogTrigger asChild>{children}</DialogTrigger>
+    <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent>
         <DialogHeader className="text-center items-center">
           <Image

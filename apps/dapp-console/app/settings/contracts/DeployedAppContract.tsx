@@ -10,20 +10,24 @@ import { NotEligibleForRebateBadge } from '@/app/settings/components/NotEligible
 import { shortenAddress } from '@eth-optimism/op-app'
 import { usePrivy } from '@privy-io/react-auth'
 import { NeedsVerificationBadge } from '@/app/settings/components/NeedsVerificationBadge'
+import { apiClient } from '@/app/helpers/apiClient'
+import { MAX_CLAIMABLE_AMOUNT } from '@/app/constants/rebate'
 
 export type AppContractProps = {
   app: DeployedApp
   contract: Contract
   onStartVerification: (contract: Contract) => void
-  onRebateClaimed: (contract: Contract) => void
+  onStartClaimRebate: (contract: Contract) => void
 }
 
 export const DeployedAppContract = ({
   contract,
   onStartVerification,
-  onRebateClaimed,
+  onStartClaimRebate,
 }: AppContractProps) => {
   const { user } = usePrivy()
+  const { data: totalRebatesClaimed } =
+    apiClient.Rebates.totalRebatesClaimed.useQuery()
 
   const handleCopy = useCallback(() => {
     navigator.clipboard.writeText(contract.contractAddress)
@@ -49,13 +53,17 @@ export const DeployedAppContract = ({
       return items
     }
 
+    if (totalRebatesClaimed && totalRebatesClaimed >= MAX_CLAIMABLE_AMOUNT) {
+      return items
+    }
+
     if (contract.state === 'verified') {
       if (contract.isEligibleForRebate) {
         items.push(
           <EligibleForRebateBadge
             key="rebate-badge"
             contract={contract}
-            onRebateClaimed={onRebateClaimed}
+            onStartClaimRebate={onStartClaimRebate}
           />,
         )
       } else {

@@ -11,32 +11,33 @@ import {
 import { AddContractFlow } from '@/app/settings/contracts/AddContractFlow'
 import { RiAddLine, RiMoreLine } from '@remixicon/react'
 import { EditAppDialog } from '@/app/settings/contracts/EditAppDialog'
-import { useCallback, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import { DeployedApp as ApiDeployedApp, Contract } from '@/app/types/api'
 import { DeployedAppContract } from '@/app/settings/contracts/DeployedAppContract'
 import { apiClient } from '@/app/helpers/apiClient'
 import { StartVerificationDialog } from '@/app/settings/contracts/StartVerificationDialog'
+import { ClaimRebateDialog } from '@/app/settings/components/ClaimRebateDialog'
 
 export type DeployedAppProps = {
   app: ApiDeployedApp
 }
 
 export const DeployedApp = ({ app }: DeployedAppProps) => {
-  const [contracts, setContracts] = useState(app.contracts)
+  const contracts = useMemo(() => app.contracts, [app])
   const [contractToVerifiy, setContractToVerify] = useState<
+    Contract | undefined
+  >()
+  const [contractToRebate, setContractToRebate] = useState<
     Contract | undefined
   >()
   const [hasDraftContract, setHasDraftContract] = useState(
     app.contracts.length === 0,
   )
   const [isVerifyDialogOpen, setVerifyDialogOpen] = useState(false)
+  const [isRebateDialogOpen, setRebateDialogOpen] = useState(false)
   const [appName, setAppName] = useState<string>(app.name)
 
-  const { refetch: fetchContracts } =
-    apiClient.Contracts.listContractsForApp.useQuery(
-      { appId: app.id },
-      { enabled: false },
-    )
+  const apiUtils = apiClient.useUtils()
 
   const handleUpdateAppName = useCallback(
     (updatedName: string) => {
@@ -49,18 +50,15 @@ export const DeployedApp = ({ app }: DeployedAppProps) => {
     async (contract: Contract) => {
       setContractToVerify(contract)
       setVerifyDialogOpen(true)
-
-      const { data: contracts } = await fetchContracts()
-      setContracts(contracts as Contract[])
+      apiUtils.apps.listApps.invalidate()
       setHasDraftContract(false)
     },
-    [setContracts, setContractToVerify, setVerifyDialogOpen],
+    [setContractToVerify, setVerifyDialogOpen, apiUtils],
   )
 
   const handleContractVerified = useCallback(async () => {
-    const { data: contracts } = await fetchContracts()
-    setContracts(contracts as Contract[])
-  }, [setContracts, fetchContracts])
+    apiUtils.apps.listApps.invalidate()
+  }, [apiUtils])
 
   const handleVerifyDialogOpenChange = useCallback(
     (isOpen: boolean) => {
@@ -70,10 +68,27 @@ export const DeployedApp = ({ app }: DeployedAppProps) => {
     [setVerifyDialogOpen],
   )
 
+  const handleStartClaimRebate = useCallback(
+    async (contract: Contract) => {
+      setContractToRebate(contract)
+      setRebateDialogOpen(true)
+    },
+    [setContractToRebate],
+  )
+
+  const handleRebateDialogOpenChange = useCallback(
+    (isOpen: boolean) => {
+      setContractToRebate(undefined)
+      setRebateDialogOpen(isOpen)
+    },
+    [setRebateDialogOpen],
+  )
+
   const handleRebateClaimed = useCallback(async () => {
-    const { data: contracts } = await fetchContracts()
-    setContracts(contracts as Contract[])
-  }, [setContracts, fetchContracts])
+    apiUtils.apps.listApps.invalidate()
+    apiUtils.Rebates.totalRebatesClaimed.invalidate()
+    apiUtils.Rebates.listCompletedRebates.invalidate()
+  }, [apiUtils])
 
   const pendingContracts = contracts.filter(
     (contract) => contract.state === 'not_verified',
@@ -104,7 +119,7 @@ export const DeployedApp = ({ app }: DeployedAppProps) => {
               app={app}
               contract={contract}
               onStartVerification={handleStartVerification}
-              onRebateClaimed={handleRebateClaimed}
+              onStartClaimRebate={handleStartClaimRebate}
             />
           ))}
           {hasDraftContract && (
@@ -123,6 +138,14 @@ export const DeployedApp = ({ app }: DeployedAppProps) => {
             open={isVerifyDialogOpen}
             onOpenChange={handleVerifyDialogOpenChange}
             onContractVerified={handleContractVerified}
+          />
+        )}
+        {contractToRebate && (
+          <ClaimRebateDialog
+            contract={contractToRebate}
+            open={isRebateDialogOpen}
+            onOpenChange={handleRebateDialogOpenChange}
+            onRebateClaimed={handleRebateClaimed}
           />
         )}
         <Button
