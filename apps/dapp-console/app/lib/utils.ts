@@ -1,8 +1,7 @@
 import { type ClassValue, clsx } from 'clsx'
 import { twMerge } from 'tailwind-merge'
-import type { Chain } from 'viem'
 import { optimism, optimismSepolia } from 'viem/chains'
-import { superchainIdMap } from '../constants/superchain'
+import { superchainIdMap } from '@/app/constants/superchain'
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -23,6 +22,10 @@ export function getRebateBlockExplorerUrl(chainId: number) {
     throw new Error('Cannot find chainId')
   }
 
-  const chain = [config.mainnet, ...config.testnets].find((chain) => chain?.id === chainId)
-  return chain?.testnet ? optimismSepolia.blockExplorers.default.url : optimism.blockExplorers.default.url
+  const chain = [config.mainnet, ...config.testnets].find(
+    (chain) => chain?.id === chainId,
+  )
+  return chain?.testnet
+    ? optimismSepolia.blockExplorers.default.url
+    : optimism.blockExplorers.default.url
 }

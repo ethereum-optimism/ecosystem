@@ -4,7 +4,6 @@ import {
   DialogHeader,
   DialogTitle,
   Label,
-  Skeleton,
   Textarea,
   useToast,
 } from '@eth-optimism/ui-components'
@@ -99,11 +98,11 @@ export const StartVerificationContent = () => {
       </DialogHeader>
       <Label>Message to sign</Label>
       <div className="flex flex-col w-full relative">
-          <Textarea
-            value={challenge?.challenge ?? ''}
-            className="min-h-[80px] pr-16 resize-none cursor-default focus-visible:ring-0"
-            readOnly
-          />
+        <Textarea
+          value={challenge?.challenge ?? ''}
+          className="min-h-[80px] pr-16 resize-none cursor-default focus-visible:ring-0"
+          readOnly
+        />
         <Button
           size="icon"
           variant="ghost"

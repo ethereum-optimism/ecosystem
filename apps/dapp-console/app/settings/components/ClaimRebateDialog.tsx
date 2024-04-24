@@ -17,7 +17,7 @@ import { Contract } from '@/app/types/api'
 import { Network } from '@/app/components/Network'
 import { optimism } from 'viem/chains'
 import { apiClient } from '@/app/helpers/apiClient'
-import { cn, getRebateBlockExplorerUrl } from '@/app/lib/utils'
+import { getRebateBlockExplorerUrl } from '@/app/lib/utils'
 import { RiLoader4Line } from '@remixicon/react'
 import { LONG_DURATION } from '@/app/constants/toast'
 
@@ -170,7 +170,9 @@ export const ClaimRebateDialog = ({
                 {rebateTxHash ? 'View Transaction' : 'Claim Rebate'}
               </Text>
 
-              {isLoadingClaimRebate ? <RiLoader4Line className="ml-2 animate-spin" /> : null}
+              {isLoadingClaimRebate ? (
+                <RiLoader4Line className="ml-2 animate-spin" />
+              ) : null}
             </Button>
           ) : (
             <Button className="h-[48px]" asChild>

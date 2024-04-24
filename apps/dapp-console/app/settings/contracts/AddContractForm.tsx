@@ -174,7 +174,10 @@ export const AddContractForm = ({
           disabled={!form.formState.isValid}
           onClick={handleCreateContract}
         >
-          <Text as="span">Verify</Text> {isLoadingCreateContract ? <RiLoader4Line className="ml-1 animate-spin" /> : null}
+          <Text as="span">Verify</Text>{' '}
+          {isLoadingCreateContract ? (
+            <RiLoader4Line className="ml-1 animate-spin" />
+          ) : null}
         </Button>
       </div>
     </div>
