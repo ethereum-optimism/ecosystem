@@ -12,8 +12,7 @@ import { shortenAddress } from '@eth-optimism/op-app'
 import { RiArrowRightSLine } from '@remixicon/react'
 import Link from 'next/link'
 import { apiClient } from '@/app/helpers/apiClient'
-import { optimism } from 'viem/chains'
-import { getDateString } from '@/app/lib/utils'
+import { getDateString, getRebateBlockExplorerUrl } from '@/app/lib/utils'
 
 export const ClaimedRebates = () => {
   const { data: rebateResp } = apiClient.Rebates.listCompletedRebates.useQuery(
@@ -38,7 +37,7 @@ export const ClaimedRebates = () => {
             {rebates.map((rebate) => (
               <div key={rebate.id} className="flex flex-col w-full">
                 <Link
-                  href={`${optimism.blockExplorers.default.url}/tx/${rebate.rebateTxHash}`}
+                  href={`${getRebateBlockExplorerUrl(rebate.chainId)}/tx/${rebate.rebateTxHash}`}
                   target="_blank"
                 >
                   <div className="flex flex-row w-full justify-between items-center">

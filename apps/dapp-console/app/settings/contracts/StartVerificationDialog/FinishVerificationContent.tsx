@@ -10,7 +10,7 @@ import {
   Input,
   Text,
 } from '@eth-optimism/ui-components'
-import { RiArrowLeftLine } from '@remixicon/react'
+import { RiArrowLeftLine, RiLoader4Line } from '@remixicon/react'
 import { captureError } from '@/app/helpers/errorReporting'
 
 export const FinishVerificationContent = () => {
@@ -26,7 +26,7 @@ export const FinishVerificationContent = () => {
 
   const [signedMessage, setSignedMessage] = useState<string>(signature ?? '')
   const [isSignedMessageValid, setSignedMessageValid] = useState(!!signature)
-  const { mutateAsync: completeVerification } =
+  const { mutateAsync: completeVerification, isLoading: isLoadingCompleteVerification } =
     apiClient.Contracts.completeVerification.useMutation()
 
   const handleSignedMessageChange = useCallback(
@@ -45,6 +45,10 @@ export const FinishVerificationContent = () => {
   ) as React.ChangeEventHandler<HTMLInputElement>
 
   const handleCompleteVerification = useCallback(async () => {
+    if (isLoadingCompleteVerification) {
+      return
+    }
+
     try {
       await completeVerification({
         signature: signature as Hash,
@@ -92,7 +96,9 @@ export const FinishVerificationContent = () => {
           Invalid Signature
         </Text>
       )}
-      <Button onClick={handleCompleteVerification}>Continue</Button>
+      <Button onClick={handleCompleteVerification} disabled={!isSignedMessageValid}>
+        Continue {isLoadingCompleteVerification ? <RiLoader4Line className="ml-2 animate-spin" /> : null}
+      </Button>
       <Button variant="outline">Learn More</Button>
     </>
   )

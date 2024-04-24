@@ -24,6 +24,7 @@ import {
   L2NetworkSelect,
   L2NetworkSelectItem,
 } from '@/app/components/Selects/L2NetworkSelect'
+import { RiLoader4Line } from '@remixicon/react'
 
 export type StartVerificationHandler = (
   contract: Contract,
@@ -56,7 +57,7 @@ export const AddContractForm = ({
 }: AddContractFormProps) => {
   const [selectedChainId, setSelectedChainId] = useState<number>(optimism.id)
 
-  const { mutateAsync: createContract } =
+  const { mutateAsync: createContract, isLoading: isLoadingCreateContract } =
     apiClient.Contracts.createContract.useMutation()
 
   const form = useForm<z.infer<typeof addContractSchema>>({
@@ -173,7 +174,7 @@ export const AddContractForm = ({
           disabled={!form.formState.isValid}
           onClick={handleCreateContract}
         >
-          <Text as="span">Verify</Text>
+          <Text as="span">Verify</Text> {isLoadingCreateContract ? <RiLoader4Line className="ml-1 animate-spin" /> : null}
         </Button>
       </div>
     </div>
