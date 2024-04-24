@@ -23,7 +23,8 @@ export const apiClient = createTRPCNext<ApiV0['handler']>({
 
             const accessToken = localStorage.getItem('privy:token')
             if (accessToken) {
-              headers['Authorization'] = parseAccessToken(accessToken)
+              headers['Authorization'] =
+                `Bearer ${parseAccessToken(accessToken)}`
             }
 
             return fetch(url, {
