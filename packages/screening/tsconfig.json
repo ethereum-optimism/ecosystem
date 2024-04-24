@@ -4,9 +4,6 @@
   "compilerOptions": {
     "rootDir": "src",
     "baseUrl": ".",
-    "paths": {
-      "@/*": ["./src/*"]
-    },
     "target": "es2021",
     "lib": ["esnext"],
     "strict": true,

@@ -56,11 +56,14 @@ export class ContractsRoute extends Route {
       try {
         const { user } = ctx.session
 
-        assertUserAuthenticated(user)
+        const { id: entityId } = await assertUserAuthenticated(
+          this.trpc.database,
+          user,
+        )
 
         const contracts = await getActiveContractsForApp({
           db: this.trpc.database,
-          entityId: user.entityId,
+          entityId,
           appId: input.appId,
         })
 
@@ -99,7 +102,10 @@ export class ContractsRoute extends Route {
       const inputContractAddress = getAddress(input.contractAddress)
       const inputDeployerAddress = getAddress(input.deployerAddress)
 
-      assertUserAuthenticated(user)
+      const { id: entityId } = await assertUserAuthenticated(
+        this.trpc.database,
+        user,
+      )
 
       const publicClient = supportedChainsPublicClientsMap[chainId]
 
@@ -116,7 +122,7 @@ export class ContractsRoute extends Route {
           this.logger?.error(
             {
               error: err,
-              entityId: user.entityId,
+              entityId,
               txHash: deploymentTxHash,
               chainId,
             },
@@ -133,7 +139,7 @@ export class ContractsRoute extends Route {
           this.logger?.error(
             {
               error: err,
-              entityId: user.entityId,
+              entityId,
               txHash: deploymentTxHash,
               chainId,
             },
@@ -150,7 +156,7 @@ export class ContractsRoute extends Route {
           this.logger?.error(
             {
               error: err,
-              entityId: user.entityId,
+              entityId,
               txHash: deploymentTxHash,
               chainId,
             },
@@ -169,7 +175,7 @@ export class ContractsRoute extends Route {
             this.logger?.error(
               {
                 error: err,
-                entityId: user.entityId,
+                entityId,
                 txHash: deploymentTxHash,
                 chainId,
               },
@@ -217,7 +223,7 @@ export class ContractsRoute extends Route {
         .transaction(async (tx) => {
           const isDeployerVerified = await hasAlreadyVerifiedDeployer({
             db: tx,
-            entityId: user.entityId,
+            entityId,
             deployerAddress: inputDeployerAddress,
           })
 
@@ -225,7 +231,7 @@ export class ContractsRoute extends Route {
             db: tx,
             contractAddress: inputContractAddress,
             chainId,
-            entityId: user.entityId,
+            entityId,
           })
           if (
             existingContract &&
@@ -247,7 +253,7 @@ export class ContractsRoute extends Route {
               this.logger?.error(
                 {
                   error: err,
-                  entityId: user.entityId,
+                  entityId,
                   contractId: existingContract.id,
                   appId,
                   chainId,
@@ -269,7 +275,7 @@ export class ContractsRoute extends Route {
                 state: isDeployerVerified
                   ? ContractState.VERIFIED
                   : ContractState.NOT_VERIFIED,
-                entityId: user.entityId,
+                entityId,
               },
             })
             await insertTransaction({
@@ -277,7 +283,7 @@ export class ContractsRoute extends Route {
               transaction: viemContractDeploymentTransactionToDbTransaction({
                 transactionReceipt: deploymentTxReceipt,
                 transaction: deploymentTx,
-                entityId: user.entityId,
+                entityId,
                 chainId,
                 contractId: contract.id,
                 deploymentTimestamp: deploymentBlock.timestamp,
@@ -291,7 +297,7 @@ export class ContractsRoute extends Route {
           this.logger?.error(
             {
               error: err,
-              entityId: user.entityId,
+              entityId,
               contractAddress: inputContractAddress,
               chainId,
             },
@@ -315,18 +321,21 @@ export class ContractsRoute extends Route {
       const { contractId } = input
       const { user } = ctx.session
 
-      assertUserAuthenticated(user)
+      const { id: entityId } = await assertUserAuthenticated(
+        this.trpc.database,
+        user,
+      )
 
       const contract = await getActiveContract({
         db: this.trpc.database,
         contractId,
-        entityId: user.entityId,
+        entityId,
       }).catch((err) => {
         metrics.fetchContractErrorCount.inc()
         this.logger?.error(
           {
             error: err,
-            entityId: user.entityId,
+            entityId,
             contractId,
           },
           'error fetching contract',
@@ -344,14 +353,14 @@ export class ContractsRoute extends Route {
 
       const challenge = await getUnexpiredChallenge({
         db: this.trpc.database,
-        entityId: user.entityId,
+        entityId,
         contractId,
       }).catch((err) => {
         metrics.fetchChallengeErrorCount.inc()
         this.logger?.error(
           {
             error: err,
-            entityId: user.entityId,
+            entityId,
             contractId,
           },
           'error fetching unexpired challenge',
@@ -371,7 +380,7 @@ export class ContractsRoute extends Route {
       const result = await insertChallenge({
         db: this.trpc.database,
         challenge: {
-          entityId: user.entityId,
+          entityId,
           contractId,
           address: contract.deployerAddress,
           chainId: contract.chainId,
@@ -382,7 +391,7 @@ export class ContractsRoute extends Route {
         this.logger?.error(
           {
             error: err,
-            entityId: user.entityId,
+            entityId,
             contractId,
           },
           'error inserting challenge',
@@ -406,18 +415,21 @@ export class ContractsRoute extends Route {
       const { challengeId, signature } = input
       const { user } = ctx.session
 
-      assertUserAuthenticated(user)
+      const { id: entityId } = await assertUserAuthenticated(
+        this.trpc.database,
+        user,
+      )
 
       const challenge = await getChallengeByChallengeId({
         db: this.trpc.database,
-        entityId: user.entityId,
+        entityId,
         challengeId,
       }).catch((err) => {
         metrics.fetchChallengeErrorCount.inc()
         this.logger?.error(
           {
             error: err,
-            entityId: user.entityId,
+            entityId,
             challengeId,
           },
           'error fetching challenge',
@@ -452,12 +464,12 @@ export class ContractsRoute extends Route {
         .transaction(async (tx) => {
           await completeChallenge({
             db: tx,
-            entityId: user.entityId,
+            entityId,
             challengeId,
           })
           await verifyContract({
             db: tx,
-            entityId: user.entityId,
+            entityId,
             contractId: challenge.contractId,
           })
         })
@@ -466,7 +478,7 @@ export class ContractsRoute extends Route {
           this.logger?.error(
             {
               error: err,
-              entityId: user.entityId,
+              entityId,
               challengeId,
             },
             'error updating challenge to complete',
@@ -492,18 +504,21 @@ export class ContractsRoute extends Route {
       const { contractId } = input
       const { user } = ctx.session
 
-      assertUserAuthenticated(user)
+      const { id: entityId } = await assertUserAuthenticated(
+        this.trpc.database,
+        user,
+      )
 
       const contract = await getActiveContract({
         db: this.trpc.database,
         contractId,
-        entityId: user.entityId,
+        entityId,
       }).catch((err) => {
         metrics.fetchContractErrorCount.inc()
         this.logger?.error(
           {
             error: err,
-            entityId: user.entityId,
+            entityId,
             contractId,
           },
           'error fetching contract',
@@ -529,18 +544,21 @@ export class ContractsRoute extends Route {
     .mutation(async ({ ctx, input }) => {
       const { user } = ctx.session
       const { contractId } = input
-      assertUserAuthenticated(user)
+      const { id: entityId } = await assertUserAuthenticated(
+        this.trpc.database,
+        user,
+      )
 
       await deleteContract({
         db: this.trpc.database,
         contractId,
-        entityId: user.entityId,
+        entityId,
       }).catch((err) => {
         metrics.deleteContractErrorCount.inc()
         this.logger?.error(
           {
             error: err,
-            entityId: user.entityId,
+            entityId,
             contractId,
           },
           'error deleting contract',

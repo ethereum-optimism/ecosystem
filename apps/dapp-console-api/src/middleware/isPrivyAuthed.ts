@@ -1,7 +1,8 @@
 import bcrypt from 'bcrypt'
 
 import { envVars, PRIVY_TOKEN_COOKIE_KEY } from '@/constants'
-import { getEntityByPrivyDid, insertEntity } from '@/models'
+import { EntityState, getEntityByPrivyDid, insertEntity } from '@/models'
+import { metrics } from '@/monitoring/metrics'
 import { Trpc } from '@/Trpc'
 
 /** Middleware used for checking if the request has a valid privy token associated with it. */
@@ -33,7 +34,20 @@ export const isPrivyAuthed = (trpc: Trpc) => {
         let entity = await getEntityByPrivyDid(
           trpc.database,
           verifiedPrivy.userId,
-        )
+        ).catch((err) => {
+          metrics.fetchEntityErrorCount.inc()
+          trpc.logger.error(
+            { err, privyDid: verifiedPrivy.userId },
+            'error fetching entity using privy did',
+          )
+          throw Trpc.handleStatus(500, 'unable to fetch entity using privy did')
+        })
+
+        if (entity?.state === EntityState.SANCTIONED) {
+          metrics.sanctionedAddressBlocked.inc({ entityId: entity.id })
+          throw Trpc.handleStatus(401, 'sanctioned entity')
+        }
+
         if (!entity) {
           entity = await insertEntity(trpc.database, {
             privyDid: verifiedPrivy.userId,

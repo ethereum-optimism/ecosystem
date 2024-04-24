@@ -6,8 +6,11 @@ import type { Mock } from 'vitest'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 import type { SessionData } from '@/constants'
+import type { Database } from '@/db'
 import {
+  EntityState,
   getActiveWalletsForEntityByCursor,
+  getEntityByEntityId,
   getWalletsByEntityId,
   insertWallet,
   updateWallet,
@@ -34,6 +37,7 @@ vi.mock('@/models', async () => ({
   insertWallet: vi.fn(),
   updateWallet: vi.fn(),
   getActiveWalletsForEntityByCursor: vi.fn().mockImplementation(async () => []),
+  getEntityByEntityId: vi.fn(),
 }))
 
 describe(WalletsRoute.name, () => {
@@ -51,6 +55,15 @@ describe(WalletsRoute.name, () => {
     const trpc = new Trpc(privyClient, mockLogger, mockDB)
     handler = new WalletsRoute(trpc).handler
     session = await validSession()
+    ;(getEntityByEntityId as Mock).mockImplementation(
+      async (input: { db: Database; entityId: string }) => {
+        const { entityId } = input
+        return {
+          state: EntityState.ACTIVE,
+          id: entityId,
+        }
+      },
+    )
     caller = createSignedInCaller(handler, session)
   })
 

@@ -356,6 +356,9 @@ importers:
 
   apps/dapp-console-api:
     dependencies:
+      '@eth-optimism/screening':
+        specifier: workspace:*
+        version: link:../../packages/screening
       '@privy-io/server-auth':
         specifier: ^1.7.2
         version: 1.7.3
