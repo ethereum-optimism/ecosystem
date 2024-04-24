@@ -15,7 +15,7 @@ export const isPrivyAuthed = (trpc: Trpc) => {
         req.headers['Authorization'] as string,
       )
     }
-    console.log('TOK', accessToken)
+
     if (!accessToken) {
       throw Trpc.handleStatus(401, `user not signed in to privy`)
     }
