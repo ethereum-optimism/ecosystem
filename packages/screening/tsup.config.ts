@@ -3,7 +3,7 @@ import { defineConfig } from 'tsup'
 
 export default defineConfig({
   name: '@eth-optimism/screening',
-  entry: ['src/index.ts', 'src/cmd/run.ts'],
+  entry: ['src/index.ts'],
   outDir: 'build',
   format: ['cjs'],
   target: 'node18',

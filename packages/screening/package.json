@@ -2,9 +2,8 @@
   "name": "@eth-optimism/screening",
   "private": true,
   "version": "0.0.0",
-  "main": "src/index.ts",
+  "main": "build/index.js",
   "types": "types/index.d.ts",
-  "module": "build/index.mjs",
   "scripts": {
     "test": "vitest --passWithNoTests",
     "clean": "rm -rf build types tsconfig.tsbuildinfo",
