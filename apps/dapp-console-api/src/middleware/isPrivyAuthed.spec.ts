@@ -58,7 +58,7 @@ describe('isPrivyAuthed', () => {
     vi.clearAllMocks()
   })
 
-  it('should throw if privy-token cookie is not on request', async () => {
+  it('should throw if the authroization header or privy cookie is not set on the request', async () => {
     await expect(signedOutCaller.test()).rejects.toEqual(Trpc.handleStatus(401))
   })
 
@@ -111,7 +111,37 @@ describe('isPrivyAuthed', () => {
     expect(verifyAuthTokenMock).toBeCalledWith(mockPrivyAccessToken)
   })
 
-  it('should update the session with the user', async () => {
+  it('should update the session with the user when an authorization header is supplied', async () => {
+    const expectedEntityId = 'entityId1'
+    const expectedExpirationTimeSeconds = Date.now() / 1000
+    const expectedPrivyDid = 'privy:did'
+    const session = mockUserSession()
+    const caller = createSignedInCaller(
+      handler,
+      session,
+      mockPrivyAccessToken,
+      'header',
+    )
+    getEntityByPrivyDidMock.mockImplementation(async () => ({
+      id: expectedEntityId,
+    }))
+    verifyAuthTokenMock.mockImplementation(async () => ({
+      expiration: expectedExpirationTimeSeconds,
+      userId: expectedPrivyDid,
+    }))
+
+    await caller.test()
+
+    expect(session.user).toEqual({
+      entityId: expectedEntityId,
+      privyAccessToken: hashedAccessToken,
+      privyAccessTokenExpiration: expectedExpirationTimeSeconds * 1000,
+      privyDid: expectedPrivyDid,
+    })
+    expect(session.save).toBeCalled()
+  })
+
+  it('should update the session with the user when a cookie is supplied', async () => {
     const expectedEntityId = 'entityId1'
     const expectedExpirationTimeSeconds = Date.now() / 1000
     const expectedPrivyDid = 'privy:did'

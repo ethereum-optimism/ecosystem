@@ -8,22 +8,27 @@ import { Trpc } from '@/Trpc'
 export const isPrivyAuthed = (trpc: Trpc) => {
   return trpc.middleware(async ({ ctx, next }) => {
     const { req, session } = ctx
-    const cookieAccessToken = req.cookies[PRIVY_TOKEN_COOKIE_KEY]
 
-    if (!cookieAccessToken) {
+    let accessToken = req.cookies[PRIVY_TOKEN_COOKIE_KEY]
+    if (!accessToken && req.headers && req.headers['Authorization']) {
+      accessToken = parseAuthorizationHeader(
+        req.headers['Authorization'] as string,
+      )
+    }
+
+    if (!accessToken) {
       throw Trpc.handleStatus(401, `user not signed in to privy`)
     }
 
-    const hashedCookieAccessToken = await hashAccessToken(cookieAccessToken)
+    const hashedAccessToken = await hashAccessToken(accessToken)
 
     if (
       !session.user ||
-      session.user.privyAccessToken !== hashedCookieAccessToken ||
+      session.user.privyAccessToken !== hashedAccessToken ||
       session.user.privyAccessTokenExpiration < Date.now()
     ) {
       try {
-        const verifiedPrivy =
-          await trpc.privy.verifyAuthToken(cookieAccessToken)
+        const verifiedPrivy = await trpc.privy.verifyAuthToken(accessToken)
 
         let entity = await getEntityByPrivyDid(
           trpc.database,
@@ -36,7 +41,7 @@ export const isPrivyAuthed = (trpc: Trpc) => {
         }
 
         session.user = {
-          privyAccessToken: hashedCookieAccessToken,
+          privyAccessToken: hashedAccessToken,
           // verifiedPrivy.expiration is in seconds
           privyAccessTokenExpiration: verifiedPrivy.expiration * 1000,
           privyDid: verifiedPrivy.userId,
@@ -55,4 +60,8 @@ export const isPrivyAuthed = (trpc: Trpc) => {
 
 const hashAccessToken = (accessToken: string) => {
   return bcrypt.hash(accessToken, envVars.PRIVY_ACCESS_TOKEN_SALT)
+}
+
+const parseAuthorizationHeader = (value: string) => {
+  return value.replace('Bearer', '').trim()
 }
