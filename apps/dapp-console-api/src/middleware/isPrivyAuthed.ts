@@ -11,9 +11,9 @@ export const isPrivyAuthed = (trpc: Trpc) => {
     const { req, session } = ctx
 
     let accessToken = req.cookies[PRIVY_TOKEN_COOKIE_KEY]
-    if (!accessToken && req.headers && req.headers['Authorization']) {
+    if (!accessToken && req.headers && req.headers['authorization']) {
       accessToken = parseAuthorizationHeader(
-        req.headers['Authorization'] as string,
+        req.headers['authorization'] as string,
       )
     }
 
