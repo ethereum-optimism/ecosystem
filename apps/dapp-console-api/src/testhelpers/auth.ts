@@ -12,20 +12,35 @@ import type { Session } from '@/constants/session'
 
 import { mockUserSession } from './session'
 
+export type AccessTokenLocation = 'header' | 'cookie'
+
 export const mockPrivyAccessToken = 'privy_token'
 
 export const createSignedInCaller = <T extends AnyRouter>(
   router: T,
   session: Awaited<ReturnType<typeof getIronSession<SessionData>>>,
   privyAccessToken?: string,
+  tokenLocation: AccessTokenLocation = 'cookie',
 ) => {
   const callerFactory = createCallerFactory()
   const createCaller = callerFactory(router)
+
+  const headers: Record<string, string> = {}
+  const cookies: Record<string, string> = {}
+
+  if (tokenLocation === 'cookie') {
+    cookies[PRIVY_TOKEN_COOKIE_KEY] = privyAccessToken || mockPrivyAccessToken
+  }
+
+  if (tokenLocation === 'header') {
+    headers['Authorization'] =
+      `Bearer ${privyAccessToken || mockPrivyAccessToken}`
+  }
+
   return createCaller({
     req: {
-      cookies: {
-        [PRIVY_TOKEN_COOKIE_KEY]: privyAccessToken || mockPrivyAccessToken,
-      } as any,
+      headers,
+      cookies,
     } as Request,
     res: {} as Response,
     session: session,
