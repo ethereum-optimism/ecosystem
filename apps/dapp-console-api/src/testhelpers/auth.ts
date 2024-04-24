@@ -33,8 +33,9 @@ export const createSignedInCaller = <T extends AnyRouter>(
   }
 
   if (tokenLocation === 'header') {
-    headers['Authorization'] =
-      `Bearer ${privyAccessToken || mockPrivyAccessToken}`
+    headers['authorization'] = `Bearer ${
+      privyAccessToken || mockPrivyAccessToken
+    }`
   }
 
   return createCaller({
