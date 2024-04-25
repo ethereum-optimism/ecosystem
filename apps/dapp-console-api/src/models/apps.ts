@@ -145,3 +145,16 @@ export const updateApp = async (input: {
     .set({ ...update, updatedAt: new Date() })
     .where(and(eq(apps.id, appId), eq(apps.entityId, entityId)))
 }
+
+export const deleteApp = async (input: {
+  db: Database
+  entityId: App['entityId']
+  appId: App['id']
+}) => {
+  const { entityId, appId, db } = input
+
+  return db
+    .update(apps)
+    .set({ state: AppState.DISABLED, updatedAt: new Date() })
+    .where(and(eq(apps.id, appId), eq(apps.entityId, entityId)))
+}

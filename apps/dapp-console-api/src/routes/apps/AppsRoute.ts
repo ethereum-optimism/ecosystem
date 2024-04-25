@@ -5,6 +5,8 @@ import { envVars } from '@/constants'
 import { isPrivyAuthed } from '@/middleware'
 import {
   AppState,
+  deleteAllContractsInApp,
+  deleteApp,
   getActiveAppsCount,
   getActiveAppsForEntityByCursor,
   insertApp,
@@ -159,6 +161,8 @@ export class AppsRoute extends Route {
           {
             error: err,
             entityId: ctx.session.user?.entityId,
+            appId,
+            newName: name,
           },
           'error updating app in db',
         )
@@ -168,9 +172,66 @@ export class AppsRoute extends Route {
       return { success: true }
     })
 
+  public readonly deleteAppEndpoint = 'deleteApp' as const
+  public readonly deleteAppController = this.trpc.procedure
+    .use(isPrivyAuthed(this.trpc))
+    .input(
+      this.z.object({
+        appId: this.z.string(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const { user } = ctx.session
+      const { appId } = input
+
+      const { id: entityId } = await assertUserAuthenticated(
+        this.trpc.database,
+        user,
+      )
+
+      await this.trpc.database.transaction(async (tx) => {
+        await deleteApp({
+          db: tx,
+          entityId,
+          appId,
+        }).catch((err) => {
+          metrics.deleteAppErrorCount.inc()
+          this.logger?.error(
+            {
+              error: err,
+              entityId,
+              appId,
+            },
+            'error deleting app in db',
+          )
+          throw Trpc.handleStatus(500, 'unable to delete app')
+        })
+
+        await deleteAllContractsInApp({
+          db: tx,
+          entityId,
+          appId,
+        }).catch((err) => {
+          metrics.deleteContractsInAppErrorCount.inc()
+          this.logger?.error(
+            {
+              error: err,
+              entityId,
+              appId,
+            },
+            'error deleting all contracts from app in db',
+          )
+          throw Trpc.handleStatus(500, 'unable to delete app')
+        })
+      })
+
+      return { success: true }
+    })
+
   public readonly handler = this.trpc.router({
     [this.listApps]: this.listAppsController,
     [this.createApp]: this.createAppController,
     [this.editApp]: this.editAppController,
+    [this.deleteAppEndpoint]: this.deleteAppController,
   })
 }

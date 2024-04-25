@@ -49,6 +49,14 @@ export const metrics = {
     name: 'edit_app_error_count',
     help: 'Total number of errors encountered while editing an app',
   }),
+  deleteAppErrorCount: new Counter({
+    name: 'delete_app_error_count',
+    help: 'Total number of errors encountered while deleting an app',
+  }),
+  deleteContractsInAppErrorCount: new Counter({
+    name: 'delete_contracts_in_app_error_count',
+    help: 'Total number of errors encountered while deleting all contracts in an app',
+  }),
   fetchingTxErrorCount: new Counter({
     name: 'fetching_tx_error_count',
     help: 'Total number of errors encountered while fetching tx',
