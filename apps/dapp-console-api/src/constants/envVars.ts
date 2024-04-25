@@ -60,6 +60,17 @@ const envVarSchema = z.object({
   RATE_LIMIT: z.number(),
   SCREENING_SERVICE_URL: z.string(),
   PERFORM_ADDRESS_SCREENING: z.boolean().default(true),
+  CB_VERIFICATION_EAS_API_URL: z
+    .string()
+    .default('https://base.easscan.org/graphql'),
+  CB_VERIFICATION_SCHEMA_ID: z
+    .string()
+    .default(
+      '0xf8b05c79f090979bf4a80270aba232dff11a10d9ca55c4f88de95317970f0de9',
+    ),
+  CB_VERIFICATION_ATTESTER: z
+    .string()
+    .default('0x357458739F90461b99789350868CD7CF330Dd7EE'),
 })
 
 const isTest = process.env.NODE_ENV === 'test'
@@ -187,5 +198,8 @@ export const envVars = envVarSchema.parse(
         PERFORM_ADDRESS_SCREENING: process.env.PERFORM_ADDRESS_SCREENING
           ? Boolean(process.env.PERFORM_ADDRESS_SCREENING === 'true')
           : true,
+        CB_VERIFICATION_EAS_API_URL: process.env.CB_VERIFICATION_EAS_API_URL,
+        CB_VERIFICATION_SCHEMA_ID: process.env.CB_VERIFICATION_SCHEMA_ID,
+        CB_VERIFICATION_ATTESTER: process.env.CB_VERIFICATION_ATTESTER,
       },
 )

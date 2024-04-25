@@ -1,8 +1,8 @@
 import { drizzle } from 'drizzle-orm/node-postgres'
 import { Pool } from 'pg'
 
-import { envVars } from '..'
-import type { Database } from '../db'
+import { envVars } from '@/constants'
+import type { Database } from '@/db'
 
 export const mockDB: Database = drizzle(
   new Pool({

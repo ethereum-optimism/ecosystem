@@ -2,6 +2,7 @@ import { gql, request } from 'graphql-request'
 import type { Address } from 'viem'
 import { z } from 'zod'
 
+import { envVars } from '@/constants'
 import type { Database } from '@/db'
 import { getWalletsByEntityId, updateWallet, WalletState } from '@/models'
 import { metrics } from '@/monitoring/metrics'
@@ -11,23 +12,27 @@ export const getCoinbaseVerificationAttestationFromEAS = async (
 ) => {
   const result = await request<{
     attestations: Array<{ id: string; decodedDataJson: string }>
-  }>(BASE_EAS_API_URL, GetCoinbaseVerificationAttestationQuery, {
-    where: {
-      recipient: {
-        equals: address,
+  }>(
+    envVars.CB_VERIFICATION_EAS_API_URL,
+    GetCoinbaseVerificationAttestationQuery,
+    {
+      where: {
+        recipient: {
+          equals: address,
+        },
+        schemaId: {
+          equals: envVars.CB_VERIFICATION_SCHEMA_ID,
+        },
+        revoked: {
+          equals: false,
+        },
+        attester: {
+          equals: envVars.CB_VERIFICATION_ATTESTER,
+        },
       },
-      schemaId: {
-        equals: CB_VERIFICATION_SCHEMA_ID,
-      },
-      revoked: {
-        equals: false,
-      },
-      attester: {
-        equals: CB_VERIFICATION_ATTESTER,
-      },
+      take: 1,
     },
-    take: 1,
-  })
+  )
 
   if (!result || !result.attestations) {
     throw Error('Graphql query error')
@@ -86,11 +91,6 @@ export const updateCbVerificationForAllWallets = async (input: {
     }),
   )
 }
-
-const BASE_EAS_API_URL = 'https://base.easscan.org/graphql'
-const CB_VERIFICATION_SCHEMA_ID =
-  '0xf8b05c79f090979bf4a80270aba232dff11a10d9ca55c4f88de95317970f0de9'
-const CB_VERIFICATION_ATTESTER = '0x357458739F90461b99789350868CD7CF330Dd7EE'
 
 const coinbaseVerifiedAccountAttestationDataSchema = z
   .tuple([
