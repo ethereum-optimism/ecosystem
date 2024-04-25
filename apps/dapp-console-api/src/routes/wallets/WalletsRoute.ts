@@ -147,35 +147,32 @@ export class WalletsRoute extends Route {
     .use(isPrivyAuthed(this.trpc))
     .input(zodListRequest(zodCreatedAtCursor))
     .query(async ({ ctx, input }) => {
-      try {
-        const { user } = ctx.session
-        const limit = input.limit ?? DEFAULT_PAGE_LIMIT
+      const { user } = ctx.session
+      const limit = input.limit ?? DEFAULT_PAGE_LIMIT
 
-        const { id: entityId } = await assertUserAuthenticated(
-          this.trpc.database,
-          user,
-        )
+      const { id: entityId } = await assertUserAuthenticated(
+        this.trpc.database,
+        user,
+      )
 
-        const activeWallets = await getActiveWalletsForEntityByCursor(
-          this.trpc.database,
-          entityId,
-          limit,
-          input.cursor,
-        )
-
-        return generateListResponse(activeWallets, limit, input.cursor)
-      } catch (err) {
+      const activeWallets = await getActiveWalletsForEntityByCursor(
+        this.trpc.database,
+        entityId,
+        limit,
+        input.cursor,
+      ).catch((err) => {
         metrics.listWalletsErrorCount.inc()
         this.logger?.error(
           {
             error: err,
             entityId: ctx.session.user?.entityId,
-            privyDid: ctx.session.user?.privyDid,
           },
           'error fetching wallets from db',
         )
         throw Trpc.handleStatus(500, 'error fetching wallets')
-      }
+      })
+
+      return generateListResponse(activeWallets, limit, input.cursor)
     })
 
   public readonly walletVerifications = 'walletVerifications' as const

@@ -33,7 +33,9 @@ const fetchLinkedWallets = async (
 ) => {
   const user = await privyClient.getUser(privyDid)
   const wallets = user.linkedAccounts.filter(
-    (account) => account.type === 'wallet',
+    (account) =>
+      // Do not include the embedded wallet that is auto-created by privy
+      account.type === 'wallet' && account.walletClientType !== 'privy',
   ) as WalletWithMetadata[]
   return wallets.map((wallet) => wallet.address as Address)
 }
