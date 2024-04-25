@@ -59,8 +59,8 @@ export const WalletVerificationMethods = () => {
   return (
     <Accordion type="single" collapsible>
       <AccordionItem value="wallet-verifications" className="border-none">
-        <AccordionTrigger className="hover:no-underline justify-start">
-          <Text className="text-base font-medium mr-2">
+        <AccordionTrigger className="hover:no-underline justify-start max-w-[215px]">
+          <Text className="text-base font-medium mr-2 cursor-pointer">
             See verification methods
           </Text>
         </AccordionTrigger>

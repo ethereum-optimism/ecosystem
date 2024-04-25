@@ -5,6 +5,7 @@ import {
   Dialog,
   DialogContent,
   DialogHeader,
+  toast,
 } from '@eth-optimism/ui-components'
 import { Text } from '@eth-optimism/ui-components/src/components/ui/text/text'
 import { Hash, formatEther } from 'viem'
@@ -16,6 +17,9 @@ import { Contract } from '@/app/types/api'
 import { Network } from '@/app/components/Network'
 import { optimism } from 'viem/chains'
 import { apiClient } from '@/app/helpers/apiClient'
+import { getRebateBlockExplorerUrl } from '@/app/lib/utils'
+import { RiLoader4Line } from '@remixicon/react'
+import { LONG_DURATION } from '@/app/constants/toast'
 
 export type ClaimRebateDialogProps = {
   open: boolean
@@ -32,7 +36,7 @@ export const ClaimRebateDialog = ({
 }: ClaimRebateDialogProps) => {
   const [rebateTxHash, setRebateTxHash] = useState<Hash | undefined>()
 
-  const { mutateAsync: claimRebate } =
+  const { mutateAsync: claimRebate, isLoading: isLoadingClaimRebate } =
     apiClient.Rebates.claimDeploymentRebate.useMutation()
 
   const { data: wallets } = apiClient.wallets.listWallets.useQuery({})
@@ -65,20 +69,30 @@ export const ClaimRebateDialog = ({
   }, [contract])
 
   const handleClaim = useCallback(async () => {
+    if (isLoadingClaimRebate) {
+      return
+    }
+
     const { txHash } = await claimRebate({
       contractId: contract.id,
       recipientAddress: contract.deployerAddress,
     })
+
+    toast({
+      description: 'Rebate Claimed',
+      duration: LONG_DURATION,
+    })
+
     setRebateTxHash(txHash)
     onRebateClaimed(contract)
   }, [setRebateTxHash, onRebateClaimed])
 
   const handleViewTransaction = useCallback(() => {
     window.open(
-      `${optimism.blockExplorers.default.url}/tx/${rebateTxHash}`,
+      `${getRebateBlockExplorerUrl(contract.chainId)}/tx/${rebateTxHash}`,
       '_blank',
     )
-  }, [rebateTxHash])
+  }, [contract, rebateTxHash])
 
   const handleCancel = useCallback(() => onOpenChange(false), [onOpenChange])
 
@@ -134,7 +148,7 @@ export const ClaimRebateDialog = ({
               >
                 To
               </Text>
-              <Network chainId={optimism.id} />
+              <Network chainId={optimism.id} className="cursor-default" />
             </div>
             <Text as="p" className="text-right">
               {shortenAddress(contract.transaction!.fromAddress)}
@@ -152,9 +166,13 @@ export const ClaimRebateDialog = ({
               className="h-[48px]"
               onClick={rebateTxHash ? handleViewTransaction : handleClaim}
             >
-              <Text as="span">
+              <Text as="span" className="cursor-pointer">
                 {rebateTxHash ? 'View Transaction' : 'Claim Rebate'}
               </Text>
+
+              {isLoadingClaimRebate ? (
+                <RiLoader4Line className="ml-2 animate-spin" />
+              ) : null}
             </Button>
           ) : (
             <Button className="h-[48px]" asChild>
@@ -174,7 +192,9 @@ export const ClaimRebateDialog = ({
             className="mt-2 h-[48px]"
             onClick={handleCancel}
           >
-            <Text as="span">Cancel</Text>
+            <Text as="span" className="cursor-pointer">
+              Cancel
+            </Text>
           </Button>
         </div>
       </DialogContent>

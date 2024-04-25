@@ -149,7 +149,9 @@ export const deploymentRebateM2Metadata: DialogMetadata = {
   primaryButton: (
     <Button id="deployment-rebate-add-contracts" size="lg" asChild>
       <Link href={routes.CONTRACTS.path}>
-        <Text as="span">Add Contracts</Text>
+        <Text as="span" className="cursor-pointer">
+          Add Contracts
+        </Text>
       </Link>
     </Button>
   ),
@@ -161,7 +163,9 @@ export const deploymentRebateM2Metadata: DialogMetadata = {
         target="_blank"
         rel="noopener noreferrer"
       >
-        <Text as="span">See Terms</Text>
+        <Text as="span" className="cursor-pointer">
+          See Terms
+        </Text>
       </Link>
     </Button>
   ),

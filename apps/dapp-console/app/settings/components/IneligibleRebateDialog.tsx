@@ -92,7 +92,9 @@ export const IneligibleRebateDialog = ({
           </Text>
 
           <Button className="mt-6 h-[48px]" onClick={handleClose}>
-            <Text as="span">Close</Text>
+            <Text as="span" className="cursor-pointer">
+              Close
+            </Text>
           </Button>
         </div>
       </DialogContent>

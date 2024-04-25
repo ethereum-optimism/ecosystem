@@ -32,7 +32,7 @@ const tabs: Record<SettingsTabType, SettingsTab> = {
         Add your app contracts here. In the future, we’ll scan them for
         insights. For now, we’ll check if they’re eligible for the{' '}
         <RebateDialog>
-          <Text as="span" className="font-semibold">
+          <Text as="span" className="font-semibold cursor-pointer">
             Deployment Rebate.
           </Text>
         </RebateDialog>

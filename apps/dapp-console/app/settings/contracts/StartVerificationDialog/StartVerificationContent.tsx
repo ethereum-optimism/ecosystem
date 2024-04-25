@@ -100,7 +100,7 @@ export const StartVerificationContent = () => {
       <div className="flex flex-col w-full relative">
         <Textarea
           value={challenge?.challenge ?? ''}
-          className="pr-16 resize-none cursor-default focus-visible:ring-0"
+          className="min-h-[80px] pr-16 resize-none cursor-default focus-visible:ring-0"
           readOnly
         />
         <Button

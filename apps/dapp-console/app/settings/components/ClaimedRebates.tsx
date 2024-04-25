@@ -12,8 +12,7 @@ import { shortenAddress } from '@eth-optimism/op-app'
 import { RiArrowRightSLine } from '@remixicon/react'
 import Link from 'next/link'
 import { apiClient } from '@/app/helpers/apiClient'
-import { optimism } from 'viem/chains'
-import { getDateString } from '@/app/lib/utils'
+import { getDateString, getRebateBlockExplorerUrl } from '@/app/lib/utils'
 
 export const ClaimedRebates = () => {
   const { data: rebateResp } = apiClient.Rebates.listCompletedRebates.useQuery(
@@ -31,28 +30,33 @@ export const ClaimedRebates = () => {
     <div className="flex flex-col w-full">
       <Accordion type="single" collapsible>
         <AccordionItem value="rebates" className="border-none">
-          <AccordionTrigger className="hover:no-underline justify-start">
-            <Text className="font-semibold mr-1">See transactions</Text>
+          <AccordionTrigger className="hover:no-underline justify-start max-w-[150px]">
+            <Text className="font-semibold mr-1 cursor-pointer">
+              See transactions
+            </Text>
           </AccordionTrigger>
           <AccordionContent>
             {rebates.map((rebate) => (
               <div key={rebate.id} className="flex flex-col w-full">
                 <Link
-                  href={`${optimism.blockExplorers.default.url}/tx/${rebate.rebateTxHash}`}
+                  href={`${getRebateBlockExplorerUrl(rebate.chainId)}/tx/${rebate.rebateTxHash}`}
                   target="_blank"
                 >
                   <div className="flex flex-row w-full justify-between items-center">
                     <div className="flex flex-col py-8">
-                      <Text as="p" className="font-semibold">
+                      <Text as="p" className="font-semibold cursor-pointer">
                         {rebate.rebateTxTimestamp &&
                           getDateString(rebate.rebateTxTimestamp)}
                       </Text>
-                      <Text as="p" className="text-muted-foreground">
+                      <Text
+                        as="p"
+                        className="text-muted-foreground cursor-pointer"
+                      >
                         Contract: {shortenAddress(rebate.contractAddress)}
                       </Text>
                     </div>
                     <div className="flex flex-row items-center">
-                      <Text as="span" className="font-semibold">
+                      <Text as="span" className="font-semibold cursor-pointer">
                         {formatEther(BigInt(rebate.rebateAmount ?? 0), 'wei')}{' '}
                         ETH
                       </Text>

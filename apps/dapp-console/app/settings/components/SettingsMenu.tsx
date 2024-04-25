@@ -41,7 +41,10 @@ const SettingsMenuItem = ({
       ></div>
       <Text
         as="span"
-        className={cn('pl-3 text-base transition', isActive ? 'font-bold' : '')}
+        className={cn(
+          'pl-3 text-base transition cursor-pointer',
+          isActive ? 'font-bold' : '',
+        )}
       >
         {title}
       </Text>

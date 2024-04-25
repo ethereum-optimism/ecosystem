@@ -29,7 +29,10 @@ export const apiClient = createTRPCNext<ApiV0['handler']>({
 
             return fetch(url, {
               ...options,
-              headers,
+              headers: {
+                ...options?.headers,
+                ...headers,
+              },
               credentials: 'include',
             })
           },
