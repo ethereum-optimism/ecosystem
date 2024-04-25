@@ -9,19 +9,17 @@ export class AuthRoute extends Route {
   public readonly logoutUser = 'logoutUser' as const
   public readonly logoutUserController = this.trpc.procedure.mutation(
     async ({ ctx }) => {
-      try {
-        const { session } = ctx
+      const { session } = ctx
 
-        delete session.user
+      delete session.user
 
-        await session.save()
-
-        return { success: true }
-      } catch (err) {
+      await session.save().catch((err) => {
         metrics.logoutUserErrorCount.inc()
-        this.logger?.error(err, 'error saving user session')
-        throw Trpc.handleStatus(500, 'error saving user session')
-      }
+        this.logger?.error({ err }, 'failed to logout user')
+        throw Trpc.handleStatus(500, 'unable to logout user')
+      })
+
+      return { success: true }
     },
   )
 

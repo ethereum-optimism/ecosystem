@@ -53,35 +53,32 @@ export class ContractsRoute extends Route {
       }),
     )
     .query(async ({ ctx, input }) => {
-      try {
-        const { user } = ctx.session
+      const { user } = ctx.session
 
-        const { id: entityId } = await assertUserAuthenticated(
-          this.trpc.database,
-          user,
-        )
+      const { id: entityId } = await assertUserAuthenticated(
+        this.trpc.database,
+        user,
+      )
 
-        const contracts = await getActiveContractsForApp({
-          db: this.trpc.database,
-          entityId,
-          appId: input.appId,
-        })
-
-        return contracts.map((contract) =>
-          addRebateEligibilityToContract(contract),
-        )
-      } catch (err) {
+      const contracts = await getActiveContractsForApp({
+        db: this.trpc.database,
+        entityId,
+        appId: input.appId,
+      }).catch((err) => {
         metrics.listContractsErrorCount.inc()
         this.logger?.error(
           {
             error: err,
-            entityId: ctx.session.user?.entityId,
-            privyDid: ctx.session.user?.privyDid,
+            entityId,
           },
           'error fetching contracts from db',
         )
         throw Trpc.handleStatus(500, 'error fetching contracts')
-      }
+      })
+
+      return contracts.map((contract) =>
+        addRebateEligibilityToContract(contract),
+      )
     })
 
   public readonly createContract = 'createContract' as const

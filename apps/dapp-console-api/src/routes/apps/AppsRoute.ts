@@ -33,38 +33,20 @@ export class AppsRoute extends Route {
     .use(isPrivyAuthed(this.trpc))
     .input(zodListRequest(zodNameCursor))
     .query(async ({ ctx, input }) => {
-      try {
-        const { user } = ctx.session
-        const limit = input.limit ?? DEFAULT_PAGE_LIMIT
+      const { user } = ctx.session
+      const limit = input.limit ?? DEFAULT_PAGE_LIMIT
 
-        const { id: entityId } = await assertUserAuthenticated(
-          this.trpc.database,
-          user,
-        )
+      const { id: entityId } = await assertUserAuthenticated(
+        this.trpc.database,
+        user,
+      )
 
-        const activeApps = await getActiveAppsForEntityByCursor({
-          db: this.trpc.database,
-          entityId,
-          limit,
-          cursor: input.cursor,
-        })
-
-        const activeAppsWithRebateEligiblity = activeApps.map((app) => ({
-          ...app,
-          contracts: app.contracts.map((contract) =>
-            addRebateEligibilityToContract({
-              ...contract,
-              entity: app.entity,
-            }),
-          ),
-        }))
-
-        return generateListResponse(
-          activeAppsWithRebateEligiblity,
-          limit,
-          input.cursor,
-        )
-      } catch (err) {
+      const activeApps = await getActiveAppsForEntityByCursor({
+        db: this.trpc.database,
+        entityId,
+        limit,
+        cursor: input.cursor,
+      }).catch((err) => {
         metrics.listAppsErrorCount.inc()
         this.logger?.error(
           {
@@ -75,7 +57,23 @@ export class AppsRoute extends Route {
           'error fetching apps from db',
         )
         throw Trpc.handleStatus(500, 'error fetching apps')
-      }
+      })
+
+      const activeAppsWithRebateEligiblity = activeApps.map((app) => ({
+        ...app,
+        contracts: app.contracts.map((contract) =>
+          addRebateEligibilityToContract({
+            ...contract,
+            entity: app.entity,
+          }),
+        ),
+      }))
+
+      return generateListResponse(
+        activeAppsWithRebateEligiblity,
+        limit,
+        input.cursor,
+      )
     })
 
   public readonly createApp = 'createApp' as const

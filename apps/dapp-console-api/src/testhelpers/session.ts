@@ -10,7 +10,7 @@ export const mockUserSession = (user?: SessionData['user']) => ({
       ...user,
     },
   }),
-  save: vi.fn(),
+  save: vi.fn().mockImplementation(async () => undefined),
   destroy: vi.fn(),
   updateConfig: vi.fn(),
 })

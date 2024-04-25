@@ -28,44 +28,59 @@ export const isPrivyAuthed = (trpc: Trpc) => {
       session.user.privyAccessToken !== hashedAccessToken ||
       session.user.privyAccessTokenExpiration < Date.now()
     ) {
-      try {
-        const verifiedPrivy = await trpc.privy.verifyAuthToken(accessToken)
-
-        let entity = await getEntityByPrivyDid(
-          trpc.database,
-          verifiedPrivy.userId,
-        ).catch((err) => {
-          metrics.fetchEntityErrorCount.inc()
-          trpc.logger.error(
-            { err, privyDid: verifiedPrivy.userId },
-            'error fetching entity using privy did',
-          )
-          throw Trpc.handleStatus(500, 'unable to fetch entity using privy did')
+      const verifiedPrivy = await trpc.privy
+        .verifyAuthToken(accessToken)
+        .catch((err) => {
+          metrics.privyVerifyAuthTokenErrorCount.inc()
+          trpc.logger.error({ err }, 'failed to verify privy did')
+          throw Trpc.handleStatus(401, 'invalid privy auth token')
         })
 
-        if (entity?.state === EntityState.SANCTIONED) {
-          metrics.sanctionedAddressBlocked.inc({ entityId: entity.id })
-          throw Trpc.handleStatus(401, 'sanctioned entity')
-        }
+      let entity = await getEntityByPrivyDid(
+        trpc.database,
+        verifiedPrivy.userId,
+      ).catch((err) => {
+        metrics.fetchEntityErrorCount.inc()
+        trpc.logger.error(
+          { err, privyDid: verifiedPrivy.userId },
+          'error fetching entity using privy did',
+        )
+        throw Trpc.handleStatus(500, 'unable to fetch entity using privy did')
+      })
 
-        if (!entity) {
-          entity = await insertEntity(trpc.database, {
-            privyDid: verifiedPrivy.userId,
-          })
-        }
-
-        session.user = {
-          privyAccessToken: hashedAccessToken,
-          // verifiedPrivy.expiration is in seconds
-          privyAccessTokenExpiration: verifiedPrivy.expiration * 1000,
-          privyDid: verifiedPrivy.userId,
-          entityId: entity.id,
-        }
-        await session.save()
-      } catch (err) {
-        trpc.logger.error('error logging user in', err)
-        throw Trpc.handleStatus(401, `unable to validate access token`)
+      if (entity?.state === EntityState.SANCTIONED) {
+        metrics.sanctionedAddressBlocked.inc({ entityId: entity.id })
+        throw Trpc.handleStatus(401, 'sanctioned entity')
       }
+
+      if (!entity) {
+        entity = await insertEntity(trpc.database, {
+          privyDid: verifiedPrivy.userId,
+        }).catch((err) => {
+          metrics.insertEntityErrorCount.inc()
+          trpc.logger.error(
+            { err, privyDid: verifiedPrivy.userId },
+            'failed to insert new entity',
+          )
+          throw Trpc.handleStatus(500, 'unable to create entity')
+        })
+      }
+
+      session.user = {
+        privyAccessToken: hashedAccessToken,
+        // verifiedPrivy.expiration is in seconds
+        privyAccessTokenExpiration: verifiedPrivy.expiration * 1000,
+        privyDid: verifiedPrivy.userId,
+        entityId: entity.id,
+      }
+      await session.save().catch((err) => {
+        metrics.failedToSaveUserIronSessionErrorCount.inc()
+        trpc.logger.error(
+          { err, entityId: entity.id },
+          'failed to save user iron session',
+        )
+        throw Trpc.handleStatus(500, 'unable to verify entity')
+      })
     }
 
     return next()

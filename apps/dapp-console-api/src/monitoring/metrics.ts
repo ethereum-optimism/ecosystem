@@ -159,4 +159,16 @@ export const metrics = {
     name: 'get_wallets_by_entity_id_error_count',
     help: 'Number of times server failed to get wallets for an entity id',
   }),
+  privyVerifyAuthTokenErrorCount: new Counter({
+    name: 'privy_verify_auth_token_error_count',
+    help: 'Number of times privy access token verification failed',
+  }),
+  insertEntityErrorCount: new Counter({
+    name: 'insert_entity_error_count',
+    help: 'Number of times a new entity failed to be inserted into db',
+  }),
+  failedToSaveUserIronSessionErrorCount: new Counter({
+    name: 'failed_to_save_user_iron_session_error_count',
+    help: 'Number of times the iron session failed to be saved with a new user',
+  }),
 }
