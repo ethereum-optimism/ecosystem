@@ -574,5 +574,6 @@ export class ContractsRoute extends Route {
     [this.createContract]: this.createContractController,
     [this.startVerification]: this.startVerificationController,
     [this.completeVerification]: this.completeVerificationController,
+    [this.deleteContractRoute]: this.deleteContractController,
   })
 }
