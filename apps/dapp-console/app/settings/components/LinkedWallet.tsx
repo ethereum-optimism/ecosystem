@@ -39,7 +39,11 @@ export const LinkedWallet = ({ address, onUnlink }: LinkedWalletProps) => {
 
   return (
     <div className="flex flex-row gap-2">
-      <Input value={address} disabled />
+      <Input
+        value={address}
+        readOnly
+        className="cursor-default focus-visible:ring-0"
+      />
       <Button
         variant="secondary"
         size="icon"

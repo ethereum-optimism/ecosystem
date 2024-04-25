@@ -92,12 +92,12 @@ export const DeployedAppContract = ({
       <div className="flex flex-row justify-between">
         <div className="flex flex-col w-full mr-2">
           <Input
-            className="hidden md:flex"
+            className="hidden md:flex cursor-default focus-visible:ring-0"
             value={contract.contractAddress}
             readOnly
           />
           <Input
-            className="flex md:hidden"
+            className="flex md:hidden cursor-default focus-visible:ring-0"
             value={shortenAddress(contract.contractAddress)}
             readOnly
           />

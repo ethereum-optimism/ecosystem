@@ -148,7 +148,7 @@ export const ClaimRebateDialog = ({
               >
                 To
               </Text>
-              <Network chainId={optimism.id} />
+              <Network chainId={optimism.id} className="cursor-default" />
             </div>
             <Text as="p" className="text-right">
               {shortenAddress(contract.transaction!.fromAddress)}
@@ -166,7 +166,7 @@ export const ClaimRebateDialog = ({
               className="h-[48px]"
               onClick={rebateTxHash ? handleViewTransaction : handleClaim}
             >
-              <Text as="span">
+              <Text as="span" className="cursor-pointer">
                 {rebateTxHash ? 'View Transaction' : 'Claim Rebate'}
               </Text>
 
@@ -192,7 +192,9 @@ export const ClaimRebateDialog = ({
             className="mt-2 h-[48px]"
             onClick={handleCancel}
           >
-            <Text as="span">Cancel</Text>
+            <Text as="span" className="cursor-pointer">
+              Cancel
+            </Text>
           </Button>
         </div>
       </DialogContent>
