@@ -17,6 +17,7 @@ import { DeployedAppContract } from '@/app/settings/contracts/DeployedAppContrac
 import { apiClient } from '@/app/helpers/apiClient'
 import { StartVerificationDialog } from '@/app/settings/contracts/StartVerificationDialog'
 import { ClaimRebateDialog } from '@/app/settings/components/ClaimRebateDialog'
+import { DeleteContractDialog } from '@/app/settings/contracts/DeleteContractDialog'
 
 export type DeployedAppProps = {
   app: ApiDeployedApp
@@ -24,10 +25,14 @@ export type DeployedAppProps = {
 
 export const DeployedApp = ({ app }: DeployedAppProps) => {
   const contracts = useMemo(() => app.contracts, [app])
+
   const [contractToVerifiy, setContractToVerify] = useState<
     Contract | undefined
   >()
   const [contractToRebate, setContractToRebate] = useState<
+    Contract | undefined
+  >()
+  const [contractToDelete, setContractToDelete] = useState<
     Contract | undefined
   >()
   const [hasDraftContract, setHasDraftContract] = useState(
@@ -35,6 +40,7 @@ export const DeployedApp = ({ app }: DeployedAppProps) => {
   )
   const [isVerifyDialogOpen, setVerifyDialogOpen] = useState(false)
   const [isRebateDialogOpen, setRebateDialogOpen] = useState(false)
+  const [isDeleteDialogOpen, setDeleteDialogOpen] = useState(false)
   const [appName, setAppName] = useState<string>(app.name)
 
   const apiUtils = apiClient.useUtils()
@@ -54,6 +60,14 @@ export const DeployedApp = ({ app }: DeployedAppProps) => {
       setHasDraftContract(false)
     },
     [setContractToVerify, setVerifyDialogOpen, apiUtils],
+  )
+
+  const handleStartDeleteContract = useCallback(
+    async (contract: Contract) => {
+      setContractToDelete(contract)
+      setDeleteDialogOpen(true)
+    },
+    [setContractToDelete, setDeleteDialogOpen],
   )
 
   const handleContractVerified = useCallback(async () => {
@@ -82,6 +96,14 @@ export const DeployedApp = ({ app }: DeployedAppProps) => {
       setRebateDialogOpen(isOpen)
     },
     [setRebateDialogOpen],
+  )
+
+  const handleDeleteDialogOpenChange = useCallback(
+    (isOpen: boolean) => {
+      setContractToDelete(undefined)
+      setDeleteDialogOpen(isOpen)
+    },
+    [setDeleteDialogOpen],
   )
 
   const handleRebateClaimed = useCallback(async () => {
@@ -120,6 +142,7 @@ export const DeployedApp = ({ app }: DeployedAppProps) => {
               contract={contract}
               onStartVerification={handleStartVerification}
               onStartClaimRebate={handleStartClaimRebate}
+              onStartDeleteContract={handleStartDeleteContract}
             />
           ))}
           {hasDraftContract && (
@@ -146,6 +169,13 @@ export const DeployedApp = ({ app }: DeployedAppProps) => {
             open={isRebateDialogOpen}
             onOpenChange={handleRebateDialogOpenChange}
             onRebateClaimed={handleRebateClaimed}
+          />
+        )}
+        {contractToDelete && (
+          <DeleteContractDialog
+            contract={contractToDelete}
+            open={isDeleteDialogOpen}
+            onOpenChange={handleDeleteDialogOpenChange}
           />
         )}
         <Button

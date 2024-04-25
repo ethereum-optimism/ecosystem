@@ -4,6 +4,7 @@ export type WalletActionContext = 'linkWallet' | 'unlinkWallet' | 'signMessage'
 export type AppActionContext = 'createApp' | 'editAppName'
 export type ContractActionContext =
   | 'createContract'
+  | 'deleteContract'
   | 'startContractVerification'
   | 'completeContractVerification'
 

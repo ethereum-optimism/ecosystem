@@ -1,7 +1,7 @@
 import { DeployedApp, Contract } from '@/app/types/api'
 import { Button, Input, toast } from '@eth-optimism/ui-components'
 import { HexBadge } from '@/app/components/Badges/HexBadge'
-import { RiFileCopyLine } from '@remixicon/react'
+import { RiCloseLine, RiFileCopyLine } from '@remixicon/react'
 import { NetworkBadge } from '@/app/components/Badges/NetworkBadge'
 import { useCallback, useMemo } from 'react'
 import { LONG_DURATION } from '@/app/constants/toast'
@@ -18,12 +18,14 @@ export type AppContractProps = {
   contract: Contract
   onStartVerification: (contract: Contract) => void
   onStartClaimRebate: (contract: Contract) => void
+  onStartDeleteContract: (contract: Contract) => void
 }
 
 export const DeployedAppContract = ({
   contract,
   onStartVerification,
   onStartClaimRebate,
+  onStartDeleteContract,
 }: AppContractProps) => {
   const { user } = usePrivy()
   const { data: totalRebatesClaimed } =
@@ -107,7 +109,7 @@ export const DeployedAppContract = ({
           </div>
         </div>
 
-        <div className="flex flex-row gap-2">
+        <div className="flex flex-row gap-2 items-start">
           <Button
             variant="secondary"
             size="icon"
@@ -116,6 +118,15 @@ export const DeployedAppContract = ({
             onClick={handleCopy}
           >
             <RiFileCopyLine size={20} />
+          </Button>
+
+          <Button
+            variant="secondary"
+            size="icon"
+            aria-label="Delete Contract"
+            onClick={() => onStartDeleteContract(contract)}
+          >
+            <RiCloseLine size={20} />
           </Button>
         </div>
       </div>
