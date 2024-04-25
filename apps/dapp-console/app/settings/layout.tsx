@@ -64,17 +64,10 @@ export default function SettingsLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
-  const shouldShowSettings = useFeature('enable_console_settings')
   const pathname = usePathname()
   const tab = useMemo(() => getActiveTab(pathname), [pathname])
 
-  useEffect(() => {
-    if (!shouldShowSettings) {
-      redirect('/')
-    }
-  }, [shouldShowSettings])
-
-  return shouldShowSettings ? (
+  return (
     <main className="flex justify-center bg-secondary min-h-screen">
       <div className="flex flex-row w-full max-w-7xl mt-6 md:mt-36 md:mb-16">
         <SettingsMenu
@@ -93,5 +86,5 @@ export default function SettingsLayout({
         </div>
       </div>
     </main>
-  ) : null
+  )
 }
