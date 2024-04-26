@@ -52,6 +52,7 @@ RUN pnpm deploy --filter=api-key-service --prod /prod/api-key-service
 
 FROM base AS paymaster-proxy
 
+COPY ./apps/paymaster-proxy/migrations ./prod/paymaster-proxy/migrations
 COPY --from=builder /prod/paymaster-proxy /prod/paymaster-proxy
 WORKDIR /prod/paymaster-proxy
 
