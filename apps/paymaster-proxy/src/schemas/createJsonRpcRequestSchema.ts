@@ -10,7 +10,7 @@ export const createJsonRpcRequestSchema = <
   return z
     .object({
       jsonrpc: z.literal('2.0'),
-      id: z.number(),
+      id: z.union([z.number().int(), z.string()]),
       method: methodSchema,
       params: paramsSchema,
     })

@@ -7,7 +7,7 @@ export const invalidParamsErrorCode = -32602 as const
 export const internalErrorCode = -32603 as const
 
 type JsonRpcErrorParams = {
-  id?: number | null
+  id?: number | string | null
   message?: string
 }
 
@@ -22,7 +22,7 @@ export class JsonRpcError extends Error {
 
   static fromPaymasterRpcError(
     error: PaymasterRpcError,
-    id: number,
+    id: number | string,
   ): JsonRpcError {
     return new JsonRpcError(error.code, {
       id,
