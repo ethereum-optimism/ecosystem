@@ -1,7 +1,6 @@
 import type { NextFunction, Request, Response } from 'express'
 import express from 'express'
 
-import { JsonRpcError } from '@/errors/JsonRpcError'
 import type { JsonRpcRouter } from '@/jsonRpc/JsonRpcRouter'
 
 export const createExpressRouterFromJsonRpcRouter = (
@@ -30,7 +29,14 @@ export const createExpressRouterFromJsonRpcRouter = (
     (err: any, req: Request, res: Response, next: NextFunction) => {
       if (err.status === 400 && err instanceof SyntaxError && 'body' in err) {
         // If JSON parsing fails, return a -32700 JSON-RPC error
-        return res.json(JsonRpcError.parseError().response())
+        return res.json({
+          jsonrpc: '2.0',
+          id: null,
+          error: {
+            code: -32700,
+            message: 'Parse error',
+          },
+        })
       }
 
       next(err)
