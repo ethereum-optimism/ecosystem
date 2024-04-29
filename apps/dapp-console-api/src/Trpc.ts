@@ -9,6 +9,7 @@ import superjson from 'superjson'
 import type { SessionData } from './constants'
 import { sessionOptions } from './constants'
 import type { Database } from './db'
+import { DappConsoleError } from './errors/DappConsoleError'
 
 const createContext = async ({
   req,
@@ -56,6 +57,24 @@ export class Trpc {
          * @see https://trpc.io/docs/v10/data-transformers
          */
         transformer: superjson,
+        // https://trpc.io/docs/v10/server/error-formatting
+        errorFormatter(opts) {
+          const { shape, error } = opts
+          return {
+            ...shape,
+            data: {
+              ...shape.data,
+              customCode:
+                error.cause instanceof DappConsoleError
+                  ? error.cause.code
+                  : null,
+              customErrorMessage:
+                error.cause instanceof DappConsoleError
+                  ? error.cause.message
+                  : null,
+            },
+          }
+        },
       }),
   ) {}
 
@@ -64,7 +83,10 @@ export class Trpc {
    * Suprised this doesn't exist in trpc yet
    * @see https://trpc.io/docs/v10/server/error-handling#error-codes
    */
-  static readonly handleStatus = (statusCode: number, cause?: string) => {
+  static readonly handleStatus = (
+    statusCode: number,
+    cause?: string | DappConsoleError,
+  ) => {
     // BAD_REQUEST	The server cannot or will not process the request due to something that is perceived to be a client error.	400
     // UNAUTHORIZED	The client request has not been completed because it lacks valid authentication credentials for the requested resource.	401
     // FORBIDDEN	The server was unauthorized to access a required data source, such as a REST API.	403

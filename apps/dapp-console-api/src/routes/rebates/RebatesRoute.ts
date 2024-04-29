@@ -17,6 +17,7 @@ import {
 } from '@/api'
 import { SUPPORTED_L2_CHAINS, SUPPORTED_L2_MAINNET_CHAINS } from '@/constants'
 import { MAX_REBATE_AMOUNT } from '@/constants/rebates'
+import { DappConsoleError } from '@/errors/DappConsoleError'
 import { isPrivyAuthed } from '@/middleware'
 import type { Contract, DeploymentRebate, Entity } from '@/models'
 import {
@@ -152,17 +153,29 @@ export class RebatesRoute extends Route {
       })
 
       if (!contract) {
-        throw Trpc.handleStatus(400, 'contract does not exist')
+        throw Trpc.handleStatus(
+          400,
+          new DappConsoleError({
+            code: 'CONTRACT_DOES_NOT_EXIST',
+          }),
+        )
       }
 
       if (contract.state !== ContractState.VERIFIED) {
-        throw Trpc.handleStatus(403, 'cannot claim on unverified contract')
+        throw Trpc.handleStatus(
+          403,
+          new DappConsoleError({
+            code: 'UNVERIFIED_CONTRACT',
+          }),
+        )
       }
 
       if (!isContractDeploymentDateEligibleForRebate(contract)) {
         throw Trpc.handleStatus(
           403,
-          'contract must be deployed after user signed up for dev console',
+          new DappConsoleError({
+            code: 'INELIGIBLE_CONTRACT',
+          }),
         )
       }
 
@@ -186,7 +199,7 @@ export class RebatesRoute extends Route {
       if (!isSupportedChain) {
         throw Trpc.handleStatus(
           403,
-          `chain id: ${contract.chainId} is not supported`,
+          new DappConsoleError({ code: 'UNSUPPORTED_CHAIN_ID' }),
         )
       }
 
@@ -213,7 +226,7 @@ export class RebatesRoute extends Route {
       ) {
         throw Trpc.handleStatus(
           403,
-          'a rebate has already been claimed for this contract',
+          new DappConsoleError({ code: 'REBATE_ALREADY_CLAIMED' }),
         )
       }
 
@@ -221,7 +234,10 @@ export class RebatesRoute extends Route {
         existingRebate &&
         existingRebate.state === DeploymentRebateState.PENDING_SEND
       ) {
-        throw Trpc.handleStatus(403, 'rebate already pending')
+        throw Trpc.handleStatus(
+          403,
+          new DappConsoleError({ code: 'REBATE_PENDING' }),
+        )
       }
 
       const cbVerifiedWallets = (
@@ -248,7 +264,7 @@ export class RebatesRoute extends Route {
       if (cbVerifiedWallets.length === 0) {
         throw Trpc.handleStatus(
           403,
-          'must have a cb verified wallet in order to claim rebate',
+          new DappConsoleError({ code: 'NOT_CB_VERIFIED' }),
         )
       }
 
@@ -272,7 +288,9 @@ export class RebatesRoute extends Route {
       if (totalAmountAlreadyClaimed >= MAX_REBATE_AMOUNT) {
         throw Trpc.handleStatus(
           403,
-          'user has already claimed the max amount of rebates',
+          new DappConsoleError({
+            code: 'MAX_REBATE_REACHED',
+          }),
         )
       }
 
@@ -281,7 +299,9 @@ export class RebatesRoute extends Route {
       if (amountLeftToClaim < 0) {
         throw Trpc.handleStatus(
           403,
-          'user has already claimed the max amount of rebates',
+          new DappConsoleError({
+            code: 'MAX_REBATE_REACHED',
+          }),
         )
       }
 
@@ -380,7 +400,10 @@ export class RebatesRoute extends Route {
             entityId,
             rebateId: pendingRebate.id,
           })
-          throw Trpc.handleStatus(500, 'error sending rebate tx')
+          throw Trpc.handleStatus(
+            500,
+            new DappConsoleError({ code: 'FAILED_TO_SEND_REBATE' }),
+          )
         })
 
       const publicClient = isMainnetChain
@@ -409,7 +432,10 @@ export class RebatesRoute extends Route {
             entityId,
             rebateId: pendingRebate.id,
           })
-          throw Trpc.handleStatus(500, 'error fetching rebate tx')
+          throw Trpc.handleStatus(
+            500,
+            new DappConsoleError({ code: 'FAILED_TO_SEND_REBATE' }),
+          )
         })
 
       await setDeploymentRebateToSent({
@@ -495,7 +521,10 @@ export class RebatesRoute extends Route {
     })
 
     if (walletAddressScreeningResults.some((result) => !!result)) {
-      throw Trpc.handleStatus(401, 'sanctioned address')
+      throw Trpc.handleStatus(
+        401,
+        new DappConsoleError({ code: 'SANCTIONED_ADDRESS' }),
+      )
     }
 
     const recipientAddressIsSanctioned = await checkIfSanctionedAddress({
@@ -514,7 +543,10 @@ export class RebatesRoute extends Route {
     })
 
     if (recipientAddressIsSanctioned) {
-      throw Trpc.handleStatus(401, 'sanctioned address')
+      throw Trpc.handleStatus(
+        401,
+        new DappConsoleError({ code: 'SANCTIONED_ADDRESS' }),
+      )
     }
 
     const deployerAddressIsSanctioned = await checkIfSanctionedAddress({
@@ -533,7 +565,10 @@ export class RebatesRoute extends Route {
     })
 
     if (deployerAddressIsSanctioned) {
-      throw Trpc.handleStatus(401, 'sanctioned address')
+      throw Trpc.handleStatus(
+        401,
+        new DappConsoleError({ code: 'SANCTIONED_ADDRESS' }),
+      )
     }
   }
 }

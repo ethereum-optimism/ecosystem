@@ -171,4 +171,8 @@ export const metrics = {
     name: 'failed_to_save_user_iron_session_error_count',
     help: 'Number of times the iron session failed to be saved with a new user',
   }),
+  insertDeploymentTransactionErrorCount: new Counter({
+    name: 'insert_deployment_transaction_error_count',
+    help: 'Number of times deployment transaction failed to be inserted into db',
+  }),
 }
