@@ -1,7 +1,9 @@
 import { inferRouterOutputs } from '@trpc/server'
 import { ApiV0 } from '@eth-optimism/dapp-console-api'
+import { TRPCClientError } from '@trpc/client'
 
 export type ApiV0RouterOutputs = inferRouterOutputs<ApiV0['handler']>
+export type ApiError = TRPCClientError<ApiV0['handler']>
 
 export type DeployedApp = ApiV0RouterOutputs['apps']['listApps']['records'][0]
 export type Contract =
