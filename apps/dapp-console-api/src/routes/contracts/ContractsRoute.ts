@@ -8,6 +8,7 @@ import {
   zodSupportedChainId,
 } from '@/api'
 import { supportedChainsPublicClientsMap } from '@/constants'
+import { DappConsoleError } from '@/errors/DappConsoleError'
 import { isPrivyAuthed } from '@/middleware'
 import {
   ChallengeState,
@@ -125,7 +126,12 @@ export class ContractsRoute extends Route {
             },
             'error fetching tx',
           )
-          throw Trpc.handleStatus(400, 'error fetching deployment transaction')
+          throw Trpc.handleStatus(
+            400,
+            new DappConsoleError({
+              code: 'DEPLOYMENT_TX_NOT_FOUND',
+            }),
+          )
         })
       const deploymentTxReceipt = await publicClient
         .getTransactionReceipt({
@@ -142,7 +148,12 @@ export class ContractsRoute extends Route {
             },
             'error fetching tx receipt',
           )
-          throw Trpc.handleStatus(400, 'error fetching deployment transaction')
+          throw Trpc.handleStatus(
+            400,
+            new DappConsoleError({
+              code: 'DEPLOYMENT_TX_NOT_FOUND',
+            }),
+          )
         })
       const deploymentBlock = await publicClient
         .getBlock({
@@ -159,7 +170,12 @@ export class ContractsRoute extends Route {
             },
             'error fetching tx deployment block',
           )
-          throw Trpc.handleStatus(400, 'error fetching deployment transaction')
+          throw Trpc.handleStatus(
+            400,
+            new DappConsoleError({
+              code: 'DEPLOYMENT_TX_NOT_FOUND',
+            }),
+          )
         })
 
       let txContractAddress: Address | null =
@@ -196,7 +212,9 @@ export class ContractsRoute extends Route {
       if (!txContractAddress) {
         throw Trpc.handleStatus(
           400,
-          'the provided deployment transaction did not create a contract',
+          new DappConsoleError({
+            code: 'DEPLOYMENT_CONTRACT_NOT_FOUND',
+          }),
         )
       }
 
@@ -205,65 +223,88 @@ export class ContractsRoute extends Route {
       ) {
         throw Trpc.handleStatus(
           400,
-          'deployer address does not match deployment transaction',
+          new DappConsoleError({
+            code: 'DEPLOYER_ADDRESS_INCORRECT',
+          }),
         )
       }
 
       if (!addressEqualityCheck(txContractAddress, inputContractAddress)) {
         throw Trpc.handleStatus(
           400,
-          'contract was not created by deployment transaction',
+          new DappConsoleError({
+            code: 'DEPLOYMENT_CONTRACT_ADDRESS_INCORRECT',
+          }),
         )
       }
 
-      const result = await this.trpc.database
-        .transaction(async (tx) => {
-          const isDeployerVerified = await hasAlreadyVerifiedDeployer({
-            db: tx,
-            entityId,
-            deployerAddress: inputDeployerAddress,
-          })
+      const result = await this.trpc.database.transaction(async (tx) => {
+        const isDeployerVerified = await hasAlreadyVerifiedDeployer({
+          db: tx,
+          entityId,
+          deployerAddress: inputDeployerAddress,
+        })
 
-          const existingContract = await getContractByAddressAndChainId({
-            db: tx,
-            contractAddress: inputContractAddress,
-            chainId,
-            entityId,
-          })
-          if (
-            existingContract &&
-            existingContract.state !== ContractState.DELETED
-          ) {
-            throw Trpc.handleStatus(400, 'contract already exists')
-          }
+        const existingContract = await getContractByAddressAndChainId({
+          db: tx,
+          contractAddress: inputContractAddress,
+          chainId,
+          entityId,
+        })
+        if (
+          existingContract &&
+          existingContract.state !== ContractState.DELETED
+        ) {
+          throw Trpc.handleStatus(
+            400,
+            new DappConsoleError({
+              code: 'DEPLOYMENT_CONTRACT_ALREADY_EXISTS',
+            }),
+          )
+        }
 
-          if (existingContract) {
-            const restoredContract = await restoreDeletedContract({
-              db: tx,
-              contractId: existingContract.id,
+        if (existingContract) {
+          const restoredContract = await restoreDeletedContract({
+            db: tx,
+            contractId: existingContract.id,
+            appId,
+            state: isDeployerVerified
+              ? ContractState.VERIFIED
+              : ContractState.NOT_VERIFIED,
+          }).catch((err) => {
+            metrics.restoreDeletedContractErrorCount.inc()
+            this.logger?.error(
+              {
+                error: err,
+                entityId,
+                contractId: existingContract.id,
+                appId,
+                chainId,
+              },
+              'error restoring deleted contract',
+            )
+            throw Trpc.handleStatus(500, 'error restoring deleted contract')
+          })
+          return restoredContract
+        } else {
+          const contract = await insertContract({
+            db: tx,
+            contract: {
+              contractAddress: inputContractAddress,
+              deploymentTxHash,
+              deployerAddress: inputDeployerAddress,
+              chainId,
               appId,
               state: isDeployerVerified
                 ? ContractState.VERIFIED
                 : ContractState.NOT_VERIFIED,
-            }).catch((err) => {
-              metrics.restoreDeletedContractErrorCount.inc()
-              this.logger?.error(
-                {
-                  error: err,
-                  entityId,
-                  contractId: existingContract.id,
-                  appId,
-                  chainId,
-                },
-                'error restoring deleted contract',
-              )
-              throw Trpc.handleStatus(500, 'error restoring deleted contract')
-            })
-            return restoredContract
-          } else {
-            const contract = await insertContract({
-              db: tx,
-              contract: {
+              entityId,
+            },
+          }).catch((err) => {
+            metrics.insertContractErrorCount.inc()
+            this.logger?.error(
+              {
+                error: err,
                 contractAddress: inputContractAddress,
                 deploymentTxHash,
                 deployerAddress: inputDeployerAddress,
@@ -274,34 +315,40 @@ export class ContractsRoute extends Route {
                   : ContractState.NOT_VERIFIED,
                 entityId,
               },
-            })
-            await insertTransaction({
-              db: tx,
-              transaction: viemContractDeploymentTransactionToDbTransaction({
-                transactionReceipt: deploymentTxReceipt,
-                transaction: deploymentTx,
-                entityId,
-                chainId,
-                contractId: contract.id,
-                deploymentTimestamp: deploymentBlock.timestamp,
-              }),
-            })
-            return contract
-          }
-        })
-        .catch((err) => {
-          metrics.insertContractErrorCount.inc()
-          this.logger?.error(
-            {
-              error: err,
+              'error inserting new contract',
+            )
+            throw Trpc.handleStatus(500, 'error creating contract')
+          })
+          await insertTransaction({
+            db: tx,
+            transaction: viemContractDeploymentTransactionToDbTransaction({
+              transactionReceipt: deploymentTxReceipt,
+              transaction: deploymentTx,
               entityId,
-              contractAddress: inputContractAddress,
               chainId,
-            },
-            'error inserting new contract',
-          )
-          throw Trpc.handleStatus(500, 'error creating contract')
-        })
+              contractId: contract.id,
+              deploymentTimestamp: deploymentBlock.timestamp,
+            }),
+          }).catch((err) => {
+            metrics.insertDeploymentTransactionErrorCount.inc()
+            this.logger?.error(
+              {
+                error: err,
+                contractAddress: inputContractAddress,
+                deploymentTxHash,
+                deployerAddress: inputDeployerAddress,
+                contractId: contract.id,
+                chainId,
+                appId,
+                entityId,
+              },
+              'error inserting new deployment transaction',
+            )
+            throw Trpc.handleStatus(500, 'error creating contract')
+          })
+          return contract
+        }
+      })
 
       return { result }
     })
@@ -341,11 +388,12 @@ export class ContractsRoute extends Route {
       })
 
       if (!contract) {
-        throw Trpc.handleStatus(400, 'contract does not exist')
-      }
-
-      if (contract.state === ContractState.VERIFIED) {
-        throw Trpc.handleStatus(400, 'contract is already verified')
+        throw Trpc.handleStatus(
+          400,
+          new DappConsoleError({
+            code: 'CONTRACT_DOES_NOT_EXIST',
+          }),
+        )
       }
 
       const challenge = await getUnexpiredChallenge({
@@ -435,15 +483,22 @@ export class ContractsRoute extends Route {
       })
 
       if (!challenge || challenge?.state === ChallengeState.EXPIRED) {
-        throw Trpc.handleStatus(400, 'challenge does not exist or is expired')
+        throw Trpc.handleStatus(
+          400,
+          new DappConsoleError({
+            code: 'CHALLENGE_DOES_NOT_EXIST',
+          }),
+        )
       }
 
       const publicClient = supportedChainsPublicClientsMap[challenge.chainId]
 
       if (!publicClient) {
         throw Trpc.handleStatus(
-          500,
-          `challenge is on invalid chain id: ${challenge.chainId}`,
+          400,
+          new DappConsoleError({
+            code: 'UNSUPPORTED_CHAIN_ID',
+          }),
         )
       }
 
@@ -454,7 +509,12 @@ export class ContractsRoute extends Route {
       })
 
       if (!result) {
-        throw Trpc.handleStatus(400, 'challenge was not completed successfully')
+        throw Trpc.handleStatus(
+          400,
+          new DappConsoleError({
+            code: 'CHALLENGE_FAILED',
+          }),
+        )
       }
 
       await this.trpc.database

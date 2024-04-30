@@ -2,6 +2,7 @@ import { z } from 'zod'
 
 import { generateListResponse, zodListRequest, zodNameCursor } from '@/api'
 import { envVars } from '@/constants'
+import { DappConsoleError } from '@/errors/DappConsoleError'
 import { isPrivyAuthed } from '@/middleware'
 import {
   AppState,
@@ -109,7 +110,10 @@ export class AppsRoute extends Route {
       })
 
       if (activeAppsCount >= envVars.MAX_APPS_COUNT) {
-        throw Trpc.handleStatus(422, 'max apps reached')
+        throw Trpc.handleStatus(
+          422,
+          new DappConsoleError({ code: 'MAX_APPS_REACHED' }),
+        )
       }
 
       const result = await insertApp({
