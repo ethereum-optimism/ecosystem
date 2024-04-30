@@ -4,7 +4,7 @@ import type { PaymasterResponse } from '@/paymaster/types'
 
 export const wrapPaymasterResponseIntoJsonRpcResponse = <T>(
   response: PaymasterResponse<T>,
-  id: number,
+  id: number | string,
 ) => {
   if (!response.success) {
     // Pass the RPC error to the user so it can be used for debugging
