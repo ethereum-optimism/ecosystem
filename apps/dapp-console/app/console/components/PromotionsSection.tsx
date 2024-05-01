@@ -12,7 +12,40 @@ import Image from 'next/image'
 import { useDialogContent } from '@/app/console/useDialogContent'
 import { useState } from 'react'
 import { trackCardClick } from '@/app/event-tracking/mixpanel'
-import { spearbitMetadata } from '@/app/console/constants'
+import {
+  alchemyGrowthMetadata,
+  alchemySubgraphMetadata,
+  bwareMetadata,
+  gelatoMetadata,
+  privyMetadata,
+  quicknodeMetadata,
+  sherlockMetadata,
+  spearbitMetadata,
+  thirdWebMetadata,
+} from '@/app/console/constants'
+import { Button } from '@eth-optimism/ui-components/src/components/ui/button/button'
+import { DialogMetadata } from '@/app/components/StandardDialogContent'
+
+enum PromotionCategory {
+  All = 'All',
+  Tooling = 'Tooling & APIs',
+  Infrastructure = 'Infrastructure',
+  Security = 'Security',
+}
+
+type Promotion = {
+  content: React.ReactNode
+  tag: PromotionCategory
+  metadata: DialogMetadata
+  trackingLabel: string
+}
+
+const filterPromosByCategory = (
+  category: PromotionCategory,
+  promos: Promotion[],
+) => {
+  return promos.filter((promo) => promo.tag === category || category === 'All')
+}
 
 const PromotionsSection = () => {
   const {
@@ -22,125 +55,118 @@ const PromotionsSection = () => {
     alchemyGrowthContent,
     alchemySubgraphContent,
     spearbitContent,
+    privyContent,
+    bwareContent,
+    sherlockContent,
   } = useDialogContent()
 
+  const promos: Promotion[] = [
+    {
+      content: alchemyGrowthContent,
+      metadata: alchemyGrowthMetadata,
+      tag: PromotionCategory.Infrastructure,
+      trackingLabel: 'AlchemyGrowth',
+    },
+    {
+      content: alchemySubgraphContent,
+      metadata: alchemySubgraphMetadata,
+      tag: PromotionCategory.Infrastructure,
+      trackingLabel: 'AlchemySubgraph',
+    },
+    {
+      content: gelatoContent,
+      metadata: gelatoMetadata,
+      tag: PromotionCategory.Tooling,
+      trackingLabel: 'Gelato',
+    },
+    {
+      content: quicknodeContent,
+      metadata: quicknodeMetadata,
+      tag: PromotionCategory.Infrastructure,
+      trackingLabel: 'QuickNode',
+    },
+    {
+      content: thirdWebContent,
+      metadata: thirdWebMetadata,
+      tag: PromotionCategory.Tooling,
+      trackingLabel: 'ThirdWeb',
+    },
+    {
+      content: spearbitContent,
+      metadata: spearbitMetadata,
+      tag: PromotionCategory.Security,
+      trackingLabel: 'Spearbit',
+    },
+    {
+      content: privyContent,
+      metadata: privyMetadata,
+      tag: PromotionCategory.Tooling,
+      trackingLabel: 'Privy',
+    },
+    {
+      content: bwareContent,
+      metadata: bwareMetadata,
+      tag: PromotionCategory.Tooling,
+      trackingLabel: 'Bware',
+    },
+    {
+      content: sherlockContent,
+      metadata: sherlockMetadata,
+      tag: PromotionCategory.Security,
+      trackingLabel: 'Sherlock',
+    },
+  ]
+
+  const [currentFilter, setCurrentFilter] = useState<PromotionCategory>(
+    PromotionCategory.All,
+  )
   const [dialogContent, setDialogContent] = useState<React.ReactNode>()
+  const currentPromos = filterPromosByCategory(currentFilter, promos)
 
   return (
     <div>
       <Text as="h3" className="text-2xl font-semibold mb-4">
         Deals
       </Text>
+      <div className="mb-4 flex gap-4">
+        {Object.values(PromotionCategory).map((category) => (
+          <Button
+            size="sm"
+            variant={currentFilter === category ? 'toggled' : 'secondary'}
+            className="rounded-full"
+            key={category}
+            onClick={() => {
+              setCurrentFilter(category)
+            }}
+          >
+            {category}
+          </Button>
+        ))}
+      </div>
+
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
         <Dialog>
-          <DialogTrigger asChild>
-            <Tile
-              title="Get 2 months of Alchemy Growth tier for free"
-              onClick={() => {
-                trackCardClick('AlchemyGrowth') // will adding this add the tracking event?
-                setDialogContent(alchemyGrowthContent)
-              }}
-              variant="secondary"
-              image={
-                <Image
-                  src="/logos/alchemy-logo.png"
-                  alt="alchemy logo"
-                  width={64}
-                  height={64}
-                />
-              }
-            />
-          </DialogTrigger>
-          <DialogTrigger asChild>
-            <Tile
-              title="Get 3 months of Alchemy Subgraphs for free "
-              onClick={() => {
-                trackCardClick('AlchemySubgraphs') // will adding this add the tracking event?
-                setDialogContent(alchemySubgraphContent)
-              }}
-              variant="secondary"
-              image={
-                <Image
-                  src="/logos/alchemy-logo.png"
-                  alt="alchemy logo"
-                  width={64}
-                  height={64}
-                />
-              }
-            />
-          </DialogTrigger>
-          <DialogTrigger asChild>
-            <Tile
-              title="Get 30 days of VIP deployment support from Gelato"
-              onClick={() => {
-                trackCardClick('Gelato')
-                setDialogContent(gelatoContent)
-              }}
-              variant="secondary"
-              image={
-                <Image
-                  src="/logos/gelato-logo.png"
-                  alt="Gelato logo"
-                  width={64}
-                  height={64}
-                />
-              }
-            />
-          </DialogTrigger>
-          <DialogTrigger asChild>
-            <Tile
-              title="Get 3 months of credits and support from Quicknode"
-              onClick={() => {
-                trackCardClick('QuickNode')
-                setDialogContent(quicknodeContent)
-              }}
-              variant="secondary"
-              image={
-                <Image
-                  src="/logos/quicknode-logo.png"
-                  alt="Gelato logo"
-                  width={64}
-                  height={64}
-                />
-              }
-            />
-          </DialogTrigger>
-          <DialogTrigger asChild>
-            <Tile
-              title="Get 90 days of Thirdweb’s Growth plan and more for free"
-              onClick={() => {
-                trackCardClick('ThirdWeb')
-                setDialogContent(thirdWebContent)
-              }}
-              variant="secondary"
-              image={
-                <Image
-                  src="/logos/thirdweb-logo.png"
-                  alt="Gelato logo"
-                  width={64}
-                  height={64}
-                />
-              }
-            />
-          </DialogTrigger>
-          <DialogTrigger asChild>
-            <Tile
-              title={spearbitMetadata.title}
-              onClick={() => {
-                trackCardClick('Spearbit')
-                setDialogContent(spearbitContent)
-              }}
-              variant="secondary"
-              image={
-                <Image
-                  src="/logos/spearbit-logo.png"
-                  alt="Spearbit logo"
-                  width={64}
-                  height={64}
-                />
-              }
-            />
-          </DialogTrigger>
+          {currentPromos.map((promo) => (
+            <DialogTrigger key={promo.metadata.title} asChild>
+              <Tile
+                title={promo.metadata.title}
+                onClick={() => {
+                  trackCardClick(promo.trackingLabel)
+                  setDialogContent(promo.content)
+                }}
+                variant="secondary"
+                image={
+                  <Image
+                    src={promo.metadata.image || ''}
+                    alt={promo.metadata.title}
+                    width={64}
+                    height={64}
+                    className="rounded-full"
+                  />
+                }
+              />
+            </DialogTrigger>
+          ))}
           <DialogContent>{dialogContent}</DialogContent>
         </Dialog>
       </div>

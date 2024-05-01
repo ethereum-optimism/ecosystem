@@ -17,6 +17,9 @@ import {
   alchemySubgraphMetadata,
   quickStartMetadata,
   spearbitMetadata,
+  privyMetadata,
+  sherlockMetadata,
+  bwareMetadata,
 } from '@/app/console/constants'
 import { DialogClose } from '@eth-optimism/ui-components/src/components/ui/dialog/dialog'
 import { useFeature } from '@/app/hooks/useFeatureFlag'
@@ -170,6 +173,33 @@ const useDialogContent = () => {
     })
   }, [authenticated, login])
 
+  const privyContent = useMemo(() => {
+    return renderDialog({
+      ...privyMetadata,
+      primaryButton: !authenticated
+        ? loginButton('Sign in to apply', privyMetadata.label)
+        : privyMetadata.primaryButton,
+    })
+  }, [authenticated, login])
+
+  const bwareContent = useMemo(() => {
+    return renderDialog({
+      ...bwareMetadata,
+      primaryButton: !authenticated
+        ? loginButton('Sign in to apply', bwareMetadata.label)
+        : bwareMetadata.primaryButton,
+    })
+  }, [authenticated, login])
+
+  const sherlockContent = useMemo(() => {
+    return renderDialog({
+      ...sherlockMetadata,
+      primaryButton: !authenticated
+        ? loginButton('Sign in to apply', sherlockMetadata.label)
+        : sherlockMetadata.primaryButton,
+    })
+  }, [authenticated, login])
+
   return {
     testnetPaymasterContent,
     uxReviewContent,
@@ -184,6 +214,9 @@ const useDialogContent = () => {
     quicknodeContent,
     thirdWebContent,
     spearbitContent,
+    privyContent,
+    bwareContent,
+    sherlockContent,
   }
 }
 
