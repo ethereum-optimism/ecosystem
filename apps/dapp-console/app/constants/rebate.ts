@@ -1,3 +1,3 @@
 import { parseEther } from 'viem'
 
-export const MAX_CLAIMABLE_AMOUNT = parseEther('.0000003')
+export const MAX_CLAIMABLE_AMOUNT = parseEther('.000003')
