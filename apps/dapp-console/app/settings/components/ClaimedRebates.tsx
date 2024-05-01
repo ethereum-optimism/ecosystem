@@ -5,14 +5,17 @@ import {
   AccordionTrigger,
   Separator,
 } from '@eth-optimism/ui-components'
-import { formatEther } from 'viem'
 
 import { Text } from '@eth-optimism/ui-components/src/components/ui/text/text'
 import { shortenAddress } from '@eth-optimism/op-app'
 import { RiArrowRightSLine } from '@remixicon/react'
 import Link from 'next/link'
 import { apiClient } from '@/app/helpers/apiClient'
-import { getDateString, getRebateBlockExplorerUrl } from '@/app/lib/utils'
+import {
+  formatEtherShort,
+  getDateString,
+  getRebateBlockExplorerUrl,
+} from '@/app/lib/utils'
 
 export const ClaimedRebates = () => {
   const { data: rebateResp } = apiClient.Rebates.listCompletedRebates.useQuery(
@@ -57,7 +60,10 @@ export const ClaimedRebates = () => {
                     </div>
                     <div className="flex flex-row items-center">
                       <Text as="span" className="font-semibold cursor-pointer">
-                        {formatEther(BigInt(rebate.rebateAmount ?? 0), 'wei')}{' '}
+                        {formatEtherShort(
+                          BigInt(rebate.rebateAmount ?? 0),
+                          'wei',
+                        )}{' '}
                         ETH
                       </Text>
                       <RiArrowRightSLine />

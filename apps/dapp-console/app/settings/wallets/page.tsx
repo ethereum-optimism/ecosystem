@@ -4,15 +4,18 @@ import { useLinkAccount, usePrivy } from '@privy-io/react-auth'
 import { Button } from '@eth-optimism/ui-components/src/components/ui/button/button'
 import { Text } from '@eth-optimism/ui-components/src/components/ui/text/text'
 import { LinkedWallet } from '@/app/settings/components/LinkedWallet'
-import { useCallback } from 'react'
+import { useCallback, useState } from 'react'
 import { apiClient } from '@/app/helpers/apiClient'
 import { Address } from 'viem'
 import { captureError } from '@/app/helpers/errorReporting'
 import { LONG_DURATION } from '@/app/constants/toast'
 import { toast } from '@eth-optimism/ui-components'
+import { RiLoader4Line } from '@remixicon/react'
 
 export default function Wallets() {
   const { ready, unlinkWallet } = usePrivy()
+
+  const [isLoadingWallets, setIsLoadingWallets] = useState(false)
 
   const { data: walletRes, refetch: fetchWallets } =
     apiClient.wallets.listWallets.useQuery({})
@@ -21,6 +24,8 @@ export default function Wallets() {
     apiClient.wallets.syncWallets.useMutation()
 
   const handleLinkWallet = useCallback(async () => {
+    setIsLoadingWallets(true)
+
     try {
       await syncWallets()
       await fetchWallets()
@@ -32,7 +37,9 @@ export default function Wallets() {
     } catch (e) {
       captureError(e, 'linkWallet')
     }
-  }, [syncWallets, fetchWallets])
+
+    setIsLoadingWallets(false)
+  }, [syncWallets, fetchWallets, setIsLoadingWallets])
 
   const handleUnlinkWallet = useCallback(
     async (address: Address) => {
@@ -70,15 +77,19 @@ export default function Wallets() {
             key={wallet.id}
             id={wallet.id}
             address={wallet.address}
+            isCbVerified={wallet.verifications.isCbVerified ?? false}
             onUnlink={() => handleUnlinkWallet(wallet.address)}
           />
         ))}
       </div>
       <Button
         onClick={linkWallet}
-        className="font-medium mt-8 px-14 py-2 gap-2 w-[88px]"
+        className="font-medium mt-8 px-8 py-2 gap-2 self-start"
       >
-        Link Wallet
+        Link Wallet{' '}
+        {isLoadingWallets ? (
+          <RiLoader4Line className="ml-2 animate-spin" />
+        ) : undefined}
       </Button>
     </div>
   )

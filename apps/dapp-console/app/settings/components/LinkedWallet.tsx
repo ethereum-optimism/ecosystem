@@ -7,23 +7,40 @@ import {
 import { Input } from '@eth-optimism/ui-components/src/components/ui/input/input'
 import { Button } from '@eth-optimism/ui-components/src/components/ui/button/button'
 import { Text } from '@eth-optimism/ui-components/src/components/ui/text/text'
-import { RiAlertFill, RiCloseLine, RiFileCopyLine } from '@remixicon/react'
+import {
+  RiAlertFill,
+  RiCheckboxCircleFill,
+  RiCloseLine,
+  RiFileCopyLine,
+  RiLoader4Line,
+} from '@remixicon/react'
 import { useCallback, useState } from 'react'
 import { useToast } from '@eth-optimism/ui-components'
 import { LONG_DURATION } from '@/app/constants/toast'
 import { Address } from 'viem'
+import { CoinbaseVerificationBadge } from '@/app/components/Badges/CoinbaseVerificationBadge'
 
 export type LinkedWalletProps = {
   id: string
   address: Address
-  onUnlink: () => void
+  isCbVerified: boolean
+  onUnlink: () => Promise<void>
 }
 
-export const LinkedWallet = ({ address, onUnlink }: LinkedWalletProps) => {
+export const LinkedWallet = ({
+  address,
+  onUnlink,
+  isCbVerified,
+}: LinkedWalletProps) => {
   const { toast } = useToast()
+  const [isLoadingUnlink, setIsLoadingUnlink] = useState(false)
   const [isDialogOpen, setIsDialogOpen] = useState(false)
 
-  const handleUnlink = useCallback(() => onUnlink(), [onUnlink])
+  const handleUnlink = useCallback(async () => {
+    setIsLoadingUnlink(true)
+    await onUnlink()
+    setIsLoadingUnlink(false)
+  }, [onUnlink])
   const handleCancel = useCallback(
     () => setIsDialogOpen(false),
     [setIsDialogOpen],
@@ -39,11 +56,24 @@ export const LinkedWallet = ({ address, onUnlink }: LinkedWalletProps) => {
 
   return (
     <div className="flex flex-row gap-2">
-      <Input
-        value={address}
-        readOnly
-        className="cursor-default focus-visible:ring-0"
-      />
+      <div className="flex flex-col w-full">
+        <div className="hidden sm:flex relative items-center">
+          <RiCheckboxCircleFill className="text-green-600 absolute left-2" />
+
+          <Input
+            value={address}
+            readOnly
+            className="pl-10 cursor-default hidden sm:flex focus-visible:ring-0"
+          />
+        </div>
+        <Input
+          value={shortenAddress(address)}
+          readOnly
+          className="cursor-default flex sm:hidden focus-visible:ring-0"
+        />
+        {isCbVerified && <CoinbaseVerificationBadge />}
+      </div>
+
       <Button
         variant="secondary"
         size="icon"
@@ -75,7 +105,10 @@ export const LinkedWallet = ({ address, onUnlink }: LinkedWalletProps) => {
             </Text>
 
             <Button className="w-full mb-2" onClick={handleUnlink}>
-              Unlink
+              Unlink{' '}
+              {isLoadingUnlink ? (
+                <RiLoader4Line className="ml-2 animate-spin" />
+              ) : undefined}
             </Button>
             <Button className="w-full" variant="outline" onClick={handleCancel}>
               Cancel

@@ -1,3 +1,4 @@
+import { LONG_DURATION } from '@/app/constants/toast'
 import { apiClient } from '@/app/helpers/apiClient'
 import { captureError } from '@/app/helpers/errorReporting'
 import {
@@ -6,37 +7,45 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
   Input,
+  toast,
 } from '@eth-optimism/ui-components'
+import { RiLoader4Line } from '@remixicon/react'
 import { useCallback, useState } from 'react'
 
 export type EditAppDialogProps = {
   id: string
   name: string
+  open: boolean
+  setOpenChange: (isOpen: boolean) => void
   onNameUpdated?: (updatedName: string) => void
-  children: React.ReactNode
 }
 
 export const EditAppDialog = ({
   id,
   name,
-  children,
+  open,
   onNameUpdated,
+  setOpenChange,
 }: EditAppDialogProps) => {
   const [editedName, setEditedName] = useState<string>(name)
-  const [open, setIsOpen] = useState<boolean>(false)
-  const { mutateAsync: updateName } = apiClient.apps.editApp.useMutation()
+  const { mutateAsync: updateName, isLoading: isEditAppLoading } =
+    apiClient.apps.editApp.useMutation()
 
   const handleEditName = useCallback(async () => {
     try {
       await updateName({ appId: id, name: editedName })
       onNameUpdated?.(editedName)
-      setIsOpen(false)
+      setOpenChange(false)
+
+      toast({
+        description: 'Updated application name.',
+        duration: LONG_DURATION,
+      })
     } catch (e) {
       captureError(e, 'editAppName')
     }
-  }, [editedName, id, updateName, onNameUpdated, setIsOpen])
+  }, [editedName, id, updateName, onNameUpdated, setOpenChange])
 
   const handleEditNameChange = useCallback(
     (e) => {
@@ -46,8 +55,7 @@ export const EditAppDialog = ({
   ) as React.ChangeEventHandler<HTMLInputElement>
 
   return (
-    <Dialog open={open} onOpenChange={setIsOpen}>
-      <DialogTrigger asChild>{children}</DialogTrigger>
+    <Dialog open={open} onOpenChange={setOpenChange}>
       <DialogContent>
         <DialogHeader>
           <DialogTitle className="text-center">App Name</DialogTitle>
@@ -59,8 +67,13 @@ export const EditAppDialog = ({
           onChange={handleEditNameChange}
         />
 
-        <Button onClick={handleEditName}>Save</Button>
-        <Button variant="outline" onClick={() => setIsOpen(false)}>
+        <Button onClick={handleEditName}>
+          Save{' '}
+          {isEditAppLoading ? (
+            <RiLoader4Line className="ml-2 animate-spin" />
+          ) : undefined}
+        </Button>
+        <Button variant="outline" onClick={() => setOpenChange(false)}>
           Cancel
         </Button>
       </DialogContent>

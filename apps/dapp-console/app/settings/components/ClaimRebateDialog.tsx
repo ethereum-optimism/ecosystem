@@ -8,7 +8,7 @@ import {
   toast,
 } from '@eth-optimism/ui-components'
 import { Text } from '@eth-optimism/ui-components/src/components/ui/text/text'
-import { Hash, formatEther } from 'viem'
+import { Hash } from 'viem'
 import { useCallback, useMemo, useState } from 'react'
 import { MAX_CLAIMABLE_AMOUNT } from '@/app/constants/rebate'
 import { shortenAddress } from '@eth-optimism/op-app'
@@ -17,7 +17,7 @@ import { ApiError, Contract } from '@/app/types/api'
 import { Network } from '@/app/components/Network'
 import { optimism } from 'viem/chains'
 import { apiClient } from '@/app/helpers/apiClient'
-import { getRebateBlockExplorerUrl } from '@/app/lib/utils'
+import { formatEtherShort, getRebateBlockExplorerUrl } from '@/app/lib/utils'
 import { RiLoader4Line } from '@remixicon/react'
 import { LONG_DURATION } from '@/app/constants/toast'
 
@@ -75,7 +75,7 @@ export const ClaimRebateDialog = ({
         ? MAX_CLAIMABLE_AMOUNT - amountClaimed
         : gasAmount
 
-    return formatEther(claimableAmount, 'wei')
+    return formatEtherShort(claimableAmount, 'wei')
   }, [contract])
 
   const handleClaim = useCallback(async () => {

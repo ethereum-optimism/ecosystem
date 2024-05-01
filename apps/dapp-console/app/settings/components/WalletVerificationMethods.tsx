@@ -72,7 +72,7 @@ export const WalletVerificationMethods = () => {
             </Text>
             {verificationMethods.map((method) => (
               <div key={method.id} className="flex flex-col w-full">
-                <div className="flex flex-row my-3 justify-between">
+                <div className="flex flex-row my-3 justify-between items-center">
                   <div className="flex flex-row items-center">
                     <Image
                       src={method.icon}
