@@ -23,16 +23,17 @@ export const DeployedApps = () => {
   }, [createApp, fetchApps, appsRes])
 
   return (
-    <div className="flex flex-col space-y-3">
-      {appsRes?.records.map((app) => <DeployedApp key={app.id} app={app} />)}
-
+    <>
+      <div className="flex flex-col space-y-6">
+        {appsRes?.records.map((app) => <DeployedApp key={app.id} app={app} />)}
+      </div>
       <Button
         variant="outline"
-        className="flex justify-between w-[120px] mt-8 mb-8"
+        className="flex justify-between w-[120px] mt-2 mb-6"
         onClick={handleCreateApp}
       >
         <RiAddLine /> App app
       </Button>
-    </div>
+    </>
   )
 }
