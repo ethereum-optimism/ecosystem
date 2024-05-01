@@ -9,7 +9,7 @@ import {
 } from '@eth-optimism/ui-components/src/components/ui/dropdown-menu/dropdown-menu'
 import { Button } from '@eth-optimism/ui-components/src/components/ui/button/button'
 import { Separator } from '@eth-optimism/ui-components/src/components/ui/separator/separator'
-import { usePrivy } from '@privy-io/react-auth'
+import { useLogin, useLogout, usePrivy } from '@privy-io/react-auth'
 import { useState } from 'react'
 import { cn } from '@eth-optimism/ui-components/src/lib/utils'
 import { Text } from '@eth-optimism/ui-components/src/components/ui/text/text'
@@ -17,9 +17,41 @@ import { RiArrowDownSLine, RiUser3Fill } from '@remixicon/react'
 import { trackSignInClick } from '@/app/event-tracking/mixpanel'
 import { routes } from '@/app/constants'
 import { useFeature } from '@/app/hooks/useFeatureFlag'
+import { apiClient } from '@/app/helpers/apiClient'
+import { captureError } from '@/app/helpers/errorReporting'
+import { toast } from '@eth-optimism/ui-components'
+import { LONG_DURATION } from '@/app/constants/toast'
 
 const SignInButton = () => {
-  const { login, logout, authenticated } = usePrivy()
+  const { authenticated } = usePrivy()
+  const { mutateAsync: loginUser } = apiClient.auth.loginUser.useMutation()
+  const { mutateAsync: logoutUser } = apiClient.auth.logoutUser.useMutation()
+  const { login } = useLogin({
+    onComplete: async () => {
+      try {
+        await loginUser()
+      } catch (e) {
+        toast({
+          description: 'Sign in failed.',
+          duration: LONG_DURATION,
+        })
+        captureError(e, 'loginUser')
+        logout()
+      }
+    },
+    onError: (privyError) => {
+      captureError(privyError, 'privyLogin')
+    },
+  })
+  const { logout } = useLogout({
+    onSuccess: async () => {
+      try {
+        await logoutUser()
+      } catch (e) {
+        captureError(e, 'logoutUser')
+      }
+    },
+  })
   const handleLogin = () => {
     trackSignInClick()
     login()
