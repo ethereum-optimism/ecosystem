@@ -10,6 +10,9 @@ export default defineConfig({
   test: {
     allowOnly: true,
     include: ['**/e2eTests/*.spec.ts'],
-    setupFiles: ['./src/testUtils/setupExtendedMatchers.ts'],
+    setupFiles: [
+      './src/testUtils/setupE2eEnv.ts',
+      './src/testUtils/setupExtendedMatchers.ts',
+    ],
   },
 })

@@ -34,3 +34,75 @@ export const mockPostErrorWithReturnJson = (
     }),
   )
 }
+
+export const mockGetSuccessJson = (route: string, response: any) => {
+  mswServer.use(
+    http.get(route, () => {
+      return HttpResponse.json(response)
+    }),
+  )
+}
+
+export const mockGetError = (route: string, status: number) => {
+  mswServer.use(
+    http.get(route, () => {
+      return new HttpResponse(null, {
+        status,
+      })
+    }),
+  )
+}
+
+export const mockGetErrorWithReturnJson = (
+  route: string,
+  status: number,
+  body: any,
+) => {
+  mswServer.use(
+    http.get(route, () => {
+      return HttpResponse.json(body, {
+        status,
+      })
+    }),
+  )
+}
+
+export const mockDeleteSuccess = (route: string) => {
+  mswServer.use(
+    http.delete(route, () => {
+      return HttpResponse.json(null)
+    }),
+  )
+}
+
+export const mockDeleteSuccessJson = (route: string, response: any) => {
+  mswServer.use(
+    http.delete(route, () => {
+      return HttpResponse.json(response)
+    }),
+  )
+}
+
+export const mockDeleteError = (route: string, status: number) => {
+  mswServer.use(
+    http.delete(route, () => {
+      return new HttpResponse(null, {
+        status,
+      })
+    }),
+  )
+}
+
+export const mockDeleteErrorWithReturnJson = (
+  route: string,
+  status: number,
+  body: any,
+) => {
+  mswServer.use(
+    http.delete(route, () => {
+      return HttpResponse.json(body, {
+        status,
+      })
+    }),
+  )
+}
