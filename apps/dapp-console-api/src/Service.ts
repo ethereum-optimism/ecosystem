@@ -249,6 +249,8 @@ export class Service {
         res.status(500).send()
       })
 
+      app.set('trust proxy', true)
+
       app.use(getRateLimiter(this.redisClient))
 
       // Metrics.
