@@ -1,7 +1,12 @@
 import { DeployedApp, Contract } from '@/app/types/api'
 import { Button, Input, toast } from '@eth-optimism/ui-components'
 import { HexBadge } from '@/app/components/Badges/HexBadge'
-import { RiCloseLine, RiFileCopyLine } from '@remixicon/react'
+import {
+  RiCheckboxCircleFill,
+  RiCloseCircleFill,
+  RiCloseLine,
+  RiFileCopyLine,
+} from '@remixicon/react'
 import { NetworkBadge } from '@/app/components/Badges/NetworkBadge'
 import { useCallback, useMemo } from 'react'
 import { LONG_DURATION } from '@/app/constants/toast'
@@ -93,13 +98,21 @@ export const DeployedAppContract = ({
     <div className="flex flex-col">
       <div className="flex flex-row justify-between">
         <div className="flex flex-col w-full mr-2">
+          <div className="hidden sm:flex flex-row items-center relative">
+            {contract.state === 'verified' ? (
+              <RiCheckboxCircleFill className="text-green-600 absolute left-2" />
+            ) : (
+              <RiCloseCircleFill className="text-muted-foreground absolute left-2" />
+            )}
+            <Input
+              className="hidden sm:flex pl-10 cursor-default focus-visible:ring-0"
+              value={contract.contractAddress}
+              readOnly
+            />
+          </div>
+
           <Input
-            className="hidden md:flex cursor-default focus-visible:ring-0"
-            value={contract.contractAddress}
-            readOnly
-          />
-          <Input
-            className="flex md:hidden cursor-default focus-visible:ring-0"
+            className="flex sm:hidden cursor-default focus-visible:ring-0"
             value={shortenAddress(contract.contractAddress)}
             readOnly
           />

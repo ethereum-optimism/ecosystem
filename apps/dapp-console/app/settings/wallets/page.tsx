@@ -70,6 +70,7 @@ export default function Wallets() {
             key={wallet.id}
             id={wallet.id}
             address={wallet.address}
+            isCbVerified={wallet.verifications.isCbVerified ?? false}
             onUnlink={() => handleUnlinkWallet(wallet.address)}
           />
         ))}

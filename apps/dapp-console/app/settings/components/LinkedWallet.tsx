@@ -7,19 +7,30 @@ import {
 import { Input } from '@eth-optimism/ui-components/src/components/ui/input/input'
 import { Button } from '@eth-optimism/ui-components/src/components/ui/button/button'
 import { Text } from '@eth-optimism/ui-components/src/components/ui/text/text'
-import { RiAlertFill, RiCloseLine, RiFileCopyLine } from '@remixicon/react'
+import {
+  RiAlertFill,
+  RiCheckboxCircleFill,
+  RiCloseLine,
+  RiFileCopyLine,
+} from '@remixicon/react'
 import { useCallback, useState } from 'react'
 import { useToast } from '@eth-optimism/ui-components'
 import { LONG_DURATION } from '@/app/constants/toast'
 import { Address } from 'viem'
+import { CoinbaseVerificationBadge } from '@/app/components/Badges/CoinbaseVerificationBadge'
 
 export type LinkedWalletProps = {
   id: string
   address: Address
+  isCbVerified: boolean
   onUnlink: () => void
 }
 
-export const LinkedWallet = ({ address, onUnlink }: LinkedWalletProps) => {
+export const LinkedWallet = ({
+  address,
+  onUnlink,
+  isCbVerified,
+}: LinkedWalletProps) => {
   const { toast } = useToast()
   const [isDialogOpen, setIsDialogOpen] = useState(false)
 
@@ -39,16 +50,24 @@ export const LinkedWallet = ({ address, onUnlink }: LinkedWalletProps) => {
 
   return (
     <div className="flex flex-row gap-2">
-      <Input
-        value={address}
-        readOnly
-        className="cursor-default hidden sm:flex focus-visible:ring-0"
-      />
-      <Input
-        value={shortenAddress(address)}
-        readOnly
-        className="cursor-default flex sm:hidden focus-visible:ring-0"
-      />
+      <div className="flex flex-col w-full">
+        <div className="hidden sm:flex relative items-center">
+          <RiCheckboxCircleFill className="text-green-600 absolute left-2" />
+
+          <Input
+            value={address}
+            readOnly
+            className="pl-10 cursor-default hidden sm:flex focus-visible:ring-0"
+          />
+        </div>
+        <Input
+          value={shortenAddress(address)}
+          readOnly
+          className="cursor-default flex sm:hidden focus-visible:ring-0"
+        />
+        {isCbVerified && <CoinbaseVerificationBadge />}
+      </div>
+
       <Button
         variant="secondary"
         size="icon"
