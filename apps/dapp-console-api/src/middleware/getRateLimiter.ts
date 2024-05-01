@@ -6,7 +6,7 @@ import { envVars } from '@/constants'
 
 export const getRateLimiter = (redisClient: Redis) =>
   rateLimit({
-    windowMs: 5 * 60 * 1000, // 5 minutes
+    windowMs: envVars.RATE_LIMIT_WINDOW_MS,
     limit: envVars.RATE_LIMIT,
     standardHeaders: 'draft-7',
     legacyHeaders: false,
