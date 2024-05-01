@@ -25,6 +25,7 @@ import {
 } from '@/app/console/constants'
 import { Button } from '@eth-optimism/ui-components/src/components/ui/button/button'
 import { DialogMetadata } from '@/app/components/StandardDialogContent'
+import { Badge } from '@eth-optimism/ui-components/src/components/ui/badge/badge'
 
 enum PromotionCategory {
   All = 'All',
@@ -155,6 +156,7 @@ const PromotionsSection = () => {
                   setDialogContent(promo.content)
                 }}
                 variant="secondary"
+                badge={<Badge variant="tertiary">{promo.tag}</Badge>}
                 image={
                   <Image
                     src={promo.metadata.image || ''}
