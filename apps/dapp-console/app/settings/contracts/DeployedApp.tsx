@@ -10,7 +10,6 @@ import {
 
 import { AddContractFlow } from '@/app/settings/contracts/AddContractFlow'
 import { RiAddLine, RiMoreLine } from '@remixicon/react'
-import { EditAppDialog } from '@/app/settings/contracts/EditAppDialog'
 import { useCallback, useMemo, useState } from 'react'
 import { DeployedApp as ApiDeployedApp, Contract } from '@/app/types/api'
 import { DeployedAppContract } from '@/app/settings/contracts/DeployedAppContract'
@@ -18,12 +17,14 @@ import { apiClient } from '@/app/helpers/apiClient'
 import { StartVerificationDialog } from '@/app/settings/contracts/StartVerificationDialog'
 import { ClaimRebateDialog } from '@/app/settings/components/ClaimRebateDialog'
 import { DeleteContractDialog } from '@/app/settings/contracts/DeleteContractDialog'
+import { AppActionsDropdown } from '@/app/settings/contracts/AppActionsDropdown'
 
 export type DeployedAppProps = {
   app: ApiDeployedApp
+  onStartDeleteApp: (app: ApiDeployedApp) => void
 }
 
-export const DeployedApp = ({ app }: DeployedAppProps) => {
+export const DeployedApp = ({ app, onStartDeleteApp }: DeployedAppProps) => {
   const contracts = useMemo(() => app.contracts, [app])
 
   const [contractToVerifiy, setContractToVerify] = useState<
@@ -122,15 +123,15 @@ export const DeployedApp = ({ app }: DeployedAppProps) => {
         <div className="flex flex-row w-full justify-between items-center">
           <CardTitle>{appName}</CardTitle>
 
-          <EditAppDialog
-            id={app.id}
-            name={app.name}
-            onNameUpdated={handleUpdateAppName}
+          <AppActionsDropdown
+            app={app}
+            onAppNameUpdated={handleUpdateAppName}
+            onStartDeleteApp={onStartDeleteApp}
           >
             <Button size="icon" variant="ghost">
               <RiMoreLine />
             </Button>
-          </EditAppDialog>
+          </AppActionsDropdown>
         </div>
       </CardHeader>
       <CardContent>

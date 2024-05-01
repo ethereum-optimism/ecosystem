@@ -1,7 +1,7 @@
 import { captureException, setUser } from '@sentry/nextjs'
 
 export type WalletActionContext = 'linkWallet' | 'unlinkWallet' | 'signMessage'
-export type AppActionContext = 'createApp' | 'editAppName'
+export type AppActionContext = 'createApp' | 'editAppName' | 'deleteApp'
 export type ContractActionContext =
   | 'createContract'
   | 'deleteContract'
