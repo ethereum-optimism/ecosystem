@@ -12,6 +12,7 @@ import {
   RiCheckboxCircleFill,
   RiCloseLine,
   RiFileCopyLine,
+  RiLoader4Line,
 } from '@remixicon/react'
 import { useCallback, useState } from 'react'
 import { useToast } from '@eth-optimism/ui-components'
@@ -23,7 +24,7 @@ export type LinkedWalletProps = {
   id: string
   address: Address
   isCbVerified: boolean
-  onUnlink: () => void
+  onUnlink: () => Promise<void>
 }
 
 export const LinkedWallet = ({
@@ -32,9 +33,14 @@ export const LinkedWallet = ({
   isCbVerified,
 }: LinkedWalletProps) => {
   const { toast } = useToast()
+  const [isLoadingUnlink, setIsLoadingUnlink] = useState(false)
   const [isDialogOpen, setIsDialogOpen] = useState(false)
 
-  const handleUnlink = useCallback(() => onUnlink(), [onUnlink])
+  const handleUnlink = useCallback(async () => {
+    setIsLoadingUnlink(true)
+    await onUnlink()
+    setIsLoadingUnlink(false)
+  }, [onUnlink])
   const handleCancel = useCallback(
     () => setIsDialogOpen(false),
     [setIsDialogOpen],
@@ -99,7 +105,10 @@ export const LinkedWallet = ({
             </Text>
 
             <Button className="w-full mb-2" onClick={handleUnlink}>
-              Unlink
+              Unlink{' '}
+              {isLoadingUnlink ? (
+                <RiLoader4Line className="ml-2 animate-spin" />
+              ) : undefined}
             </Button>
             <Button className="w-full" variant="outline" onClick={handleCancel}>
               Cancel
