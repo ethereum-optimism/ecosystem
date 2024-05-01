@@ -10,7 +10,7 @@
     "clean": "rm -rf build types tsconfig.tsbuildinfo",
     "typecheck": "tsc --noEmit --emitDeclarationOnly false",
     "typecheck:ci": "tsc --noEmit --emitDeclarationOnly false",
-    "dev": "tsup --watch --onSuccess 'pnpm kill && pnpm start'",
+    "dev": "tsup --watch --onSuccess 'node build/cmd/run.js'",
     "kill": "npx kill-port 7300",
     "build": "tsup && pnpm tsc && resolve-tspaths",
     "start": "node build/cmd/run.js",
@@ -19,7 +19,8 @@
     "docker:down": "docker compose down",
     "lint": "eslint \"**/*.{ts,tsx}\" && pnpm prettier --check \"**/*.{ts,tsx}\"",
     "lint:ci": "eslint \"**/*.{ts,tsx}\" --quiet && pnpm prettier --check \"**/*.{ts,tsx}\"",
-    "lint:fix": "eslint \"**/*.{ts,tsx}\" --fix --quiet && pnpm prettier \"**/*.{ts,tsx}\" --write --loglevel=warn"
+    "lint:fix": "eslint \"**/*.{ts,tsx}\" --fix --quiet && pnpm prettier \"**/*.{ts,tsx}\" --write --loglevel=warn",
+    "env:example:generate": "NODE_ENV=test ts-node scripts/generate-example-env.ts"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",
@@ -55,6 +56,7 @@
     "prom-client": "^15.1.0",
     "superjson": "^1.12.2",
     "trpc-playground": "^1.0.4",
+    "znv": "^0.4.0",
     "zod": "^3.22.4"
   },
   "files": [
