@@ -58,6 +58,7 @@ const envVarSchema = z.object({
   ZORA_SEPOLIA_JSON_RPC_URL: z.string().optional(),
   REDIS_URL: z.string().describe('URL of Redis instance'),
   RATE_LIMIT: z.number(),
+  RATE_LIMIT_WINDOW_MS: z.number(),
   SCREENING_SERVICE_URL: z.string(),
   PERFORM_ADDRESS_SCREENING: z.boolean().default(true),
   CB_VERIFICATION_EAS_API_URL: z
@@ -133,6 +134,7 @@ export const envVars = envVarSchema.parse(
         ZORA_SEPOLIA_JSON_RPC_URL: 'ZORA_SEPOLIA_JSON_RPC_URL',
         REDIS_URL: 'REDIS_URL',
         RATE_LIMIT: 100,
+        RATE_LIMIT_WINDOW_MS: 1 * 60 * 1000,
         SCREENING_SERVICE_URL: 'SCREENING_SERVICE_URL',
         PERFORM_ADDRESS_SCREENING: false,
       }
@@ -194,6 +196,9 @@ export const envVars = envVarSchema.parse(
         RATE_LIMIT: process.env.RATE_LIMIT
           ? Number(process.env.RATE_LIMIT)
           : 100,
+        RATE_LIMIT_WINDOW_MS: process.env.RATE_LIMIT_WINDOW_MS
+          ? Number(process.env.RATE_LIMIT_WINDOW_MS)
+          : 1 * 60 * 1000, // 1 minute
         SCREENING_SERVICE_URL: process.env.SCREENING_SERVICE_URL,
         PERFORM_ADDRESS_SCREENING: process.env.PERFORM_ADDRESS_SCREENING
           ? Boolean(process.env.PERFORM_ADDRESS_SCREENING === 'true')
