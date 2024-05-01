@@ -11,22 +11,19 @@ import type { Redis } from 'ioredis'
 import morgan from 'morgan'
 import { type Logger } from 'pino'
 
-import { getV1ApiRoute, V1_API_BASE_PATH } from '@/api/getV1ApiRoute'
+import { createV1ApiRouter, V1_API_BASE_PATH } from '@/api/createV1ApiRouter'
 import type { BackendReadinessState } from '@/helpers/BackendReadinessState'
 import { getPromBaseMetrics } from '@/middlewares/getPromBaseMetrics'
 import { getRateLimiter } from '@/middlewares/getRateLimiter'
 import type { Metrics } from '@/monitoring/metrics'
-import type { PaymasterConfig } from '@/paymaster/types'
 
 export const initializeApiServer = async ({
   redisClient,
-  paymasterConfigs,
   metrics,
   logger,
   backendReadinessState,
 }: {
   redisClient: Redis
-  paymasterConfigs: PaymasterConfig[]
   metrics: Metrics
   logger: Logger
   backendReadinessState: BackendReadinessState
@@ -69,8 +66,7 @@ export const initializeApiServer = async ({
 
   app.use(
     V1_API_BASE_PATH,
-    getV1ApiRoute({
-      paymasterConfigs,
+    createV1ApiRouter({
       metrics,
       logger: logger.child({
         apiVersion: 'v1',

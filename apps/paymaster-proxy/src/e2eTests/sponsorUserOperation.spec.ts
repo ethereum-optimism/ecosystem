@@ -127,6 +127,32 @@ describe('pm_sponsorUserOperation', async () => {
       })
     })
 
+    it.concurrent('rejects unsupported methods', async () => {
+      const userOperation =
+        await getMintUserOperationWithRandomSimpleAccount(chain)
+
+      const result = await app
+        .post(`/v1/${chain.id}/rpc`)
+        .send({
+          jsonrpc: '2.0',
+          id: 1,
+          method: 'pm_unsupportedMethod',
+          params: [userOperation, ENTRYPOINT_ADDRESS_V06],
+        })
+        .set('Content-Type', 'application/json')
+        .set('Accept', 'application/json')
+        .expect(200)
+
+      expect(result.body).toMatchObject({
+        jsonrpc: '2.0',
+        id: 1,
+        error: {
+          code: -32601,
+          message: expect.stringContaining('Method not found'),
+        },
+      })
+    })
+
     it.concurrent('ignores gas estimation params', async () => {
       const userOperation =
         await getMintUserOperationWithRandomSimpleAccount(chain)

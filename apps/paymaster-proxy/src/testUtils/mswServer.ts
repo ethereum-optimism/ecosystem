@@ -20,3 +20,17 @@ export const mockPostError = (route: string, status: number) => {
     }),
   )
 }
+
+export const mockPostErrorWithReturnJson = (
+  route: string,
+  status: number,
+  body: any,
+) => {
+  mswServer.use(
+    http.post(route, () => {
+      return HttpResponse.json(body, {
+        status,
+      })
+    }),
+  )
+}
