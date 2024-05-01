@@ -671,6 +671,9 @@ importers:
       viem:
         specifier: ^2.7.22
         version: 2.9.21(bufferutil@4.0.8)(typescript@5.4.5)(utf-8-validate@6.0.3)(zod@3.22.4)
+      znv:
+        specifier: ^0.4.0
+        version: 0.4.0(zod@3.22.4)
       zod:
         specifier: ^3.22.4
         version: 3.22.4

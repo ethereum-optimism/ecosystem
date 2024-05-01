@@ -1,8 +1,7 @@
 import 'dotenv/config'
 
+import { parseEnv } from 'znv'
+
 import { envVarsSchema } from '@/envVarsSchema'
-import { testEnvVars } from '@/testUtils/testEnvVars'
 
-const isTest = process.env.NODE_ENV === 'test'
-
-export const envVars = envVarsSchema.parse(isTest ? testEnvVars : process.env)
+export const envVars = parseEnv(process.env, envVarsSchema)

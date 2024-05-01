@@ -11,10 +11,12 @@ services:
           'CMD-SHELL',
           'pg_isready -q -U api-key-service@oplabs-local-web.iam -d api-key-service',
         ]
+      interval: 5s
+      timeout: 10s
+      retries: 3
+      start_period: 2s
     volumes:
       - ./setup-local-db.sql:/docker-entrypoint-initdb.d/setup-local-db.sql
-    ports:
-      - '5432:5432'
 
   api-key-service:
     build:
@@ -22,6 +24,10 @@ services:
       dockerfile: Dockerfile
       target: api-key-service
     env_file: .env
+    environment:
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_NAME=api-key-service
     healthcheck:
       test: wget localhost:7330/healthz -q -O - > /dev/null 2>&1
     ports:

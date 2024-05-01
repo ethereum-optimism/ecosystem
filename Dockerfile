@@ -32,8 +32,8 @@ COPY . ./
 # install monorepo dependencies, from the virtual store
 RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile --prefer-offline
 
-# build all packages/apps
-RUN pnpm nx run-many --target=build
+# build all apps we want to deploy
+RUN pnpm nx run-many --target=build --projects=paymaster-proxy,dapp-console-api,api-key-service
 
 # copy built paymaster-proxy app & isolated node_modules to prod/paymaster-proxy
 #
