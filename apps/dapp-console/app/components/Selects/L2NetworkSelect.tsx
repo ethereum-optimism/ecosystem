@@ -67,7 +67,7 @@ export const L2NetworkSelect = ({
 
   return (
     <Select onValueChange={handleNetworkChange}>
-      <SelectTrigger className="flex justify-start w-[250px]">
+      <SelectTrigger className="flex justify-start w-full sm:w-[250px]">
         <div className="flex flex-row gap-3 items-center w-full">
           <Network chainId={selectedNetwork.id} />
         </div>

@@ -1,7 +1,5 @@
 'use client'
 
-import { formatEther } from 'viem'
-
 import { Text } from '@eth-optimism/ui-components/src/components/ui/text/text'
 import { useMemo } from 'react'
 import { Progress } from '@eth-optimism/ui-components/src/components/ui/progress/progress'
@@ -9,6 +7,7 @@ import { RiQuestionFill } from '@remixicon/react'
 import { RebateDialog } from '@/app/settings/components/RebateDialog'
 import { apiClient } from '@/app/helpers/apiClient'
 import { MAX_CLAIMABLE_AMOUNT } from '@/app/constants/rebate'
+import { formatEtherShort } from '@/app/lib/utils'
 
 export type ClaimedRebateProgressBannerProps = {
   totalAmount?: bigint
@@ -21,11 +20,11 @@ export const ClaimedRebateProgressBanner = ({
     apiClient.Rebates.totalRebatesClaimed.useQuery()
 
   const claimed = useMemo(
-    () => (claimedAmount ? formatEther(claimedAmount) : '0.0'),
+    () => (claimedAmount ? formatEtherShort(claimedAmount) : '0.0'),
     [claimedAmount],
   )
   const total = useMemo(
-    () => formatEther(totalAmount ?? MAX_CLAIMABLE_AMOUNT),
+    () => formatEtherShort(totalAmount ?? MAX_CLAIMABLE_AMOUNT),
     [totalAmount],
   )
 

@@ -42,7 +42,12 @@ export const LinkedWallet = ({ address, onUnlink }: LinkedWalletProps) => {
       <Input
         value={address}
         readOnly
-        className="cursor-default focus-visible:ring-0"
+        className="cursor-default hidden sm:flex focus-visible:ring-0"
+      />
+      <Input
+        value={shortenAddress(address)}
+        readOnly
+        className="cursor-default flex sm:hidden focus-visible:ring-0"
       />
       <Button
         variant="secondary"
