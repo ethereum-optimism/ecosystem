@@ -248,6 +248,7 @@ export const alchemyGrowthMetadata: DialogMetadata = {
       </ul>
     </>
   ),
+  image: '/logos/alchemy-logo.png',
   bannerImage: '/banners/alchemy-banner.png',
   primaryButton: generatePrimaryButton(
     'Alchemy Growth',
@@ -275,6 +276,7 @@ export const alchemySubgraphMetadata: DialogMetadata = {
       Migrate to Subgraphs by March 31, 2024 for 3 months free.
     </Text>
   ),
+  image: '/logos/alchemy-logo.png',
   bannerImage: '/banners/alchemy-banner.png',
   primaryButton: generatePrimaryButton(
     'Alchemy Growth',
@@ -306,6 +308,7 @@ export const gelatoMetadata: DialogMetadata = {
       fast-track your development time.
     </Text>
   ),
+  image: '/logos/gelato-logo.png',
   bannerImage: '/banners/gelato-banner.png',
   primaryButton: generatePrimaryButton('Gelato', 'Apply', forms.GELATO),
   secondaryButton: (
@@ -332,6 +335,7 @@ export const quicknodeMetadata: DialogMetadata = {
       the next three months.
     </Text>
   ),
+  image: '/logos/quicknode-logo.png',
   bannerImage: '/banners/quicknode-banner.png',
   primaryButton: generatePrimaryButton('Quicknode', 'Apply', forms.QUICKNODE),
   secondaryButton: (
@@ -364,6 +368,7 @@ export const thirdWebMetadata: DialogMetadata = {
       </Text>
     </>
   ),
+  image: '/logos/thirdweb-logo.png',
   bannerImage: '/banners/thirdweb-banner.png',
   primaryButton: generatePrimaryButton('Third Web', 'Apply', forms.THIRDWEB),
   secondaryButton: (
@@ -396,6 +401,7 @@ export const spearbitMetadata: DialogMetadata = {
       </Text>
     </>
   ),
+  image: '/logos/spearbit-logo.png',
   bannerImage: '/banners/spearbit-banner.png',
   primaryButton: generatePrimaryButton('Spearbit', 'Apply', forms.SPEARBIT),
   secondaryButton: (
@@ -409,4 +415,63 @@ export const spearbitMetadata: DialogMetadata = {
       </a>
     </Button>
   ),
+}
+
+export const privyMetadata: DialogMetadata = {
+  label: 'Deals',
+  title: 'Get 3 free months of Privy pro tier access',
+  description: (
+    <>
+      <Text as="p">
+        Privy is the easiest way to onboard your users to web3, offering
+        embedded wallets for users who sign in with email or social login, and
+        powerful connectors for crypto natives who prefer to sign in with their
+        existing wallets. It's one library to onboard all users.
+      </Text>
+    </>
+  ),
+  image: '/logos/privy-logo.png',
+  bannerImage: '/banners/privy-banner.png',
+  primaryButton: generatePrimaryButton('Privy', 'Apply', forms.PRIVY),
+}
+
+export const bwareMetadata: DialogMetadata = {
+  label: 'Deals',
+  title: 'Get 90 days of the Blast Builder API Startup Plan for free!',
+  description: (
+    <>
+      <Text as="p">
+        Superchain builders can now redeem a 90-day free Startup Plan (worth
+        $750). With the Blast Builders API, you gain access to a variety of APIs
+        to enhance your dApp development. Our platform provides access to a
+        range of enhanced methods, including Wallet-, Transaction-, Logs-, and
+        Token-APIs.
+      </Text>
+    </>
+  ),
+  image: '/logos/blast-logo.png',
+  bannerImage: '/banners/blast-banner.png',
+  primaryButton: generatePrimaryButton('Bware', 'Apply', forms.BWARE),
+}
+
+export const sherlockMetadata: DialogMetadata = {
+  label: 'Deals',
+  title: 'Get subsidies for audits and security services from Sherlock',
+  description: (
+    <>
+      <Text as="p" className="mb-4">
+        Sherlock and the Optimism Grants Council are offering partial or full
+        subsidies for audit competitions, private audits, collaborative audits
+        and coverage. Please note: The Optimism Grants Council is the final
+        decision-maker in determining the amount subsidized.
+      </Text>
+      <Text as="p">
+        In the following form, write Dev Console when asked “How did you hear
+        about Sherlock”.
+      </Text>
+    </>
+  ),
+  image: '/logos/sherlock-logo.png',
+  bannerImage: '/banners/sherlock-banner.png',
+  primaryButton: generatePrimaryButton('Sherlock', 'Apply', forms.SHERLOCK),
 }

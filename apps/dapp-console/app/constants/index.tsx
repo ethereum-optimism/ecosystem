@@ -167,6 +167,10 @@ export const forms = {
   GELATO: 'https://share-eu1.hsforms.com/1kaQ2KRLYRym3mZNOF2aEVQ2bmmck',
   QUICKNODE: 'https://quiknode.typeform.com/to/sWxlcYV4#cd=H7qNVcJb',
   SPEARBIT: 'https://spearbit.com/contact',
+  PRIVY: 'https://50fzxaracbi.typeform.com/to/VWlGlNoH',
+  BWARE:
+    'https://docs.google.com/forms/d/e/1FAIpQLSeV1IELTrzhTEHrsVgiBkHCtLgpAL8tOyI7zgW73XK4FZC27w/viewform',
+  SHERLOCK: 'https://audits.sherlock.xyz/request-audit',
 }
 
 export const supportItems = [

@@ -9,6 +9,7 @@ export type DialogMetadata = {
   description: React.ReactNode
   primaryButton?: React.ReactNode
   secondaryButton?: React.ReactNode
+  image?: string
   bannerImage?: string
 }
 
