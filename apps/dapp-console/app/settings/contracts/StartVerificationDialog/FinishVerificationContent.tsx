@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from 'react'
+import { useCallback } from 'react'
 import { useContractVerification } from '@/app/settings/contracts/StartVerificationDialog/ContractVerificationProvider'
 import { apiClient } from '@/app/helpers/apiClient'
 import { Hash, isHex } from 'viem'
@@ -7,49 +7,56 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage,
   Input,
-  Text,
+  toast,
 } from '@eth-optimism/ui-components'
 import { RiArrowLeftLine, RiLoader4Line } from '@remixicon/react'
 import { captureError } from '@/app/helpers/errorReporting'
+import { z } from 'zod'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { ApiError } from '@/app/types/api'
+import { LONG_DURATION } from '@/app/constants/toast'
+
+const finishVerificationSchema = z.object({
+  signature: z
+    .string({ required_error: '' })
+    .refine((value: string) => isHex(value, { strict: true }), {
+      message: 'Invalid signature.',
+    }),
+})
+
+const errorMessages = {
+  CHALLENGE_FAILED: 'Signature could not be verified.',
+}
 
 export const FinishVerificationContent = () => {
-  const {
-    contract,
-    challenge,
-    goBack,
-    goNext,
-    signature,
-    setSignature,
-    onContractVerified,
-  } = useContractVerification()
+  const { contract, challenge, goBack, goNext, signature, onContractVerified } =
+    useContractVerification()
+  const form = useForm<z.infer<typeof finishVerificationSchema>>({
+    resolver: zodResolver(finishVerificationSchema),
+    mode: 'onBlur',
+    defaultValues: {
+      signature,
+    },
+  })
 
-  const [signedMessage, setSignedMessage] = useState<string>(signature ?? '')
-  const [isSignedMessageValid, setSignedMessageValid] = useState(!!signature)
   const {
     mutateAsync: completeVerification,
     isLoading: isLoadingCompleteVerification,
   } = apiClient.Contracts.completeVerification.useMutation()
 
-  const handleSignedMessageChange = useCallback(
-    (e) => {
-      const { value } = e.target
-      const validHex = isHex(value, { strict: true })
-
-      setSignedMessage(value)
-      setSignedMessageValid(validHex)
-
-      if (validHex) {
-        setSignature(value as Hash)
-      }
-    },
-    [setSignedMessage, setSignedMessageValid],
-  ) as React.ChangeEventHandler<HTMLInputElement>
-
   const handleCompleteVerification = useCallback(async () => {
     if (isLoadingCompleteVerification) {
       return
     }
+
+    const { signature } = form.getValues()
 
     try {
       await completeVerification({
@@ -59,14 +66,22 @@ export const FinishVerificationContent = () => {
       onContractVerified(contract)
       goNext()
     } catch (e) {
+      const apiError = e as ApiError
+
+      if (apiError.data?.customCode === 'CHALLENGE_FAILED') {
+        form.setError('signature', {
+          message: errorMessages.CHALLENGE_FAILED,
+        })
+      } else {
+        toast({
+          description: 'Failed to verifiy signature',
+          duration: LONG_DURATION,
+        })
+      }
+
       captureError(e, 'completeContractVerification')
     }
   }, [contract, challenge, signature, completeVerification, onContractVerified])
-
-  const hasError = useMemo(
-    () => signedMessage.length > 1 && !isSignedMessageValid,
-    [signedMessage, isSignedMessageValid],
-  )
 
   return (
     <>
@@ -84,23 +99,26 @@ export const FinishVerificationContent = () => {
           Enter the resulting signature hash from your signed message.
         </DialogDescription>
       </DialogHeader>
-      <Input
-        placeholder="0x..."
-        value={signedMessage}
-        onChange={handleSignedMessageChange}
-        className={hasError ? 'focus-visible:ring-destructive' : ''}
-      />
-      {hasError && (
-        <Text
-          as="span"
-          className="text-xs leading-none pl-3 font-medium text-destructive"
-        >
-          Invalid Signature
-        </Text>
-      )}
+
+      <Form {...form}>
+        <FormField
+          control={form.control}
+          name="signature"
+          render={({ field }) => (
+            <FormItem>
+              <FormControl>
+                <Input placeholder="0x..." {...field} />
+              </FormControl>
+              {field.value?.length > 0 ? (
+                <FormMessage className="ml-2 text-xs" />
+              ) : null}
+            </FormItem>
+          )}
+        />
+      </Form>
       <Button
         onClick={handleCompleteVerification}
-        disabled={!isSignedMessageValid}
+        disabled={!form.formState.isValid}
       >
         Continue{' '}
         {isLoadingCompleteVerification ? (

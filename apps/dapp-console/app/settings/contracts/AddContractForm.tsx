@@ -13,18 +13,20 @@ import {
   FormLabel,
   FormMessage,
   Input,
+  toast,
 } from '@eth-optimism/ui-components'
 import { Text } from '@eth-optimism/ui-components/src/components/ui/text/text'
 import { useCallback, useState } from 'react'
 import { apiClient } from '@/app/helpers/apiClient'
 import { optimism } from 'viem/chains'
-import { Contract } from '@/app/types/api'
+import { ApiError, Contract } from '@/app/types/api'
 import { captureError } from '@/app/helpers/errorReporting'
 import {
   L2NetworkSelect,
   L2NetworkSelectItem,
 } from '@/app/components/Selects/L2NetworkSelect'
 import { RiLoader4Line } from '@remixicon/react'
+import { LONG_DURATION } from '@/app/constants/toast'
 
 export type StartVerificationHandler = (
   contract: Contract,
@@ -49,6 +51,15 @@ const addContractSchema = z.object({
   deploymentTransactionHash: zodHash,
   deployerAddress: zodAddress,
 })
+
+const errorMessages = {
+  DEPLOYMENT_CONTRACT_ALREADY_EXISTS: 'Contract already exists.',
+  DEPLOYMENT_CONTRACT_ADDRESS_INCORRECT:
+    'Address does not match expected contract address for transaction.',
+  DEPLOYMENT_TX_NOT_FOUND: 'Not able to find transaction hash.',
+  DEPLOYER_ADDRESS_INCORRECT:
+    'Address does not match expected deployer address for transaction.',
+}
 
 export const AddContractForm = ({
   appId,
@@ -96,6 +107,35 @@ export const AddContractForm = ({
 
       onStartVerification(contractToVerifiy, false)
     } catch (e) {
+      const apiError = e as ApiError
+
+      if (apiError.data?.customCode === 'DEPLOYMENT_TX_NOT_FOUND') {
+        form.setError('deploymentTransactionHash', {
+          message: errorMessages.DEPLOYMENT_TX_NOT_FOUND,
+        })
+      } else if (
+        apiError.data?.customCode === 'DEPLOYMENT_CONTRACT_ADDRESS_INCORRECT'
+      ) {
+        form.setError('contract', {
+          message: errorMessages.DEPLOYMENT_CONTRACT_ADDRESS_INCORRECT,
+        })
+      } else if (
+        apiError.data?.customCode === 'DEPLOYMENT_CONTRACT_ALREADY_EXISTS'
+      ) {
+        form.setError('contract', {
+          message: errorMessages.DEPLOYMENT_CONTRACT_ALREADY_EXISTS,
+        })
+      } else if (apiError.data?.customCode === 'DEPLOYER_ADDRESS_INCORRECT') {
+        form.setError('deployerAddress', {
+          message: errorMessages.DEPLOYER_ADDRESS_INCORRECT,
+        })
+      } else {
+        toast({
+          description: 'Failed to create contract',
+          duration: LONG_DURATION,
+        })
+      }
+
       captureError(e, 'createContract')
     }
   }, [
@@ -169,7 +209,10 @@ export const AddContractForm = ({
         />
       </Form>
       <div className="mt-3 flex flex-row justify-between w-full">
-        <L2NetworkSelect onNetworkChange={handleNetworkChange} />
+        <L2NetworkSelect
+          includeTestnets
+          onNetworkChange={handleNetworkChange}
+        />
         <Button
           disabled={!form.formState.isValid}
           onClick={handleCreateContract}

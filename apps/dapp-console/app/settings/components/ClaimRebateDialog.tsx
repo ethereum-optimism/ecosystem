@@ -13,7 +13,7 @@ import { useCallback, useMemo, useState } from 'react'
 import { MAX_CLAIMABLE_AMOUNT } from '@/app/constants/rebate'
 import { shortenAddress } from '@eth-optimism/op-app'
 import Link from 'next/link'
-import { Contract } from '@/app/types/api'
+import { ApiError, Contract } from '@/app/types/api'
 import { Network } from '@/app/components/Network'
 import { optimism } from 'viem/chains'
 import { apiClient } from '@/app/helpers/apiClient'
@@ -28,6 +28,13 @@ export type ClaimRebateDialogProps = {
   onRebateClaimed: (contract: Contract) => void
 }
 
+const errorMessages: Record<string, string> = {
+  MAX_REBATE_REACHED: 'Max rebate amount has been reached.',
+  REBATE_ALREADY_CLAIMED: 'Rebate has already been claimed.',
+  REBATE_PENDING: 'Rebate is already pending.',
+  FAILED_TO_SEND_REBATE: 'Failed to send rebate.',
+}
+
 export const ClaimRebateDialog = ({
   open,
   onOpenChange,
@@ -36,8 +43,11 @@ export const ClaimRebateDialog = ({
 }: ClaimRebateDialogProps) => {
   const [rebateTxHash, setRebateTxHash] = useState<Hash | undefined>()
 
-  const { mutateAsync: claimRebate, isLoading: isLoadingClaimRebate } =
-    apiClient.Rebates.claimDeploymentRebate.useMutation()
+  const {
+    mutateAsync: claimRebate,
+    isLoading: isLoadingClaimRebate,
+    error: rebateError,
+  } = apiClient.Rebates.claimDeploymentRebate.useMutation()
 
   const { data: wallets } = apiClient.wallets.listWallets.useQuery({})
   const firstVerifiedWallet = useMemo(
@@ -73,18 +83,31 @@ export const ClaimRebateDialog = ({
       return
     }
 
-    const { txHash } = await claimRebate({
-      contractId: contract.id,
-      recipientAddress: contract.deployerAddress,
-    })
+    try {
+      const { txHash } = await claimRebate({
+        contractId: contract.id,
+        recipientAddress: contract.deployerAddress,
+      })
 
-    toast({
-      description: 'Rebate Claimed',
-      duration: LONG_DURATION,
-    })
+      toast({
+        description: 'Rebate Claimed',
+        duration: LONG_DURATION,
+      })
 
-    setRebateTxHash(txHash)
-    onRebateClaimed(contract)
+      setRebateTxHash(txHash)
+      onRebateClaimed(contract)
+    } catch (e) {
+      const apiError = e as ApiError
+
+      if (
+        !Object.keys(errorMessages).includes(apiError.data?.customCode ?? '')
+      ) {
+        toast({
+          description: 'Failed to claim rebate.',
+          duration: LONG_DURATION,
+        })
+      }
+    }
   }, [setRebateTxHash, onRebateClaimed])
 
   const handleViewTransaction = useCallback(() => {
@@ -162,18 +185,28 @@ export const ClaimRebateDialog = ({
 
         <div className="flex flex-col w-full mt-3">
           {firstVerifiedWallet ? (
-            <Button
-              className="h-[48px]"
-              onClick={rebateTxHash ? handleViewTransaction : handleClaim}
-            >
-              <Text as="span" className="cursor-pointer">
-                {rebateTxHash ? 'View Transaction' : 'Claim Rebate'}
-              </Text>
+            <>
+              <Button
+                className="h-[48px]"
+                onClick={rebateTxHash ? handleViewTransaction : handleClaim}
+              >
+                <Text as="span" className="cursor-pointer">
+                  {rebateTxHash ? 'View Transaction' : 'Claim Rebate'}
+                </Text>
 
-              {isLoadingClaimRebate ? (
-                <RiLoader4Line className="ml-2 animate-spin" />
-              ) : null}
-            </Button>
+                {isLoadingClaimRebate ? (
+                  <RiLoader4Line className="ml-2 animate-spin" />
+                ) : null}
+              </Button>
+              {rebateError?.data?.customCode && (
+                <Text
+                  as="p"
+                  className="text-sm font-medium text-center text-destructive"
+                >
+                  {errorMessages[rebateError.data.customCode]}
+                </Text>
+              )}
+            </>
           ) : (
             <Button className="h-[48px]" asChild>
               <Link
