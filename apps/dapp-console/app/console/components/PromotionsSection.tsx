@@ -129,7 +129,7 @@ const PromotionsSection = () => {
         Deals
       </Text>
       <div className="mb-4 flex gap-4">
-        {Object.values(PromotionCategory).map((category, index) => (
+        {Object.values(PromotionCategory).map((category) => (
           <Button
             size="sm"
             variant={currentFilter === category ? 'toggled' : 'secondary'}
