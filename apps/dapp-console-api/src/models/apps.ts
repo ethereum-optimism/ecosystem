@@ -15,7 +15,7 @@ import {
   varchar,
 } from 'drizzle-orm/pg-core'
 
-import type { NameCursor } from '@/api'
+import type { CreatedAtCursor } from '@/api'
 import type { Database } from '@/db'
 
 import { contracts, ContractState } from './contracts'
@@ -69,7 +69,7 @@ export const getActiveAppsForEntityByCursor = async (input: {
   db: Database
   entityId: App['entityId']
   limit: number
-  cursor?: NameCursor
+  cursor?: CreatedAtCursor
 }) => {
   const { db, entityId, limit, cursor } = input
 
@@ -78,7 +78,7 @@ export const getActiveAppsForEntityByCursor = async (input: {
     ExtractTablesWithRelations<typeof schema>['apps'],
     ExtractTablesWithRelations<typeof schema>,
     typeof db.query.apps,
-    'name',
+    'createdAt',
     'id',
     {
       contracts: {
@@ -105,7 +105,7 @@ export const getActiveAppsForEntityByCursor = async (input: {
     table: apps,
     filters: [eq(apps.entityId, entityId), eq(apps.state, AppState.ACTIVE)],
     limit,
-    orderBy: { direction: 'asc', column: 'name' },
+    orderBy: { direction: 'asc', column: 'createdAt' },
     idColumnKey: 'id',
     cursor,
   })
