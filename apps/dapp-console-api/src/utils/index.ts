@@ -1,3 +1,4 @@
+export * from './auth'
 export * from './challenges'
 export * from './coinbaseVerification'
 export * from './helpers'

@@ -1,10 +1,28 @@
 import { metrics } from '@/monitoring/metrics'
 import { Trpc } from '@/Trpc'
+import { verifyPrivyAuthAndCreateUserSession } from '@/utils'
 
 import { Route } from '../Route'
+import { assertUserAuthenticated } from '../utils'
 
 export class AuthRoute extends Route {
   public readonly name = 'auth' as const
+
+  public readonly loginUser = 'loginUser' as const
+  public readonly loginUserController = this.trpc.procedure.mutation(
+    async ({ ctx }) => {
+      await verifyPrivyAuthAndCreateUserSession(this.trpc, ctx)
+
+      const { session } = ctx
+
+      const entity = await assertUserAuthenticated(
+        this.trpc.database,
+        session.user,
+      )
+
+      return { entity }
+    },
+  )
 
   public readonly logoutUser = 'logoutUser' as const
   public readonly logoutUserController = this.trpc.procedure.mutation(
@@ -25,5 +43,6 @@ export class AuthRoute extends Route {
 
   public readonly handler = this.trpc.router({
     [this.logoutUser]: this.logoutUserController,
+    [this.loginUser]: this.loginUserController,
   })
 }

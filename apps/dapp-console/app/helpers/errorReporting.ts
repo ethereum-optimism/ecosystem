@@ -7,11 +7,15 @@ export type ContractActionContext =
   | 'deleteContract'
   | 'startContractVerification'
   | 'completeContractVerification'
+export type AuthActionContext = 'loginUser' | 'logoutUser'
+export type PrivyActionContext = 'privyLogin'
 
 export type ErrorActionContext =
   | WalletActionContext
   | AppActionContext
   | ContractActionContext
+  | AuthActionContext
+  | PrivyActionContext
 
 export const captureError = (exception: unknown, action: ErrorActionContext) =>
   captureException(exception, { data: { action } })
