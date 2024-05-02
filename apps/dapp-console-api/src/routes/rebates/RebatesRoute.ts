@@ -6,7 +6,7 @@ import type {
   Transport,
   WalletClient,
 } from 'viem'
-import { getAddress } from 'viem'
+import { formatEther, getAddress } from 'viem'
 import { type optimism, type optimismSepolia } from 'viem/chains'
 
 import {
@@ -369,14 +369,35 @@ export class RebatesRoute extends Route {
         })
       }
 
-      const isMainnetChain = SUPPORTED_L2_MAINNET_CHAINS.some(
+      const isMainnetDeployment = SUPPORTED_L2_MAINNET_CHAINS.some(
         ({ chain }) => chain.id === contract.chainId,
       )
       const walletClient: WalletClient<
         Transport,
         typeof optimism | typeof optimismSepolia,
         Account
-      > = isMainnetChain ? this.walletClient : this.testnetWalletClient
+      > = isMainnetDeployment
+        ? this.mainnetWalletClient
+        : this.testnetWalletClient
+      const publicClient = isMainnetDeployment
+        ? this.mainnetPublicClient
+        : this.testnetPublicClient
+
+      await this.updateWalletBalance(publicClient, walletClient).catch(
+        (err) => {
+          metrics.updateDeploymentRebateWalletBalanceErrorCount.inc({
+            chainId: publicClient.chain.id,
+          })
+          this.logger?.error(
+            {
+              error: err,
+              walletAddress: walletClient.account.address,
+              chainId: publicClient.chain.id,
+            },
+            'error updating deployment rebate wallet balance',
+          )
+        },
+      )
 
       const rebateTxHash = await walletClient
         .sendTransaction({
@@ -405,10 +426,6 @@ export class RebatesRoute extends Route {
             new DappConsoleError({ code: 'FAILED_TO_SEND_REBATE' }),
           )
         })
-
-      const publicClient = isMainnetChain
-        ? this.publicClient
-        : this.testnetPublicClient
 
       const rebateTxReceipt = await publicClient
         .waitForTransactionReceipt({
@@ -464,6 +481,22 @@ export class RebatesRoute extends Route {
         throw Trpc.handleStatus(500, 'unknown server error')
       })
 
+      await this.updateWalletBalance(publicClient, walletClient).catch(
+        (err) => {
+          metrics.updateDeploymentRebateWalletBalanceErrorCount.inc({
+            chainId: publicClient.chain.id,
+          })
+          this.logger?.error(
+            {
+              error: err,
+              walletAddress: walletClient.account.address,
+              chainId: publicClient.chain.id,
+            },
+            'error updating deployment rebate wallet balance',
+          )
+        },
+      )
+
       return { txHash: rebateTxReceipt.transactionHash }
     })
 
@@ -475,12 +508,15 @@ export class RebatesRoute extends Route {
 
   constructor(
     trpc: Trpc,
-    private readonly walletClient: WalletClient<
+    private readonly mainnetWalletClient: WalletClient<
       Transport,
       typeof optimism,
       Account
     >,
-    private readonly publicClient: PublicClient<HttpTransport, typeof optimism>,
+    private readonly mainnetPublicClient: PublicClient<
+      HttpTransport,
+      typeof optimism
+    >,
     private readonly testnetWalletClient: WalletClient<
       Transport,
       typeof optimismSepolia,
@@ -568,6 +604,40 @@ export class RebatesRoute extends Route {
       throw Trpc.handleStatus(
         401,
         new DappConsoleError({ code: 'SANCTIONED_ADDRESS' }),
+      )
+    }
+  }
+
+  private async updateWalletBalance(
+    publicClient: PublicClient<
+      HttpTransport,
+      typeof optimism | typeof optimismSepolia
+    >,
+    walletClient: WalletClient<
+      Transport,
+      typeof optimism | typeof optimismSepolia,
+      Account
+    >,
+  ) {
+    const walletBalance = await publicClient
+      .getBalance({ address: walletClient.account.address })
+      .catch((err) => {
+        metrics.updateDeploymentRebateWalletBalanceErrorCount.inc({
+          chainId: publicClient.chain.id,
+        })
+        this.logger?.error(
+          {
+            error: err,
+            walletAddress: walletClient.account.address,
+            chainId: publicClient.chain.id,
+          },
+          'error updating deployment rebate wallet balance',
+        )
+      })
+    if (typeof walletBalance === 'bigint') {
+      metrics.deploymentRebateWalletBalance.set(
+        { chainId: publicClient.chain.id },
+        +formatEther(walletBalance),
       )
     }
   }
