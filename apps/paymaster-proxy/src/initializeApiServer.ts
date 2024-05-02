@@ -12,6 +12,7 @@ import morgan from 'morgan'
 import { type Logger } from 'pino'
 
 import { createV1ApiRouter, V1_API_BASE_PATH } from '@/api/createV1ApiRouter'
+import { envVars } from '@/envVars'
 import type { BackendReadinessState } from '@/helpers/BackendReadinessState'
 import { getPromBaseMetrics } from '@/middlewares/getPromBaseMetrics'
 import { getRateLimiter } from '@/middlewares/getRateLimiter'
@@ -60,6 +61,9 @@ export const initializeApiServer = async ({
     res.json({ ok: true })
   })
 
+  if (envVars.SHOULD_TRUST_PROXY) {
+    app.set('trust proxy', true)
+  }
   app.use(getRateLimiter(redisClient))
 
   app.use(getPromBaseMetrics())
