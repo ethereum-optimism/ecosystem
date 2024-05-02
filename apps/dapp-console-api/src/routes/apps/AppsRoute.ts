@@ -1,6 +1,6 @@
 import { z } from 'zod'
 
-import { generateListResponse, zodListRequest, zodNameCursor } from '@/api'
+import { generateListResponse, zodCreatedAtCursor, zodListRequest } from '@/api'
 import { envVars } from '@/constants'
 import { DappConsoleError } from '@/errors/DappConsoleError'
 import { isPrivyAuthed } from '@/middleware'
@@ -32,7 +32,7 @@ export class AppsRoute extends Route {
    */
   public readonly listAppsController = this.trpc.procedure
     .use(isPrivyAuthed(this.trpc))
-    .input(zodListRequest(zodNameCursor))
+    .input(zodListRequest(zodCreatedAtCursor))
     .query(async ({ ctx, input }) => {
       const { user } = ctx.session
       const limit = input.limit ?? DEFAULT_PAGE_LIMIT
