@@ -1,7 +1,9 @@
 version: '3.8'
 
 services:
-  postgres:
+  api-key-service-postgres:
+    profiles:
+      - dependencies
     image: postgres:latest
     environment:
       - POSTGRES_HOST_AUTH_METHOD=trust
@@ -19,13 +21,15 @@ services:
       - ./setup-local-db.sql:/docker-entrypoint-initdb.d/setup-local-db.sql
 
   api-key-service:
+    profiles:
+      - app
     build:
       context: ../../
       dockerfile: Dockerfile
       target: api-key-service
     env_file: .env
     environment:
-      - DB_HOST=postgres
+      - DB_HOST=api-key-service-postgres
       - DB_PORT=5432
       - DB_NAME=api-key-service
     healthcheck:
@@ -33,5 +37,5 @@ services:
     ports:
       - 7330:7330
     depends_on:
-      postgres:
+      api-key-service-postgres:
         condition: service_healthy

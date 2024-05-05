@@ -127,6 +127,12 @@ export const envVarsSchema = inferSchemas({
       test: 'test-policy-id',
     },
   },
+  ALCHEMY_APP_ID_SEPOLIA: {
+    schema: z.string(),
+    defaults: {
+      test: 'test-sepolia-app-id',
+    },
+  },
   ALCHEMY_RPC_URL_OP_SEPOLIA: {
     schema: z.string(),
     defaults: {
@@ -137,6 +143,12 @@ export const envVarsSchema = inferSchemas({
     schema: z.string(),
     defaults: {
       test: 'test-policy-id',
+    },
+  },
+  ALCHEMY_APP_ID_OP_SEPOLIA: {
+    schema: z.string(),
+    defaults: {
+      test: 'test-op-sepolia-app-id',
     },
   },
   ALCHEMY_RPC_URL_BASE_SEPOLIA: {
@@ -151,6 +163,12 @@ export const envVarsSchema = inferSchemas({
       test: 'test-policy-id',
     },
   },
+  ALCHEMY_APP_ID_BASE_SEPOLIA: {
+    schema: z.string(),
+    defaults: {
+      test: 'test-base-sepolia-app-id',
+    },
+  },
   ALCHEMY_RPC_URL_ZORA_SEPOLIA: {
     schema: z.string(),
     defaults: {
@@ -161,6 +179,12 @@ export const envVarsSchema = inferSchemas({
     schema: z.string(),
     defaults: {
       test: 'test-policy-id',
+    },
+  },
+  ALCHEMY_APP_ID_ZORA_SEPOLIA: {
+    schema: z.string(),
+    defaults: {
+      test: 'test-zora-sepolia-app-id',
     },
   },
   ALCHEMY_RPC_URL_FRAXTAL_SEPOLIA: {
@@ -175,10 +199,10 @@ export const envVarsSchema = inferSchemas({
       test: 'test-policy-id',
     },
   },
-  ALCHEMY_APP_ID_OP_SEPOLIA: {
+  ALCHEMY_APP_ID_FRAXTAL_SEPOLIA: {
     schema: z.string(),
     defaults: {
-      test: 'test-app-id',
+      test: 'test-fraxtal-sepolia-app-id',
     },
   },
   ALCHEMY_GAS_MANAGER_ACCESS_KEY: {

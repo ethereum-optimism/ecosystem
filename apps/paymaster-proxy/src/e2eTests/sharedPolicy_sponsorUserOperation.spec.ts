@@ -1,4 +1,8 @@
-import { deepHexlify, ENTRYPOINT_ADDRESS_V06 } from 'permissionless/utils'
+import {
+  deepHexlify,
+  ENTRYPOINT_ADDRESS_V06,
+  ENTRYPOINT_ADDRESS_V07,
+} from 'permissionless/utils'
 import supertest from 'supertest'
 import { parseGwei, toHex } from 'viem'
 import { baseSepolia, optimismSepolia, sepolia, zoraSepolia } from 'viem/chains'
@@ -10,15 +14,7 @@ import {
   getMintUserOperationWithRandomSimpleAccount,
   getRevertingUserOperationWithRandomSimpleAccount,
 } from '@/testUtils/simpleAccount/exampleSimpleAccountUserOperations'
-
-const successfulPaymasterResultMatcher = {
-  paymasterAndData: expect.toBeNonNullHex(),
-  callGasLimit: expect.toBeNonNullHex(),
-  verificationGasLimit: expect.toBeNonNullHex(),
-  preVerificationGas: expect.toBeNonNullHex(),
-  maxFeePerGas: expect.toBeNonNullHex(),
-  maxPriorityFeePerGas: expect.toBeNonNullHex(),
-}
+import { successfulPaymasterResultMatcher } from '@/testUtils/successfulPaymasterResultMatcher'
 
 const app = supertest(E2E_TEST_BASE_URL)
 
@@ -297,8 +293,30 @@ describe('pm_sponsorUserOperation', async () => {
       })
     })
 
-    it.todo('rejects if entrypoint is not supported')
+    it.concurrent('rejects if entrypoint is not supported', async () => {
+      const userOperation =
+        await getMintUserOperationWithRandomSimpleAccount(chain)
 
-    it.todo('rejects if missing required fields in userOp')
+      const result = await app
+        .post(`/v1/${chain.id}/rpc`)
+        .set('Content-Type', 'application/json')
+        .set('Accept', 'application/json')
+        .send({
+          jsonrpc: '2.0',
+          id: 1,
+          method: 'pm_sponsorUserOperation',
+          params: [userOperation, ENTRYPOINT_ADDRESS_V07],
+        })
+        .expect(200)
+
+      expect(result.body).toMatchObject({
+        jsonrpc: '2.0',
+        id: 1,
+        error: {
+          code: -32602,
+          message: expect.stringContaining('Validation error'),
+        },
+      })
+    })
   })
 })

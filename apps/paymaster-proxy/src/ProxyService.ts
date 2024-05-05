@@ -58,6 +58,8 @@ export class ProxyService {
         namespace: 'api-server',
       }),
       backendReadinessState,
+      database,
+      apiKeyServiceClient,
     })
 
     const adminApiServer = envVars.SHOULD_ENABLE_ADMIN_API

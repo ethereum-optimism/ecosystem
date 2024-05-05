@@ -6,7 +6,7 @@ import {
   deleteAlchemyGasManagerPolicy,
   getAlchemyGasManagerHeaders,
   getAlchemyGasManagerPolicy,
-} from '@/paymasterProvider/alchemy/alchemyGasManagerAdminActions'
+} from '@/paymasterProvider/alchemy/admin/alchemyGasManagerAdminActions'
 import { mockAlchemyGasManagerPolicy } from '@/testUtils/mockAlchemyGasManagerPolicy'
 import {
   mockDeleteSuccess,

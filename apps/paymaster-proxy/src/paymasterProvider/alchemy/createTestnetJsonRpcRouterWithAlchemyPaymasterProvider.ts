@@ -1,94 +1,119 @@
 import type { ClientWithAlchemyMethods } from '@alchemy/aa-alchemy'
 import { createBundlerClient } from '@alchemy/aa-core'
 import type { Logger } from 'pino'
-import type { Chain } from 'viem'
 import { http } from 'viem'
 import { z } from 'zod'
 
-import { JsonRpcCastableError } from '@/errors/JsonRpcCastableError'
+import type { ApiKeyServiceClient } from '@/apiKeyService/createApiKeyServiceClient'
+import type { TestnetChainConfig } from '@/config/ChainConfig'
+import type { Database } from '@/db/Database'
+import { InvalidPolicyIdError } from '@/errors/InvalidPolicyIdError'
 import { SanctionedAddressError } from '@/errors/SanctionedAddressError'
-import { screenAddress } from '@/helpers/screenAddress'
+import { handleScreenAddress } from '@/jsonRpc/handleScreenAddress'
+import { handleVerifyApiKey } from '@/jsonRpc/handleVerifyApiKey'
 import { JsonRpcRouter } from '@/jsonRpc/JsonRpcRouter'
+import { getSponsorshipPolicyForApiKeyId } from '@/models/sponsorshipPolicies'
 import type {
   DefaultMetricsNamespaceLabels,
   Metrics,
 } from '@/monitoring/metrics'
-import { alchemySponsorUserOperation } from '@/paymasterProvider/alchemy/alchemySponsorUserOperation'
-import { addressSchema } from '@/schemas/addressSchema'
+import { handleAlchemySponsorUserOperation } from '@/paymasterProvider/alchemy/handleAlchemySponsorUserOperation'
+import { entryPointSchema } from '@/schemas/entryPointSchema'
+import { paymasterContextSchema } from '@/schemas/paymasterContextSchema'
 import { userOperationSchema } from '@/schemas/userOperationSchema'
 
 export const createTestnetJsonRpcRouterWithAlchemyPaymasterProvider = ({
-  chain,
-  rpcUrl,
-  sharedPolicyId,
+  chainConfig,
+  database,
+  apiKeyServiceClient,
   metrics,
   defaultMetricLabels,
   logger,
 }: {
-  chain: Chain
-  rpcUrl: string
-  sharedPolicyId: string
+  chainConfig: TestnetChainConfig
+  database: Database
+  apiKeyServiceClient: ApiKeyServiceClient
   metrics: Metrics
   defaultMetricLabels: DefaultMetricsNamespaceLabels
   logger: Logger
 }) => {
+  // Sanity check invariant
+  if (chainConfig.paymasterProviderConfig.type !== 'alchemy') {
+    throw new Error('Unsupported provider type')
+  }
+
+  const { chain } = chainConfig
+  const { rpcUrl, sharedPolicyId } = chainConfig.paymasterProviderConfig
+
   const alchemyClient = createBundlerClient({
     chain,
     transport: http(rpcUrl),
   }) as ClientWithAlchemyMethods
 
+  const monitoringCtx = {
+    logger,
+    metrics,
+    defaultMetricLabels,
+  }
+
   const jsonRpcRouter = new JsonRpcRouter()
 
   jsonRpcRouter.method(
     'pm_sponsorUserOperation',
-    z.tuple([userOperationSchema, addressSchema]),
-    async ([userOperation, entryPoint]) => {
+    z.union([
+      z.tuple([userOperationSchema, entryPointSchema]),
+      // paymasterContext is optional for testnet
+      z.tuple([userOperationSchema, entryPointSchema, paymasterContextSchema]),
+    ]),
+    async ([userOperation, entryPoint, paymasterContext]) => {
       // check if address is sanctioned
-      try {
-        const isAddressSanctioned = await screenAddress(userOperation.sender)
 
-        if (isAddressSanctioned === true) {
-          metrics.sanctionedAddressBlocked.inc(defaultMetricLabels)
-          logger.info({
-            message: 'Screened address',
-            address: userOperation.sender,
-          })
-          throw new SanctionedAddressError()
-        }
-      } catch (e) {
-        metrics.screeningServiceCallFailures.inc(defaultMetricLabels)
-        logger.error({
-          message: 'Error while screening address',
-          error: e,
+      const isAddressSanctioned = await handleScreenAddress(
+        monitoringCtx,
+        userOperation.sender,
+      )
+      if (isAddressSanctioned === true) {
+        metrics.sanctionedAddressBlocked.inc(defaultMetricLabels)
+        logger.info({
+          message: 'Screened address',
           address: userOperation.sender,
         })
-
-        throw e
+        throw new SanctionedAddressError()
       }
 
-      // proxy request to the provider
-      try {
-        const result = await alchemySponsorUserOperation(
-          alchemyClient,
-          sharedPolicyId,
-          userOperation,
-          entryPoint,
-        )
+      // by default the shared policyId is used
+      let alchemyPolicyId = sharedPolicyId
 
-        metrics.paymasterCallSuccesses.inc(defaultMetricLabels)
-        return result
-      } catch (e) {
-        logger.error(e, 'Alchemy paymaster provider RPC error')
-        if (e instanceof JsonRpcCastableError) {
-          metrics.paymasterCallRpcFailures.inc({
-            ...defaultMetricLabels,
-            jsonRpcCode: e.jsonRpcErrorCode,
-          })
-        } else {
-          metrics.paymasterCallNonRpcFailures.inc(defaultMetricLabels)
+      // use the passed in policyId if it's provided
+      if (paymasterContext) {
+        const verificationResult = await handleVerifyApiKey(monitoringCtx, {
+          apiKeyServiceClient,
+          key: paymasterContext.policyId,
+        })
+
+        if (!verificationResult.isVerified) {
+          metrics.policyIdVerificationFailures.inc(defaultMetricLabels)
+          throw new InvalidPolicyIdError()
         }
-        throw e
+
+        const policy = await getSponsorshipPolicyForApiKeyId(
+          database,
+          verificationResult.apiKey!.id,
+        )
+        if (!policy || policy.providerType !== 'alchemy') {
+          metrics.providerMetadataNotFoundForPolicyId.inc(defaultMetricLabels)
+          throw new InvalidPolicyIdError()
+        }
+
+        alchemyPolicyId = policy.providerMetadata.policyId
       }
+
+      return await handleAlchemySponsorUserOperation(monitoringCtx, {
+        alchemyClient,
+        alchemyPolicyId,
+        userOperation,
+        entryPoint,
+      })
     },
   )
 
