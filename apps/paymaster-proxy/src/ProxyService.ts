@@ -2,10 +2,11 @@ import type { Express } from 'express'
 import { Redis } from 'ioredis'
 import pino, { type Logger } from 'pino'
 
+import { initializeAdminApiServer } from '@/adminApi/initializeAdminApiServer'
+import { initializeApiServer } from '@/api/initializeApiServer'
 import { runMigrations } from '@/db/Database'
 import { envVars } from '@/envVars'
 import { BackendReadinessState } from '@/helpers/BackendReadinessState'
-import { initializeApiServer } from '@/initializeApiServer'
 import { metrics } from '@/monitoring/metrics'
 import { retryWithBackoff } from '@/utils/retryWithBackoff'
 
@@ -13,15 +14,18 @@ const HOST = '0.0.0.0'
 
 export class ProxyService {
   private readonly apiServer: Express
+  private readonly adminApiServer: Express | null
   private readonly logger: Logger
   private readonly backendReadinessState: BackendReadinessState
 
   constructor(
     apiServer: Express,
+    adminApiServer: Express | null,
     logger: Logger,
     backendReadinessState: BackendReadinessState,
   ) {
     this.apiServer = apiServer
+    this.adminApiServer = adminApiServer
     this.logger = logger
     this.backendReadinessState = backendReadinessState
   }
@@ -42,13 +46,37 @@ export class ProxyService {
       backendReadinessState,
     })
 
-    return new ProxyService(apiServer, logger, backendReadinessState)
+    const adminApiServer = envVars.SHOULD_ENABLE_ADMIN_API
+      ? await initializeAdminApiServer({
+          redisClient,
+          metrics,
+          logger: logger.child({
+            namespace: 'admin-api-server',
+          }),
+          backendReadinessState,
+        })
+      : null
+
+    return new ProxyService(
+      apiServer,
+      adminApiServer,
+      logger,
+      backendReadinessState,
+    )
   }
 
   async run() {
     this.apiServer.listen(envVars.PORT, HOST, () => {
       this.logger.info(`API server listening at http://${HOST}:${envVars.PORT}`)
     })
+
+    if (envVars.SHOULD_ENABLE_ADMIN_API && this.adminApiServer) {
+      this.adminApiServer.listen(envVars.ADMIN_API_PORT, HOST, () => {
+        this.logger.info(
+          `Admin API server listening at http://${HOST}:${envVars.ADMIN_API_PORT}`,
+        )
+      })
+    }
 
     if (envVars.MIGRATE_DB_USER) {
       await retryWithBackoff({
