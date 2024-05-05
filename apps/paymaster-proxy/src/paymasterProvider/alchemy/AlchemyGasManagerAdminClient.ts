@@ -1,6 +1,7 @@
 import type { AlchemyGasManagerPolicyRules } from '@/paymasterProvider/alchemy/alchemyGasManagerAdminActions'
 import {
   createAlchemyGasManagerPolicy,
+  deleteAlchemyGasManagerPolicy,
   getAlchemyGasManagerPolicy,
 } from '@/paymasterProvider/alchemy/alchemyGasManagerAdminActions'
 
@@ -33,6 +34,13 @@ export class AlchemyGasManagerAdminClient {
 
   public async getPolicy(policyId: string) {
     return await getAlchemyGasManagerPolicy({
+      accessKey: this.accessKey,
+      policyId,
+    })
+  }
+
+  public async deletePolicy(policyId: string) {
+    return await deleteAlchemyGasManagerPolicy({
       accessKey: this.accessKey,
       policyId,
     })

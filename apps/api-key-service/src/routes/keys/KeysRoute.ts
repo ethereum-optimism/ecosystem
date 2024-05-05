@@ -33,7 +33,7 @@ export class KeysRoute extends Route {
           .min(10)
           .max(200)
           .optional()
-          .default(crypto.randomUUID()),
+          .default(() => crypto.randomUUID()),
       }),
     )
     .mutation(async ({ input }) => {

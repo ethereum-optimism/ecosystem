@@ -4,7 +4,8 @@ import pino, { type Logger } from 'pino'
 
 import { initializeAdminApiServer } from '@/adminApi/initializeAdminApiServer'
 import { initializeApiServer } from '@/api/initializeApiServer'
-import { runMigrations } from '@/db/Database'
+import { createApiKeyServiceClient } from '@/apiKeyService/createApiKeyServiceClient'
+import { connectToDatabase, runMigrations } from '@/db/Database'
 import { envVars } from '@/envVars'
 import { BackendReadinessState } from '@/helpers/BackendReadinessState'
 import { metrics } from '@/monitoring/metrics'
@@ -37,6 +38,19 @@ export class ProxyService {
 
     const backendReadinessState = new BackendReadinessState()
 
+    const database = connectToDatabase({
+      user: envVars.DB_USER,
+      password: envVars.DB_PASSWORD,
+      database: envVars.DB_NAME,
+      host: envVars.DB_HOST,
+      port: envVars.DB_PORT,
+      max: envVars.DB_MAX_CONNECTIONS,
+    })
+
+    const apiKeyServiceClient = createApiKeyServiceClient({
+      url: envVars.API_KEY_SERVICE_URL,
+    })
+
     const apiServer = await initializeApiServer({
       redisClient,
       metrics,
@@ -54,6 +68,8 @@ export class ProxyService {
             namespace: 'admin-api-server',
           }),
           backendReadinessState,
+          database,
+          apiKeyServiceClient,
         })
       : null
 

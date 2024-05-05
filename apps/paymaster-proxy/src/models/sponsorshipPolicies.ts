@@ -1,3 +1,5 @@
+import type { InferInsertModel } from 'drizzle-orm'
+import { eq } from 'drizzle-orm'
 import {
   index,
   jsonb,
@@ -8,6 +10,8 @@ import {
   uuid,
   varchar,
 } from 'drizzle-orm/pg-core'
+
+import type { Database } from '@/db/Database'
 
 const UINT256_PRECISION = 78
 
@@ -46,3 +50,34 @@ export const sponsorshipPolicies = pgTable(
     }
   },
 )
+
+type InsertSponsorshipPolicy = InferInsertModel<typeof sponsorshipPolicies>
+
+export const createSponsorshipPolicy = async (
+  db: Database,
+  sponsorshipPolicy: InsertSponsorshipPolicy,
+) => {
+  const result = await db
+    .insert(sponsorshipPolicies)
+    .values(sponsorshipPolicy)
+    .returning()
+
+  return result[0]
+}
+
+export const getSponsorshipPolicyForApiKeyId = async (
+  db: Database,
+  apiKeyId: string,
+) => {
+  const policies = await db
+    .select()
+    .from(sponsorshipPolicies)
+    .where(eq(sponsorshipPolicies.apiKeyId, apiKeyId))
+
+  if (policies.length === 0) {
+    return null
+  }
+
+  // guaranteed to only be 1 max because of the unique index on apiKeyId
+  return policies[0]
+}
