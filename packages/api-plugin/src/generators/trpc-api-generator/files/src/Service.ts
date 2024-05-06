@@ -37,11 +37,6 @@ export class Service {
    */
   private metricsRegistry: Registry
 
-  /**
-   * @param state - the state object that stores cached delegate chain data
-   * @param middleware - The middleware specifying cors
-   * @param apiServerV0 - the api server served at /api/v0
-   */
   constructor(
     private readonly apiServerV0: ApiV0,
     private readonly middleware: Middleware,

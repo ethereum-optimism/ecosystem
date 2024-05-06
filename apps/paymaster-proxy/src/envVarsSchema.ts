@@ -10,6 +10,12 @@ export const envVarsSchema = inferSchemas({
       test: 7310,
     },
   },
+  SHOULD_TRUST_PROXY: {
+    schema: z.boolean(),
+    defaults: {
+      test: false,
+    },
+  },
   REDIS_URL: {
     schema: z.string(),
     defaults: {
