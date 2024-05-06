@@ -178,9 +178,10 @@ export class ContractsRoute extends Route {
           )
         })
 
-      let txContractAddress: Address | null =
-        deploymentTxReceipt.contractAddress || null
-      if (!deploymentTxReceipt.contractAddress) {
+      let txContractAddresses: Address[] = deploymentTxReceipt.contractAddress
+        ? [deploymentTxReceipt.contractAddress]
+        : []
+      if (txContractAddresses.length === 0) {
         const tracedTransaction = await publicClient
           .traceTransaction(deploymentTxHash)
           .catch((err) => {
@@ -200,16 +201,17 @@ export class ContractsRoute extends Route {
             )
           })
 
-        if (
-          tracedTransaction &&
-          tracedTransaction.calls?.length === 1 &&
-          tracedTransaction.calls[0].type === 'CREATE2'
-        ) {
-          txContractAddress = tracedTransaction.calls[0].to
+        if (tracedTransaction.calls) {
+          const create2Transactions = tracedTransaction.calls.filter(
+            (call) => call.type === 'CREATE2',
+          )
+          txContractAddresses = create2Transactions.map(
+            (create2Transaction) => create2Transaction.to,
+          )
         }
       }
 
-      if (!txContractAddress) {
+      if (txContractAddresses.length === 0) {
         throw Trpc.handleStatus(
           400,
           new DappConsoleError({
@@ -229,7 +231,11 @@ export class ContractsRoute extends Route {
         )
       }
 
-      if (!addressEqualityCheck(txContractAddress, inputContractAddress)) {
+      if (
+        !txContractAddresses.some((txContractAddress) =>
+          addressEqualityCheck(txContractAddress, inputContractAddress),
+        )
+      ) {
         throw Trpc.handleStatus(
           400,
           new DappConsoleError({
