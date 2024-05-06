@@ -178,37 +178,34 @@ export class ContractsRoute extends Route {
           )
         })
 
-      let txContractAddresses: Address[] = deploymentTxReceipt.contractAddress
+      const txContractAddresses: Address[] = deploymentTxReceipt.contractAddress
         ? [deploymentTxReceipt.contractAddress]
         : []
-      if (txContractAddresses.length === 0) {
-        const tracedTransaction = await publicClient
-          .traceTransaction(deploymentTxHash)
-          .catch((err) => {
-            metrics.traceTxErrorCount.inc({ chainId })
-            this.logger?.error(
-              {
-                error: err,
-                entityId,
-                txHash: deploymentTxHash,
-                chainId,
-              },
-              'unable to trace transaction',
-            )
-            throw Trpc.handleStatus(
-              500,
-              'error fetching deployment transaction',
-            )
-          })
+      const tracedTransaction = await publicClient
+        .traceTransaction(deploymentTxHash)
+        .catch((err) => {
+          metrics.traceTxErrorCount.inc({ chainId })
+          this.logger?.error(
+            {
+              error: err,
+              entityId,
+              txHash: deploymentTxHash,
+              chainId,
+            },
+            'unable to trace transaction',
+          )
+          throw Trpc.handleStatus(500, 'error fetching deployment transaction')
+        })
 
-        if (tracedTransaction.calls) {
-          const create2Transactions = tracedTransaction.calls.filter(
-            (call) => call.type === 'CREATE2',
-          )
-          txContractAddresses = create2Transactions.map(
+      if (tracedTransaction.calls) {
+        const createTransactions = tracedTransaction.calls.filter(
+          (call) => call.type === 'CREATE2' || call.type === 'CREATE',
+        )
+        txContractAddresses.push(
+          ...createTransactions.map(
             (create2Transaction) => create2Transaction.to,
-          )
-        }
+          ),
+        )
       }
 
       if (txContractAddresses.length === 0) {
