@@ -1,4 +1,4 @@
-import { Counter } from 'prom-client'
+import { Counter, Gauge } from 'prom-client'
 
 export type Metrics = typeof metrics
 
@@ -174,5 +174,15 @@ export const metrics = {
   insertDeploymentTransactionErrorCount: new Counter({
     name: 'insert_deployment_transaction_error_count',
     help: 'Number of times deployment transaction failed to be inserted into db',
+  }),
+  deploymentRebateWalletBalance: new Gauge({
+    name: 'deployment_rebate_wallet_balance',
+    help: 'Balance of eth on the deployment rebate wallet',
+    labelNames: ['chainId'] as const,
+  }),
+  updateDeploymentRebateWalletBalanceErrorCount: new Counter({
+    name: 'update_deployment_rebate_wallet_balance_error_count',
+    help: 'Number of times deployment rebate wallet balance failed to be updated',
+    labelNames: ['chainId'] as const,
   }),
 }
