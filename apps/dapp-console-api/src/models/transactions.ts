@@ -6,7 +6,6 @@ import {
   numeric,
   pgTable,
   timestamp,
-  uniqueIndex,
   uuid,
   varchar,
 } from 'drizzle-orm/pg-core'
@@ -108,14 +107,8 @@ export const transactions = pgTable(
   },
   (table) => {
     return {
-      chainIdTransactionHashIdx: uniqueIndex().on(
-        table.chainId,
-        table.transactionHash,
-      ),
-      fromAddressIdx: index().on(table.fromAddress),
-      toAddressIdx: index().on(table.toAddress),
-      contractAddressIdx: index().on(table.contractAddress),
-      entityBlockTimestampIdx: index().on(table.entityId, table.blockTimestamp),
+      entityIdIdx: index().on(table.entityId),
+      contractIdIdx: index().on(table.contractId),
     }
   },
 )

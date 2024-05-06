@@ -3,7 +3,7 @@ import type {
   InferInsertModel,
   InferSelectModel,
 } from 'drizzle-orm'
-import { and, arrayContains, eq, relations, sql, sum } from 'drizzle-orm'
+import { and, arrayContains, eq, relations, sum } from 'drizzle-orm'
 import {
   index,
   integer,
@@ -51,6 +51,7 @@ export const deploymentRebates = pgTable(
       .references(() => contracts.id)
       .notNull(),
     contractAddress: varchar('contract_address').$type<Address>().notNull(),
+    deploymentTxHash: varchar('deployment_tx_hash').$type<Hash>().notNull(),
     chainId: integer('chain_id').notNull(),
     state: varchar('state')
       .$type<DeploymentRebateState>()
@@ -68,8 +69,7 @@ export const deploymentRebates = pgTable(
     verifiedWallets: varchar('verified_wallets')
       .array()
       .$type<Address[]>()
-      .notNull()
-      .default(sql`ARRAY[]::varchar[]`),
+      .notNull(),
   },
   (table) => {
     return {
@@ -77,6 +77,10 @@ export const deploymentRebates = pgTable(
       contractIdx: index().on(table.contractId),
       contractAddressChainIdIdx: uniqueIndex().on(
         table.contractAddress,
+        table.chainId,
+      ),
+      deploymentTxHashChainIdIdx: uniqueIndex().on(
+        table.deploymentTxHash,
         table.chainId,
       ),
       verifiedWalletsIdx: index().on(table.verifiedWallets),
@@ -185,11 +189,16 @@ export const insertDeploymentRebate = async (input: {
   newRebate: InsertDeploymentRebate
 }) => {
   const { db, newRebate } = input
+
+  if (newRebate.verifiedWallets.length === 0) {
+    throw new Error('must have verified wallet to claim rebate')
+  }
+
   const checkSummedRebate = {
     ...newRebate,
     contractAddress: getAddress(newRebate.contractAddress),
     recipientAddress: getAddress(newRebate.recipientAddress!),
-    verifiedWallets: newRebate.verifiedWallets!.map((address) =>
+    verifiedWallets: newRebate.verifiedWallets.map((address) =>
       getAddress(address),
     ),
   }
@@ -276,20 +285,20 @@ export const setDeploymentRebateToFailed = async (input: {
   return updateResult[0]
 }
 
-export const getDeploymentRebateByContractId = async (input: {
+export const getDeploymentRebateByChainIdTxHash = async (input: {
   db: Database
-  contractId: DeploymentRebate['contractId']
-  entityId: DeploymentRebate['entityId']
+  chainId: DeploymentRebate['chainId']
+  deploymentTxHash: DeploymentRebate['deploymentTxHash']
 }): Promise<DeploymentRebate | null> => {
-  const { db, contractId, entityId } = input
+  const { db, chainId, deploymentTxHash } = input
 
   const results = await db
     .select()
     .from(deploymentRebates)
     .where(
       and(
-        eq(deploymentRebates.contractId, contractId),
-        eq(deploymentRebates.entityId, entityId),
+        eq(deploymentRebates.chainId, chainId),
+        eq(deploymentRebates.deploymentTxHash, deploymentTxHash),
       ),
     )
 

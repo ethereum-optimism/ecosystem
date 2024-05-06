@@ -32,6 +32,8 @@ const errorMessages: Record<string, string> = {
   MAX_REBATE_REACHED: 'Max rebate amount has been reached.',
   REBATE_ALREADY_CLAIMED: 'Rebate has already been claimed.',
   REBATE_PENDING: 'Rebate is already pending.',
+  DUPLICATE_REBATE:
+    'A rebate for this deployment transaction exists on another account.',
   FAILED_TO_SEND_REBATE: 'Failed to send rebate.',
 }
 

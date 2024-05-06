@@ -141,6 +141,13 @@
       "when": 1713916669274,
       "tag": "0019_first_gladiator",
       "breakpoints": true
+    },
+    {
+      "idx": 20,
+      "version": "5",
+      "when": 1715032715906,
+      "tag": "0020_crazy_ultimatum",
+      "breakpoints": true
     }
   ]
 }
