@@ -42,12 +42,6 @@ export const verificationMethods: VerificationMethod[] = [
     href: 'https://passport.gitcoin.co/',
   },
   {
-    id: 'optimist',
-    icon: '/logos/optimist-nft-logo.png',
-    title: 'Optimist NFT',
-    href: 'https://app.optimism.io/optimist-nft',
-  },
-  {
     id: 'worldid',
     icon: '/logos/worldid-logo.png',
     title: 'WorldID Orb',
@@ -111,7 +105,7 @@ export const WalletVerificationMethods = () => {
               Verification is required for some offers. Plus, with verification
               you’ll get maximum test tokens from the Superchain Faucet. That’s
               up to 1 test ETH (instead of 0.05 test ETH) on 1 test network
-              every 24 hours.
+              every 7 days.
             </Text>
           </div>
         </AccordionContent>
