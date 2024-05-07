@@ -80,7 +80,7 @@ export const superchain: Record<SuperchainBrand, SuperchainNetwork> = {
     docsUrl: 'https://docs.mode.network/introduction/introducing-mode',
   },
   op: {
-    name: 'Optimism',
+    name: 'OP Mainnet',
     type: 'l2',
     logo: '/logos/opmainnet-logo.png',
     mainnet: optimism,

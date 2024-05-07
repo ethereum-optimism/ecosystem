@@ -47,6 +47,7 @@ const SignInButton = () => {
     onSuccess: async () => {
       try {
         await logoutUser()
+        window.location.href = '/'
       } catch (e) {
         captureError(e, 'logoutUser')
       }

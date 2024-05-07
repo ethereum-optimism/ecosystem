@@ -101,7 +101,7 @@ export const MobileSettingsMenu = ({
     <Dialog>
       <DialogTrigger className={className} asChild>
         <div className="flex flex-row w-full px-6">
-          <Button variant="outline" className="bg-white w-full justify-between">
+          <Button variant="outline" className="w-full justify-between">
             <Text as="span">{activeRoute.label}</Text>
             <RiArrowDownSLine />
           </Button>

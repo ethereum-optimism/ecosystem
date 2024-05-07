@@ -19,7 +19,7 @@ type VerificationMethod = {
   href: string
 }
 
-const verificationMethods: VerificationMethod[] = [
+export const verificationMethods: VerificationMethod[] = [
   {
     id: 'attestation',
     icon: '/logos/attestation-logo.png',
@@ -31,7 +31,7 @@ const verificationMethods: VerificationMethod[] = [
     id: 'coinbase',
     icon: '/logos/coinbase-logo.png',
     title: 'Coinbase Verification',
-    description: 'Required for Deployment Rebase and Superchain Paymaster',
+    description: 'Required for Deployment Rebate and Superchain Paymaster',
     href: 'https://www.coinbase.com/onchain-verify',
   },
   {

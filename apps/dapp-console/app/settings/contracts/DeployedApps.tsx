@@ -83,7 +83,7 @@ export const DeployedApps = () => {
         className="flex justify-between w-[120px] mt-2 mb-6"
         onClick={handleCreateApp}
       >
-        <RiAddLine /> App app
+        <RiAddLine /> Add app
       </Button>
       {appToDelete && (
         <Dialog open={isDeleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
