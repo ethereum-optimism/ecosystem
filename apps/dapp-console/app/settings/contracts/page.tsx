@@ -22,13 +22,13 @@ export default function Contracts() {
 
   return (
     <div className="flex flex-col gap-2">
-      <Text className="text-lg font-semibold">Your Apps</Text>
+      <Text className="text-lg font-semibold">Your apps</Text>
 
       <div className="flex flex-col gap-6">
         <DeployedApps />
       </div>
 
-      <Text className="text-lg font-semibold">Your Rebates</Text>
+      <Text className="text-lg font-semibold">Your rebates</Text>
       <div className="flex flex-col gap-4">
         {!isLoadingCbVerifiedWallets &&
           !walletVerifications?.cbVerifiedWallets.length && (

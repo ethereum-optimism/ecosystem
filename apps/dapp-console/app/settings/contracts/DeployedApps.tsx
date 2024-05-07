@@ -28,7 +28,7 @@ export const DeployedApps = () => {
   const handleCreateApp = useCallback(async () => {
     try {
       const totalApps = (appsRes?.records.length ?? 0) + 1
-      await createApp({ name: `New App ${totalApps}` })
+      await createApp({ name: `New app ${totalApps}` })
       await fetchApps()
     } catch (e) {
       captureError(e, 'createApp')
