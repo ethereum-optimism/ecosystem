@@ -13,11 +13,14 @@ import { useDialogContent } from '@/app/console/useDialogContent'
 import { externalRoutes } from '@/app/constants'
 import { openWindow } from '@/app/helpers'
 import { trackCardClick } from '@/app/event-tracking/mixpanel'
+import { useFeature } from '@/app/hooks/useFeatureFlag'
 
 const LaunchSection = () => {
   const [dialogContent, setDialogContent] = useState<React.ReactNode>()
+  const isSettingsEnabled = useFeature('enable_console_settings')
   const { deploymentRebateContent, mainnetPaymasterContent, megaphoneContent } =
     useDialogContent()
+
   return (
     <div>
       <Text as="h3" className="text-2xl font-semibold mb-4">
@@ -33,7 +36,13 @@ const LaunchSection = () => {
                 trackCardClick('Deployment Rebate')
                 setDialogContent(deploymentRebateContent)
               }}
-              badge={<Badge variant="secondary">Coming soon</Badge>}
+              badge={
+                isSettingsEnabled ? (
+                  <Badge>Featured</Badge>
+                ) : (
+                  <Badge variant="secondary">Coming soon</Badge>
+                )
+              }
             />
           </DialogTrigger>
           <DialogTrigger asChild>
