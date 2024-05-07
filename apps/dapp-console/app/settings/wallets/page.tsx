@@ -27,7 +27,7 @@ export default function Wallets() {
     const wallets = user?.linkedAccounts.filter(
       (account) => account.type === 'wallet',
     ) as Wallet[]
-    return new Set(wallets.map((wallet) => wallet.address.toLowerCase()))
+    return new Set(wallets?.map((wallet) => wallet.address.toLowerCase()))
   }, [user])
 
   const linkedWallets = useMemo(() => {
