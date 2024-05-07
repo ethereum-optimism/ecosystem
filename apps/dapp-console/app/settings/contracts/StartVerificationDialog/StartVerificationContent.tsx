@@ -11,8 +11,7 @@ import {
   ContractVerificationSigningType,
   useContractVerification,
 } from '@/app/settings/contracts/StartVerificationDialog/ContractVerificationProvider'
-import { apiClient } from '@/app/helpers/apiClient'
-import { useCallback, useEffect } from 'react'
+import { useCallback } from 'react'
 import { Hash } from 'viem'
 import { LONG_DURATION } from '@/app/constants/toast'
 import { RiFileCopyFill } from '@remixicon/react'
@@ -27,44 +26,9 @@ const descriptionBySigningType: Record<
 }
 
 export const StartVerificationContent = () => {
-  const {
-    challenge,
-    contract,
-    signingType,
-    setChallenge,
-    goNext,
-    wallet,
-    setSignature,
-  } = useContractVerification()
+  const { challenge, signingType, goNext, wallet, setSignature } =
+    useContractVerification()
   const { toast } = useToast()
-
-  const { mutateAsync: startVerification } =
-    apiClient.Contracts.startVerification.useMutation()
-
-  useEffect(() => {
-    // challenge is already set no need to fetch again
-    if (challenge) {
-      return
-    }
-
-    ;(async () => {
-      try {
-        const challengeToSign = await startVerification({
-          contractId: contract.id,
-        })
-        setChallenge(challengeToSign)
-      } catch (e) {
-        captureError(e, 'startContractVerification')
-      }
-    })()
-  }, [
-    challenge,
-    setChallenge,
-    startVerification,
-    setSignature,
-    signingType,
-    goNext,
-  ])
 
   const handleContinue = useCallback(async () => {
     if (signingType === 'automatic') {
