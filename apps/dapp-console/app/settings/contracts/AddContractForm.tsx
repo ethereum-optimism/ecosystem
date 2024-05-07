@@ -84,8 +84,19 @@ export const AddContractForm = ({
   })
 
   const handleNetworkChange = useCallback(
-    (item: L2NetworkSelectItem) => setSelectedChainId(item.id),
-    [setSelectedChainId],
+    (item: L2NetworkSelectItem) => {
+      setSelectedChainId(item.id)
+
+      const maybeTxNotFoundError =
+        form.formState.errors.deploymentTransactionHash
+      if (
+        maybeTxNotFoundError?.message === errorMessages.DEPLOYMENT_TX_NOT_FOUND
+      ) {
+        form.clearErrors('deploymentTransactionHash')
+        form.trigger('deploymentTransactionHash')
+      }
+    },
+    [setSelectedChainId, form],
   )
 
   const handleCreateContract = useCallback(async () => {

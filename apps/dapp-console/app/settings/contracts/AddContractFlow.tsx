@@ -20,7 +20,7 @@ export const AddContractFlow = ({
 }: AddContractFlowProps) => (
   <Card>
     <CardHeader>
-      <CardTitle>
+      <CardTitle className="text-lg font-semibold">
         {unverifiedContract ? 'Verifiy Contract' : 'Add Contract'}
       </CardTitle>
     </CardHeader>

@@ -121,7 +121,7 @@ export const DeployedApp = ({ app, onStartDeleteApp }: DeployedAppProps) => {
     <Card>
       <CardHeader>
         <div className="flex flex-row w-full justify-between items-center">
-          <CardTitle>{appName}</CardTitle>
+          <CardTitle className="text-lg font-semibold">{appName}</CardTitle>
 
           <AppActionsDropdown
             app={app}

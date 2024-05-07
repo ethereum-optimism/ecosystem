@@ -19,7 +19,7 @@ type VerificationMethod = {
   href: string
 }
 
-const verificationMethods: VerificationMethod[] = [
+export const verificationMethods: VerificationMethod[] = [
   {
     id: 'attestation',
     icon: '/logos/attestation-logo.png',
@@ -31,7 +31,7 @@ const verificationMethods: VerificationMethod[] = [
     id: 'coinbase',
     icon: '/logos/coinbase-logo.png',
     title: 'Coinbase Verification',
-    description: 'Required for Deployment Rebase and Superchain Paymaster',
+    description: 'Required for Deployment Rebate and Superchain Paymaster',
     href: 'https://www.coinbase.com/onchain-verify',
   },
   {
@@ -40,12 +40,6 @@ const verificationMethods: VerificationMethod[] = [
     title: 'Gitcoin',
     description: 'Passport score > 25',
     href: 'https://passport.gitcoin.co/',
-  },
-  {
-    id: 'optimist',
-    icon: '/logos/optimist-nft-logo.png',
-    title: 'Optimist NFT',
-    href: 'https://app.optimism.io/optimist-nft',
   },
   {
     id: 'worldid',
@@ -111,7 +105,7 @@ export const WalletVerificationMethods = () => {
               Verification is required for some offers. Plus, with verification
               you’ll get maximum test tokens from the Superchain Faucet. That’s
               up to 1 test ETH (instead of 0.05 test ETH) on 1 test network
-              every 24 hours.
+              every 7 days.
             </Text>
           </div>
         </AccordionContent>

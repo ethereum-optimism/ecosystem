@@ -1,10 +1,10 @@
 'use client'
 
-import { useLinkAccount, usePrivy } from '@privy-io/react-auth'
+import { Wallet, useLinkAccount, usePrivy } from '@privy-io/react-auth'
 import { Button } from '@eth-optimism/ui-components/src/components/ui/button/button'
 import { Text } from '@eth-optimism/ui-components/src/components/ui/text/text'
 import { LinkedWallet } from '@/app/settings/components/LinkedWallet'
-import { useCallback, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import { apiClient } from '@/app/helpers/apiClient'
 import { Address } from 'viem'
 import { captureError } from '@/app/helpers/errorReporting'
@@ -13,7 +13,7 @@ import { toast } from '@eth-optimism/ui-components'
 import { RiLoader4Line } from '@remixicon/react'
 
 export default function Wallets() {
-  const { ready, unlinkWallet } = usePrivy()
+  const { ready, unlinkWallet, user } = usePrivy()
 
   const [isLoadingWallets, setIsLoadingWallets] = useState(false)
 
@@ -22,6 +22,19 @@ export default function Wallets() {
 
   const { mutateAsync: syncWallets } =
     apiClient.wallets.syncWallets.useMutation()
+
+  const privyLinkedWallets = useMemo(() => {
+    const wallets = user?.linkedAccounts.filter(
+      (account) => account.type === 'wallet',
+    ) as Wallet[]
+    return new Set(wallets.map((wallet) => wallet.address.toLowerCase()))
+  }, [user])
+
+  const linkedWallets = useMemo(() => {
+    return walletRes?.records.filter((wallet) =>
+      privyLinkedWallets.has(wallet.address.toLowerCase()),
+    )
+  }, [walletRes, privyLinkedWallets])
 
   const handleLinkWallet = useCallback(async () => {
     setIsLoadingWallets(true)
@@ -72,7 +85,7 @@ export default function Wallets() {
     <div className="flex flex-col">
       <Text className="font-semibold text-lg">Your Wallets</Text>
       <div className="flex flex-col pt-3 space-y-6">
-        {walletRes?.records.map((wallet) => (
+        {linkedWallets?.map((wallet) => (
           <LinkedWallet
             key={wallet.id}
             id={wallet.id}

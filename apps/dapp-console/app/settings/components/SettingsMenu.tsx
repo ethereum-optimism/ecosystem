@@ -69,9 +69,9 @@ export const SettingsMenu = ({
       />
       <ul>
         <SettingsMenuItem
-          isActive={activeTabType === 'account'}
-          title={routes.ACCOUNT.label}
-          url={routes.ACCOUNT.path}
+          isActive={activeTabType === 'wallets'}
+          title={routes.WALLETS.label}
+          url={routes.WALLETS.path}
         />
         <SettingsMenuItem
           isActive={activeTabType === 'contracts'}
@@ -79,9 +79,9 @@ export const SettingsMenu = ({
           url={routes.CONTRACTS.path}
         />
         <SettingsMenuItem
-          isActive={activeTabType === 'wallets'}
-          title={routes.WALLETS.label}
-          url={routes.WALLETS.path}
+          isActive={activeTabType === 'account'}
+          title={routes.ACCOUNT.label}
+          url={routes.ACCOUNT.path}
         />
       </ul>
     </div>
@@ -101,7 +101,7 @@ export const MobileSettingsMenu = ({
     <Dialog>
       <DialogTrigger className={className} asChild>
         <div className="flex flex-row w-full px-6">
-          <Button variant="outline" className="bg-white w-full justify-between">
+          <Button variant="outline" className="w-full justify-between">
             <Text as="span">{activeRoute.label}</Text>
             <RiArrowDownSLine />
           </Button>
