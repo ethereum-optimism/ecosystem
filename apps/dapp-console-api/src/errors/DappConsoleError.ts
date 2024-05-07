@@ -17,6 +17,7 @@ export type DAPP_CONSOLE_ERROR_CODE =
   | 'MAX_REBATE_REACHED'
   | 'FAILED_TO_SEND_REBATE'
   | 'INELIGIBLE_CONTRACT'
+  | 'DUPLICATE_REBATE'
 
 export const ERROR_MESSAGES: Record<DAPP_CONSOLE_ERROR_CODE, string> = {
   DEPLOYMENT_TX_NOT_FOUND: 'deployment transaction could not be located',
@@ -41,6 +42,7 @@ export const ERROR_MESSAGES: Record<DAPP_CONSOLE_ERROR_CODE, string> = {
   MAX_REBATE_REACHED: 'entity has already claimed the max amount of rebates',
   FAILED_TO_SEND_REBATE: 'wallet failed to send rebate to user',
   INELIGIBLE_CONTRACT: 'contract not eligible for deployment rebate',
+  DUPLICATE_REBATE: 'rebate already exists',
 }
 
 export class DappConsoleError extends Error {

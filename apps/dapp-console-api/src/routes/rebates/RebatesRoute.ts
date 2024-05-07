@@ -25,7 +25,7 @@ import {
   DeploymentRebateState,
   getActiveContract,
   getCompletedRebatesForEntityByCursor,
-  getDeploymentRebateByContractId,
+  getDeploymentRebateByChainIdTxHash,
   getTotalRebatesClaimed,
   getWalletsByEntityId,
   getWalletVerifications,
@@ -203,10 +203,10 @@ export class RebatesRoute extends Route {
         )
       }
 
-      const existingRebate = await getDeploymentRebateByContractId({
+      const existingRebate = await getDeploymentRebateByChainIdTxHash({
         db: this.trpc.database,
-        contractId,
-        entityId,
+        chainId: contract.chainId,
+        deploymentTxHash: contract.transaction.transactionHash,
       }).catch((err) => {
         metrics.fetchDeploymentRebateErrorCount.inc()
         this.logger?.error(
@@ -237,6 +237,13 @@ export class RebatesRoute extends Route {
         throw Trpc.handleStatus(
           403,
           new DappConsoleError({ code: 'REBATE_PENDING' }),
+        )
+      }
+
+      if (existingRebate && existingRebate.entityId !== entityId) {
+        throw Trpc.handleStatus(
+          403,
+          new DappConsoleError({ code: 'DUPLICATE_REBATE' }),
         )
       }
 
@@ -338,6 +345,7 @@ export class RebatesRoute extends Route {
             entityId,
             contractId,
             contractAddress: contract.contractAddress,
+            deploymentTxHash: contract.transaction.transactionHash,
             chainId: contract.chainId,
             state: DeploymentRebateState.PENDING_SEND,
             recipientAddress,
