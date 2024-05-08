@@ -40,4 +40,8 @@ export const metrics = {
     help: 'Number of unhandled API server errors',
     labelNames: ['apiVersion'] as const,
   }),
+  unhandledAdminApiServerErrorCount: new Counter({
+    name: 'unhandledAdminApiServerErrorCount',
+    help: 'Number of unhandled Admin API server errors',
+  }),
 } as const

@@ -58,7 +58,8 @@ WORKDIR /prod/paymaster-proxy
 
 ENV NODE_EXTRA_CA_CERTS=/usr/local/share/ca-certificates/extra-ca-certificates.crt
 
-EXPOSE 7310
+# Public port, Admin api port
+EXPOSE 7310 9900
 
 CMD [ "pnpm", "start" ]
 

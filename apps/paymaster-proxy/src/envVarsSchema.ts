@@ -10,6 +10,24 @@ export const envVarsSchema = inferSchemas({
       test: 7310,
     },
   },
+  ADMIN_API_PORT: {
+    schema: z.number(),
+    defaults: {
+      test: 9900,
+    },
+  },
+  SHOULD_ENABLE_ADMIN_API: {
+    schema: z.boolean(),
+    defaults: {
+      test: false,
+    },
+  },
+  DEPLOYMENT_ENV: {
+    schema: z.enum(['production', 'staging', 'development']),
+    defaults: {
+      test: 'production' as const,
+    },
+  },
   SHOULD_TRUST_PROXY: {
     schema: z.boolean(),
     defaults: {
