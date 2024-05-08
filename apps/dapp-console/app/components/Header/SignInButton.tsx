@@ -16,7 +16,7 @@ import { Text } from '@eth-optimism/ui-components/src/components/ui/text/text'
 import { RiArrowDownSLine, RiUser3Fill } from '@remixicon/react'
 import { trackSignInClick } from '@/app/event-tracking/mixpanel'
 import { routes } from '@/app/constants'
-import { useFeature } from '@/app/hooks/useFeatureFlag'
+import { useFeatureFlag } from '@/app/hooks/useFeatureFlag'
 import { apiClient } from '@/app/helpers/apiClient'
 import { captureError } from '@/app/helpers/errorReporting'
 import { toast } from '@eth-optimism/ui-components'
@@ -69,7 +69,9 @@ type AccountDropdownProps = {
 }
 
 const AccountDropdown = ({ logout }: AccountDropdownProps) => {
-  const shouldShowSettings = useFeature('enable_console_settings')
+  const shouldShowSettings = useFeatureFlag('enable_console_settings', {
+    allowDevs: true,
+  })
 
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
   const dropdownItemClasses =

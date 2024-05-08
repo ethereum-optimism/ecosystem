@@ -22,7 +22,7 @@ import {
   bwareMetadata,
 } from '@/app/console/constants'
 import { DialogClose } from '@eth-optimism/ui-components/src/components/ui/dialog/dialog'
-import { useFeature } from '@/app/hooks/useFeatureFlag'
+import { useFeatureFlag } from '@/app/hooks/useFeatureFlag'
 import {
   DialogMetadata,
   StandardDialogContent,
@@ -31,7 +31,7 @@ import { trackSignInModalClick } from '@/app/event-tracking/mixpanel'
 
 const useDialogContent = () => {
   const { authenticated, login } = usePrivy()
-  const isSettingsEnabled = useFeature('enable_console_settings')
+  const isSettingsEnabled = useFeatureFlag('enable_console_settings')
 
   const loginButton = (label: string, trackingLabel: string) => {
     return (

@@ -15,7 +15,7 @@ import {
   SettingsCardTitle,
 } from '@/app/settings/components/SettingsCard'
 import { SettingsTabType, SettingsTab } from '@/app/settings/types'
-import { useFeature } from '@/app/hooks/useFeatureFlag'
+import { useFeatureFlag } from '@/app/hooks/useFeatureFlag'
 import { WalletVerificationMethods } from '@/app/settings/components/WalletVerificationMethods'
 import { RebateDialog } from '@/app/settings/components/RebateDialog'
 
@@ -64,7 +64,9 @@ export default function SettingsLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
-  const shouldShowSettings = useFeature('enable_console_settings')
+  const shouldShowSettings = useFeatureFlag('enable_console_settings', {
+    allowDevs: true,
+  })
   const pathname = usePathname()
   const tab = useMemo(() => getActiveTab(pathname), [pathname])
 
