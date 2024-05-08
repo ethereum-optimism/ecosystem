@@ -16,6 +16,8 @@ import { Hash } from 'viem'
 import { LONG_DURATION } from '@/app/constants/toast'
 import { RiFileCopyFill } from '@remixicon/react'
 import { captureError } from '@/app/helpers/errorReporting'
+import { externalRoutes } from '@/app/constants'
+import Link from 'next/link'
 
 const descriptionBySigningType: Record<
   ContractVerificationSigningType,
@@ -79,7 +81,11 @@ export const StartVerificationContent = () => {
       <Button onClick={handleContinue} disabled={!challenge}>
         Continue
       </Button>
-      <Button variant="outline">Learn More</Button>
+      <Button variant="outline" asChild>
+        <Link href={externalRoutes.REBATE_LEARN_MORE.path} target="_blank">
+          Learn more
+        </Link>
+      </Button>
     </>
   )
 }

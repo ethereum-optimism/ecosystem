@@ -102,6 +102,10 @@ export const externalRoutes: Routes = {
     path: 'https://optimism.io/community-agreement',
     label: 'Community Agreement',
   },
+  REBATE_LEARN_MORE: {
+    path: 'https://docs.optimism.io/builders/app-developers/tutorials/deploy-for-free',
+    label: 'Learn More',
+  },
 
   // Build links
   TESTNET_PAYMASTER_GITHUB: {

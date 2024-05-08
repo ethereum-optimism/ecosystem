@@ -22,6 +22,8 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { ApiError } from '@/app/types/api'
 import { LONG_DURATION } from '@/app/constants/toast'
+import { externalRoutes } from '@/app/constants'
+import Link from 'next/link'
 
 const finishVerificationSchema = z.object({
   signature: z
@@ -125,7 +127,11 @@ export const FinishVerificationContent = () => {
           <RiLoader4Line className="ml-2 animate-spin" />
         ) : null}
       </Button>
-      <Button variant="outline">Learn More</Button>
+      <Button variant="outline" asChild>
+        <Link href={externalRoutes.REBATE_LEARN_MORE.path} target="_blank">
+          Learn More
+        </Link>
+      </Button>
     </>
   )
 }
