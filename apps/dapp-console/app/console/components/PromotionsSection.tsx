@@ -129,7 +129,7 @@ const PromotionsSection = () => {
       <Text as="h3" className="text-2xl font-semibold mb-4">
         Deals
       </Text>
-      <div className="mb-4 flex gap-4">
+      <div className="mb-4 flex gap-4 flex-wrap">
         {Object.values(PromotionCategory).map((category) => (
           <Button
             size="sm"
