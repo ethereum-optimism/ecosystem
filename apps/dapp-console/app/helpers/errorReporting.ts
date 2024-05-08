@@ -9,6 +9,7 @@ export type ContractActionContext =
   | 'completeContractVerification'
 export type AuthActionContext = 'loginUser' | 'logoutUser'
 export type PrivyActionContext = 'privyLogin'
+export type FeatureFlagInvalid = 'invalidFeatureFlag'
 
 export type ErrorActionContext =
   | WalletActionContext
@@ -16,6 +17,7 @@ export type ErrorActionContext =
   | ContractActionContext
   | AuthActionContext
   | PrivyActionContext
+  | FeatureFlagInvalid
 
 export const captureError = (exception: unknown, action: ErrorActionContext) =>
   captureException(exception, { data: { action } })

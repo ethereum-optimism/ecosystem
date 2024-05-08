@@ -13,11 +13,11 @@ import { useDialogContent } from '@/app/console/useDialogContent'
 import { externalRoutes } from '@/app/constants'
 import { openWindow } from '@/app/helpers'
 import { trackCardClick } from '@/app/event-tracking/mixpanel'
-import { useFeature } from '@/app/hooks/useFeatureFlag'
+import { useFeatureFlag } from '@/app/hooks/useFeatureFlag'
 
 const LaunchSection = () => {
   const [dialogContent, setDialogContent] = useState<React.ReactNode>()
-  const isSettingsEnabled = useFeature('enable_console_settings')
+  const isSettingsEnabled = useFeatureFlag('enable_console_settings')
   const { deploymentRebateContent, mainnetPaymasterContent, megaphoneContent } =
     useDialogContent()
 
