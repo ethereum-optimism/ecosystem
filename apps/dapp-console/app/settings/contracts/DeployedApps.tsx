@@ -1,6 +1,12 @@
 'use client'
 
 import { LONG_DURATION } from '@/app/constants/toast'
+import {
+  trackAddActionClick,
+  trackAddActionConfirm,
+  trackDeleteActionClick,
+  trackDeleteActionConfirm,
+} from '@/app/event-tracking/mixpanel'
 import { apiClient } from '@/app/helpers/apiClient'
 import { captureError } from '@/app/helpers/errorReporting'
 import { DeployedApp } from '@/app/settings/contracts/DeployedApp'
@@ -26,10 +32,13 @@ export const DeployedApps = () => {
     apiClient.apps.deleteApp.useMutation()
 
   const handleCreateApp = useCallback(async () => {
+    trackAddActionClick('app')
+
     try {
       const totalApps = (appsRes?.records.length ?? 0) + 1
       await createApp({ name: `New app ${totalApps}` })
       await fetchApps()
+      trackAddActionConfirm('app')
     } catch (e) {
       captureError(e, 'createApp')
     }
@@ -37,6 +46,7 @@ export const DeployedApps = () => {
 
   const handleStartDeleteApp = useCallback(
     (app: ApiApp) => {
+      trackDeleteActionClick('app')
       setAppToDelete(app)
       setDeleteDialogOpen(true)
     },
@@ -57,6 +67,8 @@ export const DeployedApps = () => {
         description: 'Deleted application.',
         duration: LONG_DURATION,
       })
+
+      trackDeleteActionConfirm('app')
     } catch (e) {
       captureError(e, 'deleteApp')
     }

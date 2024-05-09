@@ -27,6 +27,10 @@ import {
 } from '@/app/components/Selects/L2NetworkSelect'
 import { RiLoader4Line } from '@remixicon/react'
 import { LONG_DURATION } from '@/app/constants/toast'
+import {
+  trackAddActionClick,
+  trackAddActionConfirm,
+} from '@/app/event-tracking/mixpanel'
 
 export type StartVerificationHandler = (
   contract: Contract,
@@ -101,6 +105,7 @@ export const AddContractForm = ({
 
   const handleCreateContract = useCallback(async () => {
     try {
+      trackAddActionClick('contract')
       const formValues = form.getValues()
 
       let contractToVerifiy = unverifiedContract
@@ -114,6 +119,7 @@ export const AddContractForm = ({
           deploymentTxHash: formValues.deploymentTransactionHash,
         })
         contractToVerifiy = result as Contract
+        trackAddActionConfirm('contract')
       }
 
       onStartVerification(contractToVerifiy, false)

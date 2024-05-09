@@ -18,6 +18,12 @@ import { StartVerificationDialog } from '@/app/settings/contracts/StartVerificat
 import { ClaimRebateDialog } from '@/app/settings/components/ClaimRebateDialog'
 import { DeleteContractDialog } from '@/app/settings/contracts/DeleteContractDialog'
 import { AppActionsDropdown } from '@/app/settings/contracts/AppActionsDropdown'
+import {
+  trackClaimRebateClick,
+  trackDeleteActionClick,
+  trackFinishContractVerification,
+  trackStartContractVerification,
+} from '@/app/event-tracking/mixpanel'
 
 export type DeployedAppProps = {
   app: ApiDeployedApp
@@ -55,6 +61,12 @@ export const DeployedApp = ({ app, onStartDeleteApp }: DeployedAppProps) => {
 
   const handleStartVerification = useCallback(
     async (contract: Contract) => {
+      trackStartContractVerification()
+
+      if (contract.state === 'verified') {
+        trackFinishContractVerification('alreadyVerified')
+      }
+
       setContractToVerify(contract)
       setVerifyDialogOpen(true)
       apiUtils.apps.listApps.invalidate()
@@ -65,6 +77,7 @@ export const DeployedApp = ({ app, onStartDeleteApp }: DeployedAppProps) => {
 
   const handleStartDeleteContract = useCallback(
     async (contract: Contract) => {
+      trackDeleteActionClick('contract')
       setContractToDelete(contract)
       setDeleteDialogOpen(true)
     },
@@ -85,6 +98,7 @@ export const DeployedApp = ({ app, onStartDeleteApp }: DeployedAppProps) => {
 
   const handleStartClaimRebate = useCallback(
     async (contract: Contract) => {
+      trackClaimRebateClick()
       setContractToRebate(contract)
       setRebateDialogOpen(true)
     },

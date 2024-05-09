@@ -20,6 +20,7 @@ import { apiClient } from '@/app/helpers/apiClient'
 import { formatEtherShort, getRebateBlockExplorerUrl } from '@/app/lib/utils'
 import { RiLoader4Line } from '@remixicon/react'
 import { LONG_DURATION } from '@/app/constants/toast'
+import { trackClaimRebate } from '@/app/event-tracking/mixpanel'
 
 export type ClaimRebateDialogProps = {
   open: boolean
@@ -96,6 +97,7 @@ export const ClaimRebateDialog = ({
         duration: LONG_DURATION,
       })
 
+      trackClaimRebate()
       setRebateTxHash(txHash)
       onRebateClaimed(contract)
     } catch (e) {

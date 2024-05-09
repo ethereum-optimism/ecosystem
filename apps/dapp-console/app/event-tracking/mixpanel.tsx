@@ -21,6 +21,15 @@ enum TRACKING_EVENT_NAME {
   SupportDocsClick = 'Support Docs Click',
   OfferEngaged = 'Offer Engaged',
   SignInModal = 'Sign In Modal',
+  AddActionClick = 'Add Action Click',
+  AddActionConfirm = 'Add Action Confirm',
+  DeleteActionClick = 'Delete Action Click',
+  DeleteActionConfirm = 'Delete Action Confirm',
+  WalletLink = 'Successful Wallet Link',
+  StartContractVerification = 'Start Contract Verification',
+  CompleteContractVerification = 'Complete Contract Verification',
+  ClaimRebateClick = 'Claim Rebate Click',
+  ClaimRebate = 'Rebate Claimed',
 }
 
 enum CUSTOM_TRACKING_PROPERTY {
@@ -29,7 +38,13 @@ enum CUSTOM_TRACKING_PROPERTY {
   PageName = 'Page Name',
   ChainName = 'Chain Name',
   OfferingName = 'Offering Name',
+  AddActionType = 'Add Action Type',
+  DeleteActionType = 'Delete Action Type',
+  WalletType = 'Wallet Type',
+  VerificationType = 'Verification Type',
 }
+
+export type ActionType = 'app' | 'contract' | 'wallet'
 
 export const trackPageVisit = () => {
   mixpanel?.track(TRACKING_EVENT_NAME.PageVisit)
@@ -73,4 +88,54 @@ export const trackSignInModalClick = (cardName: string) => {
   mixpanel?.track(TRACKING_EVENT_NAME.SignInModal, {
     [CUSTOM_TRACKING_PROPERTY.CardName]: cardName,
   })
+}
+
+export const trackAddActionClick = (action: ActionType) => {
+  mixpanel?.track(TRACKING_EVENT_NAME.AddActionClick, {
+    [CUSTOM_TRACKING_PROPERTY.AddActionType]: action,
+  })
+}
+
+export const trackAddActionConfirm = (action: ActionType) => {
+  mixpanel?.track(TRACKING_EVENT_NAME.AddActionConfirm, {
+    [CUSTOM_TRACKING_PROPERTY.AddActionType]: action,
+  })
+}
+
+export const trackDeleteActionClick = (action: ActionType) => {
+  mixpanel?.track(TRACKING_EVENT_NAME.DeleteActionClick, {
+    [CUSTOM_TRACKING_PROPERTY.DeleteActionType]: action,
+  })
+}
+
+export const trackDeleteActionConfirm = (action: ActionType) => {
+  mixpanel?.track(TRACKING_EVENT_NAME.DeleteActionConfirm, {
+    [CUSTOM_TRACKING_PROPERTY.DeleteActionType]: action,
+  })
+}
+
+export const trackWalletConnectorType = (connectorType: string) => {
+  mixpanel?.track(TRACKING_EVENT_NAME.WalletLink, {
+    [CUSTOM_TRACKING_PROPERTY.WalletType]: connectorType,
+  })
+}
+
+export const trackStartContractVerification = () => {
+  mixpanel?.track(TRACKING_EVENT_NAME.StartContractVerification)
+}
+
+export const trackFinishContractVerification = (
+  type: 'alreadyVerified' | 'manaulVerification' | 'automaticVerification',
+) => {
+  mixpanel?.track(TRACKING_EVENT_NAME.CompleteContractVerification, {
+    [CUSTOM_TRACKING_PROPERTY.VerificationType]: type,
+  })
+}
+
+export const trackClaimRebateClick = () => {
+  mixpanel?.track(TRACKING_EVENT_NAME.ClaimRebateClick)
+}
+
+export const trackClaimRebate = () => {
+  mixpanel?.track(TRACKING_EVENT_NAME.ClaimRebate)
 }
