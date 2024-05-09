@@ -1,6 +1,6 @@
 'use client'
 
-import { Wallet, useLinkAccount, usePrivy } from '@privy-io/react-auth'
+import { User, Wallet, useLinkAccount, usePrivy } from '@privy-io/react-auth'
 import { Button } from '@eth-optimism/ui-components/src/components/ui/button/button'
 import { Text } from '@eth-optimism/ui-components/src/components/ui/text/text'
 import { LinkedWallet } from '@/app/settings/components/LinkedWallet'
@@ -11,6 +11,13 @@ import { captureError } from '@/app/helpers/errorReporting'
 import { LONG_DURATION } from '@/app/constants/toast'
 import { toast } from '@eth-optimism/ui-components'
 import { RiLoader4Line } from '@remixicon/react'
+import {
+  trackAddActionClick,
+  trackAddActionConfirm,
+  trackDeleteActionClick,
+  trackDeleteActionConfirm,
+  trackWalletConnectorType,
+} from '@/app/event-tracking/mixpanel'
 
 export default function Wallets() {
   const { ready, unlinkWallet, user } = usePrivy()
@@ -36,23 +43,33 @@ export default function Wallets() {
     )
   }, [walletRes, privyLinkedWallets])
 
-  const handleLinkWallet = useCallback(async () => {
-    setIsLoadingWallets(true)
+  const handleLinkWallet = useCallback(
+    async (user: User) => {
+      setIsLoadingWallets(true)
 
-    try {
-      await syncWallets()
-      await fetchWallets()
+      try {
+        await syncWallets()
+        await fetchWallets()
 
-      toast({
-        description: 'Address Linked',
-        duration: LONG_DURATION,
-      })
-    } catch (e) {
-      captureError(e, 'linkWallet')
-    }
+        toast({
+          description: 'Address Linked',
+          duration: LONG_DURATION,
+        })
 
-    setIsLoadingWallets(false)
-  }, [syncWallets, fetchWallets, setIsLoadingWallets])
+        trackAddActionConfirm('wallet')
+
+        // user.wallet is the users last linked wallet
+        if (user.wallet?.connectorType) {
+          trackWalletConnectorType(user.wallet?.connectorType)
+        }
+      } catch (e) {
+        captureError(e, 'linkWallet')
+      }
+
+      setIsLoadingWallets(false)
+    },
+    [syncWallets, fetchWallets, setIsLoadingWallets],
+  )
 
   const handleUnlinkWallet = useCallback(
     async (address: Address) => {
@@ -65,6 +82,8 @@ export default function Wallets() {
           description: 'Address Unlinked',
           duration: LONG_DURATION,
         })
+
+        trackDeleteActionConfirm('wallet')
       } catch (e) {
         captureError(e, 'unlinkWallet')
       }
@@ -75,6 +94,19 @@ export default function Wallets() {
   const { linkWallet } = useLinkAccount({
     onSuccess: handleLinkWallet,
   })
+
+  const handleLinkWalletClick = useCallback(() => {
+    trackAddActionClick('wallet')
+    linkWallet()
+  }, [linkWallet])
+
+  const handleUnlinkWalletClick = useCallback(
+    async (address: Address) => {
+      trackDeleteActionClick('wallet')
+      handleUnlinkWallet(address)
+    },
+    [handleLinkWallet],
+  )
 
   if (!ready) {
     // TODO: Add skeleton
@@ -91,12 +123,12 @@ export default function Wallets() {
             id={wallet.id}
             address={wallet.address}
             isCbVerified={wallet.verifications.isCbVerified ?? false}
-            onUnlink={() => handleUnlinkWallet(wallet.address)}
+            onUnlink={() => handleUnlinkWalletClick(wallet.address)}
           />
         ))}
       </div>
       <Button
-        onClick={linkWallet}
+        onClick={handleLinkWalletClick}
         className="font-medium mt-8 px-8 py-2 gap-2 self-start"
       >
         Link Wallet{' '}

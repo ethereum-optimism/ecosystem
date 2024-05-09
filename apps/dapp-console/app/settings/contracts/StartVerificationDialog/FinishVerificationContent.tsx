@@ -24,6 +24,7 @@ import { ApiError } from '@/app/types/api'
 import { LONG_DURATION } from '@/app/constants/toast'
 import { externalRoutes } from '@/app/constants'
 import Link from 'next/link'
+import { trackFinishContractVerification } from '@/app/event-tracking/mixpanel'
 
 const finishVerificationSchema = z.object({
   signature: z
@@ -38,8 +39,15 @@ const errorMessages = {
 }
 
 export const FinishVerificationContent = () => {
-  const { contract, challenge, goBack, goNext, signature, onContractVerified } =
-    useContractVerification()
+  const {
+    contract,
+    challenge,
+    goBack,
+    goNext,
+    signature,
+    signingType,
+    onContractVerified,
+  } = useContractVerification()
   const form = useForm<z.infer<typeof finishVerificationSchema>>({
     resolver: zodResolver(finishVerificationSchema),
     mode: 'onBlur',
@@ -66,6 +74,11 @@ export const FinishVerificationContent = () => {
         challengeId: challenge?.id as string,
       })
       onContractVerified(contract)
+      trackFinishContractVerification(
+        signingType === 'manual'
+          ? 'manualVerification'
+          : 'automaticVerification',
+      )
       goNext()
     } catch (e) {
       const apiError = e as ApiError
@@ -83,7 +96,14 @@ export const FinishVerificationContent = () => {
 
       captureError(e, 'completeContractVerification')
     }
-  }, [contract, challenge, signature, completeVerification, onContractVerified])
+  }, [
+    contract,
+    challenge,
+    signature,
+    completeVerification,
+    onContractVerified,
+    signingType,
+  ])
 
   return (
     <>

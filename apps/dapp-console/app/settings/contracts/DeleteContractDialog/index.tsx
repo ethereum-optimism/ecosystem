@@ -7,6 +7,7 @@ import { useCallback, useState } from 'react'
 import { DialogContractContent } from '@/app/settings/contracts/DeleteContractDialog/DeleteContractContent'
 import { SuccessContent } from '@/app/settings/contracts/DeleteContractDialog/SuccessContent'
 import { LONG_DURATION } from '@/app/constants/toast'
+import { trackDeleteActionConfirm } from '@/app/event-tracking/mixpanel'
 
 export type DeleteContractDialogProps = {
   open: boolean
@@ -39,6 +40,7 @@ export const DeleteContractDialog = ({
         duration: LONG_DURATION,
       })
 
+      trackDeleteActionConfirm('contract')
       setStep('success')
     } catch (e) {
       captureError(e, 'deleteContract')
