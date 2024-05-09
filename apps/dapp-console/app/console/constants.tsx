@@ -475,3 +475,41 @@ export const sherlockMetadata: DialogMetadata = {
   bannerImage: '/banners/sherlock-banner.png',
   primaryButton: generatePrimaryButton('Sherlock', 'Apply', forms.SHERLOCK),
 }
+
+export const turnkeyMetadata: DialogMetadata = {
+  label: 'Deals',
+  title: 'Get 3 months of Turnkey Pro for free.',
+  description: (
+    <>
+      <Text as="p" className="mb-4">
+        Turnkey: offers secure, flexible and scalable wallet infrastructure.
+        Turnkey’s low-level key management solution facilitates seamless auth
+        methods and session management that can be used for both end users and
+        developers. Turnkey is composable with account abstraction providers.
+      </Text>
+      <Text as="p">
+        Create a Turnkey account and complete the short informational form below
+        including contact information and organization details. After this is
+        completed, Turnkey will apply a discount to your account.
+      </Text>
+    </>
+  ),
+  image: '/logos/turnkey-logo.png',
+  bannerImage: '/banners/turnkey-banner.png',
+  primaryButton: generatePrimaryButton(
+    'Turnkey',
+    'Create account',
+    forms.TURNKEY,
+  ),
+  secondaryButton: (
+    <Button asChild variant="secondary" size="lg">
+      <a
+        href={externalRoutes.TURNKEY_INFO_FORM.path}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <Text as="span">{externalRoutes.TURNKEY_INFO_FORM.label}</Text>
+      </a>
+    </Button>
+  ),
+}

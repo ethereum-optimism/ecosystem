@@ -20,6 +20,7 @@ import {
   privyMetadata,
   sherlockMetadata,
   bwareMetadata,
+  turnkeyMetadata,
 } from '@/app/console/constants'
 import { DialogClose } from '@eth-optimism/ui-components/src/components/ui/dialog/dialog'
 import { useFeatureFlag } from '@/app/hooks/useFeatureFlag'
@@ -200,6 +201,16 @@ const useDialogContent = () => {
     })
   }, [authenticated, login])
 
+  const turnkeyContent = useMemo(() => {
+    return renderDialog({
+      ...turnkeyMetadata,
+      primaryButton: !authenticated
+        ? loginButton('Sign in to apply', turnkeyMetadata.label)
+        : turnkeyMetadata.primaryButton,
+      secondaryButton: !authenticated ? null : turnkeyMetadata.secondaryButton,
+    })
+  }, [authenticated, login])
+
   return {
     testnetPaymasterContent,
     uxReviewContent,
@@ -217,6 +228,7 @@ const useDialogContent = () => {
     privyContent,
     bwareContent,
     sherlockContent,
+    turnkeyContent,
   }
 }
 
