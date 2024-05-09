@@ -154,6 +154,10 @@ export const externalRoutes: Routes = {
     path: 'https://spearbit.com/branding',
     label: 'Learn more',
   },
+  TURNKEY_INFO_FORM: {
+    path: 'https://docs.google.com/forms/d/e/1FAIpQLSflGrDPIrp-ME7LJIRZlyU0WDiX0QXscwoPM0GcGP5LD4QNGA/viewform',
+    label: 'Submit account details',
+  },
 }
 
 export const forms = {
@@ -175,6 +179,7 @@ export const forms = {
   BWARE:
     'https://docs.google.com/forms/d/e/1FAIpQLSeV1IELTrzhTEHrsVgiBkHCtLgpAL8tOyI7zgW73XK4FZC27w/viewform',
   SHERLOCK: 'https://audits.sherlock.xyz/request-audit',
+  TURNKEY: 'https://app.turnkey.com/dashboard/auth/login?redirect=%2Fwelcome',
 }
 
 export const supportItems = [

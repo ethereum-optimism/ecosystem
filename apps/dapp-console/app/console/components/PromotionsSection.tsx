@@ -22,6 +22,7 @@ import {
   sherlockMetadata,
   spearbitMetadata,
   thirdWebMetadata,
+  turnkeyMetadata,
 } from '@/app/console/constants'
 import { Button } from '@eth-optimism/ui-components/src/components/ui/button/button'
 import { DialogMetadata } from '@/app/components/StandardDialogContent'
@@ -59,6 +60,7 @@ const PromotionsSection = () => {
     privyContent,
     bwareContent,
     sherlockContent,
+    turnkeyContent,
   } = useDialogContent()
 
   const promos: Promotion[] = [
@@ -115,6 +117,12 @@ const PromotionsSection = () => {
       metadata: sherlockMetadata,
       tag: PromotionCategory.Security,
       trackingLabel: 'Sherlock',
+    },
+    {
+      content: turnkeyContent,
+      metadata: turnkeyMetadata,
+      tag: PromotionCategory.Infrastructure,
+      trackingLabel: 'Turnkey',
     },
   ]
 
