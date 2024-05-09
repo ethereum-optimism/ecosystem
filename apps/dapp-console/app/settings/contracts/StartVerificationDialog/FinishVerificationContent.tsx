@@ -76,7 +76,7 @@ export const FinishVerificationContent = () => {
       onContractVerified(contract)
       trackFinishContractVerification(
         signingType === 'manual'
-          ? 'manaulVerification'
+          ? 'manualVerification'
           : 'automaticVerification',
       )
       goNext()

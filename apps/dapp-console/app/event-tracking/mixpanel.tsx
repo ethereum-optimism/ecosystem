@@ -125,7 +125,7 @@ export const trackStartContractVerification = () => {
 }
 
 export const trackFinishContractVerification = (
-  type: 'alreadyVerified' | 'manaulVerification' | 'automaticVerification',
+  type: 'alreadyVerified' | 'manualVerification' | 'automaticVerification',
 ) => {
   mixpanel?.track(TRACKING_EVENT_NAME.CompleteContractVerification, {
     [CUSTOM_TRACKING_PROPERTY.VerificationType]: type,
