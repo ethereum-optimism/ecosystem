@@ -35,6 +35,7 @@ services:
     env_file: .env
     environment:
       - REDIS_URL=redis://redis:6379
+      - API_KEY_SERVICE_CLIENT=http://0.0.0.0:7330
     healthcheck:
       test: wget localhost:7310/healthz -q -O - > /dev/null 2>&1
     volumes:

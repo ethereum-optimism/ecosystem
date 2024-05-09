@@ -7,8 +7,10 @@ export const createApiKeyServiceClient = ({ url }: { url: string }) => {
     transformer: SuperJSON,
     links: [
       httpBatchLink({
-        url,
+        url: `${url}/api/v0`,
       }),
     ],
   })
 }
+
+export type ApiKeyServiceClient = ReturnType<typeof createApiKeyServiceClient>

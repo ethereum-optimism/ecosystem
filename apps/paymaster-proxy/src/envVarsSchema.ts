@@ -34,6 +34,12 @@ export const envVarsSchema = inferSchemas({
       test: false,
     },
   },
+  API_KEY_SERVICE_URL: {
+    schema: z.string(),
+    defaults: {
+      test: 'http://0.0.0.0:7330',
+    },
+  },
   REDIS_URL: {
     schema: z.string(),
     defaults: {
@@ -167,6 +173,18 @@ export const envVarsSchema = inferSchemas({
     schema: z.string(),
     defaults: {
       test: 'test-policy-id',
+    },
+  },
+  ALCHEMY_APP_ID_OP_SEPOLIA: {
+    schema: z.string(),
+    defaults: {
+      test: 'test-app-id',
+    },
+  },
+  ALCHEMY_GAS_MANAGER_ACCESS_KEY: {
+    schema: z.string(),
+    defaults: {
+      test: 'test-gas-manager-access-key',
     },
   },
 })
