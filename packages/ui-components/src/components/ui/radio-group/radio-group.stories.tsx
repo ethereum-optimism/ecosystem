@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react'
 
 import { RadioGroup, RadioGroupItem } from './radio-group'
+import { RadioCard } from './radio-card'
 
 /**
  * A set of checkable buttons—known as radio buttons—where no more than one of
@@ -35,3 +36,22 @@ type Story = StoryObj<typeof meta>
  * The default form of the radio group.
  */
 export const Default: Story = {}
+
+/**
+ * A radio group with a card-like appearance.
+ */
+export const Card: Story = {
+  render: (args) => (
+    <RadioGroup {...args} className="flex flex-col w-96">
+      <RadioCard value="default" id="r1">
+        Default
+      </RadioCard>
+      <RadioCard value="comfortable" id="r2">
+        Comfortable
+      </RadioCard>
+      <RadioCard value="compact" id="r3">
+        Compact
+      </RadioCard>
+    </RadioGroup>
+  ),
+}
