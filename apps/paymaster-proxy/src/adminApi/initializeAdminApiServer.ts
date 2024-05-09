@@ -11,6 +11,9 @@ import type { Redis } from 'ioredis'
 import morgan from 'morgan'
 import { type Logger } from 'pino'
 
+import { createAdminRouter } from '@/adminApi/createAdminRouter'
+import type { ApiKeyServiceClient } from '@/apiKeyService/createApiKeyServiceClient'
+import type { Database } from '@/db/Database'
 import { envVars } from '@/envVars'
 import type { BackendReadinessState } from '@/helpers/BackendReadinessState'
 import { getRateLimiter } from '@/middlewares/getRateLimiter'
@@ -21,11 +24,15 @@ export const initializeAdminApiServer = async ({
   metrics,
   logger,
   backendReadinessState,
+  database,
+  apiKeyServiceClient,
 }: {
   redisClient: Redis
   metrics: Metrics
   logger: Logger
   backendReadinessState: BackendReadinessState
+  database: Database
+  apiKeyServiceClient: ApiKeyServiceClient
 }): Promise<Express> => {
   const app = express()
 
@@ -63,6 +70,15 @@ export const initializeAdminApiServer = async ({
     app.set('trust proxy', true)
   }
   app.use(getRateLimiter(redisClient))
+
+  app.use(
+    '/admin',
+    createAdminRouter({
+      logger,
+      apiKeyServiceClient,
+      database,
+    }),
+  )
 
   app.use((req, res) => {
     res.status(404).send()
