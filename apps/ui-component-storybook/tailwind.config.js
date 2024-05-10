@@ -1,7 +1,10 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   darkMode: ['class'],
-  content: ["./.storybook/**/*.{js,ts,jsx,tsx,mdx}", './node_modules/@eth-optimism/ui-components/src/**/*.{ts,tsx}'],
+  content: [
+    './.storybook/**/*.{js,ts,jsx,tsx,mdx}',
+    './node_modules/@eth-optimism/ui-components/src/**/*.{ts,tsx}',
+  ],
   theme: {
     container: {
       center: true,
@@ -24,6 +27,10 @@ module.exports = {
         secondary: {
           DEFAULT: 'hsl(var(--secondary))',
           foreground: 'hsl(var(--secondary-foreground))',
+        },
+        tertiary: {
+          DEFAULT: 'hsl(var(--tertiary))',
+          foreground: 'hsl(var(--tertiary-foreground))',
         },
         destructive: {
           DEFAULT: 'hsl(var(--destructive))',
@@ -78,4 +85,3 @@ module.exports = {
   },
   plugins: [require('tailwindcss-animate')],
 }
-
