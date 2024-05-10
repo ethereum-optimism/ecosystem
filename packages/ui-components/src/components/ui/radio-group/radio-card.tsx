@@ -1,8 +1,10 @@
-import * as React from 'react'
-import { cn } from '../../../lib/utils'
+import { Indicator, Item } from '@radix-ui/react-radio-group'
 import { RiCircleFill } from '@remixicon/react'
-import { Item, Indicator } from '@radix-ui/react-radio-group'
-import { VariantProps, cva } from 'class-variance-authority'
+import type { VariantProps } from 'class-variance-authority'
+import { cva } from 'class-variance-authority'
+import * as React from 'react'
+
+import { cn } from '../../../lib/utils'
 
 const radioCardVariants = cva(
   'flex justify-between items-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50',
