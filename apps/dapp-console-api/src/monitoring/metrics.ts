@@ -189,4 +189,8 @@ export const metrics = {
     help: 'Number of times deployment rebate wallet balance failed to be updated',
     labelNames: ['chainId'] as const,
   }),
+  updatePrivyCreatedAtErrorCount: new Counter({
+    name: 'update_privy_created_at_error_count',
+    help: 'Number of times privy created at failed to be updated on entity',
+  }),
 }

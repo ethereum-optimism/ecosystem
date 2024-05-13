@@ -130,7 +130,7 @@ export class RebatesRoute extends Route {
       const { contractId } = input
       const recipientAddress = getAddress(input.recipientAddress)
 
-      const { id: entityId, privyDid } = await assertUserAuthenticated(
+      const { id: entityId } = await assertUserAuthenticated(
         this.trpc.database,
         user,
       )
@@ -170,25 +170,7 @@ export class RebatesRoute extends Route {
         )
       }
 
-      const privyUser = await this.trpc.privy.getUser(privyDid).catch((err) => {
-        metrics.fetchPrivyUserErrorCount.inc()
-        this.logger?.error(
-          {
-            error: err,
-            entityId,
-            privyDid,
-          },
-          'error fetching privy user',
-        )
-        throw Trpc.handleStatus(500, 'error fetching privy user')
-      })
-
-      if (
-        !isContractDeploymentDateEligibleForRebate(
-          contract,
-          privyUser.createdAt,
-        )
-      ) {
+      if (!isContractDeploymentDateEligibleForRebate(contract)) {
         throw Trpc.handleStatus(
           403,
           new DappConsoleError({

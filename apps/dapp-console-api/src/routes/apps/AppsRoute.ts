@@ -37,7 +37,7 @@ export class AppsRoute extends Route {
       const { user } = ctx.session
       const limit = input.limit ?? DEFAULT_PAGE_LIMIT
 
-      const { id: entityId, privyDid } = await assertUserAuthenticated(
+      const { id: entityId } = await assertUserAuthenticated(
         this.trpc.database,
         user,
       )
@@ -60,23 +60,10 @@ export class AppsRoute extends Route {
         throw Trpc.handleStatus(500, 'error fetching apps')
       })
 
-      const privyUser = await this.trpc.privy.getUser(privyDid).catch((err) => {
-        metrics.fetchPrivyUserErrorCount.inc()
-        this.logger?.error(
-          {
-            error: err,
-            entityId,
-            privyDid,
-          },
-          'error fetching privy user',
-        )
-        throw Trpc.handleStatus(500, 'error fetching privy user')
-      })
-
       const activeAppsWithRebateEligiblity = activeApps.map((app) => ({
         ...app,
         contracts: app.contracts.map((contract) =>
-          addRebateEligibilityToContract(contract, privyUser.createdAt),
+          addRebateEligibilityToContract(contract),
         ),
       }))
 

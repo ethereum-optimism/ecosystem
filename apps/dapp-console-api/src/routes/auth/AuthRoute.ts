@@ -1,3 +1,4 @@
+import { updatePrivyCreatedAt } from '@/models'
 import { metrics } from '@/monitoring/metrics'
 import { Trpc } from '@/Trpc'
 import { verifyPrivyAuthAndCreateUserSession } from '@/utils'
@@ -19,6 +20,40 @@ export class AuthRoute extends Route {
         this.trpc.database,
         session.user,
       )
+
+      if (!entity.privyCreatedAt) {
+        const privyUser = await this.trpc.privy
+          .getUser(entity.privyDid)
+          .catch((err) => {
+            metrics.fetchPrivyUserErrorCount.inc()
+            this.logger?.error(
+              {
+                error: err,
+                entityId: entity.id,
+                privyDid: entity.privyDid,
+              },
+              'error fetching privy user',
+            )
+            throw Trpc.handleStatus(500, 'error fetching privy user')
+          })
+
+        await updatePrivyCreatedAt({
+          db: this.trpc.database,
+          entityId: entity.id,
+          privyCreatedAt: privyUser.createdAt,
+        }).catch((err) => {
+          metrics.updatePrivyCreatedAtErrorCount.inc()
+          this.logger?.error(
+            {
+              error: err,
+              entityId: entity.id,
+              privyDid: entity.privyDid,
+            },
+            'error updating privy created at on entity',
+          )
+          throw Trpc.handleStatus(500, 'error updating entity')
+        })
+      }
 
       return { entity }
     },
