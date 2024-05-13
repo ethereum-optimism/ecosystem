@@ -19,7 +19,9 @@ import { useFeatureFlag } from '@/app/hooks/useFeatureFlag'
 import { WalletVerificationMethods } from '@/app/settings/components/WalletVerificationMethods'
 import { RebateDialog } from '@/app/settings/components/RebateDialog'
 
-const tabs: Record<SettingsTabType, SettingsTab> = {
+const tabs = (
+  enableDeploymentRebates: boolean,
+): Record<SettingsTabType, SettingsTab> => ({
   account: {
     title: <SettingsCardTitle>Account</SettingsCardTitle>,
     type: 'account',
@@ -30,12 +32,18 @@ const tabs: Record<SettingsTabType, SettingsTab> = {
     description: (
       <SettingsCardDescription>
         Add your app contracts here. In the future, we’ll scan them for
-        insights. For now, we’ll check if they’re eligible for the{' '}
-        <RebateDialog>
-          <Text as="span" className="font-semibold cursor-pointer">
-            Deployment Rebate.
-          </Text>
-        </RebateDialog>
+        insights.
+        {enableDeploymentRebates ? (
+          <>
+            {' '}
+            For now, we’ll check if they’re eligible for the{' '}
+            <RebateDialog>
+              <Text as="span" className="font-semibold cursor-pointer">
+                Deployment Rebate.
+              </Text>
+            </RebateDialog>
+          </>
+        ) : null}
       </SettingsCardDescription>
     ),
   },
@@ -51,12 +59,17 @@ const tabs: Record<SettingsTabType, SettingsTab> = {
       </SettingsCardDescription>
     ),
   },
-}
+})
 
-function getActiveTab(pathname: string): SettingsTab {
+function getActiveTab(
+  pathname: string,
+  enableDeploymentRebates: boolean,
+): SettingsTab {
   const [route, _queryParams] = pathname.split('?')
   const [_, _settingsPrefix, activeRoute] = route.split('/')
-  return tabs[activeRoute as SettingsTabType] as SettingsTab
+  return tabs(enableDeploymentRebates)[
+    activeRoute as SettingsTabType
+  ] as SettingsTab
 }
 
 export default function SettingsLayout({
@@ -67,8 +80,12 @@ export default function SettingsLayout({
   const shouldShowSettings = useFeatureFlag('enable_console_settings', {
     allowDevs: true,
   })
+  const isDeploymentRebateEnabled = useFeatureFlag('enable_deployment_rebate')
   const pathname = usePathname()
-  const tab = useMemo(() => getActiveTab(pathname), [pathname])
+  const tab = useMemo(
+    () => getActiveTab(pathname, isDeploymentRebateEnabled),
+    [pathname, isDeploymentRebateEnabled],
+  )
 
   useEffect(() => {
     if (!shouldShowSettings) {
