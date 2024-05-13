@@ -163,6 +163,10 @@ export const metrics = {
     name: 'privy_verify_auth_token_error_count',
     help: 'Number of times privy access token verification failed',
   }),
+  fetchPrivyUserErrorCount: new Counter({
+    name: 'fetch_privy_user_error_count',
+    help: 'Number of times privy user failed to be fetched',
+  }),
   insertEntityErrorCount: new Counter({
     name: 'insert_entity_error_count',
     help: 'Number of times a new entity failed to be inserted into db',
