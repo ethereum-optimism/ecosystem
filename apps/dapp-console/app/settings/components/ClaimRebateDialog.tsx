@@ -97,7 +97,7 @@ export const ClaimRebateDialog = ({
         duration: LONG_DURATION,
       })
 
-      trackClaimRebate()
+      trackClaimRebate(contract.chainId)
       setRebateTxHash(txHash)
       onRebateClaimed(contract)
     } catch (e) {
