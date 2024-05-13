@@ -18,6 +18,7 @@ import { useFeatureFlag } from '@/app/hooks/useFeatureFlag'
 const LaunchSection = () => {
   const [dialogContent, setDialogContent] = useState<React.ReactNode>()
   const isSettingsEnabled = useFeatureFlag('enable_console_settings')
+  const isDeploymentRebateEnabled = useFeatureFlag('enable_deployment_rebate')
   const { deploymentRebateContent, mainnetPaymasterContent, megaphoneContent } =
     useDialogContent()
 
@@ -28,23 +29,25 @@ const LaunchSection = () => {
       </Text>
       <Dialog>
         <TileGrid>
-          <DialogTrigger asChild>
-            <Tile
-              title="Deployment Rebate"
-              description="Launch on the Superchain and get your deployment costs covered up to $200."
-              onClick={() => {
-                trackCardClick('Deployment Rebate')
-                setDialogContent(deploymentRebateContent)
-              }}
-              badge={
-                isSettingsEnabled ? (
-                  <Badge>Featured</Badge>
-                ) : (
-                  <Badge variant="secondary">Coming soon</Badge>
-                )
-              }
-            />
-          </DialogTrigger>
+          {isDeploymentRebateEnabled && (
+            <DialogTrigger asChild>
+              <Tile
+                title="Deployment Rebate"
+                description="Launch on the Superchain and get your deployment costs covered up to $200."
+                onClick={() => {
+                  trackCardClick('Deployment Rebate')
+                  setDialogContent(deploymentRebateContent)
+                }}
+                badge={
+                  isSettingsEnabled ? (
+                    <Badge>Featured</Badge>
+                  ) : (
+                    <Badge variant="secondary">Coming soon</Badge>
+                  )
+                }
+              />
+            </DialogTrigger>
+          )}
           <DialogTrigger asChild>
             <Tile
               title="Paymaster"

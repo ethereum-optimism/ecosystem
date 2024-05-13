@@ -13,6 +13,7 @@ const flag = {
 const flags = {
   enable_console_settings: flag.bool,
   dev_domain: flag.string,
+  enable_deployment_rebate: flag.bool,
 }
 
 export type FeatureFlag = keyof typeof flags

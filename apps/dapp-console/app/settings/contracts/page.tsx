@@ -8,8 +8,11 @@ import { DeployedApps } from '@/app/settings/contracts/DeployedApps'
 import { ClaimedRebates } from '@/app/settings/components/ClaimedRebates'
 import { apiClient } from '@/app/helpers/apiClient'
 import { useEffect } from 'react'
+import { useFeatureFlag } from '@/app/hooks/useFeatureFlag'
 
 export default function Contracts() {
+  const isDeploymentRebateEnabled = useFeatureFlag('enable_deployment_rebate')
+
   const { mutate: syncCbVerification } =
     apiClient.wallets.syncCbVerification.useMutation()
 
@@ -28,15 +31,19 @@ export default function Contracts() {
         <DeployedApps />
       </div>
 
-      <Text className="text-lg font-semibold">Your rebates</Text>
-      <div className="flex flex-col gap-4">
-        {!isLoadingCbVerifiedWallets &&
-          !walletVerifications?.cbVerifiedWallets.length && (
-            <CoinbaseVerificationBanner />
-          )}
-        <ClaimedRebateProgressBanner />
-        <ClaimedRebates />
-      </div>
+      {isDeploymentRebateEnabled && (
+        <>
+          <Text className="text-lg font-semibold">Your rebates</Text>
+          <div className="flex flex-col gap-4">
+            {!isLoadingCbVerifiedWallets &&
+              !walletVerifications?.cbVerifiedWallets.length && (
+                <CoinbaseVerificationBanner />
+              )}
+            <ClaimedRebateProgressBanner />
+            <ClaimedRebates />
+          </div>
+        </>
+      )}
     </div>
   )
 }

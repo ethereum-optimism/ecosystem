@@ -5,8 +5,9 @@ import { useFeatureFlag } from '@/app/hooks/useFeatureFlag'
 
 export const Announcements = () => {
   const isSettingsEnabled = useFeatureFlag('enable_console_settings')
+  const isDeploymentRebateEnabled = useFeatureFlag('enable_deployment_rebate')
 
-  return isSettingsEnabled ? (
+  return isSettingsEnabled && isDeploymentRebateEnabled ? (
     <div className="flex flex-col w-full mt-4 md:mt-10 lg:mt-16">
       <DeploymentRebateBanner />
     </div>

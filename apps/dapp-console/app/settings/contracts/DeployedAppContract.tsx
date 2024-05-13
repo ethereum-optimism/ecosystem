@@ -17,6 +17,7 @@ import { usePrivy } from '@privy-io/react-auth'
 import { NeedsVerificationBadge } from '@/app/settings/components/NeedsVerificationBadge'
 import { apiClient } from '@/app/helpers/apiClient'
 import { MAX_CLAIMABLE_AMOUNT } from '@/app/constants/rebate'
+import { useFeatureFlag } from '@/app/hooks/useFeatureFlag'
 
 export type AppContractProps = {
   app: DeployedApp
@@ -44,6 +45,7 @@ export const DeployedAppContract = ({
       duration: LONG_DURATION,
     })
   }, [contract])
+  const isDeploymentRebateEnabled = useFeatureFlag('enable_deployment_rebate')
 
   const badges = useMemo(() => {
     const items = [
@@ -64,7 +66,7 @@ export const DeployedAppContract = ({
       return items
     }
 
-    if (contract.state === 'verified') {
+    if (contract.state === 'verified' && isDeploymentRebateEnabled) {
       if (contract.isEligibleForRebate) {
         items.push(
           <EligibleForRebateBadge
@@ -92,7 +94,14 @@ export const DeployedAppContract = ({
     }
 
     return items
-  }, [contract, user, onStartVerification])
+  }, [
+    contract,
+    user,
+    onStartVerification,
+    isDeploymentRebateEnabled,
+    onStartClaimRebate,
+    totalRebatesClaimed,
+  ])
 
   return (
     <div className="flex flex-col">
