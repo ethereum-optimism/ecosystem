@@ -8,6 +8,7 @@ export const toApiKeyObj = (partialApiKey: Partial<ApiKey>): ApiKey => {
     id: partialApiKey.id ?? crypto.randomUUID(),
     entityId: partialApiKey.entityId ?? crypto.randomUUID(),
     key: partialApiKey.key ?? crypto.randomUUID(),
+    name: partialApiKey.name ?? null,
     state: partialApiKey.state ?? 'disabled',
     createdAt: partialApiKey.createdAt ?? new Date(),
     updatedAt: partialApiKey.updatedAt ?? new Date(),

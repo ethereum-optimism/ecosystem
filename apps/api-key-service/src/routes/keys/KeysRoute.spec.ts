@@ -88,6 +88,63 @@ describe(KeysRoute.name, () => {
       expect(resopnse).toEqual({ apiKey: apiKeyObj })
     })
 
+    it('accepts null name', async () => {
+      const createApiKeyParams = {
+        entityId: crypto.randomUUID(),
+        key: 'test-api-key-0',
+        name: null,
+      }
+
+      const apiKeyObj = toApiKeyObj(createApiKeyParams)
+
+      mockedCreateApiKey.mockResolvedValueOnce(apiKeyObj)
+
+      const resopnse = await caller.createApiKey(createApiKeyParams)
+
+      expect(mockedCreateApiKey).toHaveBeenCalledOnce()
+
+      expect(mockedCreateApiKey.mock.calls[0][1]).toMatchObject({
+        ...createApiKeyParams,
+        state: 'disabled',
+      })
+
+      expect(resopnse).toEqual({ apiKey: apiKeyObj })
+    })
+
+    it('happy path', async () => {
+      const createApiKeyParams = {
+        entityId: crypto.randomUUID(),
+        key: 'test-api-key-0',
+        name: 'something',
+      }
+
+      const apiKeyObj = toApiKeyObj(createApiKeyParams)
+
+      mockedCreateApiKey.mockResolvedValueOnce(apiKeyObj)
+
+      const resopnse = await caller.createApiKey(createApiKeyParams)
+
+      expect(mockedCreateApiKey).toHaveBeenCalledOnce()
+
+      expect(mockedCreateApiKey.mock.calls[0][1]).toMatchObject({
+        ...createApiKeyParams,
+        state: 'disabled',
+      })
+
+      expect(resopnse).toEqual({ apiKey: apiKeyObj })
+    })
+
+    it('rejects non string name', async () => {
+      await expect(
+        caller.createApiKey({
+          entityId: crypto.randomUUID(),
+          state: 'disabled',
+          // @ts-expect-error - testing invalid input
+          name: 123,
+        }),
+      ).rejects.toThrowError(/invalid_type/)
+    })
+
     it('rejects empty string key', async () => {
       await expect(
         caller.createApiKey({
