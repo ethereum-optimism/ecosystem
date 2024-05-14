@@ -1,29 +1,21 @@
-import type { Contract, DeploymentRebate, Transaction } from '@/models'
-
-type ContractWithDeploymentRebateAndDeploymentTx = Contract & {
-  transaction: Transaction | null
-} & { deploymentRebate: DeploymentRebate | null }
+import type { ContractWithTxRebateAndEntity } from '@/models'
 
 export const addRebateEligibilityToContract = (
-  contract: ContractWithDeploymentRebateAndDeploymentTx,
-  privyUserCreatedAt: Date,
+  contract: ContractWithTxRebateAndEntity,
 ) => {
   return {
     ...contract,
-    isEligibleForRebate: isContractDeploymentDateEligibleForRebate(
-      contract,
-      privyUserCreatedAt,
-    ),
+    isEligibleForRebate: isContractDeploymentDateEligibleForRebate(contract),
   }
 }
 
 export const isContractDeploymentDateEligibleForRebate = (
-  contract: ContractWithDeploymentRebateAndDeploymentTx,
-  privyUserCreatedAt: Date,
+  contract: ContractWithTxRebateAndEntity,
 ) => {
   return (
     contract.transaction &&
+    contract.entity?.privyCreatedAt &&
     contract.transaction.blockTimestamp >
-      Math.floor(privyUserCreatedAt.getTime() / 1000)
+      Math.floor(contract.entity.privyCreatedAt.getTime() / 1000)
   )
 }

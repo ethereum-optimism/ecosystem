@@ -88,7 +88,7 @@ export const getActiveAppsForEntityByCursor = async (input: {
           >['contracts']['columns'],
           selector: { ne: typeof ne },
         ) => SQL
-        with: { transaction: true; deploymentRebate: true }
+        with: { transaction: true; deploymentRebate: true; entity: true }
       }
       entity: true
     }
@@ -98,7 +98,7 @@ export const getActiveAppsForEntityByCursor = async (input: {
       contracts: {
         where: (contracts, { ne }) =>
           ne(contracts.state, ContractState.DELETED),
-        with: { transaction: true, deploymentRebate: true },
+        with: { transaction: true, deploymentRebate: true, entity: true },
       },
       entity: true,
     },

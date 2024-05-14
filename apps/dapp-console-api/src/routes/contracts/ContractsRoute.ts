@@ -56,7 +56,7 @@ export class ContractsRoute extends Route {
     .query(async ({ ctx, input }) => {
       const { user } = ctx.session
 
-      const { id: entityId, privyDid } = await assertUserAuthenticated(
+      const { id: entityId } = await assertUserAuthenticated(
         this.trpc.database,
         user,
       )
@@ -77,21 +77,8 @@ export class ContractsRoute extends Route {
         throw Trpc.handleStatus(500, 'error fetching contracts')
       })
 
-      const privyUser = await this.trpc.privy.getUser(privyDid).catch((err) => {
-        metrics.fetchPrivyUserErrorCount.inc()
-        this.logger?.error(
-          {
-            error: err,
-            entityId,
-            privyDid,
-          },
-          'error fetching privy user',
-        )
-        throw Trpc.handleStatus(500, 'error fetching privy user')
-      })
-
       return contracts.map((contract) =>
-        addRebateEligibilityToContract(contract, privyUser.createdAt),
+        addRebateEligibilityToContract(contract),
       )
     })
 
@@ -577,7 +564,7 @@ export class ContractsRoute extends Route {
       const { contractId } = input
       const { user } = ctx.session
 
-      const { id: entityId, privyDid } = await assertUserAuthenticated(
+      const { id: entityId } = await assertUserAuthenticated(
         this.trpc.database,
         user,
       )
@@ -603,20 +590,7 @@ export class ContractsRoute extends Route {
         throw Trpc.handleStatus(400, 'contract does not exist')
       }
 
-      const privyUser = await this.trpc.privy.getUser(privyDid).catch((err) => {
-        metrics.fetchPrivyUserErrorCount.inc()
-        this.logger?.error(
-          {
-            error: err,
-            entityId,
-            privyDid,
-          },
-          'error fetching privy user',
-        )
-        throw Trpc.handleStatus(500, 'error fetching privy user')
-      })
-
-      return addRebateEligibilityToContract(contract, privyUser.createdAt)
+      return addRebateEligibilityToContract(contract)
     })
 
   public readonly deleteContractRoute = 'deleteContract' as const

@@ -31,6 +31,7 @@ export const entities = pgTable('entities', {
     .notNull(),
   id: uuid('id').defaultRandom().primaryKey(),
   privyDid: varchar('privy_did').unique().notNull(),
+  privyCreatedAt: timestamp('privy_created_at'),
   state: varchar('state')
     .$type<EntityState>()
     .default(EntityState.ACTIVE)
@@ -95,6 +96,22 @@ export const sanctionEntity = async (input: {
       state: EntityState.SANCTIONED,
       updatedAt: new Date(),
       sanctionInfo: { sanctionedAt: new Date(), sanctionedAddress },
+    })
+    .where(eq(entities.id, entityId))
+}
+
+export const updatePrivyCreatedAt = async (input: {
+  db: Database
+  entityId: Entity['id']
+  privyCreatedAt: Date
+}) => {
+  const { db, entityId, privyCreatedAt } = input
+
+  return db
+    .update(entities)
+    .set({
+      privyCreatedAt,
+      updatedAt: new Date(),
     })
     .where(eq(entities.id, entityId))
 }
