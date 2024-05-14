@@ -1,7 +1,7 @@
 'use client'
 
-import { redirect, usePathname } from 'next/navigation'
-import { useEffect, useMemo } from 'react'
+import { usePathname } from 'next/navigation'
+import { useMemo } from 'react'
 
 import { Text } from '@eth-optimism/ui-components/src/components/ui/text/text'
 
@@ -86,12 +86,6 @@ export default function SettingsLayout({
     () => getActiveTab(pathname, isDeploymentRebateEnabled),
     [pathname, isDeploymentRebateEnabled],
   )
-
-  useEffect(() => {
-    if (!shouldShowSettings) {
-      redirect('/')
-    }
-  }, [shouldShowSettings])
 
   return shouldShowSettings ? (
     <main className="flex justify-center bg-secondary min-h-screen">
