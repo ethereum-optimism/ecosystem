@@ -79,7 +79,7 @@ export const ClaimRebateDialog = ({
         : gasAmount
 
     return formatEtherShort(claimableAmount, 'wei')
-  }, [contract])
+  }, [contract, amountClaimed])
 
   const handleClaim = useCallback(async () => {
     if (isLoadingClaimRebate) {
@@ -97,7 +97,13 @@ export const ClaimRebateDialog = ({
         duration: LONG_DURATION,
       })
 
-      trackClaimRebate(contract.chainId)
+      trackClaimRebate({
+        chainId: contract.chainId,
+        deployerAddress: contract.deployerAddress,
+        contractAddress: contract.contractAddress,
+        claimAmount: +gasFeeToReimburst,
+        deploymentTxHash: contract.deploymentTxHash,
+      })
       setRebateTxHash(txHash)
       onRebateClaimed(contract)
     } catch (e) {
@@ -112,7 +118,14 @@ export const ClaimRebateDialog = ({
         })
       }
     }
-  }, [setRebateTxHash, onRebateClaimed])
+  }, [
+    setRebateTxHash,
+    onRebateClaimed,
+    claimRebate,
+    contract,
+    gasFeeToReimburst,
+    isLoadingClaimRebate,
+  ])
 
   const handleViewTransaction = useCallback(() => {
     window.open(
