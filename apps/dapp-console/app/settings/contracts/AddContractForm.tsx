@@ -226,10 +226,7 @@ export const AddContractForm = ({
         />
       </Form>
       <div className="mt-3 flex flex-col gap-y-2 sm:flex-row justify-between w-full">
-        <L2NetworkSelect
-          includeTestnets
-          onNetworkChange={handleNetworkChange}
-        />
+        <L2NetworkSelect onNetworkChange={handleNetworkChange} />
         <Button
           disabled={!form.formState.isValid}
           onClick={handleCreateContract}
