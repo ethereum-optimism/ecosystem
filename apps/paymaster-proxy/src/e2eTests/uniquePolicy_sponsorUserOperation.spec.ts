@@ -1,4 +1,3 @@
-import crypto from 'crypto'
 import {
   deepHexlify,
   ENTRYPOINT_ADDRESS_V06,
@@ -32,28 +31,29 @@ describe('pm_sponsorUserOperation', async () => {
     fraxtalSepolia,
     sepolia,
   ])('$name', async (chain) => {
+    let sponsorshipPolicy: any
     let apiKey: string
 
     beforeAll(async () => {
-      const entityId = crypto.randomUUID()
+      const entityId = 'ed9f9f00-2c83-4f9c-a510-bbb4da6244b3'
 
       const registerApiKeyResult = await adminApp
-        .post('/admin/createPaymasterApiKey')
+        .post('/admin/createPaymasterSponsorshipPolicy')
         .send({
           chainId: chain.id,
           entityId,
         })
         .set('Content-Type', 'application/json')
         .set('Accept', 'application/json')
-      apiKey = registerApiKeyResult.body.apiKey
+      sponsorshipPolicy = registerApiKeyResult.body.sponsorshipPolicy
+      apiKey = sponsorshipPolicy.apiKey.key
     })
 
     afterAll(async () => {
       await adminApp
-        .post('/admin/deletePaymasterApiKey')
+        .post('/admin/deletePaymasterSponsorshipPolicy')
         .send({
-          chainId: chain.id,
-          apiKey,
+          id: sponsorshipPolicy.id,
         })
         .set('Content-Type', 'application/json')
         .set('Accept', 'application/json')
