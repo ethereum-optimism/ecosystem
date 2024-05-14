@@ -42,6 +42,7 @@ enum CUSTOM_TRACKING_PROPERTY {
   DeleteActionType = 'Delete Action Type',
   WalletType = 'Wallet Type',
   VerificationType = 'Verification Type',
+  ChainId = 'Chain Id',
 }
 
 export type ActionType = 'app' | 'contract' | 'wallet'
@@ -136,6 +137,8 @@ export const trackClaimRebateClick = () => {
   mixpanel?.track(TRACKING_EVENT_NAME.ClaimRebateClick)
 }
 
-export const trackClaimRebate = () => {
-  mixpanel?.track(TRACKING_EVENT_NAME.ClaimRebate)
+export const trackClaimRebate = (chainId: number) => {
+  mixpanel?.track(TRACKING_EVENT_NAME.ClaimRebate, {
+    [CUSTOM_TRACKING_PROPERTY.ChainId]: chainId,
+  })
 }
