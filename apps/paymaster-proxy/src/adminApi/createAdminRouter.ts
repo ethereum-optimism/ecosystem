@@ -18,9 +18,12 @@ import { chainConfigByChainId } from '@/config/chainConfigByChainId'
 import { fraxtalSepolia } from '@/constants/fraxtalSepolia'
 import type { Database } from '@/db/Database'
 import { envVars } from '@/envVars'
+import type { SponsorshipPolicy } from '@/models/sponsorshipPolicies'
 import {
   createSponsorshipPolicy,
-  getSponsorshipPolicyForApiKeyId,
+  deleteSponsorshipPolicy,
+  getSponsorshipPolicy,
+  listSponsorshipPoliciesForApiKeyIds,
 } from '@/models/sponsorshipPolicies'
 import type { AlchemyGasManagerPolicy } from '@/paymasterProvider/alchemy/admin/alchemyGasManagerAdminActions'
 import { AlchemyGasManagerAdminClient } from '@/paymasterProvider/alchemy/admin/AlchemyGasManagerAdminClient'
@@ -45,6 +48,16 @@ const getAlchemyGasManagerClient = (chainId: SupportedChainId) => {
     accessKey: chainConfig.paymasterProviderConfig.gasManagerAccessKey,
     appId: chainConfig.paymasterProviderConfig.appId,
   })
+}
+
+const getExpandedSponsorshipPolicy = (
+  sponsorshipPolicy: SponsorshipPolicy,
+  apiKey: ApiKey | null,
+) => {
+  return {
+    ...sponsorshipPolicy,
+    apiKey,
+  }
 }
 
 export const createAdminRouter = ({
@@ -72,11 +85,13 @@ export const createAdminRouter = ({
 
   router.use(express.json())
 
-  router.post('/createPaymasterApiKey', async (req, res) => {
+  router.post('/createPaymasterSponsorshipPolicy', async (req, res) => {
     const paramsParseResult = z
       .object({
         chainId: supportedChainIdSchema,
         entityId: z.string(),
+        name: z.string().optional().nullable(),
+        key: z.string().optional(),
       })
       .safeParse(req.body)
 
@@ -89,7 +104,7 @@ export const createAdminRouter = ({
     const alchemyGasManagerAdminClient =
       alchemyGasManagerAdminClientByChainId[paramsParseResult.data.chainId]
 
-    const { chainId, entityId } = paramsParseResult.data
+    const { chainId, entityId, key, name } = paramsParseResult.data
 
     // create new API key
     let newApiKey: ApiKey
@@ -98,6 +113,8 @@ export const createAdminRouter = ({
         await apiKeyServiceClient.keys.createApiKey.mutate({
           entityId,
           state: 'enabled',
+          key,
+          name,
         })
       newApiKey = createApiKeyResponse.apiKey
     } catch (e) {
@@ -123,9 +140,10 @@ export const createAdminRouter = ({
       })
     }
 
+    let sponsorshipPolicy: SponsorshipPolicy
     // save policy ID and API key in DB
     try {
-      await createSponsorshipPolicy(database, {
+      sponsorshipPolicy = await createSponsorshipPolicy(database, {
         apiKeyId: newApiKey.id,
         chainId: chainId.toString(),
         providerType: 'alchemy',
@@ -141,15 +159,67 @@ export const createAdminRouter = ({
     }
 
     return res.json({
-      apiKey: newApiKey.key,
+      sponsorshipPolicy: getExpandedSponsorshipPolicy(
+        sponsorshipPolicy,
+        newApiKey,
+      ),
     })
   })
 
-  router.post('/deletePaymasterApiKey', async (req, res) => {
+  router.post(
+    '/listPaymasterSponsorshipPoliciesForEntity',
+    async (req, res) => {
+      const paramsParseResult = z
+        .object({
+          entityId: z.string(),
+        })
+        .safeParse(req.body)
+
+      if (!paramsParseResult.success) {
+        return res.status(400).json({
+          error: 'Invalid params',
+        })
+      }
+
+      const listApiKeysForEntityResult =
+        await apiKeyServiceClient.keys.listApiKeysForEntity.query({
+          entityId: paramsParseResult.data.entityId,
+        })
+
+      const apiKeys = listApiKeysForEntityResult.apiKeys
+      const apiKeyIds = apiKeys.map((x) => x.id)
+
+      if (apiKeyIds.length === 0) {
+        return res.json({
+          sponsorshipPolicies: [],
+        })
+      }
+
+      const apiKeyById = apiKeys.reduce<Record<string, ApiKey>>((acc, x) => {
+        acc[x.id] = x
+        return acc
+      }, {})
+
+      const sponsorshipPolicies = await listSponsorshipPoliciesForApiKeyIds(
+        database,
+        apiKeyIds,
+      )
+
+      return res.json({
+        sponsorshipPolicies: sponsorshipPolicies.map((sponsorshipPolicy) =>
+          getExpandedSponsorshipPolicy(
+            sponsorshipPolicy,
+            apiKeyById[sponsorshipPolicy.apiKeyId] || null,
+          ),
+        ),
+      })
+    },
+  )
+
+  router.post('/deletePaymasterSponsorshipPolicy', async (req, res) => {
     const paramsParseResult = z
       .object({
-        chainId: supportedChainIdSchema,
-        apiKey: z.string(),
+        id: z.string(),
       })
       .safeParse(req.body)
 
@@ -159,28 +229,11 @@ export const createAdminRouter = ({
       })
     }
 
-    const chainId = paramsParseResult.data.chainId
+    const { id: sponsorshipPolicyId } = paramsParseResult.data
 
-    const alchemyGasManagerAdminClient =
-      alchemyGasManagerAdminClientByChainId[chainId]
-
-    const { apiKey } = paramsParseResult.data
-
-    const verifyApiKeyResult =
-      await apiKeyServiceClient.keys.verifyApiKey.query({
-        key: apiKey,
-      })
-
-    if (!verifyApiKeyResult || !verifyApiKeyResult.apiKey) {
-      return res.status(400).json({
-        error: 'Invalid API key',
-      })
-    }
-    const apiKeyId = verifyApiKeyResult.apiKey.id
-
-    const sponsorshipPolicy = await getSponsorshipPolicyForApiKeyId(
+    const sponsorshipPolicy = await getSponsorshipPolicy(
       database,
-      apiKeyId,
+      sponsorshipPolicyId,
     )
 
     if (!sponsorshipPolicy) {
@@ -189,9 +242,14 @@ export const createAdminRouter = ({
       })
     }
 
-    if (sponsorshipPolicy.chainId !== chainId.toString()) {
+    const alchemyGasManagerAdminClient =
+      alchemyGasManagerAdminClientByChainId[
+        Number(sponsorshipPolicy.chainId) as SupportedChainId
+      ]
+
+    if (!alchemyGasManagerAdminClient) {
       return res.status(400).json({
-        error: 'Policy chainId does not match the provided chainId',
+        error: 'No Alchemy Gas Manager client found for chain',
       })
     }
 
@@ -202,6 +260,8 @@ export const createAdminRouter = ({
     await apiKeyServiceClient.keys.deleteApiKey.mutate({
       id: sponsorshipPolicy.apiKeyId,
     })
+
+    await deleteSponsorshipPolicy(database, sponsorshipPolicyId)
 
     return res.status(200).send()
   })

@@ -1,5 +1,5 @@
-import type { InferInsertModel } from 'drizzle-orm'
-import { eq } from 'drizzle-orm'
+import type { InferInsertModel, InferSelectModel } from 'drizzle-orm'
+import { desc, eq, inArray } from 'drizzle-orm'
 import {
   index,
   jsonb,
@@ -53,6 +53,8 @@ export const sponsorshipPolicies = pgTable(
 
 type InsertSponsorshipPolicy = InferInsertModel<typeof sponsorshipPolicies>
 
+export type SponsorshipPolicy = InferSelectModel<typeof sponsorshipPolicies>
+
 export const createSponsorshipPolicy = async (
   db: Database,
   sponsorshipPolicy: InsertSponsorshipPolicy,
@@ -63,6 +65,24 @@ export const createSponsorshipPolicy = async (
     .returning()
 
   return result[0]
+}
+
+export const getSponsorshipPolicy = async (db: Database, id: string) => {
+  const policies = await db
+    .select()
+    .from(sponsorshipPolicies)
+    .where(eq(sponsorshipPolicies.id, id))
+
+  if (policies.length === 0) {
+    return null
+  }
+
+  // guaranteed to only be 1 max because of the unique index on apiKeyId
+  return policies[0]
+}
+
+export const deleteSponsorshipPolicy = async (db: Database, id: string) => {
+  await db.delete(sponsorshipPolicies).where(eq(sponsorshipPolicies.id, id))
 }
 
 export const getSponsorshipPolicyForApiKeyId = async (
@@ -80,4 +100,16 @@ export const getSponsorshipPolicyForApiKeyId = async (
 
   // guaranteed to only be 1 max because of the unique index on apiKeyId
   return policies[0]
+}
+
+export const listSponsorshipPoliciesForApiKeyIds = async (
+  db: Database,
+  apiKeyIds: string[],
+) => {
+  return await db
+    .select()
+    .from(sponsorshipPolicies)
+    .where(inArray(sponsorshipPolicies.apiKeyId, apiKeyIds))
+    .orderBy(desc(sponsorshipPolicies.createdAt))
+    .limit(1000)
 }
