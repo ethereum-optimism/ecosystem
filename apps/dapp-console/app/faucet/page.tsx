@@ -1,5 +1,6 @@
 'use client'
 
+import { Card } from '@eth-optimism/ui-components/src/components/ui/card/card'
 import { Text } from '@eth-optimism/ui-components/src/components/ui/text/text'
 
 export default function Faucet() {
@@ -13,6 +14,8 @@ export default function Faucet() {
           Get test tokens for building applications on the Superchain
         </Text>
       </div>
+
+      <Card>test</Card>
     </div>
   )
 }
