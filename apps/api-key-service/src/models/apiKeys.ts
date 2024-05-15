@@ -18,6 +18,7 @@ export const apiKeys = pgTable(
   {
     id: uuid('id').defaultRandom().primaryKey(),
     entityId: uuid('entity_id').notNull(),
+    name: varchar('name'), // optional
     key: varchar('key').notNull(),
     state: varchar('state').$type<ApiKeyState>().notNull(),
     stateUpdatedAt: timestamp('state_updated_at', { withTimezone: true }),

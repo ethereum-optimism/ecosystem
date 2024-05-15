@@ -24,6 +24,7 @@ export class KeysRoute extends Route {
     .input(
       z.object({
         entityId: z.string(),
+        name: z.string().optional().nullable(),
         state: z
           .union([z.literal('enabled'), z.literal('disabled')])
           .optional()
@@ -37,7 +38,7 @@ export class KeysRoute extends Route {
       }),
     )
     .mutation(async ({ input }) => {
-      const { entityId, state, key } = input
+      const { entityId, name, state, key } = input
 
       let apiKey: ApiKey
       try {
@@ -45,6 +46,7 @@ export class KeysRoute extends Route {
           entityId,
           state,
           key,
+          name,
         })
         this.metrics.generatedApiKeysCount.inc()
       } catch (e) {

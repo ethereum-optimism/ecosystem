@@ -1,0 +1,105 @@
+{
+  "id": "65d201a7-292e-4016-8ea9-6236b6f0e86c",
+  "prevId": "196c8f4f-6acb-40da-9c7e-a89fcbdad67e",
+  "version": "5",
+  "dialect": "pg",
+  "tables": {
+    "api-keys": {
+      "name": "api-keys",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "entity_id": {
+          "name": "entity_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "name": {
+          "name": "name",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "key": {
+          "name": "key",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "state": {
+          "name": "state",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "state_updated_at": {
+          "name": "state_updated_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "deleted_at": {
+          "name": "deleted_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "api-keys_deleted_at_index": {
+          "name": "api-keys_deleted_at_index",
+          "columns": [
+            "deleted_at"
+          ],
+          "isUnique": false
+        },
+        "api-keys_entity_id_deleted_at_index": {
+          "name": "api-keys_entity_id_deleted_at_index",
+          "columns": [
+            "entity_id",
+            "deleted_at"
+          ],
+          "isUnique": false
+        },
+        "api-keys_key_index": {
+          "name": "api-keys_key_index",
+          "columns": [
+            "key"
+          ],
+          "isUnique": true
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    }
+  },
+  "enums": {},
+  "schemas": {},
+  "_meta": {
+    "columns": {},
+    "schemas": {},
+    "tables": {}
+  }
+}
