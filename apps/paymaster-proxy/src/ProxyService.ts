@@ -1,3 +1,6 @@
+// Required so that express will handle async errors without needing to wrap each route handler in a try/catch block
+import 'express-async-errors'
+
 import type { Express } from 'express'
 import { Redis } from 'ioredis'
 import pino, { type Logger } from 'pino'

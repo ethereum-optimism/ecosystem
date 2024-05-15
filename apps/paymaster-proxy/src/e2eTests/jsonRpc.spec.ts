@@ -1,9 +1,9 @@
 import supertest from 'supertest'
 import { describe, expect, it } from 'vitest'
 
-import { E2E_TEST_BASE_URL } from '@/e2eTests/e2eTestBaseUrl'
+import { e2eEnvVars } from '@/e2eTests/e2eEnvVars'
 
-const app = supertest(E2E_TEST_BASE_URL)
+const app = supertest(e2eEnvVars.E2E_TEST_BASE_URL)
 
 describe.skip('JSON RPC handlers', async () => {
   it('should 404 on GET requests', async () => {
