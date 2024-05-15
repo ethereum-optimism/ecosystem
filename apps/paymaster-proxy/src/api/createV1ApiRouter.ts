@@ -2,10 +2,13 @@ import type { Router } from 'express'
 import express from 'express'
 import type { Logger } from 'pino'
 import {
+  base,
   baseSepolia,
+  fraxtal,
   optimism,
   optimismSepolia,
   sepolia,
+  zora,
   zoraSepolia,
 } from 'viem/chains'
 
@@ -79,6 +82,30 @@ export const createV1ApiRouter = ({
 
   registerMainnetWithAlchemyPaymasterProvider(router, {
     chainConfig: chainConfigByChainId[optimism.id],
+    database,
+    apiKeyServiceClient,
+    metrics,
+    logger,
+  })
+
+  registerMainnetWithAlchemyPaymasterProvider(router, {
+    chainConfig: chainConfigByChainId[base.id],
+    database,
+    apiKeyServiceClient,
+    metrics,
+    logger,
+  })
+
+  registerMainnetWithAlchemyPaymasterProvider(router, {
+    chainConfig: chainConfigByChainId[fraxtal.id],
+    database,
+    apiKeyServiceClient,
+    metrics,
+    logger,
+  })
+
+  registerMainnetWithAlchemyPaymasterProvider(router, {
+    chainConfig: chainConfigByChainId[zora.id],
     database,
     apiKeyServiceClient,
     metrics,
