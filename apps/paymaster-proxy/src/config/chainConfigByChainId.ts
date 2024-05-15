@@ -1,6 +1,15 @@
-import { baseSepolia, optimismSepolia, sepolia, zoraSepolia } from 'viem/chains'
+import {
+  baseSepolia,
+  optimism,
+  optimismSepolia,
+  sepolia,
+  zoraSepolia,
+} from 'viem/chains'
 
-import type { TestnetChainConfig } from '@/config/ChainConfig'
+import type {
+  MainnetChainConfig,
+  TestnetChainConfig,
+} from '@/config/ChainConfig'
 import { fraxtalSepolia } from '@/constants/fraxtalSepolia'
 import { envVars } from '@/envVars'
 
@@ -57,8 +66,23 @@ export const testnetChainConfigByChainId = {
   },
 } as const satisfies Record<number, TestnetChainConfig>
 
+export const mainnetChainConfigByChainId = {
+  [optimism.id]: {
+    chain: optimism,
+    paymasterProviderConfig: {
+      type: 'alchemy',
+      gasManagerAccessKey: envVars.ALCHEMY_GAS_MANAGER_ACCESS_KEY,
+      appId: envVars.ALCHEMY_APP_ID_OP_MAINNET,
+      rpcUrl: envVars.ALCHEMY_RPC_URL_OP_MAINNET,
+    },
+  },
+} as const satisfies Record<number, MainnetChainConfig>
+
 export type SupportedTestnetChainId = keyof typeof testnetChainConfigByChainId
 
-export const chainConfigByChainId = { ...testnetChainConfigByChainId } as const
+export const chainConfigByChainId = {
+  ...testnetChainConfigByChainId,
+  ...mainnetChainConfigByChainId,
+} as const
 
 export type SupportedChainId = keyof typeof chainConfigByChainId

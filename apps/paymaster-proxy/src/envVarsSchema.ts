@@ -115,6 +115,24 @@ export const envVarsSchema = inferSchemas({
       test: 'https://screening-service.localhost',
     },
   },
+  ALCHEMY_RPC_URL_OP_MAINNET: {
+    schema: z.string(),
+    defaults: {
+      test: 'https://opt.g.alchemy.com/v2/testapikey',
+    },
+  },
+  ALCHEMY_GAS_MANAGER_POLICY_ID_OP_MAINNET: {
+    schema: z.string(),
+    defaults: {
+      test: 'test-policy-id',
+    },
+  },
+  ALCHEMY_APP_ID_OP_MAINNET: {
+    schema: z.string(),
+    defaults: {
+      test: 'test-op-mainnet-app-id',
+    },
+  },
   ALCHEMY_RPC_URL_SEPOLIA: {
     schema: z.string(),
     defaults: {

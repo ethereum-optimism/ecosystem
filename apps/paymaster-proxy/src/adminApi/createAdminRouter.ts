@@ -2,12 +2,18 @@ import type { ApiKey } from '@eth-optimism/api-key-service'
 import type { Router } from 'express'
 import express from 'express'
 import type { Logger } from 'pino'
-import { baseSepolia, optimismSepolia, sepolia, zoraSepolia } from 'viem/chains'
+import {
+  baseSepolia,
+  optimism,
+  optimismSepolia,
+  sepolia,
+  zoraSepolia,
+} from 'viem/chains'
 import { z } from 'zod'
 
 import type { ApiKeyServiceClient } from '@/apiKeyService/createApiKeyServiceClient'
 import type { ChainConfig } from '@/config/ChainConfig'
-import type { SupportedTestnetChainId } from '@/config/chainConfigByChainId'
+import type { SupportedChainId } from '@/config/chainConfigByChainId'
 import { chainConfigByChainId } from '@/config/chainConfigByChainId'
 import { fraxtalSepolia } from '@/constants/fraxtalSepolia'
 import type { Database } from '@/db/Database'
@@ -26,14 +32,12 @@ const supportedChainIdSchema = z
   .number()
   .int()
   .refine(
-    (chainId): chainId is SupportedTestnetChainId =>
+    (chainId): chainId is SupportedChainId =>
       !!(chainConfigByChainId as Record<number, ChainConfig>)[chainId],
     {
       message: 'Unsupported chainId',
     },
   )
-
-type SupportedChainId = keyof typeof chainConfigByChainId
 
 const getAlchemyGasManagerClient = (chainId: SupportedChainId) => {
   const chainConfig = chainConfigByChainId[chainId]
@@ -61,6 +65,7 @@ export const createAdminRouter = ({
     [zoraSepolia.id]: getAlchemyGasManagerClient(zoraSepolia.id),
     [baseSepolia.id]: getAlchemyGasManagerClient(baseSepolia.id),
     [fraxtalSepolia.id]: getAlchemyGasManagerClient(fraxtalSepolia.id),
+    [optimism.id]: getAlchemyGasManagerClient(optimism.id),
   } as const
 
   const router = express.Router()
