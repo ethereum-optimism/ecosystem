@@ -3,10 +3,13 @@ import type { Router } from 'express'
 import express from 'express'
 import type { Logger } from 'pino'
 import {
+  base,
   baseSepolia,
+  fraxtal,
   optimism,
   optimismSepolia,
   sepolia,
+  zora,
   zoraSepolia,
 } from 'viem/chains'
 import { z } from 'zod'
@@ -79,6 +82,9 @@ export const createAdminRouter = ({
     [baseSepolia.id]: getAlchemyGasManagerClient(baseSepolia.id),
     [fraxtalSepolia.id]: getAlchemyGasManagerClient(fraxtalSepolia.id),
     [optimism.id]: getAlchemyGasManagerClient(optimism.id),
+    [base.id]: getAlchemyGasManagerClient(base.id),
+    [zora.id]: getAlchemyGasManagerClient(zora.id),
+    [fraxtal.id]: getAlchemyGasManagerClient(fraxtal.id),
   } as const
 
   const router = express.Router()

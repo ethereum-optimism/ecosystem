@@ -121,16 +121,46 @@ export const envVarsSchema = inferSchemas({
       test: 'https://opt.g.alchemy.com/v2/testapikey',
     },
   },
-  ALCHEMY_GAS_MANAGER_POLICY_ID_OP_MAINNET: {
-    schema: z.string(),
-    defaults: {
-      test: 'test-policy-id',
-    },
-  },
   ALCHEMY_APP_ID_OP_MAINNET: {
     schema: z.string(),
     defaults: {
       test: 'test-op-mainnet-app-id',
+    },
+  },
+  ALCHEMY_RPC_URL_BASE: {
+    schema: z.string(),
+    defaults: {
+      test: 'https://base.g.alchemy.com/v2/testapikey',
+    },
+  },
+  ALCHEMY_APP_ID_BASE: {
+    schema: z.string(),
+    defaults: {
+      test: 'test-base-app-id',
+    },
+  },
+  ALCHEMY_RPC_URL_FRAXTAL: {
+    schema: z.string(),
+    defaults: {
+      test: 'https://frax.g.alchemy.com/v2/testapikey',
+    },
+  },
+  ALCHEMY_APP_ID_FRAXTAL: {
+    schema: z.string(),
+    defaults: {
+      test: 'test-fraxtal-app-id',
+    },
+  },
+  ALCHEMY_RPC_URL_ZORA: {
+    schema: z.string(),
+    defaults: {
+      test: 'https://zora.g.alchemy.com/v2/testapikey',
+    },
+  },
+  ALCHEMY_APP_ID_ZORA: {
+    schema: z.string(),
+    defaults: {
+      test: 'test-zora-app-id',
     },
   },
   ALCHEMY_RPC_URL_SEPOLIA: {

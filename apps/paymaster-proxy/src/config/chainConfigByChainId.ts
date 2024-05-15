@@ -1,8 +1,11 @@
 import {
+  base,
   baseSepolia,
+  fraxtal,
   optimism,
   optimismSepolia,
   sepolia,
+  zora,
   zoraSepolia,
 } from 'viem/chains'
 
@@ -74,6 +77,33 @@ export const mainnetChainConfigByChainId = {
       gasManagerAccessKey: envVars.ALCHEMY_GAS_MANAGER_ACCESS_KEY,
       appId: envVars.ALCHEMY_APP_ID_OP_MAINNET,
       rpcUrl: envVars.ALCHEMY_RPC_URL_OP_MAINNET,
+    },
+  },
+  [base.id]: {
+    chain: base,
+    paymasterProviderConfig: {
+      type: 'alchemy',
+      gasManagerAccessKey: envVars.ALCHEMY_GAS_MANAGER_ACCESS_KEY,
+      appId: envVars.ALCHEMY_APP_ID_BASE,
+      rpcUrl: envVars.ALCHEMY_RPC_URL_BASE,
+    },
+  },
+  [fraxtal.id]: {
+    chain: fraxtal,
+    paymasterProviderConfig: {
+      type: 'alchemy',
+      gasManagerAccessKey: envVars.ALCHEMY_GAS_MANAGER_ACCESS_KEY,
+      appId: envVars.ALCHEMY_APP_ID_FRAXTAL,
+      rpcUrl: envVars.ALCHEMY_RPC_URL_FRAXTAL,
+    },
+  },
+  [zora.id]: {
+    chain: zora,
+    paymasterProviderConfig: {
+      type: 'alchemy',
+      gasManagerAccessKey: envVars.ALCHEMY_GAS_MANAGER_ACCESS_KEY,
+      appId: envVars.ALCHEMY_APP_ID_ZORA,
+      rpcUrl: envVars.ALCHEMY_RPC_URL_ZORA,
     },
   },
 } as const satisfies Record<number, MainnetChainConfig>
