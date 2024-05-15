@@ -1,4 +1,5 @@
 import mixpanelBrowser from 'mixpanel-browser'
+import { Address, Hash } from 'viem'
 
 const initMixpanel = () => {
   if (!process.env.NEXT_PUBLIC_MIXPANEL_TOKEN) {
@@ -43,6 +44,10 @@ enum CUSTOM_TRACKING_PROPERTY {
   WalletType = 'Wallet Type',
   VerificationType = 'Verification Type',
   ChainId = 'Chain Id',
+  ContractAddresss = 'Contract Address',
+  DeployerAddress = 'Deployer Address',
+  ClaimAmount = 'Claim Amount',
+  DeploymentTxHash = 'Deployment Tx Hash',
 }
 
 export type ActionType = 'app' | 'contract' | 'wallet'
@@ -133,12 +138,43 @@ export const trackFinishContractVerification = (
   })
 }
 
-export const trackClaimRebateClick = () => {
-  mixpanel?.track(TRACKING_EVENT_NAME.ClaimRebateClick)
+export const trackClaimRebateClick = ({
+  chainId,
+  contractAddress,
+  deployerAddress,
+  deploymentTxHash,
+}: {
+  chainId: number
+  contractAddress: Address
+  deployerAddress: Address
+  deploymentTxHash: Hash
+}) => {
+  mixpanel?.track(TRACKING_EVENT_NAME.ClaimRebateClick, {
+    [CUSTOM_TRACKING_PROPERTY.ChainId]: chainId,
+    [CUSTOM_TRACKING_PROPERTY.ContractAddresss]: contractAddress,
+    [CUSTOM_TRACKING_PROPERTY.DeployerAddress]: deployerAddress,
+    [CUSTOM_TRACKING_PROPERTY.DeploymentTxHash]: deploymentTxHash,
+  })
 }
 
-export const trackClaimRebate = (chainId: number) => {
+export const trackClaimRebate = ({
+  chainId,
+  contractAddress,
+  deployerAddress,
+  claimAmount,
+  deploymentTxHash,
+}: {
+  chainId: number
+  contractAddress: Address
+  deployerAddress: Address
+  claimAmount: number
+  deploymentTxHash: Hash
+}) => {
   mixpanel?.track(TRACKING_EVENT_NAME.ClaimRebate, {
     [CUSTOM_TRACKING_PROPERTY.ChainId]: chainId,
+    [CUSTOM_TRACKING_PROPERTY.ContractAddresss]: contractAddress,
+    [CUSTOM_TRACKING_PROPERTY.DeployerAddress]: deployerAddress,
+    [CUSTOM_TRACKING_PROPERTY.ClaimAmount]: claimAmount,
+    [CUSTOM_TRACKING_PROPERTY.DeploymentTxHash]: deploymentTxHash,
   })
 }

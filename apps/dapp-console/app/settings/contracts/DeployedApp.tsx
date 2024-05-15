@@ -98,7 +98,12 @@ export const DeployedApp = ({ app, onStartDeleteApp }: DeployedAppProps) => {
 
   const handleStartClaimRebate = useCallback(
     async (contract: Contract) => {
-      trackClaimRebateClick()
+      trackClaimRebateClick({
+        chainId: contract.chainId,
+        deployerAddress: contract.deployerAddress,
+        contractAddress: contract.contractAddress,
+        deploymentTxHash: contract.deploymentTxHash,
+      })
       setContractToRebate(contract)
       setRebateDialogOpen(true)
     },
