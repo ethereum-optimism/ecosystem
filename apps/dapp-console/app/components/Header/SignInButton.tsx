@@ -40,7 +40,9 @@ const SignInButton = () => {
       }
     },
     onError: (privyError) => {
-      captureError(privyError, 'privyLogin')
+      if (privyError !== 'exited_auth_flow') {
+        captureError(privyError, 'privyLogin')
+      }
     },
   })
   const { logout } = useLogout({
