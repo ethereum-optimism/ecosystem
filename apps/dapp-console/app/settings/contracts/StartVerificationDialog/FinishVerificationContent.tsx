@@ -74,11 +74,16 @@ export const FinishVerificationContent = () => {
         challengeId: challenge?.id as string,
       })
       onContractVerified(contract)
-      trackFinishContractVerification(
-        signingType === 'manual'
-          ? 'manualVerification'
-          : 'automaticVerification',
-      )
+      trackFinishContractVerification({
+        type:
+          signingType === 'manual'
+            ? 'manualVerification'
+            : 'automaticVerification',
+        chainId: contract.chainId,
+        contractAddress: contract.contractAddress,
+        deployerAddress: contract.deployerAddress,
+        deploymentTxHash: contract.deploymentTxHash,
+      })
       goNext()
     } catch (e) {
       const apiError = e as ApiError

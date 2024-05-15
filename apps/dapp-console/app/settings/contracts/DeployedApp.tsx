@@ -61,10 +61,21 @@ export const DeployedApp = ({ app, onStartDeleteApp }: DeployedAppProps) => {
 
   const handleStartVerification = useCallback(
     async (contract: Contract) => {
-      trackStartContractVerification()
+      trackStartContractVerification({
+        chainId: contract.chainId,
+        contractAddress: contract.contractAddress,
+        deployerAddress: contract.deployerAddress,
+        deploymentTxHash: contract.deploymentTxHash,
+      })
 
       if (contract.state === 'verified') {
-        trackFinishContractVerification('alreadyVerified')
+        trackFinishContractVerification({
+          type: 'alreadyVerified',
+          chainId: contract.chainId,
+          contractAddress: contract.contractAddress,
+          deployerAddress: contract.deployerAddress,
+          deploymentTxHash: contract.deploymentTxHash,
+        })
       }
 
       setContractToVerify(contract)

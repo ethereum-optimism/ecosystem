@@ -126,15 +126,44 @@ export const trackWalletConnectorType = (connectorType: string) => {
   })
 }
 
-export const trackStartContractVerification = () => {
-  mixpanel?.track(TRACKING_EVENT_NAME.StartContractVerification)
+export const trackStartContractVerification = ({
+  chainId,
+  contractAddress,
+  deployerAddress,
+  deploymentTxHash,
+}: {
+  chainId: number
+  contractAddress: Address
+  deployerAddress: Address
+  deploymentTxHash: Hash
+}) => {
+  mixpanel?.track(TRACKING_EVENT_NAME.StartContractVerification, {
+    [CUSTOM_TRACKING_PROPERTY.ChainId]: chainId,
+    [CUSTOM_TRACKING_PROPERTY.ContractAddresss]: contractAddress,
+    [CUSTOM_TRACKING_PROPERTY.DeployerAddress]: deployerAddress,
+    [CUSTOM_TRACKING_PROPERTY.DeploymentTxHash]: deploymentTxHash,
+  })
 }
 
-export const trackFinishContractVerification = (
-  type: 'alreadyVerified' | 'manualVerification' | 'automaticVerification',
-) => {
+export const trackFinishContractVerification = ({
+  type,
+  chainId,
+  contractAddress,
+  deployerAddress,
+  deploymentTxHash,
+}: {
+  type: 'alreadyVerified' | 'manualVerification' | 'automaticVerification'
+  chainId: number
+  contractAddress: Address
+  deployerAddress: Address
+  deploymentTxHash: Hash
+}) => {
   mixpanel?.track(TRACKING_EVENT_NAME.CompleteContractVerification, {
     [CUSTOM_TRACKING_PROPERTY.VerificationType]: type,
+    [CUSTOM_TRACKING_PROPERTY.ChainId]: chainId,
+    [CUSTOM_TRACKING_PROPERTY.ContractAddresss]: contractAddress,
+    [CUSTOM_TRACKING_PROPERTY.DeployerAddress]: deployerAddress,
+    [CUSTOM_TRACKING_PROPERTY.DeploymentTxHash]: deploymentTxHash,
   })
 }
 
