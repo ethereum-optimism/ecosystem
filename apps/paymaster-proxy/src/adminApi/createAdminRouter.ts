@@ -2,24 +2,45 @@ import type { ApiKey } from '@eth-optimism/api-key-service'
 import type { Router } from 'express'
 import express from 'express'
 import type { Logger } from 'pino'
-import { optimismSepolia } from 'viem/chains'
+import { baseSepolia, optimismSepolia, sepolia, zoraSepolia } from 'viem/chains'
 import { z } from 'zod'
 
 import type { ApiKeyServiceClient } from '@/apiKeyService/createApiKeyServiceClient'
+import type { ChainConfig } from '@/config/ChainConfig'
+import type { SupportedTestnetChainId } from '@/config/chainConfigByChainId'
+import { chainConfigByChainId } from '@/config/chainConfigByChainId'
+import { fraxtalSepolia } from '@/constants/fraxtalSepolia'
 import type { Database } from '@/db/Database'
 import { envVars } from '@/envVars'
 import {
   createSponsorshipPolicy,
   getSponsorshipPolicyForApiKeyId,
 } from '@/models/sponsorshipPolicies'
-import type { AlchemyGasManagerPolicy } from '@/paymasterProvider/alchemy/alchemyGasManagerAdminActions'
-import { AlchemyGasManagerAdminClient } from '@/paymasterProvider/alchemy/AlchemyGasManagerAdminClient'
+import type { AlchemyGasManagerPolicy } from '@/paymasterProvider/alchemy/admin/alchemyGasManagerAdminActions'
+import { AlchemyGasManagerAdminClient } from '@/paymasterProvider/alchemy/admin/AlchemyGasManagerAdminClient'
 import { getAlchemyGasManagerDefaultRules } from '@/paymasterProvider/alchemy/getAlchemyGasManagerDefaultRules'
 
 export const ADMIN_API_BASE_PATH = '/admin'
 
-type ChainConfig = {
-  alchemyGasManagerAdminClient: AlchemyGasManagerAdminClient
+const supportedChainIdSchema = z
+  .number()
+  .int()
+  .refine(
+    (chainId): chainId is SupportedTestnetChainId =>
+      !!(chainConfigByChainId as Record<number, ChainConfig>)[chainId],
+    {
+      message: 'Unsupported chainId',
+    },
+  )
+
+type SupportedChainId = keyof typeof chainConfigByChainId
+
+const getAlchemyGasManagerClient = (chainId: SupportedChainId) => {
+  const chainConfig = chainConfigByChainId[chainId]
+  return new AlchemyGasManagerAdminClient({
+    accessKey: chainConfig.paymasterProviderConfig.gasManagerAccessKey,
+    appId: chainConfig.paymasterProviderConfig.appId,
+  })
 }
 
 export const createAdminRouter = ({
@@ -31,13 +52,15 @@ export const createAdminRouter = ({
   apiKeyServiceClient: ApiKeyServiceClient
   logger: Logger
 }): Router => {
-  const chainConfigByChainId: Record<number, ChainConfig> = {
-    [optimismSepolia.id]: {
-      alchemyGasManagerAdminClient: new AlchemyGasManagerAdminClient({
-        accessKey: envVars.ALCHEMY_GAS_MANAGER_ACCESS_KEY,
-        appId: envVars.ALCHEMY_APP_ID_OP_SEPOLIA,
-      }),
-    },
+  const alchemyGasManagerAdminClientByChainId: Record<
+    SupportedChainId,
+    AlchemyGasManagerAdminClient
+  > = {
+    [sepolia.id]: getAlchemyGasManagerClient(sepolia.id),
+    [optimismSepolia.id]: getAlchemyGasManagerClient(optimismSepolia.id),
+    [zoraSepolia.id]: getAlchemyGasManagerClient(zoraSepolia.id),
+    [baseSepolia.id]: getAlchemyGasManagerClient(baseSepolia.id),
+    [fraxtalSepolia.id]: getAlchemyGasManagerClient(fraxtalSepolia.id),
   } as const
 
   const router = express.Router()
@@ -47,12 +70,7 @@ export const createAdminRouter = ({
   router.post('/createPaymasterApiKey', async (req, res) => {
     const paramsParseResult = z
       .object({
-        chainId: z
-          .number()
-          .int()
-          .refine((chainId) => !!chainConfigByChainId[chainId], {
-            message: 'Unsupported chainId',
-          }),
+        chainId: supportedChainIdSchema,
         entityId: z.string(),
       })
       .safeParse(req.body)
@@ -64,8 +82,7 @@ export const createAdminRouter = ({
     }
 
     const alchemyGasManagerAdminClient =
-      chainConfigByChainId[paramsParseResult.data.chainId]
-        .alchemyGasManagerAdminClient
+      alchemyGasManagerAdminClientByChainId[paramsParseResult.data.chainId]
 
     const { chainId, entityId } = paramsParseResult.data
 
@@ -126,12 +143,7 @@ export const createAdminRouter = ({
   router.post('/deletePaymasterApiKey', async (req, res) => {
     const paramsParseResult = z
       .object({
-        chainId: z
-          .number()
-          .int()
-          .refine((chainId) => !!chainConfigByChainId[chainId], {
-            message: 'Unsupported chainId',
-          }),
+        chainId: supportedChainIdSchema,
         apiKey: z.string(),
       })
       .safeParse(req.body)
@@ -142,9 +154,10 @@ export const createAdminRouter = ({
       })
     }
 
+    const chainId = paramsParseResult.data.chainId
+
     const alchemyGasManagerAdminClient =
-      chainConfigByChainId[paramsParseResult.data.chainId]
-        .alchemyGasManagerAdminClient
+      alchemyGasManagerAdminClientByChainId[chainId]
 
     const { apiKey } = paramsParseResult.data
 
@@ -168,6 +181,12 @@ export const createAdminRouter = ({
     if (!sponsorshipPolicy) {
       return res.status(400).json({
         error: 'No policy found for API key',
+      })
+    }
+
+    if (sponsorshipPolicy.chainId !== chainId.toString()) {
+      return res.status(400).json({
+        error: 'Policy chainId does not match the provided chainId',
       })
     }
 

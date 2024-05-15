@@ -20,6 +20,16 @@ export const metrics = {
     help: 'Number of addresses screened',
     labelNames: [...metricsNamespaceLabels] as const,
   }),
+  policyIdVerificationFailures: new Counter({
+    name: 'policyIdVerificationFailures',
+    help: 'Number of policy ID verification failures',
+    labelNames: [...metricsNamespaceLabels] as const,
+  }),
+  providerMetadataNotFoundForPolicyId: new Counter({
+    name: 'providerMetadataNotFound',
+    help: 'Number of times provider metadata was not found for a policy ID',
+    labelNames: [...metricsNamespaceLabels] as const,
+  }),
   paymasterCallRpcFailures: new Counter({
     name: 'paymasterCallRpcFailures',
     help: 'Number of RPC failures when calling the paymaster RPC',

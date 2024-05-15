@@ -12,6 +12,8 @@ import morgan from 'morgan'
 import { type Logger } from 'pino'
 
 import { createV1ApiRouter, V1_API_BASE_PATH } from '@/api/createV1ApiRouter'
+import type { ApiKeyServiceClient } from '@/apiKeyService/createApiKeyServiceClient'
+import type { Database } from '@/db/Database'
 import { envVars } from '@/envVars'
 import type { BackendReadinessState } from '@/helpers/BackendReadinessState'
 import { getPromBaseMetrics } from '@/middlewares/getPromBaseMetrics'
@@ -23,11 +25,15 @@ export const initializeApiServer = async ({
   metrics,
   logger,
   backendReadinessState,
+  database,
+  apiKeyServiceClient,
 }: {
   redisClient: Redis
   metrics: Metrics
   logger: Logger
   backendReadinessState: BackendReadinessState
+  database: Database
+  apiKeyServiceClient: ApiKeyServiceClient
 }): Promise<Express> => {
   const app = express()
 
@@ -75,6 +81,8 @@ export const initializeApiServer = async ({
       logger: logger.child({
         apiVersion: 'v1',
       }),
+      apiKeyServiceClient,
+      database,
     }),
   )
 

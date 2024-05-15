@@ -1,9 +1,9 @@
-import type { AlchemyGasManagerPolicyRules } from '@/paymasterProvider/alchemy/alchemyGasManagerAdminActions'
+import type { AlchemyGasManagerPolicyRules } from '@/paymasterProvider/alchemy/admin/alchemyGasManagerAdminActions'
 import {
   createAlchemyGasManagerPolicy,
   deleteAlchemyGasManagerPolicy,
   getAlchemyGasManagerPolicy,
-} from '@/paymasterProvider/alchemy/alchemyGasManagerAdminActions'
+} from '@/paymasterProvider/alchemy/admin/alchemyGasManagerAdminActions'
 
 export class AlchemyGasManagerAdminClient {
   private appId: string
