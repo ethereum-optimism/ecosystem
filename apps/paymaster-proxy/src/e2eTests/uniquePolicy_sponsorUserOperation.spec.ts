@@ -9,19 +9,16 @@ import { baseSepolia, optimismSepolia, sepolia, zoraSepolia } from 'viem/chains'
 import { afterAll, beforeAll, describe, expect, it } from 'vitest'
 
 import { fraxtalSepolia } from '@/constants/fraxtalSepolia'
-import {
-  E2E_TEST_ADMIN_BASE_URL,
-  E2E_TEST_BASE_URL,
-} from '@/e2eTests/e2eTestBaseUrl'
+import { e2eEnvVars } from '@/e2eTests/e2eEnvVars'
 import {
   getMintUserOperationWithRandomSimpleAccount,
   getRevertingUserOperationWithRandomSimpleAccount,
 } from '@/testUtils/simpleAccount/exampleSimpleAccountUserOperations'
 import { successfulPaymasterResultMatcher } from '@/testUtils/successfulPaymasterResultMatcher'
 
-const app = supertest(E2E_TEST_BASE_URL)
+const app = supertest(e2eEnvVars.E2E_TEST_BASE_URL)
 
-const adminApp = supertest(E2E_TEST_ADMIN_BASE_URL)
+const adminApp = supertest(e2eEnvVars.E2E_TEST_ADMIN_BASE_URL)
 
 describe('pm_sponsorUserOperation', async () => {
   describe.each([
