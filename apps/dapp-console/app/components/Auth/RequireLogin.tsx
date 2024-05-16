@@ -13,6 +13,7 @@ export const RequireLogin = ({ children }: { children: React.ReactNode }) => {
   const { login } = useLogin({
     onComplete: async () => {
       try {
+        setPendingLogin(false)
         await loginUser()
       } catch (e) {
         toast({
