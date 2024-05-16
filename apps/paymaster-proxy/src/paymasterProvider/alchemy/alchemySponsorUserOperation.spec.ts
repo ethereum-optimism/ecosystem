@@ -6,8 +6,8 @@ import { sepolia } from 'viem/chains'
 import { describe, expect, it, vi } from 'vitest'
 import { ZodError } from 'zod'
 
+import { AlchemySponsorUserOperationProxiedError } from '@/paymasterProvider/alchemy/alchemyErrors'
 import { alchemySponsorUserOperation } from '@/paymasterProvider/alchemy/alchemySponsorUserOperation'
-import { AlchemySponsorUserOperationProxiedError } from '@/paymasterProvider/alchemy/AlchemySponsorUserOperationProxiedError'
 import {
   mockPostError,
   mockPostErrorWithReturnJson,

@@ -17,6 +17,9 @@ import type {
   DefaultMetricsNamespaceLabels,
   Metrics,
 } from '@/monitoring/metrics'
+import { ERC_7677_SPONSOR } from '@/paymaster/erc7677Sponsor'
+import { ALCHEMY_GAS_MANAGER_STUB_PAYMASTER_AND_DATA } from '@/paymasterProvider/alchemy/gasManagerConstants'
+import { handleAlchemyRequestPaymasterAndData } from '@/paymasterProvider/alchemy/handleAlchemyRequestPaymasterAndData'
 import { handleAlchemySponsorUserOperation } from '@/paymasterProvider/alchemy/handleAlchemySponsorUserOperation'
 import { entryPointSchema } from '@/schemas/entryPointSchema'
 import { paymasterContextSchema } from '@/schemas/paymasterContextSchema'
@@ -67,7 +70,6 @@ export const createTestnetJsonRpcRouterWithAlchemyPaymasterProvider = ({
     ]),
     async ([userOperation, entryPoint, paymasterContext]) => {
       // check if address is sanctioned
-
       const isAddressSanctioned = await handleScreenAddress(
         monitoringCtx,
         userOperation.sender,
@@ -114,6 +116,83 @@ export const createTestnetJsonRpcRouterWithAlchemyPaymasterProvider = ({
         userOperation,
         entryPoint,
       })
+    },
+  )
+
+  jsonRpcRouter.method(
+    'pm_getPaymasterStubData',
+    z.union([
+      z.tuple([userOperationSchema, entryPointSchema]),
+      // paymasterContext is optional for testnet
+      z.tuple([userOperationSchema, entryPointSchema, paymasterContextSchema]),
+    ]),
+    async () => {
+      return {
+        paymasterAndData: ALCHEMY_GAS_MANAGER_STUB_PAYMASTER_AND_DATA,
+      }
+    },
+  )
+
+  jsonRpcRouter.method(
+    'pm_getPaymasterData',
+    z.union([
+      z.tuple([userOperationSchema, entryPointSchema]),
+      // paymasterContext is optional for testnet
+      z.tuple([userOperationSchema, entryPointSchema, paymasterContextSchema]),
+    ]),
+    async ([userOperation, entryPoint, paymasterContext]) => {
+      // check if address is sanctioned
+      const isAddressSanctioned = await handleScreenAddress(
+        monitoringCtx,
+        userOperation.sender,
+      )
+      if (isAddressSanctioned === true) {
+        metrics.sanctionedAddressBlocked.inc(defaultMetricLabels)
+        logger.info({
+          message: 'Screened address',
+          address: userOperation.sender,
+        })
+        throw new SanctionedAddressError()
+      }
+
+      // by default the shared policyId is used
+      let alchemyPolicyId = sharedPolicyId
+
+      // use the passed in policyId if it's provided
+      if (paymasterContext) {
+        const verificationResult = await handleVerifyApiKey(monitoringCtx, {
+          apiKeyServiceClient,
+          key: paymasterContext.policyId,
+        })
+
+        if (!verificationResult.isVerified) {
+          metrics.policyIdVerificationFailures.inc(defaultMetricLabels)
+          throw new InvalidPolicyIdError()
+        }
+
+        const policy = await getSponsorshipPolicyForApiKeyId(
+          database,
+          verificationResult.apiKey!.id,
+        )
+        if (!policy || policy.providerType !== 'alchemy') {
+          metrics.providerMetadataNotFoundForPolicyId.inc(defaultMetricLabels)
+          throw new InvalidPolicyIdError()
+        }
+
+        alchemyPolicyId = policy.providerMetadata.policyId
+      }
+
+      const result = await handleAlchemyRequestPaymasterAndData(monitoringCtx, {
+        alchemyClient,
+        alchemyPolicyId,
+        userOperation,
+        entryPoint,
+      })
+
+      return {
+        ...result,
+        sponsor: ERC_7677_SPONSOR,
+      }
     },
   )
 

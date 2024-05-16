@@ -1,6 +1,6 @@
 import type {
   ClientWithAlchemyMethods,
-  RequestGasAndPaymasterAndDataResponse,
+  RequestPaymasterAndDataResponse,
 } from '@alchemy/aa-alchemy'
 import type { Address } from 'viem'
 
@@ -11,7 +11,7 @@ import {
 } from '@/paymasterProvider/alchemy/alchemyErrors'
 import type { UserOperation } from '@/schemas/userOperationSchema'
 
-export const alchemySponsorUserOperation = async (
+export const alchemyRequestPaymasterAndData = async (
   alchemyClient: ClientWithAlchemyMethods,
   policyId: string,
   userOperation: UserOperation,
@@ -29,37 +29,26 @@ export const alchemySponsorUserOperation = async (
 
   try {
     const response = (await alchemyClient.request({
-      method: 'alchemy_requestGasAndPaymasterAndData',
+      method: 'alchemy_requestPaymasterAndData',
       params: [
         {
           policyId,
           entryPoint,
-          // Types on the SDK don't seem to match docs https://docs.alchemy.com/reference/alchemy-requestgasandpaymasteranddata
-          // SDK types expects userOperation to be fully filled out, but docs say only sender, nonce, initCode and callData are required
-          // Lying to Typescript that all fields existing so we can get benefits of the typed response
           userOperation: {
             sender,
             nonce,
             initCode,
             callData,
-          } as Required<UserOperation>,
-          dummySignature: signature,
-          // Consistent with Pimlico and Stackup paymaster behavior, we ignore any overrides to gas estimation params (callGasLimit, verificationGasLimit, preVerificationGas)
-          overrides: {
+            signature,
             maxFeePerGas,
             maxPriorityFeePerGas,
-          },
+          } as Required<UserOperation>,
         },
       ],
-    })) as RequestGasAndPaymasterAndDataResponse<'0.6.0'>
+    })) as RequestPaymasterAndDataResponse<'0.6.0'>
 
     return {
       paymasterAndData: response.paymasterAndData,
-      callGasLimit: response.callGasLimit,
-      verificationGasLimit: response.verificationGasLimit,
-      preVerificationGas: response.preVerificationGas,
-      maxFeePerGas: response.maxFeePerGas,
-      maxPriorityFeePerGas: response.maxPriorityFeePerGas,
     }
   } catch (e: unknown) {
     // Alchemy returns a HttpRequestError when the RPC call fails
