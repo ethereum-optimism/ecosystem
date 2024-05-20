@@ -148,7 +148,10 @@ export const deploymentRebateM2Metadata: DialogMetadata = {
   ),
   primaryButton: (
     <Button id="deployment-rebate-add-contracts" size="lg" asChild>
-      <Link href={routes.CONTRACTS.path}>
+      <Link
+        href={routes.CONTRACTS.path}
+        onClick={() => trackOfferEngaged('Deployment Rebate')}
+      >
         <Text as="span" className="cursor-pointer">
           Add Contracts
         </Text>
