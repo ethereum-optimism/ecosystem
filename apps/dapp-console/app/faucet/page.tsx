@@ -11,12 +11,15 @@ export default function Faucet() {
   const authentications = null
 
   return (
-    <div className="flex flex-col w-full items-center py-10 px-6">
-      <div className="text-center mb-10">
-        <Text as="h1" className="text-5xl font-semibold mb-2">
+    <div className="flex flex-col w-full items-center py-10 px-2 sm:px-6 ">
+      <div className="text-center mb-10 px-4">
+        <Text as="h1" className="text-3xl sm:text-5xl font-semibold mb-2">
           Superchain Faucet
         </Text>
-        <Text as="p" className="text-lg text-center text-muted-foreground">
+        <Text
+          as="p"
+          className="text-md sm:text-lg text-center text-muted-foreground"
+        >
           Get test tokens for building applications on the Superchain
         </Text>
       </div>
