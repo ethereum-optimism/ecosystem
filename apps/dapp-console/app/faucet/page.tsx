@@ -6,8 +6,8 @@ import { Text } from '@eth-optimism/ui-components/src/components/ui/text/text'
 import { FaucetHeader } from '@/app/faucet/components/FaucetHeader/FaucetHeader'
 
 export default function Faucet() {
-  const signedIn = false
-  const wallet = false
+  const signedIn = true
+  const wallet = true
   const authentications = null
 
   return (

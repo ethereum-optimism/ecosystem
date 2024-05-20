@@ -31,9 +31,34 @@ const FaucetHeader = ({
             wallet={wallet}
             authentications={authentications}
           />
-          <div>images</div>
+          <LogoChain />
         </div>
       )}
+    </div>
+  )
+}
+
+const LogoChain = () => {
+  const images = [
+    '/logos/gitcoin-logo.png',
+    '/logos/worldid-logo.png',
+    '/logos/eas-logo.png',
+    '/logos/coinbase-logo.png',
+  ]
+  return (
+    <div className="flex flex-row-reverse">
+      {images.map((image, index) => (
+        <img
+          key={index}
+          src={image}
+          alt="Logo"
+          className="w-8 h-8"
+          style={{
+            zIndex: index,
+            marginLeft: index === images.length - 1 ? 0 : '-12px',
+          }}
+        />
+      ))}
     </div>
   )
 }
