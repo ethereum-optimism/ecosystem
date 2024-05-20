@@ -15,7 +15,6 @@ describe.skip('getMessageStatus', () => {
   it(`should be able to correctly find a finalized withdrawal`, async () => {
     /**
      * Tx hash of a withdrawal
-     *
      * @see https://goerli-optimism.etherscan.io/tx/0x8fb235a61079f3fa87da66e78c9da075281bc4ba5f1af4b95197dd9480e03bb5
      */
     const txWithdrawalHash =

@@ -1,29 +1,29 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import {
-  ethers,
-  Contract,
-  Overrides,
-  Signer,
-  BigNumber,
-  CallOverrides,
-} from 'ethers'
-import {
-  TransactionRequest,
-  TransactionResponse,
-  BlockTag,
-} from '@ethersproject/abstract-provider'
 import { predeploys } from '@eth-optimism/contracts'
 import { hexStringEquals } from '@eth-optimism/core-utils'
+import type {
+  BlockTag,
+  TransactionRequest,
+  TransactionResponse,
+} from '@ethersproject/abstract-provider'
+import type {
+  BigNumber,
+  CallOverrides,  Overrides,
+  Signer} from 'ethers';
+import {
+  Contract,
+  ethers} from 'ethers'
 
+import type { CrossChainMessenger } from '../cross-chain-messenger'
 import l1StandardBridgeArtifact from '../forge-artifacts/L1StandardBridge.json'
 import l2StandardBridgeArtifact from '../forge-artifacts/L2StandardBridge.json'
 import optimismMintableERC20 from '../forge-artifacts/OptimismMintableERC20.json'
-import { CrossChainMessenger } from '../cross-chain-messenger'
-import {
+import type {
+  AddressLike,
   IBridgeAdapter,
   NumberLike,
-  AddressLike,
-  TokenBridgeMessage,
+  TokenBridgeMessage} from '../interfaces';
+import {
   MessageDirection,
 } from '../interfaces'
 import { toAddress } from '../utils'
@@ -38,7 +38,6 @@ export class StandardBridgeAdapter implements IBridgeAdapter {
 
   /**
    * Creates a StandardBridgeAdapter instance.
-   *
    * @param opts Options for the adapter.
    * @param opts.messenger Provider used to make queries related to cross-chain interactions.
    * @param opts.l1Bridge L1 bridge contract.

@@ -1,14 +1,15 @@
-import { task, types } from 'hardhat/config'
-import { HardhatRuntimeEnvironment } from 'hardhat/types'
-import { Wallet, providers } from 'ethers'
-import { predeploys } from '@eth-optimism/core-utils'
 import 'hardhat-deploy'
 import '@nomiclabs/hardhat-ethers'
 
+import { predeploys } from '@eth-optimism/core-utils'
+import { providers,Wallet } from 'ethers'
+import { task, types } from 'hardhat/config'
+import type { HardhatRuntimeEnvironment } from 'hardhat/types'
+
 import {
   CrossChainMessenger,
-  StandardBridgeAdapter,
   MessageStatus,
+  StandardBridgeAdapter,
 } from '../src'
 
 task('finalize-withdrawal', 'Finalize a withdrawal')

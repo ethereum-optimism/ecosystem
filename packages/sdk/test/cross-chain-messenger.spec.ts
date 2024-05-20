@@ -1,24 +1,25 @@
-import { Provider } from '@ethersproject/abstract-provider'
-import { expectApprox, hashCrossDomainMessage } from '@eth-optimism/core-utils'
 import { predeploys } from '@eth-optimism/contracts'
-import { Contract } from 'ethers'
+import { expectApprox, hashCrossDomainMessage } from '@eth-optimism/core-utils'
+import { Provider } from '@ethersproject/abstract-provider'
+import type { Contract } from 'ethers'
 import { ethers } from 'hardhat'
 
-import { expect } from './setup'
+import type {
+  CrossChainMessage} from '../src';
 import {
-  MessageDirection,
   CONTRACT_ADDRESSES,
-  omit,
-  MessageStatus,
-  CrossChainMessage,
   CrossChainMessenger,
-  StandardBridgeAdapter,
   ETHBridgeAdapter,
+  IGNORABLE_CONTRACTS,
   L1ChainID,
   L2ChainID,
-  IGNORABLE_CONTRACTS,
+  MessageDirection,
+  MessageStatus,
+  omit,
+  StandardBridgeAdapter,
 } from '../src'
-import { DUMMY_MESSAGE, DUMMY_EXTENDED_MESSAGE } from './helpers'
+import { DUMMY_EXTENDED_MESSAGE,DUMMY_MESSAGE } from './helpers'
+import { expect } from './setup'
 
 describe('CrossChainMessenger', () => {
   let l1Signer: any

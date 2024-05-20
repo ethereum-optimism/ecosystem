@@ -1,11 +1,11 @@
-import {
+import type {
+  Block,
+  BlockWithTransactions,
   Provider,
   TransactionRequest,
   TransactionResponse,
-  Block,
-  BlockWithTransactions,
 } from '@ethersproject/abstract-provider'
-import { BigNumber } from 'ethers'
+import type { BigNumber } from 'ethers'
 
 /**
  * JSON transaction representation when returned by L2Geth nodes. This is simply an extension to
@@ -43,14 +43,12 @@ export interface L2BlockWithTransactions extends BlockWithTransactions {
 export type L2Provider<TProvider extends Provider> = TProvider & {
   /**
    * Gets the current L1 (data) gas price.
-   *
    * @returns Current L1 data gas price in wei.
    */
   getL1GasPrice(): Promise<BigNumber>
 
   /**
    * Estimates the L1 (data) gas required for a transaction.
-   *
    * @param tx Transaction to estimate L1 gas for.
    * @returns Estimated L1 gas.
    */
@@ -59,7 +57,6 @@ export type L2Provider<TProvider extends Provider> = TProvider & {
   /**
    * Estimates the L1 (data) gas cost for a transaction in wei by multiplying the estimated L1 gas
    * cost by the current L1 gas price.
-   *
    * @param tx Transaction to estimate L1 gas cost for.
    * @returns Estimated L1 gas cost.
    */
@@ -69,7 +66,6 @@ export type L2Provider<TProvider extends Provider> = TProvider & {
    * Estimates the L2 (execution) gas cost for a transaction in wei by multiplying the estimated L1
    * gas cost by the current L2 gas price. This is a simple multiplication of the result of
    * getGasPrice and estimateGas for the given transaction request.
-   *
    * @param tx Transaction to estimate L2 gas cost for.
    * @returns Estimated L2 gas cost.
    */
@@ -78,7 +74,6 @@ export type L2Provider<TProvider extends Provider> = TProvider & {
   /**
    * Estimates the total gas cost for a transaction in wei by adding the estimated the L1 gas cost
    * and the estimated L2 gas cost.
-   *
    * @param tx Transaction to estimate total gas cost for.
    * @returns Estimated total gas cost.
    */

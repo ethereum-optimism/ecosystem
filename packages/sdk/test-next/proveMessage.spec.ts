@@ -69,7 +69,6 @@ describe.skip('prove message', () => {
   `, async () => {
     /**
      * Tx hash of legacy withdrawal
-     *
      * @see https://goerli-optimism.etherscan.io/tx/0xd66fda632b51a8b25a9d260d70da8be57b9930c4616370861526335c3e8eef81
      */
     const txWithdrawalHash =

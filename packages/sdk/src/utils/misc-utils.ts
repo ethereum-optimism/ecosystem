@@ -3,7 +3,6 @@
 
 /**
  * Returns a copy of the given object ({ ...obj }) with the given keys omitted.
- *
  * @param obj Object to return with the keys omitted.
  * @param keys Keys to omit from the returned object.
  * @returns A copy of the given object with the given keys omitted.

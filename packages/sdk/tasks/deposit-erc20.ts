@@ -1,30 +1,32 @@
-import { promises as fs } from 'fs'
-
-import { task, types } from 'hardhat/config'
-import { HardhatRuntimeEnvironment } from 'hardhat/types'
-import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers'
 import '@nomiclabs/hardhat-ethers'
 import 'hardhat-deploy'
-import { Event, Contract, Wallet, providers, utils, ethers } from 'ethers'
-import { predeploys, sleep } from '@eth-optimism/core-utils'
 
-import Artifact__WETH9 from '../src/forge-artifacts/WETH9.json'
-import Artifact__OptimismMintableERC20TokenFactory from '../src/forge-artifacts/OptimismMintableERC20Factory.json'
-import Artifact__OptimismMintableERC20Token from '../src/forge-artifacts/OptimismMintableERC20.json'
-import Artifact__L2ToL1MessagePasser from '../src/forge-artifacts/L2ToL1MessagePasser.json'
-import Artifact__L2CrossDomainMessenger from '../src/forge-artifacts/L2CrossDomainMessenger.json'
-import Artifact__L2StandardBridge from '../src/forge-artifacts/L2StandardBridge.json'
-import Artifact__OptimismPortal from '../src/forge-artifacts/OptimismPortal.json'
+import { predeploys, sleep } from '@eth-optimism/core-utils'
+import type { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers'
+import type {Event, Wallet } from 'ethers';
+import { Contract, ethers, providers, utils } from 'ethers'
+import { promises as fs } from 'fs'
+import { task, types } from 'hardhat/config'
+import type { HardhatRuntimeEnvironment } from 'hardhat/types'
+
+import type {
+  OEContractsLike} from '../src';
+import {
+  CONTRACT_ADDRESSES,
+  CrossChainMessenger,
+  DEFAULT_L2_CONTRACT_ADDRESSES,
+  MessageStatus
+} from '../src'
 import Artifact__L1CrossDomainMessenger from '../src/forge-artifacts/L1CrossDomainMessenger.json'
 import Artifact__L1StandardBridge from '../src/forge-artifacts/L1StandardBridge.json'
+import Artifact__L2CrossDomainMessenger from '../src/forge-artifacts/L2CrossDomainMessenger.json'
 import Artifact__L2OutputOracle from '../src/forge-artifacts/L2OutputOracle.json'
-import {
-  CrossChainMessenger,
-  MessageStatus,
-  CONTRACT_ADDRESSES,
-  OEContractsLike,
-  DEFAULT_L2_CONTRACT_ADDRESSES,
-} from '../src'
+import Artifact__L2StandardBridge from '../src/forge-artifacts/L2StandardBridge.json'
+import Artifact__L2ToL1MessagePasser from '../src/forge-artifacts/L2ToL1MessagePasser.json'
+import Artifact__OptimismMintableERC20Token from '../src/forge-artifacts/OptimismMintableERC20.json'
+import Artifact__OptimismMintableERC20TokenFactory from '../src/forge-artifacts/OptimismMintableERC20Factory.json'
+import Artifact__OptimismPortal from '../src/forge-artifacts/OptimismPortal.json'
+import Artifact__WETH9 from '../src/forge-artifacts/WETH9.json'
 
 const deployWETH9 = async (
   hre: HardhatRuntimeEnvironment,

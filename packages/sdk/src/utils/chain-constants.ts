@@ -1,6 +1,21 @@
 import { predeploys } from '@eth-optimism/core-utils'
 import { ethers } from 'ethers'
 
+import {
+  DAIBridgeAdapter,
+  ECOBridgeAdapter,
+  StandardBridgeAdapter,
+} from '../adapters'
+import type {
+  BridgeAdapterData,
+  OEContractsLike,
+  OEL1ContractsLike,
+  OEL2ContractsLike} from '../interfaces';
+import {
+  L1ChainID,
+  L2ChainID
+} from '../interfaces'
+
 // The addresses below should be for the proxy if it is a proxied contract.
 
 const portalAddresses = {
@@ -53,20 +68,6 @@ const canonicalTransactionChainAddresses = {
   sepolia: ethers.constants.AddressZero,
 }
 
-import {
-  L1ChainID,
-  L2ChainID,
-  OEContractsLike,
-  OEL1ContractsLike,
-  OEL2ContractsLike,
-  BridgeAdapterData,
-} from '../interfaces'
-import {
-  StandardBridgeAdapter,
-  DAIBridgeAdapter,
-  ECOBridgeAdapter,
-} from '../adapters'
-
 export const DEPOSIT_CONFIRMATION_BLOCKS: {
   [ChainID in L2ChainID]: number
 } = {
@@ -114,7 +115,6 @@ export const DEFAULT_L2_CONTRACT_ADDRESSES: OEL2ContractsLike = {
 
 /**
  * Loads the L1 contracts for a given network by the network name.
- *
  * @param network The name of the network to load the contracts for.
  * @returns The L1 contracts for the given network.
  */

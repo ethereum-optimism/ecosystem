@@ -1,80 +1,81 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
+import { getContractInterface, predeploys } from '@eth-optimism/contracts'
+import type {
+  BedrockCrossChainMessageProof,  BedrockOutputData} from '@eth-optimism/core-utils';
 import {
-  Provider,
-  BlockTag,
-  TransactionReceipt,
-  TransactionResponse,
-  TransactionRequest,
-} from '@ethersproject/abstract-provider'
-import { Signer } from '@ethersproject/abstract-signer'
-import {
-  ethers,
-  BigNumber,
-  Overrides,
-  CallOverrides,
-  PayableOverrides,
-} from 'ethers'
-import {
-  sleep,
-  remove0x,
-  toHexString,
-  toRpcHexString,
+  decodeVersionedNonce,
   encodeCrossDomainMessageV0,
   encodeCrossDomainMessageV1,
-  BedrockOutputData,
-  BedrockCrossChainMessageProof,
-  decodeVersionedNonce,
   encodeVersionedNonce,
   getChainId,
   hashCrossDomainMessagev0,
   hashCrossDomainMessagev1,
+  remove0x,
+  sleep,
+  toHexString,
+  toRpcHexString,
 } from '@eth-optimism/core-utils'
-import { getContractInterface, predeploys } from '@eth-optimism/contracts'
+import type {
+  BlockTag,
+  TransactionReceipt,
+  TransactionRequest,  TransactionResponse} from '@ethersproject/abstract-provider';
+import {
+  Provider
+} from '@ethersproject/abstract-provider'
+import type { Signer } from '@ethersproject/abstract-signer'
+import type {
+  CallOverrides,
+  Overrides,
+  PayableOverrides} from 'ethers';
+import {
+  BigNumber,
+  ethers} from 'ethers'
 import * as rlp from 'rlp'
 import semver from 'semver'
 
-import {
-  OEContracts,
-  OEContractsLike,
-  MessageLike,
-  MessageRequestLike,
-  TransactionLike,
+import type {
   AddressLike,
-  NumberLike,
-  SignerOrProviderLike,
-  CrossChainMessage,
-  CrossChainMessageRequest,
-  CrossChainMessageProof,
-  MessageDirection,
-  MessageStatus,
-  TokenBridgeMessage,
-  MessageReceipt,
-  MessageReceiptStatus,
   BridgeAdapterData,
   BridgeAdapters,
+  CrossChainMessage,
+  CrossChainMessageProof,
+  CrossChainMessageRequest,
+  IBridgeAdapter,
+  LowLevelMessage,  MessageLike,
+  MessageReceipt,
+  MessageRequestLike,
+  NumberLike,
+  OEContracts,
+  OEContractsLike,
+  ProvenWithdrawal,
+  SignerOrProviderLike,
   StateRoot,
   StateRootBatch,
-  IBridgeAdapter,
-  ProvenWithdrawal,
-  LowLevelMessage,
-  FPACProvenWithdrawal,
-} from './interfaces'
+  TokenBridgeMessage,
+  TransactionLike} from './interfaces';
 import {
-  toSignerOrProvider,
-  toNumber,
-  toTransactionHash,
-  DeepPartial,
+  FPACProvenWithdrawal,
+  MessageDirection,
+  MessageReceiptStatus,
+  MessageStatus,
+} from './interfaces'
+import type {
+  DeepPartial} from './utils';
+import {
+  CHAIN_BLOCK_TIMES,
+  DEPOSIT_CONFIRMATION_BLOCKS,
   getAllOEContracts,
   getBridgeAdapters,
+  getContractInterfaceBedrock,
+  hashLowLevelMessage,
+  hashMessageHash,
   makeMerkleTreeProof,
   makeStateTrieProof,
-  hashLowLevelMessage,
   migratedWithdrawalGasLimit,
-  DEPOSIT_CONFIRMATION_BLOCKS,
-  CHAIN_BLOCK_TIMES,
-  hashMessageHash,
-  getContractInterfaceBedrock,
   toJsonRpcProvider,
+  toNumber,
+  toSignerOrProvider,
+  toTransactionHash,
 } from './utils'
 
 export class CrossChainMessenger {
@@ -130,7 +131,6 @@ export class CrossChainMessenger {
 
   /**
    * Creates a new CrossChainProvider instance.
-   *
    * @param opts Options for the provider.
    * @param opts.l1SignerOrProvider Signer or Provider for the L1 chain, or a JSON-RPC url.
    * @param opts.l2SignerOrProvider Signer or Provider for the L2 chain, or a JSON-RPC url.
@@ -240,7 +240,6 @@ export class CrossChainMessenger {
    * Uses portal version to determine if the messenger is using fpac contracts. Better not to cache
    * this value as it will change during the fpac upgrade and we want clients to automatically
    * begin using the new logic without throwing any errors.
-   *
    * @returns Whether or not the messenger is using fpac contracts.
    */
   public async fpac(): Promise<boolean> {
@@ -261,7 +260,6 @@ export class CrossChainMessenger {
 
   /**
    * Retrieves all cross chain messages sent within a given transaction.
-   *
    * @param transaction Transaction hash or receipt to find messages from.
    * @param opts Options object.
    * @param opts.direction Direction to search for messages in. If not provided, will attempt to
@@ -355,7 +353,6 @@ export class CrossChainMessenger {
 
   /**
    * Transforms a legacy message into its corresponding Bedrock representation.
-   *
    * @param message Legacy message to transform.
    * @param messageIndex The index of the message, if multiple exist from multicall
    * @returns Bedrock representation of the message.
@@ -403,7 +400,6 @@ export class CrossChainMessenger {
   /**
    * Transforms a CrossChainMessenger message into its low-level representation inside the
    * L2ToL1MessagePasser contract on L2.
-   *
    * @param message Message to transform.
    * @param messageIndex The index of the message, if multiple exist from multicall
    * @return Transformed message.
@@ -510,7 +506,6 @@ export class CrossChainMessenger {
   /**
    * Finds the appropriate bridge adapter for a given L1<>L2 token pair. Will throw if no bridges
    * support the token pair or if more than one bridge supports the token pair.
-   *
    * @param l1Token L1 token address.
    * @param l2Token L2 token address.
    * @returns The appropriate bridge adapter for the given token pair.
@@ -548,7 +543,6 @@ export class CrossChainMessenger {
 
   /**
    * Gets all deposits for a given address.
-   *
    * @param address Address to search for messages from.
    * @param opts Options object.
    * @param opts.fromBlock Block to start searching for messages from. If not provided, will start
@@ -582,7 +576,6 @@ export class CrossChainMessenger {
 
   /**
    * Gets all withdrawals for a given address.
-   *
    * @param address Address to search for messages from.
    * @param opts Options object.
    * @param opts.fromBlock Block to start searching for messages from. If not provided, will start
@@ -620,7 +613,6 @@ export class CrossChainMessenger {
    * requests. For now I'm going to keep this function here, but we could consider putting a
    * similar function inside of utils/coercion.ts if people want to use this without having to
    * create an entire CrossChainProvider object.
-   *
    * @param message MessageLike to resolve into a CrossChainMessage.
    * @param messageIndex The index of the message, if multiple exist from multicall
    * @returns Message coerced into a CrossChainMessage.
@@ -683,7 +675,6 @@ export class CrossChainMessenger {
 
   /**
    * Retrieves the status of a particular message as an enum.
-   *
    * @param message Cross chain message to check the status of.
    * @param messageIndex The index of the message, if multiple exist from multicall
    * @param fromBlockOrBlockHash The start block to use for the query filter on the RECEIVING chain
@@ -857,7 +848,6 @@ export class CrossChainMessenger {
 
   /**
    * Finds the receipt of the transaction that executed a particular cross chain message.
-   *
    * @param message Message to find the receipt of.
    * @param messageIndex The index of the message, if multiple exist from multicall
    * @param fromBlockOrBlockHash The start block to use for the query filter on the RECEIVING chain
@@ -966,7 +956,6 @@ export class CrossChainMessenger {
   /**
    * Waits for a message to be executed and returns the receipt of the transaction that executed
    * the given message.
-   *
    * @param message Message to wait for.
    * @param opts Options to pass to the waiting function.
    * @param opts.confirmations Number of transaction confirmations to wait for before returning.
@@ -1021,7 +1010,6 @@ export class CrossChainMessenger {
    * status of the given message changes to a status that implies the expected status, this will
    * still return. If the status of the message changes to a status that exclues the expected
    * status, this will throw an error.
-   *
    * @param message Message to wait for.
    * @param status Expected status of the message.
    * @param opts Options to pass to the waiting function.
@@ -1109,7 +1097,6 @@ export class CrossChainMessenger {
   /**
    * Estimates the amount of gas required to fully execute a given message on L2. Only applies to
    * L1 => L2 messages. You would supply this gas limit when sending the message to L2.
-   *
    * @param message Message get a gas estimate for.
    * @param opts Options object.
    * @param opts.bufferPercent Percentage of gas to add to the estimate. Defaults to 20.
@@ -1158,7 +1145,6 @@ export class CrossChainMessenger {
    * message being sent to L1, this will return the estimated time until the message will complete
    * its challenge period. When this is a message being sent to L2, this will return the estimated
    * amount of time until the message will be picked up and executed on L2.
-   *
    * @param message Message to estimate the time remaining for.
    * @param messageIndex The index of the message, if multiple exist from multicall
    * @param opts.fromBlockOrBlockHash The start block to use for the query filter on the RECEIVING chain
@@ -1235,7 +1221,6 @@ export class CrossChainMessenger {
 
   /**
    * Queries the current challenge period in seconds from the StateCommitmentChain.
-   *
    * @returns Current challenge period in seconds.
    */
   public async getChallengePeriodSeconds(): Promise<number> {
@@ -1263,10 +1248,8 @@ export class CrossChainMessenger {
   /**
    * Queries the OptimismPortal contract's `provenWithdrawals` mapping
    * for a ProvenWithdrawal that matches the passed withdrawalHash
-   *
    * @bedrock
    * Note: This function is bedrock-specific.
-   *
    * @returns A ProvenWithdrawal object
    */
   public async getProvenWithdrawal(
@@ -1370,7 +1353,6 @@ export class CrossChainMessenger {
   /**
    * Checks whether a given root claim is valid. Uses the L2 node that the SDK is connected to
    * when verifying the claim. Assumes that the connected L2 node is honest.
-   *
    * @param outputRoot Output root to verify.
    * @param l2BlockNumber L2 block number the root is for.
    * @returns Whether or not the root is valid.
@@ -1437,7 +1419,6 @@ export class CrossChainMessenger {
 
   /**
    * Returns the Bedrock output root that corresponds to the given message.
-   *
    * @param message Message to get the Bedrock output root for.
    * @param messageIndex The index of the message, if multiple exist from multicall
    * @returns Bedrock output root.
@@ -1560,7 +1541,6 @@ export class CrossChainMessenger {
    * Returns the state root that corresponds to a given message. This is the state root for the
    * block in which the transaction was included, as published to the StateCommitmentChain. If the
    * state root for the given message has not been published yet, this function returns null.
-   *
    * @param message Message to find a state root for.
    * @param messageIndex The index of the message, if multiple exist from multicall
    * @returns State root for the block in which the message was created.
@@ -1620,7 +1600,6 @@ export class CrossChainMessenger {
   /**
    * Returns the StateBatchAppended event that was emitted when the batch with a given index was
    * created. Returns null if no such event exists (the batch has not been submitted).
-   *
    * @param batchIndex Index of the batch to find an event for.
    * @returns StateBatchAppended event for the batch, or null if no such batch exists.
    */
@@ -1646,7 +1625,6 @@ export class CrossChainMessenger {
   /**
    * Returns the StateBatchAppended event for the batch that includes the transaction with the
    * given index. Returns null if no such event exists.
-   *
    * @param transactionIndex Index of the L2 transaction to find an event for.
    * @returns StateBatchAppended event for the batch that includes the given transaction by index.
    */
@@ -1712,7 +1690,6 @@ export class CrossChainMessenger {
   /**
    * Returns information about the state root batch that included the state root for the given
    * transaction by index. Returns null if no such state root has been published yet.
-   *
    * @param transactionIndex Index of the L2 transaction to find a state root batch for.
    * @returns State root batch for the given transaction index, or null if none exists yet.
    */
@@ -1747,7 +1724,6 @@ export class CrossChainMessenger {
 
   /**
    * Generates the proof required to finalize an L2 to L1 message.
-   *
    * @param message Message to generate a proof for.
    * @param messageIndex The index of the message, if multiple exist from multicall
    * @returns Proof that can be used to finalize the message.
@@ -1807,7 +1783,6 @@ export class CrossChainMessenger {
 
   /**
    * Generates the bedrock proof required to finalize an L2 to L1 message.
-   *
    * @param message Message to generate a proof for.
    * @param messageIndex The index of the message, if multiple exist from multicall
    * @returns Proof that can be used to finalize the message.
@@ -1859,7 +1834,6 @@ export class CrossChainMessenger {
   /**
    * Sends a given cross chain message. Where the message is sent depends on the direction attached
    * to the message itself.
-   *
    * @param message Cross chain message to send.
    * @param opts Additional options.
    * @param opts.signer Optional signer to use to send the transaction.
@@ -1886,7 +1860,6 @@ export class CrossChainMessenger {
   /**
    * Resends a given cross chain message with a different gas limit. Only applies to L1 to L2
    * messages. If provided an L2 to L1 message, this function will throw an error.
-   *
    * @param message Cross chain message to resend.
    * @param messageGasLimit New gas limit to use for the message.
    * @param opts Additional options.
@@ -1914,7 +1887,6 @@ export class CrossChainMessenger {
   /**
    * Proves a cross chain message that was sent from L2 to L1. Only applicable for L2 to L1
    * messages.
-   *
    * @param message Message to finalize.
    * @param opts Additional options.
    * @param opts.signer Optional signer to use to send the transaction.
@@ -1943,7 +1915,6 @@ export class CrossChainMessenger {
   /**
    * Finalizes a cross chain message that was sent from L2 to L1. Only applicable for L2 to L1
    * messages. Will throw an error if the message has not completed its challenge period yet.
-   *
    * @param message Message to finalize.
    * @param opts Additional options.
    * @param opts.signer Optional signer to use to send the transaction.
@@ -1970,7 +1941,6 @@ export class CrossChainMessenger {
 
   /**
    * Deposits some ETH into the L2 chain.
-   *
    * @param amount Amount of ETH to deposit (in wei).
    * @param opts Additional options.
    * @param opts.signer Optional signer to use to send the transaction.
@@ -1995,7 +1965,6 @@ export class CrossChainMessenger {
 
   /**
    * Withdraws some ETH back to the L1 chain.
-   *
    * @param amount Amount of ETH to withdraw.
    * @param opts Additional options.
    * @param opts.signer Optional signer to use to send the transaction.
@@ -2018,7 +1987,6 @@ export class CrossChainMessenger {
 
   /**
    * Queries the account's approval amount for a given L1 token.
-   *
    * @param l1Token The L1 token address.
    * @param l2Token The L2 token address.
    * @param opts Additional options.
@@ -2038,7 +2006,6 @@ export class CrossChainMessenger {
 
   /**
    * Approves a deposit into the L2 chain.
-   *
    * @param l1Token The L1 token address.
    * @param l2Token The L2 token address.
    * @param amount Amount of the token to approve.
@@ -2068,7 +2035,6 @@ export class CrossChainMessenger {
 
   /**
    * Deposits some ERC20 tokens into the L2 chain.
-   *
    * @param l1Token Address of the L1 token.
    * @param l2Token Address of the L2 token.
    * @param amount Amount to deposit.
@@ -2102,7 +2068,6 @@ export class CrossChainMessenger {
 
   /**
    * Withdraws some ERC20 tokens back to the L1 chain.
-   *
    * @param l1Token Address of the L1 token.
    * @param l2Token Address of the L2 token.
    * @param amount Amount to withdraw.
@@ -2140,7 +2105,6 @@ export class CrossChainMessenger {
     /**
      * Generates a transaction that sends a given cross chain message. This transaction can be signed
      * and executed by a signer.
-     *
      * @param message Cross chain message to send.
      * @param opts Additional options.
      * @param opts.l2GasLimit Optional gas limit to use for the transaction on L2.
@@ -2174,7 +2138,6 @@ export class CrossChainMessenger {
     /**
      * Generates a transaction that resends a given cross chain message. Only applies to L1 to L2
      * messages. This transaction can be signed and executed by a signer.
-     *
      * @param message Cross chain message to resend.
      * @param messageGasLimit New gas limit to use for the message.
      * @param opts Additional options.
@@ -2230,7 +2193,6 @@ export class CrossChainMessenger {
     /**
      * Generates a message proving transaction that can be signed and executed. Only
      * applicable for L2 to L1 messages.
-     *
      * @param message Message to generate the proving transaction for.
      * @param opts Additional options.
      * @param opts.overrides Optional transaction overrides.
@@ -2287,7 +2249,6 @@ export class CrossChainMessenger {
      * Generates a message finalization transaction that can be signed and executed. Only
      * applicable for L2 to L1 messages. Will throw an error if the message has not completed
      * its challenge period yet.
-     *
      * @param message Message to generate the finalization transaction for.
      * @param opts Additional options.
      * @param opts.overrides Optional transaction overrides.
@@ -2391,7 +2352,6 @@ export class CrossChainMessenger {
 
     /**
      * Generates a transaction for depositing some ETH into the L2 chain.
-     *
      * @param amount Amount of ETH to deposit.
      * @param opts Additional options.
      * @param opts.recipient Optional address to receive the funds on L2. Defaults to sender.
@@ -2431,7 +2391,6 @@ export class CrossChainMessenger {
 
     /**
      * Generates a transaction for withdrawing some ETH back to the L1 chain.
-     *
      * @param amount Amount of ETH to withdraw.
      * @param opts Additional options.
      * @param opts.recipient Optional address to receive the funds on L1. Defaults to sender.
@@ -2455,7 +2414,6 @@ export class CrossChainMessenger {
 
     /**
      * Generates a transaction for approving some tokens to deposit into the L2 chain.
-     *
      * @param l1Token The L1 token address.
      * @param l2Token The L2 token address.
      * @param amount Amount of the token to approve.
@@ -2477,7 +2435,6 @@ export class CrossChainMessenger {
 
     /**
      * Generates a transaction for depositing some ERC20 tokens into the L2 chain.
-     *
      * @param l1Token Address of the L1 token.
      * @param l2Token Address of the L2 token.
      * @param amount Amount to deposit.
@@ -2540,7 +2497,6 @@ export class CrossChainMessenger {
 
     /**
      * Generates a transaction for withdrawing some ERC20 tokens back to the L1 chain.
-     *
      * @param l1Token Address of the L1 token.
      * @param l2Token Address of the L2 token.
      * @param amount Amount to withdraw.
@@ -2570,7 +2526,6 @@ export class CrossChainMessenger {
   estimateGas = {
     /**
      * Estimates gas required to send a cross chain message.
-     *
      * @param message Cross chain message to send.
      * @param opts Additional options.
      * @param opts.l2GasLimit Optional gas limit to use for the transaction on L2.
@@ -2594,7 +2549,6 @@ export class CrossChainMessenger {
 
     /**
      * Estimates gas required to resend a cross chain message. Only applies to L1 to L2 messages.
-     *
      * @param message Cross chain message to resend.
      * @param messageGasLimit New gas limit to use for the message.
      * @param opts Additional options.
@@ -2619,7 +2573,6 @@ export class CrossChainMessenger {
 
     /**
      * Estimates gas required to prove a cross chain message. Only applies to L2 to L1 messages.
-     *
      * @param message Message to generate the proving transaction for.
      * @param opts Additional options.
      * @param opts.overrides Optional transaction overrides.
@@ -2640,7 +2593,6 @@ export class CrossChainMessenger {
 
     /**
      * Estimates gas required to finalize a cross chain message. Only applies to L2 to L1 messages.
-     *
      * @param message Message to generate the finalization transaction for.
      * @param opts Additional options.
      * @param opts.overrides Optional transaction overrides.
@@ -2665,7 +2617,6 @@ export class CrossChainMessenger {
 
     /**
      * Estimates gas required to deposit some ETH into the L2 chain.
-     *
      * @param amount Amount of ETH to deposit.
      * @param opts Additional options.
      * @param opts.recipient Optional address to receive the funds on L2. Defaults to sender.
@@ -2688,7 +2639,6 @@ export class CrossChainMessenger {
 
     /**
      * Estimates gas required to withdraw some ETH back to the L1 chain.
-     *
      * @param amount Amount of ETH to withdraw.
      * @param opts Additional options.
      * @param opts.recipient Optional address to receive the funds on L1. Defaults to sender.
@@ -2709,7 +2659,6 @@ export class CrossChainMessenger {
 
     /**
      * Estimates gas required to approve some tokens to deposit into the L2 chain.
-     *
      * @param l1Token The L1 token address.
      * @param l2Token The L2 token address.
      * @param amount Amount of the token to approve.
@@ -2737,7 +2686,6 @@ export class CrossChainMessenger {
 
     /**
      * Estimates gas required to deposit some ERC20 tokens into the L2 chain.
-     *
      * @param l1Token Address of the L1 token.
      * @param l2Token Address of the L2 token.
      * @param amount Amount to deposit.
@@ -2770,7 +2718,6 @@ export class CrossChainMessenger {
 
     /**
      * Estimates gas required to withdraw some ERC20 tokens back to the L1 chain.
-     *
      * @param l1Token Address of the L1 token.
      * @param l2Token Address of the L2 token.
      * @param amount Amount to withdraw.

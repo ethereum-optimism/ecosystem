@@ -1,19 +1,19 @@
-import {
-  Contract,
-  Overrides,
-  Signer,
-  BigNumber,
-  CallOverrides,
-  PayableOverrides,
-} from 'ethers'
-import {
+import type {
+  BlockTag,
   TransactionRequest,
   TransactionResponse,
-  BlockTag,
 } from '@ethersproject/abstract-provider'
+import type {
+  BigNumber,
+  CallOverrides,
+  Contract,
+  Overrides,
+  PayableOverrides,
+  Signer,
+} from 'ethers'
 
-import { NumberLike, AddressLike, TokenBridgeMessage } from './types'
-import { CrossChainMessenger } from '../cross-chain-messenger'
+import type { CrossChainMessenger } from '../cross-chain-messenger'
+import type { AddressLike, NumberLike, TokenBridgeMessage } from './types'
 
 /**
  * Represents an adapter for an L1<>L2 token bridge. Each custom bridge currently needs its own
@@ -37,7 +37,6 @@ export interface IBridgeAdapter {
 
   /**
    * Gets all deposits for a given address.
-   *
    * @param address Address to search for messages from.
    * @param opts Options object.
    * @param opts.fromBlock Block to start searching for messages from. If not provided, will start
@@ -56,7 +55,6 @@ export interface IBridgeAdapter {
 
   /**
    * Gets all withdrawals for a given address.
-   *
    * @param address Address to search for messages from.
    * @param opts Options object.
    * @param opts.fromBlock Block to start searching for messages from. If not provided, will start
@@ -75,7 +73,6 @@ export interface IBridgeAdapter {
 
   /**
    * Checks whether the given token pair is supported by the bridge.
-   *
    * @param l1Token The L1 token address.
    * @param l2Token The L2 token address.
    * @returns Whether the given token pair is supported by the bridge.
@@ -87,7 +84,6 @@ export interface IBridgeAdapter {
 
   /**
    * Queries the account's approval amount for a given L1 token.
-   *
    * @param l1Token The L1 token address.
    * @param l2Token The L2 token address.
    * @param signer Signer to query the approval for.
@@ -101,7 +97,6 @@ export interface IBridgeAdapter {
 
   /**
    * Approves a deposit into the L2 chain.
-   *
    * @param l1Token The L1 token address.
    * @param l2Token The L2 token address.
    * @param amount Amount of the token to approve.
@@ -122,7 +117,6 @@ export interface IBridgeAdapter {
 
   /**
    * Deposits some tokens into the L2 chain.
-   *
    * @param l1Token The L1 token address.
    * @param l2Token The L2 token address.
    * @param amount Amount of the token to deposit.
@@ -147,7 +141,6 @@ export interface IBridgeAdapter {
 
   /**
    * Withdraws some tokens back to the L1 chain.
-   *
    * @param l1Token The L1 token address.
    * @param l2Token The L2 token address.
    * @param amount Amount of the token to withdraw.
@@ -175,7 +168,6 @@ export interface IBridgeAdapter {
   populateTransaction: {
     /**
      * Generates a transaction for approving some tokens to deposit into the L2 chain.
-     *
      * @param l1Token The L1 token address.
      * @param l2Token The L2 token address.
      * @param amount Amount of the token to approve.
@@ -194,7 +186,6 @@ export interface IBridgeAdapter {
 
     /**
      * Generates a transaction for depositing some tokens into the L2 chain.
-     *
      * @param l1Token The L1 token address.
      * @param l2Token The L2 token address.
      * @param amount Amount of the token to deposit.
@@ -217,7 +208,6 @@ export interface IBridgeAdapter {
 
     /**
      * Generates a transaction for withdrawing some tokens back to the L1 chain.
-     *
      * @param l1Token The L1 token address.
      * @param l2Token The L2 token address.
      * @param amount Amount of the token to withdraw.
@@ -244,7 +234,6 @@ export interface IBridgeAdapter {
   estimateGas: {
     /**
      * Estimates gas required to approve some tokens to deposit into the L2 chain.
-     *
      * @param l1Token The L1 token address.
      * @param l2Token The L2 token address.
      * @param amount Amount of the token to approve.
@@ -263,7 +252,6 @@ export interface IBridgeAdapter {
 
     /**
      * Estimates gas required to deposit some tokens into the L2 chain.
-     *
      * @param l1Token The L1 token address.
      * @param l2Token The L2 token address.
      * @param amount Amount of the token to deposit.
@@ -286,7 +274,6 @@ export interface IBridgeAdapter {
 
     /**
      * Estimates gas required to withdraw some tokens back to the L1 chain.
-     *
      * @param l1Token The L1 token address.
      * @param l2Token The L2 token address.
      * @param amount Amount of the token to withdraw.

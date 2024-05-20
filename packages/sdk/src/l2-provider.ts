@@ -1,18 +1,17 @@
-import { Provider, TransactionRequest } from '@ethersproject/abstract-provider'
+import { getContractInterface,predeploys } from '@eth-optimism/contracts'
+import type { Provider, TransactionRequest } from '@ethersproject/abstract-provider'
 import { serialize } from '@ethersproject/transactions'
-import { Contract, BigNumber } from 'ethers'
-import { predeploys, getContractInterface } from '@eth-optimism/contracts'
+import { BigNumber,Contract } from 'ethers'
 import cloneDeep from 'lodash/cloneDeep'
 
+import type { L2Provider, NumberLike,ProviderLike } from './interfaces'
+import { toBigNumber,toNumber, toProvider } from './utils'
 import { assert } from './utils/assert'
-import { L2Provider, ProviderLike, NumberLike } from './interfaces'
-import { toProvider, toNumber, toBigNumber } from './utils'
 
 type ProviderTypeIsWrong = any
 
 /**
  * Gets a reasonable nonce for the transaction.
- *
  * @param provider Provider to get the nonce from.
  * @param tx Requested transaction.
  * @returns A reasonable nonce for the transaction.
@@ -33,7 +32,6 @@ const getNonceForTx = async (
 
 /**
  * Returns a Contract object for the GasPriceOracle.
- *
  * @param provider Provider to attach the contract to.
  * @returns Contract object for the GasPriceOracle.
  */
@@ -47,7 +45,6 @@ const connectGasPriceOracle = (provider: ProviderLike): Contract => {
 
 /**
  * Gets the current L1 gas price as seen on L2.
- *
  * @param l2Provider L2 provider to query the L1 gas price from.
  * @returns Current L1 gas price as seen on L2.
  */
@@ -60,7 +57,6 @@ export const getL1GasPrice = async (
 
 /**
  * Estimates the amount of L1 gas required for a given L2 transaction.
- *
  * @param l2Provider L2 provider to query the gas usage from.
  * @param tx Transaction to estimate L1 gas for.
  * @returns Estimated L1 gas.
@@ -91,7 +87,6 @@ export const estimateL1Gas = async (
 
 /**
  * Estimates the amount of L1 gas cost for a given L2 transaction in wei.
- *
  * @param l2Provider L2 provider to query the gas usage from.
  * @param tx Transaction to estimate L1 gas cost for.
  * @returns Estimated L1 gas cost.
@@ -122,7 +117,6 @@ export const estimateL1GasCost = async (
 
 /**
  * Estimates the L2 gas cost for a given L2 transaction in wei.
- *
  * @param l2Provider L2 provider to query the gas usage from.
  * @param tx Transaction to estimate L2 gas cost for.
  * @returns Estimated L2 gas cost.
@@ -139,7 +133,6 @@ export const estimateL2GasCost = async (
 
 /**
  * Estimates the total gas cost for a given L2 transaction in wei.
- *
  * @param l2Provider L2 provider to query the gas usage from.
  * @param tx Transaction to estimate total gas cost for.
  * @returns Estimated total gas cost.
@@ -156,7 +149,6 @@ export const estimateTotalGasCost = async (
 /**
  * Determines if a given Provider is an L2Provider.  Will coerce type
  * if true
- *
  * @param provider The provider to check
  * @returns Boolean
  * @example
@@ -175,7 +167,6 @@ export const isL2Provider = <TProvider extends Provider>(
  * Returns an provider wrapped as an Optimism L2 provider. Adds a few extra helper functions to
  * simplify the process of estimating the gas usage for a transaction on Optimism. Returns a COPY
  * of the original provider.
- *
  * @param provider Provider to wrap into an L2 provider.
  * @returns Provider wrapped as an L2 provider.
  */

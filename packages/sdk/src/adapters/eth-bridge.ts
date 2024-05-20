@@ -1,16 +1,18 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { ethers, Overrides, BigNumber } from 'ethers'
-import { TransactionRequest, BlockTag } from '@ethersproject/abstract-provider'
 import { predeploys } from '@eth-optimism/contracts'
 import { hexStringEquals } from '@eth-optimism/core-utils'
+import type { BlockTag,TransactionRequest } from '@ethersproject/abstract-provider'
+import type { BigNumber,Overrides } from 'ethers';
+import { ethers } from 'ethers'
 
-import {
-  NumberLike,
+import type {
   AddressLike,
-  TokenBridgeMessage,
+  NumberLike,
+  TokenBridgeMessage} from '../interfaces';
+import {
   MessageDirection,
 } from '../interfaces'
-import { toAddress, omit } from '../utils'
+import { omit,toAddress } from '../utils'
 import { StandardBridgeAdapter } from './standard-bridge'
 
 /**

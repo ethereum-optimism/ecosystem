@@ -1,42 +1,42 @@
 import { getContractInterface, predeploys } from '@eth-optimism/contracts'
-import { ethers, Contract } from 'ethers'
+import { Contract,ethers } from 'ethers'
 
-import l1StandardBridge from '../forge-artifacts/L1StandardBridge.json'
-import l2StandardBridge from '../forge-artifacts/L2StandardBridge.json'
-import optimismMintableERC20 from '../forge-artifacts/OptimismMintableERC20.json'
-import optimismPortal from '../forge-artifacts/OptimismPortal.json'
-import l1CrossDomainMessenger from '../forge-artifacts/L1CrossDomainMessenger.json'
-import l2CrossDomainMessenger from '../forge-artifacts/L2CrossDomainMessenger.json'
-import optimismMintableERC20Factory from '../forge-artifacts/OptimismMintableERC20Factory.json'
-import proxyAdmin from '../forge-artifacts/ProxyAdmin.json'
-import l2OutputOracle from '../forge-artifacts/L2OutputOracle.json'
-import l1ERC721Bridge from '../forge-artifacts/L1ERC721Bridge.json'
-import l2ERC721Bridge from '../forge-artifacts/L2ERC721Bridge.json'
-import l1Block from '../forge-artifacts/L1Block.json'
-import l2ToL1MessagePasser from '../forge-artifacts/L2ToL1MessagePasser.json'
-import gasPriceOracle from '../forge-artifacts/GasPriceOracle.json'
+import { ETHBridgeAdapter,StandardBridgeAdapter } from '../adapters'
+import type { CrossChainMessenger } from '../cross-chain-messenger'
 import disputeGameFactory from '../forge-artifacts/DisputeGameFactory.json'
-import optimismPortal2 from '../forge-artifacts/OptimismPortal2.json'
 import faultDisputeGame from '../forge-artifacts/FaultDisputeGame.json'
-import { toAddress } from './coercion'
-import { DeepPartial } from './type-utils'
-import { CrossChainMessenger } from '../cross-chain-messenger'
-import { StandardBridgeAdapter, ETHBridgeAdapter } from '../adapters'
-import {
-  CONTRACT_ADDRESSES,
-  DEFAULT_L2_CONTRACT_ADDRESSES,
-  BRIDGE_ADAPTER_DATA,
-  IGNORABLE_CONTRACTS,
-} from './chain-constants'
-import {
+import gasPriceOracle from '../forge-artifacts/GasPriceOracle.json'
+import l1Block from '../forge-artifacts/L1Block.json'
+import l1CrossDomainMessenger from '../forge-artifacts/L1CrossDomainMessenger.json'
+import l1ERC721Bridge from '../forge-artifacts/L1ERC721Bridge.json'
+import l1StandardBridge from '../forge-artifacts/L1StandardBridge.json'
+import l2CrossDomainMessenger from '../forge-artifacts/L2CrossDomainMessenger.json'
+import l2ERC721Bridge from '../forge-artifacts/L2ERC721Bridge.json'
+import l2OutputOracle from '../forge-artifacts/L2OutputOracle.json'
+import l2StandardBridge from '../forge-artifacts/L2StandardBridge.json'
+import l2ToL1MessagePasser from '../forge-artifacts/L2ToL1MessagePasser.json'
+import optimismMintableERC20 from '../forge-artifacts/OptimismMintableERC20.json'
+import optimismMintableERC20Factory from '../forge-artifacts/OptimismMintableERC20Factory.json'
+import optimismPortal from '../forge-artifacts/OptimismPortal.json'
+import optimismPortal2 from '../forge-artifacts/OptimismPortal2.json'
+import proxyAdmin from '../forge-artifacts/ProxyAdmin.json'
+import type {
+  AddressLike,
+  BridgeAdapterData,
+  BridgeAdapters,
   OEContracts,
+  OEContractsLike,
   OEL1Contracts,
   OEL2Contracts,
-  OEContractsLike,
-  AddressLike,
-  BridgeAdapters,
-  BridgeAdapterData,
 } from '../interfaces'
+import {
+  BRIDGE_ADAPTER_DATA,
+  CONTRACT_ADDRESSES,
+  DEFAULT_L2_CONTRACT_ADDRESSES,
+  IGNORABLE_CONTRACTS,
+} from './chain-constants'
+import { toAddress } from './coercion'
+import type { DeepPartial } from './type-utils'
 
 /**
  * We've changed some contract names in this SDK to be a bit nicer. Here we remap these nicer names
@@ -118,7 +118,6 @@ export const getContractInterfaceBedrock = (
  * the given L2 chain ID. Users can also provide a custom address to connect the contract to
  * instead. If the chain ID is not known then the user MUST provide a custom address or this
  * function will throw an error.
- *
  * @param contractName Name of the contract to connect to.
  * @param l2ChainId Chain ID for the L2 network.
  * @param opts Additional options for connecting to the contract.
@@ -173,7 +172,6 @@ export const getOEContract = (
  * user can provide custom contract address overrides for L1 or L2 contracts. If the given chain ID
  * is not known then the user MUST provide custom contract addresses for ALL L1 contracts or this
  * function will throw an error.
- *
  * @param l2ChainId Chain ID for the L2 network.
  * @param opts Additional options for connecting to the contracts.
  * @param opts.l1SignerOrProvider: Signer or provider to connect to the L1 contracts.
@@ -240,7 +238,6 @@ export const getAllOEContracts = (
 
 /**
  * Gets a series of bridge adapters for the given L2 chain ID.
- *
  * @param l2ChainId Chain ID for the L2 network.
  * @param messenger Cross chain messenger to connect to the bridge adapters
  * @param opts Additional options for connecting to the custom bridges.

@@ -1,16 +1,15 @@
 /* Imports: External */
-import { ethers, BigNumber } from 'ethers'
 import {
   fromHexString,
   toHexString,
   toRpcHexString,
 } from '@eth-optimism/core-utils'
+import { BigNumber,ethers } from 'ethers'
 import { MerkleTree } from 'merkletreejs'
 import * as rlp from 'rlp'
 
 /**
  * Generates a Merkle proof (using the particular scheme we use within Lib_MerkleTree).
- *
  * @param leaves Leaves of the merkle tree.
  * @param index Index to generate a proof for.
  * @returns Merkle proof sibling leaves, as hex strings.
@@ -49,7 +48,6 @@ export const makeMerkleTreeProof = (
  * Fix for the case where the final proof element is less than 32 bytes and the element exists
  * inside of a branch node. Current implementation of the onchain MPT contract can't handle this
  * natively so we instead append an extra proof element to handle it instead.
- *
  * @param key Key that the proof is for.
  * @param proof Proof to potentially modify.
  * @returns Modified proof.
@@ -83,7 +81,6 @@ export const maybeAddProofNode = (key: string, proof: string[]) => {
 
 /**
  * Generates a Merkle-Patricia trie proof for a given account and storage slot.
- *
  * @param provider RPC provider attached to an EVM-compatible chain.
  * @param blockNumber Block number to generate the proof at.
  * @param address Address to generate the proof for.

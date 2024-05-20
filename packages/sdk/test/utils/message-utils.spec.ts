@@ -1,11 +1,11 @@
 import { BigNumber } from 'ethers'
 
-import { expect } from '../setup'
 import {
-  migratedWithdrawalGasLimit,
   hashLowLevelMessage,
   hashMessageHash,
+  migratedWithdrawalGasLimit,
 } from '../../src/utils/message-utils'
+import { expect } from '../setup'
 
 const goerliChainID = 420
 

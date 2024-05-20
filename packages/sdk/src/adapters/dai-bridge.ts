@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Contract } from 'ethers'
 import { hexStringEquals } from '@eth-optimism/core-utils'
+import { Contract } from 'ethers'
 
-import { AddressLike } from '../interfaces'
+import type { AddressLike } from '../interfaces'
 import { toAddress } from '../utils'
 import { StandardBridgeAdapter } from './standard-bridge'
 

@@ -1,15 +1,16 @@
 import ethers from 'ethers'
+import type { Address,PublicClient } from 'viem';
+import { parseEther } from 'viem'
 import { describe, expect, it } from 'vitest'
-import { Address, PublicClient, parseEther } from 'viem'
 
-import {
-  l1TestClient,
-  l2TestClient,
-  l1PublicClient,
-  l2PublicClient,
-} from './testUtils/viemClients'
 import { BRIDGE_ADAPTER_DATA, CrossChainMessenger, L2ChainID } from '../src'
 import { l1Provider, l2Provider } from './testUtils/ethersProviders'
+import {
+  l1PublicClient,
+  l1TestClient,
+  l2PublicClient,
+  l2TestClient,
+} from './testUtils/viemClients'
 
 const ECO_WHALE: Address = '0x982E148216E3Aa6B38f9D901eF578B5c06DD7502'
 

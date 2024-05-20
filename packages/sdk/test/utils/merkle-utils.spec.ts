@@ -1,7 +1,7 @@
 import { ethers } from 'ethers'
 
-import { expect } from '../setup'
 import { maybeAddProofNode } from '../../src/utils/merkle-utils'
+import { expect } from '../setup'
 
 describe('Merkle Utils', () => {
   describe('maybeAddProofNode', () => {

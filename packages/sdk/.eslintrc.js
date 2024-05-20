@@ -1,5 +1,13 @@
 module.exports = {
   extends: '../../.eslintrc.js',
+  rules: {
+    '@typescript-eslint/no-unused-expressions': 'off',
+    '@typescript-eslint/no-explicit-any': 'off',
+    '@typescript-eslint/member-ordering': 'off',
+    'no-console': 'off',
+    'no-loop-func': 'off',
+    'no-lone-blocks': 'off',
+  },
   overrides: [
     {
       files: ['src/**/*.ts'],

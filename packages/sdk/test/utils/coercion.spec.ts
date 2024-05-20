@@ -1,9 +1,9 @@
 import { Provider } from '@ethersproject/abstract-provider'
-import { Contract } from 'ethers'
+import type { Contract } from 'ethers'
 import { ethers } from 'hardhat'
 
-import { expect } from '../setup'
 import { toSignerOrProvider, toTransactionHash } from '../../src'
+import { expect } from '../setup'
 
 describe('type coercion utils', () => {
   describe('toSignerOrProvider', () => {

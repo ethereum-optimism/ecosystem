@@ -1,11 +1,10 @@
-import { HardhatUserConfig } from 'hardhat/types'
-import { ethers } from 'ethers'
-
 import '@nomiclabs/hardhat-ethers'
 import '@nomiclabs/hardhat-waffle'
 import 'hardhat-deploy'
-
 import './tasks'
+
+import { ethers } from 'ethers'
+import type { HardhatUserConfig } from 'hardhat/types'
 
 const config: HardhatUserConfig = {
   solidity: {

@@ -1,13 +1,13 @@
-import {
+import type {
   Provider,
   TransactionReceipt,
   TransactionResponse,
 } from '@ethersproject/abstract-provider'
-import { Signer } from '@ethersproject/abstract-signer'
-import { Contract, BigNumber } from 'ethers'
+import type { Signer } from '@ethersproject/abstract-signer'
+import type { BigNumber,Contract } from 'ethers'
 
-import { CrossChainMessenger } from '../cross-chain-messenger'
-import { IBridgeAdapter } from './bridge-adapter'
+import type { CrossChainMessenger } from '../cross-chain-messenger'
+import type { IBridgeAdapter } from './bridge-adapter'
 
 /**
  * L1 network chain IDs

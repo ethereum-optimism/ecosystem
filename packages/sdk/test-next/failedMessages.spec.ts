@@ -1,13 +1,14 @@
-import { describe, it, expect } from 'vitest'
-import { Address, Hex, encodePacked, keccak256, toHex } from 'viem'
-import { ethers } from 'ethers'
-import { z } from 'zod'
 import { hashCrossDomainMessagev1 } from '@eth-optimism/core-utils'
+import { ethers } from 'ethers'
+import type { Address, Hex} from 'viem';
+import { encodePacked, keccak256, toHex } from 'viem'
 import { optimismSepolia } from 'viem/chains'
+import { describe, expect,it } from 'vitest'
+import { z } from 'zod'
 
 import { CONTRACT_ADDRESSES, CrossChainMessenger } from '../src'
+import { opSepoliaProvider,sepoliaProvider } from './testUtils/ethersProviders'
 import { sepoliaPublicClient, sepoliaTestClient } from './testUtils/viemClients'
-import { sepoliaProvider, opSepoliaProvider } from './testUtils/ethersProviders'
 
 /**
  * Generated on Mar 28 2024 using

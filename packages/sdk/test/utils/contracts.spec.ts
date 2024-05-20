@@ -1,15 +1,15 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
-import { Signer } from 'ethers'
+import type { Signer } from 'ethers'
 import { ethers } from 'hardhat'
 
-import { expect } from '../setup'
 import {
-  getOEContract,
-  getAllOEContracts,
   CONTRACT_ADDRESSES,
   DEFAULT_L2_CONTRACT_ADDRESSES,
+  getAllOEContracts,
+  getOEContract,
   L2ChainID,
 } from '../../src'
+import { expect } from '../setup'
 
 describe('contract connection utils', () => {
   let signers: Signer[]

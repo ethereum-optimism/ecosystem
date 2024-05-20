@@ -1,24 +1,25 @@
-import {
-  Provider,
+import type {
   TransactionReceipt,
-  TransactionResponse,
+  TransactionResponse} from '@ethersproject/abstract-provider';
+import {
+  Provider
 } from '@ethersproject/abstract-provider'
 import { Signer } from '@ethersproject/abstract-signer'
-import { ethers, BigNumber } from 'ethers'
+import type { BigNumber } from 'ethers';
+import { ethers } from 'ethers'
 
-import { assert } from './assert'
-import {
-  SignerOrProviderLike,
-  ProviderLike,
-  TransactionLike,
-  NumberLike,
+import type {
   AddressLike,
+  NumberLike,
+  ProviderLike,
+  SignerOrProviderLike,
+  TransactionLike,
 } from '../interfaces'
+import { assert } from './assert'
 
 /**
  * Converts a SignerOrProviderLike into a Signer or a Provider. Assumes that if the input is a
  * string then it is a JSON-RPC url.
- *
  * @param signerOrProvider SignerOrProviderLike to turn into a Signer or Provider.
  * @returns Input as a Signer or Provider.
  */
@@ -39,7 +40,6 @@ export const toSignerOrProvider = (
 /**
  * Converts a ProviderLike into a Provider. Assumes that if the input is a string then it is a
  * JSON-RPC url.
- *
  * @param provider ProviderLike to turn into a Provider.
  * @returns Input as a Provider.
  */
@@ -55,7 +55,6 @@ export const toProvider = (provider: ProviderLike): Provider => {
 
 /**
  * Converts a ProviderLike into a JsonRpcProvider.
- *
  * @param provider ProviderLike to turn into a JsonRpcProvider.
  * @returns Input as a JsonRpcProvider.
  */
@@ -75,7 +74,6 @@ export const toJsonRpcProvider = (
 
 /**
  * Pulls a transaction hash out of a TransactionLike object.
- *
  * @param transaction TransactionLike to convert into a transaction hash.
  * @returns Transaction hash corresponding to the TransactionLike input.
  */
@@ -97,7 +95,6 @@ export const toTransactionHash = (transaction: TransactionLike): string => {
 
 /**
  * Converts a number-like into an ethers BigNumber.
- *
  * @param num Number-like to convert into a BigNumber.
  * @returns Number-like as a BigNumber.
  */
@@ -107,7 +104,6 @@ export const toBigNumber = (num: NumberLike): BigNumber => {
 
 /**
  * Converts a number-like into a number.
- *
  * @param num Number-like to convert into a number.
  * @returns Number-like as a number.
  */
@@ -117,7 +113,6 @@ export const toNumber = (num: NumberLike): number => {
 
 /**
  * Converts an address-like into a 0x-prefixed address string.
- *
  * @param addr Address-like to convert into an address.
  * @returns Address-like as an address.
  */
