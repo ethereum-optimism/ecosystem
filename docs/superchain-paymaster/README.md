@@ -6,6 +6,8 @@ The Superchain paymaster is a ERC-4337 [verifying paymaster](https://github.com/
 
 ## Endpoints
 
+### Testnet
+
 | Network          | Chain ID  | Endpoint                                       |
 | ---------------- | --------- | ---------------------------------------------- |
 | Ethereum Sepolia | 11155111  | https://paymaster.optimism.io/v1/11155111/rpc  |
@@ -15,7 +17,17 @@ The Superchain paymaster is a ERC-4337 [verifying paymaster](https://github.com/
 | OP Sepolia       | 11155420  | https://paymaster.optimism.io/v1/11155420/rpc  |
 | Zora Sepolia     | 999999999 | https://paymaster.optimism.io/v1/999999999/rpc |
 
-Mainnet endpoints coming soon!
+### Mainnet
+
+Reach out to us [here](https://share.hsforms.com/1fvxLHGW9TQuxdGCmgSlRRgqoshb) to request an api key (`policyId`). A self serve option will be added soon.
+
+| Network    | Chain ID | Endpoint                                     |
+| ---------- | -------- | -------------------------------------------- |
+| Base       | 8453     | https://paymaster.optimism.io/v1/8453/rpc    |
+| Fraxtal    | 252      | https://paymaster.optimism.io/v1/252/rpc     |
+| Mode       | 34443    | coming soon                                  |
+| OP Mainnet | 10       | https://paymaster.optimism.io/v1/10/rpc      |
+| Zora       | 7777777  | https://paymaster.optimism.io/v1/7777777/rpc |
 
 ## Supported methods
 
@@ -26,6 +38,8 @@ This endpoint returns gas estimation, fee estimation, and paymaster signature fo
 **Request**
 
 ```typescript
+
+// Testnet
 {
 	jsonrpc: "2.0",
 	id: 1,
@@ -45,11 +59,39 @@ This endpoint returns gas estimation, fee estimation, and paymaster signature fo
 			preVerificationGas, // (optional) hex string, will be ignored
 		},
 		"0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789", // entrypoint address (required)
+        // no policyId required for testnet
 	],
-
 }
 
+
+// Mainnet
+{
+	jsonrpc: "2.0",
+	id: 1,
+	method: "pm_sponsorUserOperation",
+	params: [
+		{
+			sender, // (required) address in hex string
+			nonce, // (required) hex string
+			initCode, // (required) hex string, if account is already deployed, pass in "0x"
+			callData, // (required) hex string
+			paymasterAndData, // (optional) hex string, will be ignored
+			signature, // (required) hex string, can be a dummy signature that doesn't revert
+			maxFeePerGas, // (optional), will override fee estimations done by the paymaster
+			maxPriorityFeePerGas, // (optional) will override fee estimations done by the paymaster
+			callGasLimit,  // (optional) hex string, will be ignored
+			verificationGasLimit, // (optional) hex string, will be ignored
+			preVerificationGas, // (optional) hex string, will be ignored
+		},
+		"0x5FF137D4b0FDCD49DcA30c7CF57E578a026d2789", // entrypoint address (required)
+        {
+            policyId, // (required) string, reach out to us
+        } // (required for mainnet)
+	],
+}
 ```
+
+Reach out to us [here](https://share.hsforms.com/1fvxLHGW9TQuxdGCmgSlRRgqoshb) to request an api key for mainnet (`policyId`). A self serve option will be added soon.
 
 **Response**
 
@@ -156,8 +198,8 @@ Only `sender`, `nonce`, `initCode`, `callData`, `signature` are required in the 
 
 ## Coming soon
 
-- Mainnet support
 - Entrypoint v0.7.0 support
+- ERC-7677 support
 
 ## Contact us
 
