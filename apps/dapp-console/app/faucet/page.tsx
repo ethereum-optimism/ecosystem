@@ -5,7 +5,7 @@ import { Card } from '@eth-optimism/ui-components/src/components/ui/card/card'
 import { Text } from '@eth-optimism/ui-components/src/components/ui/text/text'
 import { FaucetHeader } from '@/app/faucet/components/FaucetHeader/FaucetHeader'
 import { useEffect } from 'react'
-import { useFeatureFlag } from '../hooks/useFeatureFlag'
+import { useFeatureFlag } from '@/app/hooks/useFeatureFlag'
 import { useRouter } from 'next/navigation'
 
 export default function Faucet() {
