@@ -13,11 +13,25 @@ import { useDialogContent } from '@/app/console/useDialogContent'
 import { openWindow } from '@/app/helpers'
 import { trackCardClick } from '@/app/event-tracking/mixpanel'
 import { SuperchainSafeModalContent } from '@/app/console/SuperchainSafeModalContent'
+import { useFeatureFlag } from '@/app/hooks/useFeatureFlag'
+import { useRouter } from 'next/navigation'
 
 const BuildSection = () => {
   const [dialogContent, setDialogContent] = useState<React.ReactNode>()
   const { testnetPaymasterContent, quickStartContent } = useDialogContent()
   const superchainSafeContent = <SuperchainSafeModalContent />
+  const isConsoleFaucetEnabled = useFeatureFlag('enable_console_faucet')
+  const router = useRouter()
+
+  // Event handler for clicking on the Faucet tile
+  const handleFaucetClick = () => {
+    trackCardClick('Superchain Faucet')
+    if (isConsoleFaucetEnabled) {
+      router.push('/faucet')
+    } else {
+      openWindow(externalRoutes.SUPERCHAIN_FAUCET.path)
+    }
+  }
 
   return (
     <div>
@@ -29,10 +43,7 @@ const BuildSection = () => {
           <Tile
             title="Superchain Faucet"
             description="Get test ETH tokens to build your app on the Superchain."
-            onClick={() => {
-              trackCardClick('Superchain Faucet')
-              openWindow(externalRoutes.SUPERCHAIN_FAUCET.path)
-            }}
+            onClick={handleFaucetClick}
           />
           <DialogTrigger asChild>
             <Tile
@@ -54,7 +65,6 @@ const BuildSection = () => {
               }}
             />
           </DialogTrigger>
-
           <DialogTrigger asChild>
             <Tile
               title="Quick Start"
