@@ -95,7 +95,12 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, closeMenu }) => {
                 </Text>
                 <div className="flex flex-col py-2 gap-1">
                   {supportItems.map((item) => (
-                    <Button asChild variant="ghost" className="justify-start">
+                    <Button
+                      asChild
+                      variant="ghost"
+                      className="justify-start"
+                      key={item.label}
+                    >
                       <a href={item.path} target="_blank">
                         <Text as="span">{item.label}</Text>
                       </a>
@@ -115,6 +120,7 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, closeMenu }) => {
                       asChild
                       variant="ghost"
                       className="justify-start gap-2"
+                      key={item.label}
                     >
                       <a href={item.path} target="_blank">
                         <Image
