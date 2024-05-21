@@ -17,7 +17,7 @@ export default function Faucet() {
 
   // Redirect to the home page if the faucet is disabled
   useEffect(() => {
-    if (isConsoleFaucetEnabled) {
+    if (!isConsoleFaucetEnabled) {
       router.push('/')
     }
   }, [isConsoleFaucetEnabled, router])
