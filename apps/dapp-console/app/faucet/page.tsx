@@ -3,12 +3,11 @@
 import { CardHeader } from '@eth-optimism/ui-components'
 import { Card } from '@eth-optimism/ui-components/src/components/ui/card/card'
 import { Text } from '@eth-optimism/ui-components/src/components/ui/text/text'
-import { FaucetHeader } from './components/FaucetHeader/FaucetHeader'
-import { useWallets } from '@privy-io/react-auth'
+import { FaucetHeader } from '@/app/faucet/components/FaucetHeader/FaucetHeader'
 
 export default function Faucet() {
   const signedIn = false
-  const wallet = 'asdf'
+  const wallet = false
   const authentications = null
 
   return (

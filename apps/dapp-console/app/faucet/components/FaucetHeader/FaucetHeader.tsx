@@ -1,14 +1,10 @@
 import { Button } from '@eth-optimism/ui-components/src/components/ui/button/button'
 import { Text } from '@eth-optimism/ui-components/src/components/ui/text/text'
-import {
-  RiArrowLeftFill,
-  RiArrowRightLine,
-  RiArrowRightSLine,
-} from '@remixicon/react'
+import { RiArrowRightSLine } from '@remixicon/react'
 
 type FaucetHeaderProps = {
   signedIn: boolean
-  wallet: any
+  wallet: boolean
   authentications: string[] | null
 }
 
