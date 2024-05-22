@@ -3,13 +3,12 @@ import { createCallerFactory } from '@trpc/server'
 import bcrypt from 'bcrypt'
 import type { Request, Response } from 'express'
 import type { getIronSession } from 'iron-session'
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import type { Mock } from 'vitest'
 
 import type { SessionData } from '@/constants'
 import { envVars, PRIVY_TOKEN_COOKIE_KEY } from '@/constants'
 import type { Session } from '@/constants/session'
 
+import { ENTITY_ID, PRIVY_DID } from './constants'
 import { mockUserSession } from './session'
 
 export type AccessTokenLocation = 'header' | 'cookie'
@@ -68,9 +67,9 @@ export const validSession = async () => {
   )
 
   return mockUserSession({
-    entityId: 'id1',
+    entityId: ENTITY_ID,
     privyAccessTokenExpiration: Date.now() + 1000,
     privyAccessToken: hashedAccessToken,
-    privyDid: 'privy:did',
+    privyDid: PRIVY_DID,
   })
 }

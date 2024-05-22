@@ -155,6 +155,16 @@ export class ContractsRoute extends Route {
             }),
           )
         })
+
+      if (deploymentTxReceipt.status !== 'success') {
+        throw Trpc.handleStatus(
+          400,
+          new DappConsoleError({
+            code: 'DEPLOYMENT_TX_NOT_FOUND',
+          }),
+        )
+      }
+
       const deploymentBlock = await publicClient
         .getBlock({
           blockHash: deploymentTx.blockHash,
