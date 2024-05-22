@@ -286,3 +286,7 @@ export const superchainSafeNetworks = [
     logo: '/logos/frax-logo.png',
   },
 ]
+
+export const faucetRoutes = {
+  SEE_DETAILS_URL: 'TODO',
+}

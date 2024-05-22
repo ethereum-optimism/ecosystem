@@ -1,17 +1,22 @@
 'use client'
 
-import { CardHeader } from '@eth-optimism/ui-components'
+import { CardContent, CardHeader } from '@eth-optimism/ui-components'
 import { Card } from '@eth-optimism/ui-components/src/components/ui/card/card'
 import { Text } from '@eth-optimism/ui-components/src/components/ui/text/text'
-import { FaucetHeader } from '@/app/faucet/components/FaucetHeader/FaucetHeader'
+import { FaucetHeader } from '@/app/faucet/components/FaucetHeader'
 import { useEffect } from 'react'
 import { useFeatureFlag } from '@/app/hooks/useFeatureFlag'
 import { useRouter } from 'next/navigation'
 
 export default function Faucet() {
-  const signedIn = true
-  const wallet = true
-  const authentications = null
+  const signedIn = false
+  const wallet = false
+  const authentications = {
+    coinbase: true,
+    worldId: true,
+    gitcoin: true,
+    eas: false,
+  }
   const isConsoleFaucetEnabled = useFeatureFlag('enable_console_faucet')
   const router = useRouter()
 
@@ -36,7 +41,7 @@ export default function Faucet() {
         </Text>
       </div>
 
-      <Card>
+      <Card className="w-full max-w-screen-lg">
         <CardHeader>
           <FaucetHeader
             signedIn={signedIn}
@@ -44,6 +49,8 @@ export default function Faucet() {
             authentications={authentications}
           />
         </CardHeader>
+        <div className="w-full border-t-1 border-border pb-6" />
+        <CardContent>content here</CardContent>
       </Card>
     </div>
   )
