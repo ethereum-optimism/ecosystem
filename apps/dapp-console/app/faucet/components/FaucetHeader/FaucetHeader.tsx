@@ -1,5 +1,5 @@
 import { Text } from '@eth-optimism/ui-components/src/components/ui/text/text'
-import { FaucetHeaderInner } from './FaucetHeaderInner'
+import { FaucetHeaderInner } from '@/app/faucet/components/FaucetHeaderInner'
 
 type FaucetHeaderProps = {
   signedIn: boolean
