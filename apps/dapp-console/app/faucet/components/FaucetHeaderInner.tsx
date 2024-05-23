@@ -2,6 +2,7 @@ import { Text } from '@eth-optimism/ui-components/src/components/ui/text/text'
 import { Button } from '@eth-optimism/ui-components/src/components/ui/button/button'
 import { RiArrowRightSLine } from '@remixicon/react'
 import { Authentications } from '@/app/faucet/types'
+import { faucetRoutes } from '@/app/constants'
 
 type Props = {
   signedIn: boolean

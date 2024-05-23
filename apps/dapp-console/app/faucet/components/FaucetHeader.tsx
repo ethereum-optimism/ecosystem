@@ -5,14 +5,14 @@ import { AuthenticatedHeader } from '@/app/faucet/components/AuthenticatedHeader
 import { FaucetHeaderInner } from '@/app/faucet/components/FaucetHeaderInner'
 
 type FaucetHeaderProps = {
-  signedIn: boolean
-  wallet: boolean
+  isSignedIn: boolean
+  isWalletConnected: boolean
   authentications: Authentications
 }
 
 const FaucetHeader = ({
-  signedIn,
-  wallet,
+  isSignedIn,
+  isWalletConnected,
   authentications,
 }: FaucetHeaderProps) => {
   return (
@@ -22,8 +22,8 @@ const FaucetHeader = ({
       ) : (
         <div className="flex justify-between flex-col-reverse md:flex-row items-start gap-4">
           <FaucetHeaderInner
-            signedIn={signedIn}
-            wallet={wallet}
+            signedIn={isSignedIn}
+            wallet={isWalletConnected}
             authentications={authentications}
           />
           <LogoChain />

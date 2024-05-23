@@ -9,8 +9,8 @@ import { useFeatureFlag } from '@/app/hooks/useFeatureFlag'
 import { useRouter } from 'next/navigation'
 
 export default function Faucet() {
-  const signedIn = false
-  const wallet = false
+  const isSignedIn = false
+  const isWalletConnected = false
   const authentications = {
     coinbase: true,
     worldId: true,
@@ -44,8 +44,8 @@ export default function Faucet() {
       <Card className="w-full max-w-screen-lg">
         <CardHeader>
           <FaucetHeader
-            signedIn={signedIn}
-            wallet={wallet}
+            isSignedIn={isSignedIn}
+            isWalletConnected={isWalletConnected}
             authentications={authentications}
           />
         </CardHeader>
