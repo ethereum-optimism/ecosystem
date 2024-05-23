@@ -1,6 +1,7 @@
 {
   "name": "@eth-optimism/api-plugin",
   "version": "0.0.1",
+  "private": true,
   "scripts": {
     "build": "tsup",
     "clean": "rm -rf dist",

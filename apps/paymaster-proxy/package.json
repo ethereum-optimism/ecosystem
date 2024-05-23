@@ -1,6 +1,7 @@
 {
   "name": "@eth-optimism/paymaster-proxy",
   "version": "0.0.0",
+  "private": true,
   "scripts": {
     "test": "vitest",
     "test:e2e": "vitest run --config vitest.e2e.config.ts",
