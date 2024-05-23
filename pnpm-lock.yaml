@@ -826,6 +826,10 @@ importers:
         version: 5.4.5
 
   packages/contracts-ecosystem:
+    dependencies:
+      '@eth-optimism/contracts-bedrock':
+        specifier: ^0.17.3
+        version: 0.17.3
     devDependencies:
       solhint:
         specifier: ^4.1.1
@@ -2723,6 +2727,9 @@ packages:
   '@eslint/js@8.57.0':
     resolution: {integrity: sha512-Ys+3g2TaW7gADOJzPt83SJtCDhMjndcDMFVQ/Tj9iA1BfJzFKD9mAUXT3OenpuPHbI6P/myECxRJrofUsDx/5g==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
+
+  '@eth-optimism/contracts-bedrock@0.17.3':
+    resolution: {integrity: sha512-cHPO7ntWeOBDLO7ZFFSZGI1D7CDqf4loRbRVJrFIsqLEz+hysWIqA0e3dv2GnrjVeuYePBfI2NTBEG4uwz9bQQ==}
 
   '@eth-optimism/contracts-ts@0.15.0':
     resolution: {integrity: sha512-qga3xsj+NhnxjY96TWktKAmc2DSYrdy0E+lVkS3NZ/b5w898IisoMj/Xvv3KoovBJmnk+/ENNnMX7kk+fwQdtA==}
@@ -15578,6 +15585,8 @@ snapshots:
       - supports-color
 
   '@eslint/js@8.57.0': {}
+
+  '@eth-optimism/contracts-bedrock@0.17.3': {}
 
   ? '@eth-optimism/contracts-ts@0.15.0(@wagmi/core@2.0.2(@tanstack/query-core@5.29.0)(@types/react@18.2.79)(bufferutil@4.0.8)(immer@10.0.4)(react@18.2.0)(typescript@5.4.5)(utf-8-validate@6.0.3)(viem@2.0.3(bufferutil@4.0.8)(typescript@5.4.5)(utf-8-validate@6.0.3)(zod@3.22.4))(zod@3.22.4))(bufferutil@4.0.8)(typescript@5.4.5)(utf-8-validate@6.0.3)(wagmi@2.0.3(@react-native-async-storage/async-storage@1.23.1(react-native@0.73.6(@babel/core@7.24.4)(@babel/preset-env@7.24.4(@babel/core@7.24.4))(bufferutil@4.0.8)(encoding@0.1.13)(react@18.2.0)(utf-8-validate@6.0.3)))(@tanstack/query-core@5.29.0)(@tanstack/react-query@5.29.2(react@18.2.0))(@types/react@18.2.79)(bufferutil@4.0.8)(encoding@0.1.13)(esbuild@0.19.12)(immer@10.0.4)(ioredis@5.4.1)(react-dom@18.2.0(react@18.2.0))(react-native@0.73.6(@babel/core@7.24.4)(@babel/preset-env@7.24.4(@babel/core@7.24.4))(bufferutil@4.0.8)(encoding@0.1.13)(react@18.2.0)(utf-8-validate@6.0.3))(react@18.2.0)(rollup@4.14.3)(typescript@5.4.5)(utf-8-validate@6.0.3)(viem@2.0.3(bufferutil@4.0.8)(typescript@5.4.5)(utf-8-validate@6.0.3)(zod@3.22.4))(zod@3.22.4))(zod@3.22.4)'
   : dependencies:

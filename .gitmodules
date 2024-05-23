@@ -4,3 +4,9 @@
 [submodule "packages/contracts-ecosystem/lib/solady"]
 	path = packages/contracts-ecosystem/lib/solady
 	url = https://github.com/vectorized/solady
+[submodule "packages/contracts-ecosystem/lib/openzeppelin-contracts"]
+	path = packages/contracts-ecosystem/lib/openzeppelin-contracts
+	url = https://github.com/OpenZeppelin/openzeppelin-contracts.git
+[submodule "packages/contracts-ecosystem/lib/solmate"]
+	path = packages/contracts-ecosystem/lib/solmate
+	url = https://github.com/transmissions11/solmate
