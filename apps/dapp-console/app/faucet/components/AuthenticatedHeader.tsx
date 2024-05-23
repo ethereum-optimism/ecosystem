@@ -8,16 +8,15 @@ type Props = {
   authentications: Authentications
 }
 
-const getAuthenticatedLabelAndImages = (authentications: Authentications) => {
-  // Define the labels and images for each authentication type
-  const data: Record<keyof Authentications, { label: string; image: string }> =
-    {
-      coinbase: { label: 'Coinbase', image: '/logos/coinbase-logo.png' },
-      worldId: { label: 'World ID', image: '/logos/worldid-logo.png' },
-      gitcoin: { label: 'Gitcoin', image: '/logos/gitcoin-logo.png' },
-      eas: { label: 'EAS', image: '/logos/eas-logo.png' },
-    }
+// Define the labels and images for each authentication type
+const data: Record<keyof Authentications, { label: string; image: string }> = {
+  coinbase: { label: 'Coinbase', image: '/logos/coinbase-logo.png' },
+  worldId: { label: 'World ID', image: '/logos/worldid-logo.png' },
+  gitcoin: { label: 'Gitcoin', image: '/logos/gitcoin-logo.png' },
+  eas: { label: 'EAS', image: '/logos/eas-logo.png' },
+}
 
+const getAuthenticatedLabelAndImages = (authentications: Authentications) => {
   // Get an array of active labels and images
   const activeServices = Object.keys(authentications)
     .filter((key) => authentications[key as keyof Authentications])
