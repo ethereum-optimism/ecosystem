@@ -1,29 +1,14 @@
-import { faucetRoutes } from '@/app/constants'
-import { Button } from '@eth-optimism/ui-components/src/components/ui/button/button'
-import { Text } from '@eth-optimism/ui-components/src/components/ui/text/text'
-import { RiArrowRightSLine } from '@remixicon/react'
 import { Authentications } from '@/app/faucet/types'
 import { hasAuthentication } from '@/app/faucet/helpers'
 import { LogoChain } from '@/app/faucet/components/LogoChain'
 import { AuthenticatedHeader } from '@/app/faucet/components/AuthenticatedHeader'
-import { FaucetHeaderInner } from './FaucetHeaderInner'
+import { FaucetHeaderInner } from '@/app/faucet/components/FaucetHeaderInner'
 
 type FaucetHeaderProps = {
   signedIn: boolean
   wallet: boolean
   authentications: Authentications
 }
-
-const seeDetailsLink = (
-  <a
-    href={faucetRoutes.SEE_DETAILS_URL}
-    target="_blank"
-    rel="noreferrer"
-    className="underline hover:no-underline"
-  >
-    See details
-  </a>
-)
 
 const FaucetHeader = ({
   signedIn,
