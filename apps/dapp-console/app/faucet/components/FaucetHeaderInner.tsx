@@ -18,7 +18,7 @@ const FaucetHeaderInner = ({ signedIn, wallet, authentications }: Props) => {
         <Text as="h3" className="text-base font-semibold mb-2">
           Sign in to use the faucet
         </Text>
-        <Text as="p" className="text-base text-secondary-foreground mb-4">
+        <Text as="p" className="text-ase text-secondary-foreground mb-4">
           After sign in, verify your onchain identity and claim 1 test ETH on 1
           network every 24 hours. {seeDetailsLink}
         </Text>
