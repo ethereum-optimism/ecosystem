@@ -1,6 +1,5 @@
 {
   "name": "@eth-optimism/op-app",
-  "private": true,
   "type": "module",
   "main": "dist/index",
   "types": "dist/index.d.ts",
