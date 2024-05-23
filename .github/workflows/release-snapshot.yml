@@ -5,7 +5,7 @@ name: Release snapshot
 # we should move to a single branch in near future
 on:
   workflow_dispatch:
-  pull_request:
+  push:
     branches:
       - main
 
