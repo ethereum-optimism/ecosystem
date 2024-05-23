@@ -1,11 +1,12 @@
 import { Text } from '@eth-optimism/ui-components/src/components/ui/text/text'
 import { Button } from '@eth-optimism/ui-components/src/components/ui/button/button'
 import { RiArrowRightSLine } from '@remixicon/react'
+import { Authentications } from '@/app/faucet/types'
 
 type Props = {
   signedIn: boolean
   wallet: boolean
-  authentications: string[] | null
+  authentications: Authentications
 }
 
 const seeDetailsLink = <a href="#">See details</a>
