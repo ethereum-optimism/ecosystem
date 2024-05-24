@@ -91,19 +91,11 @@ type IconLinkProps = {
   logo: string
   label: string
   href: string
-  key: string
   description: string
   style: React.CSSProperties
 }
 
-const IconLink = ({
-  logo,
-  label,
-  href,
-  key,
-  description,
-  style,
-}: IconLinkProps) => {
+const IconLink = ({ logo, label, href, description, style }: IconLinkProps) => {
   const hoverAnimation = {
     y: -10,
     transition: { type: 'spring', stiffness: 400, damping: 15 },
@@ -116,7 +108,6 @@ const IconLink = ({
           <DialogTrigger asChild>
             <TooltipTrigger asChild>
               <motion.button
-                key={key}
                 rel="noreferrer noopener"
                 className="rounded-full overflow-hidden border border-border -ml-2"
                 style={{ ...style, position: 'relative' }}

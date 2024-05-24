@@ -2,6 +2,7 @@
 
 import { PrivyProvider, User } from '@privy-io/react-auth'
 import { useTheme } from 'next-themes'
+import { useEffect, useState } from 'react'
 import { trackSuccessfulSignIn } from '@/app/event-tracking/mixpanel'
 import { externalRoutes } from '@/app/constants'
 import { setErrorReportingUser } from '@/app/helpers/errorReporting'
@@ -10,9 +11,20 @@ import { setErrorReportingUser } from '@/app/helpers/errorReporting'
 const PRIVY_PUBLIC_APP_ID = 'clpispdty00ycl80fpueukbhl'
 
 function PrivyProviderWrapper({ children }: { children: React.ReactNode }) {
-  const { theme } = useTheme()
+  const { theme, resolvedTheme } = useTheme()
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  if (!mounted) {
+    // Render nothing while waiting for the client-side to determine the theme
+    return null
+  }
+
   const logo =
-    theme === 'dark'
+    theme === 'dark' || resolvedTheme === 'dark'
       ? '/logos/superchain-developer-logo-dark.svg'
       : '/logos/superchain-developer-logo-light.svg'
 
