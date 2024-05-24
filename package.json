@@ -10,7 +10,9 @@
   "scripts": {
     "clean": "pnpm recursive run clean",
     "create:app": "cd apps && pnpm create vite --template=react-ts ",
-    "create:react:library": "cd packages && pnpm create vite --template=react-ts "
+    "create:react:library": "cd packages && pnpm create vite --template=react-ts ",
+    "release:publish": "pnpm install --frozen-lockfile && pnpm nx run-many --target=build && changeset publish",
+    "release:version": "changeset version && pnpm install --lockfile-only"
   },
   "private": true,
   "devDependencies": {
