@@ -1,15 +1,25 @@
 import { Text } from '@eth-optimism/ui-components/src/components/ui/text/text'
 import { Button } from '@eth-optimism/ui-components/src/components/ui/button/button'
 import { RiArrowRightSLine } from '@remixicon/react'
+import { Authentications } from '@/app/faucet/types'
+import { faucetRoutes } from '@/app/constants'
 
 type Props = {
   signedIn: boolean
   wallet: boolean
-  authentications: string[] | null
+  authentications: Authentications
 }
 
-const seeDetailsLink = <a href="#">See details</a>
-
+const seeDetailsLink = (
+  <a
+    href={faucetRoutes.SEE_DETAILS_URL}
+    target="_blank"
+    rel="noreferrer"
+    className="underline hover:no-underline"
+  >
+    See details
+  </a>
+)
 const FaucetHeaderInner = ({ signedIn, wallet, authentications }: Props) => {
   if (!signedIn) {
     // User is not signed in
