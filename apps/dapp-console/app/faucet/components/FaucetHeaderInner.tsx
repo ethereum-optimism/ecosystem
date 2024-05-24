@@ -15,7 +15,7 @@ const seeDetailsLink = (
     href={faucetRoutes.SEE_DETAILS_URL}
     target="_blank"
     rel="noreferrer"
-    className="underline hover:no-underline"
+    className="underine hover:no-underline"
   >
     See details
   </a>
