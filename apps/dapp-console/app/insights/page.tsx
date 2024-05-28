@@ -13,7 +13,7 @@ export default function Insights() {
   return (
     <main className="flex justify-center relative">
       <Banner />
-      <Card className="max-w-7xl w-full mt-36 mx-8 mb-16 z-10 p-16 flex flex-col items-center">
+      <Card className="max-w-7xl w-full mt-36 mx-8 mb-16 z-10 p-16 flex flex-col items-center rounded-2xl">
         <RiCompasses2Line size={64} className="mb-4" />
         <Text as="h2" className="text-base mb-1 font-semibold">
           We're still working on insights
