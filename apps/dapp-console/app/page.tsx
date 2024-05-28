@@ -25,7 +25,7 @@ export default function Page() {
   return (
     <main className="flex justify-center relative">
       <Banner />
-      <Card className="max-w-7xl w-full mt-36 mx-8 z-10 mb-16">
+      <Card className="max-w-7xl w-full mt-36 mx-8 z-10 mb-16 rounded-2xl">
         <CardHeader className="md:p-10 lg:p-16">
           <CardTitle>
             <Text as="span" className="text-4xl mb-2">
