@@ -1,6 +1,6 @@
 import 'dotenv/config'
 
-import type { Hex } from 'viem'
+import type { Address, Hash, Hex } from 'viem'
 import { z } from 'zod'
 
 const getCommaSeparatedValues = (type: string) => {
@@ -57,6 +57,7 @@ const envVarSchema = z.object({
   OP_SEPOLIA_JSON_RPC_URL: z.string().optional(),
   ZORA_SEPOLIA_JSON_RPC_URL: z.string().optional(),
   REDIS_URL: z.string().describe('URL of Redis instance'),
+  GATEWAY_REDIS_URL: z.string().describe('URL of Gateway Redis instance'),
   RATE_LIMIT: z.number(),
   RATE_LIMIT_WINDOW_MS: z.number(),
   SCREENING_SERVICE_URL: z.string(),
@@ -72,10 +73,12 @@ const envVarSchema = z.object({
   CB_VERIFICATION_ATTESTER: z
     .string()
     .default('0x357458739F90461b99789350868CD7CF330Dd7EE'),
-  FAUCET_V1_CONTRACT_ADDRESS: z.string(),
-  FAUCET_V1_AUTH_ADMIN_WALLET_PRIVATE_KEY: z
-    .string()
-    .describe('private key for faucet v1 auth admin'),
+  FAUCET_CONTRACT_ADDRESS: z.custom<Address>(),
+  FAUCET_AUTH_ADMIN_WALLET_PRIVATE_KEY: z
+    .custom<Hash>()
+    .describe('private key for faucet auth admin'),
+  FAUCET_ON_CHAIN_MODULE_ADDRESS: z.custom<Address>(),
+  FAUCET_OFF_CHAIN_MODULE_ADDRESS: z.custom<Address>(),
   JSON_RPC_URLS_L1_SEPOLIA: z
     .string()
     .array()
@@ -143,10 +146,19 @@ export const envVars = envVarSchema.parse(
         OP_SEPOLIA_JSON_RPC_URL: 'OP_SEPOLIA_JSON_RPC_URL',
         ZORA_SEPOLIA_JSON_RPC_URL: 'ZORA_SEPOLIA_JSON_RPC_URL',
         REDIS_URL: 'REDIS_URL',
+        GATEWAY_REDIS_URL: 'GATEWAY_REDIS_URL',
         RATE_LIMIT: 100,
         RATE_LIMIT_WINDOW_MS: 1 * 60 * 1000,
         SCREENING_SERVICE_URL: 'SCREENING_SERVICE_URL',
         PERFORM_ADDRESS_SCREENING: false,
+        FAUCET_CONTRACT_ADDRESS: '0x6f324a7306c430489941990A25bA7268a69fd63e',
+        FAUCET_AUTH_ADMIN_WALLET_PRIVATE_KEY:
+          '0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80',
+        FAUCET_ON_CHAIN_MODULE_ADDRESS:
+          '0x1D5BF457f5cC5095DD693b023Fe09969BD8E2483',
+        FAUCET_OFF_CHAIN_MODULE_ADDRESS:
+          '0xf9fE0495344e68eEBC23eD23f31C82Fa88a1179B',
+        JSON_RPC_URLS_L1_SEPOLIA: ['JSON_RPC_URLS_L1_SEPOLIA'],
       }
     : {
         PORT: process.env.PORT
@@ -203,6 +215,7 @@ export const envVars = envVarSchema.parse(
         OP_SEPOLIA_JSON_RPC_URL: process.env.OP_SEPOLIA_JSON_RPC_URL,
         ZORA_SEPOLIA_JSON_RPC_URL: process.env.ZORA_SEPOLIA_JSON_RPC_URL,
         REDIS_URL: process.env.REDIS_URL,
+        GATEWAY_REDIS_URL: process.env.GATEWAY_REDIS_URL,
         RATE_LIMIT: process.env.RATE_LIMIT
           ? Number(process.env.RATE_LIMIT)
           : 100,
@@ -216,17 +229,17 @@ export const envVars = envVarSchema.parse(
         CB_VERIFICATION_EAS_API_URL: process.env.CB_VERIFICATION_EAS_API_URL,
         CB_VERIFICATION_SCHEMA_ID: process.env.CB_VERIFICATION_SCHEMA_ID,
         CB_VERIFICATION_ATTESTER: process.env.CB_VERIFICATION_ATTESTER,
-        FAUCET_V1_CONTRACT_ADDRESS:
-          process.env.FAUCET_V1_CONTRACT_ADDRESS ??
-          '0x6f324a7306c430489941990A25bA7268a69fd63e',
-        FAUCET_V1_AUTH_ADMIN_WALLET_PRIVATE_KEY:
-          process.env.FAUCET_V1_AUTH_ADMIN_WALLET_PRIVATE_KEY ??
-          // Account 0 on Anvil
-          '0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80',
+        FAUCET_CONTRACT_ADDRESS: process.env.FAUCET_CONTRACT_ADDRESS,
+        FAUCET_AUTH_ADMIN_WALLET_PRIVATE_KEY:
+          process.env.FAUCET_AUTH_ADMIN_WALLET_PRIVATE_KEY,
+        FAUCET_ON_CHAIN_MODULE_ADDRESS:
+          process.env.FAUCET_ON_CHAIN_MODULE_ADDRESS ??
+          '0x1D5BF457f5cC5095DD693b023Fe09969BD8E2483',
+        FAUCET_OFF_CHAIN_MODULE_ADDRESS:
+          process.env.FAUCET_OFF_CHAIN_MODULE_ADDRESS ??
+          '0xf9fE0495344e68eEBC23eD23f31C82Fa88a1179B',
         JSON_RPC_URLS_L1_SEPOLIA: getCommaSeparatedValues(
           'JSON_RPC_URLS_L1_SEPOLIA',
-        ).length
-          ? getCommaSeparatedValues('JSON_RPC_URLS_L1_SEPOLIA')
-          : [''],
+        ),
       },
 )

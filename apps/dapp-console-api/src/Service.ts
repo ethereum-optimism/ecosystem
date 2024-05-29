@@ -105,8 +105,7 @@ export class Service {
    */
   public static readonly init = async () => {
     const redisClient = new Redis(envVars.REDIS_URL)
-    // replace redis URL with gateway URL
-    const redisCache = new RedisCache(envVars.REDIS_URL)
+    const gatewayRedisCache = new RedisCache(envVars.GATEWAY_REDIS_URL)
 
     const db = connectToDatabase({
       user: envVars.DB_USER,
@@ -189,7 +188,7 @@ export class Service {
       logger,
       adminServer,
       redisClient,
-      redisCache,
+      gatewayRedisCache,
     )
 
     return service

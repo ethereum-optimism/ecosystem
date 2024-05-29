@@ -1,6 +1,12 @@
 import type { Address, Chain, Hex } from 'viem'
-import { defineChain, parseEther } from 'viem'
-import { createPublicClient, createWalletClient, fallback, http } from 'viem'
+import {
+  createPublicClient,
+  createWalletClient,
+  defineChain,
+  fallback,
+  http,
+  parseEther,
+} from 'viem'
 import { privateKeyToAccount } from 'viem/accounts'
 import {
   baseSepolia,
@@ -24,18 +30,8 @@ type FaucetConfig = {
   offChainDripAmount: bigint
   // Environment that the faucet is supported in.
   supportedEnvironments: Array<typeof envVars.DEPLOYMENT_ENV>
-  onChainModuleAddress: Address
-  offChainModuleAddress: Address
-}
-
-// Configs for the Drippie contracts that help keep the faucet contract and admin wallets funded.
-type DrippieConfig = {
-  // Rpc urls for the chain the faucet is on.
-  rpcUrls: string[]
-  // Chain that the Drippie contract is deployed on.
-  chain: Chain
-  // Environment that the faucet is supported in.
-  supportedEnvironments: Array<typeof envVars.DEPLOYMENT_ENV>
+  l1BridgeAddress?: Address
+  isL1Faucet?: boolean
 }
 
 const DEFAULT_ON_CHAIN_DRIP_AMOUNT = parseEther('1.0')
@@ -46,11 +42,10 @@ const faucetConfigs: FaucetConfig[] = [
     id: sepolia.id,
     displayName: 'Ethereum Sepolia',
     chain: sepolia,
+    isL1Faucet: true,
     onChainDripAmount: DEFAULT_ON_CHAIN_DRIP_AMOUNT,
     offChainDripAmount: DEFAULT_OFF_CHAIN_DRIP_AMOUNT,
     supportedEnvironments: ['production', 'staging', 'development'],
-    onChainModuleAddress: '0x1D5BF457f5cC5095DD693b023Fe09969BD8E2483',
-    offChainModuleAddress: '0xf9fE0495344e68eEBC23eD23f31C82Fa88a1179B',
   },
   {
     id: baseSepolia.id,
@@ -59,37 +54,7 @@ const faucetConfigs: FaucetConfig[] = [
     onChainDripAmount: DEFAULT_ON_CHAIN_DRIP_AMOUNT,
     offChainDripAmount: DEFAULT_OFF_CHAIN_DRIP_AMOUNT,
     supportedEnvironments: ['production', 'staging', 'development'],
-    onChainModuleAddress: '0x6d08Ad4Ba49b43cC44013da3C8a2F0ABD396B35D',
-    offChainModuleAddress: '0x9DA2873B5fFe73d3bA353111920534f30076cBb4',
-  },
-  {
-    id: 2523,
-    displayName: 'Fraxtal Sepolia',
-    chain: defineChain({
-      id: 2523,
-      name: 'Fraxtal Sepolia',
-      network: 'fraxtal-sepolia',
-      nativeCurrency: { name: 'Frax Ether', symbol: 'frxETH', decimals: 18 },
-      rpcUrls: {
-        default: {
-          http: ['https://rpc.testnet-sepolia.frax.com'],
-        },
-        public: {
-          http: ['https://rpc.testnet-sepolia.frax.com'],
-        },
-      },
-      blockExplorers: {
-        default: {
-          name: 'Explorer',
-          url: 'https://explorer.testnet-sepolia.frax.com',
-        },
-      },
-    }),
-    onChainDripAmount: DEFAULT_ON_CHAIN_DRIP_AMOUNT,
-    offChainDripAmount: DEFAULT_OFF_CHAIN_DRIP_AMOUNT,
-    supportedEnvironments: ['production', 'staging', 'development'],
-    onChainModuleAddress: '0x1D5BF457f5cC5095DD693b023Fe09969BD8E2483',
-    offChainModuleAddress: '0xf9fE0495344e68eEBC23eD23f31C82Fa88a1179B',
+    l1BridgeAddress: '0xfd0Bf71F60660E2f608ed56e1659C450eB113120',
   },
   {
     id: 4202,
@@ -117,8 +82,7 @@ const faucetConfigs: FaucetConfig[] = [
     onChainDripAmount: DEFAULT_ON_CHAIN_DRIP_AMOUNT,
     offChainDripAmount: DEFAULT_OFF_CHAIN_DRIP_AMOUNT,
     supportedEnvironments: ['production', 'staging', 'development'],
-    onChainModuleAddress: '0x1D5BF457f5cC5095DD693b023Fe09969BD8E2483',
-    offChainModuleAddress: '0xf9fE0495344e68eEBC23eD23f31C82Fa88a1179B',
+    l1BridgeAddress: '0x1Fb30e446eA791cd1f011675E5F3f5311b70faF5',
   },
   {
     id: modeTestnet.id,
@@ -127,8 +91,7 @@ const faucetConfigs: FaucetConfig[] = [
     onChainDripAmount: DEFAULT_ON_CHAIN_DRIP_AMOUNT,
     offChainDripAmount: DEFAULT_OFF_CHAIN_DRIP_AMOUNT,
     supportedEnvironments: ['production', 'staging', 'development'],
-    onChainModuleAddress: '0x6d08Ad4Ba49b43cC44013da3C8a2F0ABD396B35D',
-    offChainModuleAddress: '0x9DA2873B5fFe73d3bA353111920534f30076cBb4',
+    l1BridgeAddress: '0xbC5C679879B2965296756CD959C3C739769995E2',
   },
   {
     id: optimismSepolia.id,
@@ -137,8 +100,7 @@ const faucetConfigs: FaucetConfig[] = [
     onChainDripAmount: DEFAULT_ON_CHAIN_DRIP_AMOUNT,
     offChainDripAmount: DEFAULT_OFF_CHAIN_DRIP_AMOUNT,
     supportedEnvironments: ['production', 'staging', 'development'],
-    onChainModuleAddress: '0x6d08Ad4Ba49b43cC44013da3C8a2F0ABD396B35D',
-    offChainModuleAddress: '0x9DA2873B5fFe73d3bA353111920534f30076cBb4',
+    l1BridgeAddress: '0xFBb0621E0B23b5478B630BD55a5f21f67730B0F1',
   },
   {
     id: zoraSepolia.id,
@@ -147,16 +109,7 @@ const faucetConfigs: FaucetConfig[] = [
     onChainDripAmount: DEFAULT_ON_CHAIN_DRIP_AMOUNT,
     offChainDripAmount: DEFAULT_OFF_CHAIN_DRIP_AMOUNT,
     supportedEnvironments: ['production', 'staging', 'development'],
-    onChainModuleAddress: '0x6d08Ad4Ba49b43cC44013da3C8a2F0ABD396B35D',
-    offChainModuleAddress: '0x9DA2873B5fFe73d3bA353111920534f30076cBb4',
-  },
-]
-
-const faucetDrippieConfigs: DrippieConfig[] = [
-  {
-    chain: sepolia,
-    rpcUrls: envVars.JSON_RPC_URLS_L1_SEPOLIA,
-    supportedEnvironments: ['production', 'staging'],
+    l1BridgeAddress: '0x5376f1D543dcbB5BD416c56C189e4cB7399fCcCB',
   },
 ]
 
@@ -164,12 +117,7 @@ export const supportedFaucetConfigs = faucetConfigs.filter((faucet) =>
   faucet.supportedEnvironments.includes(envVars.DEPLOYMENT_ENV),
 )
 
-export const supportedDrippieConfigs = faucetDrippieConfigs.filter((drippie) =>
-  drippie.supportedEnvironments.includes(envVars.DEPLOYMENT_ENV),
-)
-
 export const ONCE_UPON_BASE_URL = 'https://www.onceupon.gg'
-
 const getSepoliaConfig = () => {
   const sepoliaConfig = faucetConfigs.find(
     (config) => config.displayName === 'Ethereum Sepolia',
@@ -187,7 +135,7 @@ export const sepoliaPublicClient = createPublicClient({
 
 export const sepoliaAdminWalletClient = createWalletClient({
   account: privateKeyToAccount(
-    envVars.FAUCET_V1_AUTH_ADMIN_WALLET_PRIVATE_KEY as Hex,
+    envVars.FAUCET_AUTH_ADMIN_WALLET_PRIVATE_KEY as Hex,
   ),
   chain: getSepoliaConfig().chain,
   transport: fallback(envVars.JSON_RPC_URLS_L1_SEPOLIA.map((url) => http(url))),

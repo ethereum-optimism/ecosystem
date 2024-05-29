@@ -1,17 +1,19 @@
-import type { Address, TypedDataDomain, Hex } from 'viem'
-import { getContract, keccak256, numberToHex } from 'viem'
+import { l1StandardBridgeABI } from '@eth-optimism/contracts-ts'
+import type { Address, Hex, TypedDataDomain } from 'viem'
+import { encodeFunctionData, getContract, keccak256, numberToHex } from 'viem'
+import { sepolia } from 'viem/chains'
 
 import { faucetAbi } from '../abi/Faucet'
+import {
+  sepoliaAdminWalletClient,
+  sepoliaPublicClient,
+} from '../constants/faucetConfigs'
 import { getFaucetContractBalance } from './faucetBalances'
 import type { RedisCache } from './redis'
-import {
-  sepoliaPublicClient,
-  sepoliaAdminWalletClient,
-} from '../constants/faucetConfigs'
-import { sepolia } from 'viem/chains'
 
 export type FaucetConstructorArgs = {
   chainId: number
+  isL1Faucet?: boolean
   redisCache: RedisCache
   faucetAddress: Address
   onChainAuthModuleAddress: Address
@@ -20,21 +22,26 @@ export type FaucetConstructorArgs = {
   onChainDripAmount: bigint
   offChainDripAmount: bigint
   blockExplorerUrl?: string
+  l1BridgeAddress?: Address
 }
 
 export const faucetAuthModes = [
-  'GITHUB',
-  'OPTIMIST_NFT',
   'ATTESTATION',
+  'COINBASE',
+  'GITCOIN',
   'WORLD_ID',
 ] as const
 export type FaucetAuthMode = (typeof faucetAuthModes)[number]
 
 export const ON_CHAIN_AUTH_MODES: FaucetAuthMode[] = [
-  'OPTIMIST_NFT',
   'ATTESTATION',
+  'COINBASE',
+  'GITCOIN',
   'WORLD_ID',
 ]
+
+const ETH_DEPOSIT_MIN_GAS_LIMIT = 200_000
+const DRIP_MIN_GAS_LIMIT = 1_000_000
 
 // Used for interacting with and reading from the smart contracts relevant to a faucet.
 export class Faucet {
@@ -46,6 +53,8 @@ export class Faucet {
   public readonly onChainAuthModuleAddress: Address
   public readonly offChainAuthModuleAddress: Address
   public readonly blockExplorerUrl: string | undefined
+  public readonly isL1Faucet: boolean
+  public readonly l1BridgeAddress: Address | undefined
   private readonly redisCache: RedisCache
 
   constructor({
@@ -58,6 +67,8 @@ export class Faucet {
     onChainAuthModuleAddress,
     offChainAuthModuleAddress,
     blockExplorerUrl,
+    isL1Faucet = false,
+    l1BridgeAddress,
   }: FaucetConstructorArgs) {
     this.chainId = chainId
     this.displayName = displayName
@@ -68,6 +79,8 @@ export class Faucet {
     this.offChainAuthModuleAddress = offChainAuthModuleAddress
     this.blockExplorerUrl = blockExplorerUrl
     this.redisCache = redisCache
+    this.isL1Faucet = isL1Faucet
+    this.l1BridgeAddress = l1BridgeAddress
   }
 
   private get _faucetContract() {
@@ -129,12 +142,14 @@ export class Faucet {
     }
     const dripParams = await this.createDripParams(recipientAddress)
     const authParams = await this.createAuthParams(
-      recipientAddress,
+      this.isL1Faucet ? recipientAddress : this.l1BridgeAddress!,
       famAddress,
       userId,
       domain,
     )
-    return this._faucetContract.write.drip([dripParams, authParams])
+    return this._faucetContract.write.drip([dripParams, authParams], {
+      gas: BigInt(DRIP_MIN_GAS_LIMIT),
+    })
   }
 
   public getBlockExplorerUrlTx(tx: Hex) {
@@ -148,10 +163,19 @@ export class Faucet {
       address: sepoliaAdminWalletClient.account.address,
     })
     const hashedNonce = keccak256(numberToHex(nonce))
+    const data = this.isL1Faucet
+      ? '0x'
+      : encodeFunctionData({
+          abi: l1StandardBridgeABI,
+          functionName: 'depositETHTo',
+          args: [recipientAddress, ETH_DEPOSIT_MIN_GAS_LIMIT, '0x'],
+        })
 
     return {
-      recipient: recipientAddress,
+      recipient: this.isL1Faucet ? recipientAddress : this.l1BridgeAddress!,
       nonce: hashedNonce,
+      data,
+      gasLimit: DRIP_MIN_GAS_LIMIT,
     }
   }
 
