@@ -8,6 +8,7 @@ import {
   sepoliaPublicClient,
   sepoliaAdminWalletClient,
 } from '../constants/faucetConfigs'
+import { sepolia } from 'viem/chains'
 
 export type FaucetConstructorArgs = {
   chainId: number
@@ -69,7 +70,6 @@ export class Faucet {
     this.redisCache = redisCache
   }
 
-  // can remove address walletclient and publicClient from getSupportedFaucets when defining each faucet. These can all become constants/hardcoded objects. And pass them in here
   private get _faucetContract() {
     return getContract({
       address: this.faucetAddress,
@@ -81,11 +81,10 @@ export class Faucet {
     })
   }
 
-  // could hardcode redis cache chainId and faucetAddress
   public async getFaucetBalance() {
     return getFaucetContractBalance({
       redisCache: this.redisCache,
-      chainId: this.chainId,
+      chainId: sepolia.id,
       address: this.faucetAddress,
     })
   }
@@ -125,7 +124,7 @@ export class Faucet {
     const domain = {
       name: isOnChainAuthMode ? 'OnChainAuthModule' : 'OffChainAuthModule',
       version: '1',
-      chainId: sepoliaAdminWalletClient.chain.id,
+      chainId: sepolia.id,
       verifyingContract: famAddress,
     }
     const dripParams = await this.createDripParams(recipientAddress)
