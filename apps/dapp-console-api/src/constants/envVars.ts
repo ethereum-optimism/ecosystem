@@ -72,6 +72,16 @@ const envVarSchema = z.object({
   CB_VERIFICATION_ATTESTER: z
     .string()
     .default('0x357458739F90461b99789350868CD7CF330Dd7EE'),
+  FAUCET_V1_CONTRACT_ADDRESS: z.string(),
+  FAUCET_V1_AUTH_ADMIN_WALLET_PRIVATE_KEY: z
+    .string()
+    .describe('private key for faucet v1 auth admin'),
+  JSON_RPC_URLS_L1_SEPOLIA: z
+    .string()
+    .array()
+    .refine((arr) => arr.length > 0, {
+      message: 'must pass in one l1 sepolia rpc url as env var',
+    }),
 })
 
 const isTest = process.env.NODE_ENV === 'test'
@@ -206,5 +216,17 @@ export const envVars = envVarSchema.parse(
         CB_VERIFICATION_EAS_API_URL: process.env.CB_VERIFICATION_EAS_API_URL,
         CB_VERIFICATION_SCHEMA_ID: process.env.CB_VERIFICATION_SCHEMA_ID,
         CB_VERIFICATION_ATTESTER: process.env.CB_VERIFICATION_ATTESTER,
+        FAUCET_V1_CONTRACT_ADDRESS:
+          process.env.FAUCET_V1_CONTRACT_ADDRESS ??
+          '0x6f324a7306c430489941990A25bA7268a69fd63e',
+        FAUCET_V1_AUTH_ADMIN_WALLET_PRIVATE_KEY:
+          process.env.FAUCET_V1_AUTH_ADMIN_WALLET_PRIVATE_KEY ??
+          // Account 0 on Anvil
+          '0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80',
+        JSON_RPC_URLS_L1_SEPOLIA: getCommaSeparatedValues(
+          'JSON_RPC_URLS_L1_SEPOLIA',
+        ).length
+          ? getCommaSeparatedValues('JSON_RPC_URLS_L1_SEPOLIA')
+          : [''],
       },
 )
