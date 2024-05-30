@@ -26,6 +26,11 @@ export type SessionData = {
     privyDid: string
     entityId: string
   }
+  worldIdUser?: {
+    nullifierHash: string
+    isVerified: boolean
+    createdAt: string
+  }
 }
 
 export type Session = IronSession<SessionData>

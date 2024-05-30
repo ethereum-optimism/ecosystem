@@ -31,10 +31,12 @@ import { metrics } from './monitoring/metrics'
 import { AppsRoute } from './routes/apps'
 import { AuthRoute } from './routes/auth'
 import { ContractsRoute } from './routes/contracts'
+import { FaucetRoute } from './routes/faucet/FaucetRoute'
 import { RebatesRoute } from './routes/rebates/RebatesRoute'
 import { WalletsRoute } from './routes/wallets'
 import { Trpc } from './Trpc'
 import { retryWithBackoff } from './utils'
+import { getSupportedFaucets } from './utils/getSupportedFaucets'
 import { RedisCache } from './utils/redis'
 
 const API_PATH = '/api'
@@ -166,6 +168,10 @@ export class Service {
       opSepoliaRebateWalletClient,
       opSepoliaPublicClient,
     )
+    const faucetRoute = new FaucetRoute(
+      trpc,
+      getSupportedFaucets(gatewayRedisCache),
+    )
 
     /**
      * The apiServer simply assmbles the routes into a TRPC Server
@@ -176,6 +182,7 @@ export class Service {
       appsRoute,
       contractsRoute,
       rebatesRoute,
+      faucetRoute,
     })
     apiServer.setLoggingServer(logger)
 

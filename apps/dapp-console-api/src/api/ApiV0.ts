@@ -1,6 +1,7 @@
 import type { AppsRoute } from '@/routes/apps'
 import type { AuthRoute } from '@/routes/auth'
 import type { ContractsRoute } from '@/routes/contracts'
+import type { FaucetRoute } from '@/routes/faucet/FaucetRoute'
 import type { RebatesRoute } from '@/routes/rebates'
 import type { WalletsRoute } from '@/routes/wallets'
 
@@ -38,6 +39,7 @@ export class ApiV0 extends Api {
     [this.routes.appsRoute.name]: this.routes.appsRoute.handler,
     [this.routes.contractsRoute.name]: this.routes.contractsRoute.handler,
     [this.routes.rebatesRoute.name]: this.routes.rebatesRoute.handler,
+    [this.routes.faucetRoute.name]: this.routes.faucetRoute.handler,
   })
 
   /**
@@ -51,6 +53,7 @@ export class ApiV0 extends Api {
       appsRoute: AppsRoute
       contractsRoute: ContractsRoute
       rebatesRoute: RebatesRoute
+      faucetRoute: FaucetRoute
     },
   ) {
     super(trpc)
