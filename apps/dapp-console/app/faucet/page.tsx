@@ -9,12 +9,12 @@ import { useFeatureFlag } from '@/app/hooks/useFeatureFlag'
 import { useRouter } from 'next/navigation'
 
 export default function Faucet() {
-  const isSignedIn = false
-  const isWalletConnected = false
+  const isSignedIn = true
+  const isWalletConnected = true
   const authentications = {
-    coinbase: true,
-    worldId: true,
-    gitcoin: true,
+    coinbase: false,
+    worldId: false,
+    gitcoin: false,
     eas: false,
   }
   const isConsoleFaucetEnabled = useFeatureFlag('enable_console_faucet')
