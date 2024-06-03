@@ -21,8 +21,6 @@ export default function Faucet() {
     eas: false,
   }
 
-  const claimAmount = 1
-
   const isConsoleFaucetEnabled = useFeatureFlag('enable_console_faucet')
   const router = useRouter()
 
