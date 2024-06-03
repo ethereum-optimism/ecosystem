@@ -44,9 +44,9 @@ const RadioCard = React.forwardRef<
       {...props}
     >
       <div>{children}</div>
-      <div className="h-4 w-4 border-2 border-current rounded-full flex items-center justify-center">
+      <div className="h-4 w-4 border-2 border-secondary-foreground rounded-full flex items-center justify-center">
         <Indicator className="flex items-center justify-center">
-          <div className="bg-current rounded-full h-4 w-4 flex justify-center items-center">
+          <div className="bg-secondary-foreground rounded-full h-4 w-4 flex justify-center items-center">
             <RiCircleFill className=" h-2 w-2 fill-background" />
           </div>
         </Indicator>
