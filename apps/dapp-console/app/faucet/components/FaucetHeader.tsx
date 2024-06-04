@@ -3,18 +3,15 @@ import { hasAuthentication } from '@/app/faucet/helpers'
 import { LogoChain } from '@/app/faucet/components/LogoChain'
 import { AuthenticatedHeader } from '@/app/faucet/components/AuthenticatedHeader'
 import { FaucetHeaderInner } from '@/app/faucet/components/FaucetHeaderInner'
+import { usePrivy } from '@privy-io/react-auth'
 
 type FaucetHeaderProps = {
-  isSignedIn: boolean
-  isWalletConnected: boolean
   authentications: Authentications
 }
 
-const FaucetHeader = ({
-  isSignedIn,
-  isWalletConnected,
-  authentications,
-}: FaucetHeaderProps) => {
+const FaucetHeader = ({ authentications }: FaucetHeaderProps) => {
+  const { authenticated } = usePrivy()
+
   return (
     <div>
       {hasAuthentication(authentications) ? (
@@ -22,11 +19,10 @@ const FaucetHeader = ({
       ) : (
         <div className="flex justify-between flex-col-reverse md:flex-row items-start gap-4">
           <FaucetHeaderInner
-            signedIn={isSignedIn}
-            wallet={isWalletConnected}
+            signedIn={authenticated}
             authentications={authentications}
           />
-          <LogoChain />
+          {!authenticated && <LogoChain />}
         </div>
       )}
     </div>
