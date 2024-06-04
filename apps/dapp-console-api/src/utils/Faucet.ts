@@ -1,13 +1,17 @@
 import { faucetAbi } from '@eth-optimism/contracts-ecosystem'
 import { l1StandardBridgeABI } from '@eth-optimism/contracts-ts'
-import type { Address, Hex, TypedDataDomain } from 'viem'
+import type {
+  Account,
+  Address,
+  Chain,
+  Hex,
+  PublicClient,
+  Transport,
+  TypedDataDomain,
+  WalletClient,
+} from 'viem'
 import { encodeFunctionData, getContract, keccak256, numberToHex } from 'viem'
-import { sepolia } from 'viem/chains'
 
-import {
-  sepoliaAdminWalletClient,
-  sepoliaPublicClient,
-} from '../constants/faucetConfigs'
 import { getFaucetContractBalance } from './faucetBalances'
 import type { RedisCache } from './redis'
 
@@ -23,6 +27,9 @@ export type FaucetConstructorArgs = {
   offChainDripAmount: bigint
   blockExplorerUrl?: string
   l1BridgeAddress?: Address
+  publicClient: PublicClient
+  adminWalletClient: WalletClient<Transport, Chain, Account>
+  l1ChainId: number
 }
 
 export const faucetAuthModes = [
@@ -57,6 +64,9 @@ export class Faucet {
   public readonly isL1Faucet: boolean
   public readonly l1BridgeAddress: Address | undefined
   private readonly redisCache: RedisCache
+  private readonly publicClient: PublicClient
+  public readonly adminWalletClient: WalletClient<Transport, Chain, Account>
+  private readonly l1ChainId: number
 
   constructor({
     chainId,
@@ -70,6 +80,9 @@ export class Faucet {
     blockExplorerUrl,
     isL1Faucet = false,
     l1BridgeAddress,
+    publicClient,
+    adminWalletClient,
+    l1ChainId,
   }: FaucetConstructorArgs) {
     this.chainId = chainId
     this.displayName = displayName
@@ -82,6 +95,9 @@ export class Faucet {
     this.redisCache = redisCache
     this.isL1Faucet = isL1Faucet
     this.l1BridgeAddress = l1BridgeAddress
+    this.publicClient = publicClient
+    this.adminWalletClient = adminWalletClient
+    this.l1ChainId = l1ChainId
   }
 
   private get _faucetContract() {
@@ -89,8 +105,8 @@ export class Faucet {
       address: this.faucetAddress,
       abi: faucetAbi,
       client: {
-        public: sepoliaPublicClient,
-        wallet: sepoliaAdminWalletClient,
+        public: this.publicClient,
+        wallet: this.adminWalletClient,
       },
     })
   }
@@ -98,7 +114,7 @@ export class Faucet {
   public async getFaucetBalance() {
     return getFaucetContractBalance({
       redisCache: this.redisCache,
-      chainId: sepolia.id,
+      chainId: this.l1ChainId,
       address: this.faucetAddress,
     })
   }
@@ -112,8 +128,7 @@ export class Faucet {
         : this.offChainAuthModuleAddress,
       userId,
     ])
-    const currentBlockTimestamp = (await sepoliaPublicClient.getBlock())
-      .timestamp
+    const currentBlockTimestamp = (await this.publicClient.getBlock()).timestamp
     const secondsUntilTimeoutEnds = timeout - currentBlockTimestamp
     if (secondsUntilTimeoutEnds <= 0) {
       return
@@ -138,7 +153,7 @@ export class Faucet {
     const domain = {
       name: isOnChainAuthMode ? 'OnChainAuthModule' : 'OffChainAuthModule',
       version: '1',
-      chainId: sepolia.id,
+      chainId: this.l1ChainId,
       verifyingContract: famAddress,
     }
     const dripParams = await this.createDripParams(recipientAddress)
@@ -160,8 +175,8 @@ export class Faucet {
   }
 
   private readonly createDripParams = async (recipientAddress: Address) => {
-    const nonce = await sepoliaPublicClient.getTransactionCount({
-      address: sepoliaAdminWalletClient.account.address,
+    const nonce = await this.publicClient.getTransactionCount({
+      address: this.adminWalletClient.account.address,
     })
     const hashedNonce = keccak256(numberToHex(nonce))
     const data = this.isL1Faucet
@@ -186,8 +201,8 @@ export class Faucet {
     dripId: Hex,
     domain: TypedDataDomain,
   ) => {
-    const nonce = await sepoliaPublicClient.getTransactionCount({
-      address: sepoliaAdminWalletClient.account.address,
+    const nonce = await this.publicClient.getTransactionCount({
+      address: this.adminWalletClient.account.address,
     })
     const hashedNonce = keccak256(numberToHex(nonce))
     const proof = {
@@ -203,12 +218,12 @@ export class Faucet {
         { name: 'id', type: 'bytes32' },
       ],
     }
-    const signature = await sepoliaAdminWalletClient.signTypedData({
+    const signature = await this.adminWalletClient.signTypedData({
       domain,
       types,
       primaryType: 'Proof',
       message: proof,
-      account: sepoliaAdminWalletClient.account,
+      account: this.adminWalletClient.account,
     })
 
     return {

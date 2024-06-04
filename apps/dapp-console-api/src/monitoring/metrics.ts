@@ -212,4 +212,8 @@ export const metrics = {
     help: 'How many times the request to the faucet contract for faucet funds failed for a non-ttl reason',
     labelNames: ['chainId'] as const,
   }),
+  worldIdVerifyUserFailures: new Counter({
+    name: 'world_id_verify_user_failures',
+    help: 'How many times world id verification failed',
+  }),
 }

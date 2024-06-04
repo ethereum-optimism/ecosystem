@@ -86,6 +86,8 @@ const envVarSchema = z.object({
       message: 'must pass in one l1 sepolia rpc url as env var',
     }),
   FAUCET_ACCESS_ATTESTERS: z.string().array(),
+  WORLDID_APP_ID: z.string(),
+  WORLDID_APP_ACTION_NAME: z.string(),
 })
 
 const isTest = process.env.NODE_ENV === 'test'
@@ -161,6 +163,8 @@ export const envVars = envVarSchema.parse(
           '0xf9fE0495344e68eEBC23eD23f31C82Fa88a1179B',
         JSON_RPC_URLS_L1_SEPOLIA: ['JSON_RPC_URLS_L1_SEPOLIA'],
         FAUCET_ACCESS_ATTESTERS: ['ATTESTER_ADDRESS'],
+        WORLDID_APP_ID: 'test worldid app id',
+        WORLDID_APP_ACTION_NAME: 'test worldid app action name',
       }
     : {
         PORT: process.env.PORT
@@ -246,5 +250,7 @@ export const envVars = envVarSchema.parse(
         FAUCET_ACCESS_ATTESTERS: getCommaSeparatedValues(
           'FAUCET_ACCESS_ATTESTERS',
         ),
+        WORLDID_APP_ID: process.env.WORLDID_APP_ID,
+        WORLDID_APP_ACTION_NAME: process.env.WORLDID_APP_ACTION_NAME,
       },
 )
