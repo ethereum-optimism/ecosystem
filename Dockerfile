@@ -90,7 +90,7 @@ CMD [ "pnpm", "start" ]
 # STEP 4: DAPP-CONSOLE-API
 ########################################
 
-FROM base AS dapp-console-api
+FROM base AS dapp-console-api-base
 
 COPY ./apps/dapp-console-api/migrations ./prod/dapp-console-api/migrations
 COPY  --from=builder /prod/dapp-console-api /prod/dapp-console-api
@@ -98,10 +98,18 @@ WORKDIR /prod/dapp-console-api
 
 ENV NODE_EXTRA_CA_CERTS=/usr/local/share/ca-certificates/extra-ca-certificates.crt
 
-EXPOSE 7300
 
+# API Service
+FROM dapp-console-api-base AS dapp-console-api
+
+EXPOSE 7300
 CMD [ "pnpm", "start" ]
 
+# API Worker
+FROM dapp-console-api-base AS dapp-console-api-processor
+
+EXPOSE 7340
+CMD [ "pnpm", "start:processor" ]
 
 ########################################
 # STEP 4: API-KEY-SERVICE

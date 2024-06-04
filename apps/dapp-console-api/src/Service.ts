@@ -21,6 +21,9 @@ import { createPublicClient, createWalletClient, http } from 'viem'
 import { privateKeyToAccount } from 'viem/accounts'
 import { optimism, optimismSepolia } from 'viem/chains'
 
+import type { ApiQueue } from '@/api-queue/apiQueueConfig'
+import { createApiQueue } from '@/api-queue/createApiQueue'
+
 import { ApiV0, Middleware } from './api'
 import { AdminApi } from './api/AdminApi'
 import { ensureAdmin } from './auth'
@@ -67,6 +70,7 @@ export class Service {
     private readonly adminServer: AdminApi,
     private readonly redisClient: Redis,
     private readonly redisCache: RedisCache,
+    private readonly apiQueue: ApiQueue,
   ) {
     // Create the metrics server.
     this.metricsRegistry = prometheus.register
@@ -189,6 +193,8 @@ export class Service {
     const adminServer = new AdminApi(trpc, {})
     adminServer.setLoggingServer(logger)
 
+    const apiQueue = createApiQueue()
+
     const service = new Service(
       apiServer,
       middleware,
@@ -196,6 +202,7 @@ export class Service {
       adminServer,
       redisClient,
       gatewayRedisCache,
+      apiQueue,
     )
 
     return service
@@ -345,6 +352,10 @@ export class Service {
         throw e
       }
     }
+
+    await this.apiQueue.add('sayHello', {
+      helloRecipient: 'world',
+    })
 
     serviceInitialized = true
   }

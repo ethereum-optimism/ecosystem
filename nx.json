@@ -22,11 +22,11 @@
     },
     "build": {
       "cache": true,
-      "dependsOn": ["^build"]
+      "dependsOn": ["^build", "^build:types"]
     },
     "build:types": {
       "cache": true,
-      "dependsOn": ["^build:types"]
+      "dependsOn": ["^build:types", "^build"]
     },
     "typecheck": {
       "dependsOn": ["^build:types"]

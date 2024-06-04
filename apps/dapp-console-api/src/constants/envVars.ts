@@ -88,6 +88,7 @@ const envVarSchema = z.object({
   FAUCET_ACCESS_ATTESTERS: z.string().array(),
   WORLDID_APP_ID: z.string(),
   WORLDID_APP_ACTION_NAME: z.string(),
+  API_QUEUE_REDIS_URL: z.string(),
 })
 
 const isTest = process.env.NODE_ENV === 'test'
@@ -165,6 +166,7 @@ export const envVars = envVarSchema.parse(
         FAUCET_ACCESS_ATTESTERS: ['ATTESTER_ADDRESS'],
         WORLDID_APP_ID: 'test worldid app id',
         WORLDID_APP_ACTION_NAME: 'test worldid app action name',
+        API_QUEUE_REDIS_URL: 'redis://localhost:6379',
       }
     : {
         PORT: process.env.PORT
@@ -252,5 +254,6 @@ export const envVars = envVarSchema.parse(
         ),
         WORLDID_APP_ID: process.env.WORLDID_APP_ID,
         WORLDID_APP_ACTION_NAME: process.env.WORLDID_APP_ACTION_NAME,
+        API_QUEUE_REDIS_URL: process.env.API_QUEUE_REDIS_URL,
       },
 )
