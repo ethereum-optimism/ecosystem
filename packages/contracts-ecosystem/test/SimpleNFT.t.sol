@@ -2,7 +2,7 @@
 pragma solidity ^0.8.21;
 
 import {Test, console} from "forge-std/Test.sol";
-import {SimpleNFT} from "../src/SimpleNFT.sol";
+import {SimpleNFT} from "../src/contracts/SimpleNFT.sol";
 
 contract SimpleNFTTest is Test {
     SimpleNFT public simpleNFT;

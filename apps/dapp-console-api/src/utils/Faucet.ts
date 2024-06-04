@@ -1,9 +1,9 @@
+import { faucetAbi } from '@eth-optimism/contracts-ecosystem'
 import { l1StandardBridgeABI } from '@eth-optimism/contracts-ts'
 import type { Address, Hex, TypedDataDomain } from 'viem'
 import { encodeFunctionData, getContract, keccak256, numberToHex } from 'viem'
 import { sepolia } from 'viem/chains'
 
-import { faucetAbi } from '../abi/Faucet'
 import {
   sepoliaAdminWalletClient,
   sepoliaPublicClient,
