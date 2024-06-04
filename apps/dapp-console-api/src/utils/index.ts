@@ -1,6 +1,7 @@
 export * from './auth'
 export * from './challenges'
 export * from './coinbaseVerification'
+export * from './Faucet'
 export * from './helpers'
 export * from './privy'
 export * from './rebateEligibility'

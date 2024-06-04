@@ -35,6 +35,7 @@ import { RebatesRoute } from './routes/rebates/RebatesRoute'
 import { WalletsRoute } from './routes/wallets'
 import { Trpc } from './Trpc'
 import { retryWithBackoff } from './utils'
+import { RedisCache } from './utils/redis'
 
 const API_PATH = '/api'
 
@@ -63,6 +64,7 @@ export class Service {
     private readonly logger: Logger,
     private readonly adminServer: AdminApi,
     private readonly redisClient: Redis,
+    private readonly redisCache: RedisCache,
   ) {
     // Create the metrics server.
     this.metricsRegistry = prometheus.register
@@ -103,6 +105,7 @@ export class Service {
    */
   public static readonly init = async () => {
     const redisClient = new Redis(envVars.REDIS_URL)
+    const gatewayRedisCache = new RedisCache(envVars.GATEWAY_REDIS_URL)
 
     const db = connectToDatabase({
       user: envVars.DB_USER,
@@ -185,6 +188,7 @@ export class Service {
       logger,
       adminServer,
       redisClient,
+      gatewayRedisCache,
     )
 
     return service
