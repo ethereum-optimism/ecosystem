@@ -51,14 +51,7 @@ export default function Faucet() {
           <FaucetContent authentications={authentications} />
         </CardContent>
       </Card>
-      <div className="w-full px-4 sm:p-0 flex flex-col items-center">
-        <Tile
-          className="w-full max-w-screen-lg my-10"
-          variant="secondary"
-          title="Apply for bulk tokens →"
-          description="Superchain faucet only dispenses a small number of test ETH each day. Apply to get test tokens in bulk."
-          onClick={() => {}}
-        />
+      <div className="w-full px-4 my-10 sm:p-0 flex flex-col items-center">
         <Faqs />
       </div>
     </div>

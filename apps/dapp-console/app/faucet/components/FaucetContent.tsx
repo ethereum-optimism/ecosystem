@@ -33,11 +33,6 @@ const faucetNetworks = [
     chainID: sepolia.id,
   },
   {
-    label: 'Fraxtal Sepolia',
-    image: '/logos/frax-logo.png',
-    chainID: 2523,
-  },
-  {
     label: 'Lisk Sepolia',
     image: '/logos/lisk-logo.png',
     chainID: 4202,
