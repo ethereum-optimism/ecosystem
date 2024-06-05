@@ -33,7 +33,7 @@ export default function Faucet() {
     <div className="flex flex-col w-full items-center py-10 px-2 pb-20 sm:px-6 ">
       <div className="text-center mb-10 px-4">
         <Text as="h1" className="text-3xl sm:text-5xl font-semibold mb-2">
-          Superchain Faucet
+          Superchain Faucet🚰
         </Text>
         <Text
           as="p"
