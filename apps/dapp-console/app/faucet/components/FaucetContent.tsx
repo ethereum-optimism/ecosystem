@@ -120,7 +120,7 @@ const FaucetContent = ({ authentications }: Props) => {
 
       <Label>Network</Label>
       <RadioGroup
-        className="mt-4 mb-6 grid grid-cols-2"
+        className="mt-4 mb-6 grid grid-cols-1 sm:grid-cols-2"
         value={selectedNetwork}
       >
         {faucetNetworks.map((network) => (

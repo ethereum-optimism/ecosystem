@@ -29,7 +29,7 @@ const AuthenticationCard = ({ button, variant, errorMessage }: Props) => {
   return (
     <div className="bg-secondary rounded-md p-4">
       <div className="flex justify-between">
-        <div>
+        <div className="mr-2">
           <Text as="h3" className="font-semibold mb-1">
             {title}
           </Text>
