@@ -12,6 +12,15 @@ import {
   zoraSepolia,
 } from 'viem/chains'
 
+import { isAddress } from 'viem'
+import { FormEvent, useEffect, useState } from 'react'
+import { getFormattedCountdown } from '@/app/utils'
+import { Authentications } from '@/app/faucet/types'
+
+type Props = {
+  authentications: Authentications
+}
+
 const faucetNetworks = [
   {
     label: 'Base Sepolia',
@@ -50,21 +59,78 @@ const faucetNetworks = [
   },
 ]
 
-const FaucetContent = () => {
+const FaucetContent = ({ authentications }: Props) => {
+  // Replace with real values from the backend
+  const secondsToNextDrip = 10
+
+  const hasAuthentication = Object.values(authentications).some(Boolean)
+  const claimAmount = hasAuthentication ? 1 : 0.05
+  const [address, setAddress] = useState('')
+  const [isValid, setIsValid] = useState(false)
+  const [selectedNetwork, setSelectedNetwork] = useState(
+    faucetNetworks[0].label,
+  )
+  const [countdown, setCountdown] = useState(secondsToNextDrip)
+  const [formattedTime, setFormattedTime] = useState('')
+
+  const isClaimDisabled = !isValid || !selectedNetwork || countdown > 0
+  const claimText =
+    countdown > 0
+      ? formattedTime
+      : `Claim ${claimAmount} ETH on ${selectedNetwork}`
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCountdown((prevCountdown) =>
+        prevCountdown > 0 ? prevCountdown - 1 : 0,
+      )
+    }, 1000)
+
+    setFormattedTime(`Claim again in ${getFormattedCountdown(countdown)}`)
+    return () => clearInterval(interval)
+  }, [countdown])
+
+  const handleAddressChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setAddress(e.target.value)
+    setIsValid(isAddress(e.target.value))
+  }
+
+  const handleClaim = () => {
+    console.log('Claiming ETH for address:', address)
+    console.log('Selected Network:', selectedNetwork)
+  }
+
   return (
     <div>
       <Label htmlFor="address">Address</Label>
-      <Input
-        className="mt-4 mb-6"
-        id="address"
-        type="text"
-        placeholder="Enter ETH address"
-      />
+      <div className="mb-6">
+        <Input
+          className="mt-4 mb-2"
+          id="address"
+          type="text"
+          placeholder="Enter ETH address"
+          value={address}
+          onChange={handleAddressChange}
+        />
+
+        {address.length > 0 && !isValid && (
+          <Text className="text-red-500">Please enter a valid ETH address</Text>
+        )}
+      </div>
 
       <Label>Network</Label>
-      <RadioGroup className="mt-4 mb-6 grid grid-cols-2">
+      <RadioGroup
+        className="mt-4 mb-6 grid grid-cols-2"
+        value={selectedNetwork}
+      >
         {faucetNetworks.map((network) => (
-          <RadioCard key={network.chainID} value={network.chainID.toString()}>
+          <RadioCard
+            key={network.chainID}
+            value={network.label}
+            onClick={() => {
+              setSelectedNetwork(network.label)
+            }}
+          >
             <div className="flex gap-3 items-center">
               <img
                 src={network.image}
@@ -78,7 +144,13 @@ const FaucetContent = () => {
           </RadioCard>
         ))}
       </RadioGroup>
-      <Button className="w-full">Claim</Button>
+      <Button
+        disabled={isClaimDisabled}
+        className="w-full"
+        onClick={handleClaim}
+      >
+        {claimText}
+      </Button>
     </div>
   )
 }

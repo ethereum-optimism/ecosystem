@@ -11,14 +11,14 @@ import { FaucetContent } from '@/app/faucet/components/FaucetContent'
 import { Tile } from '@/app/components/Tile/Tile'
 import { Faqs } from '@/app/faucet/components/Faqs'
 
-export default function Faucet() {
-  const authentications = {
-    coinbase: false,
-    worldId: false,
-    gitcoin: false,
-    eas: false,
-  }
+const authentications = {
+  coinbase: false,
+  worldId: false,
+  gitcoin: false,
+  eas: false,
+}
 
+export default function Faucet() {
   const isConsoleFaucetEnabled = useFeatureFlag('enable_console_faucet')
   const router = useRouter()
 
@@ -48,7 +48,7 @@ export default function Faucet() {
         </CardHeader>
         <div className="w-full border-t-1 border-border pb-6" />
         <CardContent>
-          <FaucetContent />
+          <FaucetContent authentications={authentications} />
         </CardContent>
       </Card>
       <Tile
