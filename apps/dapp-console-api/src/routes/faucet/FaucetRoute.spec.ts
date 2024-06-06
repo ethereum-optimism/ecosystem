@@ -1,3 +1,4 @@
+import { faucetAbi } from '@eth-optimism/contracts-ecosystem'
 import type { RouterCaller } from '@trpc/server'
 import type {
   Account,
@@ -32,7 +33,6 @@ import {
 } from '@/testUtils/anvil'
 import { Trpc } from '@/Trpc'
 
-import { faucetAbi } from '../../abi/Faucet'
 import { Faucet } from '../../utils/Faucet'
 import { RedisCache } from '../../utils/redis'
 import { FaucetRoute } from './FaucetRoute'

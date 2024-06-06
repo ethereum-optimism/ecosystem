@@ -1,10 +1,10 @@
+import { faucetAbi, faucetByteCode } from '@eth-optimism/contracts-ecosystem'
 import type { PrivateKeyAccount, PublicClient, WalletClient } from 'viem'
 
 import {
   adminFaucetAuthModuleAbi,
   adminFaucetAuthModuleByteCode,
 } from '../abi/AdminFaucetAuthModule'
-import { faucetAbi, faucetByteCode } from '../abi/Faucet'
 
 export const deployFaucetContract = async (
   publicClient: PublicClient,
