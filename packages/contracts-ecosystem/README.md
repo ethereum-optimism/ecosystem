@@ -1,5 +1,9 @@
 ## Ecosystem Contracts
 
+### Generating Abis
+
+To generate the abi and bytecode for a contract use the generate-abi.sh bash script. If it is your first time running the script, make sure to run `chmod +X bash-scripts/generate-abi.sh` in order to make it executable.
+
 **Foundry is a blazing fast, portable and modular toolkit for Ethereum application development written in Rust.**
 
 Foundry consists of:
