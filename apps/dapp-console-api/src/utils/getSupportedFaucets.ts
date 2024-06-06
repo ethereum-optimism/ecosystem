@@ -1,4 +1,11 @@
-import { ONCE_UPON_BASE_URL, supportedFaucetConfigs } from '../constants'
+import { sepolia } from 'viem/chains'
+
+import {
+  ONCE_UPON_BASE_URL,
+  sepoliaAdminWalletClient,
+  sepoliaPublicClient,
+  supportedFaucetConfigs,
+} from '../constants'
 import { envVars } from '../constants/envVars'
 import { Faucet } from '../utils'
 import type { RedisCache } from './redis'
@@ -25,6 +32,9 @@ export const getSupportedFaucets = (redisCache: RedisCache) =>
         offChainAuthModuleAddress: envVars.FAUCET_OFF_CHAIN_MODULE_ADDRESS,
         l1BridgeAddress,
         isL1Faucet,
+        publicClient: sepoliaPublicClient,
+        adminWalletClient: sepoliaAdminWalletClient,
+        l1ChainId: sepolia.id,
       })
     },
   )

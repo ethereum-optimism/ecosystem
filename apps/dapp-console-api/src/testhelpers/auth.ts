@@ -59,17 +59,26 @@ export const createSignedOutCaller = <T extends AnyRouter>(router: T) => {
   })
 }
 
+export type WorldIdSessionType = {
+  nullifierHash: string
+  isVerified: boolean
+  createdAt: string
+}
+
 /** Creates a valid session that passes the isPrivyAuthed middleware */
-export const validSession = async () => {
+export const validSession = async (worldIdSession?: WorldIdSessionType) => {
   const hashedAccessToken = await bcrypt.hash(
     mockPrivyAccessToken,
     envVars.PRIVY_ACCESS_TOKEN_SALT,
   )
 
-  return mockUserSession({
-    entityId: ENTITY_ID,
-    privyAccessTokenExpiration: Date.now() + 1000,
-    privyAccessToken: hashedAccessToken,
-    privyDid: PRIVY_DID,
-  })
+  return mockUserSession(
+    {
+      entityId: ENTITY_ID,
+      privyAccessTokenExpiration: Date.now() + 1000,
+      privyAccessToken: hashedAccessToken,
+      privyDid: PRIVY_DID,
+    },
+    worldIdSession,
+  )
 }
