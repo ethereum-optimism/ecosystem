@@ -26,17 +26,18 @@ export type FaucetConstructorArgs = {
 }
 
 export const faucetAuthModes = [
+  'PRIVY',
   'ATTESTATION',
-  'COINBASE',
-  'GITCOIN',
+  'COINBASE_VERIFICATION',
+  'GITCOIN_PASSPORT',
   'WORLD_ID',
 ] as const
 export type FaucetAuthMode = (typeof faucetAuthModes)[number]
 
 export const ON_CHAIN_AUTH_MODES: FaucetAuthMode[] = [
   'ATTESTATION',
-  'COINBASE',
-  'GITCOIN',
+  'COINBASE_VERIFICATION',
+  'GITCOIN_PASSPORT',
   'WORLD_ID',
 ]
 

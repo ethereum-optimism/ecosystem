@@ -1,6 +1,11 @@
 import { startProxy } from '@viem/anvil'
 import type { Address, Chain, Hash, Hex } from 'viem'
-import { createPublicClient, createWalletClient, http } from 'viem'
+import {
+  createPublicClient,
+  createTestClient,
+  createWalletClient,
+  http,
+} from 'viem'
 import { privateKeyToAccount } from 'viem/accounts'
 
 import { l2 } from './chains'
@@ -69,6 +74,15 @@ export function createL2WalletClient(accountIndex?: number) {
 export function createL2PublicClient() {
   return createPublicClient({
     chain: l2,
+    pollingInterval: 0,
+    transport: http(),
+  })
+}
+
+export function createL2TestClient() {
+  return createTestClient({
+    chain: l2,
+    mode: 'anvil',
     pollingInterval: 0,
     transport: http(),
   })
