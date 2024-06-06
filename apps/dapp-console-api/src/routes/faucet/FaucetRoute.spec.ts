@@ -245,6 +245,56 @@ describe(FaucetRoute.name, () => {
         secondsUntilNextDrip: undefined,
       })
     })
+
+    it('returns the seconds until next drip fo a worldId user that has just dripped', async () => {
+      vi.spyOn(redisCache.redisClient, 'get').mockRejectedValue(
+        new Error('Redis is offline'),
+      )
+      vi.spyOn(verifyWorldIdUserModule, 'verifyWorldIdUser').mockImplementation(
+        () => Promise.resolve(true),
+      )
+
+      const signature = await walletClient.signMessage({
+        account: ownerAccount,
+        message:
+          `You need to sign a message to prove you are the owner of ${ownerAccount.address} ` +
+          `and are sending testnet tokens to ${ownerAccount.address}`,
+      })
+
+      await caller.onChainClaims({
+        chainId: 11155111,
+        authMode: 'WORLD_ID',
+        recipientAddress: ownerAccount.address,
+        ownerAddress: ownerAccount.address,
+        signature,
+      })
+
+      const res = await caller.nextDrips({
+        authMode: 'WORLD_ID',
+      })
+
+      expect(res).toEqual({
+        secondsUntilNextDrip: 86400,
+      })
+    })
+
+    it('returns the seconds until next drip for a Privy user that has just dripped', async () => {
+      await caller.offChainClaims({
+        chainId: 11155111,
+        authMode: 'PRIVY',
+        recipientAddress: recipientAccount.address,
+      })
+
+      const res = await caller.nextDrips({
+        authMode: 'PRIVY',
+      })
+
+      expect(res).toEqual([
+        {
+          secondsUntilNextDrip: 86400,
+        },
+      ])
+    })
   })
 
   describe('onChainClaims', () => {
@@ -316,6 +366,91 @@ describe(FaucetRoute.name, () => {
         tx: claimResponse.tx,
       })
     })
+
+    it('if drip succeeds then the recipient balance should change', async () => {
+      vi.spyOn(verifyWorldIdUserModule, 'verifyWorldIdUser').mockImplementation(
+        () => Promise.resolve(true),
+      )
+
+      const signature = await walletClient.signMessage({
+        account: ownerAccount,
+        message:
+          `You need to sign a message to prove you are the owner of ${ownerAccount.address} and are ` +
+          `sending testnet tokens to ${recipientAccount.address}`,
+      })
+      const recipientBalanceBefore = parseInt(
+        formatEther(
+          await publicClient.getBalance({
+            address: ownerAccount.address as Address,
+          }),
+        ),
+      )
+
+      await caller.onChainClaims({
+        recipientAddress: recipientAccount.address,
+        ownerAddress: ownerAccount.address,
+        signature,
+        authMode: 'WORLD_ID',
+        chainId: 11155111,
+      })
+
+      const recipientBalanceAfter = parseInt(
+        formatEther(
+          await publicClient.getBalance({
+            address: ownerAccount.address as Address,
+          }),
+        ),
+      )
+      expect(recipientBalanceAfter - recipientBalanceBefore).toBe(1)
+    })
+
+    it(
+      'if the owner address requests faucet funds before ttl expires, then the ' +
+        'response has an error',
+      async () => {
+        vi.spyOn(
+          getTempFaucetAccessAttestation,
+          'getTempFaucetAccessAttestation',
+        ).mockImplementation(async () => {
+          return {
+            id: 'mock-id',
+          }
+        })
+
+        const signature = await walletClient.signMessage({
+          account: ownerAccount,
+          message:
+            `You need to sign a message to prove you are the owner of ${ownerAccount.address} and are ` +
+            `sending testnet tokens to ${recipientAccount.address}`,
+        })
+
+        await caller.onChainClaims({
+          recipientAddress: recipientAccount.address,
+          ownerAddress: ownerAccount.address,
+          signature,
+          authMode: 'ATTESTATION',
+          chainId: 11155111,
+        })
+
+        const secondClaim = await caller.onChainClaims({
+          recipientAddress: recipientAccount.address,
+          ownerAddress: ownerAccount.address,
+          signature,
+          authMode: 'ATTESTATION',
+          chainId: 11155111,
+        })
+
+        expect(secondClaim).toEqual([
+          {
+            chainId: 11155111,
+            error: 'TIMEOUT_NOT_ELAPSED',
+            authMode: 'ATTESTATION',
+            recipientAddress: ownerAccount.address,
+            requestingWalletAddress: ownerAccount.address,
+          },
+        ])
+      },
+    )
   })
 
   describe('offChainClaims', () => {
