@@ -51,6 +51,7 @@
   },
   "dependencies": {
     "@eth-optimism/contracts-ts": "^0.17.0",
+    "@eth-optimism/contracts-ecosystem": "workspace:*",
     "@eth-optimism/screening": "workspace:*",
     "@privy-io/server-auth": "^1.7.2",
     "@trpc/server": "^10.45.2",

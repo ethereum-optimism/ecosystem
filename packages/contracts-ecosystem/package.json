@@ -1,18 +1,31 @@
 {
   "name": "@eth-optimism/contracts-ecosystem",
   "version": "0.0.0",
+  "main": "src/index.ts",
+  "types": "types/index.d.ts",
   "private": true,
   "license": "MIT",
   "scripts": {
     "compile": "forge compile",
+    "build:faucet:abi": "./bash-scripts/generate-faucet-abi.sh",
+    "build": "pnpm tsup && pnpm tsc",
     "test": "forge test",
-    "lint": "solhint {src,script,test}/**/*.sol && forge fmt --check src test scripts",
-    "lint:fix": "solhint --fix --quiet --noPrompt {src,script,test}/**/*.sol && forge fmt src test script"
+    "lint": "solhint {src,script,test}/**/*.sol && forge fmt --check src test scripts && eslint \"**/*.{ts,tsx}\" && pnpm prettier --check \"**/*.{ts,tsx}\"",
+    "lint:fix": "solhint --fix --quiet --noPrompt {src,script,test}/**/*.sol && forge fmt src test script && eslint \"**/*.{ts,tsx}\" --fix --quiet && pnpm prettier \"**/*.{ts,tsx}\" --write --loglevel=warn"
   },
   "devDependencies": {
-    "solhint": "^4.1.1"
+    "@typescript-eslint/eslint-plugin": "^6.10.0",
+    "@typescript-eslint/parser": "^6.10.0",
+    "eslint": "^8.53.0",
+    "prettier": "^3.1.0",
+    "solhint": "^4.1.1",
+    "tsup": "^8.0.1"
   },
   "dependencies": {
-    "@eth-optimism/contracts-bedrock": "^0.17.3"
-  }
+    "@eth-optimism/contracts-bedrock": "^0.17.3",
+    "solc": "^0.8.26"
+  },
+  "files": [
+    "build"
+  ]
 }

@@ -3,7 +3,7 @@ pragma solidity ^0.8.24;
 
 import {Script} from "forge-std/Script.sol";
 import {console} from "forge-std/console.sol";
-import {SimpleNFT} from "../src/SimpleNFT.sol";
+import {SimpleNFT} from "../src/contracts/SimpleNFT.sol";
 
 contract DeployConsoleApiTestEnv is Script {
     function setUp() public {}
