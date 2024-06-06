@@ -193,4 +193,23 @@ export const metrics = {
     name: 'update_privy_created_at_error_count',
     help: 'Number of times privy created at failed to be updated on entity',
   }),
+  faucetFetchBalanceFailures: new Counter({
+    name: 'faucet_fetch_balance_failures',
+    help: 'How many times the balance of a faucet failed to be fetched',
+    labelNames: ['chainId'] as const,
+  }),
+  faucetFetchLastDripFailures: new Counter({
+    name: 'faucet_fetch_last_drip_failures',
+    help: 'How many times the last drip on a faucet failed to be fetched',
+  }),
+  faucetTtlFailure: new Counter({
+    name: 'faucet_ttl_failures',
+    help: 'How many times the request to the faucet contract for faucet funds failed because a user requested funds before their ttl expired',
+    labelNames: ['chainId'] as const,
+  }),
+  faucetGenericDripFailures: new Counter({
+    name: 'faucet_generic_drip_failures',
+    help: 'How many times the request to the faucet contract for faucet funds failed for a non-ttl reason',
+    labelNames: ['chainId'] as const,
+  }),
 }
