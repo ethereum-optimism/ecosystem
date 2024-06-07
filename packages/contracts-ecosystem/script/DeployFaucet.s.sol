@@ -82,7 +82,6 @@ contract DeployFaucet is Script {
         bytes32 salt = keccak256(bytes("ProxyAdmin"));
         bytes32 initCodeHash = keccak256(abi.encodePacked(type(ProxyAdmin).creationCode, abi.encode(proxyAdminOwner)));
         proxyAdminContract = vm.computeCreate2Address(salt, initCodeHash);
-        console.log("computeCreate2Address %s", proxyAdminContract);
         if (proxyAdminContract.code.length > 0) {
             console.log("ProxyAdmin already deployed at %s", proxyAdminContract);
             addr_ = proxyAdminContract;
@@ -190,9 +189,8 @@ contract DeployFaucet is Script {
                 type(AdminFaucetAuthModule).creationCode, abi.encode(faucetOffchainAuthModuleAdmin, moduleName, version)
             )
         );
-        address preComputedAddress = computeCreate2Address(salt, initCodeHash);
+        address preComputedAddress = vm.computeCreate2Address(salt, initCodeHash);
         if (preComputedAddress.code.length > 0) {
-            console.logBytes32(initCodeHash);
             console.log("OffChainAuthModule already deployed at %s", preComputedAddress);
             offChainAuthModuleContract = preComputedAddress;
             addr_ = preComputedAddress;
