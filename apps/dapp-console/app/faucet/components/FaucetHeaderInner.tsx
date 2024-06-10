@@ -95,7 +95,7 @@ const FaucetHeaderInner = ({ signedIn, authentications }: Props) => {
       </>
     )
   } else {
-    // User is signed in, but no wallet is connected
+    // User is signed n, but no wallet is connected
     content = (
       <>
         <Text as="h3" className="text-base font-semibold mb-2">
