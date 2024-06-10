@@ -8,17 +8,16 @@ import { useEffect } from 'react'
 import { useFeatureFlag } from '@/app/hooks/useFeatureFlag'
 import { useRouter } from 'next/navigation'
 import { FaucetContent } from '@/app/faucet/components/FaucetContent'
-import { Tile } from '@/app/components/Tile/Tile'
 import { Faqs } from '@/app/faucet/components/Faqs'
 
-export default function Faucet() {
-  const authentications = {
-    coinbase: false,
-    worldId: false,
-    gitcoin: false,
-    eas: false,
-  }
+const authentications = {
+  coinbase: false,
+  worldId: false,
+  gitcoin: false,
+  eas: false,
+}
 
+export default function Faucet() {
   const isConsoleFaucetEnabled = useFeatureFlag('enable_console_faucet')
   const router = useRouter()
 
@@ -33,7 +32,7 @@ export default function Faucet() {
     <div className="flex flex-col w-full items-center py-10 px-2 pb-20 sm:px-6 ">
       <div className="text-center mb-10 px-4">
         <Text as="h1" className="text-3xl sm:text-5xl font-semibold mb-2">
-          Superchain Faucet
+          Superchain Faucet🚰
         </Text>
         <Text
           as="p"
@@ -48,17 +47,12 @@ export default function Faucet() {
         </CardHeader>
         <div className="w-full border-t-1 border-border pb-6" />
         <CardContent>
-          <FaucetContent />
+          <FaucetContent authentications={authentications} />
         </CardContent>
       </Card>
-      <Tile
-        className="w-full max-w-screen-lg my-10"
-        variant="secondary"
-        title="Apply for bulk tokens →"
-        description="Superchain faucet only dispenses a small number of test ETH each day. Apply to get test tokens in bulk."
-        onClick={() => {}}
-      />
-      <Faqs />
+      <div className="w-full px-4 my-10 sm:p-0 flex flex-col items-center">
+        <Faqs />
+      </div>
     </div>
   )
 }

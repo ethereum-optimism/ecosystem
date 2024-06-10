@@ -52,11 +52,15 @@ const FaucetHeaderInner = ({ signedIn, authentications }: Props) => {
       variant="onchain-verification"
       errorMessage={onchainVerificationErrorMessage}
       button={
-        <div className="flex gap-4">
-          <Button onClick={connectWallet}>{connectWalletButtonText}</Button>
+        <div className="flex gap-4 flex-col sm:flex-row">
+          <Button className="w-full sm:w-fit" onClick={connectWallet}>
+            {connectWalletButtonText}
+          </Button>
           {onchainVerificationErrorMessage && (
             <DialogTrigger>
-              <Button variant="outline">Learn more</Button>
+              <Button className="w-full sm:w-fit" variant="outline">
+                Learn more
+              </Button>
             </DialogTrigger>
           )}
         </div>
@@ -68,7 +72,7 @@ const FaucetHeaderInner = ({ signedIn, authentications }: Props) => {
     <AuthenticationCard
       variant="world-id"
       button={
-        <Button className="bg-black hover:bg-black/90">
+        <Button className="bg-black hover:bg-black/90 w-full sm:w-fit">
           Sign in with World ID
         </Button>
       }
