@@ -20,7 +20,10 @@ const seeDetailsLink = (
     See details
   </a>
 )
+
 const FaucetHeaderInner = ({ signedIn, wallet, authentications }: Props) => {
+  const hasAuthentication = Object.values(authentications).some(Boolean)
+
   if (!signedIn) {
     // User is not signed in
     return (
@@ -50,7 +53,7 @@ const FaucetHeaderInner = ({ signedIn, wallet, authentications }: Props) => {
         <Button>Connect Wallet</Button>
       </div>
     )
-  } else if (wallet && !authentications) {
+  } else if (wallet && !hasAuthentication) {
     // User is signed in and wallet is connected, but no authentications
     return (
       <div>
