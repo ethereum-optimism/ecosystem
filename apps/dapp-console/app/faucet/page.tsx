@@ -12,8 +12,6 @@ import { Tile } from '@/app/components/Tile/Tile'
 import { Faqs } from '@/app/faucet/components/Faqs'
 
 export default function Faucet() {
-  const isSignedIn = true
-  const isWalletConnected = true
   const authentications = {
     coinbase: false,
     worldId: false,
@@ -44,21 +42,15 @@ export default function Faucet() {
           Get test tokens for building applications on the Superchain
         </Text>
       </div>
-
       <Card className="w-full max-w-screen-lg">
         <CardHeader>
-          <FaucetHeader
-            isSignedIn={isSignedIn}
-            isWalletConnected={isWalletConnected}
-            authentications={authentications}
-          />
+          <FaucetHeader authentications={authentications} />
         </CardHeader>
         <div className="w-full border-t-1 border-border pb-6" />
         <CardContent>
           <FaucetContent />
         </CardContent>
       </Card>
-
       <Tile
         className="w-full max-w-screen-lg my-10"
         variant="secondary"
@@ -66,7 +58,6 @@ export default function Faucet() {
         description="Superchain faucet only dispenses a small number of test ETH each day. Apply to get test tokens in bulk."
         onClick={() => {}}
       />
-
       <Faqs />
     </div>
   )
