@@ -14,8 +14,8 @@ const LogoChain = () => {
           key={index}
           src={image}
           alt="Logo"
-          height={24}
-          width={24}
+          height={36}
+          width={36}
           style={{
             zIndex: index,
             marginLeft: index === images.length - 1 ? 0 : '-12px',

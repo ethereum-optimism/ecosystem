@@ -3,6 +3,12 @@ import { Button } from '@eth-optimism/ui-components/src/components/ui/button/but
 import { RiArrowRightSLine } from '@remixicon/react'
 import { Authentications } from '@/app/faucet/types'
 import { faucetRoutes } from '@/app/constants'
+import {
+  Dialog,
+  DialogTrigger,
+  DialogContent,
+} from '@eth-optimism/ui-components/src/components/ui/dialog/dialog'
+import { LearnMoreDialogContent } from '@/app/faucet/components/LearnMoreDialogContent'
 
 type Props = {
   signedIn: boolean
@@ -23,11 +29,12 @@ const seeDetailsLink = (
 
 const FaucetHeaderInner = ({ signedIn, wallet, authentications }: Props) => {
   const hasAuthentication = Object.values(authentications).some(Boolean)
+  let content = null
 
   if (!signedIn) {
     // User is not signed in
-    return (
-      <div>
+    content = (
+      <>
         <Text as="h3" className="text-base font-semibold mb-2">
           Sign in to use the faucet
         </Text>
@@ -36,12 +43,12 @@ const FaucetHeaderInner = ({ signedIn, wallet, authentications }: Props) => {
           network every 24 hours. {seeDetailsLink}
         </Text>
         <Button>Sign in</Button>
-      </div>
+      </>
     )
   } else if (!wallet) {
     // User is signed in, but no wallet is connected
-    return (
-      <div>
+    content = (
+      <>
         <Text as="h3" className="text-base font-semibold mb-2">
           Get maximum testnet tokens
         </Text>
@@ -51,12 +58,12 @@ const FaucetHeaderInner = ({ signedIn, wallet, authentications }: Props) => {
           {seeDetailsLink}
         </Text>
         <Button>Connect Wallet</Button>
-      </div>
+      </>
     )
   } else if (wallet && !hasAuthentication) {
     // User is signed in and wallet is connected, but no authentications
-    return (
-      <div>
+    content = (
+      <>
         <Text as="h3" className="text-base font-semibold mb-2">
           Your connected wallet doesn’t have onchain identity
         </Text>
@@ -68,14 +75,27 @@ const FaucetHeaderInner = ({ signedIn, wallet, authentications }: Props) => {
           <Text as="p" className="text-sm text-secondary-foreground">
             For more tokens, verify your onchain identity.
           </Text>
-          <Button variant="link" size="sm" className="text-accent-foreground">
-            See details <RiArrowRightSLine size={18} />
-          </Button>
+          <DialogTrigger asChild>
+            <Button variant="link" size="sm" className="text-accent-foreground">
+              Learn more <RiArrowRightSLine size={18} />
+            </Button>
+          </DialogTrigger>
         </div>
         <Button variant="secondary">Disconnect</Button>
-      </div>
+      </>
     )
   }
+
+  return (
+    <div>
+      <Dialog>
+        {content}
+        <DialogContent>
+          <LearnMoreDialogContent />
+        </DialogContent>
+      </Dialog>
+    </div>
+  )
 }
 
 export { FaucetHeaderInner }
