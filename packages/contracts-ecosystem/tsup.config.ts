@@ -2,7 +2,7 @@ import { defineConfig } from 'tsup'
 
 export default defineConfig({
   name: '@eth-optimism/contracts-ecosystem',
-  entry: ['src/index.ts'],
+  entry: ['ts-abis/index.ts'],
   outDir: 'build',
   format: ['esm', 'cjs'],
   splitting: false,

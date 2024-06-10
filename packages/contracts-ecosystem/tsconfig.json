@@ -1,12 +1,9 @@
 {
   "extends": "../../tsconfig.base.json",
-  "include": ["src"],
+  "include": ["ts-abis"],
   "compilerOptions": {
-    "rootDir": "src",
+    "rootDir": "ts-abis",
     "baseUrl": ".",
-    "paths": {
-      "@/*": ["./src/*"]
-    },
     "target": "es2021",
     "lib": ["esnext"],
     "strict": true,

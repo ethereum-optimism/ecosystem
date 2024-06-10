@@ -1,15 +1,16 @@
 {
   "name": "@eth-optimism/contracts-ecosystem",
   "version": "0.0.0",
-  "main": "src/index.ts",
+  "main": "ts-abis/index.ts",
   "types": "types/index.d.ts",
   "private": true,
   "license": "MIT",
   "scripts": {
     "compile": "forge compile",
-    "build:faucet:abi": "./bash-scripts/generate-abi.sh -j out/Faucet.sol/Faucet.json -o src/abis/Faucet.ts -v faucet && pnpm lint:fix",
-    "build:adminfam:abi": "./bash-scripts/generate-abi.sh -j out/AdminFaucetAuthModule.sol/AdminFaucetAuthModule.json -o src/abis/AdminFaucetAuthModule.ts -v adminFaucetAuthModule && pnpm lint:fix",
-    "build": "pnpm tsup && pnpm tsc",
+    "build:faucet:abi": "./bash-scripts/generate-abi.sh -j out/Faucet.sol/Faucet.json -o ts-abis/Faucet.ts -v faucet && pnpm lint:fix",
+    "build:adminfam:abi": "./bash-scripts/generate-abi.sh -j out/AdminFaucetAuthModule.sol/AdminFaucetAuthModule.json -o ts-abis/AdminFaucetAuthModule.ts -v adminFaucetAuthModule && pnpm lint:fix",
+    "build:ts": "pnpm tsup && pnpm tsc",
+    "build": "forge build && pnpm build:ts",
     "test": "forge test",
     "lint": "solhint {src,script,test}/**/*.sol && forge fmt --check src test scripts && eslint \"**/*.{ts,tsx}\" && pnpm prettier --check \"**/*.{ts,tsx}\"",
     "lint:fix": "solhint --fix --quiet --noPrompt {src,script,test}/**/*.sol && forge fmt src test script && eslint \"**/*.{ts,tsx}\" --fix --quiet && pnpm prettier \"**/*.{ts,tsx}\" --write --loglevel=warn"
@@ -20,7 +21,8 @@
     "eslint": "^8.53.0",
     "prettier": "^3.1.0",
     "solhint": "^4.1.1",
-    "tsup": "^8.0.1"
+    "tsup": "^8.0.1",
+    "typescript": "^5.4.5"
   },
   "dependencies": {
     "@eth-optimism/contracts-bedrock": "^0.17.3",
