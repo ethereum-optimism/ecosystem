@@ -16,15 +16,12 @@ type Props = {
   authentications: Authentications
 }
 
-const seeDetailsLink = (
-  <a
-    href={faucetRoutes.SEE_DETAILS_URL}
-    target="_blank"
-    rel="noreferrer"
-    className="underline hover:no-underline"
-  >
-    See details
-  </a>
+const seeDetails = (
+  <DialogTrigger>
+    <Text as="span" className="underline hover:no-underline cursor-pointer">
+      See details
+    </Text>
+  </DialogTrigger>
 )
 
 const FaucetHeaderInner = ({ signedIn, authentications }: Props) => {
@@ -88,8 +85,8 @@ const FaucetHeaderInner = ({ signedIn, authentications }: Props) => {
           Sign in to use the faucet
         </Text>
         <Text as="p" className="text-base text-secondary-foreground mb-4">
-          After sign in, claim up to 1 test ETH on 1 network every 24 hours with
-          onchain verification. {seeDetailsLink}
+          Anyone can claim 0.05 test ETH on 1 network every 24 hours, or verify
+          your onchain identity for more tokens. {seeDetails}
         </Text>
         <Button onClick={login}>Sign in</Button>
       </>
