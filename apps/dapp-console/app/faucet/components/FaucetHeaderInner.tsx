@@ -1,6 +1,5 @@
 import { Text } from '@eth-optimism/ui-components/src/components/ui/text/text'
 import { Button } from '@eth-optimism/ui-components/src/components/ui/button/button'
-import { Authentications } from '@/app/faucet/types'
 import {
   Dialog,
   DialogTrigger,
@@ -11,7 +10,6 @@ import { usePrivy, useWallets } from '@privy-io/react-auth'
 
 type Props = {
   signedIn: boolean
-  authentications: Authentications
 }
 
 const seeDetails = (
@@ -22,7 +20,7 @@ const seeDetails = (
   </DialogTrigger>
 )
 
-const FaucetHeaderInner = ({ signedIn, authentications }: Props) => {
+const FaucetHeaderInner = ({ signedIn }: Props) => {
   const { connectWallet, login } = usePrivy()
   const { wallets } = useWallets()
   const connectedWallet = wallets.find((w) => w.walletClientType !== 'privy') // Exclude Privy wallet

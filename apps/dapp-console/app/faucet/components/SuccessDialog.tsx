@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { Text } from '@eth-optimism/ui-components/src/components/ui/text/text'
 import {
   useRive,

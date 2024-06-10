@@ -18,10 +18,7 @@ const FaucetHeader = ({ authentications }: FaucetHeaderProps) => {
         <AuthenticatedHeader authentications={authentications} />
       ) : (
         <div className="flex justify-between flex-col-reverse md:flex-row items-start gap-4">
-          <FaucetHeaderInner
-            signedIn={authenticated}
-            authentications={authentications}
-          />
+          <FaucetHeaderInner signedIn={authenticated} />
           <LogoChain />
         </div>
       )}
