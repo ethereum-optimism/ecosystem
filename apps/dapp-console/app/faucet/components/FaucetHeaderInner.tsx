@@ -95,7 +95,7 @@ const FaucetHeaderInner = ({ signedIn, authentications }: Props) => {
     content = (
       <>
         <Text as="h3" className="text-base font-semibold mb-2">
-          Get maximum tesnet tokens
+          Get maximum testnet tokens
         </Text>
         <Text as="p" className="text-base text-secondary-foreground mb-4">
           Verify your onchain identity to increase your daily ETH allowance to{' '}
