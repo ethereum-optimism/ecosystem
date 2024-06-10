@@ -22,7 +22,7 @@ const FaucetHeader = ({ authentications }: FaucetHeaderProps) => {
             signedIn={authenticated}
             authentications={authentications}
           />
-          {!authenticated && <LogoChain />}
+          <LogoChain />
         </div>
       )}
     </div>
