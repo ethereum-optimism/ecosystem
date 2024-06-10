@@ -81,7 +81,7 @@ const FaucetHeaderInner = ({ signedIn, wallet, authentications }: Props) => {
             </Button>
           </DialogTrigger>
         </div>
-        <Button variant="secondary">Disconnect</Button>
+        <Button variant="secondary">Disonnect</Button>
       </>
     )
   }
