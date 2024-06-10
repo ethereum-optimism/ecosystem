@@ -98,13 +98,6 @@ const FaucetHeaderInner = ({ signedIn, authentications }: Props) => {
     // User is signed in, but no wallet is connected
     content = (
       <>
-        <Text as="h3" className="text-base font-semibold mb-2">
-          Get maximum testnet tokens
-        </Text>
-        <Text as="p" className="text-base text-secondary-foreground mb-4">
-          Verify your onchain identity to increase your daily ETH allowance to{' '}
-          <b>1 ETH every 24 hours</b>. {seeDetailsLink}
-        </Text>
         <div className="flex flex-col gap-4">
           {onchainVerificationCard}
           {worldIdCard}

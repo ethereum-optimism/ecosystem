@@ -38,7 +38,7 @@ export default function Faucet() {
           as="p"
           className="text-md sm:text-lg text-center text-muted-foreground"
         >
-          Get test tokens for building applications on the Superchain
+          Get free testnet tokens for building applications on the Superchain.
         </Text>
       </div>
       <Card className="w-full max-w-screen-lg">

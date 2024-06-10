@@ -16,6 +16,12 @@ import { isAddress } from 'viem'
 import { useEffect, useState } from 'react'
 import { getFormattedCountdown } from '@/app/utils'
 import { Authentications } from '@/app/faucet/types'
+import {
+  Dialog,
+  DialogContent,
+  DialogTrigger,
+} from '@eth-optimism/ui-components/src/components/ui/dialog/dialog'
+import { SuccessDialog } from '@/app/faucet/components/SuccessDialog'
 
 type Props = {
   authentications: Authentications
@@ -56,7 +62,7 @@ const faucetNetworks = [
 
 const FaucetContent = ({ authentications }: Props) => {
   // Replace with real values from the backend
-  const secondsToNextDrip = 10
+  const secondsToNextDrip = 0
 
   const hasAuthentication = Object.values(authentications).some(Boolean)
   const claimAmount = hasAuthentication ? 1 : 0.05
@@ -139,13 +145,21 @@ const FaucetContent = ({ authentications }: Props) => {
           </RadioCard>
         ))}
       </RadioGroup>
-      <Button
-        disabled={isClaimDisabled}
-        className="w-full"
-        onClick={handleClaim}
-      >
-        {claimText}
-      </Button>
+      <Dialog>
+        <DialogTrigger asChild>
+          <Button
+            disabled={isClaimDisabled}
+            className="w-full"
+            onClick={handleClaim}
+          >
+            {claimText}
+          </Button>
+        </DialogTrigger>
+
+        <DialogContent>
+          <SuccessDialog />
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }

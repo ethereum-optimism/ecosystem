@@ -269,6 +269,9 @@ importers:
       '@remixicon/react':
         specifier: ^4.1.1
         version: 4.2.0(react@18.2.0)
+      '@rive-app/react-canvas':
+        specifier: ^4.11.2
+        version: 4.11.2(react@18.2.0)
       '@sentry/nextjs':
         specifier: ^7.106.0
         version: 7.110.1(encoding@0.1.13)(next@14.1.1(@babel/core@7.24.4)(@opentelemetry/api@1.8.0)(babel-plugin-macros@3.1.0)(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(react@18.2.0)(webpack@5.91.0)
@@ -4742,6 +4745,14 @@ packages:
 
   '@resolver-engine/imports@0.3.3':
     resolution: {integrity: sha512-anHpS4wN4sRMwsAbMXhMfOD/y4a4Oo0Cw/5+rue7hSwGWsDOQaAU1ClK1OxjUC35/peazxEl8JaSRRS+Xb8t3Q==}
+
+  '@rive-app/canvas@2.17.2':
+    resolution: {integrity: sha512-v2VUdyOIT8FY2+vsiezQR2UA5H9TdVsbnIzBaMDC4tqm1PfhcMJkXjs28reoh+5WzgajsTyaLF9gYBRQyMqiCQ==}
+
+  '@rive-app/react-canvas@4.11.2':
+    resolution: {integrity: sha512-4yYgA0SeJ31nZYcuirijHdLHSiW5cYnY60RldBViKNGVuV2nnjiD9D+1bTKi+SHdC5itDvpzcyu5I7BJYY3FNg==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0
 
   '@rollup/plugin-commonjs@24.0.0':
     resolution: {integrity: sha512-0w0wyykzdyRRPHOb0cQt14mIBLujfAv6GgP6g8nvg/iBxEm112t3YPPq+Buqe2+imvElTka+bjNlJ/gB56TD8g==}
@@ -19157,6 +19168,13 @@ snapshots:
       url: 0.11.3
     transitivePeerDependencies:
       - supports-color
+
+  '@rive-app/canvas@2.17.2': {}
+
+  '@rive-app/react-canvas@4.11.2(react@18.2.0)':
+    dependencies:
+      '@rive-app/canvas': 2.17.2
+      react: 18.2.0
 
   '@rollup/plugin-commonjs@24.0.0(rollup@2.78.0)':
     dependencies:
