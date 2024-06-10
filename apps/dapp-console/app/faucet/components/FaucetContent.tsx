@@ -31,7 +31,7 @@ const faucetNetworks = [
   {
     label: 'Lisk Sepolia',
     image: '/logos/lisk-logo.png',
-    chainID: 4202,
+    chainID: 402,
   },
   {
     label: 'Mode Sepolia',
