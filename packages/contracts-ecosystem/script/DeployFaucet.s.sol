@@ -10,45 +10,47 @@ import {Faucet} from "@eth-optimism/contracts-bedrock/src/periphery/faucet/Fauce
 import {AdminFaucetAuthModule} from
     "@eth-optimism/contracts-bedrock/src/periphery/faucet/authmodules/AdminFaucetAuthModule.sol";
 
-contract DeployFaucet is Script {
-    uint256 deployerPrivateKey;
-    uint256 proxyAdminOwnerPrivateKey;
-    uint256 faucetAdminPrivateKey;
-    uint256 faucetOnchainAuthModuleTtl;
-    uint256 faucetOnchainAuthModuleAmount;
-    uint256 faucetOffchainAuthModuleTtl;
-    uint256 faucetOffchainAuthModuleAmount;
+import {DeployHelper} from "script/DeployHelper.sol";
 
-    address faucetAdmin;
-    address proxyAdminOwner;
-    address proxyAdminContract;
-    address faucetProxyContract;
-    address faucetContract;
-    address faucetOnchainAuthModuleAdmin;
-    address onChainAuthModuleContract;
-    address faucetOffchainAuthModuleAdmin;
-    address offChainAuthModuleContract;
+contract DeployFaucet is Script {
+    uint256 _deployerPrivateKey;
+    uint256 _proxyAdminOwnerPrivateKey;
+    uint256 _faucetAdminPrivateKey;
+    uint256 _faucetOnchainAuthModuleTtl;
+    uint256 _faucetOnchainAuthModuleAmount;
+    uint256 _faucetOffchainAuthModuleTtl;
+    uint256 _faucetOffchainAuthModuleAmount;
+
+    address _faucetAdmin;
+    address _proxyAdminOwner;
+    address _proxyAdminContract;
+    address _faucetProxyContract;
+    address _faucetContract;
+    address _faucetOnchainAuthModuleAdmin;
+    address _onChainAuthModuleContract;
+    address _faucetOffchainAuthModuleAdmin;
+    address _offChainAuthModuleContract;
 
     function setUp() public {
-        deployerPrivateKey = vm.envUint("DEPLOYER_PRIVATE_KEY");
+        _deployerPrivateKey = vm.envUint("DEPLOYER_PRIVATE_KEY");
 
-        proxyAdminOwnerPrivateKey = vm.envUint("PROXY_ADMIN_OWNER_PRIVATE_KEY");
-        proxyAdminOwner = vm.createWallet(proxyAdminOwnerPrivateKey).addr;
+        _proxyAdminOwnerPrivateKey = vm.envUint("PROXY_ADMIN_OWNER_PRIVATE_KEY");
+        _proxyAdminOwner = vm.createWallet(_proxyAdminOwnerPrivateKey).addr;
 
-        faucetOnchainAuthModuleAmount = vm.envUint("FAUCET_ON_CHAIN_AUTH_MODULE_AMOUNT");
-        faucetOnchainAuthModuleTtl = vm.envUint("FAUCET_ON_CHAIN_AUTH_MODULE_TTL");
-        faucetOffchainAuthModuleAmount = vm.envUint("FAUCET_OFF_CHAIN_AUTH_MODULE_AMOUNT");
-        faucetOffchainAuthModuleTtl = vm.envUint("FAUCET_OFF_CHAIN_AUTH_MODULE_TTL");
+        _faucetOnchainAuthModuleAmount = vm.envUint("FAUCET_ON_CHAIN_AUTH_MODULE_AMOUNT");
+        _faucetOnchainAuthModuleTtl = vm.envUint("FAUCET_ON_CHAIN_AUTH_MODULE_TTL");
+        _faucetOffchainAuthModuleAmount = vm.envUint("FAUCET_OFF_CHAIN_AUTH_MODULE_AMOUNT");
+        _faucetOffchainAuthModuleTtl = vm.envUint("FAUCET_OFF_CHAIN_AUTH_MODULE_TTL");
 
-        faucetAdminPrivateKey = vm.envUint("FAUCET_ADMIN_PRIVATE_KEY");
-        faucetAdmin = vm.createWallet(faucetAdminPrivateKey).addr;
+        _faucetAdminPrivateKey = vm.envUint("FAUCET_ADMIN_PRIVATE_KEY");
+        _faucetAdmin = vm.createWallet(_faucetAdminPrivateKey).addr;
 
-        faucetOnchainAuthModuleAdmin = vm.envAddress("FAUCET_ON_CHAIN_AUTH_MODULE_ADMIN");
-        faucetOffchainAuthModuleAdmin = vm.envAddress("FAUCET_OFF_CHAIN_AUTH_MODULE_ADMIN");
+        _faucetOnchainAuthModuleAdmin = vm.envAddress("FAUCET_ON_CHAIN_AUTH_MODULE_ADMIN");
+        _faucetOffchainAuthModuleAdmin = vm.envAddress("FAUCET_OFF_CHAIN_AUTH_MODULE_ADMIN");
     }
 
     function run() public {
-        console.log("Deploying all periphery contracts");
+        console.log("Deploying all faucet contracts");
 
         deployProxies();
         deployImplementations();
@@ -72,82 +74,61 @@ contract DeployFaucet is Script {
 
     /// @notice Modifier that wraps a function in broadcasting.
     modifier broadcast() {
-        vm.startBroadcast(deployerPrivateKey);
+        vm.startBroadcast(_deployerPrivateKey);
         _;
         vm.stopBroadcast();
     }
 
     /// @notice Deploy the ProxyAdmin
     function deployProxyAdmin() public broadcast returns (address addr_) {
-        bytes32 salt = keccak256(bytes("ProxyAdmin"));
-        bytes32 initCodeHash = keccak256(abi.encodePacked(type(ProxyAdmin).creationCode, abi.encode(proxyAdminOwner)));
-        proxyAdminContract = vm.computeCreate2Address(salt, initCodeHash);
-        if (proxyAdminContract.code.length > 0) {
-            console.log("ProxyAdmin already deployed at %s", proxyAdminContract);
-            addr_ = proxyAdminContract;
-        } else {
-            ProxyAdmin admin = new ProxyAdmin{salt: salt}({_owner: proxyAdminOwner});
-            require(admin.owner() == proxyAdminOwner);
+        _proxyAdminContract = DeployHelper.deployCreate2({
+            _name: "ProxyAdmin",
+            _creationCode: type(ProxyAdmin).creationCode,
+            _constructorParams: abi.encode(_proxyAdminOwner)
+        });
 
-            proxyAdminContract = address(admin);
-            console.log("ProxyAdmin deployed at %s", address(admin));
+        require(ProxyAdmin(payable(_proxyAdminContract)).owner() == _proxyAdminOwner);
 
-            addr_ = address(admin);
-        }
+        addr_ = _proxyAdminContract;
     }
 
     /// @notice Deploy the FaucetProxy
     function deployFaucetProxy() public broadcast returns (address addr_) {
-        bytes32 salt = keccak256(bytes("FaucetProxy"));
-        bytes32 initCodeHash = keccak256(abi.encodePacked(type(Proxy).creationCode, abi.encode(proxyAdminContract)));
-        address preComputedAddress = vm.computeCreate2Address(salt, initCodeHash);
-        if (preComputedAddress.code.length > 0) {
-            console.log("FaucetProxy already deployed at %s", preComputedAddress);
-            faucetProxyContract = preComputedAddress;
-            addr_ = preComputedAddress;
-        } else {
-            Proxy proxy = new Proxy{salt: salt}({_admin: proxyAdminContract});
+        _faucetProxyContract = DeployHelper.deployCreate2({
+            _name: "FaucetProxy",
+            _creationCode: type(Proxy).creationCode,
+            _constructorParams: abi.encode(_proxyAdminContract)
+        });
 
-            faucetProxyContract = address(proxy);
-            console.log("FaucetProxy deployed at %s", address(proxy));
-
-            addr_ = address(proxy);
-        }
+        addr_ = _faucetProxyContract;
     }
 
     /// @notice Deploy the faucet contract.
     function deployFaucet() public broadcast returns (address addr_) {
-        bytes32 salt = keccak256(bytes("Faucet"));
-        bytes32 initCodeHash = keccak256(abi.encodePacked(type(Faucet).creationCode, abi.encode(faucetAdmin)));
-        address preComputedAddress = vm.computeCreate2Address(salt, initCodeHash);
-        if (preComputedAddress.code.length > 0) {
-            console.log("Faucet already deployed at %s", preComputedAddress);
-            faucetContract = preComputedAddress;
-            addr_ = preComputedAddress;
-        } else {
-            Faucet faucet = new Faucet{salt: salt}(faucetAdmin);
-            require(faucet.ADMIN() == faucetAdmin);
+        _faucetContract = DeployHelper.deployCreate2({
+            _name: "Faucet",
+            _creationCode: type(Faucet).creationCode,
+            _constructorParams: abi.encode(_faucetAdmin)
+        });
 
-            faucetContract = address(faucet);
-            console.log("Faucet deployed at %s", address(faucet));
+        require(Faucet(payable(_faucetContract)).ADMIN() == _faucetAdmin);
 
-            addr_ = address(faucet);
-        }
+        addr_ = _faucetContract;
     }
 
     /// @notice Initialize the Faucet
     function initializeFaucet() public {
-        vm.startBroadcast(proxyAdminOwnerPrivateKey);
+        vm.startBroadcast(_proxyAdminOwnerPrivateKey);
 
-        ProxyAdmin proxyAdmin = ProxyAdmin(proxyAdminContract);
-        address implementationAddress = proxyAdmin.getProxyImplementation(faucetProxyContract);
-        if (implementationAddress == faucetContract) {
+        ProxyAdmin proxyAdmin = ProxyAdmin(_proxyAdminContract);
+        address implementationAddress = proxyAdmin.getProxyImplementation(_faucetProxyContract);
+        if (implementationAddress == _faucetContract) {
             console.log("Faucet proxy implementation already set");
         } else {
-            proxyAdmin.upgrade({_proxy: payable(faucetProxyContract), _implementation: faucetContract});
+            proxyAdmin.upgrade({_proxy: payable(_faucetProxyContract), _implementation: _faucetContract});
         }
 
-        require(Faucet(payable(faucetProxyContract)).ADMIN() == Faucet(payable(faucetContract)).ADMIN());
+        require(Faucet(payable(_faucetProxyContract)).ADMIN() == Faucet(payable(_faucetContract)).ADMIN());
 
         vm.stopBroadcast();
     }
@@ -156,61 +137,37 @@ contract DeployFaucet is Script {
     function deployOnChainAuthModule() public broadcast returns (address addr_) {
         string memory moduleName = "OnChainAuthModule";
         string memory version = "1";
-        bytes32 salt = keccak256(bytes("OnChainAuthModule"));
-        bytes32 initCodeHash = keccak256(
-            abi.encodePacked(
-                type(AdminFaucetAuthModule).creationCode, abi.encode(faucetOnchainAuthModuleAdmin, moduleName, version)
-            )
-        );
-        address preComputedAddress = vm.computeCreate2Address(salt, initCodeHash);
-        if (preComputedAddress.code.length > 0) {
-            console.log("OnChainAuthModule already deployed at %s", preComputedAddress);
-            onChainAuthModuleContract = preComputedAddress;
-            addr_ = preComputedAddress;
-        } else {
-            AdminFaucetAuthModule onChainAuthModule =
-                new AdminFaucetAuthModule{salt: salt}(faucetOnchainAuthModuleAdmin, moduleName, version);
-            require(onChainAuthModule.ADMIN() == faucetOnchainAuthModuleAdmin);
+        _onChainAuthModuleContract = DeployHelper.deployCreate2({
+            _name: "OnChainAuthModule",
+            _creationCode: type(AdminFaucetAuthModule).creationCode,
+            _constructorParams: abi.encode(_faucetOnchainAuthModuleAdmin, moduleName, version)
+        });
 
-            onChainAuthModuleContract = address(onChainAuthModule);
-            console.log("OnChainAuthModule deployed at %s", address(onChainAuthModule));
+        require(AdminFaucetAuthModule(payable(_onChainAuthModuleContract)).ADMIN() == _faucetOnchainAuthModuleAdmin);
 
-            addr_ = address(onChainAuthModule);
-        }
+        addr_ = _onChainAuthModuleContract;
     }
 
     /// @notice deploys the Off-Chain Authentication Module
     function deployOffChainAuthModule() public broadcast returns (address addr_) {
         string memory moduleName = "OffChainAuthModule";
         string memory version = "1";
-        bytes32 salt = keccak256(bytes("OffChainAuthModule"));
-        bytes32 initCodeHash = keccak256(
-            abi.encodePacked(
-                type(AdminFaucetAuthModule).creationCode, abi.encode(faucetOffchainAuthModuleAdmin, moduleName, version)
-            )
-        );
-        address preComputedAddress = vm.computeCreate2Address(salt, initCodeHash);
-        if (preComputedAddress.code.length > 0) {
-            console.log("OffChainAuthModule already deployed at %s", preComputedAddress);
-            offChainAuthModuleContract = preComputedAddress;
-            addr_ = preComputedAddress;
-        } else {
-            AdminFaucetAuthModule offChainAuthModule =
-                new AdminFaucetAuthModule{salt: salt}(faucetOffchainAuthModuleAdmin, moduleName, version);
-            require(offChainAuthModule.ADMIN() == faucetOffchainAuthModuleAdmin);
+        _offChainAuthModuleContract = DeployHelper.deployCreate2({
+            _name: "OffChainAuthModule",
+            _creationCode: type(AdminFaucetAuthModule).creationCode,
+            _constructorParams: abi.encode(_faucetOffchainAuthModuleAdmin, moduleName, version)
+        });
 
-            offChainAuthModuleContract = address(offChainAuthModule);
-            console.log("OffChainAuthModule deployed at %s", address(offChainAuthModule));
+        require(AdminFaucetAuthModule(payable(_offChainAuthModuleContract)).ADMIN() == _faucetOffchainAuthModuleAdmin);
 
-            addr_ = address(offChainAuthModule);
-        }
+        addr_ = _offChainAuthModuleContract;
     }
 
     /// @notice installs the OnChain AuthModule on the Faucet contract.
     function installOnChainAuthModule() public {
         string memory moduleName = "OnChainAuthModule";
-        Faucet faucet = Faucet(payable(faucetProxyContract));
-        AdminFaucetAuthModule onChainAuthModule = AdminFaucetAuthModule(payable(onChainAuthModuleContract));
+        Faucet faucet = Faucet(payable(_faucetProxyContract));
+        AdminFaucetAuthModule onChainAuthModule = AdminFaucetAuthModule(payable(_onChainAuthModuleContract));
         if (faucet.isModuleEnabled(onChainAuthModule)) {
             console.log("%s already installed.", moduleName);
         } else {
@@ -218,8 +175,8 @@ contract DeployFaucet is Script {
             Faucet.ModuleConfig memory myModuleConfig = Faucet.ModuleConfig({
                 name: moduleName,
                 enabled: true,
-                ttl: faucetOnchainAuthModuleTtl,
-                amount: faucetOnchainAuthModuleAmount
+                ttl: _faucetOnchainAuthModuleTtl,
+                amount: _faucetOnchainAuthModuleAmount
             });
             faucet.configure(onChainAuthModule, myModuleConfig);
             console.log("%s installed successfully", moduleName);
@@ -229,8 +186,8 @@ contract DeployFaucet is Script {
     /// @notice installs the OffChain AuthModule on the Faucet contract.
     function installOffChainAuthModule() public {
         string memory moduleName = "OffChainAuthModule";
-        Faucet faucet = Faucet(payable(faucetProxyContract));
-        AdminFaucetAuthModule offChainAuthModule = AdminFaucetAuthModule(payable(offChainAuthModuleContract));
+        Faucet faucet = Faucet(payable(_faucetProxyContract));
+        AdminFaucetAuthModule offChainAuthModule = AdminFaucetAuthModule(payable(_offChainAuthModuleContract));
         if (faucet.isModuleEnabled(offChainAuthModule)) {
             console.log("%s already installed.", moduleName);
         } else {
@@ -238,8 +195,8 @@ contract DeployFaucet is Script {
             Faucet.ModuleConfig memory myModuleConfig = Faucet.ModuleConfig({
                 name: moduleName,
                 enabled: true,
-                ttl: faucetOffchainAuthModuleTtl,
-                amount: faucetOffchainAuthModuleAmount
+                ttl: _faucetOffchainAuthModuleTtl,
+                amount: _faucetOffchainAuthModuleAmount
             });
             faucet.configure(offChainAuthModule, myModuleConfig);
             console.log("%s installed successfully", moduleName);
@@ -248,9 +205,9 @@ contract DeployFaucet is Script {
 
     /// @notice installs all of the auth module in the faucet contract.
     function installFaucetAuthModulesConfigs() public {
-        Faucet faucet = Faucet(payable(faucetProxyContract));
+        Faucet faucet = Faucet(payable(_faucetProxyContract));
         console.log("Installing auth modules at %s", address(faucet));
-        vm.startBroadcast(faucetAdminPrivateKey);
+        vm.startBroadcast(_faucetAdminPrivateKey);
         installOnChainAuthModule();
         installOffChainAuthModule();
         vm.stopBroadcast();

@@ -7,6 +7,8 @@ import {console} from "forge-std/console.sol";
 import {CheckBalanceLow} from "@eth-optimism/contracts-bedrock/src/periphery/drippie/dripchecks/CheckBalanceLow.sol";
 import {Drippie} from "@eth-optimism/contracts-bedrock/src/periphery/drippie/Drippie.sol";
 
+import {DeployHelper} from "script/DeployHelper.sol";
+
 contract DeployFaucetDrippie is Script {
     uint256 _deployerPrivateKey;
 
@@ -34,7 +36,7 @@ contract DeployFaucetDrippie is Script {
 
     /// @notice Deploy the Drippie contract.
     function deployFaucetDrippie() public broadcast {
-        address _faucetDrippieContract = _deployCreate2({
+        address _faucetDrippieContract = DeployHelper.deployCreate2({
             _name: "FaucetDrippie",
             _creationCode: type(Drippie).creationCode,
             _constructorParams: abi.encode(_faucetDrippieOwner)
@@ -46,33 +48,10 @@ contract DeployFaucetDrippie is Script {
 
     /// @notice Deploy CheckBalanceLow contract.
     function deployCheckBalanceLow() public broadcast {
-        _deployCreate2({
+        DeployHelper.deployCreate2({
             _name: "CheckBalanceLow",
             _creationCode: type(CheckBalanceLow).creationCode,
             _constructorParams: hex""
         });
-    }
-
-    // @notice Deploys a contract using the CREATE2 opcode.
-    // @param _name The name of the contract.
-    // @param _creationCode The contract creation code.
-    // @param _constructorParams The constructor parameters.
-    function _deployCreate2(string memory _name, bytes memory _creationCode, bytes memory _constructorParams)
-        internal
-        returns (address addr_)
-    {
-        bytes32 salt = keccak256(bytes(_name));
-        bytes memory initCode = abi.encodePacked(_creationCode, _constructorParams);
-        address preComputedAddress = vm.computeCreate2Address(salt, keccak256(initCode));
-        if (preComputedAddress.code.length > 0) {
-            console.log("%s already deployed at %s", _name, preComputedAddress);
-            addr_ = preComputedAddress;
-        } else {
-            assembly {
-                addr_ := create2(0, add(initCode, 0x20), mload(initCode), salt)
-            }
-            require(addr_ != address(0), "deployment failed");
-            console.log("%s deployed at %s", _name, addr_);
-        }
     }
 }
