@@ -8,7 +8,6 @@ import { useEffect } from 'react'
 import { useFeatureFlag } from '@/app/hooks/useFeatureFlag'
 import { useRouter } from 'next/navigation'
 import { FaucetContent } from '@/app/faucet/components/FaucetContent'
-import { Tile } from '@/app/components/Tile/Tile'
 import { Faqs } from '@/app/faucet/components/Faqs'
 
 const authentications = {

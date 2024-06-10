@@ -13,7 +13,7 @@ import {
 } from 'viem/chains'
 
 import { isAddress } from 'viem'
-import { FormEvent, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { getFormattedCountdown } from '@/app/utils'
 import { Authentications } from '@/app/faucet/types'
 
