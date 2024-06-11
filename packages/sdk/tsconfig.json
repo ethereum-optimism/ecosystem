@@ -13,5 +13,9 @@
   "include": [
     "src/**/*",
     "src/forge-artifacts/*.json"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist"
   ]
 }
