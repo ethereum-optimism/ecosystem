@@ -1,11 +1,12 @@
 {
   "name": "@eth-optimism/contracts-ecosystem",
   "version": "0.0.0",
-  "main": "ts-abis/index.ts",
+  "main": "build/index.js",
   "types": "types/index.d.ts",
   "private": true,
   "license": "MIT",
   "scripts": {
+    "clean": "rm -rf build types tsconfig.tsbuildinfo",
     "compile": "forge compile",
     "build:faucet:abi": "./bash-scripts/generate-abi.sh -j out/Faucet.sol/Faucet.json -o ts-abis/Faucet.ts -v faucet && pnpm lint:fix",
     "build:adminfam:abi": "./bash-scripts/generate-abi.sh -j out/AdminFaucetAuthModule.sol/AdminFaucetAuthModule.json -o ts-abis/AdminFaucetAuthModule.ts -v adminFaucetAuthModule && pnpm lint:fix",
