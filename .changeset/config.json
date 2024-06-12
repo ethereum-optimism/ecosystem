@@ -8,5 +8,8 @@
   "baseBranch": "main",
   "updateInternalDependencies": "patch",
   "privatePackages": { "version": true, "tag": true },
-  "ignore": []
+  "ignore": [
+    "@eth-optimism/bridge-app",
+    "@eth-optimism/dapp-console"
+  ]
 }
