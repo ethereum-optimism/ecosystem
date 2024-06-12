@@ -12,7 +12,8 @@ import type {
 import {
   MessageDirection,
 } from '../interfaces'
-import { omit,toAddress } from '../utils'
+import { toAddress } from '../utils/coercion'
+import { omit } from '../utils/misc-utils'
 import { StandardBridgeAdapter } from './standard-bridge'
 
 /**

@@ -3,7 +3,7 @@ import { hexStringEquals } from '@eth-optimism/core-utils'
 import { Contract } from 'ethers'
 
 import type { AddressLike } from '../interfaces'
-import { toAddress } from '../utils'
+import { toAddress } from '../utils/coercion'
 import { StandardBridgeAdapter } from './standard-bridge'
 
 /**

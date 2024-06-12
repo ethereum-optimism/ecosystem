@@ -26,7 +26,7 @@ import type {
 import {
   MessageDirection,
 } from '../interfaces'
-import { toAddress } from '../utils'
+import { toAddress } from '../utils/coercion'
 
 /**
  * Bridge adapter for any token bridge that uses the standard token bridge interface.
