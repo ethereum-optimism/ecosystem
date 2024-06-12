@@ -1,17 +1,30 @@
 {
-  "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "module": "CommonJS",
+    "module": "commonjs",
     "target": "es2017",
+    "sourceMap": true,
+    "esModuleInterop": true,
+    "composite": true,
+    "resolveJsonModule": true,
+    "declaration": true,
+    "noImplicitAny": false,
+    "removeComments": true,
+    "noLib": false,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "typeRoots": [
+      "node_modules/@types"
+    ],
     "lib": ["ES2021"],
     "rootDir": "./src",
     "outDir": "./dist",
-    "strict": false,
-    "noImplicitAny": false,
-    "removeComments": true
   },
   "include": [
     "src/**/*",
     "src/forge-artifacts/*.json"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist"
   ]
 }
