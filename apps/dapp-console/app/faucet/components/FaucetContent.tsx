@@ -4,6 +4,8 @@ import { RadioCard } from '@eth-optimism/ui-components/src/components/ui/radio-g
 import { RadioGroup } from '@eth-optimism/ui-components/src/components/ui/radio-group/radio-group'
 import { Button } from '@eth-optimism/ui-components/src/components/ui/button/button'
 import { Text } from '@eth-optimism/ui-components/src/components/ui/text/text'
+import { Confetti } from '@eth-optimism/ui-components/src/components/ui/confetti/confetti'
+
 import {
   baseSepolia,
   modeTestnet,
@@ -73,6 +75,7 @@ const FaucetContent = ({ authentications }: Props) => {
   )
   const [countdown, setCountdown] = useState(secondsToNextDrip)
   const [formattedTime, setFormattedTime] = useState('')
+  const [isDialogOpen, setIsDialogOpen] = useState(false)
 
   const isClaimDisabled = !isValid || !selectedNetwork || countdown > 0
   const claimText =
@@ -145,7 +148,7 @@ const FaucetContent = ({ authentications }: Props) => {
           </RadioCard>
         ))}
       </RadioGroup>
-      <Dialog>
+      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <DialogTrigger asChild>
           <Button
             disabled={isClaimDisabled}
@@ -155,11 +158,17 @@ const FaucetContent = ({ authentications }: Props) => {
             {claimText}
           </Button>
         </DialogTrigger>
-
         <DialogContent>
-          <SuccessDialog />
+          <SuccessDialog
+            claimAmount={claimAmount}
+            claimNetwork={selectedNetwork}
+            closeDialog={() => {
+              setIsDialogOpen(false)
+            }}
+          />
         </DialogContent>
       </Dialog>
+      <Confetti runAnimation={isDialogOpen} zIndex={1000} />
     </div>
   )
 }
