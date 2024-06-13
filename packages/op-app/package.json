@@ -3,7 +3,7 @@
   "type": "module",
   "main": "dist/index",
   "types": "dist/index.d.ts",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "scripts": {
     "dev": "vite -m development",
     "build": "tsup && pnpm tsc",
