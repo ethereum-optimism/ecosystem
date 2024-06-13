@@ -1,5 +1,11 @@
 # @eth-optimism/sdk
 
+## 3.3.2
+
+### Patch Changes
+
+- [#378](https://github.com/ethereum-optimism/ecosystem/pull/378) [`aea7d67`](https://github.com/ethereum-optimism/ecosystem/commit/aea7d67786fe0c2b2e532a40567a72555197c138) Thanks [@smartcontracts](https://github.com/smartcontracts)! - Adds OP Mainnet DGF address to SDK
+
 ## 3.3.0
 
 ### Minor Changes
