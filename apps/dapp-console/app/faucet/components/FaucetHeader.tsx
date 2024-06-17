@@ -3,7 +3,6 @@ import { hasAuthentication } from '@/app/faucet/helpers'
 import { LogoChain } from '@/app/faucet/components/LogoChain'
 import { AuthenticatedHeader } from '@/app/faucet/components/AuthenticatedHeader'
 import { FaucetHeaderInner } from '@/app/faucet/components/FaucetHeaderInner'
-import { usePrivy } from '@privy-io/react-auth'
 
 type FaucetHeaderProps = {
   authentications: Authentications
