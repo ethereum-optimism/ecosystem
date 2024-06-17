@@ -11,7 +11,7 @@ import { FaucetContent } from '@/app/faucet/components/FaucetContent'
 import { Faqs } from '@/app/faucet/components/Faqs'
 
 const authentications = {
-  coinbase: true,
+  coinbase: false,
   worldId: false,
   gitcoin: false,
   eas: false,

@@ -10,15 +10,13 @@ type FaucetHeaderProps = {
 }
 
 const FaucetHeader = ({ authentications }: FaucetHeaderProps) => {
-  const { authenticated } = usePrivy()
-
   return (
     <div>
       {hasAuthentication(authentications) ? (
         <AuthenticatedHeader authentications={authentications} />
       ) : (
         <div className="flex justify-between flex-col-reverse md:flex-row items-start gap-4">
-          <FaucetHeaderInner signedIn={authenticated} />
+          <FaucetHeaderInner />
           <LogoChain />
         </div>
       )}
