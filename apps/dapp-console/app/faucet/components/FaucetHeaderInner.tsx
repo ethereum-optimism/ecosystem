@@ -6,8 +6,9 @@ import {
   DialogContent,
 } from '@eth-optimism/ui-components/src/components/ui/dialog/dialog'
 import { LearnMoreDialogContent } from '@/app/faucet/components/LearnMoreDialogContent'
-import { usePrivy, useWallets } from '@privy-io/react-auth'
+import { usePrivy } from '@privy-io/react-auth'
 import { useAuth } from '@/app/hooks/useAuth'
+import { useConnectedWallet } from '@/app/hooks/useConnectedWallet'
 
 const seeDetails = (
   <DialogTrigger>
@@ -18,11 +19,8 @@ const seeDetails = (
 )
 
 const FaucetHeaderInner = () => {
-  const { connectWallet } = usePrivy()
-  const { wallets } = useWallets()
-  const connectedWallet = wallets.find((w) => w.walletClientType !== 'privy') // Exclude Privy wallet
-
-  const { authenticated } = usePrivy()
+  const { connectWallet, authenticated } = usePrivy()
+  const { connectedWallet } = useConnectedWallet()
   const { login } = useAuth()
 
   const handleLogin = () => {
