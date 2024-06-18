@@ -18,7 +18,7 @@ import { useConnectedWallet } from '@/app/hooks/useConnectedWallet'
 import { generateClaimSignature } from '@/app/faucet/helpers'
 import { faucetNetworks } from '@/app/constants/faucet'
 import { usePrivy } from '@privy-io/react-auth'
-import { ClaimButton } from './ClaimButton'
+import { ClaimButton } from '@/app/faucet/components/ClaimButton'
 
 type Props = {
   authentications: Authentications
