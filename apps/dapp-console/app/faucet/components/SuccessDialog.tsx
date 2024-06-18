@@ -42,13 +42,13 @@ const SuccessDialog: React.FC<Props> = ({
   return (
     <>
       <div className="flex flex-col items-center w-full rounded-md overflow-hidden">
-        <Text as="h2" className="text-xl font-semibold">
+        <RiveComponent className="h-96 w-full" />
+        <Text as="h2" className="text-lg font-semibold">
           {title}
         </Text>
-        <Text as="p" className="text-secondary-foreground text-center">
+        <Text as="p" className="text-secondary-foreground text-center mb-10">
           {description}
         </Text>
-        <RiveComponent className="h-96 w-full" />
         <Button variant="secondary" className="w-full" onClick={closeDialog}>
           Close
         </Button>

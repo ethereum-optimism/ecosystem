@@ -34,7 +34,7 @@ const FaucetContent = ({ authentications }: Props) => {
   const [selectedNetwork, setSelectedNetwork] = useState(faucetNetworks[0])
   const [countdown, setCountdown] = useState(secondsToNextDrip)
   const [isDialogOpen, setIsDialogOpen] = useState(false)
-  const [isClaimSuccessful, setIsClaimSuccessful] = useState(false)
+  const [isClaimSuccessful, setIsClaimSuccessful] = useState(true)
 
   const hasAuthentication = Object.values(authentications).some(Boolean)
   const claimAmount = hasAuthentication ? 1 : 0.05
@@ -139,7 +139,7 @@ const FaucetContent = ({ authentications }: Props) => {
           />
         </DialogContent>
       </Dialog>
-      <Confetti runAnimation={isClaimSuccessful} zIndex={1000} />
+      <Confetti runAnimation={isDialogOpen} zIndex={1000} />
     </div>
   )
 }

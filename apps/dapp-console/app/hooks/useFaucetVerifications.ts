@@ -45,6 +45,12 @@ const useFaucetVerifications = () => {
     ATTESTATION: isAttested,
   }
 
+  // // How to use this? can we change this to just use the session to get the next drips?
+  // const { data: nextDrips } = apiClient.faucet.nextDrips.useQuery(
+  //   { authMode: 'PRIVY', walletAddress: walletAddress },
+  //   { enabled: !!walletAddress },
+  // )
+
   return { faucetAuthentications }
 }
 
