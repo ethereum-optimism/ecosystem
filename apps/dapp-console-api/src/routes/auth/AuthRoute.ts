@@ -92,17 +92,6 @@ export class AuthRoute extends Route {
         .describe('returns whether the address is attested for in any way'),
     )
     .query(async (req) => {
-      // Checks if user is Gitcoin Passport attested with a score > 25
-      const gitcoinPassportAttestation = await getGitcoinPassportAttestation(
-        req.input.address,
-      )
-      if (
-        gitcoinPassportAttestation &&
-        gitcoinPassportAttestation.score.profileScore > 25
-      ) {
-        return true
-      }
-
       // Checks if user is attested for Optimism Faucet access by an allowlisted attester
       const attestersArray = envVars.FAUCET_ACCESS_ATTESTERS
 
@@ -116,13 +105,6 @@ export class AuthRoute extends Route {
       )
 
       if (tempFaucetAttestation) {
-        return true
-      }
-
-      const coinbaseVerificationAttestation =
-        await getCoinbaseVerificationAttestationFromEAS(req.input.address)
-
-      if (coinbaseVerificationAttestation) {
         return true
       }
 
@@ -147,6 +129,30 @@ export class AuthRoute extends Route {
       }
 
       return false
+    })
+
+  public readonly isGitcoinVerified = 'isGitcoinVerified' as const
+  public readonly isGitcoinVerifiedController = this.trpc.procedure
+    .input(
+      this.z
+        .object({
+          address: zodEthereumAddress,
+        })
+        .describe(
+          'returns whether the address has gitcoin passport attestation',
+        ),
+    )
+    .query(async (req) => {
+      // Checks if user is Gitcoin Passport attested with a score > 25
+      const gitcoinPassportAttestation = await getGitcoinPassportAttestation(
+        req.input.address,
+      )
+      if (
+        gitcoinPassportAttestation &&
+        gitcoinPassportAttestation.score.profileScore > 25
+      ) {
+        return true
+      }
     })
 
   public readonly isWorldIdUser = 'isWorldIdUser' as const
@@ -239,6 +245,7 @@ export class AuthRoute extends Route {
     [this.loginUser]: this.loginUserController,
     [this.isAttested]: this.isAttestedController,
     [this.isCoinbaseVerified]: this.isCoinbaseVerifiedController,
+    [this.isGitcoinVerified]: this.isGitcoinVerifiedController,
     [this.worldIdVerify]: this.worldIdVerifyLoginController,
     [this.isWorldIdUser]: this.isWorldIdUserController,
     [this.logoutWorldIdUser]: this.logoutWorldIdUserController,
