@@ -1,6 +1,6 @@
 export type Authentications = {
-  coinbase: boolean
-  worldId: boolean
-  gitcoin: boolean
-  eas: boolean
+  COINBASE_VERIFICATION: boolean | undefined
+  WORLD_ID: boolean | undefined
+  GITCOIN_PASSPORT: boolean | undefined
+  ATTESTATION: boolean | undefined
 }

@@ -10,10 +10,13 @@ type Props = {
 
 // Define the labels and images for each authentication type
 const data: Record<keyof Authentications, { label: string; image: string }> = {
-  coinbase: { label: 'Coinbase', image: '/logos/coinbase-logo.png' },
-  worldId: { label: 'World ID', image: '/logos/worldid-logo.png' },
-  gitcoin: { label: 'Gitcoin', image: '/logos/gitcoin-logo.png' },
-  eas: { label: 'EAS', image: '/logos/eas-logo.png' },
+  COINBASE_VERIFICATION: {
+    label: 'Coinbase',
+    image: '/logos/coinbase-logo.png',
+  },
+  WORLD_ID: { label: 'World ID', image: '/logos/worldid-logo.png' },
+  GITCOIN_PASSPORT: { label: 'Gitcoin', image: '/logos/gitcoin-logo.png' },
+  ATTESTATION: { label: 'EAS', image: '/logos/eas-logo.png' },
 }
 
 const getAuthenticatedLabelAndImages = (authentications: Authentications) => {

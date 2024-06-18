@@ -2,17 +2,8 @@ import { Label } from '@eth-optimism/ui-components/src/components/ui/label/label
 import { Input } from '@eth-optimism/ui-components/src/components/ui/input/input'
 import { RadioCard } from '@eth-optimism/ui-components/src/components/ui/radio-group/radio-card'
 import { RadioGroup } from '@eth-optimism/ui-components/src/components/ui/radio-group/radio-group'
-import { Button } from '@eth-optimism/ui-components/src/components/ui/button/button'
 import { Text } from '@eth-optimism/ui-components/src/components/ui/text/text'
 import { Confetti } from '@eth-optimism/ui-components/src/components/ui/confetti/confetti'
-
-import {
-  baseSepolia,
-  modeTestnet,
-  optimismSepolia,
-  sepolia,
-  zoraSepolia,
-} from 'viem/chains'
 
 import { isAddress } from 'viem'
 import { useEffect, useState } from 'react'
@@ -21,67 +12,47 @@ import { Authentications } from '@/app/faucet/types'
 import {
   Dialog,
   DialogContent,
-  DialogTrigger,
 } from '@eth-optimism/ui-components/src/components/ui/dialog/dialog'
 import { SuccessDialog } from '@/app/faucet/components/SuccessDialog'
+import { useConnectedWallet } from '@/app/hooks/useConnectedWallet'
+import { generateClaimSignature } from '@/app/faucet/helpers'
+import { faucetNetworks } from '@/app/constants/faucet'
+import { usePrivy } from '@privy-io/react-auth'
+import { ClaimButton } from './ClaimButton'
 
 type Props = {
   authentications: Authentications
 }
 
-const faucetNetworks = [
-  {
-    label: 'Base Sepolia',
-    image: '/logos/base-logo.png',
-    chainID: baseSepolia.id,
-  },
-  {
-    label: 'Ethereum Sepolia',
-    image: '/logos/eth-logo.png',
-    chainID: sepolia.id,
-  },
-  {
-    label: 'Lisk Sepolia',
-    image: '/logos/lisk-logo.png',
-    chainID: 4202,
-  },
-  {
-    label: 'Mode Sepolia',
-    image: '/logos/mode-logo.png',
-    chainID: modeTestnet.id,
-  },
-  {
-    label: 'OP Sepolia',
-    image: '/logos/op-logo.svg',
-    chainID: optimismSepolia.id,
-  },
-  {
-    label: 'Zora Sepolia',
-    image: '/logos/zora-logo.png',
-    chainID: zoraSepolia.id,
-  },
-]
-
 const FaucetContent = ({ authentications }: Props) => {
+  const { connectedWallet } = useConnectedWallet()
+  const { authenticated } = usePrivy()
   // Replace with real values from the backend
   const secondsToNextDrip = 0
 
+  const [address, setAddress] = useState('')
+  const [selectedNetwork, setSelectedNetwork] = useState(faucetNetworks[0])
+  const [countdown, setCountdown] = useState(secondsToNextDrip)
+  const [isDialogOpen, setIsDialogOpen] = useState(false)
+  const [isClaimSuccessful, setIsClaimSuccessful] = useState(false)
+
   const hasAuthentication = Object.values(authentications).some(Boolean)
   const claimAmount = hasAuthentication ? 1 : 0.05
-  const [address, setAddress] = useState('')
-  const [isValid, setIsValid] = useState(false)
-  const [selectedNetwork, setSelectedNetwork] = useState(
-    faucetNetworks[0].label,
-  )
-  const [countdown, setCountdown] = useState(secondsToNextDrip)
-  const [formattedTime, setFormattedTime] = useState('')
-  const [isDialogOpen, setIsDialogOpen] = useState(false)
 
-  const isClaimDisabled = !isValid || !selectedNetwork || countdown > 0
+  const isValidAddress = isAddress(address)
+
+  const isClaimDisabled =
+    !authenticated || !isValidAddress || !selectedNetwork || countdown > 0
+
   const claimText =
     countdown > 0
-      ? formattedTime
-      : `Claim ${claimAmount} ETH on ${selectedNetwork}`
+      ? `Claim again in ${getFormattedCountdown(countdown)}`
+      : `Claim ${claimAmount} ETH on ${selectedNetwork.label}`
+
+  const claimSignatureMessage = generateClaimSignature(
+    connectedWallet?.address || '',
+    address,
+  )
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -90,18 +61,11 @@ const FaucetContent = ({ authentications }: Props) => {
       )
     }, 1000)
 
-    setFormattedTime(`Claim again in ${getFormattedCountdown(countdown)}`)
     return () => clearInterval(interval)
   }, [countdown])
 
   const handleAddressChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setAddress(e.target.value)
-    setIsValid(isAddress(e.target.value))
-  }
-
-  const handleClaim = () => {
-    console.log('Claiming ETH for address:', address)
-    console.log('Selected Network:', selectedNetwork)
   }
 
   return (
@@ -117,7 +81,7 @@ const FaucetContent = ({ authentications }: Props) => {
           onChange={handleAddressChange}
         />
 
-        {address.length > 0 && !isValid && (
+        {address.length > 0 && !isValidAddress && (
           <Text className="text-red-500">Please enter a valid ETH address</Text>
         )}
       </div>
@@ -125,14 +89,14 @@ const FaucetContent = ({ authentications }: Props) => {
       <Label>Network</Label>
       <RadioGroup
         className="mt-4 mb-10 grid grid-cols-1 sm:grid-cols-2"
-        value={selectedNetwork}
+        value={selectedNetwork.label}
       >
         {faucetNetworks.map((network) => (
           <RadioCard
             key={network.chainID}
             value={network.label}
             onClick={() => {
-              setSelectedNetwork(network.label)
+              setSelectedNetwork(network)
             }}
           >
             <div className="flex gap-3 items-center">
@@ -149,26 +113,33 @@ const FaucetContent = ({ authentications }: Props) => {
         ))}
       </RadioGroup>
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogTrigger asChild>
-          <Button
-            disabled={isClaimDisabled}
-            className="w-full"
-            onClick={handleClaim}
-          >
-            {claimText}
-          </Button>
-        </DialogTrigger>
+        <ClaimButton
+          isDisabled={isClaimDisabled}
+          claimSignatureMessage={claimSignatureMessage}
+          onClick={() => {
+            setIsDialogOpen(true)
+          }}
+          chainId={selectedNetwork.chainID}
+          authentications={authentications}
+          recipientAddress={address}
+          onSuccess={() => {
+            setIsClaimSuccessful(true)
+          }}
+        >
+          {claimText}
+        </ClaimButton>
         <DialogContent>
           <SuccessDialog
             claimAmount={claimAmount}
-            claimNetwork={selectedNetwork}
+            claimNetwork={selectedNetwork.label}
             closeDialog={() => {
               setIsDialogOpen(false)
             }}
+            isClaimSuccessful={isClaimSuccessful}
           />
         </DialogContent>
       </Dialog>
-      <Confetti runAnimation={isDialogOpen} zIndex={1000} />
+      <Confetti runAnimation={isClaimSuccessful} zIndex={1000} />
     </div>
   )
 }

@@ -12,12 +12,14 @@ import { Button } from '@eth-optimism/ui-components/src/components/ui/button/but
 type Props = {
   claimAmount: number | null
   claimNetwork: string | null
+  isClaimSuccessful: boolean
   closeDialog: () => void
 }
 
 const SuccessDialog: React.FC<Props> = ({
   claimAmount,
   claimNetwork,
+  isClaimSuccessful,
   closeDialog,
 }) => {
   const { RiveComponent } = useRive({
@@ -30,8 +32,10 @@ const SuccessDialog: React.FC<Props> = ({
     }),
   } as UseRiveParameters)
 
-  const title = claimAmount ? 'Claim successful' : 'Waiting for confirmation'
-  const description = claimAmount
+  const title = isClaimSuccessful
+    ? 'Claim successful'
+    : 'Waiting for confirmation'
+  const description = isClaimSuccessful
     ? `You have successfully claimed ${claimAmount} test ETH on ${claimNetwork}`
     : 'Please sign the transaction in your wallet'
 
