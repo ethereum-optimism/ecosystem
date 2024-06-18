@@ -73,11 +73,13 @@ const ClaimButton = forwardRef<HTMLButtonElement, ClaimButtonProps>(
     }
 
     const handleOffchainClaim = async () => {
-      await claimOffchain({
+      const result = await claimOffchain({
         chainId: chainId,
         recipientAddress: recipientAddress,
         authMode: 'PRIVY',
       })
+
+      console.log(result)
     }
 
     const handleClaim = async () => {
