@@ -369,6 +369,9 @@ importers:
       '@eth-optimism/contracts-ts':
         specifier: ^0.17.0
         version: 0.17.2(@wagmi/core@2.6.17(@tanstack/query-core@5.29.0)(@types/react@18.3.1)(bufferutil@4.0.8)(immer@10.0.4)(react@18.2.0)(typescript@5.4.5)(utf-8-validate@6.0.3)(viem@2.9.21(bufferutil@4.0.8)(typescript@5.4.5)(utf-8-validate@6.0.3)(zod@3.22.4))(zod@3.22.4))(bufferutil@4.0.8)(typescript@5.4.5)(utf-8-validate@6.0.3)(wagmi@2.5.20(@react-native-async-storage/async-storage@1.23.1(react-native@0.73.6(@babel/core@7.24.4)(@babel/preset-env@7.24.4(@babel/core@7.24.4))(bufferutil@4.0.8)(encoding@0.1.13)(react@18.2.0)(utf-8-validate@6.0.3)))(@tanstack/query-core@5.29.0)(@tanstack/react-query@5.29.2(react@18.2.0))(@types/react@18.3.1)(bufferutil@4.0.8)(encoding@0.1.13)(esbuild@0.19.12)(immer@10.0.4)(ioredis@5.4.1)(react-dom@18.2.0(react@18.2.0))(react-native@0.73.6(@babel/core@7.24.4)(@babel/preset-env@7.24.4(@babel/core@7.24.4))(bufferutil@4.0.8)(encoding@0.1.13)(react@18.2.0)(utf-8-validate@6.0.3))(react@18.2.0)(rollup@4.14.3)(typescript@5.4.5)(utf-8-validate@6.0.3)(viem@2.9.21(bufferutil@4.0.8)(typescript@5.4.5)(utf-8-validate@6.0.3)(zod@3.22.4))(zod@3.22.4))(zod@3.22.4)
+      '@eth-optimism/message-queue':
+        specifier: workspace:*
+        version: link:../../packages/message-queue
       '@eth-optimism/screening':
         specifier: workspace:*
         version: link:../../packages/screening

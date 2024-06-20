@@ -203,6 +203,32 @@ workflows:
           requires:
             - dapp-console-api-docker-build
 
+  build-and-publish-dapp-console-api-processor:
+    jobs:
+      - docker-build:
+          filters:
+            branches:
+              only:
+                - main
+          name: dapp-console-api-processor-docker-build
+          docker_file: ./Dockerfile
+          docker_name: dapp-console-api-processor
+          docker_tags: <<pipeline.git.revision>>,<<pipeline.git.branch>>
+          docker_context: .
+          docker_target: dapp-console-api-processor
+      - docker-publish:
+          filters:
+            branches:
+              only:
+                - main
+          name: dapp-console-api-processor-docker-publish
+          docker_name: dapp-console-api-processor
+          docker_tags: <<pipeline.git.revision>>,<<pipeline.git.branch>>
+          context:
+            - oplabs-gcr-internal
+          requires:
+            - dapp-console-api-processor-docker-build
+
   build-and-publish-api-key-service:
     jobs:
       - docker-build:
