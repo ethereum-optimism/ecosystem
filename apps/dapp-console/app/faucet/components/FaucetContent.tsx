@@ -64,6 +64,12 @@ const FaucetContent = ({ authentications }: Props) => {
     return () => clearInterval(interval)
   }, [countdown])
 
+  useEffect(() => {
+    if (!isDialogOpen) {
+      handleCloseDialog()
+    }
+  }, [isDialogOpen])
+
   const handleAddressChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setAddress(e.target.value)
   }
@@ -75,7 +81,7 @@ const FaucetContent = ({ authentications }: Props) => {
 
   return (
     <div>
-      <Label htmlFor="address">Address to fund</Label>
+      <Label htmlFor="address">Address</Label>
       <div className="mb-6">
         <Input
           className="mt-4 mb-2"

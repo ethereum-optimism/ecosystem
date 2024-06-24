@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useMemo } from 'react'
 import { Text } from '@eth-optimism/ui-components/src/components/ui/text/text'
 import {
   useRive,
@@ -23,16 +23,21 @@ const SuccessDialog: React.FC<Props> = ({
   isClaimSuccessful,
   closeDialog,
 }) => {
-  const { RiveComponent, rive } = useRive({
-    src: '/sunny-animation.riv',
-    stateMachines: ['State Machine 1'],
-    autoplay: true,
-    layout: new Layout({
-      fit: Fit.Cover,
-      alignment: Alignment.Center,
+  const isOffchainClaim = claimAmount === 0.05
+  const riveParams = useMemo(
+    () => ({
+      src: '/sunny-animation.riv',
+      stateMachines: ['State Machine 1'],
+      autoplay: true,
+      layout: new Layout({
+        fit: Fit.Cover,
+        alignment: Alignment.Center,
+      }),
     }),
-  } as UseRiveParameters)
+    [],
+  )
 
+  const { RiveComponent, rive } = useRive(riveParams as UseRiveParameters)
   const celebrateInput = useStateMachineInput(
     rive,
     'State Machine 1',
@@ -42,23 +47,38 @@ const SuccessDialog: React.FC<Props> = ({
   useEffect(() => {
     if (isClaimSuccessful && celebrateInput) {
       celebrateInput.value = true
-      setTimeout(() => {
+      const timer = setTimeout(() => {
         celebrateInput.value = false
       }, 4000)
+      return () => clearTimeout(timer)
     }
   }, [isClaimSuccessful, celebrateInput, closeDialog])
 
+  useEffect(() => {
+    return () => {
+      if (rive) {
+        rive.cleanup()
+      }
+    }
+  }, [rive])
+
   const title = isClaimSuccessful
     ? 'Claim successful'
-    : 'Waiting for confirmation'
+    : isOffchainClaim
+      ? 'Claiming testnet funds'
+      : 'Waiting for confirmation'
+
   const description = isClaimSuccessful
     ? `You have successfully claimed ${claimAmount} test ETH on ${claimNetwork}`
-    : 'Please sign the transaction in your wallet'
+    : isOffchainClaim
+      ? 'Waiting for network confirmation'
+      : 'Please sign the transaction in your wallet'
 
   return (
     <>
       <div className="flex flex-col items-center w-full rounded-md overflow-hidden">
         <RiveComponent className="h-96 w-full" />
+
         <Text as="h2" className="text-lg font-semibold">
           {title}
         </Text>
