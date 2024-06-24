@@ -34,7 +34,7 @@ const FaucetContent = ({ authentications }: Props) => {
   const [selectedNetwork, setSelectedNetwork] = useState(faucetNetworks[0])
   const [countdown, setCountdown] = useState(secondsToNextDrip)
   const [isDialogOpen, setIsDialogOpen] = useState(false)
-  const [isClaimSuccessful, setIsClaimSuccessful] = useState(true)
+  const [isClaimSuccessful, setIsClaimSuccessful] = useState(false)
 
   const hasAuthentication = Object.values(authentications).some(Boolean)
   const claimAmount = hasAuthentication ? 1 : 0.05
@@ -68,9 +68,14 @@ const FaucetContent = ({ authentications }: Props) => {
     setAddress(e.target.value)
   }
 
+  const handleCloseDialog = () => {
+    setIsDialogOpen(false)
+    setIsClaimSuccessful(false)
+  }
+
   return (
     <div>
-      <Label htmlFor="address">Address</Label>
+      <Label htmlFor="address">Address to fund</Label>
       <div className="mb-6">
         <Input
           className="mt-4 mb-2"
@@ -132,14 +137,12 @@ const FaucetContent = ({ authentications }: Props) => {
           <SuccessDialog
             claimAmount={claimAmount}
             claimNetwork={selectedNetwork.label}
-            closeDialog={() => {
-              setIsDialogOpen(false)
-            }}
+            closeDialog={handleCloseDialog}
             isClaimSuccessful={isClaimSuccessful}
           />
         </DialogContent>
       </Dialog>
-      <Confetti runAnimation={isDialogOpen} zIndex={1000} />
+      <Confetti runAnimation={isClaimSuccessful} zIndex={1000} />
     </div>
   )
 }

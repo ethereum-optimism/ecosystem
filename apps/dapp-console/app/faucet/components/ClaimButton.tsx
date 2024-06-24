@@ -91,7 +91,9 @@ const ClaimButton = forwardRef<HTMLButtonElement, ClaimButtonProps>(
         } else {
           await handleOffchainClaim()
         }
-        onSuccess()
+        setTimeout(() => {
+          onSuccess()
+        }, 3000)
       } catch (e) {
         console.error(e)
       }

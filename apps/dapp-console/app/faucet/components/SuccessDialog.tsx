@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Text } from '@eth-optimism/ui-components/src/components/ui/text/text'
 import {
   useRive,
@@ -6,6 +6,7 @@ import {
   Layout,
   Fit,
   Alignment,
+  useStateMachineInput,
 } from '@rive-app/react-canvas'
 import { Button } from '@eth-optimism/ui-components/src/components/ui/button/button'
 
@@ -22,7 +23,7 @@ const SuccessDialog: React.FC<Props> = ({
   isClaimSuccessful,
   closeDialog,
 }) => {
-  const { RiveComponent } = useRive({
+  const { RiveComponent, rive } = useRive({
     src: '/sunny-animation.riv',
     stateMachines: ['State Machine 1'],
     autoplay: true,
@@ -31,6 +32,21 @@ const SuccessDialog: React.FC<Props> = ({
       alignment: Alignment.Center,
     }),
   } as UseRiveParameters)
+
+  const celebrateInput = useStateMachineInput(
+    rive,
+    'State Machine 1',
+    'celebrate',
+  )
+
+  useEffect(() => {
+    if (isClaimSuccessful && celebrateInput) {
+      celebrateInput.value = true
+      setTimeout(() => {
+        celebrateInput.value = false
+      }, 4000)
+    }
+  }, [isClaimSuccessful, celebrateInput, closeDialog])
 
   const title = isClaimSuccessful
     ? 'Claim successful'
