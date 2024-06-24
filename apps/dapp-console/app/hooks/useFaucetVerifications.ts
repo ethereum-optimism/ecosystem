@@ -1,6 +1,7 @@
 import { apiClient } from '@/app/helpers/apiClient'
 import { useConnectedWallet } from '@/app/hooks/useConnectedWallet'
 import { Authentications } from '@/app/faucet/types'
+import { getOnchainAuthentication, hasAuthentication } from '../faucet/helpers'
 
 const useFaucetVerifications = () => {
   const { connectedWallet } = useConnectedWallet()
@@ -45,13 +46,30 @@ const useFaucetVerifications = () => {
     ATTESTATION: isAttested,
   }
 
-  // // How to use this? can we change this to just use the session to get the next drips?
-  // const { data: nextDrips } = apiClient.faucet.nextDrips.useQuery(
-  //   { authMode: 'PRIVY', walletAddress: walletAddress },
-  //   { enabled: !!walletAddress },
-  // )
+  // Get the seconds until the next faucet drip for the user
+  let secondsUntilNextDrip: number | undefined
 
-  return { faucetAuthentications }
+  if (!hasAuthentication(faucetAuthentications)) {
+    const { data: nextDrips } = apiClient.faucet.nextDrips.useQuery(
+      { authMode: 'PRIVY', walletAddress: walletAddress },
+      { enabled: !!walletAddress },
+    )
+    secondsUntilNextDrip = nextDrips?.secondsUntilNextDrip
+  } else {
+    const authMode = getOnchainAuthentication(faucetAuthentications)
+    if (authMode) {
+      const { data: nextDrips } = apiClient.faucet.nextDrips.useQuery(
+        {
+          authMode: authMode,
+          walletAddress: walletAddress,
+        },
+        { enabled: !!walletAddress && !!authMode },
+      )
+      secondsUntilNextDrip = nextDrips?.secondsUntilNextDrip
+    }
+  }
+
+  return { faucetAuthentications, secondsUntilNextDrip }
 }
 
 export { useFaucetVerifications }

@@ -19,6 +19,7 @@ import { generateClaimSignature } from '@/app/faucet/helpers'
 import { faucetNetworks } from '@/app/constants/faucet'
 import { usePrivy } from '@privy-io/react-auth'
 import { ClaimButton } from '@/app/faucet/components/ClaimButton'
+import { useFaucetVerifications } from '@/app/hooks/useFaucetVerifications'
 
 type Props = {
   authentications: Authentications
@@ -27,12 +28,11 @@ type Props = {
 const FaucetContent = ({ authentications }: Props) => {
   const { connectedWallet } = useConnectedWallet()
   const { authenticated } = usePrivy()
-  // Replace with real values from the backend
-  const secondsToNextDrip = 0
+  const { secondsUntilNextDrip } = useFaucetVerifications()
 
   const [address, setAddress] = useState('')
   const [selectedNetwork, setSelectedNetwork] = useState(faucetNetworks[0])
-  const [countdown, setCountdown] = useState(secondsToNextDrip)
+  const [countdown, setCountdown] = useState(secondsUntilNextDrip || 0)
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [isClaimSuccessful, setIsClaimSuccessful] = useState(false)
 
