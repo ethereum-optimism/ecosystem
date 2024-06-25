@@ -31,11 +31,11 @@ export default function Faucet() {
         </Text>
       </div>
       <Card className="w-full max-w-screen-lg rounded-2xl">
-        <CardHeader className="p-10">
+        <CardHeader className="p-6 sm:p-10">
           <FaucetHeader authentications={faucetAuthentications} />
         </CardHeader>
         <div className="w-full border-t-1 border-border" />
-        <CardContent className="p-10">
+        <CardContent className="p-6 sm:p-10">
           <FaucetContent authentications={faucetAuthentications} />
         </CardContent>
       </Card>
