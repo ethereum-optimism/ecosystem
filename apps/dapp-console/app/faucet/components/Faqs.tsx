@@ -131,7 +131,9 @@ const Faqs = () => {
         {accordionItems.map((item, index) => (
           <AccordionItem key={index} value={item.question}>
             <AccordionTrigger>
-              <Text as="span">{item.question}</Text>
+              <Text as="span" className="text-left">
+                {item.question}
+              </Text>
             </AccordionTrigger>
             <AccordionContent className="text-secondary-foreground">
               {item.answer}

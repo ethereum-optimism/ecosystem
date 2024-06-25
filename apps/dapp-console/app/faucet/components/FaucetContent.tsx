@@ -35,6 +35,7 @@ const FaucetContent = ({ authentications }: Props) => {
   const [countdown, setCountdown] = useState(secondsUntilNextDrip || 0)
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [isClaimSuccessful, setIsClaimSuccessful] = useState(false)
+  const [blockExplorerUrl, setBlockExplorerUrl] = useState('')
 
   useEffect(() => {
     if (secondsUntilNextDrip) {
@@ -106,7 +107,7 @@ const FaucetContent = ({ authentications }: Props) => {
 
       <Label>Network</Label>
       <RadioGroup
-        className="mt-4 mb-10 grid grid-cols-1 sm:grid-cols-2"
+        className="mt-4 mb-4 grid grid-cols-1 sm:grid-cols-2 sm:mb-10"
         value={selectedNetwork.label}
       >
         {faucetNetworks.map((network) => (
@@ -143,6 +144,7 @@ const FaucetContent = ({ authentications }: Props) => {
           onSuccess={() => {
             setIsClaimSuccessful(true)
           }}
+          setBlockExplorerUrl={setBlockExplorerUrl}
         >
           {claimText}
         </ClaimButton>
@@ -152,6 +154,7 @@ const FaucetContent = ({ authentications }: Props) => {
             claimNetwork={selectedNetwork.label}
             closeDialog={handleCloseDialog}
             isClaimSuccessful={isClaimSuccessful}
+            blockExplorerUrl={blockExplorerUrl}
           />
         </DialogContent>
       </Dialog>

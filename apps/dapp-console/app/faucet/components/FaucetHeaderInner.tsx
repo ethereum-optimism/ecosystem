@@ -53,7 +53,7 @@ const FaucetHeaderInner = () => {
           Want more tokens? Verify your onchain identity with Gitcoin, Coinbase
           Verification, World ID, or attestations. {seeDetails}
         </Text>
-        <div className="flex gap-2">
+        <div className="flex flex-col gap-2 sm:flex-row">
           <Button onClick={connectWallet} variant="secondary">
             Connect wallet
           </Button>
@@ -74,7 +74,7 @@ const FaucetHeaderInner = () => {
           You can still claim the minimum amount of 0.05 test ETH on 1 network
           every 24 hours. For more tokens, verify your identity. {seeDetails}
         </Text>
-        <div className="flex gap-2">
+        <div className="flex flex-col gap-2 sm:flex-row">
           <Button onClick={connectWallet} variant="outline">
             Try another wallet
           </Button>

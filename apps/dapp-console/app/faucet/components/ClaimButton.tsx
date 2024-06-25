@@ -17,6 +17,7 @@ interface ClaimButtonProps {
   authentications: Authentications
   recipientAddress: string
   onSuccess: () => void
+  setBlockExplorerUrl: (url: string) => void
   children: React.ReactNode
 }
 
@@ -30,6 +31,7 @@ const ClaimButton = forwardRef<HTMLButtonElement, ClaimButtonProps>(
       authentications,
       recipientAddress,
       onSuccess,
+      setBlockExplorerUrl,
       children,
     },
     ref,
@@ -54,22 +56,26 @@ const ClaimButton = forwardRef<HTMLButtonElement, ClaimButtonProps>(
         const signature = (await connectedWallet?.sign(
           claimSignatureMessage,
         )) as `0x${string}`
+
         if (signature) {
-          claimOnchain({
+          const response = await claimOnchain({
             chainId: chainId,
             recipientAddress: recipientAddress,
             authMode: verifiedAuthentication,
             ownerAddress: ownerAddress,
+            signature: signature,
           })
+          return response
         }
       } else if (authentications.WORLD_ID) {
         // if no onchain authentication is found, try to claim with WORLD_ID
-        claimOnchain({
+        const response = await claimOnchain({
           chainId: chainId,
           recipientAddress: recipientAddress,
           authMode: 'WORLD_ID',
           ownerAddress: ownerAddress,
         })
+        return response
       }
     }
 
@@ -79,25 +85,32 @@ const ClaimButton = forwardRef<HTMLButtonElement, ClaimButtonProps>(
         recipientAddress: recipientAddress,
         authMode: 'PRIVY',
       })
-
-      console.log(result)
+      return result
     }
 
     const handleClaim = async () => {
       if (!authenticated) return
       onClick()
       try {
+        let response
         if (isOnchainClaim) {
-          await handleOnchainClaim()
+          response = await handleOnchainClaim()
         } else {
-          await handleOffchainClaim()
+          response = await handleOffchainClaim()
         }
-        const interval = setTimeout(() => {
+
+        console.log('Claim response', response)
+
+        if (response && !response.error) {
+          setBlockExplorerUrl(response.etherscanUrl || '')
           onSuccess()
-        }, 3000)
-        return () => clearInterval(interval)
+          // const interval = setTimeout(() => {
+
+          // }, 3000)
+          // return () => clearInterval(interval)
+        }
       } catch (e) {
-        console.error(e)
+        console.error('Claim failed', e)
       }
     }
 
