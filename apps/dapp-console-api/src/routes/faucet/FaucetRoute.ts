@@ -143,7 +143,7 @@ export class FaucetRoute extends Route {
     )
     .mutation<FaucetClaim>(async ({ ctx, input }) => {
       const ownerAddress = input.ownerAddress as Address
-      const recipientAddrss = input.recipientAddress as Address
+      const recipientAddress = input.recipientAddress as Address
       const signature = input.signature as Hex
       const { chainId, authMode } = input
 
