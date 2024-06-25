@@ -47,28 +47,29 @@ const ClaimButton = forwardRef<HTMLButtonElement, ClaimButtonProps>(
     const ownerAddress = connectedWallet?.address || ''
 
     const handleOnchainClaim = async () => {
-      if (authentications.WORLD_ID) {
+      // get the onchain authentication in the order of priority
+      const verifiedAuthentication = getOnchainAuthentication(authentications)
+      if (verifiedAuthentication) {
+        // sign the claim signature message with the connected wallet
+        const signature = (await connectedWallet?.sign(
+          claimSignatureMessage,
+        )) as `0x${string}`
+        if (signature) {
+          claimOnchain({
+            chainId: chainId,
+            recipientAddress: recipientAddress,
+            authMode: verifiedAuthentication,
+            ownerAddress: ownerAddress,
+          })
+        }
+      } else if (authentications.WORLD_ID) {
+        // if no onchain authentication is found, try to claim with WORLD_ID
         claimOnchain({
           chainId: chainId,
           recipientAddress: recipientAddress,
           authMode: 'WORLD_ID',
           ownerAddress: ownerAddress,
         })
-      } else {
-        const verifiedAuthentication = getOnchainAuthentication(authentications)
-        const signature = (await connectedWallet?.sign(
-          claimSignatureMessage,
-        )) as `0x${string}`
-
-        if (signature && verifiedAuthentication) {
-          claimOnchain({
-            chainId: chainId,
-            recipientAddress: recipientAddress,
-            authMode: verifiedAuthentication,
-            ownerAddress: ownerAddress,
-            signature: signature,
-          })
-        }
       }
     }
 
@@ -91,9 +92,10 @@ const ClaimButton = forwardRef<HTMLButtonElement, ClaimButtonProps>(
         } else {
           await handleOffchainClaim()
         }
-        setTimeout(() => {
+        const interval = setTimeout(() => {
           onSuccess()
         }, 3000)
+        return () => clearInterval(interval)
       } catch (e) {
         console.error(e)
       }

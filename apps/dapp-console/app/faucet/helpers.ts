@@ -5,12 +5,13 @@ export const hasAuthentication = (authentications: Authentications) => {
 }
 
 export const getOnchainAuthentication = (authentications: Authentications) => {
+  // Checks if the user has any onchain authentications in the order of priority
   if (authentications.COINBASE_VERIFICATION) {
     return 'COINBASE_VERIFICATION'
-  } else if (authentications.GITCOIN_PASSPORT) {
-    return 'GITCOIN_PASSPORT'
   } else if (authentications.ATTESTATION) {
     return 'ATTESTATION'
+  } else if (authentications.GITCOIN_PASSPORT) {
+    return 'GITCOIN_PASSPORT'
   }
 }
 
