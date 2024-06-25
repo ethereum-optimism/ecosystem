@@ -134,7 +134,7 @@ export class FaucetRoute extends Route {
           ownerAddress: zodEthereumAddress,
           signature: zodEthereumSignature.optional(),
         })
-        .refine((obj) => ON_CHAIN_AUTH_MODES.includes(obj.authMode), {
+        .refine((obj) => ON_CHAN_AUTH_MODES.includes(obj.authMode), {
           message: 'Authentication mode is not a supported on-chain mode',
         })
         .refine((obj) => obj.authMode === 'WORLD_ID' || !!obj.signature, {
