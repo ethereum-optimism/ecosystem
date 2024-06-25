@@ -124,7 +124,7 @@ export class FaucetRoute extends Route {
   public readonly onChainClaimsController = this.trpc.procedure
     .use(isPrivyAuthed(this.trpc))
     .input(
-      this.z
+      this.
         .object({
           chainId: this.z.number().describe('The chain to request a drip on'),
           authMode: this.z
