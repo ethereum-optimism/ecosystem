@@ -148,11 +148,7 @@ export class FaucetRoute extends Route {
       const { chainId, authMode } = input
 
       if (authMode !== 'WORLD_ID') {
-        await this.verifySignedMessage(
-          ownerAddress,
-          recipientAddress,
-          signature,
-        )
+        await this.verifySignedMesage(ownerAddress, recipientAddress, signature)
       }
 
       switch (authMode) {
