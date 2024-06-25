@@ -1,7 +1,10 @@
 import { apiClient } from '@/app/helpers/apiClient'
 import { useConnectedWallet } from '@/app/hooks/useConnectedWallet'
 import { Authentications } from '@/app/faucet/types'
-import { getOnchainAuthentication, hasAuthentication } from '../faucet/helpers'
+import {
+  getOnchainAuthentication,
+  hasAuthentication,
+} from '@/app/faucet/helpers'
 
 const useFaucetVerifications = () => {
   const { connectedWallet } = useConnectedWallet()
@@ -50,10 +53,13 @@ const useFaucetVerifications = () => {
   let secondsUntilNextDrip: number | undefined
 
   if (!hasAuthentication(faucetAuthentications)) {
+    console.log('No authentication')
     const { data: nextDrips } = apiClient.faucet.nextDrips.useQuery(
       { authMode: 'PRIVY', walletAddress: walletAddress },
       { enabled: !!walletAddress },
     )
+
+    console.log('nextDrips', nextDrips)
     secondsUntilNextDrip = nextDrips?.secondsUntilNextDrip
   } else {
     const authMode = getOnchainAuthentication(faucetAuthentications)

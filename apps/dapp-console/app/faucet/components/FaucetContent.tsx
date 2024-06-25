@@ -36,6 +36,23 @@ const FaucetContent = ({ authentications }: Props) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [isClaimSuccessful, setIsClaimSuccessful] = useState(false)
 
+  useEffect(() => {
+    if (secondsUntilNextDrip) {
+      setCountdown(secondsUntilNextDrip)
+    }
+
+    const interval = setInterval(() => {
+      setCountdown((prevCountdown) => {
+        if (prevCountdown > 0) {
+          return prevCountdown - 1
+        }
+        return prevCountdown
+      })
+    }, 1000)
+
+    return () => clearInterval(interval)
+  }, [secondsUntilNextDrip])
+
   const hasAuthentication = Object.values(authentications).some(Boolean)
   const claimAmount = hasAuthentication ? 1 : 0.05
 
@@ -53,16 +70,6 @@ const FaucetContent = ({ authentications }: Props) => {
     connectedWallet?.address || '',
     address,
   )
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCountdown((prevCountdown) =>
-        prevCountdown > 0 ? prevCountdown - 1 : 0,
-      )
-    }, 1000)
-
-    return () => clearInterval(interval)
-  }, [countdown])
 
   useEffect(() => {
     if (!isDialogOpen) {
