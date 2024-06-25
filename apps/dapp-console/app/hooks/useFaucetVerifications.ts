@@ -39,7 +39,7 @@ const useFaucetVerifications = () => {
     {
       address: walletAddress,
     },
-    { enabled: !!walletAddress },
+    { enabled: !!walletddress },
   )
 
   const faucetAuthentications: Authentications = {
