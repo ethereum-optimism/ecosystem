@@ -7,16 +7,11 @@ import { FaucetHeader } from '@/app/faucet/components/FaucetHeader'
 import { useFeatureFlag } from '@/app/hooks/useFeatureFlag'
 import { FaucetContent } from '@/app/faucet/components/FaucetContent'
 import { Faqs } from '@/app/faucet/components/Faqs'
-
-const authentications = {
-  coinbase: false,
-  worldId: false,
-  gitcoin: false,
-  eas: false,
-}
+import { useFaucetVerifications } from '@/app/hooks/useFaucetVerifications'
 
 export default function Faucet() {
   const isConsoleFaucetEnabled = useFeatureFlag('enable_console_faucet')
+  const { faucetAuthentications } = useFaucetVerifications()
 
   if (!isConsoleFaucetEnabled) {
     return null
@@ -37,11 +32,11 @@ export default function Faucet() {
       </div>
       <Card className="w-full max-w-screen-lg rounded-2xl">
         <CardHeader className="p-10">
-          <FaucetHeader authentications={authentications} />
+          <FaucetHeader authentications={faucetAuthentications} />
         </CardHeader>
         <div className="w-full border-t-1 border-border" />
         <CardContent className="p-10">
-          <FaucetContent authentications={authentications} />
+          <FaucetContent authentications={faucetAuthentications} />
         </CardContent>
       </Card>
       <div className="w-full px-4 my-10 sm:p-0 flex flex-col items-center">
