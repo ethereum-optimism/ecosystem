@@ -6,11 +6,9 @@ import {
   DialogContent,
 } from '@eth-optimism/ui-components/src/components/ui/dialog/dialog'
 import { LearnMoreDialogContent } from '@/app/faucet/components/LearnMoreDialogContent'
-import { usePrivy, useWallets } from '@privy-io/react-auth'
-
-type Props = {
-  signedIn: boolean
-}
+import { usePrivy } from '@privy-io/react-auth'
+import { useAuth } from '@/app/hooks/useAuth'
+import { useConnectedWallet } from '@/app/hooks/useConnectedWallet'
 
 const seeDetails = (
   <DialogTrigger>
@@ -20,13 +18,17 @@ const seeDetails = (
   </DialogTrigger>
 )
 
-const FaucetHeaderInner = ({ signedIn }: Props) => {
-  const { connectWallet, login } = usePrivy()
-  const { wallets } = useWallets()
-  const connectedWallet = wallets.find((w) => w.walletClientType !== 'privy') // Exclude Privy wallet
+const FaucetHeaderInner = () => {
+  const { connectWallet, authenticated } = usePrivy()
+  const { connectedWallet } = useConnectedWallet()
+  const { login } = useAuth()
+
+  const handleLogin = () => {
+    login()
+  }
 
   let content = null
-  if (!signedIn) {
+  if (!authenticated) {
     // User is not signed in
     content = (
       <>
@@ -37,7 +39,7 @@ const FaucetHeaderInner = ({ signedIn }: Props) => {
           Anyone can claim 0.05 test ETH on 1 network every 24 hours, or verify
           your onchain identity for more tokens. {seeDetails}
         </Text>
-        <Button onClick={login}>Sign in</Button>
+        <Button onClick={handleLogin}>Sign in</Button>
       </>
     )
   } else if (!connectedWallet) {

@@ -4,14 +4,12 @@ import { CardContent, CardHeader } from '@eth-optimism/ui-components'
 import { Card } from '@eth-optimism/ui-components/src/components/ui/card/card'
 import { Text } from '@eth-optimism/ui-components/src/components/ui/text/text'
 import { FaucetHeader } from '@/app/faucet/components/FaucetHeader'
-import { useEffect } from 'react'
 import { useFeatureFlag } from '@/app/hooks/useFeatureFlag'
-import { useRouter } from 'next/navigation'
 import { FaucetContent } from '@/app/faucet/components/FaucetContent'
 import { Faqs } from '@/app/faucet/components/Faqs'
 
 const authentications = {
-  coinbase: true,
+  coinbase: false,
   worldId: false,
   gitcoin: false,
   eas: false,
@@ -19,14 +17,10 @@ const authentications = {
 
 export default function Faucet() {
   const isConsoleFaucetEnabled = useFeatureFlag('enable_console_faucet')
-  const router = useRouter()
 
-  // Redirect to the home page if the faucet is disabled
-  useEffect(() => {
-    if (!isConsoleFaucetEnabled) {
-      router.push('/')
-    }
-  }, [isConsoleFaucetEnabled, router])
+  if (!isConsoleFaucetEnabled) {
+    return null
+  }
 
   return (
     <div className="flex flex-col w-full items-center py-10 px-2 pb-20 sm:px-6 bg-secondary">
