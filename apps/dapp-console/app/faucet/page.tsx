@@ -11,7 +11,7 @@ import { FaucetContent } from '@/app/faucet/components/FaucetContent'
 import { Faqs } from '@/app/faucet/components/Faqs'
 
 const authentications = {
-  coinbase: false,
+  coinbase: true,
   worldId: false,
   gitcoin: false,
   eas: false,
@@ -29,7 +29,7 @@ export default function Faucet() {
   }, [isConsoleFaucetEnabled, router])
 
   return (
-    <div className="flex flex-col w-full items-center py-10 px-2 pb-20 sm:px-6 ">
+    <div className="flex flex-col w-full items-center py-10 px-2 pb-20 sm:px-6 bg-secondary">
       <div className="text-center mb-10 px-4">
         <Text as="h1" className="text-3xl sm:text-5xl font-semibold mb-2">
           Superchain Faucet🚰
@@ -38,15 +38,15 @@ export default function Faucet() {
           as="p"
           className="text-md sm:text-lg text-center text-muted-foreground"
         >
-          Get test tokens for building applications on the Superchain
+          Get free testnet tokens for building applications on the Superchain.
         </Text>
       </div>
-      <Card className="w-full max-w-screen-lg">
-        <CardHeader>
+      <Card className="w-full max-w-screen-lg rounded-2xl">
+        <CardHeader className="p-10">
           <FaucetHeader authentications={authentications} />
         </CardHeader>
-        <div className="w-full border-t-1 border-border pb-6" />
-        <CardContent>
+        <div className="w-full border-t-1 border-border" />
+        <CardContent className="p-10">
           <FaucetContent authentications={authentications} />
         </CardContent>
       </Card>

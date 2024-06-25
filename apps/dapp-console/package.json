@@ -18,6 +18,7 @@
     "@hookform/resolvers": "^3.3.4",
     "@privy-io/react-auth": "^1.59.5",
     "@remixicon/react": "^4.1.1",
+    "@rive-app/react-canvas": "^4.11.2",
     "@sentry/nextjs": "^7.106.0",
     "@tanstack/react-query": "^4",
     "@trpc/client": "^10.45.2",

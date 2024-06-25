@@ -269,6 +269,9 @@ importers:
       '@remixicon/react':
         specifier: ^4.1.1
         version: 4.2.0(react@18.2.0)
+      '@rive-app/react-canvas':
+        specifier: ^4.11.2
+        version: 4.11.2(react@18.2.0)
       '@sentry/nextjs':
         specifier: ^7.106.0
         version: 7.110.1(encoding@0.1.13)(next@14.1.1(@babel/core@7.24.4)(@opentelemetry/api@1.8.0)(babel-plugin-macros@3.1.0)(react-dom@18.2.0(react@18.2.0))(react@18.2.0))(react@18.2.0)(webpack@5.91.0)
@@ -1249,6 +1252,9 @@ importers:
       prettier:
         specifier: ^3.1.0
         version: 3.2.5
+      react-confetti:
+        specifier: ^6.1.0
+        version: 6.1.0(react@18.2.0)
       react-day-picker:
         specifier: ^8.10.0
         version: 8.10.1(date-fns@3.6.0)(react@18.2.0)
@@ -1258,6 +1264,9 @@ importers:
       react-resizable-panels:
         specifier: ^1.0.9
         version: 1.0.10(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
+      react-use:
+        specifier: ^17.5.0
+        version: 17.5.0(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
       sonner:
         specifier: ^1.3.1
         version: 1.4.41(react-dom@18.2.0(react@18.2.0))(react@18.2.0)
@@ -4742,6 +4751,14 @@ packages:
 
   '@resolver-engine/imports@0.3.3':
     resolution: {integrity: sha512-anHpS4wN4sRMwsAbMXhMfOD/y4a4Oo0Cw/5+rue7hSwGWsDOQaAU1ClK1OxjUC35/peazxEl8JaSRRS+Xb8t3Q==}
+
+  '@rive-app/canvas@2.17.2':
+    resolution: {integrity: sha512-v2VUdyOIT8FY2+vsiezQR2UA5H9TdVsbnIzBaMDC4tqm1PfhcMJkXjs28reoh+5WzgajsTyaLF9gYBRQyMqiCQ==}
+
+  '@rive-app/react-canvas@4.11.2':
+    resolution: {integrity: sha512-4yYgA0SeJ31nZYcuirijHdLHSiW5cYnY60RldBViKNGVuV2nnjiD9D+1bTKi+SHdC5itDvpzcyu5I7BJYY3FNg==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0
 
   '@rollup/plugin-commonjs@24.0.0':
     resolution: {integrity: sha512-0w0wyykzdyRRPHOb0cQt14mIBLujfAv6GgP6g8nvg/iBxEm112t3YPPq+Buqe2+imvElTka+bjNlJ/gB56TD8g==}
@@ -19158,6 +19175,13 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
+  '@rive-app/canvas@2.17.2': {}
+
+  '@rive-app/react-canvas@4.11.2(react@18.2.0)':
+    dependencies:
+      '@rive-app/canvas': 2.17.2
+      react: 18.2.0
+
   '@rollup/plugin-commonjs@24.0.0(rollup@2.78.0)':
     dependencies:
       '@rollup/pluginutils': 5.1.0(rollup@2.78.0)
@@ -28970,6 +28994,11 @@ snapshots:
     dependencies:
       react: 18.3.1
       react-dom: 18.2.0(react@18.3.1)
+
+  react-confetti@6.1.0(react@18.2.0):
+    dependencies:
+      react: 18.2.0
+      tween-functions: 1.2.0
 
   react-confetti@6.1.0(react@18.3.1):
     dependencies:

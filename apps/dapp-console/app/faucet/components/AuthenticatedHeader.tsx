@@ -64,9 +64,11 @@ const AuthenticatedHeader = ({ authentications }: Props) => {
           Verified with {label}
         </Text>
       </div>
-      <Text as="p" className="text-secondary-foreground">
-        You can claim 1 test ETH on 1 network every 24 hours.
-      </Text>
+      <div className="text-secondary-foreground">
+        <Text as="span">
+          You can claim 1 test ETH on 1 network every 24 hours.
+        </Text>
+      </div>
     </div>
   )
 }

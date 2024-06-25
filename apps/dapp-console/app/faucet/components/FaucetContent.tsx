@@ -4,6 +4,8 @@ import { RadioCard } from '@eth-optimism/ui-components/src/components/ui/radio-g
 import { RadioGroup } from '@eth-optimism/ui-components/src/components/ui/radio-group/radio-group'
 import { Button } from '@eth-optimism/ui-components/src/components/ui/button/button'
 import { Text } from '@eth-optimism/ui-components/src/components/ui/text/text'
+import { Confetti } from '@eth-optimism/ui-components/src/components/ui/confetti/confetti'
+
 import {
   baseSepolia,
   modeTestnet,
@@ -16,6 +18,12 @@ import { isAddress } from 'viem'
 import { useEffect, useState } from 'react'
 import { getFormattedCountdown } from '@/app/utils'
 import { Authentications } from '@/app/faucet/types'
+import {
+  Dialog,
+  DialogContent,
+  DialogTrigger,
+} from '@eth-optimism/ui-components/src/components/ui/dialog/dialog'
+import { SuccessDialog } from '@/app/faucet/components/SuccessDialog'
 
 type Props = {
   authentications: Authentications
@@ -56,7 +64,7 @@ const faucetNetworks = [
 
 const FaucetContent = ({ authentications }: Props) => {
   // Replace with real values from the backend
-  const secondsToNextDrip = 10
+  const secondsToNextDrip = 0
 
   const hasAuthentication = Object.values(authentications).some(Boolean)
   const claimAmount = hasAuthentication ? 1 : 0.05
@@ -67,6 +75,7 @@ const FaucetContent = ({ authentications }: Props) => {
   )
   const [countdown, setCountdown] = useState(secondsToNextDrip)
   const [formattedTime, setFormattedTime] = useState('')
+  const [isDialogOpen, setIsDialogOpen] = useState(false)
 
   const isClaimDisabled = !isValid || !selectedNetwork || countdown > 0
   const claimText =
@@ -115,7 +124,7 @@ const FaucetContent = ({ authentications }: Props) => {
 
       <Label>Network</Label>
       <RadioGroup
-        className="mt-4 mb-6 grid grid-cols-1 sm:grid-cols-2"
+        className="mt-4 mb-10 grid grid-cols-1 sm:grid-cols-2"
         value={selectedNetwork}
       >
         {faucetNetworks.map((network) => (
@@ -139,13 +148,27 @@ const FaucetContent = ({ authentications }: Props) => {
           </RadioCard>
         ))}
       </RadioGroup>
-      <Button
-        disabled={isClaimDisabled}
-        className="w-full"
-        onClick={handleClaim}
-      >
-        {claimText}
-      </Button>
+      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+        <DialogTrigger asChild>
+          <Button
+            disabled={isClaimDisabled}
+            className="w-full"
+            onClick={handleClaim}
+          >
+            {claimText}
+          </Button>
+        </DialogTrigger>
+        <DialogContent>
+          <SuccessDialog
+            claimAmount={claimAmount}
+            claimNetwork={selectedNetwork}
+            closeDialog={() => {
+              setIsDialogOpen(false)
+            }}
+          />
+        </DialogContent>
+      </Dialog>
+      <Confetti runAnimation={isDialogOpen} zIndex={1000} />
     </div>
   )
 }
