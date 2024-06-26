@@ -20,6 +20,9 @@ import { faucetNetworks } from '@/app/constants/faucet'
 import { usePrivy } from '@privy-io/react-auth'
 import { ClaimButton } from '@/app/faucet/components/ClaimButton'
 import { useFaucetVerifications } from '@/app/hooks/useFaucetVerifications'
+import { Alert } from '@eth-optimism/ui-components/src/components/ui/alert/alert'
+import { AlertTitle } from '@eth-optimism/ui-components'
+import { RiTimeLine } from '@remixicon/react'
 
 type Props = {
   authentications: Authentications
@@ -89,6 +92,17 @@ const FaucetContent = ({ authentications }: Props) => {
 
   return (
     <div>
+      {countdown > 0 && (
+        <Alert className="mb-6 bg-blue-500/10 text-blue-500 border-none">
+          <AlertTitle className="flex items-center mb-0 gap-2">
+            <RiTimeLine size={18} />
+            <span>
+              You will be able to use the faucet again in{' '}
+              {getFormattedCountdown(countdown)}
+            </span>
+          </AlertTitle>
+        </Alert>
+      )}
       <Label htmlFor="address">Address</Label>
       <div className="mb-6">
         <Input
@@ -98,6 +112,7 @@ const FaucetContent = ({ authentications }: Props) => {
           placeholder="Enter ETH address"
           value={address}
           onChange={handleAddressChange}
+          disabled={countdown > 0 || !authenticated}
         />
 
         {address.length > 0 && !isValidAddress && (
@@ -117,6 +132,7 @@ const FaucetContent = ({ authentications }: Props) => {
             onClick={() => {
               setSelectedNetwork(network)
             }}
+            disabled={countdown > 0 || !authenticated}
           >
             <div className="flex gap-3 items-center">
               <img
