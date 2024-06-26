@@ -53,11 +53,10 @@ const useFaucetVerifications = () => {
   let secondsUntilNextDrip: number | undefined
 
   if (!hasAuthentication(faucetAuthentications)) {
-    console.log('No authentication')
-    const { data: nextDrips } = apiClient.faucet.nextDrips.useQuery(
-      { authMode: 'PRIVY', walletAddress: walletAddress },
-      { enabled: !!walletAddress },
-    )
+    const { data: nextDrips } = apiClient.faucet.nextDrips.useQuery({
+      authMode: 'PRIVY',
+      walletAddress: walletAddress || undefined,
+    })
 
     console.log('nextDrips', nextDrips)
     secondsUntilNextDrip = nextDrips?.secondsUntilNextDrip
