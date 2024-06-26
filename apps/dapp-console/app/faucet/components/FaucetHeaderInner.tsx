@@ -1,4 +1,5 @@
 'use client'
+
 import { Text } from '@eth-optimism/ui-components/src/components/ui/text/text'
 import { Button } from '@eth-optimism/ui-components/src/components/ui/button/button'
 import {
@@ -14,6 +15,7 @@ import type { ISuccessResult } from '@worldcoin/idkit'
 import { IDKitWidget, VerificationLevel } from '@worldcoin/idkit'
 import { apiClient } from '@/app/helpers/apiClient'
 import { useState } from 'react'
+import { useFaucetVerifications } from '@/app/hooks/useFaucetVerifications'
 
 const seeDetails = (
   <DialogTrigger>
@@ -27,8 +29,12 @@ const FaucetHeaderInner = () => {
   const { connectWallet, authenticated } = usePrivy()
   const { connectedWallet } = useConnectedWallet()
   const { login } = useAuth()
+  const { refetchWorldId, faucetAuthentications } = useFaucetVerifications()
 
   const [isVerifyingWorldID, setIsVerifyingWorldID] = useState(false)
+
+  console.log(faucetAuthentications)
+
   const { mutateAsync: verifyWorldIdProof } =
     apiClient.auth.worldIdVerify.useMutation({
       onMutate: () => {
@@ -42,7 +48,7 @@ const FaucetHeaderInner = () => {
         setIsVerifyingWorldID(false)
         // TODO: Handle reload for worldID check
         // Refetch worldID user data to update the state based on the new verification
-        // refetch()
+        refetchWorldId()
       },
       onError: () => {
         setIsVerifyingWorldID(false)
@@ -67,10 +73,32 @@ const FaucetHeaderInner = () => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const onSuccess = async (result: ISuccessResult) => {}
 
-
   const handleLogin = () => {
     login()
   }
+
+  const worldIDLoginButton = (
+    <IDKitWidget
+      // app_id={process.env.NEXT_PUBLIC_WORLDID_APP_ID as `app_${string}`}
+      // action={process.env.NEXT_PUBLIC_WORLDID_ACTION_NAME as string}
+      app_id={'app_8f814b9dbe28b771d285156e3dfd49da' as `app_${string}`}
+      action={'authenticate' as string}
+      onSuccess={onSuccess}
+      handleVerify={verifyWorldId}
+      verification_level={VerificationLevel.Orb}
+    >
+      {({ open }: { open: () => void }) => (
+        <Button onClick={open} variant="secondary">
+          Login with World ID
+        </Button>
+      )}
+    </IDKitWidget>
+  )
+
+  console.log(
+    process.env.NEXT_PUBLIC_WORLDID_APP_ID,
+    process.env.NEXT_PUBLIC_WORLDID_ACTION_NAME,
+  )
 
   let content = null
   if (!authenticated) {
@@ -102,19 +130,7 @@ const FaucetHeaderInner = () => {
           <Button onClick={connectWallet} variant="secondary">
             Connect wallet
           </Button>
-          <IDKitWidget
-              app_id={process.env.NEXT_WORLDID_APP_ID as `app_${string}`}
-              action={process.env.NEXT_WORLDID_ACTION_NAME as string}
-              onSuccess={onSuccess}
-              handleVerify={verifyWorldId}
-              verification_level={VerificationLevel.Orb}
-            >
-            {({ open }: { open: () => void }) => (
-              <Button onClick={open} variant="secondary">
-                Login with World ID
-              </Button>
-            )}
-          </IDKitWidget>
+          {worldIDLoginButton}
           {isVerifyingWorldID && <div>Loading</div>}
         </div>
       </>
@@ -134,19 +150,7 @@ const FaucetHeaderInner = () => {
           <Button onClick={connectWallet} variant="outline">
             Try another wallet
           </Button>
-          <IDKitWidget
-              app_id={process.env.NEXT_WORLDID_APP_ID as `app_${string}`}
-              action={process.env.NEXT_WORLDID_ACTION_NAME as string}
-              onSuccess={onSuccess}
-              handleVerify={verifyWorldId}
-              verification_level={VerificationLevel.Orb}
-            >
-            {({ open }: { open: () => void }) => (
-              <Button onClick={open} variant="secondary">
-                Login with World ID
-              </Button>
-            )}
-          </IDKitWidget>
+          {worldIDLoginButton}
           {isVerifyingWorldID && <div>Loading</div>}
         </div>
       </>
