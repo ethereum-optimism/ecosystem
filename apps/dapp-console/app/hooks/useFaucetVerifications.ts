@@ -58,9 +58,18 @@ const useFaucetVerifications = () => {
     { enabled: !!authMode },
   )
 
-  const secondsUntilNextDrip = isAuthenticated
-    ? nextDripsAuthMode?.secondsUntilNextDrip
-    : nextDripsPrivy?.secondsUntilNextDrip
+  const { data: nextDripsWorldId } = apiClient.faucet.nextDrips.useQuery({
+    authMode: 'WORLD_ID',
+  })
+
+  let secondsUntilNextDrip = 0
+  if (nextDripsPrivy?.secondsUntilNextDrip) {
+    secondsUntilNextDrip = nextDripsPrivy.secondsUntilNextDrip
+  } else if (nextDripsAuthMode?.secondsUntilNextDrip) {
+    secondsUntilNextDrip = nextDripsAuthMode.secondsUntilNextDrip
+  } else if (nextDripsWorldId?.secondsUntilNextDrip) {
+    secondsUntilNextDrip = nextDripsWorldId.secondsUntilNextDrip
+  }
 
   return { faucetAuthentications, secondsUntilNextDrip, refetchWorldId }
 }
