@@ -20,10 +20,7 @@ import { faucetNetworks } from '@/app/constants/faucet'
 import { usePrivy } from '@privy-io/react-auth'
 import { ClaimButton } from '@/app/faucet/components/ClaimButton'
 import { useFaucetVerifications } from '@/app/hooks/useFaucetVerifications'
-import {
-  Alert,
-  AlertDescription,
-} from '@eth-optimism/ui-components/src/components/ui/alert/alert'
+import { Alert } from '@eth-optimism/ui-components/src/components/ui/alert/alert'
 import { AlertTitle } from '@eth-optimism/ui-components'
 import { RiTimeLine } from '@remixicon/react'
 
