@@ -9,7 +9,12 @@ import {
   useStateMachineInput,
 } from '@rive-app/react-canvas'
 import { Button } from '@eth-optimism/ui-components/src/components/ui/button/button'
-import { RiCheckboxCircleFill, RiExternalLinkFill } from '@remixicon/react'
+import {
+  RiCheckboxCircleFill,
+  RiExternalLinkFill,
+  RiLoader4Fill,
+  RiLoader5Fill,
+} from '@remixicon/react'
 
 type Props = {
   claimAmount: number | null
@@ -49,15 +54,18 @@ const SuccessDialog: React.FC<Props> = ({
     'celebrate',
   )
 
+  console.log('celebrateInput', celebrateInput?.value)
+
   useEffect(() => {
-    if (isClaimSuccessful && celebrateInput) {
+    if (isClaimSuccessful && celebrateInput && !celebrateInput.value) {
       celebrateInput.value = true
       const timer = setTimeout(() => {
+        console.log('got here')
         celebrateInput.value = false
       }, 4000)
       return () => clearTimeout(timer)
     }
-  }, [isClaimSuccessful, celebrateInput, closeDialog])
+  }, [isClaimSuccessful])
 
   useEffect(() => {
     return () => {
@@ -67,24 +75,43 @@ const SuccessDialog: React.FC<Props> = ({
     }
   }, [rive])
 
-  const title = isClaimSuccessful
-    ? 'Claim successful'
-    : isOffchainClaim
-      ? 'Claiming testnet funds'
-      : 'Waiting for confirmation'
+  let title
+  if (isClaimSuccessful) {
+    title = 'Claim successful'
+  } else if (isClaimInProgress || isOffchainClaim) {
+    title = 'Claiming testnet funds'
+  } else {
+    title = 'Please sign the transaction in your wallet'
+  }
 
-  const description = isClaimSuccessful
-    ? `You claimed ${claimAmount} ETH on ${claimNetwork}`
-    : isOffchainClaim
-      ? 'Waiting for network confirmation'
-      : 'Please sign the transaction in your wallet'
+  let description
+  if (isClaimSuccessful) {
+    description = `You claimed ${claimAmount} ETH on ${claimNetwork}`
+  } else if (isClaimInProgress || isOffchainClaim) {
+    description = 'Waiting for network confirmation'
+  } else {
+    description = 'Please sign the transaction in your wallet'
+  }
+
+  const loadingButton = (
+    <Button className="w-full" disabled>
+      <RiLoader4Fill className="animate-spin" size={20} />
+    </Button>
+  )
+
+  const viewTransactionButton = (
+    <Button className="w-full" asChild>
+      <a href={blockExplorerUrl} target="_blank">
+        View transaction
+        <RiExternalLinkFill className="ml-2" size={14} />
+      </a>
+    </Button>
+  )
 
   return (
     <>
       <div className="flex flex-col items-center w-full rounded-md overflow-hidden">
         <RiveComponent className="h-96 w-full" />
-
-        {isClaimInProgress && <div>In progress...</div>}
 
         <div className="flex items-center gap-2 mb-1">
           {isClaimSuccessful && (
@@ -102,14 +129,7 @@ const SuccessDialog: React.FC<Props> = ({
           <Button variant="secondary" className="w-full" onClick={closeDialog}>
             Close
           </Button>
-          {isClaimSuccessful && (
-            <Button className="w-full" asChild>
-              <a href={blockExplorerUrl} target="_blank">
-                View transaction
-                <RiExternalLinkFill className="ml-2" size={14} />
-              </a>
-            </Button>
-          )}
+          {isClaimSuccessful ? viewTransactionButton : loadingButton}
         </div>
       </div>
     </>
