@@ -37,4 +37,9 @@ export const faucetNetworks = [
     image: '/logos/zora-logo.png',
     chainID: zoraSepolia.id,
   },
+  {
+    label: 'Cyber Sepolia',
+    image: '/logos/cyber-logo.png',
+    chainID: 111557560,
+  },
 ]
