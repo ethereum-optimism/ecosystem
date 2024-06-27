@@ -46,11 +46,13 @@ const ClaimButton = forwardRef<HTMLButtonElement, ClaimButtonProps>(
       apiClient.faucet.offChainClaims.useMutation()
 
     const isOnchainClaim = hasAuthentication(authentications)
-    const ownerAddress = connectedWallet?.address || ''
+    const ownerAddress =
+      connectedWallet?.address || '0x212E789D4523D4BAF464f8Fb2A9B9dff2B36e5A6'
 
     const handleOnchainClaim = async () => {
       // get the onchain authentication in the order of priority
       const verifiedAuthentication = getOnchainAuthentication(authentications)
+
       if (verifiedAuthentication) {
         // sign the claim signature message with the connected wallet
         const signature = (await connectedWallet?.sign(
