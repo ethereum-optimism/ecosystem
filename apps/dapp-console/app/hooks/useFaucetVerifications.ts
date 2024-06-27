@@ -12,35 +12,24 @@ const useFaucetVerifications = () => {
 
   // Coinbase check
   const { data: isCoinbaseVerified } =
-    apiClient.auth.isCoinbaseVerified.useQuery(
-      {
-        address: walletAddress,
-      },
-      { enabled: !!walletAddress },
-    )
+    apiClient.auth.isCoinbaseVerified.useQuery({
+      address: walletAddress,
+    })
 
   // World ID check
-  const { data: isWorldIdUser } = apiClient.auth.isWorldIdUser.useQuery(
-    undefined,
-    { enabled: !!walletAddress },
-  )
+  const { data: isWorldIdUser, refetch: refetchWorldId } =
+    apiClient.auth.isWorldIdUser.useQuery()
 
   // Gitcoin check
   const { data: isGitcoinVerified } =
-    apiClient.auth.isCoinbaseVerified.useQuery(
-      {
-        address: walletAddress,
-      },
-      { enabled: !!walletAddress },
-    )
+    apiClient.auth.isCoinbaseVerified.useQuery({
+      address: walletAddress,
+    })
 
   // EAS check
-  const { data: isAttested } = apiClient.auth.isAttested.useQuery(
-    {
-      address: walletAddress,
-    },
-    { enabled: !!walletAddress },
-  )
+  const { data: isAttested } = apiClient.auth.isAttested.useQuery({
+    address: walletAddress,
+  })
 
   const faucetAuthentications: Authentications = {
     COINBASE_VERIFICATION: isCoinbaseVerified,
@@ -49,32 +38,40 @@ const useFaucetVerifications = () => {
     ATTESTATION: isAttested,
   }
 
-  // Get the seconds until the next faucet drip for the user
-  let secondsUntilNextDrip: number | undefined
+  const isAuthenticated = hasAuthentication(faucetAuthentications)
+  const authMode = getOnchainAuthentication(faucetAuthentications)
 
-  if (!hasAuthentication(faucetAuthentications)) {
-    const { data: nextDrips } = apiClient.faucet.nextDrips.useQuery({
+  // Get the seconds until the next faucet drip for the user
+  const { data: nextDripsPrivy } = apiClient.faucet.nextDrips.useQuery(
+    {
       authMode: 'PRIVY',
       walletAddress: walletAddress || undefined,
-    })
+    },
+    { enabled: !isAuthenticated },
+  )
 
-    console.log('nextDrips', nextDrips)
-    secondsUntilNextDrip = nextDrips?.secondsUntilNextDrip
-  } else {
-    const authMode = getOnchainAuthentication(faucetAuthentications)
-    if (authMode) {
-      const { data: nextDrips } = apiClient.faucet.nextDrips.useQuery(
-        {
-          authMode: authMode,
-          walletAddress: walletAddress,
-        },
-        { enabled: !!walletAddress && !!authMode },
-      )
-      secondsUntilNextDrip = nextDrips?.secondsUntilNextDrip
-    }
+  const { data: nextDripsAuthMode } = apiClient.faucet.nextDrips.useQuery(
+    {
+      authMode: authMode || 'PRIVY',
+      walletAddress: walletAddress,
+    },
+    { enabled: !!authMode },
+  )
+
+  const { data: nextDripsWorldId } = apiClient.faucet.nextDrips.useQuery({
+    authMode: 'WORLD_ID',
+  })
+
+  let secondsUntilNextDrip = 0
+  if (nextDripsPrivy?.secondsUntilNextDrip) {
+    secondsUntilNextDrip = nextDripsPrivy.secondsUntilNextDrip
+  } else if (nextDripsAuthMode?.secondsUntilNextDrip) {
+    secondsUntilNextDrip = nextDripsAuthMode.secondsUntilNextDrip
+  } else if (nextDripsWorldId?.secondsUntilNextDrip) {
+    secondsUntilNextDrip = nextDripsWorldId.secondsUntilNextDrip
   }
 
-  return { faucetAuthentications, secondsUntilNextDrip }
+  return { faucetAuthentications, secondsUntilNextDrip, refetchWorldId }
 }
 
 export { useFaucetVerifications }
