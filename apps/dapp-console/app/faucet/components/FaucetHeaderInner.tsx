@@ -33,8 +33,6 @@ const FaucetHeaderInner = () => {
 
   const [isVerifyingWorldID, setIsVerifyingWorldID] = useState(false)
 
-  console.log(faucetAuthentications)
-
   const { mutateAsync: verifyWorldIdProof } =
     apiClient.auth.worldIdVerify.useMutation({
       onMutate: () => {
@@ -79,10 +77,8 @@ const FaucetHeaderInner = () => {
 
   const worldIDLoginButton = (
     <IDKitWidget
-      // app_id={process.env.NEXT_PUBLIC_WORLDID_APP_ID as `app_${string}`}
-      // action={process.env.NEXT_PUBLIC_WORLDID_ACTION_NAME as string}
-      app_id={'app_8f814b9dbe28b771d285156e3dfd49da' as `app_${string}`}
-      action={'authenticate' as string}
+      app_id={process.env.NEXT_PUBLIC_WORLDID_APP_ID as `app_${string}`}
+      action={process.env.NEXT_PUBLIC_WORLDID_ACTION_NAME as string}
       onSuccess={onSuccess}
       handleVerify={verifyWorldId}
       verification_level={VerificationLevel.Orb}
@@ -93,11 +89,6 @@ const FaucetHeaderInner = () => {
         </Button>
       )}
     </IDKitWidget>
-  )
-
-  console.log(
-    process.env.NEXT_PUBLIC_WORLDID_APP_ID,
-    process.env.NEXT_PUBLIC_WORLDID_ACTION_NAME,
   )
 
   let content = null

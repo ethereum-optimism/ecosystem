@@ -15,6 +15,7 @@ type Props = {
   claimAmount: number | null
   claimNetwork: string | null
   isClaimSuccessful: boolean
+  isClaimInProgress: boolean
   closeDialog: () => void
   blockExplorerUrl: string
 }
@@ -23,6 +24,7 @@ const SuccessDialog: React.FC<Props> = ({
   claimAmount,
   claimNetwork,
   isClaimSuccessful,
+  isClaimInProgress,
   closeDialog,
   blockExplorerUrl,
 }) => {
@@ -81,6 +83,8 @@ const SuccessDialog: React.FC<Props> = ({
     <>
       <div className="flex flex-col items-center w-full rounded-md overflow-hidden">
         <RiveComponent className="h-96 w-full" />
+
+        {isClaimInProgress && <div>In progress...</div>}
 
         <div className="flex items-center gap-2 mb-1">
           {isClaimSuccessful && (
