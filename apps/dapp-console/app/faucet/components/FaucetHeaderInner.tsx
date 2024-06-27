@@ -29,7 +29,7 @@ const FaucetHeaderInner = () => {
   const { connectWallet, authenticated } = usePrivy()
   const { connectedWallet } = useConnectedWallet()
   const { login } = useAuth()
-  const { refetchWorldId, faucetAuthentications } = useFaucetVerifications()
+  const { refetchWorldId } = useFaucetVerifications()
 
   const [isVerifyingWorldID, setIsVerifyingWorldID] = useState(false)
 

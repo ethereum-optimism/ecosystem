@@ -13,7 +13,6 @@ import {
   RiCheckboxCircleFill,
   RiExternalLinkFill,
   RiLoader4Fill,
-  RiLoader5Fill,
 } from '@remixicon/react'
 
 type Props = {
