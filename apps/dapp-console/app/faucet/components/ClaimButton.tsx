@@ -49,12 +49,9 @@ const ClaimButton = forwardRef<HTMLButtonElement, ClaimButtonProps>(
     const ownerAddress =
       connectedWallet?.address || '0x212E789D4523D4BAF464f8Fb2A9B9dff2B36e5A6'
 
-    console.log('Authentications', authentications)
-
     const handleOnchainClaim = async () => {
       // get the onchain authentication in the order of priority
       const verifiedAuthentication = getOnchainAuthentication(authentications)
-      console.log('Verified authentication', authentications)
 
       if (verifiedAuthentication) {
         // sign the claim signature message with the connected wallet
@@ -74,7 +71,6 @@ const ClaimButton = forwardRef<HTMLButtonElement, ClaimButtonProps>(
         }
       } else if (authentications.WORLD_ID) {
         // if no onchain authentication is found, try to claim with WORLD_ID
-        console.log('HERE', ownerAddress, recipientAddress, chainId)
         const response = await claimOnchain({
           chainId: chainId,
           recipientAddress: recipientAddress,

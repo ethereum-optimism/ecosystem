@@ -31,13 +31,14 @@ type Props = {
 const FaucetContent = ({ authentications }: Props) => {
   const { connectedWallet } = useConnectedWallet()
   const { authenticated } = usePrivy()
-  const { secondsUntilNextDrip } = useFaucetVerifications()
+  const { secondsUntilNextDrip, refetchNextDrips } = useFaucetVerifications()
 
   const [address, setAddress] = useState('')
   const [selectedNetwork, setSelectedNetwork] = useState(faucetNetworks[0])
   const [countdown, setCountdown] = useState(secondsUntilNextDrip || 0)
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [isClaimSuccessful, setIsClaimSuccessful] = useState(false)
+  const [isClaimInProgress, setIsClaimInProgress] = useState(false)
   const [blockExplorerUrl, setBlockExplorerUrl] = useState('')
 
   useEffect(() => {
@@ -67,7 +68,7 @@ const FaucetContent = ({ authentications }: Props) => {
 
   const claimText =
     countdown > 0
-      ? `Claim again in ${getFormattedCountdown(countdown)}`
+      ? 'Claim limit reached'
       : `Claim ${claimAmount} ETH on ${selectedNetwork.label}`
 
   const claimSignatureMessage = generateClaimSignature(
@@ -80,6 +81,23 @@ const FaucetContent = ({ authentications }: Props) => {
       handleCloseDialog()
     }
   }, [isDialogOpen])
+
+  // COME BACK TO THIS.
+  // Attempting to poll the nextDrips endpoint every 5 seconds while a claim is in progress to check if the claim has been processed.
+  useEffect(() => {
+    if (isClaimInProgress && secondsUntilNextDrip !== 0) {
+      setIsClaimSuccessful(true)
+      setIsClaimInProgress(false)
+    }
+
+    if (isClaimInProgress) {
+      const interval = setInterval(() => {
+        refetchNextDrips()
+      }, 5000)
+
+      return () => clearInterval(interval)
+    }
+  }, [isClaimInProgress, secondsUntilNextDrip])
 
   const handleAddressChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setAddress(e.target.value)
@@ -158,7 +176,7 @@ const FaucetContent = ({ authentications }: Props) => {
           authentications={authentications}
           recipientAddress={address}
           onSuccess={() => {
-            setIsClaimSuccessful(true)
+            setIsClaimInProgress(true)
           }}
           setBlockExplorerUrl={setBlockExplorerUrl}
         >
@@ -170,6 +188,7 @@ const FaucetContent = ({ authentications }: Props) => {
             claimNetwork={selectedNetwork.label}
             closeDialog={handleCloseDialog}
             isClaimSuccessful={isClaimSuccessful}
+            isClaimInProgress={isClaimInProgress}
             blockExplorerUrl={blockExplorerUrl}
           />
         </DialogContent>
