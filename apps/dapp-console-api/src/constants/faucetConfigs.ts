@@ -111,6 +111,34 @@ const faucetConfigs: FaucetConfig[] = [
     supportedEnvironments: ['production', 'staging', 'development'],
     l1BridgeAddress: '0x5376f1D543dcbB5BD416c56C189e4cB7399fCcCB',
   },
+  {
+    id: 111557560,
+    displayName: 'Cyber Sepolia',
+    chain: defineChain({
+      id: 111557560,
+      name: 'Cyber Sepolia',
+      network: 'cyber-sepolia',
+      nativeCurrency: { name: 'Sepolia Ether', symbol: 'ETH', decimals: 18 },
+      rpcUrls: {
+        default: {
+          http: ['https://cyber-testnet.alt.technology'],
+        },
+        public: {
+          http: ['https://cyber-testnet.alt.technology'],
+        },
+      },
+      blockExplorers: {
+        default: {
+          name: 'Hemera',
+          url: 'https://testnet.cyberscan.co/',
+        },
+      },
+    }),
+    onChainDripAmount: DEFAULT_ON_CHAIN_DRIP_AMOUNT,
+    offChainDripAmount: DEFAULT_OFF_CHAIN_DRIP_AMOUNT,
+    supportedEnvironments: ['production', 'staging', 'development'],
+    l1BridgeAddress: '0xAA1bD6D4d8cFD37330a917bc678CB38BEFAf44E6',
+  },
 ]
 
 export const supportedFaucetConfigs = faucetConfigs.filter((faucet) =>
