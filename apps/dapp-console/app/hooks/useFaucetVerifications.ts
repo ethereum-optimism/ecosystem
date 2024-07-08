@@ -15,7 +15,7 @@ const useFaucetVerifications = () => {
       {
         address: walletAddress,
       },
-      { enabled: !!walletAddress },
+      { enabled: !!walletAddress && !!authenticated },
     )
 
   const { data: coinbaseNextDrips, refetch: refetchCoinbaseDrips } =
@@ -24,7 +24,7 @@ const useFaucetVerifications = () => {
         authMode: 'COINBASE_VERIFICATION',
         walletAddress: walletAddress,
       },
-      { enabled: !!isCoinbaseVerified && !!walletAddress },
+      { enabled: !!isCoinbaseVerified && !!walletAddress && !!authenticated },
     )
 
   // EAS check
@@ -32,7 +32,7 @@ const useFaucetVerifications = () => {
     {
       address: walletAddress,
     },
-    { enabled: !!walletAddress },
+    { enabled: !!walletAddress && !!authenticated },
   )
 
   const { data: easNextDrips, refetch: refetchEasNextDrips } =
@@ -41,7 +41,7 @@ const useFaucetVerifications = () => {
         authMode: 'ATTESTATION',
         walletAddress: walletAddress,
       },
-      { enabled: !!isAttested && !!walletAddress },
+      { enabled: !!isAttested && !!walletAddress && !!authenticated },
     )
 
   // Gitcoin check
@@ -50,7 +50,7 @@ const useFaucetVerifications = () => {
       {
         address: walletAddress,
       },
-      { enabled: !!walletAddress },
+      { enabled: !!walletAddress && !!authenticated },
     )
 
   const { data: gitcoinNextDrips, refetch: refetchGitcoinNextDrips } =
@@ -59,19 +59,21 @@ const useFaucetVerifications = () => {
         authMode: 'GITCOIN_PASSPORT',
         walletAddress: walletAddress,
       },
-      { enabled: !!isGitcoinVerified && !!walletAddress },
+      { enabled: !!isGitcoinVerified && !!walletAddress && !!authenticated },
     )
 
   // World ID check
   const { data: isWorldIdUser, refetch: refetchWorldId } =
-    apiClient.auth.isWorldIdUser.useQuery()
+    apiClient.auth.isWorldIdUser.useQuery(undefined, {
+      enabled: !!authenticated,
+    })
 
   const { data: worldIdNextDrips, refetch: refetchWorldIdNextDrips } =
     apiClient.faucet.nextDrips.useQuery(
       {
         authMode: 'WORLD_ID',
       },
-      { enabled: !!isWorldIdUser },
+      { enabled: !!isWorldIdUser && !!authenticated },
     )
 
   const { data: nextDripsPrivy, refetch: refetchPrivyNextDrips } =
