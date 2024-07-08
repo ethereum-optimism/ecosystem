@@ -5,17 +5,17 @@ import { getOnchainAuthentication } from '@/app/faucet/helpers'
 import { usePrivy } from '@privy-io/react-auth'
 
 const useFaucetVerifications = () => {
-  const { authenticated } = usePrivy()
+  const { authenticated, ready } = usePrivy()
   const { connectedWallet } = useConnectedWallet()
   const walletAddress = connectedWallet?.address ?? ''
 
   // Coinbase check
-  const { data: isCoinbaseVerified, isLoading: isCoinbaseVerifiedLoading } =
+  const { data: isCoinbaseVerified, isFetching: isCoinbaseVerifiedLoading } =
     apiClient.auth.isCoinbaseVerified.useQuery(
       {
         address: walletAddress,
       },
-      // { enabled: !!walletAddress && !!authenticated },
+      { enabled: !!walletAddress && !!authenticated },
     )
 
   const { data: coinbaseNextDrips, refetch: refetchCoinbaseDrips } =
@@ -28,7 +28,7 @@ const useFaucetVerifications = () => {
     )
 
   // EAS check
-  const { data: isAttested, isLoading: isAttestedLoading } =
+  const { data: isAttested, isFetching: isAttestedLoading } =
     apiClient.auth.isAttested.useQuery(
       {
         address: walletAddress,
@@ -46,7 +46,7 @@ const useFaucetVerifications = () => {
     )
 
   // Gitcoin check
-  const { data: isGitcoinVerified, isLoading: isGitcoinLoading } =
+  const { data: isGitcoinVerified, isFetching: isGitcoinLoading } =
     apiClient.auth.isCoinbaseVerified.useQuery(
       {
         address: walletAddress,
@@ -67,7 +67,7 @@ const useFaucetVerifications = () => {
   const {
     data: isWorldIdUser,
     refetch: refetchWorldId,
-    isLoading: isWorldIDUserLoading,
+    isFetching: isWorldIDUserLoading,
   } = apiClient.auth.isWorldIdUser.useQuery(undefined, {
     enabled: !!authenticated,
   })
@@ -89,13 +89,11 @@ const useFaucetVerifications = () => {
     )
 
   const isAuthenticationLoading =
-    authenticated &&
-    (isCoinbaseVerifiedLoading ||
-      isAttestedLoading ||
-      isGitcoinLoading ||
-      isWorldIDUserLoading)
-
-  console.log(isCoinbaseVerifiedLoading)
+    !ready ||
+    isCoinbaseVerifiedLoading ||
+    isAttestedLoading ||
+    isGitcoinLoading ||
+    isWorldIDUserLoading
 
   const refetchNextDrips = () => {
     if (isCoinbaseVerified) refetchCoinbaseDrips()
