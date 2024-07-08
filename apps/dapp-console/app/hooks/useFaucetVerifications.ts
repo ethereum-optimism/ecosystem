@@ -10,12 +10,12 @@ const useFaucetVerifications = () => {
   const walletAddress = connectedWallet?.address ?? ''
 
   // Coinbase check
-  const { data: isCoinbaseVerified } =
+  const { data: isCoinbaseVerified, isLoading: isCoinbaseVerifiedLoading } =
     apiClient.auth.isCoinbaseVerified.useQuery(
       {
         address: walletAddress,
       },
-      { enabled: !!walletAddress && !!authenticated },
+      // { enabled: !!walletAddress && !!authenticated },
     )
 
   const { data: coinbaseNextDrips, refetch: refetchCoinbaseDrips } =
@@ -28,12 +28,13 @@ const useFaucetVerifications = () => {
     )
 
   // EAS check
-  const { data: isAttested } = apiClient.auth.isAttested.useQuery(
-    {
-      address: walletAddress,
-    },
-    { enabled: !!walletAddress && !!authenticated },
-  )
+  const { data: isAttested, isLoading: isAttestedLoading } =
+    apiClient.auth.isAttested.useQuery(
+      {
+        address: walletAddress,
+      },
+      { enabled: !!walletAddress && !!authenticated },
+    )
 
   const { data: easNextDrips, refetch: refetchEasNextDrips } =
     apiClient.faucet.nextDrips.useQuery(
@@ -45,7 +46,7 @@ const useFaucetVerifications = () => {
     )
 
   // Gitcoin check
-  const { data: isGitcoinVerified } =
+  const { data: isGitcoinVerified, isLoading: isGitcoinLoading } =
     apiClient.auth.isCoinbaseVerified.useQuery(
       {
         address: walletAddress,
@@ -63,10 +64,13 @@ const useFaucetVerifications = () => {
     )
 
   // World ID check
-  const { data: isWorldIdUser, refetch: refetchWorldId } =
-    apiClient.auth.isWorldIdUser.useQuery(undefined, {
-      enabled: !!authenticated,
-    })
+  const {
+    data: isWorldIdUser,
+    refetch: refetchWorldId,
+    isLoading: isWorldIDUserLoading,
+  } = apiClient.auth.isWorldIdUser.useQuery(undefined, {
+    enabled: !!authenticated,
+  })
 
   const { data: worldIdNextDrips, refetch: refetchWorldIdNextDrips } =
     apiClient.faucet.nextDrips.useQuery(
@@ -83,6 +87,15 @@ const useFaucetVerifications = () => {
       },
       { enabled: !!authenticated },
     )
+
+  const isAuthenticationLoading =
+    authenticated &&
+    (isCoinbaseVerifiedLoading ||
+      isAttestedLoading ||
+      isGitcoinLoading ||
+      isWorldIDUserLoading)
+
+  console.log(isCoinbaseVerifiedLoading)
 
   const refetchNextDrips = () => {
     if (isCoinbaseVerified) refetchCoinbaseDrips()
@@ -123,6 +136,7 @@ const useFaucetVerifications = () => {
     secondsUntilNextDrip,
     refetchWorldId,
     refetchNextDrips,
+    isAuthenticationLoading,
   }
 }
 

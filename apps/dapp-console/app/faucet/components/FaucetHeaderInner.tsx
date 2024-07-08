@@ -29,7 +29,7 @@ const FaucetHeaderInner = () => {
   const { connectWallet, authenticated } = usePrivy()
   const { connectedWallet } = useConnectedWallet()
   const { login } = useAuth()
-  const { refetchWorldId } = useFaucetVerifications()
+  const { refetchWorldId, isAuthenticationLoading } = useFaucetVerifications()
 
   const [isVerifyingWorldID, setIsVerifyingWorldID] = useState(false)
 
@@ -92,7 +92,15 @@ const FaucetHeaderInner = () => {
   )
 
   let content = null
-  if (!authenticated) {
+  if (isAuthenticationLoading) {
+    content = (
+      <div className="animate-pulse">
+        <div className="h-6 bg-foreground/10 rounded w-1/2 mb-3"></div>
+        <div className="h-6 bg-foreground/10 rounded w-3/4 mb-3"></div>
+        <div className="h-6 bg-foreground/10 rounded w-1/4"></div>
+      </div>
+    )
+  } else if (!authenticated) {
     // User is not signed in
     content = (
       <>
