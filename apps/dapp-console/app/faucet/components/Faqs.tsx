@@ -84,7 +84,7 @@ const accordionItems = [
     answer: (
       <Text as="p">
         Donate your extra testnet ETH to help other developers for the supported
-        OP Chains at 0xF21d42203AF9af1C86E1e8ac501B41f5bc004A0a
+        OP Chains at 0x18e75dAbeD7aea55DA355ACB6165F38fd9FC6111
       </Text>
     ),
   },
