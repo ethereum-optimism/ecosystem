@@ -4,18 +4,12 @@ import { CardContent, CardHeader } from '@eth-optimism/ui-components'
 import { Card } from '@eth-optimism/ui-components/src/components/ui/card/card'
 import { Text } from '@eth-optimism/ui-components/src/components/ui/text/text'
 import { FaucetHeader } from '@/app/faucet/components/FaucetHeader'
-import { useFeatureFlag } from '@/app/hooks/useFeatureFlag'
 import { FaucetContent } from '@/app/faucet/components/FaucetContent'
 import { Faqs } from '@/app/faucet/components/Faqs'
 import { useFaucetVerifications } from '@/app/hooks/useFaucetVerifications'
 
 export default function Faucet() {
-  const isConsoleFaucetEnabled = useFeatureFlag('enable_console_faucet')
   const { faucetAuthentications } = useFaucetVerifications()
-
-  if (!isConsoleFaucetEnabled) {
-    return null
-  }
 
   return (
     <div className="flex flex-col w-full items-center py-10 px-2 pb-20 sm:px-6 bg-secondary">
