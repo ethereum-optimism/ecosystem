@@ -7,25 +7,25 @@ const LearnMoreDialogContent = () => {
       label: 'Coinbase Verification',
       description: null,
       image: '/logos/coinbase-logo.png',
-      url: '',
+      url: 'https://help.coinbase.com/en/coinbase/getting-started/getting-started-with-coinbase/id-doc-verification',
     },
     {
       label: 'EAS',
       description: 'Valid within 7 days',
       image: '/logos/eas-logo.png',
-      url: '',
+      url: 'https://attest.org/',
     },
     {
       label: 'Gitcoin',
       description: 'Passport score > 25',
       image: '/logos/gitcoin-logo.png',
-      url: '',
+      url: 'https://passport.gitcoin.co/',
     },
     {
       label: 'World ID',
       description: null,
       image: '/logos/worldid-logo.png',
-      url: '',
+      url: 'https://worldcoin.org/world-id',
     },
   ]
   return (

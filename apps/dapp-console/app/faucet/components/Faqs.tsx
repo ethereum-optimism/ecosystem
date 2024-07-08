@@ -14,7 +14,7 @@ const accordionItems = [
       <Text as="p">
         A testnet faucet is a way for developers to receive free tokens that can
         be used to interact with smart contracts on test networks, or testnets,
-        like OP Goerli.
+        like OP Sepolia.
       </Text>
     ),
   },
@@ -69,16 +69,6 @@ const accordionItems = [
     ),
   },
   {
-    question: 'What test networks are supported?',
-    answer: (
-      <Text as="p">
-        The Superchain Faucet currently supports Ethereum Sepoloa, Base Sepolia,
-        Lyra Sepolia, Mode Sepolia, OP Sepolia, PGN Sepolia, Fraxtal Sepolia,
-        and Zora Sepolia.
-      </Text>
-    ),
-  },
-  {
     question: 'What if I run into an issue or have questions?',
     answer: (
       <Text as="p">
@@ -94,7 +84,7 @@ const accordionItems = [
     answer: (
       <Text as="p">
         Donate your extra testnet ETH to help other developers for the supported
-        OP Chains at 0xF21d42203AF9af1C86E1e8ac501B41f5bc004A0a
+        OP Chains at 0x18e75dAbeD7aea55DA355ACB6165F38fd9FC6111
       </Text>
     ),
   },
