@@ -11,3 +11,5 @@ export type AuthMode =
   | 'GITCOIN_PASSPORT'
   | 'WORLD_ID'
   | 'PRIVY'
+
+export type ClaimStatus = 'successful' | 'initiated' | 'failed' | null

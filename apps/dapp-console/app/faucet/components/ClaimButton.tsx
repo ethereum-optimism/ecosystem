@@ -18,6 +18,7 @@ interface ClaimButtonProps {
   authentications: Authentications
   recipientAddress: string
   onSuccess: () => void
+  onFailed: () => void
   setBlockExplorerUrl: (url: string) => void
   children: React.ReactNode
 }
@@ -32,6 +33,7 @@ const ClaimButton = forwardRef<HTMLButtonElement, ClaimButtonProps>(
       authentications,
       recipientAddress,
       onSuccess,
+      onFailed,
       setBlockExplorerUrl,
       children,
     },
@@ -102,8 +104,6 @@ const ClaimButton = forwardRef<HTMLButtonElement, ClaimButtonProps>(
           response = await handleOffchainClaim()
         }
 
-        console.log(response)
-
         if (response && !response.error) {
           setBlockExplorerUrl(response.etherscanUrl || '')
           onSuccess()
@@ -116,6 +116,7 @@ const ClaimButton = forwardRef<HTMLButtonElement, ClaimButtonProps>(
         }
       } catch (e) {
         console.error('Claim failed', e)
+        onFailed()
       }
     }
 
