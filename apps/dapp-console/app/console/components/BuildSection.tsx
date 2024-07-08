@@ -26,11 +26,13 @@ const BuildSection = () => {
   // Event handler for clicking on the Faucet tile
   const handleFaucetClick = () => {
     trackCardClick('Superchain Faucet')
-    if (isConsoleFaucetEnabled) {
-      router.push('/faucet')
-    } else {
-      openWindow(externalRoutes.SUPERCHAIN_FAUCET.path)
-    }
+    openWindow(externalRoutes.SUPERCHAIN_FAUCET.path)
+    // TODO: Uncomment this block
+    // if (isConsoleFaucetEnabled) {
+    //   router.push('/faucet')
+    // } else {
+    //   openWindow(externalRoutes.SUPERCHAIN_FAUCET.path)
+    // }
   }
 
   return (
