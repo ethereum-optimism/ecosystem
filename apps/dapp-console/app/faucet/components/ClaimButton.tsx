@@ -8,6 +8,7 @@ import {
   getOnchainAuthentication,
   hasAuthentication,
 } from '@/app/faucet/helpers'
+import { trackFaucetClaim } from '@/app/event-tracking/mixpanel'
 
 interface ClaimButtonProps {
   isDisabled: boolean
@@ -101,15 +102,17 @@ const ClaimButton = forwardRef<HTMLButtonElement, ClaimButtonProps>(
           response = await handleOffchainClaim()
         }
 
-        console.log('Claim response', response)
+        console.log(response)
 
         if (response && !response.error) {
           setBlockExplorerUrl(response.etherscanUrl || '')
           onSuccess()
-          // const interval = setTimeout(() => {
-
-          // }, 3000)
-          // return () => clearInterval(interval)
+          trackFaucetClaim({
+            chainId,
+            authMode: response.authMode,
+            recipientAddress,
+            ownerAddress,
+          })
         }
       } catch (e) {
         console.error('Claim failed', e)

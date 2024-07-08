@@ -1,5 +1,6 @@
 import mixpanelBrowser from 'mixpanel-browser'
 import { Address, Hash } from 'viem'
+import { AuthMode } from '@/app/faucet/types'
 
 const initMixpanel = () => {
   if (!process.env.NEXT_PUBLIC_MIXPANEL_TOKEN) {
@@ -31,6 +32,7 @@ enum TRACKING_EVENT_NAME {
   CompleteContractVerification = 'Complete Contract Verification',
   ClaimRebateClick = 'Claim Rebate Click',
   ClaimRebate = 'Rebate Claimed',
+  FaucetClaim = 'Faucet Claim',
 }
 
 enum CUSTOM_TRACKING_PROPERTY {
@@ -48,6 +50,9 @@ enum CUSTOM_TRACKING_PROPERTY {
   DeployerAddress = 'Deployer Address',
   ClaimAmount = 'Claim Amount',
   DeploymentTxHash = 'Deployment Tx Hash',
+  AuthMode = 'Authentication Mode',
+  RecipientAddress = 'Recipient Address',
+  OwnerAddress = 'Owner Address',
 }
 
 export type ActionType = 'app' | 'contract' | 'wallet'
@@ -205,5 +210,25 @@ export const trackClaimRebate = ({
     [CUSTOM_TRACKING_PROPERTY.DeployerAddress]: deployerAddress,
     [CUSTOM_TRACKING_PROPERTY.ClaimAmount]: claimAmount,
     [CUSTOM_TRACKING_PROPERTY.DeploymentTxHash]: deploymentTxHash,
+  })
+}
+
+export const trackFaucetClaim = ({
+  chainId,
+  authMode,
+  recipientAddress,
+  ownerAddress,
+}: {
+  chainId: number
+  authMode: AuthMode
+  recipientAddress: string
+  ownerAddress: string
+}) => {
+  console.log(mixpanel)
+  mixpanel?.track(TRACKING_EVENT_NAME.FaucetClaim, {
+    [CUSTOM_TRACKING_PROPERTY.ChainId]: chainId,
+    [CUSTOM_TRACKING_PROPERTY.AuthMode]: authMode,
+    [CUSTOM_TRACKING_PROPERTY.RecipientAddress]: recipientAddress,
+    [CUSTOM_TRACKING_PROPERTY.OwnerAddress]: ownerAddress,
   })
 }
