@@ -23,6 +23,7 @@ import { useFaucetVerifications } from '@/app/hooks/useFaucetVerifications'
 import { Alert } from '@eth-optimism/ui-components/src/components/ui/alert/alert'
 import { AlertTitle } from '@eth-optimism/ui-components'
 import { RiTimeLine } from '@remixicon/react'
+import { useFaucetNetworks } from '@/app/hooks/useFaucetNetworks'
 
 type Props = {
   authentications: Authentications
@@ -32,6 +33,7 @@ const FaucetContent = ({ authentications }: Props) => {
   const { connectedWallet } = useConnectedWallet()
   const { authenticated } = usePrivy()
   const { secondsUntilNextDrip, refetchNextDrips } = useFaucetVerifications()
+  const { unavailableNetworksChainIds } = useFaucetNetworks()
 
   const [address, setAddress] = useState('')
   const [selectedNetwork, setSelectedNetwork] = useState(faucetNetworks[0])
@@ -150,7 +152,11 @@ const FaucetContent = ({ authentications }: Props) => {
             onClick={() => {
               setSelectedNetwork(network)
             }}
-            disabled={countdown > 0 || !authenticated}
+            disabled={
+              countdown > 0 ||
+              !authenticated ||
+              unavailableNetworksChainIds.has(network.chainID)
+            }
           >
             <div className="flex gap-3 items-center">
               <img
@@ -158,9 +164,19 @@ const FaucetContent = ({ authentications }: Props) => {
                 alt={network.label}
                 className="w-10 h-10 rounded-full"
               />
-              <Text as="span" className="text-base font-semibold">
-                {network.label}
-              </Text>
+              <div className="flex flex-col items-start">
+                <Text as="p" className="text-base font-semibold">
+                  {network.label}
+                </Text>
+                {unavailableNetworksChainIds.has(network.chainID) && (
+                  <Text
+                    as="span"
+                    className="text-sm text-secondary-foreground text-left"
+                  >
+                    Temporarily unavailable
+                  </Text>
+                )}
+              </div>
             </div>
           </RadioCard>
         ))}
