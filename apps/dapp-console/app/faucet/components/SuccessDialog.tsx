@@ -53,8 +53,6 @@ const SuccessDialog: React.FC<Props> = ({
     'celebrate',
   )
 
-  console.log('celebrateInput', celebrateInput?.value)
-
   useEffect(() => {
     if (isClaimSuccessful && celebrateInput && !celebrateInput.value) {
       celebrateInput.value = true
@@ -76,7 +74,7 @@ const SuccessDialog: React.FC<Props> = ({
 
   let title
   if (isClaimSuccessful) {
-    title = 'Claim successful'
+    title = `Claimed ${claimAmount} ETH on ${claimNetwork}`
   } else if (isClaimInProgress || isOffchainClaim) {
     title = 'Claiming testnet funds'
   } else {
@@ -85,7 +83,8 @@ const SuccessDialog: React.FC<Props> = ({
 
   let description
   if (isClaimSuccessful) {
-    description = `You claimed ${claimAmount} ETH on ${claimNetwork}`
+    description =
+      'Please allow a few minutes for the testnet funds to arrive in your wallet'
   } else if (isClaimInProgress || isOffchainClaim) {
     description = 'Waiting for network confirmation'
   } else {
@@ -121,9 +120,12 @@ const SuccessDialog: React.FC<Props> = ({
           </Text>
         </div>
 
-        <Text as="p" className="text-secondary-foreground text-center mb-6">
-          {description}
-        </Text>
+        <div className="mb-6">
+          <Text as="p" className="text-secondary-foreground text-center">
+            {description}
+          </Text>
+        </div>
+
         <div className="flex flex-col-reverse gap-2 w-full sm:flex-row">
           <Button variant="secondary" className="w-full" onClick={closeDialog}>
             Close
