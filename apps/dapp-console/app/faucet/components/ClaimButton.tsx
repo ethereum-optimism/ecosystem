@@ -111,7 +111,7 @@ const ClaimButton = forwardRef<HTMLButtonElement, ClaimButtonProps>(
             chainId,
             authMode: response.authMode,
             recipientAddress,
-            owneAddress,
+            ownerAddress,
           })
         }
       } catch (e) {
