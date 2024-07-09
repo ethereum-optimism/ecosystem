@@ -1,10 +1,12 @@
-import { CardContent, CardHeader } from '@eth-optimism/ui-components'
-import { Card } from '@eth-optimism/ui-components/src/components/ui/card/card'
+import {
+  Card,
+  CardContent,
+  CardHeader,
+} from '@eth-optimism/ui-components/src/components/ui/card/card'
 import { Text } from '@eth-optimism/ui-components/src/components/ui/text/text'
 import { FaucetHeader } from '@/app/faucet/components/FaucetHeader'
 import { FaucetContent } from '@/app/faucet/components/FaucetContent'
 import { Faqs } from '@/app/faucet/components/Faqs'
-import { useFaucetVerifications } from '@/app/hooks/useFaucetVerifications'
 import { Metadata } from 'next'
 import { faucetMetadata } from '@/app/seo'
 
