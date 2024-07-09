@@ -32,7 +32,8 @@ export const SupportedNetworks = ({
         await switchChainAsync({ chainId: chain.id })
       } catch (e) {
         if (NETWORK_NOT_FOUND_CODES.includes(e.cause.code)) {
-          walletClient.data?.addChain({ chain })
+          await walletClient.data?.addChain({ chain })
+          await switchChainAsync({ chainId: chain.id })
         }
       }
     },
