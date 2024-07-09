@@ -14,12 +14,12 @@ import {
   RiExternalLinkFill,
   RiLoader4Fill,
 } from '@remixicon/react'
+import { ClaimStatus } from '@/app/faucet/types'
 
 type Props = {
   claimAmount: number | null
   claimNetwork: string | null
-  isClaimSuccessful: boolean
-  isClaimInProgress: boolean
+  claimStatus: ClaimStatus
   closeDialog: () => void
   blockExplorerUrl: string
 }
@@ -27,12 +27,10 @@ type Props = {
 const SuccessDialog: React.FC<Props> = ({
   claimAmount,
   claimNetwork,
-  isClaimSuccessful,
-  isClaimInProgress,
+  claimStatus,
   closeDialog,
   blockExplorerUrl,
 }) => {
-  const isOffchainClaim = claimAmount === 0.05
   const riveParams = useMemo(
     () => ({
       src: '/sunny-animation.riv',
@@ -62,7 +60,7 @@ const SuccessDialog: React.FC<Props> = ({
       }, 4000)
       return () => clearTimeout(timer)
     }
-  }, [isClaimSuccessful])
+  }, [claimStatus])
 
   useEffect(() => {
     return () => {
@@ -72,22 +70,24 @@ const SuccessDialog: React.FC<Props> = ({
     }
   }, [rive])
 
-  let title
-  if (isClaimSuccessful) {
-    title = `Claimed ${claimAmount} ETH on ${claimNetwork}`
-  } else if (isClaimInProgress || isOffchainClaim) {
-    title = 'Claiming testnet funds'
-  } else {
-    title = 'Please sign the transaction in your wallet'
-  }
+  const isOffchainClaim = claimAmount === 0.05
+  const isClaimSuccessful = claimStatus === 'successful'
+  const isClaimInProgress = claimStatus === 'initiated'
 
+  let title
   let description
   if (isClaimSuccessful) {
+    title = `Claimed ${claimAmount} ETH on ${claimNetwork}`
     description =
       'Please allow a few minutes for the testnet funds to arrive in your wallet'
   } else if (isClaimInProgress || isOffchainClaim) {
+    title = 'Claiming testnet funds'
     description = 'Waiting for network confirmation'
+  } else if (claimStatus === 'failed') {
+    title = 'Claim failed'
+    description = 'Please try again'
   } else {
+    title = 'Please sign the transaction in your wallet'
     description = 'Please sign the transaction in your wallet'
   }
 
@@ -110,7 +110,6 @@ const SuccessDialog: React.FC<Props> = ({
     <>
       <div className="flex flex-col items-center w-full rounded-md overflow-hidden">
         <RiveComponent className="h-96 w-full" />
-
         <div className="flex items-center gap-2 mb-1">
           {isClaimSuccessful && (
             <RiCheckboxCircleFill size={18} color="#5BA85A" />
@@ -130,7 +129,11 @@ const SuccessDialog: React.FC<Props> = ({
           <Button variant="secondary" className="w-full" onClick={closeDialog}>
             Close
           </Button>
-          {isClaimSuccessful ? viewTransactionButton : loadingButton}
+          {isClaimSuccessful
+            ? viewTransactionButton
+            : claimStatus !== 'failed'
+              ? loadingButton
+              : null}
         </div>
       </div>
     </>

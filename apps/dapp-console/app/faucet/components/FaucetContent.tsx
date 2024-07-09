@@ -10,6 +10,7 @@ import { Confetti } from '@eth-optimism/ui-components/src/components/ui/confetti
 import { isAddress } from 'viem'
 import { useEffect, useState } from 'react'
 import { getFormattedCountdown } from '@/app/utils'
+import { ClaimStatus } from '@/app/faucet/types'
 import {
   Dialog,
   DialogContent,
@@ -38,9 +39,9 @@ const FaucetContent = () => {
   const [selectedNetwork, setSelectedNetwork] = useState(faucetNetworks[0])
   const [countdown, setCountdown] = useState(secondsUntilNextDrip || 0)
   const [isDialogOpen, setIsDialogOpen] = useState(false)
-  const [isClaimSuccessful, setIsClaimSuccessful] = useState(false)
-  const [isClaimInProgress, setIsClaimInProgress] = useState(false)
   const [blockExplorerUrl, setBlockExplorerUrl] = useState('')
+
+  const [claimStatus, setClaimStatus] = useState<ClaimStatus>(null)
 
   useEffect(() => {
     if (secondsUntilNextDrip) {
@@ -83,22 +84,20 @@ const FaucetContent = () => {
     }
   }, [isDialogOpen])
 
-  // COME BACK TO THIS.
-  // Attempting to poll the nextDrips endpoint every 5 seconds while a claim is in progress to check if the claim has been processed.
+  // Poll for the transaction status once the claim has been initiated.
   useEffect(() => {
-    if (isClaimInProgress && secondsUntilNextDrip !== 0) {
-      setIsClaimSuccessful(true)
-      setIsClaimInProgress(false)
+    if (claimStatus === 'initiated' && secondsUntilNextDrip !== 0) {
+      setClaimStatus('successful')
     }
 
-    if (isClaimInProgress) {
+    if (claimStatus === 'initiated') {
       const interval = setInterval(() => {
         refetchNextDrips()
       }, 5000)
 
       return () => clearInterval(interval)
     }
-  }, [isClaimInProgress, secondsUntilNextDrip])
+  }, [claimStatus, secondsUntilNextDrip])
 
   const handleAddressChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setAddress(e.target.value)
@@ -106,7 +105,7 @@ const FaucetContent = () => {
 
   const handleCloseDialog = () => {
     setIsDialogOpen(false)
-    setIsClaimSuccessful(false)
+    setClaimStatus(null)
   }
 
   return (
@@ -191,7 +190,10 @@ const FaucetContent = () => {
           authentications={faucetAuthentications}
           recipientAddress={address}
           onSuccess={() => {
-            setIsClaimInProgress(true)
+            setClaimStatus('initiated')
+          }}
+          onFailed={() => {
+            setClaimStatus('failed')
           }}
           setBlockExplorerUrl={setBlockExplorerUrl}
         >
@@ -202,13 +204,12 @@ const FaucetContent = () => {
             claimAmount={claimAmount}
             claimNetwork={selectedNetwork.label}
             closeDialog={handleCloseDialog}
-            isClaimSuccessful={isClaimSuccessful}
-            isClaimInProgress={isClaimInProgress}
+            claimStatus={claimStatus}
             blockExplorerUrl={blockExplorerUrl}
           />
         </DialogContent>
       </Dialog>
-      <Confetti runAnimation={isClaimSuccessful} zIndex={1000} />
+      <Confetti runAnimation={claimStatus === 'successful'} zIndex={1000} />
     </div>
   )
 }
