@@ -53,7 +53,7 @@ export const faucetMetadata = {
   description: faucetDescription,
   openGraph: {
     url: 'https://console.optimism.io/insights',
-    title: insightsTitle,
+    title: faucetTitle,
     description: faucetDescription,
     images: [
       {
