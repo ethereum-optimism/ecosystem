@@ -1,7 +1,6 @@
 'use client'
 
 import { Tile, TileGrid } from '@/app/components/Tile/Tile'
-import { externalRoutes } from '@/app/constants'
 import { Text } from '@eth-optimism/ui-components/src/components/ui/text/text'
 import {
   Dialog,
@@ -10,7 +9,6 @@ import {
 } from '@eth-optimism/ui-components/src/components/ui/dialog/dialog'
 import { useState } from 'react'
 import { useDialogContent } from '@/app/console/useDialogContent'
-import { openWindow } from '@/app/helpers'
 import { trackCardClick } from '@/app/event-tracking/mixpanel'
 import { SuperchainSafeModalContent } from '@/app/console/SuperchainSafeModalContent'
 import { useRouter } from 'next/navigation'
