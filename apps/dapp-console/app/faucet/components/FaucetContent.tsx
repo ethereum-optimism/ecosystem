@@ -1,3 +1,5 @@
+'use client'
+
 import { Label } from '@eth-optimism/ui-components/src/components/ui/label/label'
 import { Input } from '@eth-optimism/ui-components/src/components/ui/input/input'
 import { RadioCard } from '@eth-optimism/ui-components/src/components/ui/radio-group/radio-card'
@@ -8,7 +10,6 @@ import { Confetti } from '@eth-optimism/ui-components/src/components/ui/confetti
 import { isAddress } from 'viem'
 import { useEffect, useState } from 'react'
 import { getFormattedCountdown } from '@/app/utils'
-import { Authentications } from '@/app/faucet/types'
 import {
   Dialog,
   DialogContent,
@@ -25,12 +26,10 @@ import { AlertTitle } from '@eth-optimism/ui-components'
 import { RiTimeLine } from '@remixicon/react'
 import { useFaucetNetworks } from '@/app/hooks/useFaucetNetworks'
 
-type Props = {
-  authentications: Authentications
-}
-
-const FaucetContent = ({ authentications }: Props) => {
+const FaucetContent = () => {
   const { connectedWallet } = useConnectedWallet()
+  const { faucetAuthentications } = useFaucetVerifications()
+
   const { authenticated } = usePrivy()
   const { secondsUntilNextDrip, refetchNextDrips } = useFaucetVerifications()
   const { unavailableNetworksChainIds } = useFaucetNetworks()
@@ -60,7 +59,7 @@ const FaucetContent = ({ authentications }: Props) => {
     return () => clearInterval(interval)
   }, [secondsUntilNextDrip])
 
-  const hasAuthentication = Object.values(authentications).some(Boolean)
+  const hasAuthentication = Object.values(faucetAuthentications).some(Boolean)
   const claimAmount = hasAuthentication ? 1 : 0.05
 
   const isValidAddress = isAddress(address)
@@ -189,7 +188,7 @@ const FaucetContent = ({ authentications }: Props) => {
             setIsDialogOpen(true)
           }}
           chainId={selectedNetwork.chainID}
-          authentications={authentications}
+          authentications={faucetAuthentications}
           recipientAddress={address}
           onSuccess={() => {
             setIsClaimInProgress(true)

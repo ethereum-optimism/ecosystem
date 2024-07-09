@@ -1,18 +1,18 @@
-import { Authentications } from '@/app/faucet/types'
+'use client'
+
 import { hasAuthentication } from '@/app/faucet/helpers'
 import { LogoChain } from '@/app/faucet/components/LogoChain'
 import { AuthenticatedHeader } from '@/app/faucet/components/AuthenticatedHeader'
 import { FaucetHeaderInner } from '@/app/faucet/components/FaucetHeaderInner'
+import { useFaucetVerifications } from '@/app/hooks/useFaucetVerifications'
 
-type FaucetHeaderProps = {
-  authentications: Authentications
-}
+const FaucetHeader = () => {
+  const { faucetAuthentications } = useFaucetVerifications()
 
-const FaucetHeader = ({ authentications }: FaucetHeaderProps) => {
   return (
     <div>
-      {hasAuthentication(authentications) ? (
-        <AuthenticatedHeader authentications={authentications} />
+      {hasAuthentication(faucetAuthentications) ? (
+        <AuthenticatedHeader authentications={faucetAuthentications} />
       ) : (
         <div className="flex justify-between flex-col-reverse md:flex-row items-start gap-4">
           <FaucetHeaderInner />
