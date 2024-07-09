@@ -1,7 +1,11 @@
 import { SupportedNetworks } from '@/providers/SupportedNetworks'
-import { optimismSepolia } from 'viem/chains'
+import { optimismSepolia, foundry, Chain } from 'viem/chains'
 
-const supportedChains = [optimismSepolia]
+const supportedChains: Chain[] = [optimismSepolia]
+
+if (import.meta.env.VITE_DEPLOYMENT_ENV === 'local') {
+  supportedChains.push(foundry)
+}
 
 export const TicTacToe = () => {
   return (

@@ -20,6 +20,7 @@ import { NETWORK_TYPE } from '@/constants/networkType'
 import { TicTacToe } from '@/routes/TicTacToe'
 import { Home } from '@/routes/Home'
 import { Playground } from '@/routes/Playground'
+import { foundry } from 'viem/chains'
 
 const classNames = {
   app: 'app w-full min-h-screen flex flex-col',
@@ -32,6 +33,10 @@ type ProviderProps = {
 const queryClient = new QueryClient()
 
 const opChains = configureOpChains({ type: NETWORK_TYPE })
+
+if (import.meta.env.VITE_DEPLOYMENT_ENV === 'local') {
+  opChains.push(foundry)
+}
 
 const wagmiConfig = getDefaultConfig({
   appName: 'Example OP Stack Bridge',

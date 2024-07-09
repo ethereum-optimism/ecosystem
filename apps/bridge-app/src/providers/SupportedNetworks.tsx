@@ -2,12 +2,14 @@ import { Card, CardHeader, CardTitle, Text } from '@eth-optimism/ui-components'
 import { useConnectModal } from '@rainbow-me/rainbowkit'
 import { useCallback, useEffect } from 'react'
 import { Chain } from 'viem'
-import { useAccount, useSwitchChain } from 'wagmi'
+import { useAccount, useSwitchChain, useWalletClient } from 'wagmi'
 
 export type SupportedNetworkProps = {
   chains: Chain[]
   children: React.ReactNode
 }
+
+const NETWORK_NOT_FOUND_CODES = [4902, -32602]
 
 export const SupportedNetworks = ({
   chains,
@@ -15,7 +17,8 @@ export const SupportedNetworks = ({
 }: SupportedNetworkProps) => {
   const { chainId, isDisconnected } = useAccount()
   const { openConnectModal } = useConnectModal()
-  const { switchChain } = useSwitchChain()
+  const { switchChainAsync } = useSwitchChain()
+  const walletClient = useWalletClient()
 
   useEffect(() => {
     if (isDisconnected) {
@@ -24,10 +27,16 @@ export const SupportedNetworks = ({
   }, [openConnectModal, isDisconnected])
 
   const handleNetworkSwitch = useCallback(
-    (chainId: number) => {
-      switchChain({ chainId })
+    async (chain: Chain) => {
+      try {
+        await switchChainAsync({ chainId: chain.id })
+      } catch (e) {
+        if (NETWORK_NOT_FOUND_CODES.includes(e.cause.code)) {
+          walletClient.data?.addChain({ chain })
+        }
+      }
     },
-    [switchChain],
+    [switchChainAsync, walletClient],
   )
 
   if (!chainId) {
@@ -45,7 +54,7 @@ export const SupportedNetworks = ({
         {chains.map((chain) => (
           <Card
             className="cursor-pointer w-full text-center"
-            onClick={() => handleNetworkSwitch(chain.id)}
+            onClick={() => handleNetworkSwitch(chain)}
           >
             <CardHeader>
               <CardTitle>{chain.name}</CardTitle>
