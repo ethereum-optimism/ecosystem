@@ -10,7 +10,7 @@ import { Confetti } from '@eth-optimism/ui-components/src/components/ui/confetti
 import { isAddress } from 'viem'
 import { useEffect, useState } from 'react'
 import { getFormattedCountdown } from '@/app/utils'
-import { Authentications, ClaimStatus } from '@/app/faucet/types'
+import { ClaimStatus } from '@/app/faucet/types'
 import {
   Dialog,
   DialogContent,
