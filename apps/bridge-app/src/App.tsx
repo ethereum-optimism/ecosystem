@@ -17,6 +17,9 @@ import { ThemeProvider } from '@/providers/ThemeProvider'
 import { HeaderLeft } from '@/components/header/HeaderLeft'
 import { HeaderRight } from '@/components/header/HeaderRight'
 import { NETWORK_TYPE } from '@/constants/networkType'
+import { TicTacToe } from '@/routes/TicTacToe'
+import { Home } from '@/routes/Home'
+import { Playground } from '@/routes/Playground'
 
 const classNames = {
   app: 'app w-full min-h-screen flex flex-col',
@@ -68,14 +71,25 @@ const AppRoot = () => {
   )
 }
 
+const playgroundRoutes = [{ index: true, element: <Playground /> }]
+
+const bridgeRoutes = [
+  { index: true, element: <Bridge action="deposit" /> },
+  { path: 'deposit', element: <Bridge action="deposit" /> },
+  { path: 'withdraw', element: <Bridge action="withdrawal" /> },
+]
+
+const ticTacToeRoutes = [{ index: true, element: <TicTacToe /> }]
+
 const router = createBrowserRouter([
   {
     path: '/',
     element: <AppRoot />,
     children: [
-      { path: '/', element: <Bridge action="deposit" /> },
-      { path: '/deposit', element: <Bridge action="deposit" /> },
-      { path: '/withdrawal', element: <Bridge action="withdrawal" /> },
+      { index: true, element: <Home /> },
+      { path: '/bridge', children: bridgeRoutes },
+      { path: '/playground', children: playgroundRoutes },
+      { path: '/tictactoe', children: ticTacToeRoutes },
     ],
   },
 ])
