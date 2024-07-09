@@ -32,12 +32,15 @@ export const Bridge = ({ action }: BridgeProps) => {
       <CardContent>
         <Tabs defaultValue={action} className="w-[500px]">
           <TabsList className="grid w-full grid-cols-2 gap-2">
-            <TabsTrigger value="deposit" onClick={() => navigate('/deposit')}>
+            <TabsTrigger
+              value="deposit"
+              onClick={() => navigate('/bridge/deposit')}
+            >
               Deposit
             </TabsTrigger>
             <TabsTrigger
               value="withdrawal"
-              onClick={() => navigate('/withdrawal')}
+              onClick={() => navigate('/bridge/withdraw')}
             >
               Withdrawal
             </TabsTrigger>
