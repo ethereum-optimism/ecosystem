@@ -44,7 +44,7 @@ export const insightsMetadata = {
   },
 }
 
-const faucetTitle = 'Superchain Dev Insights'
+const faucetTitle = 'Superchain Faucet'
 const faucetDescription =
   'Get free testnet tokens for building applications on the Superchain'
 
@@ -52,7 +52,7 @@ export const faucetMetadata = {
   title: faucetTitle,
   description: faucetDescription,
   openGraph: {
-    url: 'https://console.optimism.io/insights',
+    url: 'https://console.optimism.io/faucet',
     title: faucetTitle,
     description: faucetDescription,
     images: [
