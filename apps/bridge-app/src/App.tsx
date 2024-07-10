@@ -84,7 +84,10 @@ const bridgeRoutes = [
   { path: 'withdraw', element: <Bridge action="withdrawal" /> },
 ]
 
-const ticTacToeRoutes = [{ index: true, element: <TicTacToe /> }]
+const ticTacToeRoutes = [
+  { index: true, element: <TicTacToe /> },
+  { path: ':game-id', element: <TicTacToe /> },
+]
 
 const router = createBrowserRouter([
   {
