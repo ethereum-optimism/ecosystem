@@ -1,3 +1,5 @@
+import { useJoinGame } from '@/hooks/tictactoe/useJoinGame'
+import { getMessageFromRevert } from '@/utils/tictactoe'
 import {
   Button,
   Dialog,
@@ -7,15 +9,31 @@ import {
   DialogTitle,
   DialogTrigger,
   Input,
+  useToast,
 } from '@eth-optimism/ui-components'
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 import { useNavigate } from 'react-router'
 
 const IGNORE_MATH_SYMBOLS = ['e', 'E', '+', '-']
 
 export const JoinGameDialog = () => {
+  const { toast } = useToast()
   const [gameId, setGameId] = useState<number | undefined>(undefined)
   const navigate = useNavigate()
+  const { joinGame } = useJoinGame()
+
+  const handleJoinGame = useCallback(async () => {
+    try {
+      await joinGame(gameId as number)
+      navigate(`/tictactoe/${gameId}`)
+    } catch (err) {
+      const errorMessage = getMessageFromRevert(err)
+
+      if (errorMessage) {
+        toast({ title: errorMessage, duration: 5000 })
+      }
+    }
+  }, [gameId, navigate, toast])
 
   return (
     <Dialog>
@@ -46,7 +64,7 @@ export const JoinGameDialog = () => {
             variant="default"
             className="font-retro"
             disabled={typeof gameId !== 'number'}
-            onClick={() => navigate(`/tictactoe/${gameId}`)}
+            onClick={handleJoinGame}
           >
             Join
           </Button>
