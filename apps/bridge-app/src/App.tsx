@@ -21,6 +21,7 @@ import { TicTacToe } from '@/routes/TicTacToe'
 import { Home } from '@/routes/Home'
 import { Playground } from '@/routes/Playground'
 import { foundry } from 'viem/chains'
+import { Toaster } from '@eth-optimism/ui-components'
 
 const classNames = {
   app: 'app w-full min-h-screen flex flex-col',
@@ -55,7 +56,12 @@ const Providers = ({ children }: ProviderProps) => (
   <WagmiProvider reconnectOnMount config={wagmiConfig}>
     <QueryClientProvider client={queryClient}>
       <RainbowKitProvider>
-        <ThemeProvider>{children}</ThemeProvider>
+        <ThemeProvider>
+          <>
+            {children}
+            <Toaster />
+          </>
+        </ThemeProvider>
       </RainbowKitProvider>
     </QueryClientProvider>
   </WagmiProvider>
@@ -84,7 +90,10 @@ const bridgeRoutes = [
   { path: 'withdraw', element: <Bridge action="withdrawal" /> },
 ]
 
-const ticTacToeRoutes = [{ index: true, element: <TicTacToe /> }]
+const ticTacToeRoutes = [
+  { index: true, element: <TicTacToe /> },
+  { path: ':game-id', element: <TicTacToe /> },
+]
 
 const router = createBrowserRouter([
   {
