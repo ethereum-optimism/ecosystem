@@ -14,7 +14,7 @@ const FaqPage = () => {
         <img src={'/logo.svg'} alt="FAQ" className="h-4" />
       </div>
       <div className="flex flex-col w-full items-center px-4 pb-10">
-        <h1 className="text-4xl font-bold text-foreground mb-2">KYC FAQ</h1>
+        <h1 className="text-4xl fnt-bold text-foreground mb-2">KYC FAQ</h1>
         <p className="text-secondary-foreground mb-10 text-center">
           Frequently asked questions for identity verification
         </p>
