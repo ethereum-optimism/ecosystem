@@ -8,7 +8,7 @@ type Props = {
   authentications: Authentications
 }
 
-// Define the labels and images for each authentication type
+// Define the labels and images for each authentication typ
 const data: Record<keyof Authentications, { label: string; image: string }> = {
   COINBASE_VERIFICATION: {
     label: 'Coinbase',
