@@ -1,5 +1,5 @@
 {
-  "name": "@eth-optimism/bridge-app",
+  "name": "@eth-optimism/kyc-faq",
   "private": true,
   "version": "0.0.0",
   "type": "module",
