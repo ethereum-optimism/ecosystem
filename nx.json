@@ -6,7 +6,8 @@
       "bridge-app": ["type:app"],
       "paymaster-proxy": ["type:app"],
       "dapp-console": ["type:app"],
-      "dapp-console-api": ["type:app"]
+      "dapp-console-api": ["type:app"],
+      "kyc-faq": ["type:app"]
     },
     "packages": {
       "op-app": ["type:package"],
