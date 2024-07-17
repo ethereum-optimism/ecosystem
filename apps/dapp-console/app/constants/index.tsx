@@ -69,7 +69,7 @@ export const externalRoutes: Routes = {
   },
   OPTIMISM_DOCS: {
     path: 'https://docs.optimism.io/',
-    label: 'Optimism',
+    label: 'OP Mainnet',
   },
   REDSTONE_DOCS: {
     path: 'https://redstone.xyz/docs/what-is-redstone',

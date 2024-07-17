@@ -20,12 +20,12 @@ export const RootLayout = ({
     <html lang="en">
       <body className={inter.className}>
         <FeatureFlagProvider>
-          <PrivyProviderWrapper>
-            <ThemeProvider attribute="class" defaultTheme="system">
+          <ThemeProvider attribute="class" defaultTheme="system">
+            <PrivyProviderWrapper>
               <Header />
               {children}
-            </ThemeProvider>
-          </PrivyProviderWrapper>
+            </PrivyProviderWrapper>
+          </ThemeProvider>
         </FeatureFlagProvider>
         <Toaster />
       </body>

@@ -11,6 +11,7 @@ import { MenuButton, MobileMenu } from '@/app/components/Header/MobileMenu'
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { useTheme } from 'next-themes'
+import { useFeatureFlag } from '@/app/hooks/useFeatureFlag'
 
 const Header = () => {
   const pathname = usePathname()
@@ -41,16 +42,20 @@ const Header = () => {
 }
 
 const HeaderLogo = () => {
+  const showNewLogo = useFeatureFlag('enable_new_brand')
+  const lightLogo = showNewLogo
+    ? '/logos/new-op-superchain-logo-light.svg'
+    : '/logos/op-superchain-logo-light.svg'
+  const darkLogo = showNewLogo
+    ? '/logos/new-op-superchain-logo-dark.svg'
+    : '/logos/op-superchain-logo-dark.svg'
+
   const { resolvedTheme } = useTheme()
   const [logoSrc, setLogoSrc] = useState('')
 
   useEffect(() => {
-    setLogoSrc(
-      resolvedTheme === 'dark'
-        ? '/logos/op-superchain-logo-dark.svg'
-        : '/logos/op-superchain-logo-light.svg',
-    )
-  }, [resolvedTheme])
+    setLogoSrc(resolvedTheme === 'dark' ? darkLogo : lightLogo)
+  }, [resolvedTheme, showNewLogo])
 
   return (
     <div className="flex items-center">

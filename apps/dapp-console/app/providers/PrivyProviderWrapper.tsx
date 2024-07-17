@@ -6,12 +6,21 @@ import { useEffect, useState } from 'react'
 import { trackSuccessfulSignIn } from '@/app/event-tracking/mixpanel'
 import { externalRoutes } from '@/app/constants'
 import { setErrorReportingUser } from '@/app/helpers/errorReporting'
+import { useFeatureFlag } from '@/app/hooks/useFeatureFlag'
 
 // This is a public app_id provided in the privy docs: https://docs.privy.io/guide/quickstart
 const PRIVY_PUBLIC_APP_ID = 'clpispdty00ycl80fpueukbhl'
 
 function PrivyProviderWrapper({ children }: { children: React.ReactNode }) {
   const { theme, resolvedTheme } = useTheme()
+  const showNewLogo = useFeatureFlag('enable_new_brand')
+  const lightLogo = showNewLogo
+    ? '/logos/new-superchain-developer-logo-light.svg'
+    : '/logos/superchain-developer-logo-light.svg'
+  const darkLogo = showNewLogo
+    ? '/logos/new-superchain-developer-logo-dark.svg'
+    : '/logos/superchain-developer-logo'
+
   const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
@@ -24,9 +33,7 @@ function PrivyProviderWrapper({ children }: { children: React.ReactNode }) {
   }
 
   const logo =
-    theme === 'dark' || resolvedTheme === 'dark'
-      ? '/logos/superchain-developer-logo-dark.svg'
-      : '/logos/superchain-developer-logo-light.svg'
+    theme === 'dark' || resolvedTheme === 'dark' ? darkLogo : lightLogo
 
   const handleSuccess = (user: User, isNewUser: boolean) => {
     setErrorReportingUser(user.id)
