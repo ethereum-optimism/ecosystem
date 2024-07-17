@@ -1,7 +1,7 @@
 import '@/globals.css'
 
 import { RouterProvider, Outlet, createBrowserRouter } from 'react-router-dom'
-import { FaqPage } from './components/FaqPage'
+import { FaqPage } from '@/components/FaqPage'
 
 const classNames = {
   app: 'app w-full min-h-screen flex flex-col bg-secondary',
