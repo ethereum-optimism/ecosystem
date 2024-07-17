@@ -19,10 +19,7 @@ const router = createBrowserRouter([
   {
     path: '/',
     element: <AppRoot />,
-    children: [
-      { path: '/', element: null },
-      { path: '/faq', element: <FaqPage /> },
-    ],
+    children: [{ path: '/', element: <FaqPage /> }],
   },
 ])
 
