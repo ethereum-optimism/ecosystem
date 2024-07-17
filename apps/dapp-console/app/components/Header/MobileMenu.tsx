@@ -11,7 +11,8 @@ import {
 
 import { Text } from '@eth-optimism/ui-components/src/components/ui/text/text'
 import Image from 'next/image'
-import { docsItems, routes, supportItems } from '@/app/constants'
+import { getDocsItems, routes, supportItems } from '@/app/constants'
+import { useFeatureFlag } from '@/app/hooks/useFeatureFlag'
 
 interface MobileMenuProps {
   isOpen: boolean
@@ -19,6 +20,9 @@ interface MobileMenuProps {
 }
 
 const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, closeMenu }) => {
+  const showNewLogo = useFeatureFlag('enable_new_brand')
+  const docsItems = getDocsItems(showNewLogo)
+
   const variants = {
     open: {
       x: 0,

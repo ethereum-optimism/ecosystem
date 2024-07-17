@@ -5,7 +5,8 @@ import { Button } from '@eth-optimism/ui-components/src/components/ui/button/but
 import { Text } from '@eth-optimism/ui-components/src/components/ui/text/text'
 import { DialogHeader } from '@eth-optimism/ui-components/src/components/ui/dialog/dialog'
 import Image from 'next/image'
-import { superchainSafeNetworks } from '@/app/constants'
+import { getSuperchainSafeNetworks } from '@/app/constants'
+import { useFeatureFlag } from '@/app/hooks/useFeatureFlag'
 
 // making this temporary until we add in lisk chain
 // eslint-disable-next-line  @typescript-eslint/no-explicit-any
@@ -28,6 +29,8 @@ const renderChainButton = (item: any) => {
 
 const SuperchainSafeModalContent = () => {
   const [currentModalStep, setCurrentModalStep] = useState<0 | 1>(0)
+  const showNewLogo = useFeatureFlag('enable_new_brand')
+  const superchainSafeNetworks = getSuperchainSafeNetworks(showNewLogo)
 
   const initialStepContent = renderDialog({
     ...superchainSafeMetadata,

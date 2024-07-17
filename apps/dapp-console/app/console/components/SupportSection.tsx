@@ -1,9 +1,10 @@
 'use client'
 
 import { Tile } from '@/app/components/Tile/Tile'
-import { docsItems, externalRoutes } from '@/app/constants'
+import { getDocsItems, externalRoutes } from '@/app/constants'
 import { trackCardClick } from '@/app/event-tracking/mixpanel'
 import { openWindow } from '@/app/helpers'
+import { useFeatureFlag } from '@/app/hooks/useFeatureFlag'
 import { FarcasterIcon } from '@/app/icons/FarcasterIcon'
 import { Button } from '@eth-optimism/ui-components/src/components/ui/button/button'
 import {
@@ -17,6 +18,9 @@ import { RiDiscordFill, RiGitForkFill, RiGithubFill } from '@remixicon/react'
 import Image from 'next/image'
 
 const SupportSection = () => {
+  const showNewLogo = useFeatureFlag('enable_new_brand')
+  const docsItems = getDocsItems(showNewLogo)
+
   return (
     <div>
       <Text as="h3" className="text-2xl font-semibold mb-4">
