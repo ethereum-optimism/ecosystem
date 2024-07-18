@@ -11,7 +11,11 @@ const FaqPage = () => {
   return (
     <div>
       <div className="p-6">
-        <img src={'/logo.svg'} alt="FAQ" className="h-4" />
+        <img
+          src="https://kyc-optimism-io-faq.netlify.app/logo.svg"
+          alt="FAQ"
+          className="h-4"
+        />
       </div>
       <div className="flex flex-col w-full items-center px-4 pb-10">
         <h1 className="text-4xl font-bold text-foreground mb-2">KYC FAQ</h1>
