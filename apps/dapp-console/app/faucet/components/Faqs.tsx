@@ -59,7 +59,8 @@ const accordionItems = [
         </Text>
         <Text as="p">
           <b>Gitcoin Passport</b> is an identity verification application. It
-          helps you collect “stamps” that prove your humanity and reputation.
+          helps you collect “stamps” that prove your humanity and reputation. Please note, 
+          the faucet requires a passport score > 25.
         </Text>
         <Text as="p">
           An <b>Ethereum attestation</b> is a digital record that is
