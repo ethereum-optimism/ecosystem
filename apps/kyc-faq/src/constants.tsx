@@ -1,4 +1,4 @@
-export const SUPPORT_URL = 'compliance@optimism.io'
+export const SUPPORT_URL = 'mailto:compliance@optimism.io'
 
 const kycFormLink = (
   <a
