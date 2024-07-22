@@ -18,6 +18,8 @@ export const useL2PublicClient: UseL2PublicClientReturnType = ({
   type,
 }: UseL2PublicClientArgs) => {
   const { networkPair } = useOPNetwork({ type, chainId })
-  const l2PublicClient = usePublicClient({ chainId: networkPair?.l2.id })
+  const l2PublicClient = usePublicClient({
+    chainId: networkPair?.l2.id,
+  }) as PublicClient
   return { l2PublicClient }
 }

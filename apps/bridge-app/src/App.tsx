@@ -8,7 +8,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { http, WagmiProvider } from 'wagmi'
 import { getDefaultConfig, RainbowKitProvider } from '@rainbow-me/rainbowkit'
 
-import type { Transport } from 'viem'
+import type { Chain, Transport } from 'viem'
 import { configureOpChains } from '@eth-optimism/op-app'
 
 import { Bridge } from '@/routes'
@@ -33,7 +33,10 @@ type ProviderProps = {
 
 const queryClient = new QueryClient()
 
-const opChains = configureOpChains({ type: NETWORK_TYPE })
+const opChains = configureOpChains({ type: NETWORK_TYPE }) as [
+  Chain,
+  ...[Chain],
+]
 
 if (import.meta.env.VITE_DEPLOYMENT_ENV === 'local') {
   opChains.push(foundry)

@@ -30,8 +30,8 @@
     "react-router-dom": "^6.20.1",
     "tailwind-merge": "^2.1.0",
     "tailwindcss-animate": "^1.0.7",
-    "viem": "2.0.3",
-    "wagmi": "2.0.3"
+    "viem": "2.17.9",
+    "wagmi": "2.11.3"
   },
   "devDependencies": {
     "@types/react": "^18.2.37",

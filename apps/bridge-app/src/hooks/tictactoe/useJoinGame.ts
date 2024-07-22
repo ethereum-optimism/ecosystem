@@ -21,8 +21,11 @@ export const useJoinGame = () => {
         args: [address as Address, BigInt(gameId)],
       })
 
-      const receipt = await publicClient.waitForTransactionReceipt({ hash })
-      const logs = parseEventLogs({ abi: ticTacToeABI, logs: receipt.logs })
+      const receipt = await publicClient?.waitForTransactionReceipt({ hash })
+      const logs = parseEventLogs({
+        abi: ticTacToeABI,
+        logs: receipt?.logs ?? [],
+      })
 
       return { hash, logs }
     },

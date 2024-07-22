@@ -20,8 +20,11 @@ export const useCreateGame = () => {
       args: [address as Address],
     })
 
-    const receipt = await publicClient.waitForTransactionReceipt({ hash })
-    const logs = parseEventLogs({ abi: ticTacToeABI, logs: receipt.logs })
+    const receipt = await publicClient?.waitForTransactionReceipt({ hash })
+    const logs = parseEventLogs({
+      abi: ticTacToeABI,
+      logs: receipt?.logs ?? [],
+    })
     const gameCreatedEvent = logs.find((log) => log.eventName === 'GameCreated')
     const gameId = gameCreatedEvent
       ? Number(gameCreatedEvent.args.gameId)
