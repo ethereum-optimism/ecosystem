@@ -103,7 +103,9 @@ const ReviewDepositDialogContent = ({
         !txData.isETH && (allowance.data ?? 0n) < txData.amount
       if (shouldApprove) {
         const approvalTxHash = await approve()
-        await l1PublicClient.waitForTransactionReceipt({ hash: approvalTxHash })
+        await l1PublicClient?.waitForTransactionReceipt({
+          hash: approvalTxHash,
+        })
       }
 
       await writeDepositERC20Async({

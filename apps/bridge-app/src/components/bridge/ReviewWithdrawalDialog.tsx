@@ -98,7 +98,9 @@ const ReviewWithdrawalDialogContent = ({
         !txData.isETH && (allowance.data ?? 0n) < txData.amount
       if (shouldApprove) {
         const approvalTxHash = await approve()
-        await l2PublicClient.waitForTransactionReceipt({ hash: approvalTxHash })
+        await l2PublicClient?.waitForTransactionReceipt({
+          hash: approvalTxHash,
+        })
       }
 
       await writeWithdrawERC20Async({
