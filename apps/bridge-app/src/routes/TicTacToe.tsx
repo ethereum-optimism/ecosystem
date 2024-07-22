@@ -1,16 +1,13 @@
 import { CreateGameDialog } from '@/components/tictactoe/CreateGameDialog'
 import { Game } from '@/components/tictactoe/Game'
 import { JoinGameDialog } from '@/components/tictactoe/JoinGameDialog'
+import { anvil1, anvil2 } from '@/constants/chains'
 import { SupportedNetworks } from '@/providers/SupportedNetworks'
 import { Text } from '@eth-optimism/ui-components'
 import { useParams } from 'react-router'
-import { optimismSepolia, foundry, Chain } from 'viem/chains'
+import { Chain } from 'viem/chains'
 
-const supportedChains: Chain[] = [optimismSepolia]
-
-if (import.meta.env.VITE_DEPLOYMENT_ENV === 'local') {
-  supportedChains.push(foundry)
-}
+const supportedChains: Chain[] = [anvil1, anvil2]
 
 export const TicTacToe = () => {
   const params = useParams()

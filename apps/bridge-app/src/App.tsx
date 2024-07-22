@@ -8,7 +8,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { http, WagmiProvider } from 'wagmi'
 import { getDefaultConfig, RainbowKitProvider } from '@rainbow-me/rainbowkit'
 
-import type { Transport } from 'viem'
+import type { Chain, Transport } from 'viem'
 import { configureOpChains } from '@eth-optimism/op-app'
 
 import { Bridge } from '@/routes'
@@ -20,8 +20,9 @@ import { NETWORK_TYPE } from '@/constants/networkType'
 import { TicTacToe } from '@/routes/TicTacToe'
 import { Home } from '@/routes/Home'
 import { Playground } from '@/routes/Playground'
-import { foundry } from 'viem/chains'
 import { Toaster } from '@eth-optimism/ui-components'
+import { anvil1, anvil2 } from './constants/chains'
+import { mainnet } from 'viem/chains'
 
 const classNames = {
   app: 'app w-full min-h-screen flex flex-col',
@@ -33,11 +34,7 @@ type ProviderProps = {
 
 const queryClient = new QueryClient()
 
-const opChains = configureOpChains({ type: NETWORK_TYPE })
-
-if (import.meta.env.VITE_DEPLOYMENT_ENV === 'local') {
-  opChains.push(foundry)
-}
+const opChains = [mainnet, ...[anvil1, anvil2]] as [Chain, ...Chain[]]
 
 const wagmiConfig = getDefaultConfig({
   appName: 'Example OP Stack Bridge',

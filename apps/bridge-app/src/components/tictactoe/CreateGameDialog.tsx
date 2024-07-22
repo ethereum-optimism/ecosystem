@@ -17,10 +17,14 @@ export const CreateGameDialog = () => {
   const { createGame, isPending } = useCreateGame()
 
   const handleCreateGame = useCallback(async () => {
-    const { gameId } = await createGame()
+    try {
+      const { gameId } = await createGame()
 
-    if (gameId) {
-      navigate(`/tictactoe/${gameId}`)
+      if (gameId) {
+        navigate(`/tictactoe/${gameId}`)
+      }
+    } catch (e) {
+      console.log(e)
     }
   }, [navigate])
 
