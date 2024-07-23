@@ -9,5 +9,5 @@ export default defineConfig({
   },
   test: {
     testTimeout: 20_000,
-  }
+  },
 })
