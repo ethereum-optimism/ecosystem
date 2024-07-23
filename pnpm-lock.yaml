@@ -1396,6 +1396,21 @@ importers:
         specifier: ^5.0.13
         version: 5.2.9(@types/node@20.12.7)(terser@5.31.3)
 
+  packages/viem:
+    devDependencies:
+      resolve-tspaths:
+        specifier: ^0.8.18
+        version: 0.8.18(typescript@5.4.5)
+      tsup:
+        specifier: ^8.0.1
+        version: 8.0.2(postcss@8.4.38)(ts-node@10.9.2(@types/node@20.14.11)(typescript@5.4.5))(typescript@5.4.5)
+      typescript:
+        specifier: ^5.2.2
+        version: 5.4.5
+      vitest:
+        specifier: ^1.6.0
+        version: 1.6.0(@types/node@20.14.11)(jsdom@23.2.0(bufferutil@4.0.8)(utf-8-validate@6.0.3))(terser@5.31.3)
+
 packages:
 
   '@aashutoshrathi/word-wrap@1.2.6':
@@ -18028,7 +18043,7 @@ snapshots:
       change-case: 4.1.2
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
-      viem: 2.17.9(bufferutil@4.0.8)(typescript@5.4.5)(utf-8-validate@6.0.3)(zod@3.22.4)
+      viem: 2.9.21(bufferutil@4.0.8)(typescript@5.4.5)(utf-8-validate@6.0.3)(zod@3.22.4)
     optionalDependencies:
       '@wagmi/core': 2.12.2(@tanstack/query-core@5.29.0)(@types/react@18.2.79)(immer@10.0.4)(react@18.2.0)(typescript@5.4.5)(viem@2.17.9(bufferutil@4.0.8)(typescript@5.4.5)(utf-8-validate@6.0.3)(zod@3.22.4))
       wagmi: 2.11.3(@react-native-async-storage/async-storage@1.23.1(react-native@0.73.6(@babel/core@7.24.4)(@babel/preset-env@7.24.4(@babel/core@7.24.4))(bufferutil@4.0.8)(encoding@0.1.13)(react@18.2.0)(utf-8-validate@6.0.3)))(@tanstack/query-core@5.29.0)(@tanstack/react-query@5.29.2(react@18.2.0))(@types/react@18.2.79)(bufferutil@4.0.8)(encoding@0.1.13)(esbuild@0.19.12)(immer@10.0.4)(ioredis@5.4.1)(react-dom@18.2.0(react@18.2.0))(react-native@0.73.6(@babel/core@7.24.4)(@babel/preset-env@7.24.4(@babel/core@7.24.4))(bufferutil@4.0.8)(encoding@0.1.13)(react@18.2.0)(utf-8-validate@6.0.3))(react@18.2.0)(rollup@4.14.3)(typescript@5.4.5)(utf-8-validate@6.0.3)(viem@2.17.9(bufferutil@4.0.8)(typescript@5.4.5)(utf-8-validate@6.0.3)(zod@3.22.4))(zod@3.22.4)
@@ -18193,7 +18208,7 @@ snapshots:
       '@ethereumjs/block': 3.6.3
       '@ethereumjs/common': 2.6.5
       '@ethereumjs/ethash': 1.1.0
-      debug: 4.3.4(supports-color@8.1.1)
+      debug: 4.3.5
       ethereumjs-util: 7.1.5
       level-mem: 5.0.1
       lru-cache: 5.1.1
@@ -18808,7 +18823,7 @@ snapshots:
       jest-haste-map: 29.7.0
       jest-regex-util: 29.6.3
       jest-util: 29.7.0
-      micromatch: 4.0.5
+      micromatch: 4.0.7
       pirates: 4.0.6
       slash: 3.0.0
       write-file-atomic: 4.0.2
@@ -19333,7 +19348,7 @@ snapshots:
       '@noble/hashes': 1.4.0
       '@scure/base': 1.1.7
       '@types/debug': 4.1.12
-      debug: 4.3.4(supports-color@8.1.1)
+      debug: 4.3.5
       pony-cause: 2.1.11
       semver: 7.6.2
       superstruct: 1.0.4
@@ -19959,7 +19974,7 @@ snapshots:
   '@parcel/watcher-wasm@2.4.1':
     dependencies:
       is-glob: 4.0.3
-      micromatch: 4.0.5
+      micromatch: 4.0.7
 
   '@parcel/watcher-win32-arm64@2.4.1':
     optional: true
@@ -19974,7 +19989,7 @@ snapshots:
     dependencies:
       detect-libc: 1.0.3
       is-glob: 4.0.3
-      micromatch: 4.0.5
+      micromatch: 4.0.7
       node-addon-api: 7.1.0
     optionalDependencies:
       '@parcel/watcher-android-arm64': 2.4.1
@@ -26833,7 +26848,7 @@ snapshots:
   engine.io-client@6.5.3(bufferutil@4.0.8)(utf-8-validate@6.0.3):
     dependencies:
       '@socket.io/component-emitter': 3.1.1
-      debug: 4.3.4(supports-color@8.1.1)
+      debug: 4.3.5
       engine.io-parser: 5.2.2
       ws: 8.11.0(bufferutil@4.0.8)(utf-8-validate@6.0.3)
       xmlhttprequest-ssl: 2.0.0
@@ -27954,7 +27969,7 @@ snapshots:
       '@nodelib/fs.walk': 1.2.8
       glob-parent: 5.1.2
       merge2: 1.4.1
-      micromatch: 4.0.5
+      micromatch: 4.0.7
 
   fast-glob@3.3.2:
     dependencies:
@@ -28107,7 +28122,7 @@ snapshots:
 
   find-yarn-workspace-root2@1.2.16:
     dependencies:
-      micromatch: 4.0.5
+      micromatch: 4.0.7
       pkg-dir: 4.2.0
 
   flat-cache@3.2.0:
@@ -29406,7 +29421,7 @@ snapshots:
       jest-regex-util: 29.6.3
       jest-util: 29.7.0
       jest-worker: 29.7.0
-      micromatch: 4.0.5
+      micromatch: 4.0.7
       walker: 1.0.8
     optionalDependencies:
       fsevents: 2.3.3
@@ -29430,7 +29445,7 @@ snapshots:
       '@types/stack-utils': 2.0.3
       chalk: 4.1.2
       graceful-fs: 4.2.11
-      micromatch: 4.0.5
+      micromatch: 4.0.7
       pretty-format: 29.7.0
       slash: 3.0.0
       stack-utils: 2.0.6
@@ -29634,7 +29649,7 @@ snapshots:
       '@babel/register': 7.24.6(@babel/core@7.24.9)
       babel-core: 7.0.0-bridge.0(@babel/core@7.24.9)
       chalk: 4.1.2
-      flow-parser: 0.206.0
+      flow-parser: 0.234.0
       graceful-fs: 4.2.11
       micromatch: 4.0.7
       neo-async: 2.6.2
@@ -29659,7 +29674,7 @@ snapshots:
       '@babel/register': 7.24.6(@babel/core@7.24.9)
       babel-core: 7.0.0-bridge.0(@babel/core@7.24.9)
       chalk: 4.1.2
-      flow-parser: 0.206.0
+      flow-parser: 0.234.0
       graceful-fs: 4.2.11
       micromatch: 4.0.7
       neo-async: 2.6.2
@@ -29687,7 +29702,7 @@ snapshots:
       chalk: 4.1.2
       flow-parser: 0.234.0
       graceful-fs: 4.2.11
-      micromatch: 4.0.5
+      micromatch: 4.0.7
       neo-async: 2.6.2
       node-dir: 0.1.17
       recast: 0.23.6
@@ -31529,7 +31544,7 @@ snapshots:
   postcss-load-config@4.0.2(postcss@8.4.38)(ts-node@10.9.2(@types/node@20.14.11)(typescript@5.4.5)):
     dependencies:
       lilconfig: 3.1.1
-      yaml: 2.4.1
+      yaml: 2.4.5
     optionalDependencies:
       postcss: 8.4.38
       ts-node: 10.9.2(@types/node@20.14.11)(typescript@5.4.5)
@@ -33733,7 +33748,7 @@ snapshots:
       bundle-require: 4.0.2(esbuild@0.19.12)
       cac: 6.7.14
       chokidar: 3.6.0
-      debug: 4.3.4(supports-color@8.1.1)
+      debug: 4.3.5
       esbuild: 0.19.12
       execa: 5.1.1
       globby: 11.1.0
@@ -34217,9 +34232,9 @@ snapshots:
   vite-node@1.6.0(@types/node@20.14.11)(terser@5.31.3):
     dependencies:
       cac: 6.7.14
-      debug: 4.3.4(supports-color@8.1.1)
+      debug: 4.3.5
       pathe: 1.1.2
-      picocolors: 1.0.0
+      picocolors: 1.0.1
       vite: 5.2.9(@types/node@20.14.11)(terser@5.31.3)
     transitivePeerDependencies:
       - '@types/node'
@@ -34315,12 +34330,12 @@ snapshots:
       '@vitest/utils': 1.6.0
       acorn-walk: 8.3.2
       chai: 4.4.1
-      debug: 4.3.4(supports-color@8.1.1)
+      debug: 4.3.5
       execa: 8.0.1
       local-pkg: 0.5.0
       magic-string: 0.30.10
       pathe: 1.1.2
-      picocolors: 1.0.0
+      picocolors: 1.0.1
       std-env: 3.7.0
       strip-literal: 2.1.0
       tinybench: 2.7.0
