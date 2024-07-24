@@ -1,7 +1,6 @@
 {
   "name": "@eth-optimism/viem",
   "private": true,
-  "module": "",
   "version": "0.0.0",
   "main": "build/index.js",
   "types": "types/index.d.ts",
