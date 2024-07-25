@@ -12,6 +12,8 @@
       "strict": true,
       "composite": true,
       "outDir": "types",
+      "moduleResolution": "NodeNext",
+      "module": "NodeNext",
       "emitDeclarationOnly": true
     }
   }
