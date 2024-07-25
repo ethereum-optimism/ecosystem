@@ -163,8 +163,13 @@ export class Faucet {
       userId,
       domain,
     )
+    const { maxPriorityFeePerGas } =
+      await this.publicClient.estimateFeesPerGas()
     return this._faucetContract.write.drip([dripParams, authParams], {
       gas: BigInt(DRIP_MIN_GAS_LIMIT),
+      maxPriorityFeePerGas:
+        maxPriorityFeePerGas &&
+        (maxPriorityFeePerGas * BigInt(150)) / BigInt(100),
     })
   }
 
