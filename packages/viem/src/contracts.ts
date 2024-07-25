@@ -1,7 +1,7 @@
-import { contracts as existingContracts } from 'viem/op-stack/contracts'
+import { chainConfig } from 'viem/op-stack'
 
 export const contracts = {
-  ...existingContracts,
+  ...chainConfig.contracts,
   l1BlockInterop: {
     address: '0x4200000000000000000000000000000000000015',
   },
