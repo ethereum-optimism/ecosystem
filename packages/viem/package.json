@@ -6,7 +6,7 @@
   "main": "build/index.js",
   "types": "types/index.d.ts",
   "scripts": {
-    "test": "vitest --passWithNoTests",
+    "test": "vitest",
     "clean": "rm -rf build types tsconfig.tsbuildinfo",
     "typecheck": "tsc --noEmit --emitDeclarationOnly false",
     "typecheck:ci": "tsc --noEmit --emitDeclarationOnly false",
@@ -25,5 +25,8 @@
   },
   "peerDependencies": {
     "viem": "^2.17.9"
+  },
+  "dependencies": {
+    "@viem/anvil": "^0.0.7"
   }
 }
