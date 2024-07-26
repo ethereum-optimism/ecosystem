@@ -16,14 +16,7 @@ module.exports = {
   
       // START TYPESCRIPT RULES
       '@typescript-eslint/member-ordering': 'warn',
-      "@typescript-eslint/no-unused-vars": [
-        "error",
-        {
-          "argsIgnorePattern": "^_",
-          "varsIgnorePattern": "^_",
-          "caughtErrorsIgnorePattern": "^_"
-        }
-      ],
+      '@typescript-eslint/no-unused-vars': 'error',
       '@typescript-eslint/ban-ts-comment': [
         'error',
         {
