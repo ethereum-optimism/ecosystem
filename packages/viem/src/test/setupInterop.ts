@@ -1,8 +1,8 @@
 import { encodePacked, keccak256, toHex } from 'viem'
 import { base } from 'viem/chains'
 
-import { contracts } from '@/contracts'
-import { testClient } from '@/test/clients'
+import { contracts } from '@/contracts.js'
+import { testClient } from '@/test/clients.js'
 
 export async function setupL2ToL2CrossDomainMessenger() {
   await testClient.setCode({

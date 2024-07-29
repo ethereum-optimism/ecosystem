@@ -5,7 +5,8 @@ import {
   setupCrossL2Inbox,
   setupL1BlockInterop,
   setupL2ToL2CrossDomainMessenger,
-} from './setupInterop'
+} from './setupInterop.js'
+import { setupTicTacToe } from './setupTicTacToe.js'
 
 async function main() {
   const shutdown = await startProxy({
@@ -18,6 +19,7 @@ async function main() {
   await setupL1BlockInterop()
   await setupCrossL2Inbox()
   await setupL2ToL2CrossDomainMessenger()
+  await setupTicTacToe()
 
   return () => {
     shutdown()

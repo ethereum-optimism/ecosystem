@@ -14,13 +14,13 @@ import type {
 } from 'viem'
 import { estimateContractGas } from 'viem/actions'
 
-import { l2ToL2CrossDomainMessengerABI } from '@/abis'
-import { contracts } from '@/contracts'
+import { l2ToL2CrossDomainMessengerABI } from '@/abis.js'
+import { contracts } from '@/contracts.js'
 import type {
   ErrorType,
   GetAccountParameter,
   UnionEvaluate,
-} from '@/types/utils'
+} from '@/types/utils.js'
 
 export type EstimateSendL2ToL2MessageGasParameters<
   chain extends Chain | undefined = Chain | undefined,

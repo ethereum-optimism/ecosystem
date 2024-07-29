@@ -11,7 +11,7 @@ import type {
 } from 'viem'
 import { parseAccount } from 'viem/accounts'
 
-import type { GetAccountParameter, Prettify } from '@/types/utils'
+import type { GetAccountParameter, Prettify } from '@/types/utils.js'
 
 export type BuildSendL2ToL2MessageParameters<
   chain extends Chain | undefined = Chain | undefined,

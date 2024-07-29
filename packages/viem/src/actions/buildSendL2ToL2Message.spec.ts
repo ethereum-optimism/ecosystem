@@ -2,8 +2,8 @@ import { toHex } from 'viem'
 import { base, optimism } from 'viem/chains'
 import { describe, expect, it } from 'vitest'
 
-import { buildSendL2ToL2Message } from '@/actions/buildSendL2ToL2Message'
-import { publicClient } from '@/test/clients'
+import { buildSendL2ToL2Message } from '@/actions/buildSendL2ToL2Message.js'
+import { publicClient } from '@/test/clients.js'
 
 describe('buildSendL2ToL2Message', () => {
   const expectedChainId = base.id
