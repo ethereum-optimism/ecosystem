@@ -27,11 +27,17 @@ import { createApiQueue } from '@/api-queue/createApiQueue'
 import { ApiV0, Middleware } from './api'
 import { AdminApi } from './api/AdminApi'
 import { ensureAdmin } from './auth'
-import { corsAllowlist, envVars } from './constants'
+import {
+  corsAllowlist,
+  envVars,
+  sepoliaAdminWalletClient,
+  sepoliaPublicClient,
+} from './constants'
 import { connectToDatabase, runMigrations } from './db'
 import { GrowthbookStore } from './growthbook/GrowthbookStore'
 import { getRateLimiter } from './middleware/getRateLimiter'
 import { metrics } from './monitoring/metrics'
+import { FaucetAdminRoute } from './routes/admin'
 import { AppsRoute } from './routes/apps'
 import { AuthRoute } from './routes/auth'
 import { ContractsRoute } from './routes/contracts'
@@ -181,6 +187,11 @@ export class Service {
       getSupportedFaucets(gatewayRedisCache),
       redisCache,
     )
+    const faucetAdminRoute = new FaucetAdminRoute(
+      trpc,
+      sepoliaPublicClient,
+      sepoliaAdminWalletClient,
+    )
 
     /**
      * The apiServer simply assmbles the routes into a TRPC Server
@@ -195,7 +206,9 @@ export class Service {
     })
     apiServer.setLoggingServer(logger)
 
-    const adminServer = new AdminApi(trpc, {})
+    const adminServer = new AdminApi(trpc, {
+      faucetAdmin: faucetAdminRoute,
+    })
     adminServer.setLoggingServer(logger)
 
     const apiQueue = createApiQueue()
