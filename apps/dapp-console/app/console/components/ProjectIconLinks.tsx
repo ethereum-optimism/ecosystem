@@ -18,55 +18,60 @@ import {
 } from '@eth-optimism/ui-components/src/components/ui/dialog/dialog'
 import { Button } from '@eth-optimism/ui-components/src/components/ui/button/button'
 import { Text } from '@eth-optimism/ui-components/src/components/ui/text/text'
+import { useFeatureFlag } from '@/app/hooks/useFeatureFlag'
 
 const joinedDescription = (joined: string) => {
   return `Joined the Superchain on ${joined}.`
 }
 
-const linkItems = [
-  {
-    ...externalRoutes.ETH_DOCS,
-    logo: '/logos/eth-logo.png',
-    description: 'The Superchain is scaling Ethereum',
-  },
-  {
-    ...externalRoutes.BASE_DOCS,
-    logo: '/logos/base-logo.png',
-    description: joinedDescription('Feb 23, 2023'),
-  },
-  {
-    ...externalRoutes.FRAX_DOCS,
-    logo: '/logos/frax-logo.png',
-    description: joinedDescription('Feb 7, 2024'),
-  },
-  {
-    ...externalRoutes.LISK_DOCS,
-    logo: '/logos/lisk-logo.png',
-    description: joinedDescription('Dec 19, 2023'),
-  },
-  {
-    ...externalRoutes.MODE_DOCS,
-    logo: '/logos/mode-logo.png',
-    description: joinedDescription('Jan 23, 2024'),
-  },
-  {
-    ...externalRoutes.OPTIMISM_DOCS,
-    logo: '/logos/op-logo.svg',
-    description: joinedDescription('Feb 23, 2023'),
-  },
-  {
-    ...externalRoutes.REDSTONE_DOCS,
-    logo: '/logos/redstone-logo.png',
-    description: joinedDescription('Nov 15, 2023'),
-  },
-  {
-    ...externalRoutes.ZORA_DOCS,
-    logo: '/logos/zora-logo.png',
-    description: joinedDescription('June 21, 2023'),
-  },
-]
-
 const ProjectIconLinks = () => {
+  const showNewLogo = useFeatureFlag('enable_new_brand')
+
+  const linkItems = [
+    {
+      ...externalRoutes.ETH_DOCS,
+      logo: '/logos/eth-logo.png',
+      description: 'The Superchain is scaling Ethereum',
+    },
+    {
+      ...externalRoutes.BASE_DOCS,
+      logo: '/logos/base-logo.png',
+      description: joinedDescription('Feb 23, 2023'),
+    },
+    {
+      ...externalRoutes.FRAX_DOCS,
+      logo: '/logos/frax-logo.png',
+      description: joinedDescription('Feb 7, 2024'),
+    },
+    {
+      ...externalRoutes.LISK_DOCS,
+      logo: '/logos/lisk-logo.png',
+      description: joinedDescription('Dec 19, 2023'),
+    },
+    {
+      ...externalRoutes.MODE_DOCS,
+      logo: '/logos/mode-logo.png',
+      description: joinedDescription('Jan 23, 2024'),
+    },
+    {
+      ...externalRoutes.OPTIMISM_DOCS,
+      logo: showNewLogo
+        ? '/logos/new-op-mainnet-logo.svg'
+        : '/logos/op-logo.svg',
+      description: joinedDescription('Feb 23, 2023'),
+    },
+    {
+      ...externalRoutes.REDSTONE_DOCS,
+      logo: '/logos/redstone-logo.png',
+      description: joinedDescription('Nov 15, 2023'),
+    },
+    {
+      ...externalRoutes.ZORA_DOCS,
+      logo: '/logos/zora-logo.png',
+      description: joinedDescription('June 21, 2023'),
+    },
+  ]
+
   return (
     <div className="flex items-center relative">
       {linkItems.map((item, index) => {

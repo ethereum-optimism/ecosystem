@@ -6,7 +6,7 @@ import {
   zoraSepolia,
 } from 'viem/chains'
 
-export const faucetNetworks = [
+export const getFaucetNetworks = (showNewLogo: boolean) => [
   {
     label: 'Base Sepolia',
     image: '/logos/base-logo.png',
@@ -29,7 +29,9 @@ export const faucetNetworks = [
   },
   {
     label: 'OP Sepolia',
-    image: '/logos/op-logo.svg',
+    image: showNewLogo
+      ? '/logos/new-op-mainnet-logo.svg'
+      : '/logos/op-logo.svg',
     chainID: optimismSepolia.id,
   },
   {

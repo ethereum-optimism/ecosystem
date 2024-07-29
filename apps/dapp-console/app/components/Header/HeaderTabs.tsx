@@ -1,4 +1,4 @@
-import { docsItems, routes, supportItems } from '@/app/constants'
+import { getDocsItems, routes, supportItems } from '@/app/constants'
 import { cn } from '@/app/lib/utils'
 import Link from 'next/link'
 import { Text } from '@eth-optimism/ui-components/src/components/ui/text/text'
@@ -18,6 +18,7 @@ import {
   trackSupportDocsClick,
   trackTopBarClick,
 } from '@/app/event-tracking/mixpanel'
+import { useFeatureFlag } from '@/app/hooks/useFeatureFlag'
 
 type HeaderTabsProps = {
   currentRoute: string
@@ -76,6 +77,8 @@ const HeaderTabItem = ({
 
 const SupportDropdownMenu = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
+  const showNewLogo = useFeatureFlag('enable_new_brand')
+  const docsItems = getDocsItems(showNewLogo)
 
   const dropdownLabelClasses = 'text-xs text-muted-foreground uppercase'
   const dropdownItemClasses =

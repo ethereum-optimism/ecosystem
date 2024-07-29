@@ -69,7 +69,7 @@ export const externalRoutes: Routes = {
   },
   OPTIMISM_DOCS: {
     path: 'https://docs.optimism.io/',
-    label: 'Optimism',
+    label: 'OP Mainnet',
   },
   REDSTONE_DOCS: {
     path: 'https://redstone.xyz/docs/what-is-redstone',
@@ -189,7 +189,7 @@ export const supportItems = [
   externalRoutes.DAPP_EXAMPLES,
 ]
 
-export const docsItems = [
+export const getDocsItems = (showNewLogo: boolean) => [
   {
     ...externalRoutes.ETH_DOCS,
     logo: '/logos/eth-logo.png',
@@ -212,7 +212,9 @@ export const docsItems = [
   },
   {
     ...externalRoutes.OPTIMISM_DOCS,
-    logo: '/logos/opmainnet-logo.png',
+    logo: showNewLogo
+      ? '/logos/new-op-mainnet-logo.svg'
+      : '/logos/opmainnet-logo.png',
   },
   {
     ...externalRoutes.REDSTONE_DOCS,
@@ -224,7 +226,7 @@ export const docsItems = [
   },
 ]
 
-export const superchainSafeNetworks = [
+export const getSuperchainSafeNetworks = (showNewLogo: boolean) => [
   {
     label: 'Base',
     path: 'https://app.safe.global/welcome/accounts?chain=base',
@@ -248,12 +250,12 @@ export const superchainSafeNetworks = [
   {
     label: 'OP Mainnet',
     path: 'https://app.safe.global/welcome/accounts?chain=oeth',
-    logo: '/logos/op-logo.svg',
+    logo: showNewLogo ? '/logos/new-op-mainnet-logo.svg' : '/logos/op-logo.svg',
   },
   {
     label: 'OP Sepolia',
     path: 'https://safe.optimism.io/welcome?chain=opsep',
-    logo: '/logos/op-logo.svg',
+    logo: showNewLogo ? '/logos/new-op-mainnet-logo.svg' : '/logos/op-logo.svg',
   },
   {
     label: 'Zora',

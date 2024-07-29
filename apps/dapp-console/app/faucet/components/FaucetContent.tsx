@@ -18,7 +18,7 @@ import {
 import { SuccessDialog } from '@/app/faucet/components/SuccessDialog'
 import { useConnectedWallet } from '@/app/hooks/useConnectedWallet'
 import { generateClaimSignature } from '@/app/faucet/helpers'
-import { faucetNetworks } from '@/app/constants/faucet'
+import { getFaucetNetworks } from '@/app/constants/faucet'
 import { usePrivy } from '@privy-io/react-auth'
 import { ClaimButton } from '@/app/faucet/components/ClaimButton'
 import { useFaucetVerifications } from '@/app/hooks/useFaucetVerifications'
@@ -26,6 +26,7 @@ import { Alert } from '@eth-optimism/ui-components/src/components/ui/alert/alert
 import { AlertTitle } from '@eth-optimism/ui-components'
 import { RiTimeLine } from '@remixicon/react'
 import { useFaucetNetworks } from '@/app/hooks/useFaucetNetworks'
+import { useFeatureFlag } from '@/app/hooks/useFeatureFlag'
 
 const FaucetContent = () => {
   const { connectedWallet } = useConnectedWallet()
@@ -36,6 +37,10 @@ const FaucetContent = () => {
   const { unavailableNetworksChainIds } = useFaucetNetworks()
 
   const [address, setAddress] = useState('')
+
+  const showNewLogo = useFeatureFlag('enable_new_brand')
+  const faucetNetworks = getFaucetNetworks(showNewLogo)
+
   const [selectedNetwork, setSelectedNetwork] = useState(faucetNetworks[0])
   const [countdown, setCountdown] = useState(secondsUntilNextDrip || 0)
   const [isDialogOpen, setIsDialogOpen] = useState(false)
