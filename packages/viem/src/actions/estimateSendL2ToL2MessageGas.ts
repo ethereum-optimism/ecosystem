@@ -66,7 +66,7 @@ export type EstimateSendL2ToL2MessageGasErrorType =
  * @example
  * import { createPublicClient, http, parseEther } from 'viem'
  * import { base, optimism } from 'viem/chains'
- * import { estimateSendL2ToL2MessageGas } from 'viem/op-stack'
+ * import { estimateSendL2ToL2MessageGas } from '@eth-optimism/viem'
  *
  * const client = createPublicClient({
  *   chain: optimism,

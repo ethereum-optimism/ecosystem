@@ -60,7 +60,7 @@ export type BuildSendL2ToL2MessageReturnType<
  * @example
  * import { createPublicClient, http } from 'viem'
  * import { optimism } from 'viem/chains'
- * import { buildSendL2ToL2Message } from 'viem/op-stack'
+ * import { buildSendL2ToL2Message } from '@eth-optimism/viem'
  *
  * const publicClientL2 = createPublicClient({
  *   chain: optimism,

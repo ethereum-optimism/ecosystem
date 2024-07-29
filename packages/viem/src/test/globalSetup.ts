@@ -12,6 +12,7 @@ async function main() {
   const shutdown = await startProxy({
     host: '::',
     options: {
+      forkUrl: optimism.rpcUrls.default.http[0],
       chainId: optimism.id,
     },
   })
