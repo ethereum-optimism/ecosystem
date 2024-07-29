@@ -1397,11 +1397,10 @@ importers:
         version: 5.2.9(@types/node@20.12.7)(terser@5.31.3)
 
   packages/viem:
-    dependencies:
+    devDependencies:
       '@viem/anvil':
         specifier: ^0.0.7
         version: 0.0.7(bufferutil@4.0.8)(utf-8-validate@6.0.3)
-    devDependencies:
       resolve-tspaths:
         specifier: ^0.8.18
         version: 0.8.18(typescript@5.4.5)
