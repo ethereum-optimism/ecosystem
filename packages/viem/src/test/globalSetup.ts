@@ -1,25 +1,19 @@
 import { startProxy } from '@viem/anvil'
 import { optimism } from 'viem/chains'
 
-import {
-  setupCrossL2Inbox,
-  setupL1BlockInterop,
-  setupL2ToL2CrossDomainMessenger,
-} from './setupInterop.js'
-import { setupTicTacToe } from './setupTicTacToe.js'
+import { configureDependencySet } from '@/test/setupInterop.js'
+import { setupTicTacToe } from '@/test/setupTicTacToe.js'
 
 async function main() {
   const shutdown = await startProxy({
     host: '::',
     options: {
-      forkUrl: optimism.rpcUrls.default.http[0],
+      init: './assets/l2-genesis.json',
       chainId: optimism.id,
     },
   })
 
-  await setupL1BlockInterop()
-  await setupCrossL2Inbox()
-  await setupL2ToL2CrossDomainMessenger()
+  await configureDependencySet()
   await setupTicTacToe()
 
   return () => {

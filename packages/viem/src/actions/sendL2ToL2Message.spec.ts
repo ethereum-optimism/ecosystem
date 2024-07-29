@@ -1,7 +1,8 @@
-import { encodeFunctionData } from 'viem'
+import { encodeFunctionData, parseEventLogs } from 'viem'
 import { base } from 'viem/chains'
 import { describe, expect, it } from 'vitest'
 
+import { l2ToL2CrossDomainMessengerABI } from '@/abis.js'
 import { buildSendL2ToL2Message } from '@/actions/buildSendL2ToL2Message.js'
 import { sendL2ToL2Message } from '@/actions/sendL2ToL2Message.js'
 import { publicClient, testAccount, walletClient } from '@/test/clients.js'
@@ -21,5 +22,13 @@ describe('sendL2ToL2Message', () => {
 
     const hash = await sendL2ToL2Message(walletClient, args)
     expect(hash).toBeDefined()
+
+    const receipt = await publicClient.waitForTransactionReceipt({ hash })
+    const logs = parseEventLogs({
+      abi: l2ToL2CrossDomainMessengerABI,
+      logs: receipt.logs,
+      eventName: 'SentMessage',
+    })
+    expect(logs[0].data).toBeDefined()
   })
 })
