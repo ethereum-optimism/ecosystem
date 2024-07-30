@@ -1,12 +1,12 @@
 {
   "name": "@eth-optimism/viem",
   "private": true,
-  "module": "",
+  "type": "module",
   "version": "0.0.0",
   "main": "build/index.js",
   "types": "types/index.d.ts",
   "scripts": {
-    "test": "vitest --passWithNoTests",
+    "test": "vitest",
     "clean": "rm -rf build types tsconfig.tsbuildinfo",
     "typecheck": "tsc --noEmit --emitDeclarationOnly false",
     "typecheck:ci": "tsc --noEmit --emitDeclarationOnly false",
@@ -17,6 +17,7 @@
     "lint:fix": "eslint \"**/*.{ts,tsx}\" --fix --quiet && pnpm prettier \"**/*.{ts,tsx}\" --write --loglevel=warn"
   },
   "devDependencies": {
+    "@viem/anvil": "^0.0.7",
     "resolve-tspaths": "^0.8.18",
     "tsup": "^8.0.1",
     "typescript": "^5.2.2",

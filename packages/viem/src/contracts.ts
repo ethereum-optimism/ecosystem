@@ -1,3 +1,4 @@
+import type { Chain } from 'viem'
 import { chainConfig } from 'viem/op-stack'
 
 export const contracts = {
@@ -11,4 +12,4 @@ export const contracts = {
   l2ToL2CrossDomainMessenger: {
     address: '0x4200000000000000000000000000000000000023',
   },
-}
+} as const satisfies Chain['contracts']
