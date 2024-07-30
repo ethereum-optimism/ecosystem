@@ -2,17 +2,26 @@ import { encodeFunctionData, parseEventLogs } from 'viem'
 import { base } from 'viem/chains'
 import { describe, expect, it } from 'vitest'
 
-import { l2ToL2CrossDomainMessengerABI } from '@/abis.js'
-import { buildSendL2ToL2Message } from '@/actions/buildSendL2ToL2Message.js'
-import { sendL2ToL2Message } from '@/actions/sendL2ToL2Message.js'
+import { crossL2InboxABI } from '@/abis.js'
+import { buildExecuteL2ToL2Message } from '@/actions/buildExecuteL2ToL2Message.js'
+import { executeL2ToL2Message } from '@/actions/executeL2ToL2Message.js'
 import { publicClient, testAccount, walletClient } from '@/test/clients.js'
 import { ticTacToeABI, ticTacToeAddress } from '@/test/setupTicTacToe.js'
+import type { MessageIdentifier } from '@/types/interop.js'
 
-describe('sendL2ToL2Message', () => {
+describe('executeL2ToL2Message', () => {
   it('should return expected request', async () => {
-    const args = await buildSendL2ToL2Message(publicClient, {
+    const expectedId = {
+      origin: testAccount.address,
+      blockNumber: BigInt(100),
+      logIndex: BigInt(0),
+      timestamp: BigInt(0),
+      chainId: BigInt(base.id),
+    } as MessageIdentifier
+
+    const args = await buildExecuteL2ToL2Message(publicClient, {
+      id: expectedId,
       account: testAccount.address,
-      destinationChainId: base.id,
       target: ticTacToeAddress,
       message: encodeFunctionData({
         abi: ticTacToeABI,
@@ -21,14 +30,15 @@ describe('sendL2ToL2Message', () => {
       }),
     })
 
-    const hash = await sendL2ToL2Message(walletClient, args)
+    const hash = await executeL2ToL2Message(walletClient, args)
+
     expect(hash).toBeDefined()
 
     const receipt = await publicClient.waitForTransactionReceipt({ hash })
     const logs = parseEventLogs({
-      abi: l2ToL2CrossDomainMessengerABI,
+      abi: crossL2InboxABI,
       logs: receipt.logs,
-      eventName: 'SentMessage',
+      eventName: 'ExecutingMessage',
     })
     expect(logs[0].data).toBeDefined()
   })
