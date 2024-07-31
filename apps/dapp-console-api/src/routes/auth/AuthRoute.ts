@@ -152,6 +152,8 @@ export class AuthRoute extends Route {
         gitcoinPassportAttestation.score.profileScore > 25
       ) {
         return true
+      } else {
+        return false
       }
     })
 
