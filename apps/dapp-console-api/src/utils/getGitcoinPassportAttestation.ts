@@ -46,7 +46,9 @@ const gitcoinPassportAttestationDataSchema = z
     }),
   ])
   .transform(([score, scoreId, score_decimals]) => {
-    const profileScore = score_decimals.value.value
+    const rawScore = BigInt(score.value.value.hex)
+    const decimals = BigInt(score_decimals.value.value)
+    const profileScore = Number(rawScore / 10n ** decimals)
     return {
       profileScore,
     }
