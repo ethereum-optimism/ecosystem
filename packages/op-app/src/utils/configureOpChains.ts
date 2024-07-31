@@ -1,4 +1,4 @@
-import type { Chain } from 'viem'
+import { type Chain } from 'viem'
 
 import { networkPairsByGroup } from '../configs/networkPairs'
 import type { NetworkType } from '../types'
@@ -32,8 +32,36 @@ export function configureOpChains({
     }
   }
 
-  const allOtherChains = [...l1s, ...l2s].filter(
-    (chain) => chain.id !== defaultChain.id,
-  )
-  return [defaultChain, ...allOtherChains]
+  const allOtherChains = [...l1s, ...l2s]
+    .filter((chain) => chain.id !== defaultChain.id)
+    .map((chain) => {
+      if (import.meta.env[`VITE_RPC_URL_CHAIN_${chain.id}`]) {
+        console.log('here', chain.id)
+        return {
+          ...chain,
+          rpcUrls: {
+            default: {
+              http: [import.meta.env[`VITE_RPC_URL_CHAIN_${chain.id}`]],
+            },
+          },
+        }
+      }
+      return chain
+    })
+
+  if (import.meta.env[`VITE_RPC_URL_CHAIN_${defaultChain.id}`]) {
+    console.log('here', defaultChain.id)
+    defaultChain = {
+      ...defaultChain,
+      rpcUrls: {
+        default: {
+          http: [
+            import.meta.env[`VITE_RPC_URL_CHAIN_${defaultChain.id}`] as string,
+          ],
+        },
+      },
+    }
+  }
+
+  return [defaultChain, ...allOtherChains] as [Chain, ...Chain[]]
 }
