@@ -93,7 +93,7 @@ const ReviewDepositDialogContent = ({
     if (txData.isETH) {
       await writeDepositETHAsync({
         args: {
-          to: txData.to,
+          to: address as Address,
           amount: txData.amount,
         },
         l2ChainId: l2.id,
@@ -112,7 +112,7 @@ const ReviewDepositDialogContent = ({
         args: {
           l1Token: l1Token.address as Address,
           l2Token: l2Token.address as Address,
-          to: txData.to,
+          to: address as Address,
           amount: txData.amount,
         },
         l2ChainId: l2.id,
