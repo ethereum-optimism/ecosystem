@@ -17,7 +17,6 @@ import { externalRoutes } from '@/app/constants'
 import { Banner } from '@/app/components/Banner'
 import { Metadata } from 'next'
 import { homeMetadata } from '@/app/seo'
-import { Announcements } from '@/app/console/components/Announcements'
 
 export const metadata: Metadata = homeMetadata
 
@@ -47,7 +46,6 @@ export default function Page() {
           </CardDescription>
           <div className="pt-6">
             <ProjectIconLinks />
-            <Announcements />
           </div>
         </CardHeader>
         <CardContent className="pt-0 flex flex-col gap-16 md:px-10 md:pb-10 lg:px-16 lg:pb-16">
