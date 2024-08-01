@@ -1,8 +1,6 @@
 import type {
   Account,
   Chain,
-  DeriveChain,
-  GetChainParameter,
   Hex,
   PublicClient,
   TransactionReceipt,
@@ -14,20 +12,16 @@ import { l2ToL2CrossDomainMessengerABI } from '@/abis.js'
 import type { MessageIdentifier } from '@/types/interop.js'
 import type { ErrorType } from '@/types/utils.js'
 
-export type extractMessageIdentifierFromLogsParameters<
-  chain extends Chain | undefined = Chain | undefined,
-  chainOverride extends Chain | undefined = Chain | undefined,
-  _derivedChain extends Chain | undefined = DeriveChain<chain, chainOverride>,
-> = GetChainParameter<chain, chainOverride> & {
+export type ExtractMessageIdentifierFromLogsParameters = {
   /**
    * The receipt for the sendL2ToL2Message transaction.
    */
   receipt: TransactionReceipt
 }
 
-export type extractMessageIdentifierFromLogsReturnType = MessageIdentifier
+export type ExtractMessageIdentifierFromLogsReturnType = MessageIdentifier
 
-export type extractMessageIdentifierFromLogsErrorType =
+export type ExtractMessageIdentifierFromLogsErrorType =
   | ErrorType
   | ReceiptContainsMessageIdentifierError
 
@@ -50,25 +44,24 @@ export class ReceiptContainsMessageIdentifierError extends BaseError {
  * @example
  * import { createPublicClient, http } from 'viem'
  * import { mainnet, optimism } from 'viem/chains'
- * import { getMessageIdentifie } from 'viem/op-stack'
+ * import { extractMessageIdentifierFromLogs } from 'viem/op-stack'
  *
  * const publicClientL1 = createPublicClient({
  *   chain: mainnet,
  *   transport: http(),
  * })
  *
- * const game = await extractMessageIdentifierFromLogs(publicClientL1, {
+ * const id = await extractMessageIdentifierFromLogs(publicClientL1, {
  *   receipt: ...
  * })
  */
 export async function extractMessageIdentifierFromLogs<
   chain extends Chain | undefined,
   account extends Account | undefined,
-  chainOverride extends Chain | undefined = undefined,
 >(
   client: PublicClient<Transport, chain, account>,
-  parameters: extractMessageIdentifierFromLogsParameters<chain, chainOverride>,
-): Promise<extractMessageIdentifierFromLogsReturnType> {
+  parameters: ExtractMessageIdentifierFromLogsParameters,
+): Promise<ExtractMessageIdentifierFromLogsReturnType> {
   const { receipt } = parameters
 
   const sentMessageLogs = parseEventLogs({
