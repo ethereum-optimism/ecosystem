@@ -2,7 +2,6 @@ import { encodeFunctionData } from 'viem'
 import { base } from 'viem/chains'
 import { describe, expect, it } from 'vitest'
 
-import { estimateSendL2ToL2MessageGas } from '@/actions/estimateSendL2ToL2MessageGas.js'
 import { publicClient, testAccount } from '@/test/clients.js'
 import { ticTacToeABI, ticTacToeAddress } from '@/test/setupTicTacToe.js'
 
@@ -14,7 +13,7 @@ describe('estimateSendL2ToL2Message', () => {
       args: [testAccount.address],
     })
 
-    const gas = await estimateSendL2ToL2MessageGas(publicClient, {
+    const gas = await publicClient.estimateSendL2ToL2MessageGas({
       account: testAccount.address,
       target: ticTacToeAddress,
       destinationChainId: base.id,

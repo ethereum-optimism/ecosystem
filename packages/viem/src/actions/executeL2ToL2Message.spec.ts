@@ -3,8 +3,6 @@ import { base } from 'viem/chains'
 import { describe, expect, it } from 'vitest'
 
 import { crossL2InboxABI } from '@/abis.js'
-import { buildExecuteL2ToL2Message } from '@/actions/buildExecuteL2ToL2Message.js'
-import { executeL2ToL2Message } from '@/actions/executeL2ToL2Message.js'
 import { publicClient, testAccount, walletClient } from '@/test/clients.js'
 import { ticTacToeABI, ticTacToeAddress } from '@/test/setupTicTacToe.js'
 import type { MessageIdentifier } from '@/types/interop.js'
@@ -19,7 +17,7 @@ describe('executeL2ToL2Message', () => {
       chainId: BigInt(base.id),
     } as MessageIdentifier
 
-    const args = await buildExecuteL2ToL2Message(publicClient, {
+    const args = await publicClient.buildExecuteL2ToL2Message({
       id: expectedId,
       account: testAccount.address,
       target: ticTacToeAddress,
@@ -30,7 +28,7 @@ describe('executeL2ToL2Message', () => {
       }),
     })
 
-    const hash = await executeL2ToL2Message(walletClient, args)
+    const hash = await walletClient.executeL2ToL2Message(args)
 
     expect(hash).toBeDefined()
 

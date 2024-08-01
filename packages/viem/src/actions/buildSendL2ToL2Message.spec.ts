@@ -2,7 +2,6 @@ import { encodeFunctionData } from 'viem'
 import { base, optimism } from 'viem/chains'
 import { describe, expect, it } from 'vitest'
 
-import { buildSendL2ToL2Message } from '@/actions/buildSendL2ToL2Message.js'
 import { publicClient, testAccount } from '@/test/clients.js'
 import { ticTacToeABI, ticTacToeAddress } from '@/test/setupTicTacToe.js'
 
@@ -16,7 +15,7 @@ describe('buildSendL2ToL2Message', () => {
   })
 
   it('should return expected request', async () => {
-    const res = await buildSendL2ToL2Message(publicClient, {
+    const res = await publicClient.buildSendL2ToL2Message({
       destinationChainId: expectedChainId,
       target: expectedTarget,
       message: expectedMessage,
