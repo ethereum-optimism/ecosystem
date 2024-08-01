@@ -3,7 +3,6 @@ import { base, optimism } from 'viem/chains'
 import { describe, expect, it } from 'vitest'
 
 import { buildSendL2ToL2Message } from '@/actions/buildSendL2ToL2Message.js'
-import { sendL2ToL2Message } from '@/actions/sendL2ToL2Message.js'
 import { publicClient, testAccount, walletClient } from '@/test/clients.js'
 import { ticTacToeABI, ticTacToeAddress } from '@/test/setupTicTacToe.js'
 import { extractMessageIdentifierFromLogs } from '@/utils/extractMessageIdentifierFromLogs.js'
@@ -21,7 +20,7 @@ describe('sendL2ToL2Message', () => {
       }),
     })
 
-    const hash = await sendL2ToL2Message(walletClient, args)
+    const hash = await walletClient.sendL2ToL2Message(args)
     expect(hash).toBeDefined()
 
     const receipt = await publicClient.waitForTransactionReceipt({ hash })

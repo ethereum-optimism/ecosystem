@@ -7,6 +7,9 @@ import {
 import { privateKeyToAccount } from 'viem/accounts'
 import { optimism } from 'viem/chains'
 
+import { publicActionsL2 } from '@/decorators/publicL2.js'
+import { walletActionsL2 } from '@/decorators/walletL2.js'
+
 const RPC_URL = `http://localhost:8545/${Number(process.env.VITEST_vitestPool_ID ?? 1)}`
 
 // anvil account: 0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266
@@ -17,13 +20,13 @@ export const testAccount = privateKeyToAccount(
 export const publicClient = createPublicClient({
   chain: optimism,
   transport: http(RPC_URL),
-})
+}).extend(publicActionsL2())
 
 export const walletClient = createWalletClient({
   account: testAccount,
   chain: optimism,
   transport: http(RPC_URL),
-})
+}).extend(walletActionsL2())
 
 export const testClient = createTestClient({
   chain: optimism,
