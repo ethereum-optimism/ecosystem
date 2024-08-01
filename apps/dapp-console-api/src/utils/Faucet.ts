@@ -1,16 +1,16 @@
 import { faucetAbi } from '@eth-optimism/contracts-ecosystem'
 import { l1StandardBridgeABI } from '@eth-optimism/contracts-ts'
 import type {
-  Account,
   Address,
-  Chain,
   Hex,
+  PrivateKeyAccount,
   PublicClient,
-  Transport,
   TypedDataDomain,
-  WalletClient,
 } from 'viem'
-import { encodeFunctionData, getContract, keccak256, numberToHex } from 'viem'
+import { encodeFunctionData, getContract } from 'viem'
+
+import type { TransactionSender } from '@/transaction-sender/TransactionSender'
+import { getRandomNonceHex } from '@/utils/getRandomNonceHex'
 
 import { getFaucetContractBalance } from './faucetBalances'
 import type { RedisCache } from './redis'
@@ -28,7 +28,8 @@ export type FaucetConstructorArgs = {
   blockExplorerUrl?: string
   l1BridgeAddress?: Address
   publicClient: PublicClient
-  adminWalletClient: WalletClient<Transport, Chain, Account>
+  adminAccount: PrivateKeyAccount
+  transactionSender: TransactionSender
   l1ChainId: number
 }
 
@@ -65,7 +66,8 @@ export class Faucet {
   public readonly l1BridgeAddress: Address | undefined
   private readonly redisCache: RedisCache
   private readonly publicClient: PublicClient
-  public readonly adminWalletClient: WalletClient<Transport, Chain, Account>
+  private readonly adminAccount: PrivateKeyAccount
+  private readonly transactionSender: TransactionSender
   private readonly l1ChainId: number
 
   constructor({
@@ -81,7 +83,8 @@ export class Faucet {
     isL1Faucet = false,
     l1BridgeAddress,
     publicClient,
-    adminWalletClient,
+    adminAccount,
+    transactionSender,
     l1ChainId,
   }: FaucetConstructorArgs) {
     this.chainId = chainId
@@ -96,7 +99,8 @@ export class Faucet {
     this.isL1Faucet = isL1Faucet
     this.l1BridgeAddress = l1BridgeAddress
     this.publicClient = publicClient
-    this.adminWalletClient = adminWalletClient
+    this.adminAccount = adminAccount
+    this.transactionSender = transactionSender
     this.l1ChainId = l1ChainId
   }
 
@@ -106,7 +110,6 @@ export class Faucet {
       abi: faucetAbi,
       client: {
         public: this.publicClient,
-        wallet: this.adminWalletClient,
       },
     })
   }
@@ -156,20 +159,27 @@ export class Faucet {
       chainId: this.l1ChainId,
       verifyingContract: famAddress,
     }
-    const dripParams = await this.createDripParams(recipientAddress)
+
+    const nonce = getRandomNonceHex()
+    const dripParams = await this.createDripParams(recipientAddress, nonce)
     const authParams = await this.createAuthParams(
       this.isL1Faucet ? recipientAddress : this.l1BridgeAddress!,
       famAddress,
       userId,
+      nonce,
       domain,
     )
-    const { maxPriorityFeePerGas } =
-      await this.publicClient.estimateFeesPerGas()
-    return this._faucetContract.write.drip([dripParams, authParams], {
-      gas: BigInt(DRIP_MIN_GAS_LIMIT),
-      maxPriorityFeePerGas:
-        maxPriorityFeePerGas &&
-        (maxPriorityFeePerGas * BigInt(150)) / BigInt(100),
+
+    const functionData = encodeFunctionData({
+      abi: this._faucetContract.abi,
+      functionName: 'drip',
+      args: [dripParams, authParams],
+    })
+
+    return await this.transactionSender.sendTransaction({
+      chainId: this.chainId,
+      to: this.faucetAddress,
+      data: functionData,
     })
   }
 
@@ -179,11 +189,10 @@ export class Faucet {
       : undefined
   }
 
-  private readonly createDripParams = async (recipientAddress: Address) => {
-    const nonce = await this.publicClient.getTransactionCount({
-      address: this.adminWalletClient.account.address,
-    })
-    const hashedNonce = keccak256(numberToHex(nonce))
+  private readonly createDripParams = async (
+    recipientAddress: Address,
+    nonce: Hex,
+  ) => {
     const data = this.isL1Faucet
       ? '0x'
       : encodeFunctionData({
@@ -194,7 +203,7 @@ export class Faucet {
 
     return {
       recipient: this.isL1Faucet ? recipientAddress : this.l1BridgeAddress!,
-      nonce: hashedNonce,
+      nonce,
       data,
       gasLimit: DRIP_MIN_GAS_LIMIT,
     }
@@ -204,15 +213,12 @@ export class Faucet {
     recipientAddress: Address,
     moduleAddress: Address,
     dripId: Hex,
+    nonce: Hex,
     domain: TypedDataDomain,
   ) => {
-    const nonce = await this.publicClient.getTransactionCount({
-      address: this.adminWalletClient.account.address,
-    })
-    const hashedNonce = keccak256(numberToHex(nonce))
     const proof = {
       recipient: recipientAddress,
-      nonce: hashedNonce,
+      nonce,
       id: dripId,
     }
 
@@ -223,12 +229,11 @@ export class Faucet {
         { name: 'id', type: 'bytes32' },
       ],
     }
-    const signature = await this.adminWalletClient.signTypedData({
+    const signature = await this.adminAccount.signTypedData({
       domain,
       types,
       primaryType: 'Proof',
       message: proof,
-      account: this.adminWalletClient.account,
     })
 
     return {

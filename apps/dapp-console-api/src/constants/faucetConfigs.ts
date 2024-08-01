@@ -161,10 +161,12 @@ export const sepoliaPublicClient = createPublicClient({
   transport: fallback(envVars.JSON_RPC_URLS_L1_SEPOLIA.map((url) => http(url))),
 })
 
+export const adminWalletAccount = privateKeyToAccount(
+  envVars.FAUCET_AUTH_ADMIN_WALLET_PRIVATE_KEY as Hex,
+)
+
 export const sepoliaAdminWalletClient = createWalletClient({
-  account: privateKeyToAccount(
-    envVars.FAUCET_AUTH_ADMIN_WALLET_PRIVATE_KEY as Hex,
-  ),
+  account: adminWalletAccount,
   chain: getSepoliaConfig().chain,
   transport: fallback(envVars.JSON_RPC_URLS_L1_SEPOLIA.map((url) => http(url))),
 })

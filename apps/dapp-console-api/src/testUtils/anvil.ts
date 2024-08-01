@@ -1,5 +1,5 @@
 import { startProxy } from '@viem/anvil'
-import type { Address, Chain, Hash, Hex } from 'viem'
+import type { Address, Chain, Hex } from 'viem'
 import {
   createPublicClient,
   createTestClient,
@@ -21,7 +21,7 @@ export type startAnvilL2InstanceArgs = {
 }
 
 // all accounts have a starting balance of 10000 ETH
-export const anvilAccounts = [
+export const anvilAccountAddresses = [
   '0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266',
   '0x70997970C51812dc3A010C7d01b50e0d17dc79C8',
   '0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC',
@@ -32,7 +32,7 @@ export const anvilAccounts = [
   '0x14dC79964da2C08b23698B3D3cc7Ca32193d9955',
   '0x23618e81E3f5cdF7f54C3d65f7FBc0aBf5B21E8f',
   '0xa0Ee7A142d267C1f36714E4a8F75612F20a79720',
-] as readonly Address[]
+] as const satisfies Address[]
 
 export const anvilAccountPrivateKeys = [
   '0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80',
@@ -45,7 +45,9 @@ export const anvilAccountPrivateKeys = [
   '0x4bbbf85ce3377467afe5d46f804f221813b2bb87f24d81f60f1fcdbf7cbf4356',
   '0xdbda1821b80551c9d65939329250298aa3472ba22feea921c0cf5d620ea67b97',
   '0x2a871d0798f97d79848a013d4936a73bf4cc922c825d33c1cf7073dff6d409c6',
-] as Hash[]
+] as const satisfies Hex[]
+
+export const anvilAccounts = anvilAccountPrivateKeys.map(privateKeyToAccount)
 
 export async function startAnvilL2Instance() {
   return await startProxy({
@@ -57,16 +59,11 @@ export async function startAnvilL2Instance() {
   })
 }
 
-export function anvilAccount(index?: number) {
-  const idx = index ?? 0
-  return privateKeyToAccount(anvilAccountPrivateKeys[idx])
-}
-
-export function createL2WalletClient(accountIndex?: number) {
+export function createL2WalletClient(accountIndex: number = 0) {
   return createWalletClient({
     chain: l2,
     pollingInterval: 0,
-    account: anvilAccount(accountIndex),
+    account: anvilAccounts[accountIndex],
     transport: http(),
   })
 }
