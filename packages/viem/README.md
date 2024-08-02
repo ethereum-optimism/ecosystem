@@ -14,3 +14,5 @@ This package is a TypeScript extension for Viem that provides actions and utilit
 * [`sendL2ToL2Message`](./docs/actions/sendL2ToL2Message.md)
 * [`executeL2ToL2Message`](./docs/actions/executeL2ToL2Message.md)
 
+### Utilities
+* [`extractMessageIdentifierFromLogs`](./docs/utils/extractMessageIdentifierFromLogs.md)
