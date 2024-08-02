@@ -16,3 +16,6 @@ This package is a TypeScript extension for Viem that provides actions and utilit
 
 ### Utilities
 * [`extractMessageIdentifierFromLogs`](./docs/utils/extractMessageIdentifierFromLogs.md)
+
+### Guides
+* [`interop`](./docs/guides/interop.md)
