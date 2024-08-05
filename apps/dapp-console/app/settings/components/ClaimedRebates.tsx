@@ -7,7 +7,7 @@ import {
 } from '@eth-optimism/ui-components'
 
 import { Text } from '@eth-optimism/ui-components/src/components/ui/text/text'
-import { shortenAddress } from '@eth-optimism/op-app'
+import { shortenAddress } from '@/app/utils/address'
 import { RiArrowRightSLine } from '@remixicon/react'
 import Link from 'next/link'
 import { apiClient } from '@/app/helpers/apiClient'

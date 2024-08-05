@@ -13,7 +13,7 @@ import {
   ToastAction,
   toast,
 } from '@eth-optimism/ui-components'
-import { shortenAddress } from '@eth-optimism/op-app'
+import { shortenAddress } from '@/app/utils/address'
 import { apiClient } from '@/app/helpers/apiClient'
 import { captureError } from '@/app/helpers/errorReporting'
 import { RiLoader4Line } from '@remixicon/react'

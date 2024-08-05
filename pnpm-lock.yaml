@@ -251,9 +251,6 @@ importers:
       '@eth-optimism/dapp-console-api':
         specifier: workspace:^
         version: link:../dapp-console-api
-      '@eth-optimism/op-app':
-        specifier: workspace:*
-        version: link:../../packages/op-app
       '@eth-optimism/ui-components':
         specifier: workspace:*
         version: link:../../packages/ui-components
@@ -31550,7 +31547,7 @@ snapshots:
   postcss-load-config@4.0.2(postcss@8.4.38)(ts-node@10.9.2(@types/node@20.14.11)(typescript@5.4.5)):
     dependencies:
       lilconfig: 3.1.1
-      yaml: 2.4.5
+      yaml: 2.4.1
     optionalDependencies:
       postcss: 8.4.38
       ts-node: 10.9.2(@types/node@20.14.11)(typescript@5.4.5)

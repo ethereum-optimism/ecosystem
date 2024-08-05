@@ -1,4 +1,4 @@
-import { shortenAddress } from '@eth-optimism/op-app'
+import { shortenAddress } from '@/app/utils/address'
 import {
   Dialog,
   DialogContent,

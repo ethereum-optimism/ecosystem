@@ -1,5 +1,5 @@
 import { Contract } from '@/app/types/api'
-import { shortenAddress } from '@eth-optimism/op-app'
+import { shortenAddress } from '@/app/utils/address'
 import { Button, DialogHeader, Text } from '@eth-optimism/ui-components'
 import { RiLoader4Line } from '@remixicon/react'
 
