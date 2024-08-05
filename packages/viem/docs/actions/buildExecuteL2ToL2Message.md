@@ -1,6 +1,6 @@
 # buildExecuteL2ToL2Message
 
-Builds & prepares parameters for a `executeMessage` transaction to execute a cross chain L2 to L2 message.
+Builds & prepares parameters for an `executeMessage` transaction to execute a cross chain L2 to L2 message.
 
 ## Usage
 

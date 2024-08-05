@@ -1,6 +1,6 @@
 # Interop Flow Example
 
-This snippet of code will demo how to send a cross chain L2 to L2 message between optimism & base.
+This snippet of code will demo how to send a cross chain L2 to L2 message between Optimism & Base.
 
 ```ts [example.ts]
 import { createPublicClient, http, encodeFunctionData } from 'viem'
@@ -8,7 +8,7 @@ import { optimism, base } from 'viem/chains'
 import { privateKeyToAccount } from 'viem/accounts'
 import { publicActionsL2, walletActionsL2, extractMessageIdentifierFromLogs } from '@eth-optimism/viem'
 
-import { TIC_TAC_TOE_ADDRES, ticTacToeABI } from './tictactoe'
+import { TIC_TAC_TOE_ADDRESS, ticTacToeABI } from './tictactoe'
 
 const account = privateKeyToAccount('0x...')
 
