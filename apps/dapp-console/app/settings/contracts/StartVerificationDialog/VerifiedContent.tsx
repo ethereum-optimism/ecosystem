@@ -8,7 +8,7 @@ import {
 } from '@eth-optimism/ui-components'
 import { useContractVerification } from '@/app/settings/contracts/StartVerificationDialog/ContractVerificationProvider'
 import { RiCheckboxCircleFill } from '@remixicon/react'
-import { shortenAddress } from '@eth-optimism/op-app'
+import { shortenAddress } from '@/app/utils/address'
 
 export const VerifiedContent = () => {
   const { contract } = useContractVerification()

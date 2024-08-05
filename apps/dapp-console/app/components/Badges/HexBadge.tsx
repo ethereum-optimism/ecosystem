@@ -1,5 +1,5 @@
 import { LONG_DURATION } from '@/app/constants/toast'
-import { shortenHex } from '@eth-optimism/op-app'
+import { shortenHex } from '@/app/utils/address'
 import { Badge, toast } from '@eth-optimism/ui-components'
 import { useCallback } from 'react'
 import { Hex } from 'viem'

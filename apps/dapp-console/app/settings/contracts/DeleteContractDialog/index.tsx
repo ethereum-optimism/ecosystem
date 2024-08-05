@@ -1,7 +1,7 @@
 import { apiClient } from '@/app/helpers/apiClient'
 import { captureError } from '@/app/helpers/errorReporting'
 import { Contract } from '@/app/types/api'
-import { shortenAddress } from '@eth-optimism/op-app'
+import { shortenAddress } from '@/app/utils/address'
 import { Dialog, DialogContent, toast } from '@eth-optimism/ui-components'
 import { useCallback, useState } from 'react'
 import { DialogContractContent } from '@/app/settings/contracts/DeleteContractDialog/DeleteContractContent'
