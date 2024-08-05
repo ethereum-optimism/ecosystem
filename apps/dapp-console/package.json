@@ -12,7 +12,6 @@
   },
   "dependencies": {
     "@eth-optimism/dapp-console-api": "workspace:^",
-    "@eth-optimism/op-app": "workspace:*",
     "@eth-optimism/ui-components": "workspace:*",
     "@growthbook/growthbook-react": "^0.24.0",
     "@hookform/resolvers": "^3.3.4",
