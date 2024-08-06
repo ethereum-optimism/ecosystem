@@ -1,7 +1,7 @@
 import { Button } from '@eth-optimism/ui-components/src/components/ui/button/button'
 import { Text } from '@eth-optimism/ui-components/src/components/ui/text/text'
 import { trackOfferEngaged } from '@/app/event-tracking/mixpanel'
-import { externalRoutes, forms, routes } from '@/app/constants'
+import { externalRoutes, forms } from '@/app/constants'
 import { DialogMetadata } from '@/app/components/StandardDialogContent'
 
 function generatePrimaryButton(
