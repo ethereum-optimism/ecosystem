@@ -7,7 +7,7 @@ export const useExecuteL2ToL2Message = () => {
   const config = useConfig()
   const { writeContractAsync } = useWriteContract({ config })
 
-  const sendMessage = useCallback(
+  const executeMessage = useCallback(
     (params: ExecuteL2ToL2MessageParameters) => {
       const {
         id,
@@ -35,5 +35,5 @@ export const useExecuteL2ToL2Message = () => {
     [writeContractAsync],
   )
 
-  return { sendMessage }
+  return { executeMessage }
 }
