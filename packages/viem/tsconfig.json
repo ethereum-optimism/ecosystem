@@ -11,10 +11,10 @@
       "lib": ["esnext"],
       "strict": true,
       "composite": true,
-      "outDir": "types",
+      "outDir": "dist",
       "moduleResolution": "NodeNext",
       "module": "NodeNext",
-      "emitDeclarationOnly": true
+      "sourceMap": true
     }
   }
   
