@@ -26,7 +26,6 @@
     "@viem/anvil": "^0.0.7",
     "react": "^18",
     "resolve-tspaths": "^0.8.18",
-    "tsup": "^8.0.1",
     "typescript": "^5.2.2",
     "viem": "^2.17.9",
     "vitest": "^1.6.0",
