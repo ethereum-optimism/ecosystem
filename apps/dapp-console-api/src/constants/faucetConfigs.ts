@@ -145,7 +145,6 @@ export const supportedFaucetConfigs = faucetConfigs.filter((faucet) =>
   faucet.supportedEnvironments.includes(envVars.DEPLOYMENT_ENV),
 )
 
-export const ONCE_UPON_BASE_URL = 'https://www.onceupon.gg'
 const getSepoliaConfig = () => {
   const sepoliaConfig = faucetConfigs.find(
     (config) => config.displayName === 'Ethereum Sepolia',
