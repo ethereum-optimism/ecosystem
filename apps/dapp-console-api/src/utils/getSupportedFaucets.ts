@@ -1,7 +1,6 @@
 import { sepolia } from 'viem/chains'
 
 import {
-  ONCE_UPON_BASE_URL,
   sepoliaAdminWalletClient,
   sepoliaPublicClient,
   supportedFaucetConfigs,
@@ -27,7 +26,7 @@ export const getSupportedFaucets = (redisCache: RedisCache) =>
         displayName,
         onChainDripAmount,
         offChainDripAmount,
-        blockExplorerUrl: ONCE_UPON_BASE_URL,
+        blockExplorerUrl: 'https://sepolia.etherscan.io',
         onChainAuthModuleAddress: envVars.FAUCET_ON_CHAIN_MODULE_ADDRESS,
         offChainAuthModuleAddress: envVars.FAUCET_OFF_CHAIN_MODULE_ADDRESS,
         l1BridgeAddress,
