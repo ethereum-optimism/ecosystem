@@ -5,14 +5,12 @@ import type {
   Account,
   Address,
   Chain,
-  PrivateKeyAccount,
   PublicClient,
   TestClient,
   Transport,
   WalletClient,
 } from 'viem'
 import { parseEther } from 'viem'
-import { privateKeyToAccount } from 'viem/accounts'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 import type { SessionData } from '@/constants'
@@ -30,10 +28,12 @@ import {
   deployOnChainFamContract,
 } from '@/testhelpers/deployFaucetContracts'
 import {
+  anvilAccounts,
   createL2PublicClient,
   createL2TestClient,
   createL2WalletClient,
 } from '@/testUtils/anvil'
+import { createWalletTransactionSender } from '@/transaction-sender/wallet/createWalletTransactionSender'
 import { Trpc } from '@/Trpc'
 import * as getTempFaucetAccessAttestation from '@/utils/getTempFaucetAccessAttestation'
 import * as verifyWorldIdUserModule from '@/utils/verifyWorldIdUser'
@@ -49,9 +49,8 @@ describe(FaucetRoute.name, () => {
   let faucetAddress: Address
   let onChainFamAddress: Address
   let offChainFamAddress: Address
-  let faucetAdminAccount: PrivateKeyAccount
-  let ownerAccount: PrivateKeyAccount
-  let recipientAccount: PrivateKeyAccount
+
+  const [faucetAdminAccount, ownerAccount, recipientAccount] = anvilAccounts
 
   let trpc: Trpc
   let session: Awaited<ReturnType<typeof getIronSession<SessionData>>>
@@ -73,16 +72,10 @@ describe(FaucetRoute.name, () => {
     walletClient = createL2WalletClient()
     testClient = createL2TestClient()
 
-    faucetAdminAccount = privateKeyToAccount(
-      '0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80',
-    )
-
-    ownerAccount = privateKeyToAccount(
-      '0x59c6995e998f97a5a0044966f0945389dc9e86dae88c7a8412f4603b6b78690d',
-    )
-    recipientAccount = privateKeyToAccount(
-      '0x5de4111afa1a4b94908f83103eb1f1706367c2e68ca870fc3fb9a804cdab365a',
-    )
+    // uses 0x9965507D1a55bcC2695C58ba16FB37d819B0A4dc as the sender
+    const txSenderWalletClient = createL2WalletClient(5)
+    const transactionSender =
+      createWalletTransactionSender(txSenderWalletClient)
 
     faucetAddress = await deployFaucetContract(
       publicClient,
@@ -157,7 +150,8 @@ describe(FaucetRoute.name, () => {
         isL1Faucet: true,
         l1BridgeAddress: undefined,
         publicClient: publicClient,
-        adminWalletClient: walletClient,
+        transactionSender: transactionSender,
+        adminAccount: faucetAdminAccount,
         l1ChainId: 11155111,
       }),
     ]).handler

@@ -89,6 +89,7 @@ const envVarSchema = z.object({
   WORLDID_APP_ID: z.string(),
   WORLDID_APP_ACTION_NAME: z.string(),
   API_QUEUE_REDIS_URL: z.string(),
+  GELATO_RELAY_API_KEY: z.string(),
 })
 
 const isTest = process.env.NODE_ENV === 'test'
@@ -167,6 +168,7 @@ export const envVars = envVarSchema.parse(
         WORLDID_APP_ID: 'test worldid app id',
         WORLDID_APP_ACTION_NAME: 'test worldid app action name',
         API_QUEUE_REDIS_URL: 'redis://localhost:6379',
+        GELATO_RELAY_API_KEY: 'MOCK_GELATO_RELAY_API_KEY',
       }
     : {
         PORT: process.env.PORT
@@ -255,5 +257,6 @@ export const envVars = envVarSchema.parse(
         WORLDID_APP_ID: process.env.WORLDID_APP_ID,
         WORLDID_APP_ACTION_NAME: process.env.WORLDID_APP_ACTION_NAME,
         API_QUEUE_REDIS_URL: process.env.API_QUEUE_REDIS_URL,
+        GELATO_RELAY_API_KEY: process.env.GELATO_RELAY_API_KEY,
       },
 )

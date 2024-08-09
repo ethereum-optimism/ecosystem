@@ -1,8 +1,10 @@
 import { sepolia } from 'viem/chains'
 
+import type { TransactionSender } from '@/transaction-sender/TransactionSender'
+
 import {
+  adminWalletAccount,
   ONCE_UPON_BASE_URL,
-  sepoliaAdminWalletClient,
   sepoliaPublicClient,
   supportedFaucetConfigs,
 } from '../constants'
@@ -10,7 +12,10 @@ import { envVars } from '../constants/envVars'
 import { Faucet } from '../utils'
 import type { RedisCache } from './redis'
 
-export const getSupportedFaucets = (redisCache: RedisCache) =>
+export const getSupportedFaucets = (
+  redisCache: RedisCache,
+  transactionSender: TransactionSender,
+) =>
   supportedFaucetConfigs.map(
     ({
       chain,
@@ -33,7 +38,8 @@ export const getSupportedFaucets = (redisCache: RedisCache) =>
         l1BridgeAddress,
         isL1Faucet,
         publicClient: sepoliaPublicClient,
-        adminWalletClient: sepoliaAdminWalletClient,
+        adminAccount: adminWalletAccount,
+        transactionSender,
         l1ChainId: sepolia.id,
       })
     },

@@ -248,8 +248,6 @@ export class FaucetRoute extends Route {
           })
       }
 
-      console.log('got here')
-
       const faucet = this.faucets.find((f) => f.chainId === chainId)
 
       if (!faucet) {

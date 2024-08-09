@@ -23,6 +23,8 @@ import { optimism, optimismSepolia } from 'viem/chains'
 
 import type { ApiQueue } from '@/api-queue/apiQueueConfig'
 import { createApiQueue } from '@/api-queue/createApiQueue'
+import { createGelatoTransactionSender } from '@/transaction-sender/gelato/createGelatoTransactionSender'
+import { GelatoRelay } from '@/transaction-sender/gelato/GelatoRelay'
 
 import { ApiV0, Middleware } from './api'
 import { AdminApi } from './api/AdminApi'
@@ -161,6 +163,10 @@ export class Service {
       ),
     })
 
+    const sepoliaGelatoTransactionSender = createGelatoTransactionSender(
+      new GelatoRelay(envVars.GELATO_RELAY_API_KEY),
+    )
+
     const authRoute = new AuthRoute(trpc)
     const walletsRoute = new WalletsRoute(trpc)
     const appsRoute = new AppsRoute(trpc)
@@ -174,7 +180,7 @@ export class Service {
     )
     const faucetRoute = new FaucetRoute(
       trpc,
-      getSupportedFaucets(gatewayRedisCache),
+      getSupportedFaucets(gatewayRedisCache, sepoliaGelatoTransactionSender),
     )
 
     /**
