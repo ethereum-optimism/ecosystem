@@ -450,171 +450,248 @@ export const l1BlockInteropAbi = [
  */
 export const crossL2InboxABI = [
   {
-    type: 'function',
+    inputs: [],
     name: 'blockNumber',
-    inputs: [],
     outputs: [
       {
+        internalType: 'uint256',
         name: '',
         type: 'uint256',
-        internalType: 'uint256',
       },
     ],
     stateMutability: 'view',
+    type: 'function',
   },
   {
-    type: 'function',
+    inputs: [],
     name: 'chainId',
-    inputs: [],
     outputs: [
       {
+        internalType: 'uint256',
         name: '',
         type: 'uint256',
-        internalType: 'uint256',
       },
     ],
     stateMutability: 'view',
+    type: 'function',
   },
   {
-    type: 'function',
-    name: 'executeMessage',
     inputs: [
       {
-        name: '_id',
-        type: 'tuple',
-        internalType: 'struct ICrossL2Inbox.Identifier',
         components: [
           {
+            internalType: 'address',
             name: 'origin',
             type: 'address',
-            internalType: 'address',
           },
           {
+            internalType: 'uint256',
             name: 'blockNumber',
             type: 'uint256',
-            internalType: 'uint256',
           },
           {
+            internalType: 'uint256',
             name: 'logIndex',
             type: 'uint256',
-            internalType: 'uint256',
           },
           {
+            internalType: 'uint256',
             name: 'timestamp',
             type: 'uint256',
-            internalType: 'uint256',
           },
           {
+            internalType: 'uint256',
             name: 'chainId',
             type: 'uint256',
-            internalType: 'uint256',
           },
         ],
+        internalType: 'struct ICrossL2Inbox.Identifier',
+        name: '_id',
+        type: 'tuple',
       },
       {
+        internalType: 'address',
         name: '_target',
         type: 'address',
-        internalType: 'address',
       },
       {
+        internalType: 'bytes',
         name: '_message',
         type: 'bytes',
-        internalType: 'bytes',
       },
     ],
+    name: 'executeMessage',
     outputs: [],
     stateMutability: 'payable',
+    type: 'function',
   },
   {
-    type: 'function',
-    name: 'logIndex',
     inputs: [],
+    name: 'logIndex',
     outputs: [
       {
+        internalType: 'uint256',
         name: '',
         type: 'uint256',
-        internalType: 'uint256',
       },
     ],
     stateMutability: 'view',
+    type: 'function',
   },
   {
-    type: 'function',
-    name: 'origin',
     inputs: [],
+    name: 'origin',
     outputs: [
       {
+        internalType: 'address',
         name: '',
         type: 'address',
-        internalType: 'address',
       },
     ],
     stateMutability: 'view',
+    type: 'function',
   },
   {
-    type: 'function',
-    name: 'timestamp',
     inputs: [],
+    name: 'timestamp',
     outputs: [
       {
+        internalType: 'uint256',
         name: '',
         type: 'uint256',
-        internalType: 'uint256',
       },
     ],
     stateMutability: 'view',
-  },
-  {
     type: 'function',
-    name: 'version',
-    inputs: [],
-    outputs: [
-      {
-        name: '',
-        type: 'string',
-        internalType: 'string',
-      },
-    ],
-    stateMutability: 'view',
   },
   {
-    type: 'event',
-    name: 'ExecutingMessage',
     inputs: [
       {
-        name: 'encodedId',
-        type: 'bytes',
-        indexed: false,
-        internalType: 'bytes',
+        components: [
+          {
+            internalType: 'address',
+            name: 'origin',
+            type: 'address',
+          },
+          {
+            internalType: 'uint256',
+            name: 'blockNumber',
+            type: 'uint256',
+          },
+          {
+            internalType: 'uint256',
+            name: 'logIndex',
+            type: 'uint256',
+          },
+          {
+            internalType: 'uint256',
+            name: 'timestamp',
+            type: 'uint256',
+          },
+          {
+            internalType: 'uint256',
+            name: 'chainId',
+            type: 'uint256',
+          },
+        ],
+        internalType: 'struct ICrossL2Inbox.Identifier',
+        name: '_id',
+        type: 'tuple',
       },
       {
-        name: 'message',
-        type: 'bytes',
-        indexed: false,
-        internalType: 'bytes',
+        internalType: 'bytes32',
+        name: '_msgHash',
+        type: 'bytes32',
       },
     ],
+    name: 'validateMessage',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'version',
+    outputs: [
+      {
+        internalType: 'string',
+        name: '',
+        type: 'string',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
     anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: 'bytes32',
+        name: 'msgHash',
+        type: 'bytes32',
+      },
+      {
+        components: [
+          {
+            internalType: 'address',
+            name: 'origin',
+            type: 'address',
+          },
+          {
+            internalType: 'uint256',
+            name: 'blockNumber',
+            type: 'uint256',
+          },
+          {
+            internalType: 'uint256',
+            name: 'logIndex',
+            type: 'uint256',
+          },
+          {
+            internalType: 'uint256',
+            name: 'timestamp',
+            type: 'uint256',
+          },
+          {
+            internalType: 'uint256',
+            name: 'chainId',
+            type: 'uint256',
+          },
+        ],
+        indexed: false,
+        internalType: 'struct ICrossL2Inbox.Identifier',
+        name: 'id',
+        type: 'tuple',
+      },
+    ],
+    name: 'ExecutingMessage',
+    type: 'event',
   },
   {
-    type: 'error',
+    inputs: [],
     name: 'InvalidChainId',
-    inputs: [],
+    type: 'error',
   },
   {
-    type: 'error',
+    inputs: [],
     name: 'InvalidTimestamp',
-    inputs: [],
+    type: 'error',
   },
   {
-    type: 'error',
+    inputs: [],
     name: 'NotEntered',
-    inputs: [],
+    type: 'error',
   },
   {
-    type: 'error',
-    name: 'TargetCallFailed',
     inputs: [],
+    name: 'ReentrantCall',
+    type: 'error',
+  },
+  {
+    inputs: [],
+    name: 'TargetCallFailed',
+    type: 'error',
   },
 ] as const
 
@@ -623,232 +700,219 @@ export const crossL2InboxABI = [
  */
 export const l2ToL2CrossDomainMessengerABI = [
   {
-    type: 'function',
-    name: 'crossDomainMessageSender',
     inputs: [],
+    name: 'crossDomainMessageSender',
     outputs: [
       {
+        internalType: 'address',
         name: '_sender',
         type: 'address',
-        internalType: 'address',
       },
     ],
     stateMutability: 'view',
+    type: 'function',
   },
   {
-    type: 'function',
-    name: 'crossDomainMessageSource',
     inputs: [],
+    name: 'crossDomainMessageSource',
     outputs: [
       {
+        internalType: 'uint256',
         name: '_source',
         type: 'uint256',
-        internalType: 'uint256',
       },
     ],
     stateMutability: 'view',
+    type: 'function',
   },
   {
-    type: 'function',
-    name: 'messageNonce',
     inputs: [],
+    name: 'messageNonce',
     outputs: [
       {
+        internalType: 'uint256',
         name: '',
         type: 'uint256',
-        internalType: 'uint256',
       },
     ],
     stateMutability: 'view',
+    type: 'function',
   },
   {
-    type: 'function',
-    name: 'messageVersion',
     inputs: [],
+    name: 'messageVersion',
     outputs: [
       {
+        internalType: 'uint16',
         name: '',
         type: 'uint16',
-        internalType: 'uint16',
       },
     ],
     stateMutability: 'view',
+    type: 'function',
   },
   {
-    type: 'function',
-    name: 'relayMessage',
     inputs: [
       {
+        internalType: 'uint256',
         name: '_destination',
         type: 'uint256',
-        internalType: 'uint256',
       },
       {
+        internalType: 'uint256',
         name: '_source',
         type: 'uint256',
-        internalType: 'uint256',
       },
       {
+        internalType: 'uint256',
         name: '_nonce',
         type: 'uint256',
-        internalType: 'uint256',
       },
       {
+        internalType: 'address',
         name: '_sender',
         type: 'address',
-        internalType: 'address',
       },
       {
+        internalType: 'address',
         name: '_target',
         type: 'address',
-        internalType: 'address',
       },
       {
+        internalType: 'bytes',
         name: '_message',
         type: 'bytes',
-        internalType: 'bytes',
       },
     ],
+    name: 'relayMessage',
     outputs: [],
     stateMutability: 'payable',
+    type: 'function',
   },
   {
-    type: 'function',
-    name: 'sendMessage',
     inputs: [
       {
+        internalType: 'uint256',
         name: '_destination',
         type: 'uint256',
-        internalType: 'uint256',
       },
       {
+        internalType: 'address',
         name: '_target',
         type: 'address',
-        internalType: 'address',
       },
       {
+        internalType: 'bytes',
         name: '_message',
         type: 'bytes',
-        internalType: 'bytes',
       },
     ],
+    name: 'sendMessage',
     outputs: [],
     stateMutability: 'payable',
+    type: 'function',
   },
   {
-    type: 'function',
-    name: 'successfulMessages',
     inputs: [
       {
+        internalType: 'bytes32',
         name: '',
         type: 'bytes32',
-        internalType: 'bytes32',
       },
     ],
+    name: 'successfulMessages',
     outputs: [
       {
+        internalType: 'bool',
         name: '',
         type: 'bool',
-        internalType: 'bool',
       },
     ],
     stateMutability: 'view',
+    type: 'function',
   },
   {
-    type: 'function',
-    name: 'version',
     inputs: [],
+    name: 'version',
     outputs: [
       {
+        internalType: 'string',
         name: '',
         type: 'string',
-        internalType: 'string',
       },
     ],
     stateMutability: 'view',
+    type: 'function',
   },
   {
-    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: 'bytes32',
+        name: 'messageHash',
+        type: 'bytes32',
+      },
+    ],
     name: 'FailedRelayedMessage',
-    inputs: [
-      {
-        name: 'messageHash',
-        type: 'bytes32',
-        indexed: true,
-        internalType: 'bytes32',
-      },
-    ],
-    anonymous: false,
+    type: 'event',
   },
   {
-    type: 'event',
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: 'bytes32',
+        name: 'messageHash',
+        type: 'bytes32',
+      },
+    ],
     name: 'RelayedMessage',
-    inputs: [
-      {
-        name: 'messageHash',
-        type: 'bytes32',
-        indexed: true,
-        internalType: 'bytes32',
-      },
-    ],
-    anonymous: false,
-  },
-  {
     type: 'event',
-    name: 'SentMessage',
-    inputs: [
-      {
-        name: 'data',
-        type: 'bytes',
-        indexed: false,
-        internalType: 'bytes',
-      },
-    ],
-    anonymous: true,
   },
   {
-    type: 'error',
+    inputs: [],
     name: 'CrossL2InboxOriginNotL2ToL2CrossDomainMessenger',
-    inputs: [],
+    type: 'error',
   },
   {
-    type: 'error',
+    inputs: [],
     name: 'MessageAlreadyRelayed',
-    inputs: [],
+    type: 'error',
   },
   {
-    type: 'error',
+    inputs: [],
     name: 'MessageDestinationNotRelayChain',
-    inputs: [],
+    type: 'error',
   },
   {
-    type: 'error',
+    inputs: [],
     name: 'MessageDestinationSameChain',
-    inputs: [],
+    type: 'error',
   },
   {
-    type: 'error',
+    inputs: [],
     name: 'MessageTargetCrossL2Inbox',
-    inputs: [],
+    type: 'error',
   },
   {
-    type: 'error',
+    inputs: [],
     name: 'MessageTargetL2ToL2CrossDomainMessenger',
-    inputs: [],
+    type: 'error',
   },
   {
-    type: 'error',
+    inputs: [],
     name: 'NotEntered',
-    inputs: [],
+    type: 'error',
   },
   {
-    type: 'error',
+    inputs: [],
     name: 'ReentrantCall',
-    inputs: [],
+    type: 'error',
   },
   {
-    type: 'error',
-    name: 'RelayMessageCallerNotCrossL2Inbox',
     inputs: [],
+    name: 'RelayMessageCallerNotCrossL2Inbox',
+    type: 'error',
   },
 ] as const

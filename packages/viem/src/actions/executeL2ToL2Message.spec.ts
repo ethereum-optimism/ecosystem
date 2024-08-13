@@ -1,4 +1,4 @@
-import { encodeFunctionData, parseEventLogs } from 'viem'
+import { encodeFunctionData, keccak256, parseEventLogs } from 'viem'
 import { base } from 'viem/chains'
 import { describe, expect, it } from 'vitest'
 
@@ -17,15 +17,17 @@ describe('executeL2ToL2Message', () => {
       chainId: BigInt(base.id),
     } as MessageIdentifier
 
+    const encodedData = encodeFunctionData({
+      abi: ticTacToeABI,
+      functionName: 'createGame',
+      args: [testAccount.address],
+    })
+
     const args = await publicClient.buildExecuteL2ToL2Message({
       id: expectedId,
       account: testAccount.address,
       target: ticTacToeAddress,
-      message: encodeFunctionData({
-        abi: ticTacToeABI,
-        functionName: 'createGame',
-        args: [testAccount.address],
-      }),
+      message: encodedData,
     })
 
     const hash = await walletClient.executeL2ToL2Message(args)
@@ -33,11 +35,14 @@ describe('executeL2ToL2Message', () => {
     expect(hash).toBeDefined()
 
     const receipt = await publicClient.waitForTransactionReceipt({ hash })
+
     const logs = parseEventLogs({
       abi: crossL2InboxABI,
       logs: receipt.logs,
       eventName: 'ExecutingMessage',
     })
-    expect(logs[0].data).toBeDefined()
+
+    const { msgHash } = logs[0].args
+    expect(msgHash).toEqual(keccak256(encodedData))
   })
 })
