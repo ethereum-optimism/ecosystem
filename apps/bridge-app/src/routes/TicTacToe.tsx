@@ -3,13 +3,16 @@ import { Game } from '@/components/tictactoe/Game'
 import { JoinGameDialog } from '@/components/tictactoe/JoinGameDialog'
 import { SupportedNetworks } from '@/providers/SupportedNetworks'
 import { Text } from '@eth-optimism/ui-components'
+import { supersimL1, supersimL2A, supersimL2B } from '@eth-optimism/viem'
 import { useParams } from 'react-router'
-import { optimismSepolia, foundry, Chain } from 'viem/chains'
+import { optimismSepolia, Chain } from 'viem/chains'
 
 const supportedChains: Chain[] = [optimismSepolia]
 
-if (import.meta.env.VITE_DEPLOYMENT_ENV === 'local') {
-  supportedChains.push(foundry)
+if (import.meta.env.VITE_SUPERSIM_ENABLED === 'true') {
+  supportedChains.push(supersimL1)
+  supportedChains.push(supersimL2A)
+  supportedChains.push(supersimL2B)
 }
 
 export const TicTacToe = () => {

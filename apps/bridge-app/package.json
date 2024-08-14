@@ -17,6 +17,8 @@
     "@eth-optimism/op-app": "workspace:*",
     "@eth-optimism/tokenlist": "^9.0.12",
     "@eth-optimism/ui-components": "workspace:*",
+    "@eth-optimism/viem": "workspace:*",
+    "@eth-optimism/wagmi": "workspace:*",
     "@rainbow-me/rainbowkit": "2.1.3",
     "@remixicon/react": "^4.1.1",
     "@tanstack/react-query": "^5.29.2",
