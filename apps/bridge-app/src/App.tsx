@@ -20,8 +20,8 @@ import { NETWORK_TYPE } from '@/constants/networkType'
 import { TicTacToe } from '@/routes/TicTacToe'
 import { Home } from '@/routes/Home'
 import { Playground } from '@/routes/Playground'
-import { foundry } from 'viem/chains'
 import { Toaster } from '@eth-optimism/ui-components'
+import { supersimL1, supersimL2A, supersimL2B } from '@eth-optimism/viem'
 
 const classNames = {
   app: 'app w-full min-h-screen flex flex-col',
@@ -38,8 +38,10 @@ const opChains = configureOpChains({ type: NETWORK_TYPE }) as [
   ...[Chain],
 ]
 
-if (import.meta.env.VITE_DEPLOYMENT_ENV === 'local') {
-  opChains.push(foundry)
+if (import.meta.env.VITE_SUPERSIM_ENABLED === 'true') {
+  opChains.push(supersimL1)
+  opChains.push(supersimL2A)
+  opChains.push(supersimL2B)
 }
 
 const wagmiConfig = getDefaultConfig({

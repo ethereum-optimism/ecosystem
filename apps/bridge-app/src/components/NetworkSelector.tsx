@@ -30,6 +30,7 @@ const NetworkSelectorItem = ({
   logo,
   onSelect,
 }: NetworkSelectorItemProps) => {
+  console.log(chain)
   return (
     <div
       className="flex flex-row p-3 cursor-pointer max-h-12 hover:bg-accent rounded-md"
@@ -82,7 +83,7 @@ export const NetworkSelector = () => {
             <NetworkSelectorItem
               key={mainnet.id}
               chain={mainnet}
-              logo={networkPairsByID[mainnet.id] ? l2AssetLogo : l1AssetLogo}
+              logo={mainnet.sourceId ? l2AssetLogo : l1AssetLogo}
               isActive={chain?.id === mainnet.id}
               onSelect={onSwitchNetwork}
             />
@@ -95,7 +96,7 @@ export const NetworkSelector = () => {
             <NetworkSelectorItem
               key={testnet.id}
               chain={testnet}
-              logo={networkPairsByID[testnet.id] ? l2AssetLogo : l1AssetLogo}
+              logo={testnet.sourceId ? l2AssetLogo : l1AssetLogo}
               isActive={chain?.id === testnet.id}
               onSelect={onSwitchNetwork}
             />
