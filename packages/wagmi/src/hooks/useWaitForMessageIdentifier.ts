@@ -1,7 +1,5 @@
-import {
-  extractMessageIdentifierFromLogs,
-  type MessageIdentifier,
-} from '@eth-optimism/viem'
+import type { ExtractMessageIdentifierFromLogsReturnType } from '@eth-optimism/viem'
+import { extractMessageIdentifierFromLogs } from '@eth-optimism/viem'
 import { useMemo } from 'react'
 import type { Hash, PublicClient } from 'viem'
 import { useConfig, usePublicClient, useWaitForTransactionReceipt } from 'wagmi'
@@ -17,7 +15,9 @@ export const useWaitForMessageIdentifier = ({
   const publicClient = usePublicClient({ config })
   const { data } = useWaitForTransactionReceipt({ config, hash })
 
-  const id = useMemo<Promise<MessageIdentifier | undefined>>(async () => {
+  const message = useMemo<
+    Promise<ExtractMessageIdentifierFromLogsReturnType | undefined>
+  >(async () => {
     if (!data) {
       return
     }
@@ -27,5 +27,5 @@ export const useWaitForMessageIdentifier = ({
     )
   }, [data, publicClient])
 
-  return { id }
+  return message
 }

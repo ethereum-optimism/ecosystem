@@ -19,7 +19,10 @@ export type ExtractMessageIdentifierFromLogsParameters = {
   receipt: TransactionReceipt
 }
 
-export type ExtractMessageIdentifierFromLogsReturnType = MessageIdentifier
+export type ExtractMessageIdentifierFromLogsReturnType = {
+  id: MessageIdentifier
+  payload: Hex
+}
 
 export type ExtractMessageIdentifierFromLogsErrorType =
   | ErrorType
@@ -67,7 +70,6 @@ export async function extractMessageIdentifierFromLogs<
   const sentMessageLogs = parseEventLogs({
     abi: l2ToL2CrossDomainMessengerABI,
     logs: receipt.logs,
-    eventName: 'SentMessage',
   })
 
   const log = sentMessageLogs[0]
@@ -87,5 +89,8 @@ export async function extractMessageIdentifierFromLogs<
     chainId: BigInt(client.chain?.id as number),
   } as MessageIdentifier
 
-  return id
+  return {
+    id,
+    payload: log.data,
+  }
 }
