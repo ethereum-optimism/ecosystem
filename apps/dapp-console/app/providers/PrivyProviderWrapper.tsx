@@ -50,6 +50,7 @@ function PrivyProviderWrapper({ children }: { children: React.ReactNode }) {
           accentColor: '#FF0420',
           logo: logo,
         },
+        captchaEnabled: true,
         legal: {
           termsAndConditionsUrl: externalRoutes.TERMS.path,
           privacyPolicyUrl: externalRoutes.COMMUNITY_AGREEMENT.path,
