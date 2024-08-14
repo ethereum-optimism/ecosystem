@@ -8,6 +8,9 @@ export {
   l2ToL2CrossDomainMessengerABI,
 } from '@/abis.js'
 
+// supersim
+export { supersimL1, supersimL2A, supersimL2B } from '@/chains/supersim.js'
+
 // contracts
 export { contracts } from '@/contracts.js'
 
