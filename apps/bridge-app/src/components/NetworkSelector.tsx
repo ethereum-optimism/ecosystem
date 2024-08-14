@@ -30,7 +30,6 @@ const NetworkSelectorItem = ({
   logo,
   onSelect,
 }: NetworkSelectorItemProps) => {
-  console.log(chain)
   return (
     <div
       className="flex flex-row p-3 cursor-pointer max-h-12 hover:bg-accent rounded-md"
