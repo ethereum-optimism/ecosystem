@@ -5,7 +5,7 @@ import type { Hash, PublicClient } from 'viem'
 import { useConfig, usePublicClient, useWaitForTransactionReceipt } from 'wagmi'
 
 export type WaitForMessageIdentifierParams = {
-  hash: Hash
+  hash: Hash | undefined
 }
 
 export const useWaitForMessageIdentifier = ({
@@ -13,12 +13,12 @@ export const useWaitForMessageIdentifier = ({
 }: WaitForMessageIdentifierParams) => {
   const config = useConfig()
   const publicClient = usePublicClient({ config })
-  const { data } = useWaitForTransactionReceipt({ config, hash })
+  const { data, isError, isPending, refetch } = useWaitForTransactionReceipt({ config, hash, query: { enabled: !!hash } })
 
   const message = useMemo<
     Promise<ExtractMessageIdentifierFromLogsReturnType | undefined>
   >(async () => {
-    if (!data) {
+    if (!hash || !data) {
       return
     }
     return await extractMessageIdentifierFromLogs(
@@ -27,5 +27,5 @@ export const useWaitForMessageIdentifier = ({
     )
   }, [data, publicClient])
 
-  return message
+  return { ...message, isPending, isError, refetch }
 }

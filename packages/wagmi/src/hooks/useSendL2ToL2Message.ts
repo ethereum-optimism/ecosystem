@@ -5,7 +5,7 @@ import { useConfig, useWriteContract } from 'wagmi'
 
 export const useSendL2ToL2Message = () => {
   const config = useConfig()
-  const { writeContractAsync } = useWriteContract({ config })
+  const { writeContractAsync, isError, isPending, isSuccess } = useWriteContract({ config })
 
   const sendMessage = useCallback(
     (params: SendL2ToL2MessageParameters) => {
@@ -21,5 +21,5 @@ export const useSendL2ToL2Message = () => {
     [writeContractAsync],
   )
 
-  return { sendMessage }
+  return { sendMessage, isError, isPending, isSuccess }
 }
