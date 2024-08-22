@@ -1,6 +1,6 @@
 import { Button, Text } from "@eth-optimism/ui-components"
 import { UseInteropStatus, useInterop } from "@eth-optimism/wagmi"
-import { InteropTransactionData } from "@eth-optimism/wagmi/dist/hooks/useInterop"
+import { InteropTransactionData } from "@/hooks/useInterop"
 import { RiCheckboxBlankCircleLine, RiCheckboxCircleFill, RiLoader2Fill } from "@remixicon/react"
 import { useCallback } from "react"
 import { Abi, AbiStateMutability, Address, Chain, ContractFunctionArgs, ContractFunctionName } from "viem"
