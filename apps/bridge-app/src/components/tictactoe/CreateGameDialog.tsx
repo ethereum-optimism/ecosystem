@@ -1,28 +1,38 @@
-import { useCreateGame } from '@/hooks/tictactoe/useCreateGame'
 import {
   Button,
   Dialog,
-  DialogClose,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-  Text,
 } from '@eth-optimism/ui-components'
 import { useCallback } from 'react'
 import { useNavigate } from 'react-router'
+import { InteropDialogContent } from '@/components/dialogs/InteropGameDialogContent'
+import { supersimL2A, supersimL2B } from '@eth-optimism/viem'
+import { Address } from 'viem'
+import {
+  TIC_TAC_TOE_CONTRACT_ADDRESS,
+  ticTacToeABI,
+} from '@/constants/contracts'
+import { useAccount } from 'wagmi'
+import { getGameId } from '@/utils/gameClient'
+import { InteropTransactionData } from '@/hooks/useInterop'
 
 export const CreateGameDialog = () => {
   const navigate = useNavigate()
-  const { createGame, isPending } = useCreateGame()
+  const { address } = useAccount()
 
-  const handleCreateGame = useCallback(async () => {
-    const { gameId } = await createGame()
+  const handleCreateGame = useCallback(
+    async (transactionData: InteropTransactionData) => {
+      const gameId = await getGameId(transactionData.executeMessageHash)
 
-    if (gameId) {
-      navigate(`/tictactoe/${gameId}`)
-    }
-  }, [navigate])
+      if (gameId) {
+        navigate(`/tictactoe/${gameId}`)
+      }
+    },
+    [navigate],
+  )
 
   return (
     <Dialog>
@@ -38,29 +48,15 @@ export const CreateGameDialog = () => {
           </DialogTitle>
         </DialogHeader>
 
-        {isPending && (
-          <Text className="font-retro text-sm text-center color-secondary">
-            Waiting for game to be created.
-          </Text>
-        )}
-
-        <div className="flex flex-col pt-3 gap-3">
-          <Button
-            type="button"
-            variant="default"
-            className="font-retro"
-            disabled={isPending}
-            onClick={handleCreateGame}
-          >
-            Continue
-          </Button>
-
-          <DialogClose asChild>
-            <Button type="button" variant="secondary" className="font-retro">
-              Cancel
-            </Button>
-          </DialogClose>
-        </div>
+        <InteropDialogContent
+          abi={ticTacToeABI}
+          functionName="createGame"
+          originChain={supersimL2B}
+          destinationChain={supersimL2A}
+          contractAddress={TIC_TAC_TOE_CONTRACT_ADDRESS}
+          args={[address as Address]}
+          onComplete={handleCreateGame}
+        />
       </DialogContent>
     </Dialog>
   )
