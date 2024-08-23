@@ -41,7 +41,9 @@ describe('sendL2ToL2Message', () => {
     // verifiy message id
     expect(id).toBeDefined()
     expect(id.chainId).toEqual(BigInt(optimism.id))
-    expect(id.origin.toLowerCase()).toEqual(testAccount.address.toLowerCase())
+    expect(id.origin.toLowerCase()).toEqual(
+      contracts.l2ToL2CrossDomainMessenger.address.toLowerCase(),
+    )
     expect(id.blockNumber).toEqual(receipt.blockNumber)
     expect(id.logIndex).toEqual(BigInt(receipt.logs[0].logIndex))
 
