@@ -1,13 +1,13 @@
 import { TicTacToeGameState, TicTacToePlayerTurn } from '@/constants/contracts'
 import { useGameState } from '@/hooks/tictactoe/useGameState'
-import { useMakeMove } from '@/hooks/tictactoe/useMakeMove'
 import { cn } from '@/utils'
-import { getMessageFromRevert, getStatus } from '@/utils/tictactoe'
+import { getStatus } from '@/utils/tictactoe'
 import { shortenAddress } from '@eth-optimism/op-app'
-import { Badge, Text, useToast } from '@eth-optimism/ui-components'
-import { useCallback, useMemo } from 'react'
+import { Badge, Text } from '@eth-optimism/ui-components'
+import { useCallback, useMemo, useState } from 'react'
 import { Address, formatEther } from 'viem'
 import { useAccount, useBalance } from 'wagmi'
+import { MakeMoveDialog } from '@/components/tictactoe/MakeMoveDialog'
 
 type GameCellValue = 1 | 2 | 0
 
@@ -53,13 +53,16 @@ const GameCell = ({
 }
 
 export const Game = ({ id }: GameProps) => {
-  const { toast } = useToast()
   const { address, chainId } = useAccount()
   const { data: balance, refetch: refetchBalance } = useBalance({
     address,
     chainId,
   })
-  const { makeMove } = useMakeMove(id)
+
+  const [nextMove, setNextMove] = useState<[number, number] | undefined>(
+    undefined,
+  )
+  const [showDialog, setShowDialog] = useState<boolean>(false)
 
   const gameState = useGameState(id)
 
@@ -93,60 +96,67 @@ export const Game = ({ id }: GameProps) => {
       if (!isYourTurn) {
         return
       }
-
-      try {
-        await makeMove(x, y)
-        gameState.refetch()
-        refetchBalance()
-      } catch (err) {
-        const errorMessage = getMessageFromRevert(err)
-
-        if (errorMessage) {
-          toast({ title: errorMessage, duration: 5000 })
-        }
-      }
+      setShowDialog(true)
+      setNextMove([x, y])
     },
-    [address, id, makeMove, isYourTurn, gameState, refetchBalance],
+    [isYourTurn],
   )
 
+  const handleFinishMakingMove = useCallback(() => {
+    setShowDialog(false)
+    gameState.refetch()
+    refetchBalance()
+  }, [gameState, refetchBalance])
+
   return (
-    <div className="max-w-[960px] align-center justify-center">
-      <Badge
-        className="w-full cursor-default hover:bg-default"
-        variant="default"
-      >
-        <Text className="w-full font-retro py-3 px-1 text-center">
-          {getStatus(
-            gameState.data?.state as number,
-            isYourTurn,
-            isPlayer1,
-            isPlayer2,
-          )}
-        </Text>
-      </Badge>
-      <div className="grid grid-rows-3 grid-cols-3 border-1 mt-6">
-        {gameState.data?.board.map((row, rowIndex) => {
-          return row.map((_, colIndex) => (
-            <GameCell
-              key={`${rowIndex}_${colIndex}`}
-              value={gameState.data.board[rowIndex][colIndex] as GameCellValue}
-              position={[rowIndex, colIndex]}
-              onMakeMove={handleMakeMove}
-              isYourTurn={isYourTurn}
-            />
-          ))
-        })}
-      </div>
-      <div className="flex flex-col mt-3 text-center">
-        <Text className="font-retro">
-          Player: {shortenAddress(address as Address)}
-        </Text>
-        {balance && (
-          <Text className="font-retro">
-            Balance: {formatEther(balance?.value)}
+    <div className="flex flex-col w-full items-center">
+      <div className="max-w-[960px] align-center justify-center">
+        <Badge
+          className="w-full cursor-default hover:bg-default"
+          variant="default"
+        >
+          <Text className="w-full font-retro py-3 px-1 text-center">
+            {getStatus(
+              gameState.data?.state as number,
+              isYourTurn,
+              isPlayer1,
+              isPlayer2,
+            )}
           </Text>
-        )}
+        </Badge>
+        <div className="grid grid-rows-3 grid-cols-3 border-1 mt-6">
+          {gameState.data?.board.map((row, rowIndex) => {
+            return row.map((_, colIndex) => (
+              <GameCell
+                key={`${rowIndex}_${colIndex}`}
+                value={
+                  gameState.data.board[rowIndex][colIndex] as GameCellValue
+                }
+                position={[rowIndex, colIndex]}
+                onMakeMove={handleMakeMove}
+                isYourTurn={isYourTurn}
+              />
+            ))
+          })}
+        </div>
+        <div className="flex flex-col mt-3 text-center">
+          <Text className="font-retro">
+            Player: {shortenAddress(address as Address)}
+          </Text>
+          {balance && (
+            <Text className="font-retro">
+              Balance: {formatEther(balance?.value)}
+            </Text>
+          )}
+        </div>
       </div>
+      <MakeMoveDialog
+        isOpen={showDialog}
+        onOpenChange={setShowDialog}
+        gameId={id}
+        position={nextMove}
+        onComplete={handleFinishMakingMove}
+      />
     </div>
   )
 }

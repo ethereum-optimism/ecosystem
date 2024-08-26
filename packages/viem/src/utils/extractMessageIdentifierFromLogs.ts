@@ -6,9 +6,8 @@ import type {
   TransactionReceipt,
   Transport,
 } from 'viem'
-import { BaseError, parseEventLogs } from 'viem'
+import { BaseError } from 'viem'
 
-import { l2ToL2CrossDomainMessengerABI } from '@/abis.js'
 import type { MessageIdentifier } from '@/types/interop.js'
 import type { ErrorType } from '@/types/utils.js'
 
@@ -67,12 +66,7 @@ export async function extractMessageIdentifierFromLogs<
 ): Promise<ExtractMessageIdentifierFromLogsReturnType> {
   const { receipt } = parameters
 
-  const sentMessageLogs = parseEventLogs({
-    abi: l2ToL2CrossDomainMessengerABI,
-    logs: receipt.logs,
-  })
-
-  const log = sentMessageLogs[0]
+  const log = receipt.logs.find((log) => log.topics.length === 0)
   if (!log) {
     throw new ReceiptContainsMessageIdentifierError({
       hash: receipt.transactionHash,
@@ -82,8 +76,8 @@ export async function extractMessageIdentifierFromLogs<
   const block = await client.getBlock({ blockHash: log.blockHash })
 
   const id = {
-    origin: receipt.from,
-    blockNumber: log.blockNumber,
+    origin: log.address,
+    blockNumber: block.number,
     logIndex: BigInt(log.logIndex),
     timestamp: block.timestamp,
     chainId: BigInt(client.chain?.id as number),

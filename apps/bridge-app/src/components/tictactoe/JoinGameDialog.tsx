@@ -1,5 +1,3 @@
-import { useJoinGame } from '@/hooks/tictactoe/useJoinGame'
-import { getMessageFromRevert } from '@/utils/tictactoe'
 import {
   Button,
   Dialog,
@@ -9,31 +7,25 @@ import {
   DialogTitle,
   DialogTrigger,
   Input,
-  useToast,
 } from '@eth-optimism/ui-components'
-import { useCallback, useState } from 'react'
+import { useState } from 'react'
 import { useNavigate } from 'react-router'
+import { InteropDialogContent } from '@/components/dialogs/InteropGameDialogContent'
+import {
+  TIC_TAC_TOE_CONTRACT_ADDRESS,
+  ticTacToeABI,
+} from '@/constants/contracts'
+import { Address } from 'viem'
+import { useAccount } from 'wagmi'
+import { supersimL2A, supersimL2B } from '@eth-optimism/viem'
 
 const IGNORE_MATH_SYMBOLS = ['e', 'E', '+', '-']
 
 export const JoinGameDialog = () => {
-  const { toast } = useToast()
+  const { address } = useAccount()
   const [gameId, setGameId] = useState<number | undefined>(undefined)
+  const [step, setStep] = useState<'inputGameId' | 'executeFlow'>('inputGameId')
   const navigate = useNavigate()
-  const { joinGame } = useJoinGame()
-
-  const handleJoinGame = useCallback(async () => {
-    try {
-      await joinGame(gameId as number)
-      navigate(`/tictactoe/${gameId}`)
-    } catch (err) {
-      const errorMessage = getMessageFromRevert(err)
-
-      if (errorMessage) {
-        toast({ title: errorMessage, duration: 5000 })
-      }
-    }
-  }, [gameId, navigate, toast])
 
   return (
     <Dialog>
@@ -49,32 +41,44 @@ export const JoinGameDialog = () => {
           </DialogTitle>
         </DialogHeader>
 
-        <div className="flex flex-col pt-3 gap-3">
-          <Input
-            value={gameId}
-            onKeyDown={(e) =>
-              IGNORE_MATH_SYMBOLS.includes(e.key) && e.preventDefault()
-            }
-            onChange={(e) => setGameId(parseInt(e.target.value))}
-            type="number"
-          />
+        {step === 'inputGameId' ? (
+          <div className="flex flex-col pt-3 gap-3">
+            <Input
+              value={gameId}
+              onKeyDown={(e) =>
+                IGNORE_MATH_SYMBOLS.includes(e.key) && e.preventDefault()
+              }
+              onChange={(e) => setGameId(parseInt(e.target.value))}
+              type="number"
+            />
 
-          <Button
-            type="button"
-            variant="default"
-            className="font-retro"
-            disabled={typeof gameId !== 'number'}
-            onClick={handleJoinGame}
-          >
-            Join
-          </Button>
-
-          <DialogClose asChild>
-            <Button type="button" variant="secondary" className="font-retro">
-              Cancel
+            <Button
+              type="button"
+              variant="default"
+              className="font-retro"
+              disabled={typeof gameId !== 'number'}
+              onClick={() => setStep('executeFlow')}
+            >
+              Join
             </Button>
-          </DialogClose>
-        </div>
+
+            <DialogClose asChild>
+              <Button type="button" variant="secondary" className="font-retro">
+                Cancel
+              </Button>
+            </DialogClose>
+          </div>
+        ) : (
+          <InteropDialogContent
+            abi={ticTacToeABI}
+            functionName="joinGame"
+            contractAddress={TIC_TAC_TOE_CONTRACT_ADDRESS}
+            args={[address as Address, BigInt(gameId as number)]}
+            originChain={supersimL2B}
+            destinationChain={supersimL2A}
+            onComplete={async () => navigate(`/tictactoe/${gameId}`)}
+          />
+        )}
       </DialogContent>
     </Dialog>
   )

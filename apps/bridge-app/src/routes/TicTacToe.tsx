@@ -5,15 +5,9 @@ import { SupportedNetworks } from '@/providers/SupportedNetworks'
 import { Text } from '@eth-optimism/ui-components'
 import { supersimL1, supersimL2A, supersimL2B } from '@eth-optimism/viem'
 import { useParams } from 'react-router'
-import { optimismSepolia, Chain } from 'viem/chains'
+import { Chain } from 'viem/chains'
 
-const supportedChains: Chain[] = [optimismSepolia]
-
-if (import.meta.env.VITE_SUPERSIM_ENABLED === 'true') {
-  supportedChains.push(supersimL1)
-  supportedChains.push(supersimL2A)
-  supportedChains.push(supersimL2B)
-}
+const supportedChains: Chain[] = [supersimL1, supersimL2A, supersimL2B]
 
 export const TicTacToe = () => {
   const params = useParams()
