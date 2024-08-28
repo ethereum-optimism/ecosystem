@@ -147,24 +147,24 @@ const faucetConfigs: FaucetConfig[] = [
       name: 'Metal Sepolia',
       network: 'metal-sepolia',
       nativeCurrency: { name: 'Sepolia Ether', symbol: 'ETH', decimals: 18 },
-        rpcUrls: {
-          default: {
-            http: ['https://testnet.rpc.metall2.com'],
-          },
-          public: {
-            http: ['https://testnet.rpc.metall2.com'],
-          },
+      rpcUrls: {
+        default: {
+          http: ['https://testnet.rpc.metall2.com'],
         },
-        blockExplorers: {
-          default: {
-            name: 'Blockscout',
-            url: 'https://testnet.explorer.metall2.com',
-          },
+        public: {
+          http: ['https://testnet.rpc.metall2.com'],
         },
+      },
+      blockExplorers: {
+        default: {
+          name: 'Blockscout',
+          url: 'https://testnet.explorer.metall2.com',
+        },
+      },
     }),
     onChainDripAmount: DEFAULT_ON_CHAIN_DRIP_AMOUNT,
     offChainDripAmount: DEFAULT_OFF_CHAIN_DRIP_AMOUNT,
-    supportedEnvironments: ['development'],
+    supportedEnvironments: ['staging', 'development'],
     l1BridgeAddress: '0x21530aAdF4DCFb9c477171400E40d4ef615868BE',
   },
 ]
