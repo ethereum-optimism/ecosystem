@@ -164,7 +164,7 @@ const faucetConfigs: FaucetConfig[] = [
     }),
     onChainDripAmount: DEFAULT_ON_CHAIN_DRIP_AMOUNT,
     offChainDripAmount: DEFAULT_OFF_CHAIN_DRIP_AMOUNT,
-    supportedEnvironments: ['staging', 'development'],
+    supportedEnvironments: ['production', 'staging', 'development'],
     l1BridgeAddress: '0x21530aAdF4DCFb9c477171400E40d4ef615868BE',
   },
 ]
