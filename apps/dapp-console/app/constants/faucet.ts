@@ -44,4 +44,9 @@ export const getFaucetNetworks = (showNewLogo: boolean) => [
     image: '/logos/cyber-logo.png',
     chainID: 111557560,
   },
+  {
+    label: 'Metal Sepolia',
+    image: '/logos/metal-logo.png',
+    chainID: 1740,
+  },
 ]
