@@ -16,6 +16,7 @@ const flags = {
   enable_deployment_rebate: flag.bool,
   enable_console_faucet: flag.bool,
   enable_new_brand: flag.bool,
+  enable_github_auth: flag.bool,
 }
 
 export type FeatureFlag = keyof typeof flags

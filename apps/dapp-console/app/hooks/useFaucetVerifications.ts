@@ -3,9 +3,11 @@ import { useConnectedWallet } from '@/app/hooks/useConnectedWallet'
 import { Authentications } from '@/app/faucet/types'
 import { getOnchainAuthentication } from '@/app/faucet/helpers'
 import { usePrivy } from '@privy-io/react-auth'
+import { useAuth } from '@/app/hooks/useAuth'
 
 const useFaucetVerifications = () => {
   const { authenticated, ready } = usePrivy()
+  const { userNeedsGithubAuth } = useAuth()
   const { connectedWallet } = useConnectedWallet()
   const walletAddress = connectedWallet?.address ?? ''
 
@@ -85,7 +87,7 @@ const useFaucetVerifications = () => {
       {
         authMode: 'PRIVY',
       },
-      { enabled: !!authenticated },
+      { enabled: !!authenticated && !userNeedsGithubAuth },
     )
 
   const isAuthenticationLoading =
