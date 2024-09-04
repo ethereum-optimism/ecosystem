@@ -29,6 +29,7 @@ import { AdminApi } from './api/AdminApi'
 import { ensureAdmin } from './auth'
 import { corsAllowlist, envVars } from './constants'
 import { connectToDatabase, runMigrations } from './db'
+import { GrowthbookStore } from './growthbook/GrowthbookStore'
 import { getRateLimiter } from './middleware/getRateLimiter'
 import { metrics } from './monitoring/metrics'
 import { AppsRoute } from './routes/apps'
@@ -131,6 +132,7 @@ export class Service {
       envVars.PRIVY_APP_ID,
       envVars.PRIVY_APP_SECRET,
     )
+    const growthbookStore = await GrowthbookStore.create()
 
     const logger = pino().child({
       namespace: 'dapp-console-api-server',
@@ -174,6 +176,7 @@ export class Service {
     )
     const faucetRoute = new FaucetRoute(
       trpc,
+      growthbookStore,
       getSupportedFaucets(gatewayRedisCache),
     )
 

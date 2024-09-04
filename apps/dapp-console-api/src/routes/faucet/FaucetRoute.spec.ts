@@ -1,5 +1,6 @@
 import { faucetAbi } from '@eth-optimism/contracts-ecosystem'
-import type { RouterCaller } from '@trpc/server'
+import type { PrivyClient } from '@privy-io/server-auth'
+import { type RouterCaller, TRPCError } from '@trpc/server'
 import type { getIronSession } from 'iron-session'
 import type {
   Account,
@@ -11,8 +12,9 @@ import type {
   Transport,
   WalletClient,
 } from 'viem'
-import { parseEther } from 'viem'
+import { keccak256, parseEther, stringToHex } from 'viem'
 import { privateKeyToAccount } from 'viem/accounts'
+import type { Mock } from 'vitest'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
 import type { SessionData } from '@/constants'
@@ -29,6 +31,7 @@ import {
   deployOffChainFamContract,
   deployOnChainFamContract,
 } from '@/testhelpers/deployFaucetContracts'
+import { mockGrowthbookStore } from '@/testhelpers/MockGrowtbookStore'
 import {
   createL2PublicClient,
   createL2TestClient,
@@ -52,6 +55,8 @@ describe(FaucetRoute.name, () => {
   let faucetAdminAccount: PrivateKeyAccount
   let ownerAccount: PrivateKeyAccount
   let recipientAccount: PrivateKeyAccount
+  let privyClient: PrivyClient
+  let faucet: Faucet
 
   let trpc: Trpc
   let session: Awaited<ReturnType<typeof getIronSession<SessionData>>>
@@ -65,7 +70,10 @@ describe(FaucetRoute.name, () => {
       isVerified: true,
       createdAt: Date.now().toString(),
     } as WorldIdSessionType)
-    const privyClient = mockPrivyClient()
+    privyClient = mockPrivyClient()
+    ;(privyClient.getUser as Mock).mockImplementation(async () => ({
+      getUser: {},
+    }))
 
     trpc = new Trpc(privyClient, mockLogger, mockDB)
 
@@ -142,25 +150,26 @@ describe(FaucetRoute.name, () => {
       account: faucetAdminAccount,
       chain: walletClient.chain,
     })
+    mockGrowthbookStore.get.mockImplementation(() => false)
+    faucet = new Faucet({
+      chainId: 11155111,
+      redisCache: redisCache,
+      faucetAddress: faucetAddress,
+      displayName: 'Sepolia',
+      onChainDripAmount: parseEther('1.0'),
+      offChainDripAmount: parseEther('0.05'),
+      onChainAuthModuleAddress: onChainFamAddress,
+      offChainAuthModuleAddress: offChainFamAddress,
+      blockExplorerUrl: 'https://sepolia.infura.io/v3',
+      isL1Faucet: true,
+      l1BridgeAddress: undefined,
+      publicClient: publicClient,
+      adminWalletClient: walletClient,
+      l1ChainId: 11155111,
+    })
 
-    const route = new FaucetRoute(trpc, [
-      new Faucet({
-        chainId: 11155111,
-        redisCache: redisCache,
-        faucetAddress: faucetAddress,
-        displayName: 'Sepolia',
-        onChainDripAmount: parseEther('1.0'),
-        offChainDripAmount: parseEther('0.05'),
-        onChainAuthModuleAddress: onChainFamAddress,
-        offChainAuthModuleAddress: offChainFamAddress,
-        blockExplorerUrl: 'https://sepolia.infura.io/v3',
-        isL1Faucet: true,
-        l1BridgeAddress: undefined,
-        publicClient: publicClient,
-        adminWalletClient: walletClient,
-        l1ChainId: 11155111,
-      }),
-    ]).handler
+    const route = new FaucetRoute(trpc, mockGrowthbookStore as any, [faucet])
+      .handler
     caller = createSignedInCaller(route, session)
   })
 
@@ -334,6 +343,58 @@ describe(FaucetRoute.name, () => {
         etherscanUrl: `https://sepolia.infura.io/v3/tx/${claimResponse.tx}`,
         recipientAddress: recipientAccount.address,
         tx: claimResponse.tx,
+      })
+    })
+
+    describe('with github auth required', () => {
+      beforeEach(() => {
+        mockGrowthbookStore.get.mockImplementation(() => true)
+      })
+
+      it('if the user is a Privy user, but has not linked their github then claim fails', async () => {
+        await expect(
+          caller.offChainClaims({
+            recipientAddress: recipientAccount.address,
+            authMode: 'PRIVY',
+            chainId: 11155111,
+          }),
+        ).rejects.toEqual(
+          new TRPCError({
+            code: 'UNAUTHORIZED',
+            message: 'User is not logged into github',
+          }),
+        )
+      })
+
+      it('if the user is a Privy user that has linked their github, then the drip succeeds', async () => {
+        const githubId = '1234'
+        ;(privyClient.getUser as Mock).mockImplementation(async () => ({
+          github: {
+            subject: githubId,
+          },
+        }))
+        const spy = vi.spyOn(faucet, 'triggerFaucetDrip')
+
+        const claimResponse = await caller.offChainClaims({
+          recipientAddress: recipientAccount.address,
+          authMode: 'PRIVY',
+          chainId: 11155111,
+        })
+
+        expect(claimResponse).toEqual({
+          amountDistributed: BigInt(50000000000000000n),
+          authMode: 'PRIVY',
+          chainId: 11155111,
+          error: undefined,
+          etherscanUrl: `https://sepolia.infura.io/v3/tx/${claimResponse.tx}`,
+          recipientAddress: recipientAccount.address,
+          tx: claimResponse.tx,
+        })
+        expect(spy).toHaveBeenCalledWith({
+          authMode: 'PRIVY',
+          recipientAddress: '0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC',
+          userId: keccak256(stringToHex(githubId)),
+        })
       })
     })
   })

@@ -8,9 +8,10 @@ import { sepolia } from 'viem/chains'
 import { zodEthereumAddress, zodEthereumSignature } from '@/api'
 import type { SessionData } from '@/constants'
 import { envVars } from '@/constants'
+import type { GrowthbookStore } from '@/growthbook'
 import { isPrivyAuthed } from '@/middleware'
 import { metrics } from '@/monitoring/metrics'
-import type { Trpc } from '@/Trpc'
+import { Trpc } from '@/Trpc'
 
 import { getCoinbaseVerificationAttestationFromEAS } from '../../utils/coinbaseVerification'
 import type { Faucet, FaucetAuthMode } from '../../utils/Faucet'
@@ -87,7 +88,7 @@ export class FaucetRoute extends Route {
     )
     .query(async ({ ctx, input }) => {
       const { authMode, walletAddress } = input
-      const userId = this.getUserIdForAuthMode(
+      const userId = await this.getUserIdForAuthMode(
         ctx.session,
         authMode,
         walletAddress as Address | undefined,
@@ -186,13 +187,14 @@ export class FaucetRoute extends Route {
 
       let tx: Hex | undefined
       let error: FaucetError | undefined
+      const userId = await this.getUserIdForAuthMode(
+        ctx.session,
+        authMode,
+        ownerAddress,
+      )
       try {
         tx = await faucet.triggerFaucetDrip({
-          userId: this.getUserIdForAuthMode(
-            ctx.session,
-            authMode,
-            ownerAddress,
-          ),
+          userId,
           recipientAddress,
           authMode,
         })
@@ -248,8 +250,6 @@ export class FaucetRoute extends Route {
           })
       }
 
-      console.log('got here')
-
       const faucet = this.faucets.find((f) => f.chainId === chainId)
 
       if (!faucet) {
@@ -261,9 +261,10 @@ export class FaucetRoute extends Route {
 
       let tx: Hex | undefined
       let error: FaucetError | undefined
+      const userId = await this.getUserIdForAuthMode(ctx.session, authMode)
       try {
         tx = await faucet.triggerFaucetDrip({
-          userId: this.getUserIdForAuthMode(ctx.session, authMode),
+          userId,
           recipientAddress,
           authMode,
         })
@@ -296,14 +297,20 @@ export class FaucetRoute extends Route {
 
   constructor(
     trpc: Trpc,
+    private readonly growthBookStore: GrowthbookStore,
     private readonly faucets: Faucet[],
   ) {
     super(trpc)
   }
 
   /// The user id to store on-chain for tracking the last time a user that authed with
-  /// github received a faucet drip.
+  /// privy received a faucet drip.
   private readonly getUserIdForPrivyAuth = (userId: string) =>
+    keccak256(stringToHex(userId))
+
+  /// The user id to store on-chain for tracking the last time a user that authed with
+  /// github received a faucet drip.
+  private readonly getUserIdForGithubAuth = (userId: string) =>
     keccak256(stringToHex(userId))
 
   /// The user id to store on-chain for tracking the last time a user that authed with
@@ -316,7 +323,7 @@ export class FaucetRoute extends Route {
   private readonly getUserIdForWorldIdAuth = (nullifierHash: string) =>
     keccak256(nullifierHash as Hex)
 
-  private readonly getUserIdForAuthMode = (
+  private readonly getUserIdForAuthMode = async (
     session: IronSession<SessionData>,
     authMode: FaucetAuthMode,
     walletAddress?: Address,
@@ -326,9 +333,35 @@ export class FaucetRoute extends Route {
         if (!session.user || !session.user.privyDid) {
           throw new TRPCError({
             code: 'UNAUTHORIZED',
-            message: 'User is not logged into github',
+            message: 'User is not logged into privy',
           })
         }
+        if (this.growthBookStore.get('enable_github_auth')) {
+          const user = await this.trpc.privy
+            .getUser(session.user.privyDid)
+            .catch((err) => {
+              metrics.fetchPrivyUserErrorCount.inc()
+              this.logger?.error(
+                {
+                  error: err,
+                  entityId: session.user?.entityId,
+                  privyDid: session.user?.privyDid,
+                },
+                'error fetching privy user',
+              )
+              throw Trpc.handleStatus(500, 'error fetching privy user')
+            })
+
+          if (!user.github) {
+            throw new TRPCError({
+              code: 'UNAUTHORIZED',
+              message: 'User is not logged into github',
+            })
+          }
+
+          return this.getUserIdForGithubAuth(user.github.subject)
+        }
+
         return this.getUserIdForPrivyAuth(session.user.privyDid)
       case 'ATTESTATION':
         if (!walletAddress) {
