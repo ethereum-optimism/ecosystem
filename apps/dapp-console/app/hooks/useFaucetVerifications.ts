@@ -17,7 +17,10 @@ const useFaucetVerifications = () => {
       {
         address: walletAddress,
       },
-      { enabled: !!walletAddress && !!authenticated },
+      {
+        enabled: !!walletAddress && !!authenticated,
+        refetchOnWindowFocus: false,
+      },
     )
 
   const { data: coinbaseNextDrips, refetch: refetchCoinbaseDrips } =
@@ -35,7 +38,10 @@ const useFaucetVerifications = () => {
       {
         address: walletAddress,
       },
-      { enabled: !!walletAddress && !!authenticated },
+      {
+        enabled: !!walletAddress && !!authenticated,
+        refetchOnWindowFocus: false,
+      },
     )
 
   const { data: easNextDrips, refetch: refetchEasNextDrips } =
@@ -53,7 +59,10 @@ const useFaucetVerifications = () => {
       {
         address: walletAddress,
       },
-      { enabled: !!walletAddress && !!authenticated },
+      {
+        enabled: !!walletAddress && !!authenticated,
+        refetchOnWindowFocus: false,
+      },
     )
 
   const { data: gitcoinNextDrips, refetch: refetchGitcoinNextDrips } =
@@ -72,6 +81,7 @@ const useFaucetVerifications = () => {
     isFetching: isWorldIDUserLoading,
   } = apiClient.auth.isWorldIdUser.useQuery(undefined, {
     enabled: !!authenticated,
+    refetchOnWindowFocus: false,
   })
 
   const { data: worldIdNextDrips, refetch: refetchWorldIdNextDrips } =

@@ -17,7 +17,7 @@ interface ClaimButtonProps {
   chainId: number
   authentications: Authentications
   recipientAddress: string
-  onSuccess: () => void
+  onClaimStarted: () => void
   onFailed: () => void
   setBlockExplorerUrl: (url: string) => void
   children: React.ReactNode
@@ -32,7 +32,7 @@ const ClaimButton = forwardRef<HTMLButtonElement, ClaimButtonProps>(
       chainId,
       authentications,
       recipientAddress,
-      onSuccess,
+      onClaimStarted,
       onFailed,
       setBlockExplorerUrl,
       children,
@@ -97,6 +97,7 @@ const ClaimButton = forwardRef<HTMLButtonElement, ClaimButtonProps>(
       if (!authenticated) return
       onClick()
       try {
+        onClaimStarted()
         let response
         if (isOnchainClaim) {
           response = await handleOnchainClaim()
@@ -104,9 +105,14 @@ const ClaimButton = forwardRef<HTMLButtonElement, ClaimButtonProps>(
           response = await handleOffchainClaim()
         }
 
+        if (response && response.error) {
+          console.error('Claim failed', response.error)
+          onFailed()
+          return
+        }
+
         if (response && !response.error) {
           setBlockExplorerUrl(response.etherscanUrl || '')
-          onSuccess()
           trackFaucetClaim({
             chainId,
             authMode: response.authMode,
