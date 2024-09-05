@@ -1,12 +1,15 @@
-import { useLogin, useLogout } from '@privy-io/react-auth'
+import { useLogin, useLogout, usePrivy } from '@privy-io/react-auth'
 import { apiClient } from '@/app/helpers/apiClient'
 import { toast } from '@eth-optimism/ui-components'
 import { LONG_DURATION } from '@/app/constants/toast'
 import { captureError } from '@/app/helpers/errorReporting'
+import { useFeatureFlag } from '@/app/hooks/useFeatureFlag'
 
 const useAuth = () => {
   const { mutateAsync: loginUser } = apiClient.auth.loginUser.useMutation()
   const { mutateAsync: logoutUser } = apiClient.auth.logoutUser.useMutation()
+  const { ready, authenticated, user } = usePrivy()
+  const githubAuthRequired = useFeatureFlag('enable_github_auth')
 
   const { login: privyLogin } = useLogin({
     onComplete: async () => {
@@ -38,7 +41,12 @@ const useAuth = () => {
     },
   })
 
-  return { login: privyLogin, logout: privyLogout }
+  return {
+    login: privyLogin,
+    logout: privyLogout,
+    userNeedsGithubAuth:
+      githubAuthRequired && ready && authenticated && !user?.github,
+  }
 }
 
 export { useAuth }

@@ -26,7 +26,8 @@ const seeDetails = (
 )
 
 const FaucetHeaderInner = () => {
-  const { connectWallet, authenticated } = usePrivy()
+  const { connectWallet, authenticated, linkGithub } = usePrivy()
+  const { userNeedsGithubAuth } = useAuth()
   const { connectedWallet } = useConnectedWallet()
   const { login } = useAuth()
   const { refetchWorldId, isAuthenticationLoading } = useFaucetVerifications()
@@ -112,6 +113,20 @@ const FaucetHeaderInner = () => {
           your onchain identity for more tokens. {seeDetails}
         </Text>
         <Button onClick={handleLogin}>Sign in</Button>
+      </>
+    )
+  } else if (userNeedsGithubAuth) {
+    // User is signed in, but no github is linked
+    content = (
+      <>
+        <Text as="h3" className="text-base font-semibold mb-1">
+          Link Github to use the faucet
+        </Text>
+        <Text as="p" className="text-base text-secondary-foreground mb-4">
+          Anyone can claim 0.05 test ETH on 1 network every 24 hours, or verify
+          your onchain identity for more tokens. {seeDetails}
+        </Text>
+        <Button onClick={linkGithub}>Link Github</Button>
       </>
     )
   } else if (!connectedWallet) {
