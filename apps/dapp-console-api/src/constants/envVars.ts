@@ -90,6 +90,7 @@ const envVarSchema = z.object({
   WORLDID_APP_ACTION_NAME: z.string(),
   API_QUEUE_REDIS_URL: z.string(),
   GROWTHBOOK_CLIENT_KEY: z.string(),
+  GROWTHBOOK_ENCRYPTION_KEY: z.string().optional(),
 })
 
 const isTest = process.env.NODE_ENV === 'test'
@@ -258,5 +259,6 @@ export const envVars = envVarSchema.parse(
         WORLDID_APP_ACTION_NAME: process.env.WORLDID_APP_ACTION_NAME,
         API_QUEUE_REDIS_URL: process.env.API_QUEUE_REDIS_URL,
         GROWTHBOOK_CLIENT_KEY: process.env.GROWTHBOOK_CLIENT_KEY,
+        GROWTHBOOK_ENCRYPTION_KEY: process.env.GROWTHBOOK_ENCRYPTION_KEY,
       },
 )

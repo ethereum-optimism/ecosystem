@@ -41,6 +41,7 @@ export class GrowthbookStore {
     const growthbook = new GrowthBook({
       apiHost: 'https://cdn.growthbook.io',
       clientKey: envVars.GROWTHBOOK_CLIENT_KEY,
+      decryptionKey: envVars.GROWTHBOOK_ENCRYPTION_KEY,
     })
     // Growthbook in general does not throw, instead just returning default values if fetch fails
     await growthbook.loadFeatures({ autoRefresh: true })
