@@ -102,7 +102,7 @@ const FaucetContent = () => {
 
       return () => clearInterval(interval)
     }
-  }, [claimStatus, secondsUntilNextDrip])
+  }, [claimStatus, secondsUntilNextDrip, refetchNextDrips])
 
   const handleAddressChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setAddress(e.target.value)
@@ -194,7 +194,7 @@ const FaucetContent = () => {
           chainId={selectedNetwork.chainID}
           authentications={faucetAuthentications}
           recipientAddress={address}
-          onSuccess={() => {
+          onClaimStarted={() => {
             setClaimStatus('initiated')
           }}
           onFailed={() => {

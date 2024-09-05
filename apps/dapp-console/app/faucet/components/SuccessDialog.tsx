@@ -15,6 +15,8 @@ import {
   RiLoader4Fill,
 } from '@remixicon/react'
 import { ClaimStatus } from '@/app/faucet/types'
+import { useFaucetVerifications } from '@/app/hooks/useFaucetVerifications'
+import { getOnchainAuthentication } from '@/app/faucet/helpers'
 
 type Props = {
   claimAmount: number | null
@@ -31,6 +33,8 @@ const SuccessDialog: React.FC<Props> = ({
   closeDialog,
   blockExplorerUrl,
 }) => {
+  const { faucetAuthentications } = useFaucetVerifications()
+
   const riveParams = useMemo(
     () => ({
       src: '/sunny-animation.riv',
@@ -51,6 +55,9 @@ const SuccessDialog: React.FC<Props> = ({
     'celebrate',
   )
 
+  const isClaimSuccessful = claimStatus === 'successful'
+  const isClaimInProgress = claimStatus === 'initiated'
+
   useEffect(() => {
     if (isClaimSuccessful && celebrateInput && !celebrateInput.value) {
       celebrateInput.value = true
@@ -60,7 +67,7 @@ const SuccessDialog: React.FC<Props> = ({
       }, 4000)
       return () => clearTimeout(timer)
     }
-  }, [claimStatus])
+  }, [claimStatus, celebrateInput, isClaimSuccessful])
 
   useEffect(() => {
     return () => {
@@ -70,23 +77,19 @@ const SuccessDialog: React.FC<Props> = ({
     }
   }, [rive])
 
-  const isOffchainClaim = claimAmount === 0.05
-  const isClaimSuccessful = claimStatus === 'successful'
-  const isClaimInProgress = claimStatus === 'initiated'
-
   let title
   let description
   if (isClaimSuccessful) {
     title = `Claimed ${claimAmount} ETH on ${claimNetwork}`
     description =
       'Please allow a few minutes for the testnet funds to arrive in your wallet'
-  } else if (isClaimInProgress || isOffchainClaim) {
+  } else if (isClaimInProgress) {
     title = 'Claiming testnet funds'
     description = 'Waiting for network confirmation'
   } else if (claimStatus === 'failed') {
     title = 'Claim failed'
     description = 'Please try again'
-  } else {
+  } else if (getOnchainAuthentication(faucetAuthentications)) {
     title = 'Please sign the transaction in your wallet'
     description = 'Please sign the transaction in your wallet'
   }
