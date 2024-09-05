@@ -198,6 +198,11 @@ export const metrics = {
     help: 'How many times the balance of a faucet failed to be fetched',
     labelNames: ['chainId'] as const,
   }),
+  faucetAdminWalletFetchBalanceFailures: new Counter({
+    name: 'faucet_admin_wallet_fetch_balance_failures',
+    help: 'How many times the balance of the faucet admin wallet failed to be fetched',
+    labelNames: ['chainId'] as const,
+  }),
   faucetFetchLastDripFailures: new Counter({
     name: 'faucet_fetch_last_drip_failures',
     help: 'How many times the last drip on a faucet failed to be fetched',

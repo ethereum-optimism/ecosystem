@@ -16,7 +16,7 @@ export const getFaucetContractBalance = async ({
 }) => redisCache.getItem<bigint>(getFaucetContractBalanceKey(address, chainId))
 
 const getFaucetAdminWalletBalanceKey = (address: Address, chainId: number) =>
-  `faucet_admin_wallet_balance_${chainId}_${address}`
+  `faucet_admin_wallet_balance_${chainId}_${address.toLowerCase()}`
 
 export const getFaucetAdminWalletBalance = async ({
   redisCache,

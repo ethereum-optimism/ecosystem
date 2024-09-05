@@ -12,7 +12,10 @@ import type {
 } from 'viem'
 import { encodeFunctionData, getContract, keccak256, numberToHex } from 'viem'
 
-import { getFaucetContractBalance } from './faucetBalances'
+import {
+  getFaucetAdminWalletBalance,
+  getFaucetContractBalance,
+} from './faucetBalances'
 import type { RedisCache } from './redis'
 
 export type FaucetConstructorArgs = {
@@ -116,6 +119,14 @@ export class Faucet {
       redisCache: this.redisCache,
       chainId: this.l1ChainId,
       address: this.faucetAddress,
+    })
+  }
+
+  public async getAdminWalletBalance() {
+    return getFaucetAdminWalletBalance({
+      redisCache: this.redisCache,
+      address: this.adminWalletClient.account.address,
+      chainId: this.l1ChainId,
     })
   }
 
