@@ -49,20 +49,20 @@ const FaucetContent = () => {
   const [claimStatus, setClaimStatus] = useState<ClaimStatus>(null)
 
   useEffect(() => {
-    if (secondsUntilNextDrip) {
-      setCountdown(secondsUntilNextDrip)
-    }
+    // if (secondsUntilNextDrip) {
+    //   setCountdown(secondsUntilNextDrip)
+    // }
 
-    const interval = setInterval(() => {
-      setCountdown((prevCountdown) => {
-        if (prevCountdown > 0) {
-          return prevCountdown - 1
-        }
-        return prevCountdown
-      })
-    }, 1000)
+    // const interval = setInterval(() => {
+    //   setCountdown((prevCountdown) => {
+    //     if (prevCountdown > 0) {
+    //       return prevCountdown - 1
+    //     }
+    //     return prevCountdown
+    //   })
+    // }, 1000)
 
-    return () => clearInterval(interval)
+    // return () => clearInterval(interval)
   }, [secondsUntilNextDrip])
 
   const hasAuthentication = Object.values(faucetAuthentications).some(Boolean)

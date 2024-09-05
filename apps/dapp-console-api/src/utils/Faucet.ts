@@ -165,6 +165,9 @@ export class Faucet {
     )
     const { maxPriorityFeePerGas } =
       await this.publicClient.estimateFeesPerGas()
+    await this._faucetContract.simulate.drip([dripParams, authParams], {
+      gas: BigInt(DRIP_MIN_GAS_LIMIT),
+    })
     return this._faucetContract.write.drip([dripParams, authParams], {
       gas: BigInt(DRIP_MIN_GAS_LIMIT),
       maxPriorityFeePerGas:
