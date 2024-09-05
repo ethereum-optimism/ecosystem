@@ -108,11 +108,11 @@ const useFaucetVerifications = () => {
     isWorldIDUserLoading
 
   const refetchNextDrips = () => {
-    if (isCoinbaseVerified) refetchCoinbaseDrips()
-    if (isAttested) refetchEasNextDrips()
-    if (isGitcoinVerified) refetchGitcoinNextDrips()
-    if (isWorldIdUser) refetchWorldIdNextDrips()
-    refetchPrivyNextDrips()
+    // if (isCoinbaseVerified) refetchCoinbaseDrips()
+    // if (isAttested) refetchEasNextDrips()
+    // if (isGitcoinVerified) refetchGitcoinNextDrips()
+    // if (isWorldIdUser) refetchWorldIdNextDrips()
+    // refetchPrivyNextDrips()
   }
 
   const faucetAuthentications: Authentications = {

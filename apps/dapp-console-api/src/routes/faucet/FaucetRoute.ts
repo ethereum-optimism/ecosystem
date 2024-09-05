@@ -490,13 +490,11 @@ export class FaucetRoute extends Route {
   }
 
   private readonly handleFaucetDripError = (
-    error: { details?: string },
+    error: Error,
     chainId: number,
   ): FaucetError => {
-    const errorDetails = error.details ?? ''
     if (
-      errorDetails.includes &&
-      errorDetails.includes(
+      error.message.includes(
         'Faucet: auth cannot be used yet because timeout has not elapsed',
       )
     ) {
