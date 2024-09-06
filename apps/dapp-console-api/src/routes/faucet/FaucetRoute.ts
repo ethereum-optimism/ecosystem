@@ -352,6 +352,10 @@ export class FaucetRoute extends Route {
             message: 'User is not logged into privy',
           })
         }
+        console.log(
+          `this.growthBookStore.get('enable_github_auth')`,
+          this.growthBookStore.get('enable_github_auth'),
+        )
         if (this.growthBookStore.get('enable_github_auth')) {
           const user = await this.trpc.privy
             .getUser(session.user.privyDid)
@@ -374,6 +378,7 @@ export class FaucetRoute extends Route {
               message: 'User is not logged into github',
             })
           }
+          console.log('user has github subject', !!user.github.subject)
 
           return this.getUserIdForGithubAuth(user.github.subject)
         }
