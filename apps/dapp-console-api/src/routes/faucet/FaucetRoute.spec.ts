@@ -194,6 +194,8 @@ describe(FaucetRoute.name, () => {
           isAvailable: true,
           onChainDripAmount: parseEther('1.0'),
           offChainDripAmount: parseEther('0.05'),
+          adminWalletBalance: 4200000000000000000000n,
+          faucetBalance: 4200000000000000000000n,
         },
       ])
     })

@@ -45,26 +45,42 @@ export class FaucetRoute extends Route {
     async () => {
       return Promise.all(
         this.faucets.map(async (faucet) => {
-          let isFaucetAvailable: boolean = true
-          try {
-            const faucetBalance = await faucet.getFaucetBalance()
-            // If the faucet balance has not been fetched and returns null
-            // assume that the faucet is available to claim from.
-            isFaucetAvailable =
-              faucetBalance === null || faucetBalance >= parseEther('1.0')
-          } catch (e) {
+          const faucetBalance = await faucet.getFaucetBalance().catch((err) => {
             this.logger?.error(
-              `${FaucetRoute.LOG_TAG} Failed to fetch faucet balance for chain ${faucet.chainId}: ${e.message}`,
-              e,
+              `${FaucetRoute.LOG_TAG} Failed to fetch faucet balance for chain ${faucet.chainId}: ${err.message}`,
+              err,
             )
             metrics.faucetFetchBalanceFailures.inc({
               chainId: faucet.chainId,
             })
-          }
+            return null
+          })
+          const adminWalletBalance = await faucet
+            .getAdminWalletBalance()
+            .catch((err) => {
+              this.logger?.error(
+                `${FaucetRoute.LOG_TAG} Failed to fetch faucet balance for chain ${faucet.chainId}: ${err.message}`,
+                err,
+              )
+              metrics.faucetAdminWalletFetchBalanceFailures.inc({
+                chainId: faucet.chainId,
+              })
+              return null
+            })
+
+          // If the faucet balance has not been fetched and returns null
+          // assume that the faucet is available to claim from.
+          const isFaucetAvailable =
+            faucetBalance === null || faucetBalance >= parseEther('1.0')
+          const isFaucetAdminWalletAvailable =
+            adminWalletBalance === null ||
+            adminWalletBalance > parseEther('0.01')
           return {
             displayName: faucet.displayName,
             chainId: faucet.chainId,
-            isAvailable: isFaucetAvailable,
+            isAvailable: isFaucetAvailable && isFaucetAdminWalletAvailable,
+            adminWalletBalance,
+            faucetBalance,
             onChainDripAmount: faucet.onChainDripAmount,
             offChainDripAmount: faucet.offChainDripAmount,
           }
