@@ -19,7 +19,6 @@ import { SuccessDialog } from '@/app/faucet/components/SuccessDialog'
 import { useConnectedWallet } from '@/app/hooks/useConnectedWallet'
 import { generateClaimSignature } from '@/app/faucet/helpers'
 import { getFaucetNetworks } from '@/app/constants/faucet'
-import { usePrivy } from '@privy-io/react-auth'
 import { ClaimButton } from '@/app/faucet/components/ClaimButton'
 import { useFaucetVerifications } from '@/app/hooks/useFaucetVerifications'
 import { Alert } from '@eth-optimism/ui-components/src/components/ui/alert/alert'
@@ -30,9 +29,8 @@ import { useFeatureFlag } from '@/app/hooks/useFeatureFlag'
 
 const FaucetContent = () => {
   const { connectedWallet } = useConnectedWallet()
-  const { faucetAuthentications } = useFaucetVerifications()
+  const { authenticated, faucetAuthentications } = useFaucetVerifications()
 
-  const { authenticated } = usePrivy()
   const { secondsUntilNextDrip, refetchNextDrips } = useFaucetVerifications()
   const { unavailableNetworksChainIds } = useFaucetNetworks()
 
