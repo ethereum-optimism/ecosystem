@@ -1,7 +1,6 @@
 import { apiClient } from '@/app/helpers/apiClient'
 import { useConnectedWallet } from '@/app/hooks/useConnectedWallet'
 import { Button } from '@eth-optimism/ui-components/src/components/ui/button/button'
-import { usePrivy } from '@privy-io/react-auth'
 import { forwardRef } from 'react'
 import { Authentications } from '@/app/faucet/types'
 import {
@@ -9,6 +8,7 @@ import {
   hasAuthentication,
 } from '@/app/faucet/helpers'
 import { trackFaucetClaim } from '@/app/event-tracking/mixpanel'
+import { useFaucetVerifications } from '@/app/hooks/useFaucetVerifications'
 
 interface ClaimButtonProps {
   isDisabled: boolean
@@ -40,7 +40,7 @@ const ClaimButton = forwardRef<HTMLButtonElement, ClaimButtonProps>(
     ref,
   ) => {
     const { connectedWallet } = useConnectedWallet()
-    const { authenticated } = usePrivy()
+    const { authenticated } = useFaucetVerifications()
 
     const { mutateAsync: claimOnchain } =
       apiClient.faucet.onChainClaims.useMutation()
