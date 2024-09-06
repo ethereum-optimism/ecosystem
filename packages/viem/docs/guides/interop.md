@@ -52,14 +52,14 @@ const hash = await opWalletClient.sendL2ToL2Message(sendArgs)
 const receipt = await opPublicClient.waitForTransactionReceipt({ hash })
 
 // Grab MessageIdentifier from logs
-const id = await extractMessageIdentifierFromLogs(opPublicClient, { receipt })
+const { id, payload } = await extractMessageIdentifierFromLogs(opPublicClient, { receipt })
 
 // execute the L2 to L2 message
 const executeArgs = await basePublicClient.buildExecuteL2ToL2Message({
     id,
     account,
     target: ticTacToeAddress,
-    message: encodedMessage,
+    message: payload,
 })
 
 await baseWalletClient.executeL2ToL2Message(executeArgs)
