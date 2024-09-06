@@ -26,7 +26,7 @@ const hash = await sendMessage({
 
 - **Type:** `(params: SendL2ToL2MessageParameters) => Promise<`0x${string}`>`
 
-Call this function with the parameters below to initiate a cross chain message
+Call this function with the [SendL2ToL2MessageParameters](https://github.com/ethereum-optimism/ecosystem/blob/main/packages/viem/docs/actions/sendL2ToL2Message.md#parameters) to initiate a cross chain message
 
 ### `isError`
 
