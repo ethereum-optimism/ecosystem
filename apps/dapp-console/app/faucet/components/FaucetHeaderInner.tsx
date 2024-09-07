@@ -27,7 +27,7 @@ const seeDetails = (
 
 const FaucetHeaderInner = () => {
   const { connectWallet, authenticated, linkGithub } = usePrivy()
-  const { userNeedsGithubAuth } = useAuth()
+  const { userHasGithubAuth } = useAuth()
   const { connectedWallet } = useConnectedWallet()
   const { login } = useAuth()
   const { refetchWorldId, isAuthenticationLoading } = useFaucetVerifications()
@@ -115,7 +115,7 @@ const FaucetHeaderInner = () => {
         <Button onClick={handleLogin}>Sign in</Button>
       </>
     )
-  } else if (userNeedsGithubAuth) {
+  } else if (!userHasGithubAuth) {
     // User is signed in, but no github is linked
     content = (
       <>
