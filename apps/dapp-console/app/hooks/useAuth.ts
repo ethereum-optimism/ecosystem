@@ -44,8 +44,8 @@ const useAuth = () => {
   return {
     login: privyLogin,
     logout: privyLogout,
-    userNeedsGithubAuth:
-      githubAuthRequired && ready && authenticated && !user?.github,
+    userHasGithubAuth:
+      !githubAuthRequired || (ready && authenticated && !!user?.github),
   }
 }
 

@@ -1,13 +1,16 @@
 import { apiClient } from '@/app/helpers/apiClient'
 import { useConnectedWallet } from '@/app/hooks/useConnectedWallet'
 import { Authentications } from '@/app/faucet/types'
-import { getOnchainAuthentication } from '@/app/faucet/helpers'
+import {
+  getOnchainAuthentication,
+  hasAuthentication,
+} from '@/app/faucet/helpers'
 import { usePrivy } from '@privy-io/react-auth'
 import { useAuth } from '@/app/hooks/useAuth'
 
 const useFaucetVerifications = () => {
   const { authenticated: privyAuthenticated, ready } = usePrivy()
-  const { userNeedsGithubAuth } = useAuth()
+  const { userHasGithubAuth } = useAuth()
   const { connectedWallet } = useConnectedWallet()
   const walletAddress = connectedWallet?.address ?? ''
 
@@ -18,7 +21,7 @@ const useFaucetVerifications = () => {
         address: walletAddress,
       },
       {
-        enabled: !!walletAddress && !!privyAuthenticated,
+        enabled: !!walletAddress && !!privyAuthenticated && userHasGithubAuth,
         refetchOnWindowFocus: false,
       },
     )
@@ -31,7 +34,10 @@ const useFaucetVerifications = () => {
       },
       {
         enabled:
-          !!isCoinbaseVerified && !!walletAddress && !!privyAuthenticated,
+          !!isCoinbaseVerified &&
+          !!walletAddress &&
+          !!privyAuthenticated &&
+          userHasGithubAuth,
       },
     )
 
@@ -42,7 +48,7 @@ const useFaucetVerifications = () => {
         address: walletAddress,
       },
       {
-        enabled: !!walletAddress && !!privyAuthenticated,
+        enabled: !!walletAddress && !!privyAuthenticated && userHasGithubAuth,
         refetchOnWindowFocus: false,
       },
     )
@@ -53,7 +59,13 @@ const useFaucetVerifications = () => {
         authMode: 'ATTESTATION',
         walletAddress: walletAddress,
       },
-      { enabled: !!isAttested && !!walletAddress && !!privyAuthenticated },
+      {
+        enabled:
+          !!isAttested &&
+          !!walletAddress &&
+          !!privyAuthenticated &&
+          userHasGithubAuth,
+      },
     )
 
   // Gitcoin check
@@ -63,7 +75,7 @@ const useFaucetVerifications = () => {
         address: walletAddress,
       },
       {
-        enabled: !!walletAddress && !!privyAuthenticated,
+        enabled: !!walletAddress && !!privyAuthenticated && userHasGithubAuth,
         refetchOnWindowFocus: false,
       },
     )
@@ -75,7 +87,11 @@ const useFaucetVerifications = () => {
         walletAddress: walletAddress,
       },
       {
-        enabled: !!isGitcoinVerified && !!walletAddress && !!privyAuthenticated,
+        enabled:
+          !!isGitcoinVerified &&
+          !!walletAddress &&
+          !!privyAuthenticated &&
+          userHasGithubAuth,
       },
     )
 
@@ -85,7 +101,7 @@ const useFaucetVerifications = () => {
     refetch: refetchWorldId,
     isFetching: isWorldIDUserLoading,
   } = apiClient.auth.isWorldIdUser.useQuery(undefined, {
-    enabled: !!privyAuthenticated,
+    enabled: !!privyAuthenticated && userHasGithubAuth,
     refetchOnWindowFocus: false,
   })
 
@@ -94,7 +110,7 @@ const useFaucetVerifications = () => {
       {
         authMode: 'WORLD_ID',
       },
-      { enabled: !!isWorldIdUser && !!privyAuthenticated },
+      { enabled: !!isWorldIdUser && !!privyAuthenticated && userHasGithubAuth },
     )
 
   const { data: nextDripsPrivy, refetch: refetchPrivyNextDrips } =
@@ -102,7 +118,7 @@ const useFaucetVerifications = () => {
       {
         authMode: 'PRIVY',
       },
-      { enabled: !!privyAuthenticated && !userNeedsGithubAuth },
+      { enabled: !!privyAuthenticated && userHasGithubAuth },
     )
 
   const isAuthenticationLoading =
@@ -146,9 +162,10 @@ const useFaucetVerifications = () => {
     secondsUntilNextDrip = nextDripsPrivy?.secondsUntilNextDrip || 0
   }
 
-  const authenticated =
-    Object.values(faucetAuthentications).some((auth) => auth === true) ||
-    (ready && privyAuthenticated && !userNeedsGithubAuth)
+  const hasOnChainAuthentication =
+    hasAuthentication(faucetAuthentications) && userHasGithubAuth
+
+  const authenticated = hasOnChainAuthentication || userHasGithubAuth
 
   return {
     faucetAuthentications,
@@ -157,6 +174,7 @@ const useFaucetVerifications = () => {
     refetchNextDrips,
     isAuthenticationLoading,
     authenticated,
+    hasOnChainAuthentication,
   }
 }
 
