@@ -71,6 +71,7 @@ export class AuthRoute extends Route {
       const { session } = ctx
 
       delete session.user
+      delete session.worldIdUser
 
       await session.save().catch((err) => {
         metrics.logoutUserErrorCount.inc()

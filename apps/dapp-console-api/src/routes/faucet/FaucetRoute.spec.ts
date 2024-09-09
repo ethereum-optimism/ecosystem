@@ -363,7 +363,7 @@ describe(FaucetRoute.name, () => {
         ).rejects.toEqual(
           new TRPCError({
             code: 'UNAUTHORIZED',
-            message: 'User is not logged into github',
+            message: 'User has not linked their github',
           }),
         )
       })
