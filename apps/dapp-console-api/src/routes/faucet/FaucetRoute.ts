@@ -9,9 +9,9 @@ import { zodEthereumAddress, zodEthereumSignature } from '@/api'
 import type { SessionData } from '@/constants'
 import { envVars } from '@/constants'
 import type { GrowthbookStore } from '@/growthbook'
-import { isPrivyAuthed } from '@/middleware'
+import { isGithubAuthed, isPrivyAuthed } from '@/middleware'
 import { metrics } from '@/monitoring/metrics'
-import { Trpc } from '@/Trpc'
+import type { Trpc } from '@/Trpc'
 
 import { getCoinbaseVerificationAttestationFromEAS } from '../../utils/coinbaseVerification'
 import type { Faucet, FaucetAuthMode } from '../../utils/Faucet'
@@ -94,6 +94,7 @@ export class FaucetRoute extends Route {
   /// no timeout exists for a chain then the value for that chain will be set to null.
   public readonly nextDripsController = this.trpc.procedure
     .use(isPrivyAuthed(this.trpc))
+    .use(isGithubAuthed(this.trpc, this.growthBookStore))
     .input(
       this.z.object({
         authMode: this.z
@@ -104,7 +105,7 @@ export class FaucetRoute extends Route {
     )
     .query(async ({ ctx, input }) => {
       const { authMode, walletAddress } = input
-      const userId = await this.getUserIdForAuthMode(
+      const userId = this.getUserIdForAuthMode(
         ctx.session,
         authMode,
         walletAddress as Address | undefined,
@@ -140,6 +141,7 @@ export class FaucetRoute extends Route {
   public readonly onChainClaimsRoute = 'onChainClaims' as const
   public readonly onChainClaimsController = this.trpc.procedure
     .use(isPrivyAuthed(this.trpc))
+    .use(isGithubAuthed(this.trpc, this.growthBookStore))
     .input(
       this.z
         .object({
@@ -203,7 +205,7 @@ export class FaucetRoute extends Route {
 
       let tx: Hex | undefined
       let error: FaucetError | undefined
-      const userId = await this.getUserIdForAuthMode(
+      const userId = this.getUserIdForAuthMode(
         ctx.session,
         authMode,
         ownerAddress,
@@ -239,6 +241,7 @@ export class FaucetRoute extends Route {
   public readonly offChainClaimsRoute = 'offChainClaims' as const
   public readonly offChainClaimsController = this.trpc.procedure
     .use(isPrivyAuthed(this.trpc))
+    .use(isGithubAuthed(this.trpc, this.growthBookStore))
     .input(
       this.z
         .object({
@@ -277,7 +280,7 @@ export class FaucetRoute extends Route {
 
       let tx: Hex | undefined
       let error: FaucetError | undefined
-      const userId = await this.getUserIdForAuthMode(ctx.session, authMode)
+      const userId = this.getUserIdForAuthMode(ctx.session, authMode)
       try {
         tx = await faucet.triggerFaucetDrip({
           userId,
@@ -339,7 +342,7 @@ export class FaucetRoute extends Route {
   private readonly getUserIdForWorldIdAuth = (nullifierHash: string) =>
     keccak256(nullifierHash as Hex)
 
-  private readonly getUserIdForAuthMode = async (
+  private readonly getUserIdForAuthMode = (
     session: IronSession<SessionData>,
     authMode: FaucetAuthMode,
     walletAddress?: Address,
@@ -352,35 +355,16 @@ export class FaucetRoute extends Route {
             message: 'User is not logged into privy',
           })
         }
-        console.log(
-          `this.growthBookStore.get('enable_github_auth')`,
-          this.growthBookStore.get('enable_github_auth'),
-        )
-        if (this.growthBookStore.get('enable_github_auth')) {
-          const user = await this.trpc.privy
-            .getUser(session.user.privyDid)
-            .catch((err) => {
-              metrics.fetchPrivyUserErrorCount.inc()
-              this.logger?.error(
-                {
-                  error: err,
-                  entityId: session.user?.entityId,
-                  privyDid: session.user?.privyDid,
-                },
-                'error fetching privy user',
-              )
-              throw Trpc.handleStatus(500, 'error fetching privy user')
-            })
 
-          if (!user.github) {
+        if (this.growthBookStore.get('enable_github_auth')) {
+          if (!session.user.githubSubject) {
             throw new TRPCError({
               code: 'UNAUTHORIZED',
-              message: 'User is not logged into github',
+              message: 'User has not linked their github',
             })
           }
-          console.log('user has github subject', !!user.github.subject)
 
-          return this.getUserIdForGithubAuth(user.github.subject)
+          return this.getUserIdForGithubAuth(session.user.githubSubject)
         }
 
         return this.getUserIdForPrivyAuth(session.user.privyDid)

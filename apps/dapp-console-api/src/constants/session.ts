@@ -25,6 +25,7 @@ export type SessionData = {
     privyAccessTokenExpiration: number
     privyDid: string
     entityId: string
+    githubSubject?: string
   }
   worldIdUser?: {
     nullifierHash: string
