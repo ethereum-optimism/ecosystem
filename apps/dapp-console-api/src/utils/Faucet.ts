@@ -180,7 +180,7 @@ export class Faucet {
       gas: BigInt(DRIP_MIN_GAS_LIMIT),
       maxPriorityFeePerGas:
         maxPriorityFeePerGas &&
-        (maxPriorityFeePerGas * BigInt(150)) / BigInt(100),
+        (maxPriorityFeePerGas * BigInt(110)) / BigInt(100),
     })
   }
 
