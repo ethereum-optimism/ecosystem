@@ -57,6 +57,9 @@ const HeaderLogo = () => {
     setLogoSrc(resolvedTheme === 'dark' ? darkLogo : lightLogo)
   }, [resolvedTheme, showNewLogo])
 
+  const height = showNewLogo ? 40 : 24
+  const width = showNewLogo ? 180 : 142
+
   return (
     <div className="flex items-center">
       <Link href="/" className="flex flex-row items-center">
@@ -64,17 +67,24 @@ const HeaderLogo = () => {
           <Image
             src={logoSrc}
             alt="Superchain app developer logo"
-            width={142}
-            height={24}
+            width={width}
+            height={height}
           />
         )}
-        <Separator
-          orientation="vertical"
-          className="h-4 mx-4 hidden md:block"
-        />
-        <Text as="span" className="tracking-widest font-medium hidden md:block">
-          DEVELOPER
-        </Text>
+        {!showNewLogo && (
+          <>
+            <Separator
+              orientation="vertical"
+              className="h-4 mx-4 hidden md:block"
+            />
+            <Text
+              as="span"
+              className="tracking-widest font-medium hidden md:block"
+            >
+              DEVELOPER
+            </Text>
+          </>
+        )}
       </Link>
     </div>
   )
