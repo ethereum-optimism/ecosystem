@@ -1,9 +1,9 @@
 import { decodeFunctionData, encodeFunctionData } from 'viem'
-import { base, optimism } from 'viem/chains'
 import { describe, expect, it } from 'vitest'
 
 import { l2ToL2CrossDomainMessengerABI } from '@/abis.js'
 import { buildSendL2ToL2Message } from '@/actions/buildSendL2ToL2Message.js'
+import { supersimL2A, supersimL2B } from '@/chains/supersim.js'
 import { contracts } from '@/contracts.js'
 import { publicClient, testAccount, walletClient } from '@/test/clients.js'
 import { ticTacToeABI, ticTacToeAddress } from '@/test/setupTicTacToe.js'
@@ -19,7 +19,7 @@ describe('sendL2ToL2Message', () => {
 
     const args = await buildSendL2ToL2Message(publicClient, {
       account: testAccount.address,
-      destinationChainId: base.id,
+      destinationChainId: supersimL2B.id,
       target: ticTacToeAddress,
       message: encodedData,
     })
@@ -40,7 +40,7 @@ describe('sendL2ToL2Message', () => {
 
     // verifiy message id
     expect(id).toBeDefined()
-    expect(id.chainId).toEqual(BigInt(optimism.id))
+    expect(id.chainId).toEqual(BigInt(supersimL2A.id))
     expect(id.origin.toLowerCase()).toEqual(
       contracts.l2ToL2CrossDomainMessenger.address.toLowerCase(),
     )
@@ -55,8 +55,8 @@ describe('sendL2ToL2Message', () => {
     })
 
     expect(decodedPayload.args).toEqual([
-      BigInt(base.id),
-      BigInt(optimism.id),
+      BigInt(supersimL2B.id),
+      BigInt(supersimL2A.id),
       currentNonce - 1n,
       testAccount.address,
       ticTacToeAddress,
