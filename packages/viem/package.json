@@ -19,6 +19,7 @@
     "lint:fix": "eslint \"**/*.{ts,tsx}\" --fix --quiet && pnpm prettier \"**/*.{ts,tsx}\" --write --loglevel=warn"
   },
   "devDependencies": {
+    "@types/node": "^22.5.4",
     "@viem/anvil": "^0.0.7",
     "resolve-tspaths": "^0.8.18",
     "typescript": "^5.2.2",

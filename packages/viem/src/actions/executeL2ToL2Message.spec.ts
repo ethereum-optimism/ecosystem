@@ -1,8 +1,8 @@
 import { encodeFunctionData, keccak256, parseEventLogs } from 'viem'
-import { base } from 'viem/chains'
 import { describe, expect, it } from 'vitest'
 
 import { crossL2InboxABI } from '@/abis.js'
+import { supersimL2A } from '@/chains/supersim.js'
 import { publicClient, testAccount, walletClient } from '@/test/clients.js'
 import { ticTacToeABI, ticTacToeAddress } from '@/test/setupTicTacToe.js'
 import type { MessageIdentifier } from '@/types/interop.js'
@@ -14,7 +14,7 @@ describe('executeL2ToL2Message', () => {
       blockNumber: BigInt(100),
       logIndex: BigInt(0),
       timestamp: BigInt(0),
-      chainId: BigInt(base.id),
+      chainId: BigInt(supersimL2A.id),
     } as MessageIdentifier
 
     const encodedData = encodeFunctionData({

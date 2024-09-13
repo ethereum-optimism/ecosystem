@@ -1,7 +1,7 @@
 import { encodeFunctionData } from 'viem'
-import { base } from 'viem/chains'
 import { describe, expect, it } from 'vitest'
 
+import { supersimL2B } from '@/chains/supersim.js'
 import { publicClient, testAccount } from '@/test/clients.js'
 import { ticTacToeABI, ticTacToeAddress } from '@/test/setupTicTacToe.js'
 
@@ -16,7 +16,7 @@ describe('estimateSendL2ToL2Message', () => {
     const gas = await publicClient.estimateSendL2ToL2MessageGas({
       account: testAccount.address,
       target: ticTacToeAddress,
-      destinationChainId: base.id,
+      destinationChainId: supersimL2B.id,
       message: encodedMessage,
     })
 
