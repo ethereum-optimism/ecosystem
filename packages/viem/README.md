@@ -16,6 +16,7 @@ This package is a TypeScript extension for Viem that provides actions and utilit
 
 ### Utilities
 * [`extractMessageIdentifierFromLogs`](https://github.com/ethereum-optimism/ecosystem/tree/main/packages/viem/docs/utils/extractMessageIdentifierFromLogs.md)
+* [`decodeSentMessage`](https://github.com/ethereum-optimism/ecosystem/tree/main/packages/viem/docs/utils/decodeSentMessage.md)
 
 ### Guides
 * [`interop`](https://github.com/ethereum-optimism/ecosystem/tree/main/packages/viem/docs/guides/interop.md)
