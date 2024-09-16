@@ -16,6 +16,11 @@ This package is a TypeScript extension for Viem that provides actions and utilit
 
 ### Utilities
 * [`extractMessageIdentifierFromLogs`](https://github.com/ethereum-optimism/ecosystem/tree/main/packages/viem/docs/utils/extractMessageIdentifierFromLogs.md)
+* [`decodeSentMessage`](https://github.com/ethereum-optimism/ecosystem/tree/main/packages/viem/docs/utils/decodeSentMessage.md)
 
 ### Guides
 * [`interop`](https://github.com/ethereum-optimism/ecosystem/tree/main/packages/viem/docs/guides/interop.md)
+
+### Running Tests
+
+Before you can run the unit tests you'll need [supersim](https://github.com/ethereum-optimism/supersim) installed. Once you have supersim installed you can run `pnpm nx run @eth-optimism/viem:test` from the root of the monorepo to get the tests running.

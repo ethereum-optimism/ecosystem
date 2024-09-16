@@ -54,6 +54,11 @@ export { sendL2ToL2Message } from '@/actions/sendL2ToL2Message.js'
 
 // utils
 export type {
+  DecodeSentMessageParameters,
+  DecodeSentMessageReturnType,
+} from '@/utils/decodeSentMessage.js'
+export { decodeSentMessage } from '@/utils/decodeSentMessage.js'
+export type {
   ExtractMessageIdentifierFromLogsErrorType,
   ExtractMessageIdentifierFromLogsParameters,
   ExtractMessageIdentifierFromLogsReturnType,
