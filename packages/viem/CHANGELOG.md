@@ -1,5 +1,11 @@
 # @eth-optimism/viem
 
+## 0.0.2
+
+### Patch Changes
+
+- [#473](https://github.com/ethereum-optimism/ecosystem/pull/473) [`a7d602b`](https://github.com/ethereum-optimism/ecosystem/commit/a7d602bfaa9af8f5c5c49f79d9f5a353c17061dd) Thanks [@nitaliano](https://github.com/nitaliano)! - Adds decodeSentMessage util
+
 ## 0.0.1
 
 ### Patch Changes
