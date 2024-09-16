@@ -1,4 +1,4 @@
-import type { Address, type Hex } from 'viem'
+import type { Address, Hex } from 'viem'
 import { decodeFunctionData } from 'viem'
 
 import { l2ToL2CrossDomainMessengerABI } from '@/abis.js'
