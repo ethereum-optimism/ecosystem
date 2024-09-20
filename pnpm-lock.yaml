@@ -1416,6 +1416,9 @@ importers:
       '@viem/anvil':
         specifier: ^0.0.7
         version: 0.0.7(bufferutil@4.0.8)(utf-8-validate@6.0.3)
+      eta:
+        specifier: ^3.1.1
+        version: 3.4.0
       resolve-tspaths:
         specifier: ^0.8.18
         version: 0.8.18(typescript@5.4.5)
@@ -25189,19 +25192,19 @@ snapshots:
       '@webassemblyjs/ast': 1.12.1
       '@xtuc/long': 4.2.2
 
-  '@webpack-cli/configtest@2.1.1(webpack-cli@5.1.4(webpack@5.91.0))(webpack@5.91.0(esbuild@0.19.12)(webpack-cli@5.1.4))':
+  '@webpack-cli/configtest@2.1.1(webpack-cli@5.1.4(webpack@5.91.0))(webpack@5.91.0(webpack-cli@5.1.4))':
     dependencies:
-      webpack: 5.91.0(esbuild@0.19.12)(webpack-cli@5.1.4)
+      webpack: 5.91.0(webpack-cli@5.1.4)
       webpack-cli: 5.1.4(webpack@5.91.0)
 
-  '@webpack-cli/info@2.0.2(webpack-cli@5.1.4(webpack@5.91.0))(webpack@5.91.0(esbuild@0.19.12)(webpack-cli@5.1.4))':
+  '@webpack-cli/info@2.0.2(webpack-cli@5.1.4(webpack@5.91.0))(webpack@5.91.0(webpack-cli@5.1.4))':
     dependencies:
-      webpack: 5.91.0(esbuild@0.19.12)(webpack-cli@5.1.4)
+      webpack: 5.91.0(webpack-cli@5.1.4)
       webpack-cli: 5.1.4(webpack@5.91.0)
 
-  '@webpack-cli/serve@2.0.5(webpack-cli@5.1.4(webpack@5.91.0))(webpack@5.91.0(esbuild@0.19.12)(webpack-cli@5.1.4))':
+  '@webpack-cli/serve@2.0.5(webpack-cli@5.1.4(webpack@5.91.0))(webpack@5.91.0(webpack-cli@5.1.4))':
     dependencies:
-      webpack: 5.91.0(esbuild@0.19.12)(webpack-cli@5.1.4)
+      webpack: 5.91.0(webpack-cli@5.1.4)
       webpack-cli: 5.1.4(webpack@5.91.0)
 
   '@worldcoin/idkit-core@1.2.0(@types/react@18.2.79)(bufferutil@4.0.8)(immer@10.0.4)(react@18.2.0)(typescript@5.4.5)(utf-8-validate@6.0.3)(zod@3.22.4)':
@@ -35363,9 +35366,9 @@ snapshots:
   webpack-cli@5.1.4(webpack@5.91.0):
     dependencies:
       '@discoveryjs/json-ext': 0.5.7
-      '@webpack-cli/configtest': 2.1.1(webpack-cli@5.1.4(webpack@5.91.0))(webpack@5.91.0(esbuild@0.19.12)(webpack-cli@5.1.4))
-      '@webpack-cli/info': 2.0.2(webpack-cli@5.1.4(webpack@5.91.0))(webpack@5.91.0(esbuild@0.19.12)(webpack-cli@5.1.4))
-      '@webpack-cli/serve': 2.0.5(webpack-cli@5.1.4(webpack@5.91.0))(webpack@5.91.0(esbuild@0.19.12)(webpack-cli@5.1.4))
+      '@webpack-cli/configtest': 2.1.1(webpack-cli@5.1.4(webpack@5.91.0))(webpack@5.91.0(webpack-cli@5.1.4))
+      '@webpack-cli/info': 2.0.2(webpack-cli@5.1.4(webpack@5.91.0))(webpack@5.91.0(webpack-cli@5.1.4))
+      '@webpack-cli/serve': 2.0.5(webpack-cli@5.1.4(webpack@5.91.0))(webpack@5.91.0(webpack-cli@5.1.4))
       colorette: 2.0.20
       commander: 10.0.1
       cross-spawn: 7.0.3
@@ -35374,7 +35377,7 @@ snapshots:
       import-local: 3.1.0
       interpret: 3.1.1
       rechoir: 0.8.0
-      webpack: 5.91.0(esbuild@0.19.12)(webpack-cli@5.1.4)
+      webpack: 5.91.0(webpack-cli@5.1.4)
       webpack-merge: 5.10.0
 
   webpack-merge@5.10.0:
