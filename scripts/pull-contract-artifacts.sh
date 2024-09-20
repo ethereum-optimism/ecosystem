@@ -29,4 +29,6 @@ rm $archive_name
 rm -rf artifacts
 rm -rf cache
 
+gcloud config unset project
+
 echo "Done"
