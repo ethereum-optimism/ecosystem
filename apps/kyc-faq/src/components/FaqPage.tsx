@@ -6,7 +6,7 @@ import {
   AccordionTrigger,
   Card,
 } from '@eth-optimism/ui-components'
-import { HeaderLogo } from './HeaderLogo'
+import { HeaderLogo } from '@/components/HeaderLogo'
 
 const FaqPage = () => {
   return (
