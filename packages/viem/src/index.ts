@@ -2,11 +2,7 @@
 export type { MessageIdentifier } from '@/types/interop.js'
 
 // abi
-export {
-  crossL2InboxABI,
-  l1BlockInteropAbi,
-  l2ToL2CrossDomainMessengerABI,
-} from '@/abis.js'
+export * from '@/abis.js'
 
 // supersim
 export { supersimL1, supersimL2A, supersimL2B } from '@/chains/supersim.js'

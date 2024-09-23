@@ -21,6 +21,10 @@
       "cache": true,
       "dependsOn": ["^build"]
     },
+    "generate": {
+      "cache": true,
+      "dependsOn": ["ecosystem:fetch:artifacts"]
+    },
     "build": {
       "cache": true,
       "dependsOn": ["^build", "^build:types"]

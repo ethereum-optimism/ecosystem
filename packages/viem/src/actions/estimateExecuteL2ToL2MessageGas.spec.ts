@@ -12,7 +12,7 @@ describe('estimateExecuteL2ToL2Message', () => {
       origin: walletClient.account.address,
       blockNumber: BigInt(100),
       logIndex: BigInt(0),
-      timestamp: BigInt(0),
+      timestamp: BigInt(1),
       chainId: BigInt(supersimL2A.id),
     } as MessageIdentifier
 

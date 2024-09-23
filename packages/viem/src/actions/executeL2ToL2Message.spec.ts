@@ -13,7 +13,7 @@ describe('executeL2ToL2Message', () => {
       origin: testAccount.address,
       blockNumber: BigInt(100),
       logIndex: BigInt(0),
-      timestamp: BigInt(0),
+      timestamp: BigInt(1),
       chainId: BigInt(supersimL2A.id),
     } as MessageIdentifier
 
