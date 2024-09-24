@@ -5,8 +5,6 @@ This package is a TypeScript extension for Viem that provides actions and utilit
 ## Documentation
 
 ### Public L2 Actions
-* [`buildSendL2ToL2Message`](https://github.com/ethereum-optimism/ecosystem/tree/main/packages/viem/docs/actions/buildSendL2ToL2Message.md)
-* [`buildExecuteL2ToL2Message`](https://github.com/ethereum-optimism/ecosystem/tree/main/packages/viem/docs/actions/buildExecuteL2ToL2Message.md)
 * [`estimateSendL2ToL2MessageGas`](https://github.com/ethereum-optimism/ecosystem/tree/main/packages/viem/docs/actions/estimateSendL2ToL2MessageGas.md)
 * [`estimateExecuteL2ToL2MessageGas`](https://github.com/ethereum-optimism/ecosystem/tree/main/packages/viem/docs/actions/estimateExecuteL2ToL2MessageGas.md)
 

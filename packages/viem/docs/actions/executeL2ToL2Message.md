@@ -30,13 +30,11 @@ const hash =  '0x...' // sendL2ToL2Message tx hash
 const receipt = await publicClient.waitForTransactionReceipt({ hash })
 const id = await extractMessageIdentifierFromLogs(publicClient, { receipt })
 
-const args = await basePublicClient.buildExecuteL2ToL2Message({
+const hash = await baseWalletClient.executeL2ToL2Message({
   id,
   target: '0x...',
   message: encodeFunctionData({ ... }),
 })
-
-const hash = await baseWalletClient.executeL2ToL2Message(args)
 ```
 
 ## Returns
