@@ -12,18 +12,6 @@ export { contracts } from '@/contracts.js'
 
 // actions
 export type {
-  BuildExecuteL2ToL2MessageParameters,
-  BuildExecuteL2ToL2MessageReturnType,
-} from '@/actions/buildExecuteL2ToL2Message.js'
-export { buildExecuteL2ToL2Message } from '@/actions/buildExecuteL2ToL2Message.js'
-export type {
-  BuildSendL2ToL2MessageParameters,
-  BuildSendL2ToL2MessageReturnType,
-} from '@/actions/buildSendL2ToL2Message.js'
-export { buildSendL2ToL2Message } from '@/actions/buildSendL2ToL2Message.js'
-
-// actions
-export type {
   ExecuteL2ToL2MessageErrorType,
   ExecuteL2ToL2MessageParameters,
   ExecuteL2ToL2MessageReturnType,
