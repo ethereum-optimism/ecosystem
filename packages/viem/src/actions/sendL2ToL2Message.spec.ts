@@ -10,19 +10,19 @@ import { decodeSentMessage } from '@/utils/decodeSentMessage.js'
 import { extractMessageIdentifierFromLogs } from '@/utils/extractMessageIdentifierFromLogs.js'
 
 describe('sendL2ToL2Message', () => {
+  const encodedMessage = encodeFunctionData({
+    abi: ticTacToeABI,
+    functionName: 'createGame',
+    args: [testAccount.address],
+  })
+
   describe('write contract', () => {
     it('should return expected request', async () => {
-      const encodedData = encodeFunctionData({
-        abi: ticTacToeABI,
-        functionName: 'createGame',
-        args: [testAccount.address],
-      })
-
       const hash = await walletClient.sendL2ToL2Message({
         account: testAccount.address,
         destinationChainId: supersimL2B.id,
         target: ticTacToeAddress,
-        message: encodedData,
+        message: encodedMessage,
       })
       expect(hash).toBeDefined()
 
@@ -55,19 +55,13 @@ describe('sendL2ToL2Message', () => {
         messageNonce: currentNonce - 1n,
         sender: testAccount.address,
         target: ticTacToeAddress,
-        message: encodedData,
+        message: encodedMessage,
       })
     })
   })
 
   describe('estimate gas', () => {
     it('should estimate gas', async () => {
-      const encodedMessage = encodeFunctionData({
-        abi: ticTacToeABI,
-        functionName: 'createGame',
-        args: [testAccount.address],
-      })
-
       const gas = await publicClient.estimateSendL2ToL2MessageGas({
         account: testAccount.address,
         target: ticTacToeAddress,
@@ -76,6 +70,19 @@ describe('sendL2ToL2Message', () => {
       })
 
       expect(gas).toBeDefined()
+    })
+  })
+
+  describe('simulate', () => {
+    it('should simulate', async () => {
+      expect(() =>
+        publicClient.simulateSendL2ToL2Message({
+          account: testAccount.address,
+          destinationChainId: supersimL2B.id,
+          target: ticTacToeAddress,
+          message: encodedMessage,
+        }),
+      ).not.throw()
     })
   })
 })

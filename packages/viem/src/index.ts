@@ -12,6 +12,7 @@ export { contracts } from '@/contracts.js'
 
 // actions
 export type {
+  ExecuteL2ToL2MessageContractReturnType,
   ExecuteL2ToL2MessageErrorType,
   ExecuteL2ToL2MessageParameters,
   ExecuteL2ToL2MessageReturnType,
@@ -22,6 +23,7 @@ export {
   simulateExecuteL2ToL2Message,
 } from '@/actions/executeL2ToL2Message.js'
 export type {
+  SendL2ToL2MessageContractReturnType,
   SendL2ToL2MessageErrorType,
   SendL2ToL2MessageParameters,
   SendL2ToL2MessageReturnType,

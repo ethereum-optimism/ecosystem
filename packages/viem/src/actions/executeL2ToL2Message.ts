@@ -3,6 +3,7 @@ import type {
   Address,
   Chain,
   Client,
+  ContractFunctionReturnType,
   DeriveChain,
   EstimateContractGasErrorType,
   EstimateContractGasParameters,
@@ -24,15 +25,15 @@ import type { MessageIdentifier } from '@/types/interop.js'
 import type { ErrorType } from '@/types/utils.js'
 
 export type ExecuteL2ToL2MessageParameters<
-  chain extends Chain | undefined = Chain | undefined,
-  account extends Account | undefined = Account | undefined,
-  chainOverride extends Chain | undefined = Chain | undefined,
-  derivedChain extends Chain | undefined = DeriveChain<chain, chainOverride>,
+  TChain extends Chain | undefined = Chain | undefined,
+  TAccount extends Account | undefined = Account | undefined,
+  TChainOverride extends Chain | undefined = Chain | undefined,
+  TDerivedChain extends Chain | undefined = DeriveChain<TChain, TChainOverride>,
 > = BaseWriteContractActionParameters<
-  chain,
-  account,
-  chainOverride,
-  derivedChain
+  TChain,
+  TAccount,
+  TChainOverride,
+  TDerivedChain
 > & {
   /** Identifier pointing to the initiating message. */
   id: MessageIdentifier
@@ -42,6 +43,11 @@ export type ExecuteL2ToL2MessageParameters<
   message: Hex
 }
 export type ExecuteL2ToL2MessageReturnType = Hash
+export type ExecuteL2ToL2MessageContractReturnType = ContractFunctionReturnType<
+  typeof crossL2InboxABI,
+  'payable',
+  'executeMessage'
+>
 export type ExecuteL2ToL2MessageErrorType =
   | EstimateContractGasErrorType
   | WriteContractErrorType
@@ -120,10 +126,10 @@ export async function simulateExecuteL2ToL2Message<
 >(
   client: Client<Transport, TChain, TAccount>,
   parameters: ExecuteL2ToL2MessageParameters<TChain, TAccount, TChainOverride>,
-) {
+): Promise<ExecuteL2ToL2MessageContractReturnType> {
   const { account, id, target, message } = parameters
 
-  return simulateContract(client, {
+  const res = await simulateContract(client, {
     account,
     abi: crossL2InboxABI,
     address: contracts.crossL2Inbox.address,
@@ -131,4 +137,6 @@ export async function simulateExecuteL2ToL2Message<
     functionName: 'executeMessage',
     args: [id, target, message],
   } as SimulateContractParameters)
+
+  return res.result as ExecuteL2ToL2MessageContractReturnType
 }

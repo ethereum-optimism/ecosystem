@@ -3,6 +3,7 @@ import type {
   Address,
   Chain,
   Client,
+  ContractFunctionReturnType,
   DeriveChain,
   EstimateContractGasErrorType,
   EstimateContractGasParameters,
@@ -39,6 +40,11 @@ export type SendL2ToL2MessageParameters<
   message: Hex
 }
 export type SendL2ToL2MessageReturnType = Hash
+export type SendL2ToL2MessageContractReturnType = ContractFunctionReturnType<
+  typeof l2ToL2CrossDomainMessengerABI,
+  'nonpayable',
+  'sendMessage'
+>
 export type SendL2ToL2MessageErrorType =
   | EstimateContractGasErrorType
   | WriteContractErrorType
@@ -117,10 +123,10 @@ export async function simulateSendL2ToL2Message<
 >(
   client: Client<Transport, TChain, TAccount>,
   parameters: SendL2ToL2MessageParameters<TChain, TAccount, TChainOverride>,
-) {
+): Promise<SendL2ToL2MessageContractReturnType> {
   const { account, destinationChainId, target, message } = parameters
 
-  return simulateContract(client, {
+  const res = await simulateContract(client, {
     account,
     abi: l2ToL2CrossDomainMessengerABI,
     address: contracts.l2ToL2CrossDomainMessenger.address,
@@ -128,4 +134,6 @@ export async function simulateSendL2ToL2Message<
     functionName: 'sendMessage',
     args: [destinationChainId, target, message],
   } as SimulateContractParameters)
+
+  return res.result as SendL2ToL2MessageContractReturnType
 }
