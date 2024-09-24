@@ -21,13 +21,11 @@ export const walletClientL2 = createPublicClient({
   transport: http(),
 }).extend(walletActionsL2())
 
-const args = await publicClientL2.buildSendL2ToL2Message({
+const hash = await walletClientL2.sendL2ToL2Message({
   destinationChainId: base.id,
   target: '0x...',
   message: encodeFunctionData({ ... }),
 })
-
-const hash = await walletClientL2.sendL2ToL2Message(args)
 ```
 
 ## Returns
