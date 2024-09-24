@@ -4,6 +4,7 @@ import type {
   Chain,
   Client,
   DeriveChain,
+  EstimateContractGasErrorType,
   EstimateContractGasParameters,
   Hash,
   Hex,
@@ -14,7 +15,6 @@ import type {
 import { estimateContractGas, simulateContract } from 'viem/actions'
 
 import { l2ToL2CrossDomainMessengerABI } from '@/abis.js'
-import type { EstimateSendL2ToL2MessageGasErrorType } from '@/actions/estimateSendL2ToL2MessageGas.js'
 import { contracts } from '@/contracts.js'
 import type { BaseWriteContractActionParameters } from '@/core/baseWriteAction.js'
 import { baseWriteAction } from '@/core/baseWriteAction.js'
@@ -40,7 +40,7 @@ export type SendL2ToL2MessageParameters<
 }
 export type SendL2ToL2MessageReturnType = Hash
 export type SendL2ToL2MessageErrorType =
-  | EstimateSendL2ToL2MessageGasErrorType
+  | EstimateContractGasErrorType
   | WriteContractErrorType
   | ErrorType
 

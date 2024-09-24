@@ -51,14 +51,12 @@ describe('executeL2ToL2Message', () => {
         args: [testAccount.address],
       })
 
-      const args = await publicClient.buildExecuteL2ToL2Message({
+      const hash = await walletClient.executeL2ToL2Message({
         id: expectedId,
         account: testAccount.address,
         target: ticTacToeAddress,
         message: encodedData,
       })
-
-      const hash = await walletClient.executeL2ToL2Message(args)
 
       expect(hash).toBeDefined()
 

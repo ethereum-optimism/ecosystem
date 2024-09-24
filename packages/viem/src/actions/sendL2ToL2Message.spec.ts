@@ -2,7 +2,6 @@ import { encodeFunctionData } from 'viem'
 import { describe, expect, it } from 'vitest'
 
 import { l2ToL2CrossDomainMessengerABI } from '@/abis.js'
-import { buildSendL2ToL2Message } from '@/actions/buildSendL2ToL2Message.js'
 import { supersimL2A, supersimL2B } from '@/chains/supersim.js'
 import { contracts } from '@/contracts.js'
 import { publicClient, testAccount, walletClient } from '@/test/clients.js'
@@ -19,14 +18,12 @@ describe('sendL2ToL2Message', () => {
         args: [testAccount.address],
       })
 
-      const args = await buildSendL2ToL2Message(publicClient, {
+      const hash = await walletClient.sendL2ToL2Message({
         account: testAccount.address,
         destinationChainId: supersimL2B.id,
         target: ticTacToeAddress,
         message: encodedData,
       })
-
-      const hash = await walletClient.sendL2ToL2Message(args)
       expect(hash).toBeDefined()
 
       const receipt = await publicClient.waitForTransactionReceipt({ hash })
