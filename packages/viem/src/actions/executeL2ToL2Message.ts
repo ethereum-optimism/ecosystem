@@ -4,62 +4,43 @@ import type {
   Chain,
   Client,
   DeriveChain,
-  FormattedTransactionRequest,
-  GetChainParameter,
+  EstimateContractGasParameters,
   Hash,
   Hex,
+  SimulateContractParameters,
   Transport,
-  UnionOmit,
   WriteContractErrorType,
-  WriteContractParameters,
 } from 'viem'
-import { writeContract } from 'viem/actions'
+import { estimateContractGas, simulateContract } from 'viem/actions'
 
 import { crossL2InboxABI } from '@/abis.js'
-import type {
-  EstimateExecuteL2ToL2MessageGasErrorType,
-  EstimateExecuteL2ToL2MessageGasParameters,
-} from '@/actions/estimateExecuteL2ToL2MessageGas.js'
-import { estimateExecuteL2ToL2MessageGas } from '@/actions/estimateExecuteL2ToL2MessageGas.js'
+import type { EstimateExecuteL2ToL2MessageGasErrorType } from '@/actions/estimateExecuteL2ToL2MessageGas.js'
 import { contracts } from '@/contracts.js'
+import {
+  baseWriteAction,
+  type BaseWriteContractActionParameters,
+} from '@/core/baseWriteAction.js'
 import type { MessageIdentifier } from '@/types/interop.js'
-import type {
-  ErrorType,
-  GetAccountParameter,
-  UnionEvaluate,
-} from '@/types/utils.js'
+import type { ErrorType } from '@/types/utils.js'
 
 export type ExecuteL2ToL2MessageParameters<
   chain extends Chain | undefined = Chain | undefined,
   account extends Account | undefined = Account | undefined,
   chainOverride extends Chain | undefined = Chain | undefined,
-  _derivedChain extends Chain | undefined = DeriveChain<chain, chainOverride>,
-> = UnionEvaluate<
-  UnionOmit<
-    FormattedTransactionRequest<_derivedChain>,
-    | 'accessList'
-    | 'blobs'
-    | 'data'
-    | 'from'
-    | 'gas'
-    | 'maxFeePerBlobGas'
-    | 'gasPrice'
-    | 'to'
-    | 'type'
-    | 'value'
-  >
-> &
-  GetAccountParameter<account, Account | Address> &
-  GetChainParameter<chain, chainOverride> & {
-    /** Gas limit for transaction execution on the L1. `null` to skip gas estimation & defer calculation to signer. */
-    gas?: bigint | null | undefined
-    /** Identifier pointing to the initiating message. */
-    id: MessageIdentifier
-    /** Target contract or wallet address. */
-    target: Address
-    /** Message payload to call target with. */
-    message: Hex
-  }
+  derivedChain extends Chain | undefined = DeriveChain<chain, chainOverride>,
+> = BaseWriteContractActionParameters<
+  chain,
+  account,
+  chainOverride,
+  derivedChain
+> & {
+  /** Identifier pointing to the initiating message. */
+  id: MessageIdentifier
+  /** Target contract or wallet address. */
+  target: Address
+  /** Message payload to call target with. */
+  message: Hex
+}
 export type ExecuteL2ToL2MessageReturnType = Hash
 export type ExecuteL2ToL2MessageErrorType =
   | EstimateExecuteL2ToL2MessageGasErrorType
@@ -92,43 +73,62 @@ export type ExecuteL2ToL2MessageErrorType =
  * })
  */
 export async function executeL2ToL2Message<
-  chain extends Chain | undefined,
-  account extends Account | undefined,
-  chainOverride extends Chain | undefined = undefined,
+  TChain extends Chain | undefined,
+  TAccount extends Account | undefined,
+  TChainOverride extends Chain | undefined = undefined,
 >(
-  client: Client<Transport, chain, account>,
-  parameters: ExecuteL2ToL2MessageParameters<chain, account, chainOverride>,
+  client: Client<Transport, TChain, TAccount>,
+  parameters: ExecuteL2ToL2MessageParameters<TChain, TAccount, TChainOverride>,
 ): Promise<ExecuteL2ToL2MessageReturnType> {
-  const {
-    account,
-    chain = client.chain,
-    gas,
-    id,
-    target,
-    message,
-    maxFeePerGas,
-    maxPriorityFeePerGas,
-    nonce,
-  } = parameters
+  const { id, target, message, ...txParameters } = parameters
 
-  const gas_ =
-    typeof gas !== 'bigint' && gas !== null
-      ? await estimateExecuteL2ToL2MessageGas(
-          client,
-          parameters as EstimateExecuteL2ToL2MessageGasParameters,
-        )
-      : gas ?? undefined
+  return baseWriteAction(
+    client,
+    {
+      abi: crossL2InboxABI,
+      contractAddress: contracts.crossL2Inbox.address,
+      contractFunctionName: 'executeMessage',
+      contractArgs: [id, target, message],
+    },
+    txParameters as BaseWriteContractActionParameters,
+  )
+}
 
-  return writeContract(client, {
-    account: account!,
+export async function estimateExecuteL2ToL2MessageGas<
+  TChain extends Chain | undefined,
+  TAccount extends Account | undefined,
+  TChainOverride extends Chain | undefined = undefined,
+>(
+  client: Client<Transport, TChain, TAccount>,
+  parameters: ExecuteL2ToL2MessageParameters<TChain, TAccount, TChainOverride>,
+): Promise<bigint> {
+  const { id, target, message, ...txParameters } = parameters
+
+  return estimateContractGas(client, {
     abi: crossL2InboxABI,
     address: contracts.crossL2Inbox.address,
-    chain,
     functionName: 'executeMessage',
     args: [id, target, message],
-    gas: gas_,
-    maxFeePerGas,
-    maxPriorityFeePerGas,
-    nonce,
-  } satisfies WriteContractParameters as any)
+    ...txParameters,
+  } as EstimateContractGasParameters)
+}
+
+export async function simulateExecuteL2ToL2Message<
+  TChain extends Chain | undefined,
+  TAccount extends Account | undefined,
+  TChainOverride extends Chain | undefined = undefined,
+>(
+  client: Client<Transport, TChain, TAccount>,
+  parameters: ExecuteL2ToL2MessageParameters<TChain, TAccount, TChainOverride>,
+) {
+  const { account, id, target, message } = parameters
+
+  return simulateContract(client, {
+    account,
+    abi: crossL2InboxABI,
+    address: contracts.crossL2Inbox.address,
+    chain: client.chain,
+    functionName: 'executeMessage',
+    args: [id, target, message],
+  } as SimulateContractParameters)
 }
