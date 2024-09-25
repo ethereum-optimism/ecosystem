@@ -91,6 +91,8 @@ const envVarSchema = z.object({
   API_QUEUE_REDIS_URL: z.string(),
   GROWTHBOOK_CLIENT_KEY: z.string(),
   GROWTHBOOK_ENCRYPTION_KEY: z.string().optional(),
+  FAUCET_IP_RATE_LIMIT: z.number().min(1),
+  FAUCET_IP_RATE_LIMIT_WINDOW_SECS: z.number().min(1),
 })
 
 const isTest = process.env.NODE_ENV === 'test'
@@ -170,6 +172,8 @@ export const envVars = envVarSchema.parse(
         WORLDID_APP_ACTION_NAME: 'test worldid app action name',
         API_QUEUE_REDIS_URL: 'redis://localhost:6379',
         GROWTHBOOK_CLIENT_KEY: 'GROWTHBOOK_CLIENT_KEY',
+        FAUCET_IP_RATE_LIMIT: 1,
+        FAUCET_IP_RATE_LIMIT_WINDOW_SECS: 1,
       }
     : {
         PORT: process.env.PORT
@@ -260,5 +264,11 @@ export const envVars = envVarSchema.parse(
         API_QUEUE_REDIS_URL: process.env.API_QUEUE_REDIS_URL,
         GROWTHBOOK_CLIENT_KEY: process.env.GROWTHBOOK_CLIENT_KEY,
         GROWTHBOOK_ENCRYPTION_KEY: process.env.GROWTHBOOK_ENCRYPTION_KEY,
+        FAUCET_IP_RATE_LIMIT:
+          process.env.FAUCET_IP_RATE_LIMIT &&
+          Number(process.env.FAUCET_IP_RATE_LIMIT),
+        FAUCET_IP_RATE_LIMIT_WINDOW_SECS:
+          process.env.FAUCET_IP_RATE_LIMIT_WINDOW_SECS &&
+          Number(process.env.FAUCET_IP_RATE_LIMIT_WINDOW_SECS),
       },
 )

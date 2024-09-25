@@ -66,7 +66,7 @@ describe(RebatesRoute.name, () => {
       l2WalletClient as any,
       publicClient as any,
     ).handler
-    caller = createSignedInCaller(route, session)
+    caller = createSignedInCaller({ router: route, session })
   })
 
   afterEach(() => {

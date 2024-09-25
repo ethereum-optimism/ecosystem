@@ -221,4 +221,12 @@ export const metrics = {
     name: 'world_id_verify_user_failures',
     help: 'How many times world id verification failed',
   }),
+  faucetRateLimitRedisCacheFailures: new Counter({
+    name: 'faucet_rate_limit_redis_cache_failures',
+    help: 'How many times a failure was encountered when updating the redis cache for tracking faucet rate limits',
+  }),
+  faucetRateLimitCount: new Counter({
+    name: 'faucet_rate_limit_count',
+    help: 'How many times a faucet claim request has been rate limited',
+  }),
 }
