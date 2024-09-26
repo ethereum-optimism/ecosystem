@@ -1,5 +1,11 @@
 # @eth-optimism/viem
 
+## 0.0.3
+
+### Patch Changes
+
+- [#484](https://github.com/ethereum-optimism/ecosystem/pull/484) [`e0ba04a`](https://github.com/ethereum-optimism/ecosystem/commit/e0ba04a04c290b15f8520b3c31d71edbb5835c25) Thanks [@tremarkley](https://github.com/tremarkley)! - Update abis.ts to latest develop branch
+
 ## 0.0.2
 
 ### Patch Changes
