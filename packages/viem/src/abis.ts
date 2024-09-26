@@ -361,7 +361,7 @@ export const l2ToL2CrossDomainMessengerABI = [
     inputs: [],
     outputs: [
       {
-        name: '_sender',
+        name: 'sender_',
         type: 'address',
         internalType: 'address',
       },
@@ -374,7 +374,7 @@ export const l2ToL2CrossDomainMessengerABI = [
     inputs: [],
     outputs: [
       {
-        name: '_source',
+        name: 'source_',
         type: 'uint256',
         internalType: 'uint256',
       },
@@ -465,7 +465,13 @@ export const l2ToL2CrossDomainMessengerABI = [
         internalType: 'bytes',
       },
     ],
-    outputs: [],
+    outputs: [
+      {
+        name: 'msgHash_',
+        type: 'bytes32',
+        internalType: 'bytes32',
+      },
+    ],
     stateMutability: 'nonpayable',
   },
   {
