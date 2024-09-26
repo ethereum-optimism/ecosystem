@@ -2,6 +2,7 @@ import type { Address } from 'viem'
 
 /**
  * Spec for [`MessageIdentifier`](https://github.com/ethereum-optimism/specs/blob/main/specs/interop/messaging.md#message-identifier).
+ * @category Types
  */
 export type MessageIdentifier = {
   /** Account that emits the SendMessage log in L2ToL2CrossDomainMessenger. */

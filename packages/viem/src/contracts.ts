@@ -1,6 +1,10 @@
 import type { Chain } from 'viem'
 import { chainConfig } from 'viem/op-stack'
 
+/**
+ * OP Stack Predeploy Addresses
+ * @category Predeploy Addresses
+ */
 export const contracts = {
   ...chainConfig.contracts,
   l1BlockInterop: {

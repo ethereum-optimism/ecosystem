@@ -3,10 +3,16 @@ import { decodeFunctionData } from 'viem'
 
 import { l2ToL2CrossDomainMessengerABI } from '@/abis.js'
 
+/**
+ * @category Types
+ */
 export type DecodeSentMessageParameters = {
   payload: Hex
 }
 
+/**
+ * @category Types
+ */
 export type DecodeSentMessageReturnType = {
   origin: bigint
   destination: bigint
@@ -16,6 +22,13 @@ export type DecodeSentMessageReturnType = {
   message: Hex
 }
 
+/**
+ * Utility for decoding SentMessage log events
+ * 
+ * @category Utils
+ * @param params {@link DecodeSentMessageParameters}
+ * @returns Decoded message arugments {@link DecodeSentMessageReturnType}
+ */
 export function decodeSentMessage(
   params: DecodeSentMessageParameters,
 ): DecodeSentMessageReturnType {

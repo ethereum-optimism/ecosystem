@@ -1,3 +1,4 @@
+/** @module sendL2ToL2Message */
 import type {
   Account,
   Address,
@@ -21,6 +22,9 @@ import type { BaseWriteContractActionParameters } from '@/core/baseWriteAction.j
 import { baseWriteAction } from '@/core/baseWriteAction.js'
 import type { ErrorType } from '@/types/utils.js'
 
+/**
+ * @category Types
+ */
 export type SendL2ToL2MessageParameters<
   TChain extends Chain | undefined = Chain | undefined,
   TAccount extends Account | undefined = Account | undefined,
@@ -39,12 +43,24 @@ export type SendL2ToL2MessageParameters<
   /** Message payload to call target with. */
   message: Hex
 }
+
+/**
+ * @category Types
+ */
 export type SendL2ToL2MessageReturnType = Hash
+
+/**
+ * @category Types
+ */
 export type SendL2ToL2MessageContractReturnType = ContractFunctionReturnType<
   typeof l2ToL2CrossDomainMessengerABI,
   'nonpayable',
   'sendMessage'
 >
+
+/**
+ * @category Types
+ */
 export type SendL2ToL2MessageErrorType =
   | EstimateContractGasErrorType
   | WriteContractErrorType
@@ -53,27 +69,11 @@ export type SendL2ToL2MessageErrorType =
 /**
  * Initiates the intent of sending a L2 to L2 message. Used in the interop flow.
  *
- * - Docs: TODO add markdown docs
- * @param client - Client to use
+ * @category L2 Wallet Actions
+ * @param client - L2 Wallet Client
  * @param parameters - {@link SendL2ToL2MessageParameters}
  * @returns The sendL2ToL2Message transaction hash. {@link SendL2ToL2MessageReturnType}
- * @example
- * import { createWalletClient, http } from 'viem'
- * import { optimism } from 'viem/chains'
- * import { sendL2ToL2Message } from '@eth-optimism/viem'
- *
- * const walletClientL1 = createWalletClient({
- *   chain: optimism,
- *   transport: http(),
- * })
- *
- * const request = await sendL2ToL2Message(walletClientL1, {
- *   account: '0xA0Cf798816D4b9b9866b5330EEa46a18382f251e',
- *   targetChain: optimism,
- *   destinationChainId: 8453,
- *   target: 0x...,
- *   message: 0x...,
- * })
+ * 
  */
 export async function sendL2ToL2Message<
   chain extends Chain | undefined,
@@ -97,6 +97,15 @@ export async function sendL2ToL2Message<
   )
 }
 
+/**
+ * Estimates gas for {@link sendL2ToL2Message}
+ *
+ * @category L2 Wallet Actions
+ * @param client - L2 Wallet Client
+ * @param parameters - {@link SendL2ToL2MessageParameters}
+ * @returns The estimated gas value.
+ * 
+ */
 export async function estimateSendL2ToL2MessageGas<
   TChain extends Chain | undefined,
   TAccount extends Account | undefined,
@@ -116,6 +125,15 @@ export async function estimateSendL2ToL2MessageGas<
   } as EstimateContractGasParameters)
 }
 
+/**
+ * Simulate contract call for {@link sendL2ToL2Message}
+ *
+ * @category L2 Public Actions
+ * @param client - L2 Public Client
+ * @param parameters - {@link SendL2ToL2MessageParameters}
+ * @returns The contract functions return value. {@link SendL2ToL2MessageContractReturnType}
+ * 
+ */
 export async function simulateSendL2ToL2Message<
   TChain extends Chain | undefined,
   TAccount extends Account | undefined,
@@ -134,6 +152,8 @@ export async function simulateSendL2ToL2Message<
     functionName: 'sendMessage',
     args: [destinationChainId, target, message],
   } as SimulateContractParameters)
+
+  console.log('HERE', res)
 
   return res.result as SendL2ToL2MessageContractReturnType
 }

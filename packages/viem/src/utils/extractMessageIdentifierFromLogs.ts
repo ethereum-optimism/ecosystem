@@ -11,6 +11,9 @@ import { BaseError } from 'viem'
 import type { MessageIdentifier } from '@/types/interop.js'
 import type { ErrorType } from '@/types/utils.js'
 
+/**
+ * @category Types
+ */
 export type ExtractMessageIdentifierFromLogsParameters = {
   /**
    * The receipt for the sendL2ToL2Message transaction.
@@ -18,11 +21,17 @@ export type ExtractMessageIdentifierFromLogsParameters = {
   receipt: TransactionReceipt
 }
 
+/**
+ * @category Types
+ */
 export type ExtractMessageIdentifierFromLogsReturnType = {
   id: MessageIdentifier
   payload: Hex
 }
 
+/**
+ * @category Types
+ */
 export type ExtractMessageIdentifierFromLogsErrorType =
   | ErrorType
   | ReceiptContainsMessageIdentifierError
@@ -39,23 +48,11 @@ export class ReceiptContainsMessageIdentifierError extends BaseError {
 /**
  * Retrieves a message identifier from the logs returned with the receipt from the sendL2ToL2Message transaction.
  *
- * - Docs: TODO add markdown docs
- * @param client - Client to use
+ * @category Utils
+ * @param client - L2 Public Client
  * @param parameters - {@link GetGameParameters}
  * @returns A valid message identifier. {@link GetGameReturnType}
- * @example
- * import { createPublicClient, http } from 'viem'
- * import { mainnet, optimism } from 'viem/chains'
- * import { extractMessageIdentifierFromLogs } from 'viem/op-stack'
- *
- * const publicClientL1 = createPublicClient({
- *   chain: mainnet,
- *   transport: http(),
- * })
- *
- * const id = await extractMessageIdentifierFromLogs(publicClientL1, {
- *   receipt: ...
- * })
+ * 
  */
 export async function extractMessageIdentifierFromLogs<
   chain extends Chain | undefined,
