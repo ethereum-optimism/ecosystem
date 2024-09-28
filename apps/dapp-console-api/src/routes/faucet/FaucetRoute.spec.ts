@@ -17,7 +17,7 @@ import { privateKeyToAccount } from 'viem/accounts'
 import type { Mock } from 'vitest'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
-import type { SessionData } from '@/constants'
+import { envVars, type SessionData } from '@/constants'
 import {
   createSignedInCaller,
   mockDB,
@@ -44,6 +44,17 @@ import * as verifyWorldIdUserModule from '@/utils/verifyWorldIdUser'
 import { Faucet } from '../../utils/Faucet'
 import { RedisCache } from '../../utils/redis'
 import { FaucetRoute } from './FaucetRoute'
+
+vi.mock('ioredis')
+vi.mock('@/constants', async () => ({
+  // @ts-ignore - importActual returns unknown
+  ...(await vi.importActual('@/constants')),
+  envVars: {
+    FAUCET_ACCESS_ATTESTERS: ['ATTESTER_ADDRESS'],
+    PRIVY_ACCESS_TOKEN_SALT: '$2b$10$Kd085thA56nZmQiRHh2XHu',
+    FAUCET_IP_RATE_LIMIT: 2,
+  },
+}))
 
 describe(FaucetRoute.name, () => {
   let publicClient: PublicClient
@@ -168,9 +179,13 @@ describe(FaucetRoute.name, () => {
       l1ChainId: 11155111,
     })
 
-    const route = new FaucetRoute(trpc, mockGrowthbookStore as any, [faucet])
-      .handler
-    caller = createSignedInCaller(route, session)
+    const route = new FaucetRoute(
+      trpc,
+      mockGrowthbookStore as any,
+      [faucet],
+      redisCache,
+    ).handler
+    caller = createSignedInCaller({ router: route, session })
   })
 
   afterEach(async () => {
@@ -327,6 +342,86 @@ describe(FaucetRoute.name, () => {
         tx: claimResponse.tx,
       })
     })
+
+    describe('with faucet rate limiting', () => {
+      beforeEach(() => {
+        mockGrowthbookStore.get.mockImplementation(
+          (key) => key === 'enable_faucet_rate_limit',
+        )
+      })
+
+      it('should throw error when max requests exceeded', async () => {
+        vi.spyOn(redisCache, 'getItem').mockImplementation(async () =>
+          BigInt(2),
+        )
+
+        await expect(
+          caller.onChainClaims({
+            recipientAddress: recipientAccount.address,
+            ownerAddress: recipientAccount.address,
+            authMode: 'WORLD_ID',
+            chainId: 11155111,
+          }),
+        ).rejects.toEqual(
+          new TRPCError({
+            code: 'TOO_MANY_REQUESTS',
+            message: 'Too many faucet claims',
+          }),
+        )
+      })
+
+      it('should update faucet claim rate after successful claim', async () => {
+        vi.spyOn(redisCache, 'getItem').mockImplementation(async () => null)
+        const incrementItemMock = vi
+          .spyOn(redisCache, 'incrementItem')
+          .mockImplementation(async () => 1)
+        vi.spyOn(
+          getTempFaucetAccessAttestation,
+          'getTempFaucetAccessAttestation',
+        ).mockImplementation(async () => {
+          return {
+            id: 'mock-id',
+          }
+        })
+
+        const signature = await walletClient.signMessage({
+          account: ownerAccount,
+          message:
+            `You need to sign a message to prove you are the owner of ${ownerAccount.address} and are ` +
+            `sending testnet tokens to ${recipientAccount.address}`,
+        })
+
+        await caller.onChainClaims({
+          recipientAddress: recipientAccount.address,
+          ownerAddress: ownerAccount.address,
+          signature,
+          authMode: 'ATTESTATION',
+          chainId: 11155111,
+        })
+
+        expect(incrementItemMock).toBeCalledWith({
+          key: 'faucet-ip-rate-limit:127.0.0.1',
+          ttlInSeconds: envVars.FAUCET_IP_RATE_LIMIT_WINDOW_SECS,
+        })
+
+        vi.spyOn(redisCache, 'getItem').mockImplementation(async () =>
+          BigInt(1),
+        )
+
+        await caller.onChainClaims({
+          recipientAddress: recipientAccount.address,
+          ownerAddress: ownerAccount.address,
+          signature,
+          authMode: 'ATTESTATION',
+          chainId: 11155111,
+        })
+
+        expect(incrementItemMock).toHaveBeenLastCalledWith({
+          key: 'faucet-ip-rate-limit:127.0.0.1',
+          ttlInSeconds: envVars.FAUCET_IP_RATE_LIMIT_WINDOW_SECS,
+        })
+      })
+    })
   })
 
   describe('offChainClaims', () => {
@@ -345,6 +440,45 @@ describe(FaucetRoute.name, () => {
         etherscanUrl: `https://sepolia.infura.io/v3/tx/${claimResponse.tx}`,
         recipientAddress: recipientAccount.address,
         tx: claimResponse.tx,
+      })
+    })
+
+    describe('with faucet rate limiting', () => {
+      beforeEach(() => {
+        mockGrowthbookStore.get.mockImplementation(
+          (key) => key === 'enable_faucet_rate_limit',
+        )
+      })
+
+      it('should throw error when max requests exceeded', async () => {
+        vi.spyOn(redisCache, 'getItem').mockImplementation(async () =>
+          BigInt(2),
+        )
+
+        await expect(
+          caller.offChainClaims({
+            recipientAddress: recipientAccount.address,
+            authMode: 'PRIVY',
+            chainId: 11155111,
+          }),
+        ).rejects.toEqual(
+          new TRPCError({
+            code: 'TOO_MANY_REQUESTS',
+            message: 'Too many faucet claims',
+          }),
+        )
+      })
+
+      it('should not throw if under rate limit', async () => {
+        vi.spyOn(redisCache, 'getItem').mockImplementation(async () => null)
+
+        await expect(
+          caller.offChainClaims({
+            recipientAddress: recipientAccount.address,
+            authMode: 'PRIVY',
+            chainId: 11155111,
+          }),
+        ).resolves.not.toThrow()
       })
     })
 

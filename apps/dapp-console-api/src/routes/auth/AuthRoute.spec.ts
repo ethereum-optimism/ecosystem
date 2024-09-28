@@ -32,7 +32,7 @@ describe(AuthRoute.name, () => {
 
     trpc = new Trpc(privyClient, mockLogger, mockDB)
     const route = new AuthRoute(trpc).handler
-    caller = createSignedInCaller(route, session)
+    caller = createSignedInCaller({ router: route, session })
   })
 
   it('logoutUser deletes the users session', async () => {

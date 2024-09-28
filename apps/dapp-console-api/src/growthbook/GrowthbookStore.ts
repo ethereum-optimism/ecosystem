@@ -19,6 +19,7 @@ const bool = z.boolean().catch(false)
 // If you have a new feature flag, add it here
 const flags = z.object({
   enable_github_auth: bool,
+  enable_faucet_rate_limit: bool,
 })
 
 type FeatureFlag = keyof typeof flags.shape

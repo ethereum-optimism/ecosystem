@@ -32,15 +32,15 @@ describe('isPrivyAuthed', () => {
     trpc = new Trpc(privyClient, mockLogger, mockDB)
     handler = new TestRoute(trpc).handler
     getUser = (privyClient.getUser as Mock).mockImplementation(async () => ({}))
-    signedInCaller = createSignedInCaller(
-      handler,
-      mockUserSession({
+    signedInCaller = createSignedInCaller({
+      router: handler,
+      session: mockUserSession({
         privyAccessToken: '0xhdfhdfh',
         privyAccessTokenExpiration: Date.now() + 1000,
         entityId: '1',
         privyDid: 'privy:did',
       }),
-    )
+    })
     signedOutCaller = createSignedOutCaller(handler)
     mockGrowthbookStore.get.mockImplementation(() => true)
   })
@@ -68,17 +68,17 @@ describe('isPrivyAuthed', () => {
   })
 
   it('should pass if user is already signed into privy with github account linked', async () => {
-    signedInCaller = createSignedInCaller(
-      handler,
-      mockUserSession({
+    signedInCaller = createSignedInCaller({
+      router: handler,
+      session: mockUserSession({
         privyAccessToken: '0xhdfhdfh',
         privyAccessTokenExpiration: Date.now() + 1000,
         entityId: '1',
         privyDid: 'privy:did',
         githubSubject: 'subject',
       }),
-      `${mockPrivyAccessToken}-new`,
-    )
+      privyAccessToken: `${mockPrivyAccessToken}-new`,
+    })
 
     await expect(signedInCaller.test()).resolves.not.toThrow()
     expect(getUser).not.toBeCalled()
@@ -105,7 +105,7 @@ describe('isPrivyAuthed', () => {
       entityId: '1',
       privyDid: 'privy:did',
     })
-    const caller = createSignedInCaller(handler, session)
+    const caller = createSignedInCaller({ router: handler, session })
     const expectedGithubSubject = '0x123'
     getUser.mockImplementation(async () => ({
       github: { subject: expectedGithubSubject },
@@ -124,7 +124,7 @@ describe('isPrivyAuthed', () => {
       entityId: '1',
       privyDid: 'privy:did',
     })
-    const caller = createSignedInCaller(handler, session)
+    const caller = createSignedInCaller({ router: handler, session })
     const expectedGithubSubject = '0x123'
     getUser.mockImplementation(async () => ({
       github: { subject: expectedGithubSubject },

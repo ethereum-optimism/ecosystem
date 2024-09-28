@@ -15,12 +15,19 @@ export type AccessTokenLocation = 'header' | 'cookie'
 
 export const mockPrivyAccessToken = 'privy_token'
 
-export const createSignedInCaller = <T extends AnyRouter>(
-  router: T,
-  session: Awaited<ReturnType<typeof getIronSession<SessionData>>>,
-  privyAccessToken?: string,
-  tokenLocation: AccessTokenLocation = 'cookie',
-) => {
+export const createSignedInCaller = <T extends AnyRouter>({
+  router,
+  session,
+  privyAccessToken,
+  tokenLocation = 'cookie',
+  ip = '127.0.0.1',
+}: {
+  router: T
+  session: Awaited<ReturnType<typeof getIronSession<SessionData>>>
+  privyAccessToken?: string
+  tokenLocation?: AccessTokenLocation
+  ip?: string | null
+}) => {
   const callerFactory = createCallerFactory()
   const createCaller = callerFactory(router)
 
@@ -41,6 +48,7 @@ export const createSignedInCaller = <T extends AnyRouter>(
     req: {
       headers,
       cookies,
+      ip,
     } as Request,
     res: {} as Response,
     session: session,

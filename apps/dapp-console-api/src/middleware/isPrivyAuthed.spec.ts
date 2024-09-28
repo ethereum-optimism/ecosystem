@@ -50,7 +50,10 @@ describe('isPrivyAuthed', () => {
     verifyAuthTokenMock = (
       privyClient.verifyAuthToken as Mock
     ).mockImplementation(async () => ({}))
-    signedInCaller = createSignedInCaller(handler, mockUserSession())
+    signedInCaller = createSignedInCaller({
+      router: handler,
+      session: mockUserSession(),
+    })
     signedOutCaller = createSignedOutCaller(handler)
   })
 
@@ -79,16 +82,16 @@ describe('isPrivyAuthed', () => {
   })
 
   it('should call to privy to verify token when access token changes', async () => {
-    signedInCaller = createSignedInCaller(
-      handler,
-      mockUserSession({
+    signedInCaller = createSignedInCaller({
+      router: handler,
+      session: mockUserSession({
         privyAccessToken: hashedAccessToken,
         privyAccessTokenExpiration: Date.now() + 1000,
         entityId: '1',
         privyDid: 'privy:did',
       }),
-      `${mockPrivyAccessToken}-new`,
-    )
+      privyAccessToken: `${mockPrivyAccessToken}-new`,
+    })
 
     await signedInCaller.test()
 
@@ -96,15 +99,15 @@ describe('isPrivyAuthed', () => {
   })
 
   it('should call to privy if access token on session is expired', async () => {
-    signedInCaller = createSignedInCaller(
-      handler,
-      mockUserSession({
+    signedInCaller = createSignedInCaller({
+      router: handler,
+      session: mockUserSession({
         privyAccessToken: hashedAccessToken,
         privyAccessTokenExpiration: Date.now() - 1000,
         entityId: '1',
         privyDid: 'privy:did',
       }),
-    )
+    })
 
     await signedInCaller.test()
 
@@ -116,12 +119,12 @@ describe('isPrivyAuthed', () => {
     const expectedExpirationTimeSeconds = Date.now() / 1000
     const expectedPrivyDid = 'privy:did'
     const session = mockUserSession()
-    const caller = createSignedInCaller(
-      handler,
+    const caller = createSignedInCaller({
+      router: handler,
       session,
-      mockPrivyAccessToken,
-      'header',
-    )
+      privyAccessToken: mockPrivyAccessToken,
+      tokenLocation: 'header',
+    })
     getEntityByPrivyDidMock.mockImplementation(async () => ({
       id: expectedEntityId,
     }))
@@ -146,7 +149,7 @@ describe('isPrivyAuthed', () => {
     const expectedExpirationTimeSeconds = Date.now() / 1000
     const expectedPrivyDid = 'privy:did'
     const session = mockUserSession()
-    const caller = createSignedInCaller(handler, session)
+    const caller = createSignedInCaller({ router: handler, session })
     getEntityByPrivyDidMock.mockImplementation(async () => ({
       id: expectedEntityId,
     }))
@@ -171,7 +174,7 @@ describe('isPrivyAuthed', () => {
     const expectedExpirationTimeSeconds = Date.now() / 1000
     const expectedPrivyDid = 'privy:did'
     const session = mockUserSession()
-    const caller = createSignedInCaller(handler, session)
+    const caller = createSignedInCaller({ router: handler, session })
     getEntityByPrivyDidMock.mockImplementation(async () => undefined)
     insertEntityMock.mockImplementation(async () => ({ id: expectedEntityId }))
     verifyAuthTokenMock.mockImplementation(async () => ({
@@ -198,7 +201,7 @@ describe('isPrivyAuthed', () => {
     const expectedExpirationTimeSeconds = Date.now() / 1000
     const expectedPrivyDid = 'privy:did'
     const session = mockUserSession()
-    const caller = createSignedInCaller(handler, session)
+    const caller = createSignedInCaller({ router: handler, session })
     getEntityByPrivyDidMock.mockImplementation(async () => ({
       id: expectedEntityId,
     }))
@@ -220,7 +223,7 @@ describe('isPrivyAuthed', () => {
       entityId: 'id1',
       privyDid: 'privy:did',
     })
-    const caller = createSignedInCaller(handler, session)
+    const caller = createSignedInCaller({ router: handler, session })
 
     await caller.test()
 

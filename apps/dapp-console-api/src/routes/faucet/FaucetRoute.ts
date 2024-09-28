@@ -9,9 +9,15 @@ import { zodEthereumAddress, zodEthereumSignature } from '@/api'
 import type { SessionData } from '@/constants'
 import { envVars } from '@/constants'
 import type { GrowthbookStore } from '@/growthbook'
-import { isGithubAuthed, isPrivyAuthed } from '@/middleware'
+import {
+  faucetIPClaimRateLimiter,
+  isGithubAuthed,
+  isPrivyAuthed,
+} from '@/middleware'
 import { metrics } from '@/monitoring/metrics'
 import type { Trpc } from '@/Trpc'
+import { incrementFaucetIPClaimRate } from '@/utils'
+import type { RedisCache } from '@/utils/redis'
 
 import { getCoinbaseVerificationAttestationFromEAS } from '../../utils/coinbaseVerification'
 import type { Faucet, FaucetAuthMode } from '../../utils/Faucet'
@@ -142,6 +148,13 @@ export class FaucetRoute extends Route {
   public readonly onChainClaimsController = this.trpc.procedure
     .use(isPrivyAuthed(this.trpc))
     .use(isGithubAuthed(this.trpc, this.growthBookStore))
+    .use(
+      faucetIPClaimRateLimiter(
+        this.trpc,
+        this.growthBookStore,
+        this.redisCache,
+      ),
+    )
     .input(
       this.z
         .object({
@@ -226,6 +239,17 @@ export class FaucetRoute extends Route {
           authMode,
         }
       }
+      try {
+        if (this.growthBookStore.get('enable_faucet_rate_limit')) {
+          await incrementFaucetIPClaimRate(this.redisCache, ctx.req.ip!)
+        }
+      } catch (err) {
+        this.logger?.error(
+          `${FaucetRoute.LOG_TAG} Failed to update faucet rate limit cache: ${err.message}`,
+          err,
+        )
+        metrics.faucetRateLimitRedisCacheFailures.inc()
+      }
       return {
         chainId: faucet.chainId,
         tx,
@@ -242,6 +266,13 @@ export class FaucetRoute extends Route {
   public readonly offChainClaimsController = this.trpc.procedure
     .use(isPrivyAuthed(this.trpc))
     .use(isGithubAuthed(this.trpc, this.growthBookStore))
+    .use(
+      faucetIPClaimRateLimiter(
+        this.trpc,
+        this.growthBookStore,
+        this.redisCache,
+      ),
+    )
     .input(
       this.z
         .object({
@@ -296,6 +327,17 @@ export class FaucetRoute extends Route {
           authMode,
         }
       }
+      try {
+        if (this.growthBookStore.get('enable_faucet_rate_limit')) {
+          await incrementFaucetIPClaimRate(this.redisCache, ctx.req.ip!)
+        }
+      } catch (err) {
+        this.logger?.error(
+          `${FaucetRoute.LOG_TAG} Failed to update faucet rate limit cache: ${err.message}`,
+          err,
+        )
+        metrics.faucetRateLimitRedisCacheFailures.inc()
+      }
       return {
         chainId: faucet.chainId,
         tx,
@@ -318,6 +360,7 @@ export class FaucetRoute extends Route {
     trpc: Trpc,
     private readonly growthBookStore: GrowthbookStore,
     private readonly faucets: Faucet[],
+    private readonly redisCache: RedisCache,
   ) {
     super(trpc)
   }

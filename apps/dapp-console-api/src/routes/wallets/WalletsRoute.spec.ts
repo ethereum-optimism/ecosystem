@@ -64,7 +64,7 @@ describe(WalletsRoute.name, () => {
         }
       },
     )
-    caller = createSignedInCaller(handler, session)
+    caller = createSignedInCaller({ router: handler, session })
   })
 
   afterEach(() => {

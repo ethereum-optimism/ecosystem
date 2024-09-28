@@ -189,6 +189,14 @@ describe('redis helper', () => {
         const res = await redisCache.getItem<string>(testKey)
         expect(res).toEqual('str')
       })
+
+      it('should get non-encoded number', async () => {
+        vi.spyOn(redisCache.redisClient, 'get').mockImplementation(() => {
+          return Promise.resolve('1')
+        })
+        const res = await redisCache.getItem<number>(testKey)
+        expect(res).toEqual(1)
+      })
     })
   })
 })
