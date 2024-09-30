@@ -10,4 +10,4 @@
 
 ## Defined in
 
-[packages/viem/src/actions/executeL2ToL2Message.ts:52](https://github.com/ethereum-optimism/ecosystem/blob/c1e85d9590ff961efd71aa28bb561bf44dbc4c2d/packages/viem/src/actions/executeL2ToL2Message.ts#L52)
+[packages/viem/src/actions/executeL2ToL2Message.ts:52](https://github.com/ethereum-optimism/ecosystem/blob/9f1518a8b470f51e691a3ccf35afc0dba397076b/packages/viem/src/actions/executeL2ToL2Message.ts#L52)

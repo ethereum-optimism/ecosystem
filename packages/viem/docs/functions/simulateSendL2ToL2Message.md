@@ -36,4 +36,4 @@ The contract functions return value. [SendL2ToL2MessageContractReturnType](../ty
 
 ## Defined in
 
-[packages/viem/src/actions/sendL2ToL2Message.ts:137](https://github.com/ethereum-optimism/ecosystem/blob/c1e85d9590ff961efd71aa28bb561bf44dbc4c2d/packages/viem/src/actions/sendL2ToL2Message.ts#L137)
+[packages/viem/src/actions/sendL2ToL2Message.ts:131](https://github.com/ethereum-optimism/ecosystem/blob/9f1518a8b470f51e691a3ccf35afc0dba397076b/packages/viem/src/actions/sendL2ToL2Message.ts#L131)
