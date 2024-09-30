@@ -10,6 +10,9 @@
       "supersim",
       "superchain"
     ],
+    "engines": {
+        "node": ">=18.0.0"
+    },
     "bin": {
         "supersim": "./bin/supersim"
     },
