@@ -12,4 +12,4 @@ ABI for the OP Stack contract `SuperchainWETH`
 
 ## Defined in
 
-[packages/viem/src/abis.ts:874](https://github.com/ethereum-optimism/ecosystem/blob/c1e85d9590ff961efd71aa28bb561bf44dbc4c2d/packages/viem/src/abis.ts#L874)
+[packages/viem/src/abis.ts:874](https://github.com/ethereum-optimism/ecosystem/blob/c363acafc2b5c0db021f95b4e5fefe43bbcaf322/packages/viem/src/abis.ts#L874)

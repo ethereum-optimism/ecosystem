@@ -36,6 +36,11 @@ export {
 
 // utils
 export type {
+  DecodeExecutingMessageParameters,
+  DecodeExecutingMessageReturnType,
+} from '@/utils/decodeExecutingMessage.js'
+export { decodeExecutingMessage } from '@/utils/decodeExecutingMessage.js'
+export type {
   DecodeSentMessageParameters,
   DecodeSentMessageReturnType,
 } from '@/utils/decodeSentMessage.js'

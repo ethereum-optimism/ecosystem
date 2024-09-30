@@ -16,4 +16,4 @@
 
 ## Defined in
 
-[packages/viem/src/utils/decodeSentMessage.ts:9](https://github.com/ethereum-optimism/ecosystem/blob/c1e85d9590ff961efd71aa28bb561bf44dbc4c2d/packages/viem/src/utils/decodeSentMessage.ts#L9)
+[packages/viem/src/utils/decodeSentMessage.ts:9](https://github.com/ethereum-optimism/ecosystem/blob/c363acafc2b5c0db021f95b4e5fefe43bbcaf322/packages/viem/src/utils/decodeSentMessage.ts#L9)

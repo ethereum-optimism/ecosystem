@@ -5,6 +5,9 @@ This package is a TypeScript extension for Viem that provides actions and utilit
 ### Documentation
 * [SDK Reference](./docs/README.md)
 
+### Code Snippets
+* [Interop](./src/test/e2e/interop.spec.ts)
+
 ### Running Tests
 
 Before you can run the unit tests you'll need [supersim](https://github.com/ethereum-optimism/supersim) installed. Once you have supersim installed you can run `pnpm nx run @eth-optimism/viem:test` from the root of the monorepo to get the tests running.

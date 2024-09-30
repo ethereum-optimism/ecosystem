@@ -44,4 +44,4 @@ The timestamp that the log was emitted. Used to enforce the timestamp invariant
 
 ## Defined in
 
-[packages/viem/src/types/interop.ts:7](https://github.com/ethereum-optimism/ecosystem/blob/c1e85d9590ff961efd71aa28bb561bf44dbc4c2d/packages/viem/src/types/interop.ts#L7)
+[packages/viem/src/types/interop.ts:7](https://github.com/ethereum-optimism/ecosystem/blob/c363acafc2b5c0db021f95b4e5fefe43bbcaf322/packages/viem/src/types/interop.ts#L7)

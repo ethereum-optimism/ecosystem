@@ -35,6 +35,8 @@
 
 ## Types
 
+- [DecodeExecutingMessageParameters](type-aliases/DecodeExecutingMessageParameters.md)
+- [DecodeExecutingMessageReturnType](type-aliases/DecodeExecutingMessageReturnType.md)
 - [DecodeSentMessageParameters](type-aliases/DecodeSentMessageParameters.md)
 - [DecodeSentMessageReturnType](type-aliases/DecodeSentMessageReturnType.md)
 - [ExecuteL2ToL2MessageContractReturnType](type-aliases/ExecuteL2ToL2MessageContractReturnType.md)
@@ -52,5 +54,6 @@
 
 ## Utils
 
+- [decodeExecutingMessage](functions/decodeExecutingMessage.md)
 - [decodeSentMessage](functions/decodeSentMessage.md)
 - [extractMessageIdentifierFromLogs](functions/extractMessageIdentifierFromLogs.md)
