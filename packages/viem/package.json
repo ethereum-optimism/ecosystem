@@ -10,7 +10,7 @@
   ],
   "scripts": {
     "docs": "typedoc",
-    "test": "vitest --maxConcurrency 1",
+    "test": "vitest",
     "clean": "rm -rf build types tsconfig.tsbuildinfo",
     "typecheck": "tsc --noEmit --emitDeclarationOnly false",
     "typecheck:ci": "tsc --noEmit --emitDeclarationOnly false",
