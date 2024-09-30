@@ -147,7 +147,5 @@ export async function simulateSendL2ToL2Message<
     args: [destinationChainId, target, message],
   } as SimulateContractParameters)
 
-  console.log('HERE', res)
-
   return res.result as SendL2ToL2MessageContractReturnType
 }

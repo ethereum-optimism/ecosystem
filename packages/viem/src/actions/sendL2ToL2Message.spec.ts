@@ -18,6 +18,13 @@ describe('sendL2ToL2Message', () => {
 
   describe('write contract', () => {
     it('should return expected request', async () => {
+      // fetch current nonce
+      const currentNonce = await publicClient.readContract({
+        abi: l2ToL2CrossDomainMessengerABI,
+        address: contracts.l2ToL2CrossDomainMessenger.address,
+        functionName: 'messageNonce',
+      })
+
       const hash = await walletClient.sendL2ToL2Message({
         account: testAccount.address,
         destinationChainId: supersimL2B.id,
@@ -41,18 +48,11 @@ describe('sendL2ToL2Message', () => {
       expect(id.blockNumber).toEqual(receipt.blockNumber)
       expect(id.logIndex).toEqual(BigInt(receipt.logs[0].logIndex))
 
-      // verify payload
-      const currentNonce = await publicClient.readContract({
-        abi: l2ToL2CrossDomainMessengerABI,
-        address: contracts.l2ToL2CrossDomainMessenger.address,
-        functionName: 'messageNonce',
-      })
-
       const decodedPayload = decodeSentMessage({ payload })
       expect(decodedPayload).toEqual({
         origin: BigInt(supersimL2A.id),
         destination: BigInt(supersimL2B.id),
-        messageNonce: currentNonce - 1n,
+        messageNonce: currentNonce + 1n,
         sender: testAccount.address,
         target: ticTacToeAddress,
         message: encodedMessage,
