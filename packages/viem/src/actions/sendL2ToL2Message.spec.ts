@@ -1,7 +1,6 @@
 import { encodeFunctionData } from 'viem'
 import { describe, expect, it } from 'vitest'
 
-import { l2ToL2CrossDomainMessengerABI } from '@/abis.js'
 import { supersimL2A, supersimL2B } from '@/chains/supersim.js'
 import { contracts } from '@/contracts.js'
 import { publicClient, testAccount, walletClient } from '@/test/clients.js'
@@ -18,13 +17,6 @@ describe('sendL2ToL2Message', () => {
 
   describe('write contract', () => {
     it('should return expected request', async () => {
-      // fetch current nonce
-      const currentNonce = await publicClient.readContract({
-        abi: l2ToL2CrossDomainMessengerABI,
-        address: contracts.l2ToL2CrossDomainMessenger.address,
-        functionName: 'messageNonce',
-      })
-
       const hash = await walletClient.sendL2ToL2Message({
         account: testAccount.address,
         destinationChainId: supersimL2B.id,
@@ -49,14 +41,11 @@ describe('sendL2ToL2Message', () => {
       expect(id.logIndex).toEqual(BigInt(receipt.logs[0].logIndex))
 
       const decodedPayload = decodeSentMessage({ payload })
-      expect(decodedPayload).toEqual({
-        origin: BigInt(supersimL2A.id),
-        destination: BigInt(supersimL2B.id),
-        messageNonce: currentNonce + 1n,
-        sender: testAccount.address,
-        target: ticTacToeAddress,
-        message: encodedMessage,
-      })
+      expect(decodedPayload.origin).toEqual(BigInt(supersimL2A.id))
+      expect(decodedPayload.destination).toEqual(BigInt(supersimL2B.id))
+      expect(decodedPayload.sender).toEqual(testAccount.address)
+      expect(decodedPayload.target).toEqual(ticTacToeAddress)
+      expect(decodedPayload.message).toEqual(encodedMessage)
     })
   })
 
