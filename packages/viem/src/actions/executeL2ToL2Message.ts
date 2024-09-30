@@ -24,6 +24,9 @@ import {
 import type { MessageIdentifier } from '@/types/interop.js'
 import type { ErrorType } from '@/types/utils.js'
 
+/**
+ * @category Types
+ */
 export type ExecuteL2ToL2MessageParameters<
   TChain extends Chain | undefined = Chain | undefined,
   TAccount extends Account | undefined = Account | undefined,
@@ -42,12 +45,24 @@ export type ExecuteL2ToL2MessageParameters<
   /** Message payload to call target with. */
   message: Hex
 }
+
+/**
+ * @category Types
+ */
 export type ExecuteL2ToL2MessageReturnType = Hash
+
+/**
+ * @category Types
+ */
 export type ExecuteL2ToL2MessageContractReturnType = ContractFunctionReturnType<
   typeof crossL2InboxABI,
   'payable',
   'executeMessage'
 >
+
+/**
+ * @category Types
+ */
 export type ExecuteL2ToL2MessageErrorType =
   | EstimateContractGasErrorType
   | WriteContractErrorType
@@ -55,28 +70,10 @@ export type ExecuteL2ToL2MessageErrorType =
 
 /**
  * Executes the L2 to L2 message. Used in the interop flow.
- *
- * - Docs: TODO add markdown docs
+ * @category L2 Wallet Actions
  * @param client - Client to use
  * @param parameters - {@link ExecuteL2ToL2MessageParameters}
  * @returns The executeL2ToL2Message transaction hash. {@link ExecuteL2ToL2MessageReturnType}
- * @example
- * import { createWalletClient, http } from 'viem'
- * import { optimism } from 'viem/chains'
- * import { executeL2ToL2Message } from '@eth-optimism/viem'
- *
- * const walletClientL1 = createWalletClient({
- *   chain: optimism,
- *   transport: http(),
- * })
- *
- * const request = await executeL2ToL2Message(walletClientL1, {
- *   account: '0xA0Cf798816D4b9b9866b5330EEa46a18382f251e',
- *   targetChain: optimism,
- *   id: { ... },
- *   target: 0x...,
- *   message: 0x...,
- * })
  */
 export async function executeL2ToL2Message<
   TChain extends Chain | undefined,
@@ -100,6 +97,13 @@ export async function executeL2ToL2Message<
   )
 }
 
+/**
+ * Estimates gas for {@link executeL2ToL2Message}
+ * @category L2 Wallet Actions
+ * @param client - Client to use
+ * @param parameters - {@link ExecuteL2ToL2MessageParameters}
+ * @returns The estimated gas value.
+ */
 export async function estimateExecuteL2ToL2MessageGas<
   TChain extends Chain | undefined,
   TAccount extends Account | undefined,
@@ -119,6 +123,13 @@ export async function estimateExecuteL2ToL2MessageGas<
   } as EstimateContractGasParameters)
 }
 
+/**
+ * Simulate contract call for {@link executeL2ToL2Message}
+ * @category L2 Public Actions
+ * @param client - L2 Public Client
+ * @param parameters - {@link ExecuteL2ToL2MessageParameters}
+ * @returns The contract functions return value. {@link ExecuteL2ToL2MessageContractReturnType}
+ */
 export async function simulateExecuteL2ToL2Message<
   TChain extends Chain | undefined,
   TAccount extends Account | undefined,

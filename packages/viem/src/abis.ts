@@ -2,6 +2,7 @@
 
 /**
  * ABI for the OP Stack contract `L1Block`
+ * @category ABI
  */
 export const l1BlockABI = [
   {
@@ -353,6 +354,7 @@ export const l1BlockABI = [
 
 /**
  * ABI for the OP Stack contract `L2ToL2CrossDomainMessenger`
+ * @category ABI
  */
 export const l2ToL2CrossDomainMessengerABI = [
   {
@@ -581,6 +583,7 @@ export const l2ToL2CrossDomainMessengerABI = [
 
 /**
  * ABI for the OP Stack contract `CrossL2Inbox`
+ * @category ABI
  */
 export const crossL2InboxABI = [
   {
@@ -866,6 +869,7 @@ export const crossL2InboxABI = [
 
 /**
  * ABI for the OP Stack contract `SuperchainWETH`
+ * @category ABI
  */
 export const superchainWETHABI = [
   {

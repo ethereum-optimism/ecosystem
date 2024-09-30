@@ -1,6 +1,10 @@
 import { defineChain } from 'viem'
 import { mainnet, optimism } from 'viem/chains'
 
+/**
+ * L1 chain definition for supersim in non-forked mode
+ * @category Supersim
+ */
 export const supersimL1 = defineChain({
   ...mainnet,
   id: 900,
@@ -13,6 +17,10 @@ export const supersimL1 = defineChain({
   testnet: true,
 })
 
+/**
+ * L2 chain A definition for supersim in non-forked mode. Interop Enabled
+ * @category Supersim
+ */
 export const supersimL2A = defineChain({
   ...optimism,
   id: 901,
@@ -26,6 +34,10 @@ export const supersimL2A = defineChain({
   sourceId: 900,
 })
 
+/**
+ * L2 chain B definition for supersim in non-forked mode. Interop Enabled
+ * @category Supersim
+ */
 export const supersimL2B = defineChain({
   ...optimism,
   id: 902,
