@@ -1,5 +1,5 @@
 const fs = require('fs')
-const https = require('https')
+const { https } = require('follow-redirects')
 const path = require('path')
 const os = require('os')
 const { exec } = require('child_process')

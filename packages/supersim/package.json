@@ -5,10 +5,10 @@
     "license": "MIT",
     "author": "Optimism PBC",
     "keywords": [
-      "optimism",
-      "ethereum",
-      "supersim",
-      "superchain"
+        "optimism",
+        "ethereum",
+        "supersim",
+        "superchain"
     ],
     "engines": {
         "node": ">=18.0.0"
@@ -20,5 +20,8 @@
         "lint": "eslint install.js && pnpm prettier --check install.js",
         "lint:fix": "eslint install.js --fix --quiet && pnpm prettier install.js --write --loglevel=warn",
         "postinstall": "node install.js"
+    },
+    "dependencies": {
+        "follow-redirects": "^1.15.9"
     }
-  }
+}
