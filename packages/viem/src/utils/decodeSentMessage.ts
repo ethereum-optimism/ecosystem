@@ -24,7 +24,6 @@ export type DecodeSentMessageReturnType = {
 
 /**
  * Utility for decoding SentMessage log events
- * 
  * @category Utils
  * @param params {@link DecodeSentMessageParameters}
  * @returns Decoded message arugments {@link DecodeSentMessageReturnType}

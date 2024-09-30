@@ -47,12 +47,10 @@ export class ReceiptContainsMessageIdentifierError extends BaseError {
 
 /**
  * Retrieves a message identifier from the logs returned with the receipt from the sendL2ToL2Message transaction.
- *
  * @category Utils
  * @param client - L2 Public Client
  * @param parameters - {@link GetGameParameters}
  * @returns A valid message identifier. {@link GetGameReturnType}
- * 
  */
 export async function extractMessageIdentifierFromLogs<
   chain extends Chain | undefined,

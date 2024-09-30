@@ -70,12 +70,10 @@ export type ExecuteL2ToL2MessageErrorType =
 
 /**
  * Executes the L2 to L2 message. Used in the interop flow.
- *
  * @category L2 Wallet Actions
  * @param client - Client to use
  * @param parameters - {@link ExecuteL2ToL2MessageParameters}
  * @returns The executeL2ToL2Message transaction hash. {@link ExecuteL2ToL2MessageReturnType}
- * 
  */
 export async function executeL2ToL2Message<
   TChain extends Chain | undefined,
@@ -101,12 +99,10 @@ export async function executeL2ToL2Message<
 
 /**
  * Estimates gas for {@link executeL2ToL2Message}
- *
  * @category L2 Wallet Actions
  * @param client - Client to use
  * @param parameters - {@link ExecuteL2ToL2MessageParameters}
  * @returns The estimated gas value.
- * 
  */
 export async function estimateExecuteL2ToL2MessageGas<
   TChain extends Chain | undefined,
@@ -129,12 +125,10 @@ export async function estimateExecuteL2ToL2MessageGas<
 
 /**
  * Simulate contract call for {@link executeL2ToL2Message}
- *
  * @category L2 Public Actions
  * @param client - L2 Public Client
  * @param parameters - {@link ExecuteL2ToL2MessageParameters}
  * @returns The contract functions return value. {@link ExecuteL2ToL2MessageContractReturnType}
- * 
  */
 export async function simulateExecuteL2ToL2Message<
   TChain extends Chain | undefined,
