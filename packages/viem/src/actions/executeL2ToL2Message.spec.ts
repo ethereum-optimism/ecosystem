@@ -1,11 +1,11 @@
-import { encodeFunctionData, keccak256, parseEventLogs } from 'viem'
+import { encodeFunctionData, keccak256 } from 'viem'
 import { describe, expect, it } from 'vitest'
 
-import { crossL2InboxABI } from '@/abis.js'
 import { supersimL2A } from '@/chains/supersim.js'
 import { publicClient, testAccount, walletClient } from '@/test/clients.js'
 import { ticTacToeABI, ticTacToeAddress } from '@/test/setupTicTacToe.js'
 import type { MessageIdentifier } from '@/types/interop.js'
+import { decodeExecutingMessage } from '@/utils/decodeExecutingMessage.js'
 
 describe('executeL2ToL2Message', () => {
   const expectedId = {
@@ -48,14 +48,9 @@ describe('executeL2ToL2Message', () => {
 
       const receipt = await publicClient.waitForTransactionReceipt({ hash })
 
-      const logs = parseEventLogs({
-        abi: crossL2InboxABI,
-        logs: receipt.logs,
-        eventName: 'ExecutingMessage',
-      })
-
-      const { msgHash } = logs[0].args
+      const { msgHash, id } = decodeExecutingMessage({ logs: receipt.logs })
       expect(msgHash).toEqual(keccak256(encodedMessage))
+      expect(expectedId).toEqual(id)
     })
   })
 
