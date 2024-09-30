@@ -24,4 +24,4 @@ Decoded message arugments [DecodeSentMessageReturnType](../type-aliases/DecodeSe
 
 ## Defined in
 
-[packages/viem/src/utils/decodeSentMessage.ts:31](https://github.com/ethereum-optimism/ecosystem/blob/9f1518a8b470f51e691a3ccf35afc0dba397076b/packages/viem/src/utils/decodeSentMessage.ts#L31)
+[packages/viem/src/utils/decodeSentMessage.ts:31](https://github.com/ethereum-optimism/ecosystem/blob/c363acafc2b5c0db021f95b4e5fefe43bbcaf322/packages/viem/src/utils/decodeSentMessage.ts#L31)
