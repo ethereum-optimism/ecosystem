@@ -11,8 +11,7 @@ import { BaseError } from 'viem'
 
 import type { MessageIdentifier } from '@/types/interop.js'
 import type { ErrorType } from '@/types/utils.js'
-
-import { decodeSentMessage } from './decodeSentMessage.js'
+import { decodeSentMessage } from '@/utils/decodeSentMessage.js'
 
 /**
  * @category Types
