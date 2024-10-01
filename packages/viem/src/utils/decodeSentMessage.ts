@@ -1,5 +1,5 @@
-import type { Address, Hex } from 'viem'
-import { decodeFunctionData } from 'viem'
+import type { Address, Hex, Log } from 'viem'
+import { parseEventLogs } from 'viem'
 
 import { l2ToL2CrossDomainMessengerABI } from '@/abis.js'
 
@@ -7,19 +7,19 @@ import { l2ToL2CrossDomainMessengerABI } from '@/abis.js'
  * @category Types
  */
 export type DecodeSentMessageParameters = {
-  payload: Hex
+  logs: Log[]
 }
 
 /**
  * @category Types
  */
 export type DecodeSentMessageReturnType = {
-  origin: bigint
   destination: bigint
   messageNonce: bigint
   sender: Address
   target: Address
   message: Hex
+  log: Log
 }
 
 /**
@@ -31,20 +31,21 @@ export type DecodeSentMessageReturnType = {
 export function decodeSentMessage(
   params: DecodeSentMessageParameters,
 ): DecodeSentMessageReturnType {
-  const decodedPayload = decodeFunctionData({
+  const parsedLogs = parseEventLogs({
     abi: l2ToL2CrossDomainMessengerABI,
-    data: params.payload,
+    eventName: 'SentMessage',
+    logs: params.logs,
   })
 
-  const [destination, origin, messageNonce, sender, target, message] =
-    decodedPayload.args
+  const { destination, target, messageNonce, sender, message } =
+    parsedLogs[0].args
 
   return {
-    origin,
     destination,
     messageNonce,
     sender,
     target,
     message,
+    log: parsedLogs[0],
   } as DecodeSentMessageReturnType
 }

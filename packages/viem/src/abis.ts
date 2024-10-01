@@ -85,6 +85,32 @@ export const l1BlockABI = [
   },
   {
     type: 'function',
+    name: 'eip1559Denominator',
+    inputs: [],
+    outputs: [
+      {
+        name: '',
+        type: 'uint64',
+        internalType: 'uint64',
+      },
+    ],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    name: 'eip1559Elasticity',
+    inputs: [],
+    outputs: [
+      {
+        name: '',
+        type: 'uint64',
+        internalType: 'uint64',
+      },
+    ],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
     name: 'gasPayingToken',
     inputs: [],
     outputs: [
@@ -290,6 +316,13 @@ export const l1BlockABI = [
   },
   {
     type: 'function',
+    name: 'setL1BlockValuesHolocene',
+    inputs: [],
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
     name: 'timestamp',
     inputs: [],
     outputs: [
@@ -414,32 +447,39 @@ export const l2ToL2CrossDomainMessengerABI = [
     name: 'relayMessage',
     inputs: [
       {
-        name: '_destination',
-        type: 'uint256',
-        internalType: 'uint256',
+        name: '_id',
+        type: 'tuple',
+        internalType: 'struct ICrossL2Inbox.Identifier',
+        components: [
+          {
+            name: 'origin',
+            type: 'address',
+            internalType: 'address',
+          },
+          {
+            name: 'blockNumber',
+            type: 'uint256',
+            internalType: 'uint256',
+          },
+          {
+            name: 'logIndex',
+            type: 'uint256',
+            internalType: 'uint256',
+          },
+          {
+            name: 'timestamp',
+            type: 'uint256',
+            internalType: 'uint256',
+          },
+          {
+            name: 'chainId',
+            type: 'uint256',
+            internalType: 'uint256',
+          },
+        ],
       },
       {
-        name: '_source',
-        type: 'uint256',
-        internalType: 'uint256',
-      },
-      {
-        name: '_nonce',
-        type: 'uint256',
-        internalType: 'uint256',
-      },
-      {
-        name: '_sender',
-        type: 'address',
-        internalType: 'address',
-      },
-      {
-        name: '_target',
-        type: 'address',
-        internalType: 'address',
-      },
-      {
-        name: '_message',
+        name: '_sentMessage',
         type: 'bytes',
         internalType: 'bytes',
       },
@@ -469,7 +509,7 @@ export const l2ToL2CrossDomainMessengerABI = [
     ],
     outputs: [
       {
-        name: 'msgHash_',
+        name: '',
         type: 'bytes32',
         internalType: 'bytes32',
       },
@@ -513,6 +553,18 @@ export const l2ToL2CrossDomainMessengerABI = [
     name: 'FailedRelayedMessage',
     inputs: [
       {
+        name: 'source',
+        type: 'uint256',
+        indexed: true,
+        internalType: 'uint256',
+      },
+      {
+        name: 'messageNonce',
+        type: 'uint256',
+        indexed: true,
+        internalType: 'uint256',
+      },
+      {
         name: 'messageHash',
         type: 'bytes32',
         indexed: true,
@@ -526,6 +578,18 @@ export const l2ToL2CrossDomainMessengerABI = [
     name: 'RelayedMessage',
     inputs: [
       {
+        name: 'source',
+        type: 'uint256',
+        indexed: true,
+        internalType: 'uint256',
+      },
+      {
+        name: 'messageNonce',
+        type: 'uint256',
+        indexed: true,
+        internalType: 'uint256',
+      },
+      {
         name: 'messageHash',
         type: 'bytes32',
         indexed: true,
@@ -535,8 +599,50 @@ export const l2ToL2CrossDomainMessengerABI = [
     anonymous: false,
   },
   {
+    type: 'event',
+    name: 'SentMessage',
+    inputs: [
+      {
+        name: 'destination',
+        type: 'uint256',
+        indexed: true,
+        internalType: 'uint256',
+      },
+      {
+        name: 'target',
+        type: 'address',
+        indexed: true,
+        internalType: 'address',
+      },
+      {
+        name: 'messageNonce',
+        type: 'uint256',
+        indexed: true,
+        internalType: 'uint256',
+      },
+      {
+        name: 'sender',
+        type: 'address',
+        indexed: false,
+        internalType: 'address',
+      },
+      {
+        name: 'message',
+        type: 'bytes',
+        indexed: false,
+        internalType: 'bytes',
+      },
+    ],
+    anonymous: false,
+  },
+  {
     type: 'error',
-    name: 'CrossL2InboxOriginNotL2ToL2CrossDomainMessenger',
+    name: 'EventPayloadNotSentMessage',
+    inputs: [],
+  },
+  {
+    type: 'error',
+    name: 'IdOriginNotL2ToL2CrossDomainMessenger',
     inputs: [],
   },
   {
@@ -572,11 +678,6 @@ export const l2ToL2CrossDomainMessengerABI = [
   {
     type: 'error',
     name: 'ReentrantCall',
-    inputs: [],
-  },
-  {
-    type: 'error',
-    name: 'RelayMessageCallerNotCrossL2Inbox',
     inputs: [],
   },
 ] as const

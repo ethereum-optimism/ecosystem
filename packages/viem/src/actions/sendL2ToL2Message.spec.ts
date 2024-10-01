@@ -40,12 +40,11 @@ describe('sendL2ToL2Message', () => {
       expect(id.blockNumber).toEqual(receipt.blockNumber)
       expect(id.logIndex).toEqual(BigInt(receipt.logs[0].logIndex))
 
-      const decodedPayload = decodeSentMessage({ payload })
-      expect(decodedPayload.origin).toEqual(BigInt(supersimL2A.id))
+      const decodedPayload = decodeSentMessage({ logs: receipt.logs })
       expect(decodedPayload.destination).toEqual(BigInt(supersimL2B.id))
       expect(decodedPayload.sender).toEqual(testAccount.address)
       expect(decodedPayload.target).toEqual(ticTacToeAddress)
-      expect(decodedPayload.message).toEqual(encodedMessage)
+      expect(decodedPayload.message).toEqual(payload)
     })
   })
 
