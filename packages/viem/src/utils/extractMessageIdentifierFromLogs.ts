@@ -1,6 +1,7 @@
 import type {
   Account,
   Chain,
+  Hash,
   Hex,
   PublicClient,
   TransactionReceipt,
@@ -10,6 +11,8 @@ import { BaseError } from 'viem'
 
 import type { MessageIdentifier } from '@/types/interop.js'
 import type { ErrorType } from '@/types/utils.js'
+
+import { decodeSentMessage } from './decodeSentMessage.js'
 
 /**
  * @category Types
@@ -61,25 +64,25 @@ export async function extractMessageIdentifierFromLogs<
 ): Promise<ExtractMessageIdentifierFromLogsReturnType> {
   const { receipt } = parameters
 
-  const log = receipt.logs.find((log) => log.topics.length === 0)
+  const { log, message } = decodeSentMessage({ logs: receipt.logs })
   if (!log) {
     throw new ReceiptContainsMessageIdentifierError({
       hash: receipt.transactionHash,
     })
   }
 
-  const block = await client.getBlock({ blockHash: log.blockHash })
+  const block = await client.getBlock({ blockHash: log.blockHash as Hash })
 
   const id = {
     origin: log.address,
     blockNumber: block.number,
-    logIndex: BigInt(log.logIndex),
+    logIndex: BigInt(log.logIndex as number),
     timestamp: block.timestamp,
     chainId: BigInt(client.chain?.id as number),
   } as MessageIdentifier
 
   return {
     id,
-    payload: log.data,
+    payload: message,
   }
 }
