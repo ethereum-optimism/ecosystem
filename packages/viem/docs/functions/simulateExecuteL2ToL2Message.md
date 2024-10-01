@@ -36,4 +36,4 @@ The contract functions return value. [ExecuteL2ToL2MessageContractReturnType](..
 
 ## Defined in
 
-[packages/viem/src/actions/executeL2ToL2Message.ts:133](https://github.com/ethereum-optimism/ecosystem/blob/c363acafc2b5c0db021f95b4e5fefe43bbcaf322/packages/viem/src/actions/executeL2ToL2Message.ts#L133)
+[packages/viem/src/actions/executeL2ToL2Message.ts:133](https://github.com/ethereum-optimism/ecosystem/blob/a6a591d88cd41aa48aa7325dbb668dbe8084e5ee/packages/viem/src/actions/executeL2ToL2Message.ts#L133)

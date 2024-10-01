@@ -6,10 +6,10 @@
 
 # l2ToL2CrossDomainMessengerABI
 
-> `const` **l2ToL2CrossDomainMessengerABI**: readonly [`object`, `object`, `object`, `object`, `object`, `object`, `object`, `object`, `object`, `object`, `object`, `object`, `object`, `object`, `object`, `object`, `object`, `object`, `object`]
+> `const` **l2ToL2CrossDomainMessengerABI**: readonly [`object`, `object`, `object`, `object`, `object`, `object`, `object`, `object`, `object`, `object`, `object`, `object`, `object`, `object`, `object`, `object`, `object`, `object`, `object`, `object`]
 
 ABI for the OP Stack contract `L2ToL2CrossDomainMessenger`
 
 ## Defined in
 
-[packages/viem/src/abis.ts:359](https://github.com/ethereum-optimism/ecosystem/blob/c363acafc2b5c0db021f95b4e5fefe43bbcaf322/packages/viem/src/abis.ts#L359)
+[packages/viem/src/abis.ts:392](https://github.com/ethereum-optimism/ecosystem/blob/a6a591d88cd41aa48aa7325dbb668dbe8084e5ee/packages/viem/src/abis.ts#L392)
