@@ -1,5 +1,11 @@
 # @eth-optimism/viem
 
+## 0.0.5
+
+### Patch Changes
+
+- [#491](https://github.com/ethereum-optimism/ecosystem/pull/491) [`efa52cc`](https://github.com/ethereum-optimism/ecosystem/commit/efa52ccdcae413e27c3344e562dedddb059fe1d0) Thanks [@nitaliano](https://github.com/nitaliano)! - Adds support for protocol changes related to SentMessage events
+
 ## 0.0.4
 
 ### Patch Changes
