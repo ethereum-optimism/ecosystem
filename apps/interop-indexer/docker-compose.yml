@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:14-alpine
+    environment:
+      - POSTGRES_HOST_AUTH_METHOD=trust
+    ports:
+      - '5432:5432'
+    volumes:
+      - ./setup-local-db.sql:/docker-entrypoint-initdb.d/setup-local-db.sql
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -q -U local-db-user -d interop-indexer']
+
+  indexer:
+    build:
+      context: ../../
+      dockerfile: Dockerfile
+      target: interop-indexer
+    env_file:
+      - .env.local
+    environment:
+      - DATABASE_URL=postgresql://local-db-user:@postgres:5432/interop-indexer
+    volumes:
+      - ../../certs/extra-ca-certificates.crt:/usr/local/share/ca-certificates/extra-ca-certificates.crt
+    ports:
+      - "42070:42070"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+volumes:
+  db:

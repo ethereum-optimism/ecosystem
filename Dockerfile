@@ -86,6 +86,30 @@ EXPOSE 42069
 
 CMD [ "pnpm", "start" ]
 
+
+########################################
+# STEP 4: INTEROP-INDEXER
+########################################
+
+FROM node:18.19-bullseye-slim AS interop-indexer
+
+RUN apt-get update \
+  && apt-get install -y libvips libxtst6 libxss1 curl \
+  git ca-certificates python3 pkg-config build-essential --no-install-recommends
+
+COPY ./ ./monorepo
+WORKDIR /monorepo/apps/interop-indexer
+
+RUN npm install pnpm --global
+RUN pnpm install --frozen-lockfile
+
+ENV NODE_ENVIRONMENT=production
+ENV NODE_EXTRA_CA_CERTS=/usr/local/share/ca-certificates/extra-ca-certificates.crt
+
+EXPOSE 42070
+
+CMD [ "pnpm", "start" ]
+
 ########################################
 # STEP 4: DAPP-CONSOLE-API
 ########################################

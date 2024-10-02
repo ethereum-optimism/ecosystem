@@ -1,0 +1,31 @@
+{
+  "name": "@eth-optimism/interop-indexer",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "ponder dev",
+    "docker:up": "docker compose up",
+    "docker:down": "docker compose down",
+    "start": "ponder start",
+    "codegen": "ponder codegen",
+    "lint": "eslint \"**/*.{ts,tsx}\" && pnpm prettier --check \"**/*.{ts,tsx}\"",
+    "lint:fix": "eslint \"**/*.{ts,tsx}\" --fix --quiet && pnpm prettier \"**/*.{ts,tsx}\" --write --loglevel=warn",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@eth-optimism/viem": "workspace:^",
+    "@ponder/core": "^0.6.4",
+    "hono": "^4.5.0",
+    "viem": "^2.21.3"
+  },
+  "devDependencies": {
+    "@types/node": "^20.9.0",
+    "eslint": "^8.53.0",
+    "eslint-config-ponder": "^0.6.4",
+    "typescript": "^5.2.2"
+  },
+  "engines": {
+    "node": ">=18.14"
+  }
+}
