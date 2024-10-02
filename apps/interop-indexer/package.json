@@ -3,7 +3,9 @@
   "version": "0.0.1",
   "private": true,
   "type": "module",
+  "types": "types/src/index.d.ts",
   "scripts": {
+    "build": "tsup",
     "dev": "ponder dev",
     "docker:up": "docker compose up",
     "docker:down": "docker compose down",
@@ -15,14 +17,19 @@
   },
   "dependencies": {
     "@eth-optimism/viem": "workspace:^",
+    "@hono/trpc-server": "^0.3.2",
     "@ponder/core": "^0.6.4",
+    "@trpc/server": "^10.45.2",
     "hono": "^4.5.0",
-    "viem": "^2.21.3"
+    "superjson": "^1.12.2",
+    "viem": "^2.21.3",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@types/node": "^20.9.0",
     "eslint": "^8.53.0",
     "eslint-config-ponder": "^0.6.4",
+    "tsconfig-paths": "^4.2.0",
     "typescript": "^5.2.2"
   },
   "engines": {

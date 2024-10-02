@@ -93,6 +93,7 @@ const envVarSchema = z.object({
   GROWTHBOOK_ENCRYPTION_KEY: z.string().optional(),
   FAUCET_IP_RATE_LIMIT: z.number().min(1),
   FAUCET_IP_RATE_LIMIT_WINDOW_SECS: z.number().min(1),
+  PONDER_TRPC_URL: z.string(),
 })
 
 const isTest = process.env.NODE_ENV === 'test'
@@ -174,6 +175,7 @@ export const envVars = envVarSchema.parse(
         GROWTHBOOK_CLIENT_KEY: 'GROWTHBOOK_CLIENT_KEY',
         FAUCET_IP_RATE_LIMIT: 1,
         FAUCET_IP_RATE_LIMIT_WINDOW_SECS: 1,
+        PONDER_TRPC_URL: 'http://127.0.0.1:42069/trpc',
       }
     : {
         PORT: process.env.PORT
@@ -270,5 +272,7 @@ export const envVars = envVarSchema.parse(
         FAUCET_IP_RATE_LIMIT_WINDOW_SECS:
           process.env.FAUCET_IP_RATE_LIMIT_WINDOW_SECS &&
           Number(process.env.FAUCET_IP_RATE_LIMIT_WINDOW_SECS),
+        PONDER_TRPC_URL:
+          process.env.PONDER_TRPC_URL || 'http://127.0.0.1:42069/trpc',
       },
 )

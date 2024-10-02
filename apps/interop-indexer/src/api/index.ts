@@ -1,9 +1,6 @@
 import { ponder } from '@/generated'
-import { graphql } from '@ponder/core'
 import { encodeAbiParameters, keccak256 } from 'viem'
 
-ponder.use('/graphql', graphql())
-ponder.use('/', graphql())
 ponder.on('L2toL2CDM:SentMessage', async ({ event, context }) => {
   const { db, network } = context
   const { XChainMessage } = db

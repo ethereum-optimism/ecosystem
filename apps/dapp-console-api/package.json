@@ -56,11 +56,13 @@
   },
   "dependencies": {
     "@eth-optimism/contracts-ecosystem": "workspace:*",
+    "@eth-optimism/interop-indexer": "workspace:*",
     "@eth-optimism/contracts-ts": "^0.17.0",
     "@eth-optimism/message-queue": "workspace:*",
     "@eth-optimism/screening": "workspace:*",
     "@growthbook/growthbook": "^0.27.0",
     "@privy-io/server-auth": "^1.7.2",
+    "@trpc/client": "^10.45.2",
     "@trpc/server": "^10.45.2",
     "abitype": "^1.0.0",
     "bcrypt": "^5.1.1",
