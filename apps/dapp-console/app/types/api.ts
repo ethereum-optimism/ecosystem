@@ -11,3 +11,6 @@ export type Contract =
 export type Challenge = ApiV0RouterOutputs['Contracts']['startVerification']
 export type TotalRebatesClaimedRebate =
   ApiV0RouterOutputs['Rebates']['totalRebatesClaimed']
+export type XChainMessage = NonNullable<
+  ApiV0RouterOutputs['messages']['messages']
+>[0]

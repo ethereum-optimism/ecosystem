@@ -8,6 +8,7 @@ export default createSchema((p) => ({
       txHash: p.hex(),
       destinationChainId: p.bigint(),
       target: p.hex(),
+      origin: p.hex(),
       sender: p.hex(),
       chainId: p.bigint(),
       messagePayload: p.hex(),
@@ -24,6 +25,7 @@ export default createSchema((p) => ({
     },
     {
       msgHashIndex: p.index('msgHash'),
+      timestampIndex: p.index('timestamp'),
     },
   ),
 }))

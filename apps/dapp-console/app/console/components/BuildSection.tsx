@@ -25,6 +25,10 @@ const BuildSection = () => {
     router.push('/faucet')
   }
 
+  const handleMessageExplorerClick = () => {
+    router.push('/messages')
+  }
+
   return (
     <div>
       <Text as="h3" className="text-2xl font-semibold mb-4">
@@ -32,6 +36,11 @@ const BuildSection = () => {
       </Text>
       <Dialog>
         <TileGrid>
+          <Tile
+            title="Interop Message Explorer"
+            description="View and relay interop messages."
+            onClick={handleMessageExplorerClick}
+          />
           <Tile
             title="Superchain Faucet"
             description="Get test ETH tokens to build your app on the Superchain."

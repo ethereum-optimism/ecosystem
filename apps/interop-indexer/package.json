@@ -5,7 +5,7 @@
   "type": "module",
   "types": "types/src/index.d.ts",
   "scripts": {
-    "build": "tsup",
+    "build": "tsc",
     "dev": "ponder dev",
     "docker:up": "docker compose up",
     "docker:down": "docker compose down",
