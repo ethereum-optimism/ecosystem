@@ -1,4 +1,6 @@
+import type { AppRouter } from '@eth-optimism/interop-indexer'
 import { PrivyClient } from '@privy-io/server-auth'
+import { createTRPCProxyClient, httpBatchLink } from '@trpc/client'
 import bodyParser from 'body-parser'
 import cookieParser from 'cookie-parser'
 import type {
@@ -17,6 +19,7 @@ import type { Logger } from 'pino'
 import pino from 'pino'
 import type { Registry } from 'prom-client'
 import prometheus from 'prom-client'
+import superjson from 'superjson'
 import { createPublicClient, createWalletClient, http } from 'viem'
 import { privateKeyToAccount } from 'viem/accounts'
 import { optimism, optimismSepolia } from 'viem/chains'
@@ -36,6 +39,7 @@ import { AppsRoute } from './routes/apps'
 import { AuthRoute } from './routes/auth'
 import { ContractsRoute } from './routes/contracts'
 import { FaucetRoute } from './routes/faucet/FaucetRoute'
+import { MessagesRoute } from './routes/messages'
 import { RebatesRoute } from './routes/rebates/RebatesRoute'
 import { WalletsRoute } from './routes/wallets'
 import { Trpc } from './Trpc'
@@ -143,6 +147,14 @@ export class Service {
      * Routes and controllers are created with trpc
      */
     const trpc = new Trpc(privy, logger, db)
+    const ponderClient = createTRPCProxyClient<AppRouter>({
+      transformer: superjson,
+      links: [
+        httpBatchLink({
+          url: envVars.PONDER_TRPC_URL,
+        }),
+      ],
+    })
     const opMainnetPublicClient = createPublicClient({
       chain: optimism,
       transport: http(envVars.OP_MAINNET_JSON_RPC_URL),
@@ -164,6 +176,7 @@ export class Service {
       ),
     })
 
+    const messagesRoute = new MessagesRoute(trpc, ponderClient)
     const authRoute = new AuthRoute(trpc)
     const walletsRoute = new WalletsRoute(trpc)
     const appsRoute = new AppsRoute(trpc)
@@ -192,6 +205,7 @@ export class Service {
       contractsRoute,
       rebatesRoute,
       faucetRoute,
+      messagesRoute,
     })
     apiServer.setLoggingServer(logger)
 

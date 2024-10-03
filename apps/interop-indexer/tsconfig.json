@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "baseUrl": ".",
     // Type checking
     "strict": true,
     "noUncheckedIndexedAccess": true,
@@ -14,13 +15,15 @@
     // Language and environment
     "moduleResolution": "bundler",
     "module": "ESNext",
-    "noEmit": true,
     "lib": ["ES2022"],
     "target": "ES2022",
 
     // Skip type checking for node modules
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "composite": true,
+    "outDir": "types",
+    "emitDeclarationOnly": true
   },
-  "include": ["./**/*.ts"],
-  "exclude": ["node_modules"]
+  "include": ["src/**/*.ts", "ponder-env.d.ts" ],
+  "exclude": ["node_modules", "types"]
 }
