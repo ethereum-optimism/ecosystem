@@ -7,7 +7,7 @@ ponder.on('L2toL2CDM:SentMessage', async ({ event, context }) => {
   const { log, block, transaction, args } = event
 
   const { chainId } = network
-  const { logIndex } = log
+  const { logIndex, address: origin } = log
   const { timestamp, number: blockNumber } = block
   const { hash: txHash } = transaction
   const { destination, target, messageNonce, sender, message } = args
@@ -29,6 +29,7 @@ ponder.on('L2toL2CDM:SentMessage', async ({ event, context }) => {
       destinationChainId: destination,
       target,
       sender,
+      origin,
       messagePayload: executingMessagePayloadBytes(event.log),
       blockNumber,
       timestamp,
@@ -55,6 +56,7 @@ ponder.on('L2toL2CDM:RelayedMessage', async ({ event, context }) => {
       destinationTxHash: txHash,
       destinationTimestamp: timestamp,
       destinationBlockNumber: blockNumber,
+      failedTxHash: undefined,
     },
   })
 })

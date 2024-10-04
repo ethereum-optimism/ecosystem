@@ -12,10 +12,14 @@
   },
   "dependencies": {
     "@eth-optimism/dapp-console-api": "workspace:^",
+    "@eth-optimism/op-app": "workspace:*",
     "@eth-optimism/ui-components": "workspace:*",
+    "@eth-optimism/viem": "workspace:*",
+    "@eth-optimism/wagmi": "workspace:*",
     "@growthbook/growthbook-react": "^0.24.0",
     "@hookform/resolvers": "^3.3.4",
     "@privy-io/react-auth": "^1.59.5",
+    "@privy-io/wagmi": "^0.2.12",
     "@remixicon/react": "^4.1.1",
     "@rive-app/react-canvas": "^4.11.2",
     "@sentry/nextjs": "^7.106.0",
@@ -37,6 +41,7 @@
     "superjson": "^1.12.2",
     "tailwind-merge": "^2.1.0",
     "viem": "^2.8.16",
+    "wagmi": "2.11.3",
     "zod": "^3.22.4"
   },
   "devDependencies": {

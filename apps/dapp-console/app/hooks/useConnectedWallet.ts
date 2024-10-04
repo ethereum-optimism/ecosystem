@@ -7,4 +7,15 @@ const useConnectedWallet = () => {
   return { connectedWallet }
 }
 
-export { useConnectedWallet }
+const useConnectedChainId = () => {
+  const { connectedWallet } = useConnectedWallet()
+
+  if (!connectedWallet) {
+    return { chainId: connectedWallet }
+  }
+
+  const chainId = connectedWallet.chainId.split(':')[1]
+  return { chainId: Number(chainId) }
+}
+
+export { useConnectedWallet, useConnectedChainId }
