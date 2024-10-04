@@ -7,6 +7,7 @@
       "paymaster-proxy": ["type:app"],
       "dapp-console": ["type:app"],
       "dapp-console-api": ["type:app"],
+      "interop-indexer": ["type:app"],
       "kyc-faq": ["type:app"]
     },
     "packages": {
