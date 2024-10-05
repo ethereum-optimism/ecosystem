@@ -5,8 +5,6 @@ import { useMemo } from 'react'
 import {
   testnetPaymasterMetadata,
   uxReviewMetadata,
-  deploymentRebateMetadata,
-  deploymentRebateM2Metadata,
   mainnetPaymasterMetadata,
   megaphoneMetadata,
   userFeedbackMetadata,
@@ -23,7 +21,6 @@ import {
   turnkeyMetadata,
 } from '@/app/console/constants'
 import { DialogClose } from '@eth-optimism/ui-components/src/components/ui/dialog/dialog'
-import { useFeatureFlag } from '@/app/hooks/useFeatureFlag'
 import {
   DialogMetadata,
   StandardDialogContent,
@@ -32,7 +29,6 @@ import { trackSignInModalClick } from '@/app/event-tracking/mixpanel'
 
 const useDialogContent = () => {
   const { authenticated, login } = usePrivy()
-  const isSettingsEnabled = useFeatureFlag('enable_console_settings')
 
   const loginButton = (label: string, trackingLabel: string) => {
     return (
@@ -69,14 +65,6 @@ const useDialogContent = () => {
       ...quickStartMetadata,
     })
   }, [authenticated, login])
-
-  const deploymentRebateContent = useMemo(() => {
-    return renderDialog({
-      ...(isSettingsEnabled
-        ? deploymentRebateM2Metadata
-        : deploymentRebateMetadata),
-    })
-  }, [authenticated, login, isSettingsEnabled])
 
   const mainnetPaymasterContent = useMemo(() => {
     return renderDialog({
@@ -214,7 +202,6 @@ const useDialogContent = () => {
   return {
     testnetPaymasterContent,
     uxReviewContent,
-    deploymentRebateContent,
     quickStartContent,
     mainnetPaymasterContent,
     megaphoneContent,
