@@ -2,9 +2,11 @@ import * as trpcExpress from '@trpc/server/adapters/express'
 import bcrypt from 'bcrypt'
 import type { NextFunction, Request, Response, Router } from 'express'
 import { getIronSession } from 'iron-session'
+import type { Logger } from 'pino'
 import * as trpcPlayground from 'trpc-playground/handlers/express'
 
 import { ensureAdmin } from '@/auth'
+import type { FaucetAdminRoute } from '@/routes/admin'
 
 import type { SessionData } from '../constants'
 import { envVars, sessionOptions } from '../constants'
@@ -42,11 +44,15 @@ export type AdminHandler = (
 export class AdminApi extends Route {
   public readonly name = 'AdminAPI'
 
-  public readonly handler = this.trpc.router({})
+  public readonly handler = this.trpc.router({
+    [this.routes.faucetAdmin.name]: this.routes.faucetAdmin.handler,
+  })
 
   constructor(
     trpc: Trpc,
-    protected readonly routes: {},
+    protected readonly routes: {
+      readonly faucetAdmin: FaucetAdminRoute
+    },
   ) {
     super(trpc)
   }
@@ -73,6 +79,13 @@ export class AdminApi extends Route {
       },
     })
     router.use('/admin/playground', ensureAdmin(), playgroundHandler)
+  }
+
+  public readonly setLoggingServer = (logger: Logger) => {
+    this.logger = logger
+    Object.values(this.routes).forEach((route) => {
+      route.setLoggingServer(logger)
+    })
   }
 
   private getLogin(): AdminHandler {
