@@ -226,7 +226,7 @@ importers:
         version: 6.21.0(eslint@8.57.0)(typescript@5.4.5)
       '@vitejs/plugin-react':
         specifier: ^4.2.0
-        version: 4.2.1(vite@5.2.9(@types/node@20.14.11)(terser@5.31.3))
+        version: 4.2.1(vite@5.2.14(@types/node@20.14.11)(terser@5.31.3))
       autoprefixer:
         specifier: ^10.4.16
         version: 10.4.19(postcss@8.4.38)
@@ -249,8 +249,8 @@ importers:
         specifier: ^5.2.2
         version: 5.4.5
       vite:
-        specifier: ^5.0.13
-        version: 5.2.9(@types/node@20.14.11)(terser@5.31.3)
+        specifier: ^5.2.14
+        version: 5.2.14(@types/node@20.14.11)(terser@5.31.3)
 
   apps/dapp-console:
     dependencies:
@@ -608,7 +608,7 @@ importers:
         version: 6.21.0(eslint@8.57.0)(typescript@5.4.5)
       '@vitejs/plugin-react':
         specifier: ^4.2.0
-        version: 4.2.1(vite@5.2.9(@types/node@20.14.11)(terser@5.31.3))
+        version: 4.2.1(vite@5.2.14(@types/node@20.14.11)(terser@5.31.3))
       autoprefixer:
         specifier: ^10.4.16
         version: 10.4.19(postcss@8.4.38)
@@ -631,8 +631,8 @@ importers:
         specifier: ^5.2.2
         version: 5.4.5
       vite:
-        specifier: ^5.0.13
-        version: 5.2.9(@types/node@20.14.11)(terser@5.31.3)
+        specifier: ^5.2.14
+        version: 5.2.14(@types/node@20.14.11)(terser@5.31.3)
 
   apps/paymaster-nft-mint:
     dependencies:
@@ -705,7 +705,7 @@ importers:
         version: 7.7.0(eslint@8.57.0)(typescript@5.4.5)
       '@vitejs/plugin-react':
         specifier: ^4.2.1
-        version: 4.2.1(vite@5.2.9(@types/node@20.12.7)(terser@5.31.3))
+        version: 4.2.1(vite@5.2.14(@types/node@20.12.7)(terser@5.31.3))
       autoprefixer:
         specifier: ^10.4.17
         version: 10.4.19(postcss@8.4.38)
@@ -728,8 +728,8 @@ importers:
         specifier: ^5.2.2
         version: 5.4.5
       vite:
-        specifier: ^5.0.13
-        version: 5.2.9(@types/node@20.12.7)(terser@5.31.3)
+        specifier: ^5.2.14
+        version: 5.2.14(@types/node@20.12.7)(terser@5.31.3)
 
   apps/paymaster-proxy:
     dependencies:
@@ -889,7 +889,7 @@ importers:
         version: 8.0.8(encoding@0.1.13)(react-dom@18.2.0(react@18.3.1))(react@18.3.1)(typescript@5.4.5)
       '@storybook/react-vite':
         specifier: ^8.0.1
-        version: 8.0.8(encoding@0.1.13)(react-dom@18.2.0(react@18.3.1))(react@18.3.1)(rollup@4.14.3)(typescript@5.4.5)(vite@5.2.9(@types/node@22.5.4)(terser@5.31.3))
+        version: 8.0.8(encoding@0.1.13)(react-dom@18.2.0(react@18.3.1))(react@18.3.1)(rollup@4.14.3)(typescript@5.4.5)(vite@5.2.14(@types/node@22.5.4)(terser@5.31.3))
       '@storybook/test':
         specifier: ^8.0.1
         version: 8.0.8(@jest/globals@29.7.0)(vitest@1.6.0(@types/node@22.5.4)(jsdom@23.2.0(bufferutil@4.0.8)(utf-8-validate@6.0.3))(terser@5.31.3))
@@ -1010,7 +1010,7 @@ importers:
     devDependencies:
       '@eth-optimism/superchain-registry':
         specifier: github:ethereum-optimism/superchain-registry#0496fcd6ee4e36f2bedd3e4fbffa9146b10219af
-        version: https://codeload.github.com/ethereum-optimism/superchain-registry/tar.gz/0496fcd6ee4e36f2bedd3e4fbffa9146b10219af
+        version: git+git@github.com:ethereum-optimism/superchain-registry.git#0496fcd6ee4e36f2bedd3e4fbffa9146b10219af
       '@tanstack/react-query':
         specifier: ^5.29.2
         version: 5.29.2(react@18.2.0)
@@ -1037,7 +1037,7 @@ importers:
         version: 6.21.0(eslint@8.57.0)(typescript@5.4.5)
       '@vitejs/plugin-react':
         specifier: ^4.2.0
-        version: 4.2.1(vite@5.2.9(@types/node@20.12.7)(terser@5.31.3))
+        version: 4.2.1(vite@5.2.14(@types/node@20.12.7)(terser@5.31.3))
       eslint:
         specifier: ^8.53.0
         version: 8.57.0
@@ -1075,8 +1075,8 @@ importers:
         specifier: 2.17.9
         version: 2.17.9(bufferutil@4.0.8)(typescript@5.4.5)(utf-8-validate@6.0.3)(zod@3.22.4)
       vite:
-        specifier: ^5.0.13
-        version: 5.2.9(@types/node@20.12.7)(terser@5.31.3)
+        specifier: ^5.2.14
+        version: 5.2.14(@types/node@20.12.7)(terser@5.31.3)
       vitest:
         specifier: ^1.1.3
         version: 1.5.0(@types/node@20.12.7)(jsdom@23.2.0(bufferutil@4.0.8)(utf-8-validate@6.0.3))(terser@5.31.3)
@@ -1388,7 +1388,7 @@ importers:
         version: 18.2.79
       '@vitejs/plugin-react':
         specifier: ^4.2.1
-        version: 4.2.1(vite@5.2.9(@types/node@20.12.7)(terser@5.31.3))
+        version: 4.2.1(vite@5.2.14(@types/node@20.12.7)(terser@5.31.3))
       autoprefixer:
         specifier: ^10.4.16
         version: 10.4.19(postcss@8.4.38)
@@ -1411,8 +1411,8 @@ importers:
         specifier: ^5.2.2
         version: 5.4.5
       vite:
-        specifier: ^5.0.13
-        version: 5.2.9(@types/node@20.12.7)(terser@5.31.3)
+        specifier: ^5.2.14
+        version: 5.2.14(@types/node@20.12.7)(terser@5.31.3)
 
   packages/viem:
     devDependencies:
@@ -2855,9 +2855,11 @@ packages:
 
   '@esbuild-kit/core-utils@3.3.2':
     resolution: {integrity: sha512-sPRAnw9CdSsRmEtnsl2WXWdyquogVpB3yZ3dgwJfe8zrOzTsV7cJvmwrKVa+0ma5BoiGJ+BoqkMvawbayKUsqQ==}
+    deprecated: 'Merged into tsx: https://tsx.is'
 
   '@esbuild-kit/esm-loader@2.6.5':
     resolution: {integrity: sha512-FxEMIkJKnodyA1OaCUoEvbYRkoZlLZ4d/eXFu9Fh8CbBBgP5EmZxrfTRyN0qpXZ4vOvqnE5YdRdcrmUUXuU+dA==}
+    deprecated: 'Merged into tsx: https://tsx.is'
 
   '@esbuild/aix-ppc64@0.19.12':
     resolution: {integrity: sha512-bmoCYyWdEL3wDQIVbcyzRyeKLgk2WtWLTWz1ZIAZF/EGbNOwSA6ew3PftJ1PqMiOOGu0OyFMzG53L0zqIpPeNA==}
@@ -3341,10 +3343,6 @@ packages:
   '@eth-optimism/core-utils@0.13.2':
     resolution: {integrity: sha512-u7TOKm1RxH1V5zw7dHmfy91bOuEAZU68LT/9vJPkuWEjaTl+BgvPDRDTurjzclHzN0GbWdcpOqPZg4ftjkJGaw==}
 
-  '@eth-optimism/superchain-registry@https://codeload.github.com/ethereum-optimism/superchain-registry/tar.gz/0496fcd6ee4e36f2bedd3e4fbffa9146b10219af':
-    resolution: {tarball: https://codeload.github.com/ethereum-optimism/superchain-registry/tar.gz/0496fcd6ee4e36f2bedd3e4fbffa9146b10219af}
-    version: 0.0.1-alpha.1
-
   '@eth-optimism/tokenlist@9.0.51':
     resolution: {integrity: sha512-GfKk4euEfNLniyRisP7sB/N9Kp96M+2t529mkvwC6nXITouzH4faDP8JdtwU6AOcgC4UlrFjXJ9w8ecnWWNQbw==}
 
@@ -3607,6 +3605,7 @@ packages:
   '@humanwhocodes/config-array@0.11.14':
     resolution: {integrity: sha512-3T8LkOmg45BV5FICb15QQMsyUSWrQ8AygVfC7ZG32zOalnqrilm018ZVCw0eapXux8FtA33q8PSRSstjee3jSg==}
     engines: {node: '>=10.10.0'}
+    deprecated: Use @eslint/config-array instead
 
   '@humanwhocodes/module-importer@1.0.1':
     resolution: {integrity: sha512-bxveV4V8v5Yb4ncFTT3rPSgZBOpCkjfK0y4oVVVJwIuDVBRMDXrPyXRL988i5ap9m9bnyEEjWfm5WkBmtffLfA==}
@@ -3614,6 +3613,7 @@ packages:
 
   '@humanwhocodes/object-schema@2.0.3':
     resolution: {integrity: sha512-93zYdMES/c1D69yZiKDBj0V24vqNzB/koF26KPaagAfd3P/4gUlh3Dys5ogAK+Exi9QyzlD8x/08Zt7wIKcDcA==}
+    deprecated: Use @eslint/object-schema instead
 
   '@humanwhocodes/retry@0.3.0':
     resolution: {integrity: sha512-d2CGZR2o7fS6sWB7DG/3a95bGKQyHMACZ5aW8qGkkqQpUoZV6C0X7Pc7l4ZNMZkfNBf4VWNe9E1jRsf0G146Ew==}
@@ -7212,6 +7212,7 @@ packages:
   are-we-there-yet@2.0.0:
     resolution: {integrity: sha512-Ci/qENmwHnsYo9xKIcUJN5LeDKdJ6R1Z1j9V/J5wyq8nh/mYPEpIKJbBZXtZjG04HiK7zV/p6Vs9952MrMeUIw==}
     engines: {node: '>=10'}
+    deprecated: This package is no longer supported.
 
   arg@4.1.3:
     resolution: {integrity: sha512-58S9QDqG0Xx27YwPSt9fJxivjYl432YCwfDMfZ+71RAqUrZef7LrKQZ3LHLOwCS4FLNBplP533Zx895SeOCHvA==}
@@ -9125,6 +9126,7 @@ packages:
   eslint@8.57.0:
     resolution: {integrity: sha512-dZ6+mexnaTIbSBZWgou51U6OmzIhYM2VcNdtiTtI7qPNZm35Akpr0f6vtw3w1Kmn5PYo+tZVfh13WrhpS6oLqQ==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
+    deprecated: This version is no longer supported. Please see https://eslint.org/version-support for other options.
     hasBin: true
 
   eslint@9.4.0:
@@ -9206,6 +9208,7 @@ packages:
 
   ethereum-bloom-filters@1.1.0:
     resolution: {integrity: sha512-J1gDRkLpuGNvWYzWslBQR9cDV4nd4kfvVTE/Wy4Kkm4yb3EYRSlyi0eB/inTsSTTVyA0+HyzHgbr95Fn/Z1fSw==}
+    deprecated: do not use this package use package versions above as this can miss some topics
 
   ethereum-cryptography@0.1.3:
     resolution: {integrity: sha512-w8/4x1SGGzc+tO97TASLja6SLd3fRIK2tLVcV2Gx4IB21hE19atll5Cq9o3d0ZmAYC/8aw0ipieTSiekAea4SQ==}
@@ -9693,6 +9696,7 @@ packages:
   gauge@3.0.2:
     resolution: {integrity: sha512-+5J6MS/5XksCuXq++uFRsnUd7Ovu1XenbeuIuNRJxYWjgQbPuFhT14lAvsWfqfAmnwluf1OwMjz39HjfLPci0Q==}
     engines: {node: '>=10'}
+    deprecated: This package is no longer supported.
 
   gensync@1.0.0-beta.2:
     resolution: {integrity: sha512-3hN7NaskYvMDLQY55gnW3NQ+mesEAepTqlg+VEbj7zzqEMBVNhzcGYYeqFo/TlYz6eQiFcp1HcsCZO+nGgS8zg==}
@@ -9788,19 +9792,24 @@ packages:
 
   glob@7.1.4:
     resolution: {integrity: sha512-hkLPepehmnKk41pUGm3sYxoFs/umurYfYJCerbXEyFIWcAzvpipAgVkBqqT9RBKMGjnq6kMuyYwha6csxbiM1A==}
+    deprecated: Glob versions prior to v9 are no longer supported
 
   glob@7.1.7:
     resolution: {integrity: sha512-OvD9ENzPLbegENnYP5UUfJIirTg4+XwMWGaQfQTY0JenxNvvIKP3U3/tAQSPIu/lHxXYSZmpXlUHeqAIdKzBLQ==}
+    deprecated: Glob versions prior to v9 are no longer supported
 
   glob@7.2.0:
     resolution: {integrity: sha512-lmLf6gtyrPq8tTjSmrO94wBeQbFR3HbLHbuyD69wuyQkImp2hWqMGB47OX65FBkPffO641IP9jWa1z4ivqG26Q==}
+    deprecated: Glob versions prior to v9 are no longer supported
 
   glob@7.2.3:
     resolution: {integrity: sha512-nFR0zLpU2YCaRxwoCJvL6UvCH2JFyFVIvwTLsIf21AuHlMskA1hhTdk+LlYJtOlYt9v6dvszD2BGRqBL+iQK9Q==}
+    deprecated: Glob versions prior to v9 are no longer supported
 
   glob@8.1.0:
     resolution: {integrity: sha512-r8hpEjiQEYlF2QU0df3dS+nxxSIreXQS1qRhMJM0Q5NDdR386C7jb7Hwwod8Fgiuex+k0GFjgft18yvxm5XoCQ==}
     engines: {node: '>=12'}
+    deprecated: Glob versions prior to v9 are no longer supported
 
   globals@11.12.0:
     resolution: {integrity: sha512-WOBp/EEGUiIsJSp7wcv/y6MO+lV9UoncWqxuFfm8eBwzWNgyfBd6Gz+IeKQ9jCmyhoH99g15M3T+QaVHFjizVA==}
@@ -10189,6 +10198,7 @@ packages:
 
   inflight@1.0.6:
     resolution: {integrity: sha512-k92I/b08q4wvFscXCLvqfsHCrjrF7yiXsQuIVvVE7N82W3+aqpzuUdBbfhWcy/FZR3/4IgflMgKLOsvPDrGCJA==}
+    deprecated: This module is not supported, and leaks memory. Do not use it. Check out lru-cache if you want a good and tested way to coalesce async requests by a key value, which is much more comprehensive and powerful.
 
   inherits@2.0.4:
     resolution: {integrity: sha512-k/vGaX4/Yla3WzyMCvTQOXYeIHvqOKtnqBduzTHpzpQZzAskKMhZ2K+EnBiSM9zGSoIFeMpXKxa4dYeZIQqewQ==}
@@ -11738,6 +11748,7 @@ packages:
 
   npmlog@5.0.1:
     resolution: {integrity: sha512-AqZtDUWOMKs1G/8lwylVjrdYgqA4d9nu8hc+0gzRxlDb1I10+FHBGMXs6aiQHFdCUUlqH99MUMuLfzWDNDtfxw==}
+    deprecated: This package is no longer supported.
 
   nullthrows@1.1.1:
     resolution: {integrity: sha512-2vPPEi+Z7WqML2jZYddDIfy5Dqb0r2fze2zTxNNknZaFpVHU3mFB3R+DWeJWGVx0ecvttSGlJTI+WG+8Z4cDWw==}
@@ -13040,10 +13051,12 @@ packages:
 
   rimraf@2.6.3:
     resolution: {integrity: sha512-mwqeW5XsA2qAejG46gYdENaxXjx9onRNCfn7L0duuP4hCuTIi/QO7PDK07KJfp1d+izWPrzEJDcSqBa0OZQriA==}
+    deprecated: Rimraf versions prior to v4 are no longer supported
     hasBin: true
 
   rimraf@3.0.2:
     resolution: {integrity: sha512-JZkJMZkAGFFPP2YqXZXPbMlMBgsxzE8ILs4lMIX/2o0L9UBw9O/Y3o6wFw/i9YLapcUJWwqbi3kdxIPdC62TIA==}
+    deprecated: Rimraf versions prior to v4 are no longer supported
     hasBin: true
 
   ripemd160@2.0.2:
@@ -13669,6 +13682,7 @@ packages:
   superagent@8.1.2:
     resolution: {integrity: sha512-6WTxW1EB6yCxV5VFOIPQruWGHqc3yI7hEmZK6h+pyk69Lk/Ut7rLUY6W/ONF2MjBuGjvmMiIpsrVJ2vjrHlslA==}
     engines: {node: '>=6.4.0 <13 || >=14'}
+    deprecated: Please upgrade to v9.0.0+ as we have fixed a public vulnerability with formidable dependency. Note that v9.0.0+ requires Node.js v14.18.0+. See https://github.com/ladjs/superagent/pull/1800 for insight. This project is supported and maintained by the team at Forward Email @ https://forwardemail.net
 
   superjson@1.13.3:
     resolution: {integrity: sha512-mJiVjfd2vokfDxsQPOwJ/PtanO87LhpYY88ubI5dUB1Ab58Txbyje3+jpm+/83R/fevaq/107NNhtYBLuoTrFg==}
@@ -14549,6 +14563,34 @@ packages:
     hasBin: true
     peerDependencies:
       '@types/node': '>= 14'
+      less: '*'
+      lightningcss: ^1.21.0
+      sass: '*'
+      stylus: '*'
+      sugarss: '*'
+      terser: ^5.4.0
+    peerDependenciesMeta:
+      '@types/node':
+        optional: true
+      less:
+        optional: true
+      lightningcss:
+        optional: true
+      sass:
+        optional: true
+      stylus:
+        optional: true
+      sugarss:
+        optional: true
+      terser:
+        optional: true
+
+  vite@5.2.14:
+    resolution: {integrity: sha512-TFQLuwWLPms+NBNlh0D9LZQ+HXW471COABxw/9TEUBrjuHMo9BrYBPrN/SYAwIuVL+rLerycxiLT41t4f5MZpA==}
+    engines: {node: ^18.0.0 || >=20.0.0}
+    hasBin: true
+    peerDependencies:
+      '@types/node': ^18.0.0 || >=20.0.0
       less: '*'
       lightningcss: ^1.21.0
       sass: '*'
@@ -15807,7 +15849,7 @@ snapshots:
       '@babel/helper-validator-identifier': 7.22.20
       chalk: 2.4.2
       js-tokens: 4.0.0
-      picocolors: 1.0.0
+      picocolors: 1.0.1
 
   '@babel/highlight@7.24.7':
     dependencies:
@@ -18329,8 +18371,6 @@ snapshots:
       - encoding
       - utf-8-validate
 
-  '@eth-optimism/superchain-registry@https://codeload.github.com/ethereum-optimism/superchain-registry/tar.gz/0496fcd6ee4e36f2bedd3e4fbffa9146b10219af': {}
-
   '@eth-optimism/tokenlist@9.0.51': {}
 
   '@ethereum-waffle/chai@4.0.10(@ensdomains/ens@0.4.5)(@ensdomains/resolver@0.2.4)(ethers@5.7.2(bufferutil@4.0.8)(utf-8-validate@6.0.3))':
@@ -19040,13 +19080,13 @@ snapshots:
       '@types/yargs': 17.0.32
       chalk: 4.1.2
 
-  '@joshwooding/vite-plugin-react-docgen-typescript@0.3.0(typescript@5.4.5)(vite@5.2.9(@types/node@22.5.4)(terser@5.31.3))':
+  '@joshwooding/vite-plugin-react-docgen-typescript@0.3.0(typescript@5.4.5)(vite@5.2.14(@types/node@22.5.4)(terser@5.31.3))':
     dependencies:
       glob: 7.2.3
       glob-promise: 4.2.2(glob@7.2.3)
       magic-string: 0.27.0
       react-docgen-typescript: 2.2.2(typescript@5.4.5)
-      vite: 5.2.9(@types/node@22.5.4)(terser@5.31.3)
+      vite: 5.2.14(@types/node@22.5.4)(terser@5.31.3)
     optionalDependencies:
       typescript: 5.4.5
 
@@ -19608,7 +19648,7 @@ snapshots:
       '@types/debug': 4.1.12
       debug: 4.3.5
       pony-cause: 2.1.11
-      semver: 7.6.2
+      semver: 7.6.3
       superstruct: 1.0.4
       uuid: 9.0.1
     transitivePeerDependencies:
@@ -20322,9 +20362,9 @@ snapshots:
       retry: 0.13.1
       stacktrace-parser: 0.1.10
       viem: 1.21.4(bufferutil@4.0.8)(typescript@5.4.5)(utf-8-validate@6.0.3)(zod@3.22.4)
-      vite: 5.2.9(@types/node@20.12.7)(terser@5.31.3)
+      vite: 5.2.14(@types/node@20.12.7)(terser@5.31.3)
       vite-node: 1.5.0(@types/node@20.12.7)(terser@5.31.3)
-      vite-tsconfig-paths: 4.3.2(typescript@5.4.5)(vite@5.2.9(@types/node@20.12.7)(terser@5.31.3))
+      vite-tsconfig-paths: 4.3.2(typescript@5.4.5)(vite@5.2.14(@types/node@20.12.7)(terser@5.31.3))
     optionalDependencies:
       typescript: 5.4.5
     transitivePeerDependencies:
@@ -22391,7 +22431,7 @@ snapshots:
       - encoding
       - supports-color
 
-  '@storybook/builder-vite@8.0.8(encoding@0.1.13)(typescript@5.4.5)(vite@5.2.9(@types/node@22.5.4)(terser@5.31.3))':
+  '@storybook/builder-vite@8.0.8(encoding@0.1.13)(typescript@5.4.5)(vite@5.2.14(@types/node@22.5.4)(terser@5.31.3))':
     dependencies:
       '@storybook/channels': 8.0.8
       '@storybook/client-logger': 8.0.8
@@ -22410,7 +22450,7 @@ snapshots:
       fs-extra: 11.2.0
       magic-string: 0.30.10
       ts-dedent: 2.2.0
-      vite: 5.2.9(@types/node@22.5.4)(terser@5.31.3)
+      vite: 5.2.14(@types/node@22.5.4)(terser@5.31.3)
     optionalDependencies:
       typescript: 5.4.5
     transitivePeerDependencies:
@@ -22718,11 +22758,11 @@ snapshots:
       react: 18.3.1
       react-dom: 18.2.0(react@18.3.1)
 
-  '@storybook/react-vite@8.0.8(encoding@0.1.13)(react-dom@18.2.0(react@18.3.1))(react@18.3.1)(rollup@4.14.3)(typescript@5.4.5)(vite@5.2.9(@types/node@22.5.4)(terser@5.31.3))':
+  '@storybook/react-vite@8.0.8(encoding@0.1.13)(react-dom@18.2.0(react@18.3.1))(react@18.3.1)(rollup@4.14.3)(typescript@5.4.5)(vite@5.2.14(@types/node@22.5.4)(terser@5.31.3))':
     dependencies:
-      '@joshwooding/vite-plugin-react-docgen-typescript': 0.3.0(typescript@5.4.5)(vite@5.2.9(@types/node@22.5.4)(terser@5.31.3))
+      '@joshwooding/vite-plugin-react-docgen-typescript': 0.3.0(typescript@5.4.5)(vite@5.2.14(@types/node@22.5.4)(terser@5.31.3))
       '@rollup/pluginutils': 5.1.0(rollup@4.14.3)
-      '@storybook/builder-vite': 8.0.8(encoding@0.1.13)(typescript@5.4.5)(vite@5.2.9(@types/node@22.5.4)(terser@5.31.3))
+      '@storybook/builder-vite': 8.0.8(encoding@0.1.13)(typescript@5.4.5)(vite@5.2.14(@types/node@22.5.4)(terser@5.31.3))
       '@storybook/node-logger': 8.0.8
       '@storybook/react': 8.0.8(encoding@0.1.13)(react-dom@18.2.0(react@18.3.1))(react@18.3.1)(typescript@5.4.5)
       find-up: 5.0.0
@@ -22732,7 +22772,7 @@ snapshots:
       react-dom: 18.2.0(react@18.3.1)
       resolve: 1.22.8
       tsconfig-paths: 4.2.0
-      vite: 5.2.9(@types/node@22.5.4)(terser@5.31.3)
+      vite: 5.2.14(@types/node@22.5.4)(terser@5.31.3)
     transitivePeerDependencies:
       - '@preact/preset-vite'
       - encoding
@@ -23711,25 +23751,25 @@ snapshots:
       - debug
       - utf-8-validate
 
-  '@vitejs/plugin-react@4.2.1(vite@5.2.9(@types/node@20.12.7)(terser@5.31.3))':
+  '@vitejs/plugin-react@4.2.1(vite@5.2.14(@types/node@20.12.7)(terser@5.31.3))':
     dependencies:
       '@babel/core': 7.24.4
       '@babel/plugin-transform-react-jsx-self': 7.24.1(@babel/core@7.24.4)
       '@babel/plugin-transform-react-jsx-source': 7.24.1(@babel/core@7.24.4)
       '@types/babel__core': 7.20.5
       react-refresh: 0.14.0
-      vite: 5.2.9(@types/node@20.12.7)(terser@5.31.3)
+      vite: 5.2.14(@types/node@20.12.7)(terser@5.31.3)
     transitivePeerDependencies:
       - supports-color
 
-  '@vitejs/plugin-react@4.2.1(vite@5.2.9(@types/node@20.14.11)(terser@5.31.3))':
+  '@vitejs/plugin-react@4.2.1(vite@5.2.14(@types/node@20.14.11)(terser@5.31.3))':
     dependencies:
       '@babel/core': 7.24.4
       '@babel/plugin-transform-react-jsx-self': 7.24.1(@babel/core@7.24.4)
       '@babel/plugin-transform-react-jsx-source': 7.24.1(@babel/core@7.24.4)
       '@types/babel__core': 7.20.5
       react-refresh: 0.14.0
-      vite: 5.2.9(@types/node@20.14.11)(terser@5.31.3)
+      vite: 5.2.14(@types/node@20.14.11)(terser@5.31.3)
     transitivePeerDependencies:
       - supports-color
 
@@ -34876,7 +34916,7 @@ snapshots:
     dependencies:
       browserslist: 4.23.0
       escalade: 3.1.2
-      picocolors: 1.0.0
+      picocolors: 1.0.1
 
   update-browserslist-db@1.1.0(browserslist@4.23.2):
     dependencies:
@@ -35099,7 +35139,7 @@ snapshots:
       debug: 4.3.4(supports-color@8.1.1)
       pathe: 1.1.2
       picocolors: 1.0.0
-      vite: 5.2.9(@types/node@20.12.7)(terser@5.31.3)
+      vite: 5.2.14(@types/node@20.12.7)(terser@5.31.3)
     transitivePeerDependencies:
       - '@types/node'
       - less
@@ -35116,7 +35156,7 @@ snapshots:
       debug: 4.3.5
       pathe: 1.1.2
       picocolors: 1.0.1
-      vite: 5.2.9(@types/node@20.14.11)(terser@5.31.3)
+      vite: 5.2.14(@types/node@20.14.11)(terser@5.31.3)
     transitivePeerDependencies:
       - '@types/node'
       - less
@@ -35133,7 +35173,7 @@ snapshots:
       debug: 4.3.5
       pathe: 1.1.2
       picocolors: 1.0.1
-      vite: 5.2.9(@types/node@22.5.4)(terser@5.31.3)
+      vite: 5.2.14(@types/node@22.5.4)(terser@5.31.3)
     transitivePeerDependencies:
       - '@types/node'
       - less
@@ -35144,13 +35184,13 @@ snapshots:
       - supports-color
       - terser
 
-  vite-tsconfig-paths@4.3.2(typescript@5.4.5)(vite@5.2.9(@types/node@20.12.7)(terser@5.31.3)):
+  vite-tsconfig-paths@4.3.2(typescript@5.4.5)(vite@5.2.14(@types/node@20.12.7)(terser@5.31.3)):
     dependencies:
       debug: 4.3.4(supports-color@8.1.1)
       globrex: 0.1.2
       tsconfck: 3.0.3(typescript@5.4.5)
     optionalDependencies:
-      vite: 5.2.9(@types/node@20.12.7)(terser@5.31.3)
+      vite: 5.2.14(@types/node@20.12.7)(terser@5.31.3)
     transitivePeerDependencies:
       - supports-color
       - typescript
@@ -35165,7 +35205,7 @@ snapshots:
       fsevents: 2.3.3
       terser: 5.31.3
 
-  vite@5.2.9(@types/node@20.12.7)(terser@5.31.3):
+  vite@5.2.14(@types/node@20.12.7)(terser@5.31.3):
     dependencies:
       esbuild: 0.20.2
       postcss: 8.4.38
@@ -35175,7 +35215,7 @@ snapshots:
       fsevents: 2.3.3
       terser: 5.31.3
 
-  vite@5.2.9(@types/node@20.14.11)(terser@5.31.3):
+  vite@5.2.14(@types/node@20.14.11)(terser@5.31.3):
     dependencies:
       esbuild: 0.20.2
       postcss: 8.4.38
@@ -35185,13 +35225,23 @@ snapshots:
       fsevents: 2.3.3
       terser: 5.31.3
 
-  vite@5.2.9(@types/node@22.5.4)(terser@5.31.3):
+  vite@5.2.14(@types/node@22.5.4)(terser@5.31.3):
     dependencies:
       esbuild: 0.20.2
       postcss: 8.4.38
       rollup: 4.14.3
     optionalDependencies:
       '@types/node': 22.5.4
+      fsevents: 2.3.3
+      terser: 5.31.3
+
+  vite@5.2.9(@types/node@20.12.7)(terser@5.31.3):
+    dependencies:
+      esbuild: 0.20.2
+      postcss: 8.4.38
+      rollup: 4.14.3
+    optionalDependencies:
+      '@types/node': 20.12.7
       fsevents: 2.3.3
       terser: 5.31.3
 
@@ -35248,7 +35298,7 @@ snapshots:
       strip-literal: 2.1.0
       tinybench: 2.7.0
       tinypool: 0.8.4
-      vite: 5.2.9(@types/node@20.14.11)(terser@5.31.3)
+      vite: 5.2.14(@types/node@20.14.11)(terser@5.31.3)
       vite-node: 1.6.0(@types/node@20.14.11)(terser@5.31.3)
       why-is-node-running: 2.2.2
     optionalDependencies:
@@ -35282,7 +35332,7 @@ snapshots:
       strip-literal: 2.1.0
       tinybench: 2.7.0
       tinypool: 0.8.4
-      vite: 5.2.9(@types/node@22.5.4)(terser@5.31.3)
+      vite: 5.2.14(@types/node@22.5.4)(terser@5.31.3)
       vite-node: 1.6.0(@types/node@22.5.4)(terser@5.31.3)
       why-is-node-running: 2.2.2
     optionalDependencies:
