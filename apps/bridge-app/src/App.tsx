@@ -17,7 +17,6 @@ import { ThemeProvider } from '@/providers/ThemeProvider'
 import { HeaderLeft } from '@/components/header/HeaderLeft'
 import { HeaderRight } from '@/components/header/HeaderRight'
 import { NETWORK_TYPE } from '@/constants/networkType'
-import { TicTacToe } from '@/routes/TicTacToe'
 import { Home } from '@/routes/Home'
 import { Playground } from '@/routes/Playground'
 import { Toaster } from '@eth-optimism/ui-components'
@@ -95,11 +94,6 @@ const bridgeRoutes = [
   { path: 'withdraw', element: <Bridge action="withdrawal" /> },
 ]
 
-const ticTacToeRoutes = [
-  { index: true, element: <TicTacToe /> },
-  { path: ':game-id', element: <TicTacToe /> },
-]
-
 const router = createBrowserRouter([
   {
     path: '/',
@@ -108,7 +102,6 @@ const router = createBrowserRouter([
       { index: true, element: <Home /> },
       { path: '/bridge', children: bridgeRoutes },
       { path: '/playground', children: playgroundRoutes },
-      { path: '/tictactoe', children: ticTacToeRoutes },
     ],
   },
 ])
