@@ -16,13 +16,13 @@ import {
 } from '@/utils/l2ToL2CrossDomainMessenger.js'
 
 describe('Generic Interop Flow', () => {
-  it('should send and execute cross chain message', async () => {
-    const calldata = encodeFunctionData({
-      abi: ticTacToeABI,
-      functionName: 'createGame',
-      args: [testAccount.address],
-    })
+  const calldata = encodeFunctionData({
+    abi: ticTacToeABI,
+    functionName: 'createGame',
+    args: [testAccount.address],
+  })
 
+  it('should send and execute cross chain message', async () => {
     const sentMessageTxHash = await walletClientA.sendL2ToL2Message({
       account: testAccount.address,
       destinationChainId: supersimL2B.id,
@@ -41,6 +41,7 @@ describe('Generic Interop Flow', () => {
 
     // message was relayed on the other side
     const relayMessageTxHash = await walletClientB.relayL2ToL2Message({
+      account: testAccount.address,
       sentMessageId: sentMessages[0].id,
       sentMessagePayload: sentMessages[0].payload,
     })
