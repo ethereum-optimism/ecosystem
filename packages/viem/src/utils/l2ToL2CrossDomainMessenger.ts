@@ -21,8 +21,8 @@ import { l2ToL2CrossDomainMessengerABI } from '@/abis.js'
 import { createInteropMessage } from '@/utils/interop.js'
 import type { MessageIdentifier, MessagePayload } from '@/types/interop.js'
 
-export type CreateSentL2ToL2MessagesInteropParameters = { receipt: TransactionReceipt }
-export type CreateSentL2ToL2MessagesInteropReturnType = {
+export type CreateInteropSentL2ToL2MessagesParameters = { receipt: TransactionReceipt }
+export type CreateInteropSentL2ToL2MessagesReturnType = {
   sentMessages: Array<{ id: MessageIdentifier, payload: MessagePayload }>
 }
 
@@ -47,16 +47,16 @@ export type DecodeRelayedL2ToL2MessagesReturnType = {
 /**
  * Utility for creating interoperable messages for the SentMessage event 
  * @category Utils
- * @param params {@link CreateL2ToL2SentMessagesInteropParameters}
- * @returns Decoded interop messages {@link CreateSentL2ToL2MessagesInteropReturnType }
+ * @param params {@link CreateInteropL2ToL2SentMessagesParameters}
+ * @returns Decoded interop messages {@link CreateInteropSentL2ToL2MessagesReturnType }
  */
 export async function createInteropSentL2ToL2Messages<
   chain extends Chain | undefined,
   account extends Account | undefined,
 >(
   client: PublicClient<Transport, chain, account>,
-  params: CreateSentL2ToL2MessagesInteropParameters
-): Promise<CreateSentL2ToL2MessagesInteropReturnType> {
+  params: CreateInteropSentL2ToL2MessagesParameters
+): Promise<CreateInteropSentL2ToL2MessagesReturnType> {
   const selector = keccak256(toHex('SentMessage(uint256,address,uint256,address,bytes)'))
   const logs = params.receipt.logs.filter((log) => log.topics.length > 0 || log.topics[0] === selector)
   const messages = await Promise.all(logs.map((log) => createInteropMessage(client, { log })))
@@ -91,18 +91,17 @@ export function decodeSentL2ToL2Messages(
 export function decodeRelayedL2ToL2Messages(
   params: DecodeRelayedL2ToL2MessagesParameters
 ): DecodeRelayedL2ToL2MessagesReturnType {
-  const successfulMessages = parseEventLogs({
+  const RelayedMessageEventName = 'RelayedMessage'
+  const FailedRelayedMessageEventName = 'FailedRelayedMessage'
+  const relayedMessages = parseEventLogs({
       abi: l2ToL2CrossDomainMessengerABI,
-      eventName: 'RelayedMessage',
+      eventName: [RelayedMessageEventName, FailedRelayedMessageEventName],
       logs: params.receipt.logs,
+      strict: true,
   })
 
-  const failedMessages = parseEventLogs({
-      abi: l2ToL2CrossDomainMessengerABI,
-      eventName: 'FailedRelayedMessage',
-      logs: params.receipt.logs,
-  })
-
+  const successfulMessages = relayedMessages.filter((log) => log.eventName === RelayedMessageEventName)
+  const failedMessages = relayedMessages.filter((log) => log.eventName === FailedRelayedMessageEventName)
   return {
       successfulMessages: successfulMessages.map((log) => { return { ...log.args, log }}),
       failedMessages: failedMessages.map((log) => { return { ...log.args, log }})
@@ -110,7 +109,7 @@ export function decodeRelayedL2ToL2Messages(
 }
 
 /**
- * Utility for constructing the message hash used to identify a cross-chain message of the L2ToL2CrossDomianMessenger
+ * Utility for constructing the message hash used to identify a cross chain message of the L2ToL2CrossDomianMessenger
  * @category Utils
  */
 export function hashL2ToL2Message(

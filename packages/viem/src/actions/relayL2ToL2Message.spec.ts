@@ -1,10 +1,15 @@
 import { encodeFunctionData } from 'viem'
 import { describe, expect, it } from 'vitest'
 
-import { supersimL2B } from '@/chains/supersim.js'
+import { supersimL2A, supersimL2B } from '@/chains/supersim.js'
 import { publicClientA, publicClientB, testAccount, walletClientA, walletClientB } from '@/test/clients.js'
 import { ticTacToeABI, ticTacToeAddress } from '@/test/setupTicTacToe.js'
-import { createInteropSentL2ToL2Messages, decodeRelayedL2ToL2Messages } from '@/utils/l2ToL2CrossDomainMessenger.js'
+import {
+  createInteropSentL2ToL2Messages,
+  decodeRelayedL2ToL2Messages,
+  decodeSentL2ToL2Messages,
+  hashL2ToL2Message,
+} from '@/utils/l2ToL2CrossDomainMessenger.js'
 
 describe('relayL2ToL2Message', () => {
   const calldata = encodeFunctionData({
@@ -13,76 +18,85 @@ describe('relayL2ToL2Message', () => {
     args: [testAccount.address],
   })
 
-  describe('estimate gas', async () => {
-    const hash = await walletClientA.sendL2ToL2Message({
-      account: testAccount.address,
-      destinationChainId: supersimL2B.id,
-      target: ticTacToeAddress,
-      message: calldata,
-    })
-
-    const receipt = await publicClientA.waitForTransactionReceipt({ hash })
-    const { sentMessages } = await createInteropSentL2ToL2Messages(publicClientA, { receipt })
-    const sentMessage = sentMessages[0]
-
+  describe('estimate gas', () => {
     it('should estimate gas', async () => {
+      const hash = await walletClientA.sendL2ToL2Message({
+        account: testAccount.address,
+        destinationChainId: supersimL2B.id,
+        target: ticTacToeAddress,
+        message: calldata,
+      })
+
+      const receipt = await publicClientA.waitForTransactionReceipt({ hash })
+      const { sentMessages } = await createInteropSentL2ToL2Messages(publicClientA, { receipt })
+      expect(sentMessages).length(1)
+
       const gas = await publicClientB.estimateRelayL2ToL2MessageGas({
         account: testAccount.address,
-        sentMessageId: sentMessage.id,
-        sentMessagePayload: sentMessage.payload,
+        sentMessageId: sentMessages[0].id,
+        sentMessagePayload: sentMessages[0].payload,
       })
 
       expect(gas).toBeDefined()
     })
   })
 
-
-  describe('simulate', async () => {
-    const hash = await walletClientA.sendL2ToL2Message({
-      account: testAccount.address,
-      destinationChainId: supersimL2B.id,
-      target: ticTacToeAddress,
-      message: calldata,
-    })
-
-    const receipt = await publicClientA.waitForTransactionReceipt({ hash })
-    const { sentMessages } = await createInteropSentL2ToL2Messages(publicClientA, { receipt })
-    const sentMessage = sentMessages[0]
-
+  describe('simulate', () => {
     it('should simulate', async () => {
+      const hash = await walletClientA.sendL2ToL2Message({
+        account: testAccount.address,
+        destinationChainId: supersimL2B.id,
+        target: ticTacToeAddress,
+        message: calldata,
+      })
+
+      const receipt = await publicClientA.waitForTransactionReceipt({ hash })
+      const { sentMessages } = await createInteropSentL2ToL2Messages(publicClientA, { receipt })
+      expect(sentMessages).length(1)
+
       expect(() =>
         publicClientB.simulateRelayL2ToL2Message({
           account: testAccount,
-          sentMessageId: sentMessage.id,
-          sentMessagePayload: sentMessage.payload
+          sentMessageId: sentMessages[0].id,
+          sentMessagePayload: sentMessages[0].payload
         }),
       ).not.throw()
     })
   })
 
-  describe('write contract', async () => {
-    const hash = await walletClientA.sendL2ToL2Message({
-      account: testAccount.address,
-      destinationChainId: supersimL2B.id,
-      target: ticTacToeAddress,
-      message: calldata,
-    })
-
-    const receipt = await publicClientA.waitForTransactionReceipt({ hash })
-    const { sentMessages } = await createInteropSentL2ToL2Messages(publicClientA, { receipt })
-    const sentMessage = sentMessages[0]
-
+  describe('write contract', () => {
     it('should return expected request', async () => {
-      const hash = await walletClientB.relayL2ToL2Message({
-        sentMessageId: sentMessage.id,
-        sentMessagePayload: sentMessage.payload
+      const sendTxHash = await walletClientA.sendL2ToL2Message({
+        account: testAccount.address,
+        destinationChainId: supersimL2B.id,
+        target: ticTacToeAddress,
+        message: calldata,
       })
 
-      expect(hash).toBeDefined()
-      const receipt = await publicClientB.waitForTransactionReceipt({ hash })
-      const { successfulMessages, failedMessages } = decodeRelayedL2ToL2Messages({ receipt })
+      const sendReceipt = await publicClientA.waitForTransactionReceipt({ hash: sendTxHash })
+      const { sentMessages } = await createInteropSentL2ToL2Messages(publicClientA, { receipt: sendReceipt })
+      expect(sentMessages).length(1)
+
+      const relayTxHash = await walletClientB.relayL2ToL2Message({
+        sentMessageId: sentMessages[0].id,
+        sentMessagePayload: sentMessages[0].payload
+      })
+
+      expect(relayTxHash).toBeDefined()
+
+      // succesfully relayed
+      const relayReceipt = await publicClientB.waitForTransactionReceipt({ hash: relayTxHash })
+      const { successfulMessages, failedMessages } = decodeRelayedL2ToL2Messages({ receipt: relayReceipt })
       expect(successfulMessages).length(1)
       expect(failedMessages).length(0)
+
+      // L2ToL2CDM messageHash check
+      const { messages } = decodeSentL2ToL2Messages({ receipt: sendReceipt })
+      expect(messages).length(1)
+
+      const { destination, messageNonce, sender, target, message } = messages[0]
+      const msgHash = hashL2ToL2Message(destination, BigInt(supersimL2A.id), messageNonce, sender, target, message)
+      expect(msgHash).toEqual(successfulMessages[0].messageHash)
     })
   })
 })

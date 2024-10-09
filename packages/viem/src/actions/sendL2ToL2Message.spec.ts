@@ -1,10 +1,10 @@
 import { encodeFunctionData } from 'viem'
 import { describe, expect, it } from 'vitest'
 
-import { supersimL2A, supersimL2B } from '@/chains/supersim.js'
+import { supersimL2B } from '@/chains/supersim.js'
 import { publicClientA, testAccount, walletClientA } from '@/test/clients.js'
 import { ticTacToeABI, ticTacToeAddress } from '@/test/setupTicTacToe.js'
-import { decodeSentL2ToL2Messages, hashL2ToL2Message } from '@/utils/l2ToL2CrossDomainMessenger.js'
+import { decodeSentL2ToL2Messages } from '@/utils/l2ToL2CrossDomainMessenger.js'
 
 describe('sendL2ToL2Message', () => {
   const calldata = encodeFunctionData({
@@ -15,27 +15,26 @@ describe('sendL2ToL2Message', () => {
 
   describe('write contract', () => {
     it('should return expected request', async () => {
-      const hash = await walletClientA.sendL2ToL2Message({
+      const txHash = await walletClientA.sendL2ToL2Message({
         account: testAccount.address,
         destinationChainId: supersimL2B.id,
         target: ticTacToeAddress,
         message: calldata,
       })
 
-      expect(hash).toBeDefined()
+      expect(txHash).toBeDefined()
 
       // SentMessage event
-      const receipt = await publicClientA.waitForTransactionReceipt({ hash })
+      const receipt = await publicClientA.waitForTransactionReceipt({ hash: txHash })
       const { messages } = decodeSentL2ToL2Messages({ receipt })
       expect(messages).length(1)
 
       // very cross chain msg
-      const { destination, messageNonce, sender, target, message } = messages[0]
+      const { destination, sender, target, message } = messages[0]
       expect(destination).toEqual(BigInt(supersimL2B.id))
       expect(sender).toEqual(testAccount.address)
       expect(target).toEqual(ticTacToeAddress)
       expect(message).toEqual(calldata)
-      expect(hash).toEqual(hashL2ToL2Message(destination, BigInt(supersimL2A.id), messageNonce, sender, target, message))
     })
   })
 

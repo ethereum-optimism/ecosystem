@@ -46,8 +46,8 @@ export {
   decodeExecutingMessages,
 } from '@/utils/interop.js'
 export type {
-  CreateSentL2ToL2MessagesInteropParameters,
-  CreateSentL2ToL2MessagesInteropReturnType,
+  CreateInteropSentL2ToL2MessagesParameters,
+  CreateInteropSentL2ToL2MessagesReturnType,
   DecodeRelayedL2ToL2MessagesParameters,
   DecodeRelayedL2ToL2MessagesReturnType,
   DecodeSentL2ToL2MessagesParameters,

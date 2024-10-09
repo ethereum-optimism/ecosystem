@@ -37,7 +37,7 @@ export async function createInteropMessage<
   params: CreateInteropMessageParameters
 ): Promise<CreateInteropMessageReturnType> {
   const { log } = params
-  if (!log.blockNumber || !log.logIndex) {
+  if (log.blockNumber === undefined || log.logIndex === undefined) {
     throw new Error("pending log cannot be constructed into an interop message")
   }
   if (!client.chain) {
