@@ -1,5 +1,11 @@
 # @eth-optimism/viem
 
+## 0.0.7
+
+### Patch Changes
+
+- [#500](https://github.com/ethereum-optimism/ecosystem/pull/500) [`d301e66`](https://github.com/ethereum-optimism/ecosystem/commit/d301e66ba53ccf63d034a7d0b8314df2b4443329) Thanks [@hamdiallam](https://github.com/hamdiallam)! - bugfix when filtering the selector
+
 ## 0.0.6
 
 ### Patch Changes
