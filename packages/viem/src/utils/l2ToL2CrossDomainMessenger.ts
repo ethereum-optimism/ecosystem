@@ -73,7 +73,7 @@ export async function createInteropSentL2ToL2Messages<
     toHex('SentMessage(uint256,address,uint256,address,bytes)'),
   )
   const logs = params.receipt.logs.filter(
-    (log) => log.topics.length > 0 || log.topics[0] === selector,
+    (log) => log.topics.length > 0 && log.topics[0] === selector,
   )
   const messages = await Promise.all(
     logs.map((log) => createInteropMessage(client, { log })),
