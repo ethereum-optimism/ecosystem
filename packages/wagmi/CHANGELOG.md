@@ -1,5 +1,14 @@
 # @eth-optimism/wagmi
 
+## 0.0.6
+
+### Patch Changes
+
+- [#496](https://github.com/ethereum-optimism/ecosystem/pull/496) [`9954f3f`](https://github.com/ethereum-optimism/ecosystem/commit/9954f3fc3d0bb748eea0b89dab8de4af6a6b27b0) Thanks [@hamdiallam](https://github.com/hamdiallam)! - seperated CrossL2Inbox & L2ToL2CrossDomainMessenger actions/util abstractions
+
+- Updated dependencies [[`9954f3f`](https://github.com/ethereum-optimism/ecosystem/commit/9954f3fc3d0bb748eea0b89dab8de4af6a6b27b0)]:
+  - @eth-optimism/viem@0.0.6
+
 ## 0.0.5
 
 ### Patch Changes
