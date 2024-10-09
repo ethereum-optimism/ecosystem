@@ -1,4 +1,4 @@
-import { testClient } from '@/test/clients.js'
+import { testClientA, testClientB } from '@/test/clients.js'
 
 export const ticTacToeAddress = '0x057ef64E23666F000b34aE31332854aCBd1c8544'
 
@@ -305,8 +305,6 @@ export const ticTacToeABI = [
 ] as const
 
 export async function setupTicTacToe() {
-  await testClient.setCode({
-    address: ticTacToeAddress,
-    bytecode: ticTacToeBytecode,
-  })
+  await testClientA.setCode({ address: ticTacToeAddress, bytecode: ticTacToeBytecode })
+  await testClientB.setCode({ address: ticTacToeAddress, bytecode: ticTacToeBytecode })
 }

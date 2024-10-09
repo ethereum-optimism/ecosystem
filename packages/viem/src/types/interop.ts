@@ -1,4 +1,4 @@
-import type { Address } from 'viem'
+import type { Address, Hex } from 'viem'
 
 /**
  * Spec for [`MessageIdentifier`](https://github.com/ethereum-optimism/specs/blob/main/specs/interop/messaging.md#message-identifier).
@@ -16,3 +16,9 @@ export type MessageIdentifier = {
   /** The chain id of the chain that emitted the log */
   chainId: bigint
 }
+
+/**
+ * Spec for [`MessagePayload`](https://github.com/ethereum-optimism/specs/blob/main/specs/interop/messaging.md#message-payload).
+ * @category Types
+ */
+export type MessagePayload = Hex

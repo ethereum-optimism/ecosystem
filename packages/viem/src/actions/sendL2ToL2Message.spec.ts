@@ -2,14 +2,12 @@ import { encodeFunctionData } from 'viem'
 import { describe, expect, it } from 'vitest'
 
 import { supersimL2A, supersimL2B } from '@/chains/supersim.js'
-import { contracts } from '@/contracts.js'
-import { publicClient, testAccount, walletClient } from '@/test/clients.js'
+import { publicClientA, testAccount, walletClientA } from '@/test/clients.js'
 import { ticTacToeABI, ticTacToeAddress } from '@/test/setupTicTacToe.js'
-import { decodeSentMessage } from '@/utils/decodeSentMessage.js'
-import { extractMessageIdentifierFromLogs } from '@/utils/extractMessageIdentifierFromLogs.js'
+import { decodeSentL2ToL2Messages, hashL2ToL2Message } from '@/utils/l2ToL2CrossDomainMessenger.js'
 
 describe('sendL2ToL2Message', () => {
-  const encodedMessage = encodeFunctionData({
+  const calldata = encodeFunctionData({
     abi: ticTacToeABI,
     functionName: 'createGame',
     args: [testAccount.address],
@@ -17,44 +15,37 @@ describe('sendL2ToL2Message', () => {
 
   describe('write contract', () => {
     it('should return expected request', async () => {
-      const hash = await walletClient.sendL2ToL2Message({
+      const hash = await walletClientA.sendL2ToL2Message({
         account: testAccount.address,
         destinationChainId: supersimL2B.id,
         target: ticTacToeAddress,
-        message: encodedMessage,
+        message: calldata,
       })
+
       expect(hash).toBeDefined()
 
-      const receipt = await publicClient.waitForTransactionReceipt({ hash })
-      const { id, payload } = await extractMessageIdentifierFromLogs(
-        publicClient,
-        { receipt },
-      )
+      // SentMessage event
+      const receipt = await publicClientA.waitForTransactionReceipt({ hash })
+      const { messages } = decodeSentL2ToL2Messages({ receipt })
+      expect(messages).length(1)
 
-      // verifiy message id
-      expect(id).toBeDefined()
-      expect(id.chainId).toEqual(BigInt(supersimL2A.id))
-      expect(id.origin.toLowerCase()).toEqual(
-        contracts.l2ToL2CrossDomainMessenger.address.toLowerCase(),
-      )
-      expect(id.blockNumber).toEqual(receipt.blockNumber)
-      expect(id.logIndex).toEqual(BigInt(receipt.logs[0].logIndex))
-
-      const decodedPayload = decodeSentMessage({ logs: receipt.logs })
-      expect(decodedPayload.destination).toEqual(BigInt(supersimL2B.id))
-      expect(decodedPayload.sender).toEqual(testAccount.address)
-      expect(decodedPayload.target).toEqual(ticTacToeAddress)
-      expect(decodedPayload.message).toEqual(payload)
+      // very cross chain msg
+      const { destination, messageNonce, sender, target, message } = messages[0]
+      expect(destination).toEqual(BigInt(supersimL2B.id))
+      expect(sender).toEqual(testAccount.address)
+      expect(target).toEqual(ticTacToeAddress)
+      expect(message).toEqual(calldata)
+      expect(hash).toEqual(hashL2ToL2Message(destination, BigInt(supersimL2A.id), messageNonce, sender, target, message))
     })
   })
 
   describe('estimate gas', () => {
     it('should estimate gas', async () => {
-      const gas = await publicClient.estimateSendL2ToL2MessageGas({
+      const gas = await publicClientA.estimateSendL2ToL2MessageGas({
         account: testAccount.address,
         target: ticTacToeAddress,
         destinationChainId: supersimL2B.id,
-        message: encodedMessage,
+        message: calldata,
       })
 
       expect(gas).toBeDefined()
@@ -64,11 +55,11 @@ describe('sendL2ToL2Message', () => {
   describe('simulate', () => {
     it('should simulate', async () => {
       expect(() =>
-        publicClient.simulateSendL2ToL2Message({
+        publicClientA.simulateSendL2ToL2Message({
           account: testAccount.address,
           destinationChainId: supersimL2B.id,
           target: ticTacToeAddress,
-          message: encodedMessage,
+          message: calldata,
         }),
       ).not.throw()
     })
