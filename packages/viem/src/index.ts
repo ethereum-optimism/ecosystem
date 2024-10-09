@@ -12,16 +12,16 @@ export { contracts } from '@/contracts.js'
 
 // actions
 export type {
-  ExecuteL2ToL2MessageContractReturnType,
-  ExecuteL2ToL2MessageErrorType,
-  ExecuteL2ToL2MessageParameters,
-  ExecuteL2ToL2MessageReturnType,
-} from '@/actions/executeL2ToL2Message.js'
+  RelayL2ToL2MessageContractReturnType,
+  RelayL2ToL2MessageErrorType,
+  RelayL2ToL2MessageParameters,
+  RelayL2ToL2MessageReturnType,
+} from '@/actions/relayL2ToL2Message.js'
 export {
-  estimateExecuteL2ToL2MessageGas,
-  executeL2ToL2Message,
-  simulateExecuteL2ToL2Message,
-} from '@/actions/executeL2ToL2Message.js'
+  estimateRelayL2ToL2MessageGas,
+  relayL2ToL2Message,
+  simulateRelayL2ToL2Message,
+} from '@/actions/relayL2ToL2Message.js'
 export type {
   SendL2ToL2MessageContractReturnType,
   SendL2ToL2MessageErrorType,
@@ -36,21 +36,28 @@ export {
 
 // utils
 export type {
-  DecodeExecutingMessageParameters,
-  DecodeExecutingMessageReturnType,
-} from '@/utils/decodeExecutingMessage.js'
-export { decodeExecutingMessage } from '@/utils/decodeExecutingMessage.js'
+  CreateInteropMessageParameters,
+  CreateInteropMessageReturnType,
+  DecodeExecutingMessagesParameters,
+  DecodeExecutingMessagesReturnType,
+} from '@/utils/interop.js'
+export {
+  createInteropMessage,
+  decodeExecutingMessages,
+} from '@/utils/interop.js'
 export type {
-  DecodeSentMessageParameters,
-  DecodeSentMessageReturnType,
-} from '@/utils/decodeSentMessage.js'
-export { decodeSentMessage } from '@/utils/decodeSentMessage.js'
-export type {
-  ExtractMessageIdentifierFromLogsErrorType,
-  ExtractMessageIdentifierFromLogsParameters,
-  ExtractMessageIdentifierFromLogsReturnType,
-} from '@/utils/extractMessageIdentifierFromLogs.js'
-export { extractMessageIdentifierFromLogs } from '@/utils/extractMessageIdentifierFromLogs.js'
+  CreateInteropSentL2ToL2MessagesParameters,
+  CreateInteropSentL2ToL2MessagesReturnType,
+  DecodeRelayedL2ToL2MessagesParameters,
+  DecodeRelayedL2ToL2MessagesReturnType,
+  DecodeSentL2ToL2MessagesParameters,
+  DecodeSentL2ToL2MessagesReturnType,
+} from '@/utils/l2ToL2CrossDomainMessenger.js'
+export {
+  createInteropSentL2ToL2Messages,
+  decodeRelayedL2ToL2Messages,
+  decodeSentL2ToL2Messages,
+} from '@/utils/l2ToL2CrossDomainMessenger.js'
 
 // decorators
 export { publicActionsL2 } from '@/decorators/publicL2.js'

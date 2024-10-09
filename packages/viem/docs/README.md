@@ -13,15 +13,28 @@
 
 ## L2 Public Actions
 
-- [simulateExecuteL2ToL2Message](functions/simulateExecuteL2ToL2Message.md)
+- [simulateRelayL2ToL2Message](functions/simulateRelayL2ToL2Message.md)
 - [simulateSendL2ToL2Message](functions/simulateSendL2ToL2Message.md)
 
 ## L2 Wallet Actions
 
-- [estimateExecuteL2ToL2MessageGas](functions/estimateExecuteL2ToL2MessageGas.md)
+- [estimateRelayL2ToL2MessageGas](functions/estimateRelayL2ToL2MessageGas.md)
 - [estimateSendL2ToL2MessageGas](functions/estimateSendL2ToL2MessageGas.md)
-- [executeL2ToL2Message](functions/executeL2ToL2Message.md)
+- [relayL2ToL2Message](functions/relayL2ToL2Message.md)
 - [sendL2ToL2Message](functions/sendL2ToL2Message.md)
+
+## Other
+
+- [CreateInteropMessageParameters](type-aliases/CreateInteropMessageParameters.md)
+- [CreateInteropMessageReturnType](type-aliases/CreateInteropMessageReturnType.md)
+- [CreateInteropSentL2ToL2MessagesParameters](type-aliases/CreateInteropSentL2ToL2MessagesParameters.md)
+- [CreateInteropSentL2ToL2MessagesReturnType](type-aliases/CreateInteropSentL2ToL2MessagesReturnType.md)
+- [DecodeExecutingMessagesParameters](type-aliases/DecodeExecutingMessagesParameters.md)
+- [DecodeExecutingMessagesReturnType](type-aliases/DecodeExecutingMessagesReturnType.md)
+- [DecodeRelayedL2ToL2MessagesParameters](type-aliases/DecodeRelayedL2ToL2MessagesParameters.md)
+- [DecodeRelayedL2ToL2MessagesReturnType](type-aliases/DecodeRelayedL2ToL2MessagesReturnType.md)
+- [DecodeSentL2ToL2MessagesParameters](type-aliases/DecodeSentL2ToL2MessagesParameters.md)
+- [DecodeSentL2ToL2MessagesReturnType](type-aliases/DecodeSentL2ToL2MessagesReturnType.md)
 
 ## Predeploy Addresses
 
@@ -35,18 +48,11 @@
 
 ## Types
 
-- [DecodeExecutingMessageParameters](type-aliases/DecodeExecutingMessageParameters.md)
-- [DecodeExecutingMessageReturnType](type-aliases/DecodeExecutingMessageReturnType.md)
-- [DecodeSentMessageParameters](type-aliases/DecodeSentMessageParameters.md)
-- [DecodeSentMessageReturnType](type-aliases/DecodeSentMessageReturnType.md)
-- [ExecuteL2ToL2MessageContractReturnType](type-aliases/ExecuteL2ToL2MessageContractReturnType.md)
-- [ExecuteL2ToL2MessageErrorType](type-aliases/ExecuteL2ToL2MessageErrorType.md)
-- [ExecuteL2ToL2MessageParameters](type-aliases/ExecuteL2ToL2MessageParameters.md)
-- [ExecuteL2ToL2MessageReturnType](type-aliases/ExecuteL2ToL2MessageReturnType.md)
-- [ExtractMessageIdentifierFromLogsErrorType](type-aliases/ExtractMessageIdentifierFromLogsErrorType.md)
-- [ExtractMessageIdentifierFromLogsParameters](type-aliases/ExtractMessageIdentifierFromLogsParameters.md)
-- [ExtractMessageIdentifierFromLogsReturnType](type-aliases/ExtractMessageIdentifierFromLogsReturnType.md)
 - [MessageIdentifier](type-aliases/MessageIdentifier.md)
+- [RelayL2ToL2MessageContractReturnType](type-aliases/RelayL2ToL2MessageContractReturnType.md)
+- [RelayL2ToL2MessageErrorType](type-aliases/RelayL2ToL2MessageErrorType.md)
+- [RelayL2ToL2MessageParameters](type-aliases/RelayL2ToL2MessageParameters.md)
+- [RelayL2ToL2MessageReturnType](type-aliases/RelayL2ToL2MessageReturnType.md)
 - [SendL2ToL2MessageContractReturnType](type-aliases/SendL2ToL2MessageContractReturnType.md)
 - [SendL2ToL2MessageErrorType](type-aliases/SendL2ToL2MessageErrorType.md)
 - [SendL2ToL2MessageParameters](type-aliases/SendL2ToL2MessageParameters.md)
@@ -54,6 +60,8 @@
 
 ## Utils
 
-- [decodeExecutingMessage](functions/decodeExecutingMessage.md)
-- [decodeSentMessage](functions/decodeSentMessage.md)
-- [extractMessageIdentifierFromLogs](functions/extractMessageIdentifierFromLogs.md)
+- [createInteropMessage](functions/createInteropMessage.md)
+- [createInteropSentL2ToL2Messages](functions/createInteropSentL2ToL2Messages.md)
+- [decodeExecutingMessages](functions/decodeExecutingMessages.md)
+- [decodeRelayedL2ToL2Messages](functions/decodeRelayedL2ToL2Messages.md)
+- [decodeSentL2ToL2Messages](functions/decodeSentL2ToL2Messages.md)

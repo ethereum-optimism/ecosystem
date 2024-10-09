@@ -3,13 +3,13 @@ import type { PublicActionsL2 as UpstreamPublicActionsL2 } from 'viem/op-stack'
 import { publicActionsL2 as upstreamPublicActionsL2 } from 'viem/op-stack'
 
 import type {
-  ExecuteL2ToL2MessageContractReturnType,
-  ExecuteL2ToL2MessageParameters,
-} from '@/actions/executeL2ToL2Message.js'
+  RelayL2ToL2MessageContractReturnType,
+  RelayL2ToL2MessageParameters,
+} from '@/actions/relayL2ToL2Message.js'
 import {
-  estimateExecuteL2ToL2MessageGas,
-  simulateExecuteL2ToL2Message,
-} from '@/actions/executeL2ToL2Message.js'
+  estimateRelayL2ToL2MessageGas,
+  simulateRelayL2ToL2Message,
+} from '@/actions/relayL2ToL2Message.js'
 import type {
   SendL2ToL2MessageContractReturnType,
   SendL2ToL2MessageParameters,
@@ -29,14 +29,10 @@ export type PublicActionsL2<
     parameters: SendL2ToL2MessageParameters<TChain, TAccount, TChainOverride>,
   ) => Promise<bigint>
 
-  estimateExecuteL2ToL2MessageGas: <
+  estimateRelayL2ToL2MessageGas: <
     TChainOverride extends Chain | undefined = undefined,
   >(
-    parameters: ExecuteL2ToL2MessageParameters<
-      TChain,
-      TAccount,
-      TChainOverride
-    >,
+    parameters: RelayL2ToL2MessageParameters<TChain, TAccount, TChainOverride>,
   ) => Promise<bigint>
 
   simulateSendL2ToL2Message: <
@@ -45,15 +41,11 @@ export type PublicActionsL2<
     parameters: SendL2ToL2MessageParameters<TChain, TAccount, TChainOverride>,
   ) => Promise<SendL2ToL2MessageContractReturnType>
 
-  simulateExecuteL2ToL2Message: <
+  simulateRelayL2ToL2Message: <
     TChainOverride extends Chain | undefined = undefined,
   >(
-    parameters: ExecuteL2ToL2MessageParameters<
-      TChain,
-      TAccount,
-      TChainOverride
-    >,
-  ) => Promise<ExecuteL2ToL2MessageContractReturnType>
+    parameters: RelayL2ToL2MessageParameters<TChain, TAccount, TChainOverride>,
+  ) => Promise<RelayL2ToL2MessageContractReturnType>
 }
 
 export function publicActionsL2() {
@@ -68,12 +60,12 @@ export function publicActionsL2() {
       ...upstreamPublicActionsL2(),
       estimateSendL2ToL2MessageGas: (args) =>
         estimateSendL2ToL2MessageGas(client, args),
-      estimateExecuteL2ToL2MessageGas: (args) =>
-        estimateExecuteL2ToL2MessageGas(client, args),
+      estimateRelayL2ToL2MessageGas: (args) =>
+        estimateRelayL2ToL2MessageGas(client, args),
       simulateSendL2ToL2Message: (args) =>
         simulateSendL2ToL2Message(client, args),
-      simulateExecuteL2ToL2Message: (args) =>
-        simulateExecuteL2ToL2Message(client, args),
+      simulateRelayL2ToL2Message: (args) =>
+        simulateRelayL2ToL2Message(client, args),
     } as PublicActionsL2<TChain, TAccount>
   }
 }

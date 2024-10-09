@@ -2,13 +2,13 @@
 
 ***
 
-[@eth-optimism/viem](../README.md) / extractMessageIdentifierFromLogs
+[@eth-optimism/viem](../README.md) / createInteropSentL2ToL2Messages
 
-# extractMessageIdentifierFromLogs()
+# createInteropSentL2ToL2Messages()
 
-> **extractMessageIdentifierFromLogs**\<`chain`, `account`\>(`client`, `parameters`): `Promise`\<[`ExtractMessageIdentifierFromLogsReturnType`](../type-aliases/ExtractMessageIdentifierFromLogsReturnType.md)\>
+> **createInteropSentL2ToL2Messages**\<`chain`, `account`\>(`client`, `params`): `Promise`\<[`CreateInteropSentL2ToL2MessagesReturnType`](../type-aliases/CreateInteropSentL2ToL2MessagesReturnType.md)\>
 
-Retrieves a message identifier from the logs returned with the receipt from the sendL2ToL2Message transaction.
+Utility for creating interoperable messages for the SentMessage event
 
 ## Type Parameters
 
@@ -19,8 +19,6 @@ Retrieves a message identifier from the logs returned with the receipt from the 
 ## Parameters
 
 • **client**
-
-L2 Public Client
 
 • **client.account**: `account`
 
@@ -1365,16 +1363,16 @@ const unwatch = await client.watchPendingTransactions({
 })
 ```
 
-• **parameters**: [`ExtractMessageIdentifierFromLogsParameters`](../type-aliases/ExtractMessageIdentifierFromLogsParameters.md)
+• **params**: [`CreateInteropSentL2ToL2MessagesParameters`](../type-aliases/CreateInteropSentL2ToL2MessagesParameters.md)
 
-GetGameParameters
+CreateInteropL2ToL2SentMessagesParameters
 
 ## Returns
 
-`Promise`\<[`ExtractMessageIdentifierFromLogsReturnType`](../type-aliases/ExtractMessageIdentifierFromLogsReturnType.md)\>
+`Promise`\<[`CreateInteropSentL2ToL2MessagesReturnType`](../type-aliases/CreateInteropSentL2ToL2MessagesReturnType.md)\>
 
-A valid message identifier. GetGameReturnType
+Decoded interop messages [CreateInteropSentL2ToL2MessagesReturnType](../type-aliases/CreateInteropSentL2ToL2MessagesReturnType.md)
 
 ## Defined in
 
-[packages/viem/src/utils/extractMessageIdentifierFromLogs.ts:58](https://github.com/ethereum-optimism/ecosystem/blob/a6a591d88cd41aa48aa7325dbb668dbe8084e5ee/packages/viem/src/utils/extractMessageIdentifierFromLogs.ts#L58)
+[packages/viem/src/utils/l2ToL2CrossDomainMessenger.ts:65](https://github.com/ethereum-optimism/ecosystem/blob/c6de7f1b878b611a9ec2ae09ccf5f2ca7cfa2bce/packages/viem/src/utils/l2ToL2CrossDomainMessenger.ts#L65)
