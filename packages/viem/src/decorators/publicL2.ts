@@ -32,11 +32,7 @@ export type PublicActionsL2<
   estimateRelayL2ToL2MessageGas: <
     TChainOverride extends Chain | undefined = undefined,
   >(
-    parameters: RelayL2ToL2MessageParameters<
-      TChain,
-      TAccount,
-      TChainOverride
-    >,
+    parameters: RelayL2ToL2MessageParameters<TChain, TAccount, TChainOverride>,
   ) => Promise<bigint>
 
   simulateSendL2ToL2Message: <
@@ -48,11 +44,7 @@ export type PublicActionsL2<
   simulateRelayL2ToL2Message: <
     TChainOverride extends Chain | undefined = undefined,
   >(
-    parameters: RelayL2ToL2MessageParameters<
-      TChain,
-      TAccount,
-      TChainOverride
-    >,
+    parameters: RelayL2ToL2MessageParameters<TChain, TAccount, TChainOverride>,
   ) => Promise<RelayL2ToL2MessageContractReturnType>
 }
 
@@ -66,10 +58,14 @@ export function publicActionsL2() {
   ) => {
     return {
       ...upstreamPublicActionsL2(),
-      estimateSendL2ToL2MessageGas: (args) => estimateSendL2ToL2MessageGas(client, args),
-      estimateRelayL2ToL2MessageGas: (args) => estimateRelayL2ToL2MessageGas(client, args),
-      simulateSendL2ToL2Message: (args) => simulateSendL2ToL2Message(client, args),
-      simulateRelayL2ToL2Message: (args) => simulateRelayL2ToL2Message(client, args),
+      estimateSendL2ToL2MessageGas: (args) =>
+        estimateSendL2ToL2MessageGas(client, args),
+      estimateRelayL2ToL2MessageGas: (args) =>
+        estimateRelayL2ToL2MessageGas(client, args),
+      simulateSendL2ToL2Message: (args) =>
+        simulateSendL2ToL2Message(client, args),
+      simulateRelayL2ToL2Message: (args) =>
+        simulateRelayL2ToL2Message(client, args),
     } as PublicActionsL2<TChain, TAccount>
   }
 }

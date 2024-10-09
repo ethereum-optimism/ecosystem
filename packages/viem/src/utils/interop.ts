@@ -20,7 +20,7 @@ export type CreateInteropMessageReturnType = {
 
 export type DecodeExecutingMessagesParameters = { receipt: TransactionReceipt }
 export type DecodeExecutingMessagesReturnType = {
-  executingMessages: Array<{ id: MessageIdentifier, msgHash: Hash, log: Log }>
+  executingMessages: Array<{ id: MessageIdentifier; msgHash: Hash; log: Log }>
 }
 
 /**
@@ -34,14 +34,14 @@ export async function createInteropMessage<
   account extends Account | undefined,
 >(
   client: PublicClient<Transport, chain, account>,
-  params: CreateInteropMessageParameters
+  params: CreateInteropMessageParameters,
 ): Promise<CreateInteropMessageReturnType> {
   const { log } = params
   if (log.blockNumber === undefined || log.logIndex === undefined) {
-    throw new Error("pending log cannot be constructed into an interop message")
+    throw new Error('pending log cannot be constructed into an interop message')
   }
   if (!client.chain) {
-    throw new Error("define chain required to construct an interop message")
+    throw new Error('define chain required to construct an interop message')
   }
 
   const block = await client.getBlock({ blockHash: log.blockHash as Hash })
@@ -64,7 +64,7 @@ export async function createInteropMessage<
  * @returns Decoded cross-chain calls {@link DecodeExecutingMessagesReturnType }
  */
 export function decodeExecutingMessages(
-  params: DecodeExecutingMessagesParameters
+  params: DecodeExecutingMessagesParameters,
 ): DecodeExecutingMessagesReturnType {
   const logs = parseEventLogs({
     abi: crossL2InboxABI,
@@ -72,6 +72,8 @@ export function decodeExecutingMessages(
     logs: params.receipt.logs,
   })
 
-  const executingMessages = logs.map((log) => { return { ...log.args, log }})
+  const executingMessages = logs.map((log) => {
+    return { ...log.args, log }
+  })
   return { executingMessages }
 }

@@ -25,7 +25,9 @@ describe('sendL2ToL2Message', () => {
       expect(txHash).toBeDefined()
 
       // SentMessage event
-      const receipt = await publicClientA.waitForTransactionReceipt({ hash: txHash })
+      const receipt = await publicClientA.waitForTransactionReceipt({
+        hash: txHash,
+      })
       const { messages } = decodeSentL2ToL2Messages({ receipt })
       expect(messages).length(1)
 

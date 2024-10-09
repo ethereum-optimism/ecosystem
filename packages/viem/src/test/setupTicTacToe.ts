@@ -305,6 +305,12 @@ export const ticTacToeABI = [
 ] as const
 
 export async function setupTicTacToe() {
-  await testClientA.setCode({ address: ticTacToeAddress, bytecode: ticTacToeBytecode })
-  await testClientB.setCode({ address: ticTacToeAddress, bytecode: ticTacToeBytecode })
+  await testClientA.setCode({
+    address: ticTacToeAddress,
+    bytecode: ticTacToeBytecode,
+  })
+  await testClientB.setCode({
+    address: ticTacToeAddress,
+    bytecode: ticTacToeBytecode,
+  })
 }

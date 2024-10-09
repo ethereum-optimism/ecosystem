@@ -53,7 +53,7 @@ export type {
   DecodeSentL2ToL2MessagesParameters,
   DecodeSentL2ToL2MessagesReturnType,
 } from '@/utils/l2ToL2CrossDomainMessenger.js'
-export { 
+export {
   createInteropSentL2ToL2Messages,
   decodeRelayedL2ToL2Messages,
   decodeSentL2ToL2Messages,

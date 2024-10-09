@@ -15,7 +15,10 @@ import { estimateContractGas, simulateContract } from 'viem/actions'
 
 import { l2ToL2CrossDomainMessengerABI } from '@/abis.js'
 import { contracts } from '@/contracts.js'
-import { baseWriteAction, type BaseWriteContractActionParameters } from '@/core/baseWriteAction.js'
+import {
+  baseWriteAction,
+  type BaseWriteContractActionParameters,
+} from '@/core/baseWriteAction.js'
 import type { MessageIdentifier, MessagePayload } from '@/types/interop.js'
 import type { ErrorType } from '@/types/utils.js'
 
