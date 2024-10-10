@@ -167,6 +167,34 @@ const faucetConfigs: FaucetConfig[] = [
     supportedEnvironments: ['production', 'staging', 'development'],
     l1BridgeAddress: '0x21530aAdF4DCFb9c477171400E40d4ef615868BE',
   },
+  {
+    id: 1301,
+    displayName: 'Unichain Sepolia',
+    chain: defineChain({
+      id: 1301,
+      name: 'Unichain Sepolia',
+      network: 'unichain-sepolia',
+      nativeCurrency: { name: 'Sepolia Ether', symbol: 'ETH', decimals: 18 },
+      rpcUrls: {
+        default: {
+          http: ['https://sepolia.unichain.org'],
+        },
+        public: {
+          http: ['https://sepolia.unichain.org'],
+        },
+      },
+      blockExplorers: {
+        default: {
+          name: 'Blockscout',
+          url: 'https://unichain-sepolia.blockscout.com/',
+        },
+      },
+    }),
+    onChainDripAmount: DEFAULT_ON_CHAIN_DRIP_AMOUNT,
+    offChainDripAmount: DEFAULT_OFF_CHAIN_DRIP_AMOUNT,
+    supportedEnvironments: ['production', 'staging', 'development'],
+    l1BridgeAddress: '0xea58fcA6849d79EAd1f26608855c2D6407d54Ce2',
+  },
 ]
 
 export const supportedFaucetConfigs = faucetConfigs.filter((faucet) =>
