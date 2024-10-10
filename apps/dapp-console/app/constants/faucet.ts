@@ -49,4 +49,9 @@ export const getFaucetNetworks = (showNewLogo: boolean) => [
     image: '/logos/metal-logo.png',
     chainID: 1740,
   },
+  {
+    label: 'Unichain Sepolia',
+    image: '/logos/unichain-logo.png',
+    chainID: 1301,
+  },
 ]
