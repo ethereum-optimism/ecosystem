@@ -1,9 +1,0 @@
-{
-  "generators": {
-    "trpc-api-generator": {
-      "factory": "./src/generators/trpc-api-generator/generator",
-      "schema": "./src/generators/trpc-api-generator/schema.json",
-      "description": "trpc-api-generator generator"
-    }
-  }
-}

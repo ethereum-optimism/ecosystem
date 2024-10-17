@@ -31,17 +31,10 @@ Governance discussion can also be found on the [Optimism Governance Forum](https
 <pre>
 ├── <a href="./apps">apps</a>
 │   ├── <a href="./apps/bridge-app">bridge-app</a>: Example Bridge App
-│   ├── <a href="./apps/dapp-console">dapp-console</a>: Dapp console frontend app
-│   ├── <a href="./apps/dapp-console-api">dapp-console-api</a>: Dapp console backend api
-│   ├── <a href="./apps/event-log-indexer">event-log-indexer</a>: Indexer app
-│   ├── <a href="./apps/paymaster-nft-mint">paymaster-nft-mint</a>: Nft mint + paymaster example app
-│   ├── <a href="./apps/paymaster-proxy">paymaster-proxy</a>: Paymaster proxy service
 ├── <a href="./packages">packages</a>
-│   ├── <a href="./packages/api-plugin">api-plugin</a>: Nx generators for api apps
-│   ├── <a href="./packages/contracts-ecosystem">contracts-ecosystem</a>: Ecosystem contracts
-│   ├── <a href="./packages/op-app">op-app</a>: Optimism Stack App Utils
-│   ├── <a href="./packages/screening">screening</a>: Utils for integrating app with screening service
-│   ├── <a href="./packages/ui-components">ui-components</a>: Shared ui components
+├── ├── <a href="./packages/viem">supersim</a>: Util supersim package that works with npx
+│   ├── <a href="./packages/viem">viem</a>: Viem action/utils
+│   ├── <a href="./packages/wagmi">wagmi</a>: Wagmi react hooks
 </pre>
 
 ## Development Quick Start
@@ -97,7 +90,7 @@ pnpm nx run @eth-optimism/bridge-app:dev
 
 If we wanted to build the `op-app` package we could run this
 ```bash
-pnpm nx run @eth-optimism/op-app:build
+pnpm nx run @eth-optimism/bridge-app:build
 ```
 
 There will be a few common targets that you will most likely see across all applications and packages in the repo.
@@ -109,29 +102,12 @@ There will be a few common targets that you will most likely see across all appl
 * `lint`
 * `lint:fix`
 
-### Codegen
-
-#### Nx generateors
-
-* `trpc-api-generator`: generates the boiler plate code for creating a trpc api server
-
-To run a generator run this command:
-```bash
-pnpm nx generate <name of generator> <name of new project>
-```
-
-Feel free to open up an issue on the repo if you're running into any issues!
-
 ## Contributing
 
 No contribution is too small and all contributions are valued.
 Thanks for your help improving the project! We are so happy to have you!
 
 You can read our contribution guide [here](./CONTRIBUTING.md) to understand better how we work in the repo.
-
-## Releases
-
-As of now we have not published any packages in this repo to npm, but stay tuned as we plan to do that once we add more packages to the repo!
 
 ## License
 

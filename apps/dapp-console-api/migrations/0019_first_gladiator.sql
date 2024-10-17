@@ -1,1 +1,0 @@
-ALTER TABLE "entities" ADD COLUMN "sanction_info" jsonb;
