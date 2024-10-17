@@ -9,7 +9,6 @@
   "updateInternalDependencies": "patch",
   "privatePackages": { "version": true, "tag": true },
   "ignore": [
-    "@eth-optimism/bridge-app",
-    "@eth-optimism/dapp-console"
+    "@eth-optimism/bridge-app"
   ]
 }
