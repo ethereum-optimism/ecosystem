@@ -25,6 +25,6 @@ module.exports = {
       { varsIgnorePattern: '_', argsIgnorePattern: '_' },
     ],
     'react-refresh/only-export-components': ['off'],
-    'no-extra-semi': 'off'
+    'no-extra-semi': 'off',
   },
 }
