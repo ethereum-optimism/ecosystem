@@ -32,7 +32,7 @@ Governance discussion can also be found on the [Optimism Governance Forum](https
 ├── <a href="./apps">apps</a>
 │   ├── <a href="./apps/bridge-app">bridge-app</a>: Example Bridge App
 ├── <a href="./packages">packages</a>
-├── ├── <a href="./packages/viem">supersim</a>: Util supersim package that works with npx
+├── ├── <a href="./packages/supersim">supersim</a>: Util supersim package that works with npx
 │   ├── <a href="./packages/viem">viem</a>: Viem action/utils
 │   ├── <a href="./packages/wagmi">wagmi</a>: Wagmi react hooks
 </pre>
