@@ -85,32 +85,6 @@ export const l1BlockABI = [
   },
   {
     type: 'function',
-    name: 'eip1559Denominator',
-    inputs: [],
-    outputs: [
-      {
-        name: '',
-        type: 'uint64',
-        internalType: 'uint64',
-      },
-    ],
-    stateMutability: 'view',
-  },
-  {
-    type: 'function',
-    name: 'eip1559Elasticity',
-    inputs: [],
-    outputs: [
-      {
-        name: '',
-        type: 'uint64',
-        internalType: 'uint64',
-      },
-    ],
-    stateMutability: 'view',
-  },
-  {
-    type: 'function',
     name: 'gasPayingToken',
     inputs: [],
     outputs: [
@@ -310,13 +284,6 @@ export const l1BlockABI = [
   {
     type: 'function',
     name: 'setL1BlockValuesEcotone',
-    inputs: [],
-    outputs: [],
-    stateMutability: 'nonpayable',
-  },
-  {
-    type: 'function',
-    name: 'setL1BlockValuesHolocene',
     inputs: [],
     outputs: [],
     stateMutability: 'nonpayable',
@@ -1384,12 +1351,17 @@ export const superchainWETHABI = [
   },
   {
     type: 'error',
-    name: 'NotCustomGasToken',
+    name: 'CallerNotL2ToL2CrossDomainMessenger',
     inputs: [],
   },
   {
     type: 'error',
-    name: 'Unauthorized',
+    name: 'InvalidCrossDomainSender',
+    inputs: [],
+  },
+  {
+    type: 'error',
+    name: 'NotCustomGasToken',
     inputs: [],
   },
 ] as const
