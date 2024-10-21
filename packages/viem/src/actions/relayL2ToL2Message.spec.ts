@@ -105,10 +105,10 @@ describe('relayL2ToL2Message', () => {
       const relayReceipt = await publicClientB.waitForTransactionReceipt({
         hash: relayTxHash,
       })
-      const { successfulMessages, failedMessages } =
-        decodeRelayedL2ToL2Messages({ receipt: relayReceipt })
+      const { successfulMessages } = decodeRelayedL2ToL2Messages({
+        receipt: relayReceipt,
+      })
       expect(successfulMessages).length(1)
-      expect(failedMessages).length(0)
 
       // L2ToL2CDM messageHash check
       const { messages } = decodeSentL2ToL2Messages({ receipt: sendReceipt })

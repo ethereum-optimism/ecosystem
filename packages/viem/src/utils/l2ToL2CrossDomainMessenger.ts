@@ -49,11 +49,6 @@ export type DecodeRelayedL2ToL2MessagesReturnType = {
     messageNonce: bigint
     messageHash: Hash
   }>
-  failedMessages: Array<{
-    source: bigint
-    messageNonce: bigint
-    messageHash: Hash
-  }>
 }
 
 /**
@@ -112,10 +107,9 @@ export function decodeRelayedL2ToL2Messages(
   params: DecodeRelayedL2ToL2MessagesParameters,
 ): DecodeRelayedL2ToL2MessagesReturnType {
   const RelayedMessageEventName = 'RelayedMessage'
-  const FailedRelayedMessageEventName = 'FailedRelayedMessage'
   const relayedMessages = parseEventLogs({
     abi: l2ToL2CrossDomainMessengerABI,
-    eventName: [RelayedMessageEventName, FailedRelayedMessageEventName],
+    eventName: [RelayedMessageEventName],
     logs: params.receipt.logs,
     strict: true,
   })
@@ -123,14 +117,8 @@ export function decodeRelayedL2ToL2Messages(
   const successfulMessages = relayedMessages.filter(
     (log) => log.eventName === RelayedMessageEventName,
   )
-  const failedMessages = relayedMessages.filter(
-    (log) => log.eventName === FailedRelayedMessageEventName,
-  )
   return {
     successfulMessages: successfulMessages.map((log) => {
-      return { ...log.args, log }
-    }),
-    failedMessages: failedMessages.map((log) => {
       return { ...log.args, log }
     }),
   }

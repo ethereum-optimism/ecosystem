@@ -49,10 +49,9 @@ describe('Generic Interop Flow', () => {
     const relayMessageReceipt = await publicClientB.waitForTransactionReceipt({
       hash: relayMessageTxHash,
     })
-    const { successfulMessages, failedMessages } = decodeRelayedL2ToL2Messages({
+    const { successfulMessages } = decodeRelayedL2ToL2Messages({
       receipt: relayMessageReceipt,
     })
     expect(successfulMessages).length(1)
-    expect(failedMessages).length(0)
   })
 })
