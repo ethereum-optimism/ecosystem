@@ -36,14 +36,6 @@ OP Stack Predeploy Addresses
 
 > `readonly` **address**: `"0x4200000000000000000000000000000000000015"`
 
-### l1BlockInterop
-
-> `readonly` **l1BlockInterop**: `object`
-
-### l1BlockInterop.address
-
-> `readonly` **address**: `"0x4200000000000000000000000000000000000015"` = `'0x4200000000000000000000000000000000000015'`
-
 ### l2CrossDomainMessenger
 
 > `readonly` **l2CrossDomainMessenger**: `object`
@@ -84,6 +76,14 @@ OP Stack Predeploy Addresses
 
 > `readonly` **address**: `"0x4200000000000000000000000000000000000023"` = `'0x4200000000000000000000000000000000000023'`
 
+### superchainTokenBridge
+
+> `readonly` **superchainTokenBridge**: `object`
+
+### superchainTokenBridge.address
+
+> `readonly` **address**: `"0x4200000000000000000000000000000000000028"` = `'0x4200000000000000000000000000000000000028'`
+
 ## Defined in
 
-[packages/viem/src/contracts.ts:8](https://github.com/ethereum-optimism/ecosystem/blob/37c6534910b25082298b9c156497899cc7f9678f/packages/viem/src/contracts.ts#L8)
+[packages/viem/src/contracts.ts:8](https://github.com/ethereum-optimism/ecosystem/blob/f37b8fc19a387e2dafa1ae2c518e8664567c7ee9/packages/viem/src/contracts.ts#L8)

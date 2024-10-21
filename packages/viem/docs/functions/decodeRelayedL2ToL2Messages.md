@@ -24,4 +24,4 @@ Identified relayed messages [DecodeRelayedL2ToL2MessagesReturnType](../type-alia
 
 ## Defined in
 
-[packages/viem/src/utils/l2ToL2CrossDomainMessenger.ts:106](https://github.com/ethereum-optimism/ecosystem/blob/37c6534910b25082298b9c156497899cc7f9678f/packages/viem/src/utils/l2ToL2CrossDomainMessenger.ts#L106)
+[packages/viem/src/utils/l2ToL2CrossDomainMessenger.ts:106](https://github.com/ethereum-optimism/ecosystem/blob/f37b8fc19a387e2dafa1ae2c518e8664567c7ee9/packages/viem/src/utils/l2ToL2CrossDomainMessenger.ts#L106)
