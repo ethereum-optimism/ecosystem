@@ -16,4 +16,4 @@
 
 ## Defined in
 
-[packages/viem/src/utils/l2ToL2CrossDomainMessenger.ts:24](https://github.com/ethereum-optimism/ecosystem/blob/c6de7f1b878b611a9ec2ae09ccf5f2ca7cfa2bce/packages/viem/src/utils/l2ToL2CrossDomainMessenger.ts#L24)
+[packages/viem/src/utils/l2ToL2CrossDomainMessenger.ts:24](https://github.com/ethereum-optimism/ecosystem/blob/37c6534910b25082298b9c156497899cc7f9678f/packages/viem/src/utils/l2ToL2CrossDomainMessenger.ts#L24)

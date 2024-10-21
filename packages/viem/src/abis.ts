@@ -359,6 +359,24 @@ export const l1BlockABI = [
 export const l2ToL2CrossDomainMessengerABI = [
   {
     type: 'function',
+    name: 'crossDomainMessageContext',
+    inputs: [],
+    outputs: [
+      {
+        name: 'sender_',
+        type: 'address',
+        internalType: 'address',
+      },
+      {
+        name: 'source_',
+        type: 'uint256',
+        internalType: 'uint256',
+      },
+    ],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
     name: 'crossDomainMessageSender',
     inputs: [],
     outputs: [
@@ -517,31 +535,6 @@ export const l2ToL2CrossDomainMessengerABI = [
   },
   {
     type: 'event',
-    name: 'FailedRelayedMessage',
-    inputs: [
-      {
-        name: 'source',
-        type: 'uint256',
-        indexed: true,
-        internalType: 'uint256',
-      },
-      {
-        name: 'messageNonce',
-        type: 'uint256',
-        indexed: true,
-        internalType: 'uint256',
-      },
-      {
-        name: 'messageHash',
-        type: 'bytes32',
-        indexed: true,
-        internalType: 'bytes32',
-      },
-    ],
-    anonymous: false,
-  },
-  {
-    type: 'event',
     name: 'RelayedMessage',
     inputs: [
       {
@@ -645,6 +638,11 @@ export const l2ToL2CrossDomainMessengerABI = [
   {
     type: 'error',
     name: 'ReentrantCall',
+    inputs: [],
+  },
+  {
+    type: 'error',
+    name: 'TargetCallFailed',
     inputs: [],
   },
 ] as const

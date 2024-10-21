@@ -36,4 +36,4 @@ The relayMessage transaction hash. [RelayL2ToL2MessageReturnType](../type-aliase
 
 ## Defined in
 
-[packages/viem/src/actions/relayL2ToL2Message.ts:74](https://github.com/ethereum-optimism/ecosystem/blob/c6de7f1b878b611a9ec2ae09ccf5f2ca7cfa2bce/packages/viem/src/actions/relayL2ToL2Message.ts#L74)
+[packages/viem/src/actions/relayL2ToL2Message.ts:74](https://github.com/ethereum-optimism/ecosystem/blob/37c6534910b25082298b9c156497899cc7f9678f/packages/viem/src/actions/relayL2ToL2Message.ts#L74)
