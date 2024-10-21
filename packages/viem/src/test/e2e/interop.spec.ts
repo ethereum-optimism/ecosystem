@@ -70,7 +70,7 @@ describe('SuperchainERC20 Flow', () => {
       functionName: 'balanceOf',
       args: [testAccount.address],
     })
-  
+
     const hash = await walletClientA.sendSupERC20({
       tokenAddress: SUPERSIM_SUPERC20_ADDRESS,
       to: testAccount.address,
