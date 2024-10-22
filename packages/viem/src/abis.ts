@@ -1015,6 +1015,42 @@ export const superchainWETHABI = [
   },
   {
     type: 'function',
+    name: 'crosschainBurn',
+    inputs: [
+      {
+        name: '_from',
+        type: 'address',
+        internalType: 'address',
+      },
+      {
+        name: '_amount',
+        type: 'uint256',
+        internalType: 'uint256',
+      },
+    ],
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    name: 'crosschainMint',
+    inputs: [
+      {
+        name: '_to',
+        type: 'address',
+        internalType: 'address',
+      },
+      {
+        name: '_amount',
+        type: 'uint256',
+        internalType: 'uint256',
+      },
+    ],
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
     name: 'decimals',
     inputs: [],
     outputs: [
@@ -1045,52 +1081,6 @@ export const superchainWETHABI = [
       },
     ],
     stateMutability: 'view',
-  },
-  {
-    type: 'function',
-    name: 'relayERC20',
-    inputs: [
-      {
-        name: 'from',
-        type: 'address',
-        internalType: 'address',
-      },
-      {
-        name: 'dst',
-        type: 'address',
-        internalType: 'address',
-      },
-      {
-        name: 'wad',
-        type: 'uint256',
-        internalType: 'uint256',
-      },
-    ],
-    outputs: [],
-    stateMutability: 'nonpayable',
-  },
-  {
-    type: 'function',
-    name: 'sendERC20',
-    inputs: [
-      {
-        name: 'dst',
-        type: 'address',
-        internalType: 'address',
-      },
-      {
-        name: 'wad',
-        type: 'uint256',
-        internalType: 'uint256',
-      },
-      {
-        name: 'chainId',
-        type: 'uint256',
-        internalType: 'uint256',
-      },
-    ],
-    outputs: [],
-    stateMutability: 'nonpayable',
   },
   {
     type: 'function',
@@ -1189,7 +1179,7 @@ export const superchainWETHABI = [
     name: 'withdraw',
     inputs: [
       {
-        name: 'wad',
+        name: '_amount',
         type: 'uint256',
         internalType: 'uint256',
       },
@@ -1224,6 +1214,44 @@ export const superchainWETHABI = [
   },
   {
     type: 'event',
+    name: 'CrosschainBurnt',
+    inputs: [
+      {
+        name: 'from',
+        type: 'address',
+        indexed: true,
+        internalType: 'address',
+      },
+      {
+        name: 'amount',
+        type: 'uint256',
+        indexed: false,
+        internalType: 'uint256',
+      },
+    ],
+    anonymous: false,
+  },
+  {
+    type: 'event',
+    name: 'CrosschainMinted',
+    inputs: [
+      {
+        name: 'to',
+        type: 'address',
+        indexed: true,
+        internalType: 'address',
+      },
+      {
+        name: 'amount',
+        type: 'uint256',
+        indexed: false,
+        internalType: 'uint256',
+      },
+    ],
+    anonymous: false,
+  },
+  {
+    type: 'event',
     name: 'Deposit',
     inputs: [
       {
@@ -1234,68 +1262,6 @@ export const superchainWETHABI = [
       },
       {
         name: 'wad',
-        type: 'uint256',
-        indexed: false,
-        internalType: 'uint256',
-      },
-    ],
-    anonymous: false,
-  },
-  {
-    type: 'event',
-    name: 'RelayERC20',
-    inputs: [
-      {
-        name: 'from',
-        type: 'address',
-        indexed: true,
-        internalType: 'address',
-      },
-      {
-        name: 'to',
-        type: 'address',
-        indexed: true,
-        internalType: 'address',
-      },
-      {
-        name: 'amount',
-        type: 'uint256',
-        indexed: false,
-        internalType: 'uint256',
-      },
-      {
-        name: 'source',
-        type: 'uint256',
-        indexed: false,
-        internalType: 'uint256',
-      },
-    ],
-    anonymous: false,
-  },
-  {
-    type: 'event',
-    name: 'SendERC20',
-    inputs: [
-      {
-        name: 'from',
-        type: 'address',
-        indexed: true,
-        internalType: 'address',
-      },
-      {
-        name: 'to',
-        type: 'address',
-        indexed: true,
-        internalType: 'address',
-      },
-      {
-        name: 'amount',
-        type: 'uint256',
-        indexed: false,
-        internalType: 'uint256',
-      },
-      {
-        name: 'destination',
         type: 'uint256',
         indexed: false,
         internalType: 'uint256',
@@ -1349,17 +1315,12 @@ export const superchainWETHABI = [
   },
   {
     type: 'error',
-    name: 'CallerNotL2ToL2CrossDomainMessenger',
-    inputs: [],
-  },
-  {
-    type: 'error',
-    name: 'InvalidCrossDomainSender',
-    inputs: [],
-  },
-  {
-    type: 'error',
     name: 'NotCustomGasToken',
+    inputs: [],
+  },
+  {
+    type: 'error',
+    name: 'Unauthorized',
     inputs: [],
   },
 ] as const
