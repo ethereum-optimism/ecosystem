@@ -8,7 +8,8 @@ export default defineConfig({
     },
   },
   test: {
-    testTimeout: 20_000,
+    testTimeout: 30_000,
     globalSetup: ['./src/test/globalSetup.ts'],
+    fileParallelism: false,
   },
 })

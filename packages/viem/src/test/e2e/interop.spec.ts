@@ -1,5 +1,5 @@
 import { encodeFunctionData, parseAbi } from 'viem'
-import { describe, expect, it } from 'vitest'
+import { beforeAll, describe, expect, it } from 'vitest'
 
 import { supersimL2B } from '@/chains/supersim.js'
 import {
@@ -62,6 +62,17 @@ describe('SuperchainERC20 Flow', () => {
   const balanceOfABI = parseAbi([
     'function balanceOf(address account) view returns (uint256)',
   ])
+
+  beforeAll(async () => {
+    const hash = await walletClientA.writeContract({
+      address: SUPERSIM_SUPERC20_ADDRESS,
+      abi: parseAbi(['function mint(address to, uint256 amount)']),
+      functionName: 'mint',
+      args: [testAccount.address, 1000n],
+    })
+
+    await publicClientA.waitForTransactionReceipt({ hash })
+  })
 
   it('should send supERC20 and relay cross chain message to burn/mint tokens', async () => {
     const startingBalance = await publicClientB.readContract({
