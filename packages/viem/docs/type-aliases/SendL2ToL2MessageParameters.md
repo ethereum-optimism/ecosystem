@@ -40,4 +40,4 @@ Target contract or wallet address.
 
 ## Defined in
 
-[packages/viem/src/actions/sendL2ToL2Message.ts:28](https://github.com/ethereum-optimism/ecosystem/blob/f37b8fc19a387e2dafa1ae2c518e8664567c7ee9/packages/viem/src/actions/sendL2ToL2Message.ts#L28)
+[packages/viem/src/actions/sendL2ToL2Message.ts:28](https://github.com/ethereum-optimism/ecosystem/blob/5f378d3b907e5960d4ca4cd1b4965867e0f1fb40/packages/viem/src/actions/sendL2ToL2Message.ts#L28)
