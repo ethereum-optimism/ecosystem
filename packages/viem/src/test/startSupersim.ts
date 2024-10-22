@@ -1,6 +1,6 @@
+import { spawn } from 'child_process'
 import fs from 'fs'
 import path from 'path'
-import { spawn } from 'child_process'
 
 export type SupersimParameters = {
   l1Port?: number
