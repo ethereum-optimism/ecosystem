@@ -74,7 +74,7 @@ describe('SuperchainERC20 Flow', () => {
     const hash = await walletClientA.sendSupERC20({
       tokenAddress: SUPERSIM_SUPERC20_ADDRESS,
       to: testAccount.address,
-      amount: 1000n,
+      amount: 10n,
       chainId: supersimL2B.id,
     })
 
@@ -108,6 +108,6 @@ describe('SuperchainERC20 Flow', () => {
       args: [testAccount.address],
     })
 
-    expect(endingBalance).toEqual(startingBalance + 1000n)
+    expect(endingBalance).toEqual(startingBalance + 10n)
   })
 })

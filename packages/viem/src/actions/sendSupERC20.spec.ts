@@ -10,6 +10,8 @@ const balanceOfABI = parseAbi([
   'function balanceOf(address account) view returns (uint256)',
 ])
 
+const AMOUNT_TO_SEND = 10n
+
 describe('sendSupERC20', () => {
   beforeAll(async () => {
     const hash = await walletClientA.writeContract({
@@ -34,7 +36,7 @@ describe('sendSupERC20', () => {
       const hash = await walletClientA.sendSupERC20({
         tokenAddress: SUPERSIM_SUPERC20_ADDRESS,
         to: testAccount.address,
-        amount: 1000n,
+        amount: AMOUNT_TO_SEND,
         chainId: supersimL2B.id,
       })
 
@@ -53,7 +55,7 @@ describe('sendSupERC20', () => {
         args: [testAccount.address],
       })
 
-      expect(endingBalance).toEqual(startingBalance - 1000n)
+      expect(endingBalance).toEqual(startingBalance - AMOUNT_TO_SEND)
     })
   })
 
@@ -63,7 +65,7 @@ describe('sendSupERC20', () => {
         account: testAccount.address,
         tokenAddress: SUPERSIM_SUPERC20_ADDRESS,
         to: testAccount.address,
-        amount: 1000n,
+        amount: AMOUNT_TO_SEND,
         chainId: supersimL2B.id,
       })
 
@@ -78,7 +80,7 @@ describe('sendSupERC20', () => {
           account: testAccount.address,
           tokenAddress: SUPERSIM_SUPERC20_ADDRESS,
           to: testAccount.address,
-          amount: 1000n,
+          amount: AMOUNT_TO_SEND,
           chainId: supersimL2B.id,
         }),
       ).not.throw()
