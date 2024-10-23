@@ -1,5 +1,5 @@
-import { encodeFunctionData } from 'viem'
-import { describe, expect, it } from 'vitest'
+import { encodeFunctionData, parseAbi } from 'viem'
+import { beforeAll, describe, expect, it } from 'vitest'
 
 import { supersimL2B } from '@/chains/supersim.js'
 import {
@@ -15,6 +15,8 @@ import {
   decodeRelayedL2ToL2Messages,
 } from '@/utils/l2ToL2CrossDomainMessenger.js'
 
+import { SUPERSIM_SUPERC20_ADDRESS } from '../supERC20.js'
+
 describe('Generic Interop Flow', () => {
   const calldata = encodeFunctionData({
     abi: ticTacToeABI,
@@ -22,7 +24,7 @@ describe('Generic Interop Flow', () => {
     args: [testAccount.address],
   })
 
-  it('should send and execute cross chain message', async () => {
+  it('should send and relay cross chain message', async () => {
     const sentMessageTxHash = await walletClientA.sendL2ToL2Message({
       account: testAccount.address,
       destinationChainId: supersimL2B.id,
@@ -53,5 +55,70 @@ describe('Generic Interop Flow', () => {
       receipt: relayMessageReceipt,
     })
     expect(successfulMessages).length(1)
+  })
+})
+
+describe('SuperchainERC20 Flow', () => {
+  const balanceOfABI = parseAbi([
+    'function balanceOf(address account) view returns (uint256)',
+  ])
+
+  beforeAll(async () => {
+    const hash = await walletClientA.writeContract({
+      address: SUPERSIM_SUPERC20_ADDRESS,
+      abi: parseAbi(['function mint(address to, uint256 amount)']),
+      functionName: 'mint',
+      args: [testAccount.address, 1000n],
+    })
+
+    await publicClientA.waitForTransactionReceipt({ hash })
+  })
+
+  it('should send supERC20 and relay cross chain message to burn/mint tokens', async () => {
+    const startingBalance = await publicClientB.readContract({
+      address: SUPERSIM_SUPERC20_ADDRESS,
+      abi: balanceOfABI,
+      functionName: 'balanceOf',
+      args: [testAccount.address],
+    })
+
+    const hash = await walletClientA.sendSupERC20({
+      tokenAddress: SUPERSIM_SUPERC20_ADDRESS,
+      to: testAccount.address,
+      amount: 10n,
+      chainId: supersimL2B.id,
+    })
+
+    const receipt = await publicClientA.waitForTransactionReceipt({ hash })
+
+    const { sentMessages } = await createInteropSentL2ToL2Messages(
+      publicClientA,
+      { receipt },
+    )
+    expect(sentMessages).toHaveLength(1)
+
+    const relayMessageTxHash = await walletClientB.relayL2ToL2Message({
+      account: testAccount.address,
+      sentMessageId: sentMessages[0].id,
+      sentMessagePayload: sentMessages[0].payload,
+    })
+
+    const relayMessageReceipt = await publicClientB.waitForTransactionReceipt({
+      hash: relayMessageTxHash,
+    })
+
+    const { successfulMessages } = decodeRelayedL2ToL2Messages({
+      receipt: relayMessageReceipt,
+    })
+    expect(successfulMessages).length(1)
+
+    const endingBalance = await publicClientB.readContract({
+      address: SUPERSIM_SUPERC20_ADDRESS,
+      abi: balanceOfABI,
+      functionName: 'balanceOf',
+      args: [testAccount.address],
+    })
+
+    expect(endingBalance).toEqual(startingBalance + 10n)
   })
 })

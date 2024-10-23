@@ -18,6 +18,14 @@ import {
   estimateSendL2ToL2MessageGas,
   simulateSendL2ToL2Message,
 } from '@/actions/sendL2ToL2Message.js'
+import type {
+  SendSupERC20ContractReturnType,
+  SendSupERC20Parameters,
+} from '@/actions/sendSupERC20.js'
+import {
+  estimateSendSupERC20Gas,
+  simulateSendSupERC20,
+} from '@/actions/sendSupERC20.js'
 
 export type PublicActionsL2<
   TChain extends Chain | undefined = Chain | undefined,
@@ -35,6 +43,12 @@ export type PublicActionsL2<
     parameters: RelayL2ToL2MessageParameters<TChain, TAccount, TChainOverride>,
   ) => Promise<bigint>
 
+  estimateSendSupERC20Gas: <
+    TChainOverride extends Chain | undefined = undefined,
+  >(
+    parameters: SendSupERC20Parameters<TChain, TAccount, TChainOverride>,
+  ) => Promise<bigint>
+
   simulateSendL2ToL2Message: <
     TChainOverride extends Chain | undefined = undefined,
   >(
@@ -46,6 +60,10 @@ export type PublicActionsL2<
   >(
     parameters: RelayL2ToL2MessageParameters<TChain, TAccount, TChainOverride>,
   ) => Promise<RelayL2ToL2MessageContractReturnType>
+
+  simulateSendSupERC20: <TChainOverride extends Chain | undefined = undefined>(
+    parameters: SendSupERC20Parameters<TChain, TAccount, TChainOverride>,
+  ) => Promise<SendSupERC20ContractReturnType>
 }
 
 export function publicActionsL2() {
@@ -62,10 +80,12 @@ export function publicActionsL2() {
         estimateSendL2ToL2MessageGas(client, args),
       estimateRelayL2ToL2MessageGas: (args) =>
         estimateRelayL2ToL2MessageGas(client, args),
+      estimateSendSupERC20Gas: (args) => estimateSendSupERC20Gas(client, args),
       simulateSendL2ToL2Message: (args) =>
         simulateSendL2ToL2Message(client, args),
       simulateRelayL2ToL2Message: (args) =>
         simulateRelayL2ToL2Message(client, args),
+      simulateSendSupERC20: (args) => simulateSendSupERC20(client, args),
     } as PublicActionsL2<TChain, TAccount>
   }
 }
