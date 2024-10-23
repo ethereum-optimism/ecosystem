@@ -1,5 +1,11 @@
 # @eth-optimism/viem
 
+## 0.0.10
+
+### Patch Changes
+
+- [#520](https://github.com/ethereum-optimism/ecosystem/pull/520) [`5edc283`](https://github.com/ethereum-optimism/ecosystem/commit/5edc2832fef2b566d436d4161862983b951559ff) Thanks [@nitaliano](https://github.com/nitaliano)! - Added sendSupERC20 action
+
 ## 0.0.9
 
 ### Patch Changes
