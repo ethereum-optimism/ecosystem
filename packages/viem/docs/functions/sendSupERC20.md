@@ -36,4 +36,4 @@ The sendSupERC20 transaction hash. [SendSupERC20ReturnType](../type-aliases/Send
 
 ## Defined in
 
-[packages/viem/src/actions/sendSupERC20.ts:77](https://github.com/ethereum-optimism/ecosystem/blob/ab77241754eb52e5f63719e48141efd7250e972b/packages/viem/src/actions/sendSupERC20.ts#L77)
+[packages/viem/src/actions/sendSupERC20.ts:77](https://github.com/ethereum-optimism/ecosystem/blob/2fda6aba11612b1bd271ada62170b607e878a916/packages/viem/src/actions/sendSupERC20.ts#L77)

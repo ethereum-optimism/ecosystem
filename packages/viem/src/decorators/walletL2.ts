@@ -17,6 +17,8 @@ import type {
   SendSupERC20ReturnType,
 } from '@/actions/sendSupERC20.js'
 import { sendSupERC20 } from '@/actions/sendSupERC20.js'
+import type { SendSuperchainWETHParameters } from '@/actions/sendSuperchainWETH.js'
+import { sendSuperchainWETH } from '@/actions/sendSuperchainWETH.js'
 
 export type WalletActionsL2<
   chain extends Chain | undefined = Chain | undefined,
@@ -30,6 +32,9 @@ export type WalletActionsL2<
   ) => Promise<RelayL2ToL2MessageReturnType>
   sendSupERC20: <chainOverride extends Chain | undefined = undefined>(
     parameters: SendSupERC20Parameters<chain, account, chainOverride>,
+  ) => Promise<SendSupERC20ReturnType>
+  sendSuperchainWETH: <chainOverride extends Chain | undefined = undefined>(
+    parameters: SendSuperchainWETHParameters<chain, account, chainOverride>,
   ) => Promise<SendSupERC20ReturnType>
 }
 
@@ -46,6 +51,7 @@ export function walletActionsL2() {
       sendL2ToL2Message: (args) => sendL2ToL2Message(client, args),
       relayL2ToL2Message: (args) => relayL2ToL2Message(client, args),
       sendSupERC20: (args) => sendSupERC20(client, args),
+      sendSuperchainWETH: (args) => sendSuperchainWETH(client, args),
     } as WalletActionsL2<chain, account>
   }
 }

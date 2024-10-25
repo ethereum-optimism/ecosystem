@@ -2,6 +2,7 @@ import { encodeFunctionData, parseAbi } from 'viem'
 import { beforeAll, describe, expect, it } from 'vitest'
 
 import { supersimL2B } from '@/chains/supersim.js'
+import { contracts } from '@/contracts.js'
 import {
   publicClientA,
   publicClientB,
@@ -114,6 +115,70 @@ describe('SuperchainERC20 Flow', () => {
 
     const endingBalance = await publicClientB.readContract({
       address: SUPERSIM_SUPERC20_ADDRESS,
+      abi: balanceOfABI,
+      functionName: 'balanceOf',
+      args: [testAccount.address],
+    })
+
+    expect(endingBalance).toEqual(startingBalance + 10n)
+  })
+})
+
+describe('SuperchainWETH Flow', () => {
+  const balanceOfABI = parseAbi([
+    'function balanceOf(address account) view returns (uint256)',
+  ])
+
+  beforeAll(async () => {
+    const hash = await walletClientA.writeContract({
+      address: contracts.superchainWETH.address,
+      abi: parseAbi(['function deposit() payable']),
+      functionName: 'deposit',
+      value: 1000n,
+    })
+
+    await publicClientA.waitForTransactionReceipt({ hash })
+  })
+
+  it('should send SuperchainWETH and relay cross chain message to burn/mint tokens', async () => {
+    const startingBalance = await publicClientB.readContract({
+      address: contracts.superchainWETH.address,
+      abi: balanceOfABI,
+      functionName: 'balanceOf',
+      args: [testAccount.address],
+    })
+
+    const hash = await walletClientA.sendSuperchainWETH({
+      to: testAccount.address,
+      amount: 10n,
+      chainId: supersimL2B.id,
+    })
+
+    const receipt = await publicClientA.waitForTransactionReceipt({ hash })
+
+    const { sentMessages } = await createInteropSentL2ToL2Messages(
+      publicClientA,
+      { receipt },
+    )
+    expect(sentMessages).toHaveLength(1)
+
+    const relayMessageTxHash = await walletClientB.relayL2ToL2Message({
+      account: testAccount.address,
+      sentMessageId: sentMessages[0].id,
+      sentMessagePayload: sentMessages[0].payload,
+    })
+
+    const relayMessageReceipt = await publicClientB.waitForTransactionReceipt({
+      hash: relayMessageTxHash,
+    })
+
+    const { successfulMessages } = decodeRelayedL2ToL2Messages({
+      receipt: relayMessageReceipt,
+    })
+    expect(successfulMessages).length(1)
+
+    const endingBalance = await publicClientB.readContract({
+      address: contracts.superchainWETH.address,
       abi: balanceOfABI,
       functionName: 'balanceOf',
       args: [testAccount.address],

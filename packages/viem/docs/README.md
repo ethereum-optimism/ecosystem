@@ -17,15 +17,18 @@
 - [simulateRelayL2ToL2Message](functions/simulateRelayL2ToL2Message.md)
 - [simulateSendL2ToL2Message](functions/simulateSendL2ToL2Message.md)
 - [simulateSendSupERC20](functions/simulateSendSupERC20.md)
+- [simulateSendSuperchainWETH](functions/simulateSendSuperchainWETH.md)
 
 ## L2 Wallet Actions
 
 - [estimateRelayL2ToL2MessageGas](functions/estimateRelayL2ToL2MessageGas.md)
 - [estimateSendL2ToL2MessageGas](functions/estimateSendL2ToL2MessageGas.md)
 - [estimateSendSupERC20Gas](functions/estimateSendSupERC20Gas.md)
+- [estimateSendSuperchainWETHGas](functions/estimateSendSuperchainWETHGas.md)
 - [relayL2ToL2Message](functions/relayL2ToL2Message.md)
 - [sendL2ToL2Message](functions/sendL2ToL2Message.md)
 - [sendSupERC20](functions/sendSupERC20.md)
+- [sendSuperchainWETH](functions/sendSuperchainWETH.md)
 
 ## Other
 
@@ -65,6 +68,7 @@
 - [SendSupERC20ErrorType](type-aliases/SendSupERC20ErrorType.md)
 - [SendSupERC20Parameters](type-aliases/SendSupERC20Parameters.md)
 - [SendSupERC20ReturnType](type-aliases/SendSupERC20ReturnType.md)
+- [SendSuperchainWETHParameters](type-aliases/SendSuperchainWETHParameters.md)
 
 ## Utils
 

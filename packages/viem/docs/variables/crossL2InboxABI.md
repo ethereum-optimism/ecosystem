@@ -12,4 +12,4 @@ ABI for the OP Stack contract `CrossL2Inbox`
 
 ## Defined in
 
-[packages/viem/src/abis.ts:7](https://github.com/ethereum-optimism/ecosystem/blob/ab77241754eb52e5f63719e48141efd7250e972b/packages/viem/src/abis.ts#L7)
+[packages/viem/src/abis.ts:7](https://github.com/ethereum-optimism/ecosystem/blob/2fda6aba11612b1bd271ada62170b607e878a916/packages/viem/src/abis.ts#L7)
