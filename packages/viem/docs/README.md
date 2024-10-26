@@ -16,13 +16,16 @@
 
 - [simulateRelayL2ToL2Message](functions/simulateRelayL2ToL2Message.md)
 - [simulateSendL2ToL2Message](functions/simulateSendL2ToL2Message.md)
+- [simulateSendSupERC20](functions/simulateSendSupERC20.md)
 
 ## L2 Wallet Actions
 
 - [estimateRelayL2ToL2MessageGas](functions/estimateRelayL2ToL2MessageGas.md)
 - [estimateSendL2ToL2MessageGas](functions/estimateSendL2ToL2MessageGas.md)
+- [estimateSendSupERC20Gas](functions/estimateSendSupERC20Gas.md)
 - [relayL2ToL2Message](functions/relayL2ToL2Message.md)
 - [sendL2ToL2Message](functions/sendL2ToL2Message.md)
+- [sendSupERC20](functions/sendSupERC20.md)
 
 ## Other
 
@@ -58,6 +61,10 @@
 - [SendL2ToL2MessageErrorType](type-aliases/SendL2ToL2MessageErrorType.md)
 - [SendL2ToL2MessageParameters](type-aliases/SendL2ToL2MessageParameters.md)
 - [SendL2ToL2MessageReturnType](type-aliases/SendL2ToL2MessageReturnType.md)
+- [SendSupERC20ContractReturnType](type-aliases/SendSupERC20ContractReturnType.md)
+- [SendSupERC20ErrorType](type-aliases/SendSupERC20ErrorType.md)
+- [SendSupERC20Parameters](type-aliases/SendSupERC20Parameters.md)
+- [SendSupERC20ReturnType](type-aliases/SendSupERC20ReturnType.md)
 
 ## Utils
 
