@@ -126,6 +126,8 @@ describe('SuperchainERC20 Flow', () => {
 })
 
 describe('SuperchainWETH Flow', () => {
+  const AMOUNT_TO_SEND = 10n
+
   beforeAll(async () => {
     const hash = await walletClientA.depositSuperchainWETH({
       value: 1000n,
@@ -135,7 +137,7 @@ describe('SuperchainWETH Flow', () => {
   })
 
   it('should send SuperchainWETH and relay cross chain message to burn/mint tokens', async () => {
-    const startingBalance = await publicClientB.readContract({
+    const startingWETHBalance = await publicClientB.readContract({
       address: contracts.superchainWETH.address,
       abi: superchainWETHABI,
       functionName: 'balanceOf',
@@ -144,7 +146,7 @@ describe('SuperchainWETH Flow', () => {
 
     const hash = await walletClientA.sendSuperchainWETH({
       to: testAccount.address,
-      amount: 10n,
+      amount: AMOUNT_TO_SEND,
       chainId: supersimL2B.id,
     })
 
@@ -171,13 +173,31 @@ describe('SuperchainWETH Flow', () => {
     })
     expect(successfulMessages).length(1)
 
-    const endingBalance = await publicClientB.readContract({
+    const endingWETHBalance = await publicClientB.readContract({
       address: contracts.superchainWETH.address,
       abi: superchainWETHABI,
       functionName: 'balanceOf',
       args: [testAccount.address],
     })
 
-    expect(endingBalance).toEqual(startingBalance + 10n)
+    expect(endingWETHBalance).toEqual(startingWETHBalance + AMOUNT_TO_SEND)
+
+    const startingETHBalance = await publicClientB.getBalance({
+      address: testAccount.address,
+    })
+    const withdrawHash = await walletClientB.withdrawSuperchainWETH({
+      amount: AMOUNT_TO_SEND,
+    })
+    const withdrawReceipt = await publicClientB.waitForTransactionReceipt({
+      hash: withdrawHash,
+    })
+
+    const gasPaid = withdrawReceipt.gasUsed * withdrawReceipt.effectiveGasPrice
+    const endingETHBalance = await publicClientB.getBalance({
+      address: testAccount.address,
+    })
+    expect(endingETHBalance).toEqual(
+      startingETHBalance + AMOUNT_TO_SEND - gasPaid,
+    )
   })
 })

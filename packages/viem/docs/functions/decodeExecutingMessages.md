@@ -24,4 +24,4 @@ Decoded cross-chain calls [DecodeExecutingMessagesReturnType](../type-aliases/De
 
 ## Defined in
 
-[packages/viem/src/utils/interop.ts:66](https://github.com/ethereum-optimism/ecosystem/blob/13a9597363979821622ee318a8281c7048f1a00b/packages/viem/src/utils/interop.ts#L66)
+[packages/viem/src/utils/interop.ts:66](https://github.com/ethereum-optimism/ecosystem/blob/5b57c542e6f02774701a464de238b830e81b7ecb/packages/viem/src/utils/interop.ts#L66)

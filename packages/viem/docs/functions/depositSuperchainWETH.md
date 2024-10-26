@@ -36,4 +36,4 @@ The depositSuperchainWETH transaction hash. [DepositSuperchainWETHReturnType](..
 
 ## Defined in
 
-[packages/viem/src/actions/depositSuperchainWETH.ts:64](https://github.com/ethereum-optimism/ecosystem/blob/13a9597363979821622ee318a8281c7048f1a00b/packages/viem/src/actions/depositSuperchainWETH.ts#L64)
+[packages/viem/src/actions/depositSuperchainWETH.ts:64](https://github.com/ethereum-optimism/ecosystem/blob/5b57c542e6f02774701a464de238b830e81b7ecb/packages/viem/src/actions/depositSuperchainWETH.ts#L64)
