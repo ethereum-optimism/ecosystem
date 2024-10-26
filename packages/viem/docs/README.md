@@ -14,6 +14,7 @@
 
 ## L2 Public Actions
 
+- [simulateDepositSuperchainWETH](functions/simulateDepositSuperchainWETH.md)
 - [simulateRelayL2ToL2Message](functions/simulateRelayL2ToL2Message.md)
 - [simulateSendL2ToL2Message](functions/simulateSendL2ToL2Message.md)
 - [simulateSendSupERC20](functions/simulateSendSupERC20.md)
@@ -21,6 +22,8 @@
 
 ## L2 Wallet Actions
 
+- [depositSuperchainWETH](functions/depositSuperchainWETH.md)
+- [estimateDepositSuperchainWETHGas](functions/estimateDepositSuperchainWETHGas.md)
 - [estimateRelayL2ToL2MessageGas](functions/estimateRelayL2ToL2MessageGas.md)
 - [estimateSendL2ToL2MessageGas](functions/estimateSendL2ToL2MessageGas.md)
 - [estimateSendSupERC20Gas](functions/estimateSendSupERC20Gas.md)
@@ -55,6 +58,10 @@
 
 ## Types
 
+- [DepositSuperchainWETHContractReturnType](type-aliases/DepositSuperchainWETHContractReturnType.md)
+- [DepositSuperchainWETHErrorType](type-aliases/DepositSuperchainWETHErrorType.md)
+- [DepositSuperchainWETHParameters](type-aliases/DepositSuperchainWETHParameters.md)
+- [DepositSuperchainWETHReturnType](type-aliases/DepositSuperchainWETHReturnType.md)
 - [MessageIdentifier](type-aliases/MessageIdentifier.md)
 - [RelayL2ToL2MessageContractReturnType](type-aliases/RelayL2ToL2MessageContractReturnType.md)
 - [RelayL2ToL2MessageErrorType](type-aliases/RelayL2ToL2MessageErrorType.md)

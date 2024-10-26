@@ -37,7 +37,6 @@ export type BaseWriteContractActionParameters<
     | 'gasPrice'
     | 'to'
     | 'type'
-    | 'value'
   >
 > &
   GetAccountParameter<account, Account | Address> &
@@ -82,6 +81,7 @@ export async function baseWriteAction<
     maxFeePerGas,
     maxPriorityFeePerGas,
     nonce,
+    value,
   } = parameters
 
   const gas_ =
@@ -96,6 +96,7 @@ export async function baseWriteAction<
           maxFeePerGas,
           maxPriorityFeePerGas,
           nonce,
+          value,
         } as EstimateContractGasParameters)
       : gas ?? undefined
 
@@ -110,5 +111,6 @@ export async function baseWriteAction<
     maxFeePerGas,
     maxPriorityFeePerGas,
     nonce,
+    value,
   } satisfies WriteContractParameters as any)
 }

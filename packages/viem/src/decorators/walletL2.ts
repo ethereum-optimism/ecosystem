@@ -2,6 +2,11 @@ import type { Account, Chain, Client, Transport } from 'viem'
 import type { WalletActionsL2 as UpstreamWalletActionsL2 } from 'viem/op-stack'
 import { walletActionsL2 as upstreamWalletActionsL2 } from 'viem/op-stack'
 
+import {
+  depositSuperchainWETH,
+  type DepositSuperchainWETHParameters,
+  type DepositSuperchainWETHReturnType,
+} from '@/actions/depositSuperchainWETH.js'
 import type {
   RelayL2ToL2MessageParameters,
   RelayL2ToL2MessageReturnType,
@@ -36,6 +41,9 @@ export type WalletActionsL2<
   sendSuperchainWETH: <chainOverride extends Chain | undefined = undefined>(
     parameters: SendSuperchainWETHParameters<chain, account, chainOverride>,
   ) => Promise<SendSupERC20ReturnType>
+  depositSuperchainWETH: <chainOverride extends Chain | undefined = undefined>(
+    parameters: DepositSuperchainWETHParameters<chain, account, chainOverride>,
+  ) => Promise<DepositSuperchainWETHReturnType>
 }
 
 export function walletActionsL2() {
@@ -52,6 +60,7 @@ export function walletActionsL2() {
       relayL2ToL2Message: (args) => relayL2ToL2Message(client, args),
       sendSupERC20: (args) => sendSupERC20(client, args),
       sendSuperchainWETH: (args) => sendSuperchainWETH(client, args),
+      depositSuperchainWETH: (args) => depositSuperchainWETH(client, args),
     } as WalletActionsL2<chain, account>
   }
 }

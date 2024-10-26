@@ -3,6 +3,14 @@ import type { PublicActionsL2 as UpstreamPublicActionsL2 } from 'viem/op-stack'
 import { publicActionsL2 as upstreamPublicActionsL2 } from 'viem/op-stack'
 
 import type {
+  DepositSuperchainWETHContractReturnType,
+  DepositSuperchainWETHParameters,
+} from '@/actions/depositSuperchainWETH.js'
+import {
+  estimateDepositSuperchainWETHGas,
+  simulateDepositSuperchainWETH,
+} from '@/actions/depositSuperchainWETH.js'
+import type {
   RelayL2ToL2MessageContractReturnType,
   RelayL2ToL2MessageParameters,
 } from '@/actions/relayL2ToL2Message.js'
@@ -54,6 +62,16 @@ export type PublicActionsL2<
     parameters: SendSupERC20Parameters<TChain, TAccount, TChainOverride>,
   ) => Promise<bigint>
 
+  estimateDepositSuperchainWETHGas: <
+    TChainOverride extends Chain | undefined = undefined,
+  >(
+    parameters: DepositSuperchainWETHParameters<
+      TChain,
+      TAccount,
+      TChainOverride
+    >,
+  ) => Promise<bigint>
+
   estimateSendSuperchainWETHGas: <
     TChainOverride extends Chain | undefined = undefined,
   >(
@@ -75,6 +93,16 @@ export type PublicActionsL2<
   simulateSendSupERC20: <TChainOverride extends Chain | undefined = undefined>(
     parameters: SendSupERC20Parameters<TChain, TAccount, TChainOverride>,
   ) => Promise<SendSupERC20ContractReturnType>
+
+  simulateDepositSuperchainWETH: <
+    TChainOverride extends Chain | undefined = undefined,
+  >(
+    parameters: DepositSuperchainWETHParameters<
+      TChain,
+      TAccount,
+      TChainOverride
+    >,
+  ) => Promise<DepositSuperchainWETHContractReturnType>
 
   simulateSendSuperchainWETH: <
     TChainOverride extends Chain | undefined = undefined,
@@ -100,11 +128,15 @@ export function publicActionsL2() {
       estimateSendSupERC20Gas: (args) => estimateSendSupERC20Gas(client, args),
       estimateSendSuperchainWETHGas: (args) =>
         estimateSendSuperchainWETHGas(client, args),
+      estimateDepositSuperchainWETHGas: (args) =>
+        estimateDepositSuperchainWETHGas(client, args),
       simulateSendL2ToL2Message: (args) =>
         simulateSendL2ToL2Message(client, args),
       simulateRelayL2ToL2Message: (args) =>
         simulateRelayL2ToL2Message(client, args),
       simulateSendSupERC20: (args) => simulateSendSupERC20(client, args),
+      simulateDepositSuperchainWETH: (args) =>
+        simulateDepositSuperchainWETH(client, args),
       simulateSendSuperchainWETH: (args) =>
         simulateSendSuperchainWETH(client, args),
     } as PublicActionsL2<TChain, TAccount>
