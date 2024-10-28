@@ -1,0 +1,54 @@
+/** @module {decode<%= it.module.abi.event.name %>s} */
+
+import type {
+    <% it.module.viemImports.forEach(function (viemImport) { %>
+        <%= viemImport %>,
+    <% }) %>
+    Log,
+} from 'viem'
+import { parseEventLogs } from 'viem'
+
+import { <%= it.module.abi.name %> } from '@/abis.js'
+
+/**
+ * @category Types
+ */
+export type Decode<%= it.module.abi.event.name %>sParameters = {
+  logs: Log[]
+}
+
+/**
+ * @category Types
+ */
+export type Decode<%= it.module.abi.event.name %>sReturnType = {
+  <% it.module.abi.event.args.forEach(function (arg) { %>
+    <% if (arg.doc) { %>
+      /** <%= arg.doc %> */
+    <% } %>
+    <%= arg.name %>: <%= arg.type %>,
+  <% }) %>
+  /** Event log */
+  log: Log
+}[]
+
+/**
+ * <%= it.module.abi.doc %>
+
+ * @category Events
+ * @param params {@link Decode<%= it.module.abi.event.name %>sParameters}
+ * @returns Parsed <%= it.module.abi.event.name %> logs {@link Decode<%= it.module.abi.event.name %>sReturnType}
+ */
+export function decode<%= it.module.abi.event.name %>s(
+  params: Decode<%= it.module.abi.event.name %>sParameters,
+) {
+  const parsedLogs = parseEventLogs({
+    abi: <%= it.module.abi.name %>,
+    logs: params.logs,
+    eventName: '<%= it.module.abi.event.name %>',
+  })
+
+  return parsedLogs.map((log) => ({
+    ...log.args,
+    log,
+  })) as Decode<%= it.module.abi.event.name %>sReturnType
+}

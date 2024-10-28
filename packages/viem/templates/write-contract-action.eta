@@ -1,0 +1,188 @@
+/** @module {<%= it.module.variableName %>} */
+import type {
+  <% it.module.viemImports.forEach(function (viemImport) { %>
+    <%= viemImport %>,
+  <% }) %>
+  Account,
+  Chain,
+  Client,
+  ContractFunctionReturnType,
+  DeriveChain,
+  EstimateContractGasErrorType,
+  EstimateContractGasParameters,
+  Hash,
+  SimulateContractParameters,
+  Transport,
+  WriteContractErrorType,
+} from 'viem'
+import { estimateContractGas, simulateContract } from 'viem/actions'
+
+import { <%= it.module.abi.name %> } from '@/abis.js'
+import { contracts } from '@/contracts.js'
+import type { BaseWriteContractActionParameters } from '@/core/baseWriteAction.js'
+import { baseWriteAction } from '@/core/baseWriteAction.js'
+import type { ErrorType } from '@/types/utils.js'
+
+/**
+ * @category Types
+ */
+export type <%= it.module.name %>Parameters<
+  TChain extends Chain | undefined = Chain | undefined,
+  TAccount extends Account | undefined = Account | undefined,
+  TChainOverride extends Chain | undefined = Chain | undefined,
+  TDerivedChain extends Chain | undefined = DeriveChain<TChain, TChainOverride>,
+> = BaseWriteContractActionParameters<
+  TChain,
+  TAccount,
+  TChainOverride,
+  TDerivedChain
+> & {
+  <% it.module.abi.contractFunctionArgs.forEach(function (arg) { %>
+    <% if (arg.doc) { %>
+      /** <%= arg.doc %> */
+    <% } %>
+    <% if (arg.type === 'tuple') { %>
+      <%= arg.name %>: {
+        <% arg.components.forEach(function (component) { %>
+          <%= component.name %>: <%= component.type %>,
+        <% }) %>
+     }
+    <% } else { %>
+      <%= arg.name %>: <%= arg.type %>
+    <% } %>
+
+  <% }) %>
+}
+
+/**
+ * @category Types
+ */
+export type <%= it.module.name %>ReturnType = Hash
+
+/**
+ * @category Types
+ */
+export type <%= it.module.name %>ContractReturnType = ContractFunctionReturnType<
+  typeof <%= it.module.abi.name %>,
+  '<%= it.module.abi.stateMutability %>',
+  '<%= it.module.abi.contractFunctionName %>'
+>
+
+/**
+ * @category Types
+ */
+export type <%= it.module.name %>ErrorType =
+  | EstimateContractGasErrorType
+  | WriteContractErrorType
+  | ErrorType
+
+/**
+ * <%= it.module.abi.contractFunctionDoc %>
+ * @category <%= it.module.direction %> Wallet Actions
+ * @param client - <%= it.module.direction %> Wallet Client
+ * @param parameters - {@link <%= it.module.name %>Parameters}
+ * @returns The <%= it.module.name %> transaction hash. {@link <%= it.module.name %>ReturnType}
+ */
+export async function <%= it.module.variableName %><
+  chain extends Chain | undefined,
+  account extends Account | undefined,
+  chainOverride extends Chain | undefined = undefined,
+>(
+  client: Client<Transport, chain, account>,
+  parameters: <%= it.module.name %>Parameters<chain, account, chainOverride>,
+): Promise<<%= it.module.name %>ReturnType> {
+  const {
+    <% it.module.abi.contractFunctionArgs.forEach(function (arg) { %>
+      <%= arg.name %>,
+    <% }) %>
+    <%~ '...txParameters' %>
+  } = parameters
+
+  return baseWriteAction(
+    client,
+    {
+      abi: <%= it.module.abi.name %>,
+      contractAddress: contracts.<%= it.module.abi.contractName %>.address,
+      contractFunctionName: '<%= it.module.abi.contractFunctionName %>',
+      contractArgs: [
+        <% it.module.abi.contractFunctionArgs.forEach(function (arg) { %>
+          <%= arg.value %>,
+        <% }) %>
+      ],
+    },
+    txParameters as BaseWriteContractActionParameters,
+  )
+}
+
+/**
+ * Estimates gas for {@link <%= it.module.variableName %>}
+ * @category <%= it.module.direction %> Wallet Actions
+ * @param client - <%= it.module.direction %> Wallet Client
+ * @param parameters - {@link <%= it.module.name %>Parameters}
+ * @returns The estimated gas value.
+ */
+export async function estimate<%= it.module.name %>Gas<
+  TChain extends Chain | undefined,
+  TAccount extends Account | undefined,
+  TChainOverride extends Chain | undefined = undefined,
+>(
+  client: Client<Transport, TChain, TAccount>,
+  parameters: <%= it.module.name %>Parameters<TChain, TAccount, TChainOverride>,
+): Promise<bigint> {
+  const {
+    <% it.module.abi.contractFunctionArgs.forEach(function (arg) { %>
+      <%= arg.name %>,
+    <% }) %>
+    <%~ '...txParameters' %>
+  } = parameters
+
+  return estimateContractGas(client, {
+    abi: <%= it.module.abi.name %>,
+    address: contracts.<%= it.module.abi.contractName %>.address,
+    functionName: '<%= it.module.abi.contractFunctionName %>',
+    args: [
+      <% it.module.abi.contractFunctionArgs.forEach(function (arg) { %>
+        <%= arg.value %>,
+      <% }) %>
+    ],
+    ...txParameters,
+  } as EstimateContractGasParameters)
+}
+
+/**
+ * Simulate contract call for {@link <%= it.module.variableName %>}
+ * @category <%= it.module.direction %> Public Actions
+ * @param client - <%= it.module.direction %> Public Client
+ * @param parameters - {@link <%= it.module.name %>Parameters}
+ * @returns The contract functions return value. {@link <%= it.module.name %>ContractReturnType}
+ */
+export async function simulate<%= it.module.name %><
+  TChain extends Chain | undefined,
+  TAccount extends Account | undefined,
+  TChainOverride extends Chain | undefined = undefined,
+>(
+  client: Client<Transport, TChain, TAccount>,
+  parameters: <%= it.module.name %>Parameters<TChain, TAccount, TChainOverride>,
+): Promise<<%= it.module.name %>ContractReturnType> {
+  const {
+    account,
+    <% it.module.abi.contractFunctionArgs.forEach(function (arg) { %>
+      <%= arg.name %>,
+    <% }) %>
+  } = parameters
+
+  const res = await simulateContract(client, {
+    account,
+    abi: <%= it.module.abi.name %>,
+    address: contracts.<%= it.module.abi.contractName %>.address,
+    chain: client.chain,
+    functionName: '<%= it.module.abi.contractFunctionName %>',
+    args: [
+      <% it.module.abi.contractFunctionArgs.forEach(function (arg) { %>
+        <%= arg.value %>,
+      <% }) %>
+    ],
+  } as SimulateContractParameters)
+
+  return res.result as <%= it.module.name %>ContractReturnType
+}
