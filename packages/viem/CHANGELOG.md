@@ -1,5 +1,15 @@
 # @eth-optimism/viem
 
+## 0.0.11
+
+### Patch Changes
+
+- [#540](https://github.com/ethereum-optimism/ecosystem/pull/540) [`e6d475e`](https://github.com/ethereum-optimism/ecosystem/commit/e6d475ef8d6e88c0d8791112e09250fb9fb58597) Thanks [@tremarkley](https://github.com/tremarkley)! - add withdrawSuperchainWETH
+
+- [#539](https://github.com/ethereum-optimism/ecosystem/pull/539) [`e50cf9b`](https://github.com/ethereum-optimism/ecosystem/commit/e50cf9bba7532715523cfd1af7b019146c461408) Thanks [@tremarkley](https://github.com/tremarkley)! - add depositSuperchainWETH
+
+- [#538](https://github.com/ethereum-optimism/ecosystem/pull/538) [`6209e63`](https://github.com/ethereum-optimism/ecosystem/commit/6209e63847ce39804c2492d0938bd0a216bb61f7) Thanks [@tremarkley](https://github.com/tremarkley)! - add sendSuperchainWETH
+
 ## 0.0.10
 
 ### Patch Changes
