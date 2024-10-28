@@ -44,6 +44,12 @@ export {
   sendSupERC20,
   simulateSendSupERC20,
 } from '@/actions/sendSupERC20.js'
+export type { SendSuperchainWETHParameters } from '@/actions/sendSuperchainWETH.js'
+export {
+  estimateSendSuperchainWETHGas,
+  sendSuperchainWETH,
+  simulateSendSuperchainWETH,
+} from '@/actions/sendSuperchainWETH.js'
 
 // utils
 export type {

@@ -26,6 +26,11 @@ import {
   estimateSendSupERC20Gas,
   simulateSendSupERC20,
 } from '@/actions/sendSupERC20.js'
+import type { SendSuperchainWETHParameters } from '@/actions/sendSuperchainWETH.js'
+import {
+  estimateSendSuperchainWETHGas,
+  simulateSendSuperchainWETH,
+} from '@/actions/sendSuperchainWETH.js'
 
 export type PublicActionsL2<
   TChain extends Chain | undefined = Chain | undefined,
@@ -49,6 +54,12 @@ export type PublicActionsL2<
     parameters: SendSupERC20Parameters<TChain, TAccount, TChainOverride>,
   ) => Promise<bigint>
 
+  estimateSendSuperchainWETHGas: <
+    TChainOverride extends Chain | undefined = undefined,
+  >(
+    parameters: SendSuperchainWETHParameters<TChain, TAccount, TChainOverride>,
+  ) => Promise<bigint>
+
   simulateSendL2ToL2Message: <
     TChainOverride extends Chain | undefined = undefined,
   >(
@@ -63,6 +74,12 @@ export type PublicActionsL2<
 
   simulateSendSupERC20: <TChainOverride extends Chain | undefined = undefined>(
     parameters: SendSupERC20Parameters<TChain, TAccount, TChainOverride>,
+  ) => Promise<SendSupERC20ContractReturnType>
+
+  simulateSendSuperchainWETH: <
+    TChainOverride extends Chain | undefined = undefined,
+  >(
+    parameters: SendSuperchainWETHParameters<TChain, TAccount, TChainOverride>,
   ) => Promise<SendSupERC20ContractReturnType>
 }
 
@@ -81,11 +98,15 @@ export function publicActionsL2() {
       estimateRelayL2ToL2MessageGas: (args) =>
         estimateRelayL2ToL2MessageGas(client, args),
       estimateSendSupERC20Gas: (args) => estimateSendSupERC20Gas(client, args),
+      estimateSendSuperchainWETHGas: (args) =>
+        estimateSendSuperchainWETHGas(client, args),
       simulateSendL2ToL2Message: (args) =>
         simulateSendL2ToL2Message(client, args),
       simulateRelayL2ToL2Message: (args) =>
         simulateRelayL2ToL2Message(client, args),
       simulateSendSupERC20: (args) => simulateSendSupERC20(client, args),
+      simulateSendSuperchainWETH: (args) =>
+        simulateSendSuperchainWETH(client, args),
     } as PublicActionsL2<TChain, TAccount>
   }
 }

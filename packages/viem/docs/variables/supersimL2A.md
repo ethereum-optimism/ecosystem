@@ -504,4 +504,4 @@ Flag for test networks
 
 ## Defined in
 
-[packages/viem/src/chains/supersim.ts:24](https://github.com/ethereum-optimism/ecosystem/blob/ab77241754eb52e5f63719e48141efd7250e972b/packages/viem/src/chains/supersim.ts#L24)
+[packages/viem/src/chains/supersim.ts:24](https://github.com/ethereum-optimism/ecosystem/blob/2fda6aba11612b1bd271ada62170b607e878a916/packages/viem/src/chains/supersim.ts#L24)

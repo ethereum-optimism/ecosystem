@@ -1375,4 +1375,4 @@ created interop message Message
 
 ## Defined in
 
-[packages/viem/src/utils/interop.ts:32](https://github.com/ethereum-optimism/ecosystem/blob/ab77241754eb52e5f63719e48141efd7250e972b/packages/viem/src/utils/interop.ts#L32)
+[packages/viem/src/utils/interop.ts:32](https://github.com/ethereum-optimism/ecosystem/blob/2fda6aba11612b1bd271ada62170b607e878a916/packages/viem/src/utils/interop.ts#L32)

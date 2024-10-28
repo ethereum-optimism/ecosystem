@@ -2,11 +2,11 @@
 
 ***
 
-[@eth-optimism/viem](../README.md) / SendSupERC20Parameters
+[@eth-optimism/viem](../README.md) / SendSuperchainWETHParameters
 
-# SendSupERC20Parameters\<TChain, TAccount, TChainOverride, TDerivedChain\>
+# SendSuperchainWETHParameters\<TChain, TAccount, TChainOverride, TDerivedChain\>
 
-> **SendSupERC20Parameters**\<`TChain`, `TAccount`, `TChainOverride`, `TDerivedChain`\>: `BaseWriteContractActionParameters`\<`TChain`, `TAccount`, `TChainOverride`, `TDerivedChain`\> & `object`
+> **SendSuperchainWETHParameters**\<`TChain`, `TAccount`, `TChainOverride`, `TDerivedChain`\>: `BaseWriteContractActionParameters`\<`TChain`, `TAccount`, `TChainOverride`, `TDerivedChain`\> & `object`
 
 ## Type declaration
 
@@ -28,12 +28,6 @@ Chain ID of the destination chain.
 
 Address to send tokens to.
 
-### tokenAddress
-
-> **tokenAddress**: `Address`
-
-Token to send.
-
 ## Type Parameters
 
 • **TChain** *extends* `Chain` \| `undefined` = `Chain` \| `undefined`
@@ -46,4 +40,4 @@ Token to send.
 
 ## Defined in
 
-[packages/viem/src/actions/sendSupERC20.ts:27](https://github.com/ethereum-optimism/ecosystem/blob/2fda6aba11612b1bd271ada62170b607e878a916/packages/viem/src/actions/sendSupERC20.ts#L27)
+[packages/viem/src/actions/sendSuperchainWETH.ts:27](https://github.com/ethereum-optimism/ecosystem/blob/2fda6aba11612b1bd271ada62170b607e878a916/packages/viem/src/actions/sendSuperchainWETH.ts#L27)

@@ -16,4 +16,7 @@ export const contracts = {
   superchainTokenBridge: {
     address: '0x4200000000000000000000000000000000000028',
   },
+  superchainWETH: {
+    address: '0x4200000000000000000000000000000000000024',
+  },
 } as const satisfies Chain['contracts']
