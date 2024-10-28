@@ -1,6 +1,7 @@
 import { encodeFunctionData, parseAbi } from 'viem'
 import { beforeAll, describe, expect, it } from 'vitest'
 
+import { superchainWETHABI } from '@/abis.js'
 import { supersimL2B } from '@/chains/supersim.js'
 import { contracts } from '@/contracts.js'
 import {
@@ -125,15 +126,8 @@ describe('SuperchainERC20 Flow', () => {
 })
 
 describe('SuperchainWETH Flow', () => {
-  const balanceOfABI = parseAbi([
-    'function balanceOf(address account) view returns (uint256)',
-  ])
-
   beforeAll(async () => {
-    const hash = await walletClientA.writeContract({
-      address: contracts.superchainWETH.address,
-      abi: parseAbi(['function deposit() payable']),
-      functionName: 'deposit',
+    const hash = await walletClientA.depositSuperchainWETH({
       value: 1000n,
     })
 
@@ -143,7 +137,7 @@ describe('SuperchainWETH Flow', () => {
   it('should send SuperchainWETH and relay cross chain message to burn/mint tokens', async () => {
     const startingBalance = await publicClientB.readContract({
       address: contracts.superchainWETH.address,
-      abi: balanceOfABI,
+      abi: superchainWETHABI,
       functionName: 'balanceOf',
       args: [testAccount.address],
     })
@@ -179,7 +173,7 @@ describe('SuperchainWETH Flow', () => {
 
     const endingBalance = await publicClientB.readContract({
       address: contracts.superchainWETH.address,
-      abi: balanceOfABI,
+      abi: superchainWETHABI,
       functionName: 'balanceOf',
       args: [testAccount.address],
     })

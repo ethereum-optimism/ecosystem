@@ -12,6 +12,17 @@ export { contracts } from '@/contracts.js'
 
 // actions
 export type {
+  DepositSuperchainWETHContractReturnType,
+  DepositSuperchainWETHErrorType,
+  DepositSuperchainWETHParameters,
+  DepositSuperchainWETHReturnType,
+} from '@/actions/depositSuperchainWETH.js'
+export {
+  depositSuperchainWETH,
+  estimateDepositSuperchainWETHGas,
+  simulateDepositSuperchainWETH,
+} from '@/actions/depositSuperchainWETH.js'
+export type {
   RelayL2ToL2MessageContractReturnType,
   RelayL2ToL2MessageErrorType,
   RelayL2ToL2MessageParameters,

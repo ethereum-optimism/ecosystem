@@ -24,4 +24,4 @@ Decoded cross-chain calls [DecodeSentL2ToL2MessagesReturnType](../type-aliases/D
 
 ## Defined in
 
-[packages/viem/src/utils/l2ToL2CrossDomainMessenger.ts:85](https://github.com/ethereum-optimism/ecosystem/blob/2fda6aba11612b1bd271ada62170b607e878a916/packages/viem/src/utils/l2ToL2CrossDomainMessenger.ts#L85)
+[packages/viem/src/utils/l2ToL2CrossDomainMessenger.ts:85](https://github.com/ethereum-optimism/ecosystem/blob/13a9597363979821622ee318a8281c7048f1a00b/packages/viem/src/utils/l2ToL2CrossDomainMessenger.ts#L85)

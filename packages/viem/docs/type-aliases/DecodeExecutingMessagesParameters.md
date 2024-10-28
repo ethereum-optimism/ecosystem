@@ -16,4 +16,4 @@
 
 ## Defined in
 
-[packages/viem/src/utils/interop.ts:21](https://github.com/ethereum-optimism/ecosystem/blob/2fda6aba11612b1bd271ada62170b607e878a916/packages/viem/src/utils/interop.ts#L21)
+[packages/viem/src/utils/interop.ts:21](https://github.com/ethereum-optimism/ecosystem/blob/13a9597363979821622ee318a8281c7048f1a00b/packages/viem/src/utils/interop.ts#L21)

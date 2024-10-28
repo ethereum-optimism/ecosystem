@@ -14,10 +14,7 @@ const AMOUNT_TO_SEND = 10n
 
 describe('sendSuperchainWETH', () => {
   beforeAll(async () => {
-    const hash = await walletClientA.writeContract({
-      address: contracts.superchainWETH.address,
-      abi: parseAbi(['function deposit() payable']),
-      functionName: 'deposit',
+    const hash = await walletClientA.depositSuperchainWETH({
       value: 1000n,
     })
 
