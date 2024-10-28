@@ -36,4 +36,4 @@ The sendL2ToL2Message transaction hash. [SendL2ToL2MessageReturnType](../type-al
 
 ## Defined in
 
-[packages/viem/src/actions/sendL2ToL2Message.ts:76](https://github.com/ethereum-optimism/ecosystem/blob/5f378d3b907e5960d4ca4cd1b4965867e0f1fb40/packages/viem/src/actions/sendL2ToL2Message.ts#L76)
+[packages/viem/src/actions/sendL2ToL2Message.ts:76](https://github.com/ethereum-optimism/ecosystem/blob/ab77241754eb52e5f63719e48141efd7250e972b/packages/viem/src/actions/sendL2ToL2Message.ts#L76)

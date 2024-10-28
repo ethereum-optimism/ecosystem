@@ -33,6 +33,17 @@ export {
   sendL2ToL2Message,
   simulateSendL2ToL2Message,
 } from '@/actions/sendL2ToL2Message.js'
+export type {
+  SendSupERC20ContractReturnType,
+  SendSupERC20ErrorType,
+  SendSupERC20Parameters,
+  SendSupERC20ReturnType,
+} from '@/actions/sendSupERC20.js'
+export {
+  estimateSendSupERC20Gas,
+  sendSupERC20,
+  simulateSendSupERC20,
+} from '@/actions/sendSupERC20.js'
 
 // utils
 export type {
