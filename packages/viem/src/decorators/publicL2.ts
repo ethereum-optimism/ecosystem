@@ -39,6 +39,12 @@ import {
   estimateSendSuperchainWETHGas,
   simulateSendSuperchainWETH,
 } from '@/actions/sendSuperchainWETH.js'
+import {
+  estimateWithdrawSuperchainWETHGas,
+  simulateWithdrawSuperchainWETH,
+  type WithdrawSuperchainWETHContractReturnType,
+  type WithdrawSuperchainWETHParameters,
+} from '@/actions/withdrawSuperchainWETH.js'
 
 export type PublicActionsL2<
   TChain extends Chain | undefined = Chain | undefined,
@@ -66,6 +72,16 @@ export type PublicActionsL2<
     TChainOverride extends Chain | undefined = undefined,
   >(
     parameters: DepositSuperchainWETHParameters<
+      TChain,
+      TAccount,
+      TChainOverride
+    >,
+  ) => Promise<bigint>
+
+  estimateWithdrawSuperchainWETHGas: <
+    TChainOverride extends Chain | undefined = undefined,
+  >(
+    parameters: WithdrawSuperchainWETHParameters<
       TChain,
       TAccount,
       TChainOverride
@@ -104,6 +120,16 @@ export type PublicActionsL2<
     >,
   ) => Promise<DepositSuperchainWETHContractReturnType>
 
+  simulateWithdrawSuperchainWETH: <
+    TChainOverride extends Chain | undefined = undefined,
+  >(
+    parameters: WithdrawSuperchainWETHParameters<
+      TChain,
+      TAccount,
+      TChainOverride
+    >,
+  ) => Promise<WithdrawSuperchainWETHContractReturnType>
+
   simulateSendSuperchainWETH: <
     TChainOverride extends Chain | undefined = undefined,
   >(
@@ -130,6 +156,8 @@ export function publicActionsL2() {
         estimateSendSuperchainWETHGas(client, args),
       estimateDepositSuperchainWETHGas: (args) =>
         estimateDepositSuperchainWETHGas(client, args),
+      estimateWithdrawSuperchainWETHGas: (args) =>
+        estimateWithdrawSuperchainWETHGas(client, args),
       simulateSendL2ToL2Message: (args) =>
         simulateSendL2ToL2Message(client, args),
       simulateRelayL2ToL2Message: (args) =>
@@ -137,6 +165,8 @@ export function publicActionsL2() {
       simulateSendSupERC20: (args) => simulateSendSupERC20(client, args),
       simulateDepositSuperchainWETH: (args) =>
         simulateDepositSuperchainWETH(client, args),
+      simulateWithdrawSuperchainWETH: (args) =>
+        simulateWithdrawSuperchainWETH(client, args),
       simulateSendSuperchainWETH: (args) =>
         simulateSendSuperchainWETH(client, args),
     } as PublicActionsL2<TChain, TAccount>

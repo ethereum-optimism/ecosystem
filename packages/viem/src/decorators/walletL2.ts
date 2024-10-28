@@ -24,6 +24,11 @@ import type {
 import { sendSupERC20 } from '@/actions/sendSupERC20.js'
 import type { SendSuperchainWETHParameters } from '@/actions/sendSuperchainWETH.js'
 import { sendSuperchainWETH } from '@/actions/sendSuperchainWETH.js'
+import {
+  withdrawSuperchainWETH,
+  type WithdrawSuperchainWETHParameters,
+  type WithdrawSuperchainWETHReturnType,
+} from '@/actions/withdrawSuperchainWETH.js'
 
 export type WalletActionsL2<
   chain extends Chain | undefined = Chain | undefined,
@@ -44,6 +49,9 @@ export type WalletActionsL2<
   depositSuperchainWETH: <chainOverride extends Chain | undefined = undefined>(
     parameters: DepositSuperchainWETHParameters<chain, account, chainOverride>,
   ) => Promise<DepositSuperchainWETHReturnType>
+  withdrawSuperchainWETH: <chainOverride extends Chain | undefined = undefined>(
+    parameters: WithdrawSuperchainWETHParameters<chain, account, chainOverride>,
+  ) => Promise<WithdrawSuperchainWETHReturnType>
 }
 
 export function walletActionsL2() {
@@ -61,6 +69,7 @@ export function walletActionsL2() {
       sendSupERC20: (args) => sendSupERC20(client, args),
       sendSuperchainWETH: (args) => sendSuperchainWETH(client, args),
       depositSuperchainWETH: (args) => depositSuperchainWETH(client, args),
+      withdrawSuperchainWETH: (args) => withdrawSuperchainWETH(client, args),
     } as WalletActionsL2<chain, account>
   }
 }

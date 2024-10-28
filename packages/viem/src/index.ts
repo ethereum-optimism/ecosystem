@@ -61,6 +61,17 @@ export {
   sendSuperchainWETH,
   simulateSendSuperchainWETH,
 } from '@/actions/sendSuperchainWETH.js'
+export type {
+  WithdrawSuperchainWETHContractReturnType,
+  WithdrawSuperchainWETHErrorType,
+  WithdrawSuperchainWETHParameters,
+  WithdrawSuperchainWETHReturnType,
+} from '@/actions/withdrawSuperchainWETH.js'
+export {
+  estimateWithdrawSuperchainWETHGas,
+  simulateWithdrawSuperchainWETH,
+  withdrawSuperchainWETH,
+} from '@/actions/withdrawSuperchainWETH.js'
 
 // utils
 export type {
