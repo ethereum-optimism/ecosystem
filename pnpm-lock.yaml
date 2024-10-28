@@ -595,6 +595,9 @@ importers:
       '@viem/anvil':
         specifier: ^0.0.7
         version: 0.0.7(bufferutil@4.0.8)(utf-8-validate@6.0.3)
+      abitype:
+        specifier: ^1.0.6
+        version: 1.0.6(typescript@5.4.5)(zod@3.22.4)
       eta:
         specifier: ^3.1.1
         version: 3.4.0
@@ -5242,6 +5245,17 @@ packages:
 
   abitype@1.0.5:
     resolution: {integrity: sha512-YzDhti7cjlfaBhHutMaboYB21Ha3rXR9QTkNJFzYC4kC8YclaiwPBBBJY8ejFdu2wnJeZCVZSMlQJ7fi8S6hsw==}
+    peerDependencies:
+      typescript: '>=5.0.4'
+      zod: ^3 >=3.22.0
+    peerDependenciesMeta:
+      typescript:
+        optional: true
+      zod:
+        optional: true
+
+  abitype@1.0.6:
+    resolution: {integrity: sha512-MMSqYh4+C/aVqI2RQaWqbvI4Kxo5cQV40WQ4QFtDnNzCkqChm8MuENhElmynZlO0qUy/ObkEUaXtKqYnx1Kp3A==}
     peerDependencies:
       typescript: '>=5.0.4'
       zod: ^3 >=3.22.0
@@ -20255,6 +20269,11 @@ snapshots:
       zod: 3.22.4
 
   abitype@1.0.5(typescript@5.4.5)(zod@3.22.4):
+    optionalDependencies:
+      typescript: 5.4.5
+      zod: 3.22.4
+
+  abitype@1.0.6(typescript@5.4.5)(zod@3.22.4):
     optionalDependencies:
       typescript: 5.4.5
       zod: 3.22.4
