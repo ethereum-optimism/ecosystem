@@ -82,7 +82,7 @@ export const NetworkSelector = () => {
             <NetworkSelectorItem
               key={mainnet.id}
               chain={mainnet}
-              logo={networkPairsByID[mainnet.id] ? l2AssetLogo : l1AssetLogo}
+              logo={mainnet.sourceId ? l2AssetLogo : l1AssetLogo}
               isActive={chain?.id === mainnet.id}
               onSelect={onSwitchNetwork}
             />
@@ -95,7 +95,7 @@ export const NetworkSelector = () => {
             <NetworkSelectorItem
               key={testnet.id}
               chain={testnet}
-              logo={networkPairsByID[testnet.id] ? l2AssetLogo : l1AssetLogo}
+              logo={testnet.sourceId ? l2AssetLogo : l1AssetLogo}
               isActive={chain?.id === testnet.id}
               onSelect={onSwitchNetwork}
             />

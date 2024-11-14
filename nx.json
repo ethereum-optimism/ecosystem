@@ -3,16 +3,11 @@
   "neverConnectToCloud": true,
   "projects": {
     "apps": {
-      "bridge-app": ["type:app"],
-      "paymaster-proxy": ["type:app"],
-      "dapp-console": ["type:app"],
-      "dapp-console-api": ["type:app"]
+      "bridge-app": ["type:app"]
     },
     "packages": {
       "op-app": ["type:package"],
-      "ui-components": ["type:package"],
-      "api-plugin": ["type:package"],
-      "screening": ["type:package"]
+      "ui-components": ["type:package"]
     }
   },
   "targetDefaults": {
@@ -20,13 +15,17 @@
       "cache": true,
       "dependsOn": ["^build"]
     },
+    "generate": {
+      "cache": true,
+      "dependsOn": ["ecosystem:fetch:artifacts"]
+    },
     "build": {
       "cache": true,
-      "dependsOn": ["^build"]
+      "dependsOn": ["^build", "^build:types"]
     },
     "build:types": {
       "cache": true,
-      "dependsOn": ["^build:types"]
+      "dependsOn": ["^build:types", "^build"]
     },
     "typecheck": {
       "dependsOn": ["^build:types"]
