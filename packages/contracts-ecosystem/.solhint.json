@@ -1,6 +1,0 @@
-{
-  "extends": "solhint:default",
-  "rules": {
-    "no-console": "off"
-  }
-}

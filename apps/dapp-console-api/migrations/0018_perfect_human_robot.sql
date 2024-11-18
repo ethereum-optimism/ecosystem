@@ -1,2 +1,0 @@
-ALTER TABLE "deploymentRebates" ADD COLUMN "rebate_tx_timestamp" timestamp with time zone;--> statement-breakpoint
-CREATE INDEX IF NOT EXISTS "deploymentRebates_entity_id_rebate_tx_timestamp_index" ON "deploymentRebates" ("entity_id","rebate_tx_timestamp");

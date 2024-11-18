@@ -7,12 +7,14 @@
     "pnpm": "^9.0.0",
     "node": "^18.0.0"
   },
+  "nx": {},
   "scripts": {
     "clean": "pnpm recursive run clean",
     "create:app": "cd apps && pnpm create vite --template=react-ts ",
     "create:react:library": "cd packages && pnpm create vite --template=react-ts ",
     "release:publish": "pnpm install --frozen-lockfile && pnpm nx run-many --target=build && changeset publish",
-    "release:version": "changeset version && pnpm install --lockfile-only"
+    "release:version": "changeset version && pnpm install --lockfile-only",
+    "fetch:artifacts": "bash ./scripts/pull-contract-artifacts.sh"
   },
   "private": true,
   "devDependencies": {

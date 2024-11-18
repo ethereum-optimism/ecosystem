@@ -8,7 +8,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { http, WagmiProvider } from 'wagmi'
 import { getDefaultConfig, RainbowKitProvider } from '@rainbow-me/rainbowkit'
 
-import type { Transport } from 'viem'
+import type { Chain, Transport } from 'viem'
 import { configureOpChains } from '@eth-optimism/op-app'
 
 import { Bridge } from '@/routes'
@@ -17,6 +17,10 @@ import { ThemeProvider } from '@/providers/ThemeProvider'
 import { HeaderLeft } from '@/components/header/HeaderLeft'
 import { HeaderRight } from '@/components/header/HeaderRight'
 import { NETWORK_TYPE } from '@/constants/networkType'
+import { Home } from '@/routes/Home'
+import { Playground } from '@/routes/Playground'
+import { Toaster } from '@eth-optimism/ui-components'
+import { supersimL1, supersimL2A, supersimL2B } from '@eth-optimism/viem'
 
 const classNames = {
   app: 'app w-full min-h-screen flex flex-col',
@@ -28,7 +32,16 @@ type ProviderProps = {
 
 const queryClient = new QueryClient()
 
-const opChains = configureOpChains({ type: NETWORK_TYPE })
+const opChains = configureOpChains({ type: NETWORK_TYPE }) as [
+  Chain,
+  ...[Chain],
+]
+
+if (import.meta.env.VITE_SUPERSIM_ENABLED === 'true') {
+  opChains.push(supersimL1)
+  opChains.push(supersimL2A)
+  opChains.push(supersimL2B)
+}
 
 const wagmiConfig = getDefaultConfig({
   appName: 'Example OP Stack Bridge',
@@ -47,7 +60,12 @@ const Providers = ({ children }: ProviderProps) => (
   <WagmiProvider reconnectOnMount config={wagmiConfig}>
     <QueryClientProvider client={queryClient}>
       <RainbowKitProvider>
-        <ThemeProvider>{children}</ThemeProvider>
+        <ThemeProvider>
+          <>
+            {children}
+            <Toaster />
+          </>
+        </ThemeProvider>
       </RainbowKitProvider>
     </QueryClientProvider>
   </WagmiProvider>
@@ -68,14 +86,22 @@ const AppRoot = () => {
   )
 }
 
+const playgroundRoutes = [{ index: true, element: <Playground /> }]
+
+const bridgeRoutes = [
+  { index: true, element: <Bridge action="deposit" /> },
+  { path: 'deposit', element: <Bridge action="deposit" /> },
+  { path: 'withdraw', element: <Bridge action="withdrawal" /> },
+]
+
 const router = createBrowserRouter([
   {
     path: '/',
     element: <AppRoot />,
     children: [
-      { path: '/', element: <Bridge action="deposit" /> },
-      { path: '/deposit', element: <Bridge action="deposit" /> },
-      { path: '/withdrawal', element: <Bridge action="withdrawal" /> },
+      { index: true, element: <Home /> },
+      { path: '/bridge', children: bridgeRoutes },
+      { path: '/playground', children: playgroundRoutes },
     ],
   },
 ])

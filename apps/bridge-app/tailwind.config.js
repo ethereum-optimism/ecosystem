@@ -63,6 +63,9 @@ module.exports = {
         6: '6px',
         8: '8px',
       },
+      fontFamily: {
+        retro: ['"Press Start 2P"', 'cursive']
+      },
       keyframes: {
         'accordion-down': {
           from: { height: 0 },

@@ -1,1 +1,0 @@
-ALTER TABLE "entities" ADD COLUMN "privy_created_at" timestamp;
