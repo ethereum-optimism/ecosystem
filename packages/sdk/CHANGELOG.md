@@ -1,5 +1,11 @@
 # @eth-optimism/sdk
 
+## 3.3.3
+
+### Patch Changes
+
+- [#571](https://github.com/ethereum-optimism/ecosystem/pull/571) [`5e55ee3`](https://github.com/ethereum-optimism/ecosystem/commit/5e55ee37f3c09e2a9343b1ab342ed5796c47c9bd) Thanks [@TheArhaam](https://github.com/TheArhaam)! - Updated base contract addresses
+
 ## 3.3.2
 
 ### Patch Changes
