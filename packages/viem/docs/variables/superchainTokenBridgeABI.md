@@ -6,10 +6,10 @@
 
 # superchainTokenBridgeABI
 
-> `const` **superchainTokenBridgeABI**: readonly [`object`, `object`, `object`, `object`, `object`, `object`, `object`, `object`]
+> `const` **superchainTokenBridgeABI**: readonly [`object`, `object`, `object`, `object`, `object`, `object`, `object`, `object`, `object`]
 
 ABI for the OP Stack contract `SuperchainTokenBridge`
 
 ## Defined in
 
-[packages/viem/src/abis.ts:1411](https://github.com/ethereum-optimism/ecosystem/blob/5b57c542e6f02774701a464de238b830e81b7ecb/packages/viem/src/abis.ts#L1411)
+[packages/viem/src/abis.ts:1602](https://github.com/ethereum-optimism/ecosystem/blob/1d855f26d1024617b154d28d909dbc33a421f5de/packages/viem/src/abis.ts#L1602)

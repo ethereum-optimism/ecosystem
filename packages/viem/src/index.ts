@@ -12,6 +12,16 @@ export { contracts } from '@/contracts.js'
 
 // actions
 export type {
+  CrossChainSendETHContractReturnType,
+  CrossChainSendETHErrorType,
+  CrossChainSendETHParameters,
+} from '@/actions/crosschainSendETH.js'
+export {
+  crossChainSendETH,
+  estimateCrossChainSendETHGas,
+  simulateCrossChainSendETH,
+} from '@/actions/crosschainSendETH.js'
+export type {
   DepositSuperchainWETHContractReturnType,
   DepositSuperchainWETHErrorType,
   DepositSuperchainWETHParameters,

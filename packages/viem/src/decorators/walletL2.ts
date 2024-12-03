@@ -3,6 +3,11 @@ import type { WalletActionsL2 as UpstreamWalletActionsL2 } from 'viem/op-stack'
 import { walletActionsL2 as upstreamWalletActionsL2 } from 'viem/op-stack'
 
 import {
+  crossChainSendETH,
+  type CrossChainSendETHContractReturnType,
+  type CrossChainSendETHParameters,
+} from '@/actions/crosschainSendETH.js'
+import {
   depositSuperchainWETH,
   type DepositSuperchainWETHParameters,
   type DepositSuperchainWETHReturnType,
@@ -52,6 +57,9 @@ export type WalletActionsL2<
   withdrawSuperchainWETH: <chainOverride extends Chain | undefined = undefined>(
     parameters: WithdrawSuperchainWETHParameters<chain, account, chainOverride>,
   ) => Promise<WithdrawSuperchainWETHReturnType>
+  crossChainSendETH: <chainOverride extends Chain | undefined = undefined>(
+    parameters: CrossChainSendETHParameters<chain, account, chainOverride>,
+  ) => Promise<CrossChainSendETHContractReturnType>
 }
 
 export function walletActionsL2() {
@@ -70,6 +78,7 @@ export function walletActionsL2() {
       sendSuperchainWETH: (args) => sendSuperchainWETH(client, args),
       depositSuperchainWETH: (args) => depositSuperchainWETH(client, args),
       withdrawSuperchainWETH: (args) => withdrawSuperchainWETH(client, args),
+      crossChainSendETH: (args) => crossChainSendETH(client, args),
     } as WalletActionsL2<chain, account>
   }
 }

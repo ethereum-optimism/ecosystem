@@ -28,4 +28,4 @@ Amount of SuperchainWETH to withdraw.
 
 ## Defined in
 
-[packages/viem/src/actions/withdrawSuperchainWETH.ts:26](https://github.com/ethereum-optimism/ecosystem/blob/5b57c542e6f02774701a464de238b830e81b7ecb/packages/viem/src/actions/withdrawSuperchainWETH.ts#L26)
+[packages/viem/src/actions/withdrawSuperchainWETH.ts:26](https://github.com/ethereum-optimism/ecosystem/blob/1d855f26d1024617b154d28d909dbc33a421f5de/packages/viem/src/actions/withdrawSuperchainWETH.ts#L26)
