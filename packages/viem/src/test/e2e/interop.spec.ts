@@ -201,3 +201,49 @@ describe('SuperchainWETH Flow', () => {
     )
   })
 })
+
+describe('Cross chain ETH transfer', () => {
+  const AMOUNT_TO_SEND = 10n
+
+  it('should send native ETH from source chain to destination chain', async () => {
+    const startingBalance = await publicClientB.getBalance({
+      address: testAccount.address,
+    })
+
+    const hash = await walletClientA.crossChainSendETH({
+      to: testAccount.address,
+      value: AMOUNT_TO_SEND,
+      chainId: supersimL2B.id,
+    })
+
+    const receipt = await publicClientA.waitForTransactionReceipt({ hash })
+
+    const { sentMessages } = await createInteropSentL2ToL2Messages(
+      publicClientA,
+      { receipt },
+    )
+    expect(sentMessages).toHaveLength(1)
+
+    const relayMessageTxHash = await walletClientB.relayL2ToL2Message({
+      account: testAccount.address,
+      sentMessageId: sentMessages[0].id,
+      sentMessagePayload: sentMessages[0].payload,
+    })
+
+    const relayMessageReceipt = await publicClientB.waitForTransactionReceipt({
+      hash: relayMessageTxHash,
+    })
+
+    const { successfulMessages } = decodeRelayedL2ToL2Messages({
+      receipt: relayMessageReceipt,
+    })
+    expect(successfulMessages).length(1)
+
+    const gasPaid =
+      relayMessageReceipt.gasUsed * relayMessageReceipt.effectiveGasPrice
+    const endingBalance = await publicClientB.getBalance({
+      address: testAccount.address,
+    })
+    expect(endingBalance).toEqual(startingBalance + AMOUNT_TO_SEND - gasPaid)
+  })
+})

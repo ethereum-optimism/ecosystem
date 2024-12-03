@@ -14,6 +14,7 @@
 
 ## L2 Public Actions
 
+- [simulateCrossChainSendETH](functions/simulateCrossChainSendETH.md)
 - [simulateDepositSuperchainWETH](functions/simulateDepositSuperchainWETH.md)
 - [simulateRelayL2ToL2Message](functions/simulateRelayL2ToL2Message.md)
 - [simulateSendL2ToL2Message](functions/simulateSendL2ToL2Message.md)
@@ -23,7 +24,9 @@
 
 ## L2 Wallet Actions
 
+- [crossChainSendETH](functions/crossChainSendETH.md)
 - [depositSuperchainWETH](functions/depositSuperchainWETH.md)
+- [estimateCrossChainSendETHGas](functions/estimateCrossChainSendETHGas.md)
 - [estimateDepositSuperchainWETHGas](functions/estimateDepositSuperchainWETHGas.md)
 - [estimateRelayL2ToL2MessageGas](functions/estimateRelayL2ToL2MessageGas.md)
 - [estimateSendL2ToL2MessageGas](functions/estimateSendL2ToL2MessageGas.md)
@@ -61,6 +64,9 @@
 
 ## Types
 
+- [CrossChainSendETHContractReturnType](type-aliases/CrossChainSendETHContractReturnType.md)
+- [CrossChainSendETHErrorType](type-aliases/CrossChainSendETHErrorType.md)
+- [CrossChainSendETHParameters](type-aliases/CrossChainSendETHParameters.md)
 - [DepositSuperchainWETHContractReturnType](type-aliases/DepositSuperchainWETHContractReturnType.md)
 - [DepositSuperchainWETHErrorType](type-aliases/DepositSuperchainWETHErrorType.md)
 - [DepositSuperchainWETHParameters](type-aliases/DepositSuperchainWETHParameters.md)

@@ -6,10 +6,10 @@
 
 # superchainWETHABI
 
-> `const` **superchainWETHABI**: readonly [`object`, `object`, `object`, `object`, `object`, `object`, `object`, `object`, `object`, `object`, `object`, `object`, `object`, `object`, `object`, `object`, `object`, `object`, `object`, `object`, `object`, `object`, `object`, `object`]
+> `const` **superchainWETHABI**: readonly [`object`, `object`, `object`, `object`, `object`, `object`, `object`, `object`, `object`, `object`, `object`, `object`, `object`, `object`, `object`, `object`, `object`, `object`, `object`, `object`, `object`, `object`, `object`, `object`, `object`, `object`, `object`, `object`, `object`, `object`, `object`]
 
 ABI for the OP Stack contract `SuperchainWETH`
 
 ## Defined in
 
-[packages/viem/src/abis.ts:588](https://github.com/ethereum-optimism/ecosystem/blob/5b57c542e6f02774701a464de238b830e81b7ecb/packages/viem/src/abis.ts#L588)
+[packages/viem/src/abis.ts:593](https://github.com/ethereum-optimism/ecosystem/blob/1d855f26d1024617b154d28d909dbc33a421f5de/packages/viem/src/abis.ts#L593)

@@ -3,6 +3,14 @@ import type { PublicActionsL2 as UpstreamPublicActionsL2 } from 'viem/op-stack'
 import { publicActionsL2 as upstreamPublicActionsL2 } from 'viem/op-stack'
 
 import type {
+  CrossChainSendETHContractReturnType,
+  CrossChainSendETHParameters,
+} from '@/actions/crosschainSendETH.js'
+import {
+  estimateCrossChainSendETHGas,
+  simulateCrossChainSendETH,
+} from '@/actions/crosschainSendETH.js'
+import type {
   DepositSuperchainWETHContractReturnType,
   DepositSuperchainWETHParameters,
 } from '@/actions/depositSuperchainWETH.js'
@@ -78,6 +86,12 @@ export type PublicActionsL2<
     >,
   ) => Promise<bigint>
 
+  estimateCrossChainSendETHGas: <
+    TChainOverride extends Chain | undefined = undefined,
+  >(
+    parameters: CrossChainSendETHParameters<TChain, TAccount, TChainOverride>,
+  ) => Promise<bigint>
+
   estimateWithdrawSuperchainWETHGas: <
     TChainOverride extends Chain | undefined = undefined,
   >(
@@ -120,6 +134,12 @@ export type PublicActionsL2<
     >,
   ) => Promise<DepositSuperchainWETHContractReturnType>
 
+  simulateCrossChainSendETH: <
+    TChainOverride extends Chain | undefined = undefined,
+  >(
+    parameters: CrossChainSendETHParameters<TChain, TAccount, TChainOverride>,
+  ) => Promise<CrossChainSendETHContractReturnType>
+
   simulateWithdrawSuperchainWETH: <
     TChainOverride extends Chain | undefined = undefined,
   >(
@@ -158,6 +178,8 @@ export function publicActionsL2() {
         estimateDepositSuperchainWETHGas(client, args),
       estimateWithdrawSuperchainWETHGas: (args) =>
         estimateWithdrawSuperchainWETHGas(client, args),
+      estimateCrossChainSendETHGas: (args) =>
+        estimateCrossChainSendETHGas(client, args),
       simulateSendL2ToL2Message: (args) =>
         simulateSendL2ToL2Message(client, args),
       simulateRelayL2ToL2Message: (args) =>
@@ -169,6 +191,8 @@ export function publicActionsL2() {
         simulateWithdrawSuperchainWETH(client, args),
       simulateSendSuperchainWETH: (args) =>
         simulateSendSuperchainWETH(client, args),
+      simulateCrossChainSendETH: (args) =>
+        simulateCrossChainSendETH(client, args),
     } as PublicActionsL2<TChain, TAccount>
   }
 }
