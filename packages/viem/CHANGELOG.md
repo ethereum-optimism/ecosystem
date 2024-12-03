@@ -1,5 +1,11 @@
 # @eth-optimism/viem
 
+## 0.0.12
+
+### Patch Changes
+
+- [#584](https://github.com/ethereum-optimism/ecosystem/pull/584) [`852b42d`](https://github.com/ethereum-optimism/ecosystem/commit/852b42dd69f7ffa9c94d3a2b21f9e518d61f0449) Thanks [@tremarkley](https://github.com/tremarkley)! - add crossChainSendETH action
+
 ## 0.0.11
 
 ### Patch Changes
