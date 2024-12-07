@@ -1,9 +1,37 @@
 {
-    "contracts": [
-        "CrossL2Inbox",
-        "L2ToL2CrossDomainMessenger",
-        "SuperchainWETH",
-        "SuperchainERC20",
-        "SuperchainTokenBridge"
-    ]
+    "l1": {
+        "contracts": [],
+        "bindings": {}
+    },
+    "l2": {
+        "contracts": [
+            "CrossL2Inbox",
+            "L2ToL2CrossDomainMessenger",
+            "SuperchainWETH",
+            "SuperchainERC20",
+            "SuperchainTokenBridge"
+        ],
+
+        "bindings": {
+            "L2ToL2CrossDomainMessenger": {
+                "actions": {
+                    "sendL2ToL2Message": "sendMessage(uint256 _destination, address _target, bytes calldata _message)",
+                    "relayL2ToL2Message": "relayMessage(ICrossL2Inbox.Identifier calldata _id, bytes calldata _sentMessage)"
+                },
+                "events": [
+                    "SentMessage",
+                    "RelayedMessage"
+                ]
+            },
+            "SuperchainTokenBridge": {
+                "actions": {
+                    "sendSupERC20": "sendERC20(address _token, address _to, uint256 _amount, uint256 _chainId)"
+                },
+                "events": [
+                    "SendERC20",
+                    "RelayERC20"
+                ]
+            }
+        }
+    }
 }
