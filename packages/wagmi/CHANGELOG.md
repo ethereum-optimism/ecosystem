@@ -1,5 +1,11 @@
 # @eth-optimism/wagmi
 
+## 0.0.13
+
+### Patch Changes
+
+- [#587](https://github.com/ethereum-optimism/ecosystem/pull/587) [`2bf79e4`](https://github.com/ethereum-optimism/ecosystem/commit/2bf79e4fa020779ebbf7573ff1f3047c1fc6e5ed) Thanks [@nitaliano](https://github.com/nitaliano)! - Added useSendSupERC20 & useSendSuperchainWETH
+
 ## 0.0.12
 
 ### Patch Changes
