@@ -47,7 +47,7 @@ export const SupportedNetworks = ({
   return chains.find((chain) => chain.id === chainId) ? (
     children
   ) : (
-    <div className="fle flex-col text-center">
+    <div className="flex flex-col text-center">
       <Text className="text-xl font-semibold">
         Please Select a Supported Network
       </Text>
