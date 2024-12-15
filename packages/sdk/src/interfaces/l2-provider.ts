@@ -37,7 +37,7 @@ export interface L2BlockWithTransactions extends BlockWithTransactions {
 }
 
 /**
- * Represents an extended version of an normal ethers Provider that returns additional L2 info and
+ * Represents an extended version of a normal ethers Provider that returns additional L2 info and
  * has special functions for L2-specific interactions.
  */
 export type L2Provider<TProvider extends Provider> = TProvider & {
