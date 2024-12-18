@@ -1,7 +1,7 @@
 name: Release snapshot
 
 # Releases a snapshot release when new commits merge to main
-# This ensures the release process is working as expected as well as always gives us a release
+# This ensures the release process is working as expected as well and always gives us a release
 on:
   workflow_dispatch:
   push:

@@ -134,7 +134,7 @@ const getL1ContractsByNetworkName = (network: string): OEL1ContractsLike => {
 }
 
 /**
- * List of contracts that are ignorable when checking for contracts on a given network.
+ * List of ignorable contracts when checking for contracts on a given network.
  */
 export const IGNORABLE_CONTRACTS = ['OptimismPortal2', 'DisputeGameFactory']
 

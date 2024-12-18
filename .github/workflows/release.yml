@@ -36,7 +36,7 @@ jobs:
         id: check_token
         run: |
           if [ -z "${{ secrets.NPM_TOKEN }}" ]; then
-            echo "NPM_TOKEN is not set. Is it set it in your repository secrets?"
+            echo "NPM_TOKEN is not set. Is it set in your repository secrets?"
             exit 1
           fi
         shell: bash

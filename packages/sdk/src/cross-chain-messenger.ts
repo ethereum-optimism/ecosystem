@@ -1008,7 +1008,7 @@ export class CrossChainMessenger {
   /**
    * Waits until the status of a given message changes to the expected status. Note that if the
    * status of the given message changes to a status that implies the expected status, this will
-   * still return. If the status of the message changes to a status that exclues the expected
+   * still return. If the status of the message changes to a status that excludes the expected
    * status, this will throw an error.
    * @param message Message to wait for.
    * @param status Expected status of the message.

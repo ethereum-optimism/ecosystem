@@ -9,7 +9,7 @@ import { l1Provider, l2Provider } from './testUtils/ethersProviders'
  * This test repros the bug where legacy withdrawals are not provable
  */
 /*******
-Cast results from runnning cast tx and cast receipt on the l2 tx hash
+Cast results from running cast tx and cast receipt on the l2 tx hash
 
 cast tx 0xd66fda632b51a8b25a9d260d70da8be57b9930c4616370861526335c3e8eef81 --rpc-url https://goerli.optimism.io
 
