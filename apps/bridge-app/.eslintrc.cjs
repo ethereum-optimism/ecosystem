@@ -21,6 +21,6 @@ module.exports = {
       'error',
       { "varsIgnorePattern": "_", "argsIgnorePattern": "_" } 
     ],
-    'react-refresh/only-export-components': ['off']
+    'react-refresh/only-export-components': ['warn']
   },
 }
