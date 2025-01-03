@@ -11,7 +11,8 @@
     "typecheck": "tsc --noEmit --emitDeclarationOnly false",
     "lint": "eslint \"**/*.{ts,tsx}\" && pnpm prettier --check \"**/*.{ts,tsx}\" --log-level=warn",
     "lint:fix": "eslint \"**/*.{ts,tsx}\" --fix --quiet && pnpm prettier \"**/*.{ts,tsx}\" --write --log-level=warn",
-    "codegen": "ts-node --esm -T ./scripts/codegen"
+    "codegen": "ts-node --esm -T ./scripts/codegen",
+    "refresh": "vite build && vite preview"
   },
   "dependencies": {
     "@eth-optimism/contracts-ts": "^0.17.0",
@@ -20,7 +21,8 @@
     "prettier": "^3.1.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "tsup": "^8.0.1"
+    "tsup": "^8.0.1",
+    "vite-plugin-react-refresh": "^0.3.0"
   },
   "devDependencies": {
     "@eth-optimism/superchain-registry": "github:ethereum-optimism/superchain-registry#0496fcd6ee4e36f2bedd3e4fbffa9146b10219af",
