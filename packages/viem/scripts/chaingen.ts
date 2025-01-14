@@ -1,7 +1,6 @@
+import toml from '@iarna/toml'
 import { Eta } from 'eta'
 import fs from 'fs'
-import toml from '@iarna/toml'
-
 import type { Address, PublicClient } from 'viem'
 import { createPublicClient, erc20Abi, http } from 'viem'
 import { mainnet, sepolia } from 'viem/chains'
@@ -78,7 +77,7 @@ async function main() {
             const chainConfig = toml.parse(fs.readFileSync(`${configPath}/${entry}`, 'utf8'))
 
             const addresses = chainConfig.addresses as Record<string, Address>
-            let l1Addresses = {
+            const l1Addresses = {
                 // Referenced as `portal` in viem
                 'portal': addresses.OptimismPortalProxy,
 
