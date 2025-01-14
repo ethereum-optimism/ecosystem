@@ -1,12 +1,12 @@
 import { defineChain } from 'viem'
-import { mainnet, optimism } from 'viem/chains'
+import { chainConfig } from 'viem/op-stack'
 
 /**
  * L1 chain definition for supersim in non-forked mode
  * @category Supersim
  */
 export const supersimL1 = defineChain({
-  ...mainnet,
+  ...chainConfig,
   id: 900,
   name: 'Supersim L1',
   rpcUrls: {
@@ -14,6 +14,7 @@ export const supersimL1 = defineChain({
       http: ['http://127.0.0.1:8545'],
     },
   },
+  nativeCurrency: { name: 'Ether', symbol: 'ETH', decimals: 18 },
   testnet: true,
 })
 
@@ -22,7 +23,7 @@ export const supersimL1 = defineChain({
  * @category Supersim
  */
 export const supersimL2A = defineChain({
-  ...optimism,
+  ...chainConfig,
   id: 901,
   name: 'Supersim L2 A',
   rpcUrls: {
@@ -30,8 +31,9 @@ export const supersimL2A = defineChain({
       http: ['http://127.0.0.1:9545'],
     },
   },
-  testnet: true,
+  nativeCurrency: { name: 'Ether', symbol: 'ETH', decimals: 18 },
   sourceId: 900,
+  testnet: true,
 })
 
 /**
@@ -39,7 +41,7 @@ export const supersimL2A = defineChain({
  * @category Supersim
  */
 export const supersimL2B = defineChain({
-  ...optimism,
+  ...chainConfig,
   id: 902,
   name: 'Supersim L2 B',
   rpcUrls: {
@@ -47,6 +49,61 @@ export const supersimL2B = defineChain({
       http: ['http://127.0.0.1:9546'],
     },
   },
-  testnet: true,
+  nativeCurrency: { name: 'Ether', symbol: 'ETH', decimals: 18 },
   sourceId: 900,
+  testnet: true,
+})
+
+/**
+ * L2 chain C definition for supersim in non-forked mode. Interop Enabled
+ * @category Supersim
+ */
+export const supersimL2C = defineChain({
+  ...chainConfig,
+  id: 903,
+  name: 'Supersim L2 C',
+  rpcUrls: {
+    default: {
+      http: ['http://127.0.0.1:9547'],
+    },
+  },
+  nativeCurrency: { name: 'Ether', symbol: 'ETH', decimals: 18 },
+  sourceId: 900,
+  testnet: true,
+})
+
+/**
+ * L2 chain D definition for supersim in non-forked mode. Interop Enabled
+ * @category Supersim
+ */
+export const supersimL2D = defineChain({
+  ...chainConfig,
+  id: 904,
+  name: 'Supersim L2 D',
+  rpcUrls: {
+    default: {
+      http: ['http://127.0.0.1:9548'],
+    },
+  },
+  nativeCurrency: { name: 'Ether', symbol: 'ETH', decimals: 18 },
+  sourceId: 900,
+  testnet: true,
+})
+
+/**
+ * L2 chain E definition for supersim in non-forked mode. Interop Enabled
+ * @category Supersim
+ */
+export const supersimL2E = defineChain({
+  ...chainConfig,
+  id: 904,
+  name: 'Supersim L2 E',
+  rpcUrls: {
+    default: {
+      http: ['http://127.0.0.1:9549'],
+    },
+  },
+  nativeCurrency: { name: 'Ether', symbol: 'ETH', decimals: 18 },
+  sourceId: 900,
+  testnet: true,
 })

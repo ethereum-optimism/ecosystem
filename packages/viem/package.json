@@ -9,16 +9,17 @@
     "src/*"
   ],
   "scripts": {
-    "docs": "typedoc",
-    "test": "vitest",
-    "clean": "rm -rf build types tsconfig.tsbuildinfo",
-    "typecheck": "tsc --noEmit --emitDeclarationOnly false",
-    "typecheck:ci": "tsc --noEmit --emitDeclarationOnly false",
     "build": "tsc && resolve-tspaths",
-    "generate": "pnpm dlx tsx ./scripts/generate.ts",
+    "clean": "rm -rf build types tsconfig.tsbuildinfo",
+    "docs": "typedoc",
+    "gen:abis": "pnpm dlx tsx ./scripts/abigen",
+    "gen:chains": "pnpm dlx tsx ./scripts/chaingen",
     "lint": "eslint \"**/*.{ts,tsx}\" && pnpm prettier --check \"**/*.{ts,tsx}\"",
     "lint:ci": "eslint \"**/*.{ts,tsx}\" --quiet && pnpm prettier --check \"**/*.{ts,tsx}\"",
-    "lint:fix": "eslint \"**/*.{ts,tsx}\" --fix --quiet && pnpm prettier \"**/*.{ts,tsx}\" --write --loglevel=warn"
+    "lint:fix": "eslint \"**/*.{ts,tsx}\" --fix --quiet && pnpm prettier \"**/*.{ts,tsx}\" --write --loglevel=warn",
+    "test": "vitest",
+    "typecheck": "tsc --noEmit --emitDeclarationOnly false",
+    "typecheck:ci": "tsc --noEmit --emitDeclarationOnly false"
   },
   "devDependencies": {
     "@types/node": "^22.5.4",
@@ -33,5 +34,8 @@
   },
   "peerDependencies": {
     "viem": "^2.17.9"
+  },
+  "dependencies": {
+    "@iarna/toml": "^2.2.5"
   }
 }
