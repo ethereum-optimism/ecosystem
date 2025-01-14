@@ -33,12 +33,12 @@ export const <%= chainDef.exportName %>: Chain = defineChain({
         ...chainConfig.contracts,
         <% Object.entries(chainDef.l1Addresses).forEach(function([name, address]){ _%>
         <%= name %>: {
-            [<%= chainDef.sourceChainId %>]: {
+            <%= chainDef.sourceChainId %>: {
                 address: '<%= address %>',
             }
         },
         <% }) %>
-        
+
     }
 })
 
