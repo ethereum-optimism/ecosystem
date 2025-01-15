@@ -5,7 +5,6 @@ import { chainConfig } from 'viem/op-stack'
 
 /**
  * Chain Definition for arena-z
- * @type {Chain}
  */
 export const arenaZMainnet: Chain = defineChain({
   ...chainConfig,
@@ -65,7 +64,6 @@ export const arenaZMainnet: Chain = defineChain({
 
 /**
  * Chain Definition for Automata Mainnet
- * @type {Chain}
  */
 export const automataMainnet: Chain = defineChain({
   ...chainConfig,
@@ -130,7 +128,6 @@ export const automataMainnet: Chain = defineChain({
 
 /**
  * Chain Definition for Base
- * @type {Chain}
  */
 export const baseMainnet: Chain = defineChain({
   ...chainConfig,
@@ -195,7 +192,6 @@ export const baseMainnet: Chain = defineChain({
 
 /**
  * Chain Definition for Cyber Mainnet
- * @type {Chain}
  */
 export const cyberMainnet: Chain = defineChain({
   ...chainConfig,
@@ -260,7 +256,6 @@ export const cyberMainnet: Chain = defineChain({
 
 /**
  * Chain Definition for Ethernity
- * @type {Chain}
  */
 export const ethernityMainnet: Chain = defineChain({
   ...chainConfig,
@@ -325,7 +320,6 @@ export const ethernityMainnet: Chain = defineChain({
 
 /**
  * Chain Definition for Funki
- * @type {Chain}
  */
 export const funkiMainnet: Chain = defineChain({
   ...chainConfig,
@@ -390,7 +384,6 @@ export const funkiMainnet: Chain = defineChain({
 
 /**
  * Chain Definition for Ink
- * @type {Chain}
  */
 export const inkMainnet: Chain = defineChain({
   ...chainConfig,
@@ -450,7 +443,6 @@ export const inkMainnet: Chain = defineChain({
 
 /**
  * Chain Definition for Lisk
- * @type {Chain}
  */
 export const liskMainnet: Chain = defineChain({
   ...chainConfig,
@@ -515,7 +507,6 @@ export const liskMainnet: Chain = defineChain({
 
 /**
  * Chain Definition for Lyra Chain
- * @type {Chain}
  */
 export const lyraMainnet: Chain = defineChain({
   ...chainConfig,
@@ -575,7 +566,6 @@ export const lyraMainnet: Chain = defineChain({
 
 /**
  * Chain Definition for Metal L2
- * @type {Chain}
  */
 export const metalMainnet: Chain = defineChain({
   ...chainConfig,
@@ -635,7 +625,6 @@ export const metalMainnet: Chain = defineChain({
 
 /**
  * Chain Definition for Mode
- * @type {Chain}
  */
 export const modeMainnet: Chain = defineChain({
   ...chainConfig,
@@ -695,7 +684,6 @@ export const modeMainnet: Chain = defineChain({
 
 /**
  * Chain Definition for OP Mainnet
- * @type {Chain}
  */
 export const opMainnet: Chain = defineChain({
   ...chainConfig,
@@ -755,7 +743,6 @@ export const opMainnet: Chain = defineChain({
 
 /**
  * Chain Definition for Orderly Mainnet
- * @type {Chain}
  */
 export const orderlyMainnet: Chain = defineChain({
   ...chainConfig,
@@ -815,7 +802,6 @@ export const orderlyMainnet: Chain = defineChain({
 
 /**
  * Chain Definition for RACE Mainnet
- * @type {Chain}
  */
 export const raceMainnet: Chain = defineChain({
   ...chainConfig,
@@ -875,7 +861,6 @@ export const raceMainnet: Chain = defineChain({
 
 /**
  * Chain Definition for Redstone
- * @type {Chain}
  */
 export const redstoneMainnet: Chain = defineChain({
   ...chainConfig,
@@ -940,7 +925,6 @@ export const redstoneMainnet: Chain = defineChain({
 
 /**
  * Chain Definition for Shape
- * @type {Chain}
  */
 export const shapeMainnet: Chain = defineChain({
   ...chainConfig,
@@ -1005,7 +989,6 @@ export const shapeMainnet: Chain = defineChain({
 
 /**
  * Chain Definition for Superseed
- * @type {Chain}
  */
 export const sseedMainnet: Chain = defineChain({
   ...chainConfig,
@@ -1070,7 +1053,6 @@ export const sseedMainnet: Chain = defineChain({
 
 /**
  * Chain Definition for Swan Chain Mainnet
- * @type {Chain}
  */
 export const swanMainnet: Chain = defineChain({
   ...chainConfig,
@@ -1135,7 +1117,6 @@ export const swanMainnet: Chain = defineChain({
 
 /**
  * Chain Definition for Swellchain
- * @type {Chain}
  */
 export const swellMainnet: Chain = defineChain({
   ...chainConfig,
@@ -1195,7 +1176,6 @@ export const swellMainnet: Chain = defineChain({
 
 /**
  * Chain Definition for Binary Mainnet
- * @type {Chain}
  */
 export const tbnMainnet: Chain = defineChain({
   ...chainConfig,
@@ -1260,7 +1240,6 @@ export const tbnMainnet: Chain = defineChain({
 
 /**
  * Chain Definition for World Chain
- * @type {Chain}
  */
 export const worldchainMainnet: Chain = defineChain({
   ...chainConfig,
@@ -1325,7 +1304,6 @@ export const worldchainMainnet: Chain = defineChain({
 
 /**
  * Chain Definition for Zora
- * @type {Chain}
  */
 export const zoraMainnet: Chain = defineChain({
   ...chainConfig,

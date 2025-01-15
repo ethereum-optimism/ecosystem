@@ -5,7 +5,6 @@ import { chainConfig } from 'viem/op-stack'
 
 /**
  * Chain Definition for arena-z-testnet
- * @type {Chain}
  */
 export const arenaZSepolia: Chain = defineChain({
   ...chainConfig,
@@ -70,7 +69,6 @@ export const arenaZSepolia: Chain = defineChain({
 
 /**
  * Chain Definition for Base Sepolia Testnet
- * @type {Chain}
  */
 export const baseSepolia: Chain = defineChain({
   ...chainConfig,
@@ -130,7 +128,6 @@ export const baseSepolia: Chain = defineChain({
 
 /**
  * Chain Definition for Cyber Testnet
- * @type {Chain}
  */
 export const cyberSepolia: Chain = defineChain({
   ...chainConfig,
@@ -195,7 +192,6 @@ export const cyberSepolia: Chain = defineChain({
 
 /**
  * Chain Definition for Ethernity Testnet
- * @type {Chain}
  */
 export const ethernitySepolia: Chain = defineChain({
   ...chainConfig,
@@ -260,7 +256,6 @@ export const ethernitySepolia: Chain = defineChain({
 
 /**
  * Chain Definition for Funki Sepolia Testnet
- * @type {Chain}
  */
 export const funkiSepolia: Chain = defineChain({
   ...chainConfig,
@@ -325,7 +320,6 @@ export const funkiSepolia: Chain = defineChain({
 
 /**
  * Chain Definition for Ink Sepolia
- * @type {Chain}
  */
 export const inkSepolia: Chain = defineChain({
   ...chainConfig,
@@ -385,7 +379,6 @@ export const inkSepolia: Chain = defineChain({
 
 /**
  * Chain Definition for Lisk Sepolia Testnet
- * @type {Chain}
  */
 export const liskSepolia: Chain = defineChain({
   ...chainConfig,
@@ -450,7 +443,6 @@ export const liskSepolia: Chain = defineChain({
 
 /**
  * Chain Definition for Metal L2 Testnet
- * @type {Chain}
  */
 export const metalSepolia: Chain = defineChain({
   ...chainConfig,
@@ -510,7 +502,6 @@ export const metalSepolia: Chain = defineChain({
 
 /**
  * Chain Definition for Minato
- * @type {Chain}
  */
 export const minatoSepolia: Chain = defineChain({
   ...chainConfig,
@@ -575,7 +566,6 @@ export const minatoSepolia: Chain = defineChain({
 
 /**
  * Chain Definition for Mode Testnet
- * @type {Chain}
  */
 export const modeSepolia: Chain = defineChain({
   ...chainConfig,
@@ -635,7 +625,6 @@ export const modeSepolia: Chain = defineChain({
 
 /**
  * Chain Definition for OP Sepolia Testnet
- * @type {Chain}
  */
 export const opSepolia: Chain = defineChain({
   ...chainConfig,
@@ -695,7 +684,6 @@ export const opSepolia: Chain = defineChain({
 
 /**
  * Chain Definition for RACE Testnet
- * @type {Chain}
  */
 export const raceSepolia: Chain = defineChain({
   ...chainConfig,
@@ -755,7 +743,6 @@ export const raceSepolia: Chain = defineChain({
 
 /**
  * Chain Definition for Shape Sepolia Testnet
- * @type {Chain}
  */
 export const shapeSepolia: Chain = defineChain({
   ...chainConfig,
@@ -820,7 +807,6 @@ export const shapeSepolia: Chain = defineChain({
 
 /**
  * Chain Definition for Binary Sepolia
- * @type {Chain}
  */
 export const tbnSepolia: Chain = defineChain({
   ...chainConfig,
@@ -885,7 +871,6 @@ export const tbnSepolia: Chain = defineChain({
 
 /**
  * Chain Definition for Unichain Sepolia Testnet
- * @type {Chain}
  */
 export const unichainSepolia: Chain = defineChain({
   ...chainConfig,
@@ -945,7 +930,6 @@ export const unichainSepolia: Chain = defineChain({
 
 /**
  * Chain Definition for World Chain Sepolia Testnet
- * @type {Chain}
  */
 export const worldchainSepolia: Chain = defineChain({
   ...chainConfig,
@@ -1010,7 +994,6 @@ export const worldchainSepolia: Chain = defineChain({
 
 /**
  * Chain Definition for Zora Sepolia Testnet
- * @type {Chain}
  */
 export const zoraSepolia: Chain = defineChain({
   ...chainConfig,
