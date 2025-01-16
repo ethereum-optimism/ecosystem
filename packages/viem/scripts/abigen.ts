@@ -26,18 +26,6 @@ function camelCase(str: string): string {
   return start.toLowerCase() + rest.join('')
 }
 
-function prettyPrintJSON(obj: any): string {
-  const str = JSON.stringify(obj, null, 2)
-
-  // Remove quotes from keys
-  const cleaned = str.replace(/^[\t ]*"[^:\n\r]+(?<!\\)":/gm, function (match) {
-    return match.replace(/"/g, '')
-  })
-
-  // Replace left over double quotes with single
-  return cleaned.replace(/"/g, "'")
-}
-
 /** Abi Generation */
 
 async function main() {
@@ -55,7 +43,11 @@ async function main() {
     return { name: contract, exportName: camelCase(contract), abi }
   })
 
-  const fileContents = eta.render('abis', { contracts, prettyPrintJSON })
+  const fileContents = eta.render('abis', {
+    contracts,
+    prettyPrintJSON: (obj: any) => JSON.stringify(obj, null, 2),
+  })
+
   fs.writeFileSync(`src/abis.ts`, fileContents)
 }
 
