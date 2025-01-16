@@ -94,9 +94,13 @@ async function main() {
       'configs',
       network,
     )
+
+    // `superchain.toml` contains information on activation times as well as the
+    // applicable l1 contracts for the chain. We exclude this file as a chain entry
     const entries = fs
       .readdirSync(configPath)
       .filter((entry) => !entry.includes('superchain'))
+
     const chainDefs = await Promise.all(
       entries.map(async (entry) => {
         const chainConfig = toml.parse(
@@ -122,9 +126,11 @@ async function main() {
           l1Addresses['l2OutputOracle'] = addresses.L2OutputOracleProxy
         }
 
+        // This is an edge case handler for the `arena-z-testnet` chain name.
         const normalizedName = entry
           .replace('.toml', '')
           .replace('-testnet', '')
+
         return {
           chainName: chainConfig.name as string,
           exportName: camelCase(`${normalizedName}-${network}`),
