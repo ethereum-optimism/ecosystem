@@ -8,8 +8,8 @@ const ABI_SNAPSHOTS_PATH = path.join(OPTIMISM_PATH, 'packages', 'contracts-bedro
 const CONTRACTS = [
   'CrossL2Inbox',
   'L2ToL2CrossDomainMessenger',
+  'OptimismSuperchainERC20',
   'SuperchainWETH',
-  'SuperchainERC20',
   'SuperchainTokenBridge',
 ]
 
@@ -23,21 +23,24 @@ function camelCase(str: string): string {
 /** ABI Generation */
 
 async function main() {
-  console.log('Running ABI generation...')
+  console.log('Running Abi generation...')
   const eta = new Eta({ views: './scripts/templates', debug: true, autoTrim: [false, false] })
 
   const contracts = CONTRACTS.map((contract) => {
+    console.log(`Generating Abi for ${contract}`)
     const abiPath = path.join(ABI_SNAPSHOTS_PATH, `${contract}.json`)
     const abi = JSON.parse(fs.readFileSync(abiPath, 'utf8'))
     return { name: contract, exportName: camelCase(contract), abi }
   })
 
-  console.log(contracts)
-  const fileContents = eta.render('abis', { contracts })
+  const fileContents = eta.render('abis', {
+    contracts,
+    prettyPrintJSON: (json: any) => JSON.stringify(json, null, 2),
+  })
+
   fs.writeFileSync(`src/abis.ts`, fileContents)
 }
 
-;(async () => {
 ;(async () => {
   try {
     await main()
