@@ -9,7 +9,7 @@ import type {
 } from 'viem'
 import { concat, parseEventLogs } from 'viem'
 
-import { crossL2InboxABI } from '@/abis.js'
+import { crossL2InboxAbi } from '@/abis.js'
 import type { MessageIdentifier, MessagePayload } from '@/types/interop.js'
 
 export type CreateInteropMessageParameters = { log: Log }
@@ -67,7 +67,7 @@ export function decodeExecutingMessages(
   params: DecodeExecutingMessagesParameters,
 ): DecodeExecutingMessagesReturnType {
   const logs = parseEventLogs({
-    abi: crossL2InboxABI,
+    abi: crossL2InboxAbi,
     eventName: 'ExecutingMessage',
     logs: params.receipt.logs,
   })

@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 
-import { superchainWETHABI } from '@/abis.js'
+import { superchainWETHAbi } from '@/abis.js'
 import { contracts } from '@/contracts.js'
 import { publicClientA, testAccount, walletClientA } from '@/test/clients.js'
 
@@ -11,7 +11,7 @@ describe('depositSuperchainWETH', () => {
     it('should return expected request', async () => {
       const startingBalance = await publicClientA.readContract({
         address: contracts.superchainWETH.address,
-        abi: superchainWETHABI,
+        abi: superchainWETHAbi,
         functionName: 'balanceOf',
         args: [testAccount.address],
       })
@@ -24,7 +24,7 @@ describe('depositSuperchainWETH', () => {
 
       const endingBalance = await publicClientA.readContract({
         address: contracts.superchainWETH.address,
-        abi: superchainWETHABI,
+        abi: superchainWETHAbi,
         functionName: 'balanceOf',
         args: [testAccount.address],
       })

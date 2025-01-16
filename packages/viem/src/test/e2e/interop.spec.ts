@@ -1,7 +1,7 @@
 import { encodeFunctionData, parseAbi } from 'viem'
 import { beforeAll, describe, expect, it } from 'vitest'
 
-import { superchainWETHABI } from '@/abis.js'
+import { superchainWETHAbi } from '@/abis.js'
 import { supersimL2B } from '@/chains/supersim.js'
 import { contracts } from '@/contracts.js'
 import {
@@ -11,7 +11,7 @@ import {
   walletClientA,
   walletClientB,
 } from '@/test/clients.js'
-import { ticTacToeABI, ticTacToeAddress } from '@/test/setupTicTacToe.js'
+import { ticTacToeAbi, ticTacToeAddress } from '@/test/setupTicTacToe.js'
 import {
   createInteropSentL2ToL2Messages,
   decodeRelayedL2ToL2Messages,
@@ -21,7 +21,7 @@ import { SUPERSIM_SUPERC20_ADDRESS } from '../supERC20.js'
 
 describe('Generic Interop Flow', () => {
   const calldata = encodeFunctionData({
-    abi: ticTacToeABI,
+    abi: ticTacToeAbi,
     functionName: 'createGame',
     args: [testAccount.address],
   })
@@ -61,7 +61,7 @@ describe('Generic Interop Flow', () => {
 })
 
 describe('SuperchainERC20 Flow', () => {
-  const balanceOfABI = parseAbi([
+  const balanceOfAbi = parseAbi([
     'function balanceOf(address account) view returns (uint256)',
   ])
 
@@ -79,7 +79,7 @@ describe('SuperchainERC20 Flow', () => {
   it('should send supERC20 and relay cross chain message to burn/mint tokens', async () => {
     const startingBalance = await publicClientB.readContract({
       address: SUPERSIM_SUPERC20_ADDRESS,
-      abi: balanceOfABI,
+      abi: balanceOfAbi,
       functionName: 'balanceOf',
       args: [testAccount.address],
     })
@@ -116,7 +116,7 @@ describe('SuperchainERC20 Flow', () => {
 
     const endingBalance = await publicClientB.readContract({
       address: SUPERSIM_SUPERC20_ADDRESS,
-      abi: balanceOfABI,
+      abi: balanceOfAbi,
       functionName: 'balanceOf',
       args: [testAccount.address],
     })
@@ -139,7 +139,7 @@ describe('SuperchainWETH Flow', () => {
   it('should send SuperchainWETH and relay cross chain message to burn/mint tokens', async () => {
     const startingWETHBalance = await publicClientB.readContract({
       address: contracts.superchainWETH.address,
-      abi: superchainWETHABI,
+      abi: superchainWETHAbi,
       functionName: 'balanceOf',
       args: [testAccount.address],
     })
@@ -175,7 +175,7 @@ describe('SuperchainWETH Flow', () => {
 
     const endingWETHBalance = await publicClientB.readContract({
       address: contracts.superchainWETH.address,
-      abi: superchainWETHABI,
+      abi: superchainWETHAbi,
       functionName: 'balanceOf',
       args: [testAccount.address],
     })

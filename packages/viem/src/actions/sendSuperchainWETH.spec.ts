@@ -6,7 +6,7 @@ import { contracts } from '@/contracts.js'
 import { publicClientA, testAccount, walletClientA } from '@/test/clients.js'
 import { createInteropSentL2ToL2Messages } from '@/utils/l2ToL2CrossDomainMessenger.js'
 
-const balanceOfABI = parseAbi([
+const balanceOfAbi = parseAbi([
   'function balanceOf(address account) view returns (uint256)',
 ])
 
@@ -25,7 +25,7 @@ describe('sendSuperchainWETH', () => {
     it('should return expected request', async () => {
       const startingBalance = await publicClientA.readContract({
         address: contracts.superchainWETH.address,
-        abi: balanceOfABI,
+        abi: balanceOfAbi,
         functionName: 'balanceOf',
         args: [testAccount.address],
       })
@@ -46,7 +46,7 @@ describe('sendSuperchainWETH', () => {
 
       const endingBalance = await publicClientA.readContract({
         address: contracts.superchainWETH.address,
-        abi: balanceOfABI,
+        abi: balanceOfAbi,
         functionName: 'balanceOf',
         args: [testAccount.address],
       })

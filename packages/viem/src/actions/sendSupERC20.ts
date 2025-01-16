@@ -15,7 +15,7 @@ import type {
 } from 'viem'
 import { estimateContractGas, simulateContract } from 'viem/actions'
 
-import { superchainTokenBridgeABI } from '@/abis.js'
+import { superchainTokenBridgeAbi } from '@/abis.js'
 import { contracts } from '@/contracts.js'
 import type { BaseWriteContractActionParameters } from '@/core/baseWriteAction.js'
 import { baseWriteAction } from '@/core/baseWriteAction.js'
@@ -54,7 +54,7 @@ export type SendSupERC20ReturnType = Hash
  * @category Types
  */
 export type SendSupERC20ContractReturnType = ContractFunctionReturnType<
-  typeof superchainTokenBridgeABI,
+  typeof superchainTokenBridgeAbi,
   'nonpayable',
   'sendERC20'
 >
@@ -87,7 +87,7 @@ export async function sendSupERC20<
   return baseWriteAction(
     client,
     {
-      abi: superchainTokenBridgeABI,
+      abi: superchainTokenBridgeAbi,
       contractAddress: contracts.superchainTokenBridge.address,
       contractFunctionName: 'sendERC20',
       contractArgs: [tokenAddress, to, amount, BigInt(chainId)],
@@ -114,7 +114,7 @@ export async function estimateSendSupERC20Gas<
   const { tokenAddress, to, amount, chainId, ...txParameters } = parameters
 
   return estimateContractGas(client, {
-    abi: superchainTokenBridgeABI,
+    abi: superchainTokenBridgeAbi,
     address: contracts.superchainTokenBridge.address,
     functionName: 'sendERC20',
     args: [tokenAddress, to, amount, BigInt(chainId)],
@@ -141,7 +141,7 @@ export async function simulateSendSupERC20<
 
   const res = await simulateContract(client, {
     account,
-    abi: superchainTokenBridgeABI,
+    abi: superchainTokenBridgeAbi,
     address: contracts.superchainTokenBridge.address,
     chain: client.chain,
     functionName: 'sendERC20',

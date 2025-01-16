@@ -14,7 +14,7 @@ import type {
 } from 'viem'
 import { estimateContractGas, simulateContract } from 'viem/actions'
 
-import { superchainWETHABI } from '@/abis.js'
+import { superchainWETHAbi } from '@/abis.js'
 import { contracts } from '@/contracts.js'
 import type { BaseWriteContractActionParameters } from '@/core/baseWriteAction.js'
 import { baseWriteAction } from '@/core/baseWriteAction.js'
@@ -44,7 +44,7 @@ export type DepositSuperchainWETHReturnType = Hash
  * @category Types
  */
 export type DepositSuperchainWETHContractReturnType =
-  ContractFunctionReturnType<typeof superchainWETHABI, 'payable', 'deposit'>
+  ContractFunctionReturnType<typeof superchainWETHAbi, 'payable', 'deposit'>
 
 /**
  * @category Types
@@ -72,7 +72,7 @@ export async function depositSuperchainWETH<
   return baseWriteAction(
     client,
     {
-      abi: superchainWETHABI,
+      abi: superchainWETHAbi,
       contractAddress: contracts.superchainWETH.address,
       contractFunctionName: 'deposit',
       contractArgs: [],
@@ -97,7 +97,7 @@ export async function estimateDepositSuperchainWETHGas<
   parameters: DepositSuperchainWETHParameters<TChain, TAccount, TChainOverride>,
 ): Promise<bigint> {
   return estimateContractGas(client, {
-    abi: superchainWETHABI,
+    abi: superchainWETHAbi,
     address: contracts.superchainWETH.address,
     functionName: 'deposit',
     args: [],
@@ -124,7 +124,7 @@ export async function simulateDepositSuperchainWETH<
 
   const res = await simulateContract(client, {
     account,
-    abi: superchainWETHABI,
+    abi: superchainWETHAbi,
     address: contracts.superchainWETH.address,
     chain: client.chain,
     functionName: 'deposit',

@@ -14,7 +14,7 @@ import type {
 } from 'viem'
 import { estimateContractGas, simulateContract } from 'viem/actions'
 
-import { superchainWETHABI } from '@/abis.js'
+import { superchainWETHAbi } from '@/abis.js'
 import { contracts } from '@/contracts.js'
 import type { BaseWriteContractActionParameters } from '@/core/baseWriteAction.js'
 import { baseWriteAction } from '@/core/baseWriteAction.js'
@@ -47,7 +47,7 @@ export type WithdrawSuperchainWETHReturnType = Hash
  * @category Types
  */
 export type WithdrawSuperchainWETHContractReturnType =
-  ContractFunctionReturnType<typeof superchainWETHABI, 'nonpayable', 'withdraw'>
+  ContractFunctionReturnType<typeof superchainWETHAbi, 'nonpayable', 'withdraw'>
 
 /**
  * @category Types
@@ -77,7 +77,7 @@ export async function withdrawSuperchainWETH<
   return baseWriteAction(
     client,
     {
-      abi: superchainWETHABI,
+      abi: superchainWETHAbi,
       contractAddress: contracts.superchainWETH.address,
       contractFunctionName: 'withdraw',
       contractArgs: [amount],
@@ -108,7 +108,7 @@ export async function estimateWithdrawSuperchainWETHGas<
   const { amount, ...txParameters } = parameters
 
   return estimateContractGas(client, {
-    abi: superchainWETHABI,
+    abi: superchainWETHAbi,
     address: contracts.superchainWETH.address,
     functionName: 'withdraw',
     args: [amount],
@@ -139,7 +139,7 @@ export async function simulateWithdrawSuperchainWETH<
 
   const res = await simulateContract(client, {
     account,
-    abi: superchainWETHABI,
+    abi: superchainWETHAbi,
     address: contracts.superchainWETH.address,
     chain: client.chain,
     functionName: 'withdraw',

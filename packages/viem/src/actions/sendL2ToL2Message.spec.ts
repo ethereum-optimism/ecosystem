@@ -3,12 +3,12 @@ import { describe, expect, it } from 'vitest'
 
 import { supersimL2B } from '@/chains/supersim.js'
 import { publicClientA, testAccount, walletClientA } from '@/test/clients.js'
-import { ticTacToeABI, ticTacToeAddress } from '@/test/setupTicTacToe.js'
+import { ticTacToeAbi, ticTacToeAddress } from '@/test/setupTicTacToe.js'
 import { decodeSentL2ToL2Messages } from '@/utils/l2ToL2CrossDomainMessenger.js'
 
 describe('sendL2ToL2Message', () => {
   const calldata = encodeFunctionData({
-    abi: ticTacToeABI,
+    abi: ticTacToeAbi,
     functionName: 'createGame',
     args: [testAccount.address],
   })

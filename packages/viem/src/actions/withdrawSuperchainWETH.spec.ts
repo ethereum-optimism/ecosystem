@@ -1,6 +1,6 @@
 import { beforeAll, describe, expect, it } from 'vitest'
 
-import { superchainWETHABI } from '@/abis.js'
+import { superchainWETHAbi } from '@/abis.js'
 import { contracts } from '@/contracts.js'
 import { publicClientA, testAccount, walletClientA } from '@/test/clients.js'
 import { SUPERSIM_SUPERC20_ADDRESS } from '@/test/supERC20.js'
@@ -20,7 +20,7 @@ describe('withdrawSuperchainWETH', () => {
     it('should return expected request', async () => {
       const startingSuperchainWETHBalance = await publicClientA.readContract({
         address: contracts.superchainWETH.address,
-        abi: superchainWETHABI,
+        abi: superchainWETHAbi,
         functionName: 'balanceOf',
         args: [testAccount.address],
       })
@@ -35,7 +35,7 @@ describe('withdrawSuperchainWETH', () => {
 
       const endingSuperchainWETHBalance = await publicClientA.readContract({
         address: contracts.superchainWETH.address,
-        abi: superchainWETHABI,
+        abi: superchainWETHAbi,
         functionName: 'balanceOf',
         args: [testAccount.address],
       })
