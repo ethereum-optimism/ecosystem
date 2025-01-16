@@ -4,9 +4,6 @@ export type { MessageIdentifier } from '@/types/interop.js'
 // abi
 export * from '@/abis.js'
 
-// supersim
-export { supersimL1, supersimL2A, supersimL2B } from '@/chains/supersim.js'
-
 // contracts
 export { contracts } from '@/contracts.js'
 
