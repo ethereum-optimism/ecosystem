@@ -1,52 +1,43 @@
 import { Eta } from 'eta'
 import fs from 'fs'
+import path from 'path'
 
-import abigen from '../abigen.json'
+// Hardcoded. Can take a more elaborate approach if needed.
+const OPTIMISM_PATH = path.join('..', '..', 'lib', 'optimism')
+const ABI_SNAPSHOTS_PATH = path.join(OPTIMISM_PATH, 'packages', 'contracts-bedrock', 'snapshots', 'abi')
+const CONTRACTS = [
+  'CrossL2Inbox',
+  'L2ToL2CrossDomainMessenger',
+  'SuperchainWETH',
+  'SuperchainERC20',
+  'SuperchainTokenBridge',
+]
 
-type JSONValue =
-  | string
-  | number
-  | boolean
-  | { [x: string]: JSONValue }
-  | JSONValue[]
-
-type AutogenContract = {
-  name: string
-  abi: { [x: string]: JSONValue }
-}
-
-const ARTIFACT_DIRECTORY = '../../lib/forge-artifacts'
-const SRC_DIR = './src'
-
-const eta = new Eta({ views: './scripts/templates', debug: true })
-
-async function generateAbis() {
-  const contracts = [] as AutogenContract[]
-  for (const name of abigen.contracts) {
-    const artifact = JSON.parse(
-      fs.readFileSync(`${ARTIFACT_DIRECTORY}/${name}.sol/${name}.json`),
-    )
-    contracts.push({ name, abi: artifact.abi })
-  }
-
-  const generateAbiFileContents = eta.render('abis', {
-    contracts,
-    camelCase,
-    prettyPrintJSON: (json: JSONValue) => JSON.stringify(json, null, 2),
-  })
-
-  fs.writeFileSync(`${SRC_DIR}/abis.ts`, generateAbiFileContents)
-}
+/** Utility Functions */
 
 function camelCase(str: string): string {
   const [start, ...rest] = str
   return start.toLowerCase() + rest.join('')
 }
 
+/** ABI Generation */
+
 async function main() {
-  await generateAbis()
+  console.log('Running ABI generation...')
+  const eta = new Eta({ views: './scripts/templates', debug: true, autoTrim: [false, false] })
+
+  const contracts = CONTRACTS.map((contract) => {
+    const abiPath = path.join(ABI_SNAPSHOTS_PATH, `${contract}.json`)
+    const abi = JSON.parse(fs.readFileSync(abiPath, 'utf8'))
+    return { name: contract, exportName: camelCase(contract), abi }
+  })
+
+  console.log(contracts)
+  const fileContents = eta.render('abis', { contracts })
+  fs.writeFileSync(`src/abis.ts`, fileContents)
 }
 
+;(async () => {
 ;(async () => {
   try {
     await main()
