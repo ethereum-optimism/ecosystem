@@ -8,6 +8,10 @@
     "dist/*",
     "src/*"
   ],
+  "exports": {
+    ".": "./dist/index.js",
+    "./chains": "./dist/chains/index.js"
+  },
   "scripts": {
     "build": "tsc && resolve-tspaths",
     "clean": "rm -rf build types tsconfig.tsbuildinfo",

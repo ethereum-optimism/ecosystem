@@ -10,6 +10,7 @@ import { getDefaultConfig, RainbowKitProvider } from '@rainbow-me/rainbowkit'
 
 import type { Chain, Transport } from 'viem'
 import { configureOpChains } from '@eth-optimism/op-app'
+import { supersimL1, supersimL2A, supersimL2B } from '@eth-optimism/viem/chains'
 
 import { Bridge } from '@/routes'
 import { Layout } from '@/components/Layout'
@@ -20,7 +21,6 @@ import { NETWORK_TYPE } from '@/constants/networkType'
 import { Home } from '@/routes/Home'
 import { Playground } from '@/routes/Playground'
 import { Toaster } from '@eth-optimism/ui-components'
-import { supersimL1, supersimL2A, supersimL2B } from '@eth-optimism/viem'
 
 const classNames = {
   app: 'app w-full min-h-screen flex flex-col',

@@ -19,7 +19,7 @@ export const supersimL1 = defineChain({
 })
 
 /**
- * L2 chain A definition for supersim in non-forked mode. Interop Enabled
+ * L2 chain A definition for supersim in non-forked mode
  * @category Supersim
  */
 export const supersimL2A = defineChain({
@@ -37,7 +37,7 @@ export const supersimL2A = defineChain({
 })
 
 /**
- * L2 chain B definition for supersim in non-forked mode. Interop Enabled
+ * L2 chain B definition for supersim in non-forked mode
  * @category Supersim
  */
 export const supersimL2B = defineChain({
@@ -55,7 +55,7 @@ export const supersimL2B = defineChain({
 })
 
 /**
- * L2 chain C definition for supersim in non-forked mode. Interop Enabled
+ * L2 chain C definition for supersim in non-forked mode
  * @category Supersim
  */
 export const supersimL2C = defineChain({
@@ -73,7 +73,7 @@ export const supersimL2C = defineChain({
 })
 
 /**
- * L2 chain D definition for supersim in non-forked mode. Interop Enabled
+ * L2 chain D definition for supersim in non-forked mode
  * @category Supersim
  */
 export const supersimL2D = defineChain({
@@ -91,7 +91,7 @@ export const supersimL2D = defineChain({
 })
 
 /**
- * L2 chain E definition for supersim in non-forked mode. Interop Enabled
+ * L2 chain E definition for supersim in non-forked mode
  * @category Supersim
  */
 export const supersimL2E = defineChain({
