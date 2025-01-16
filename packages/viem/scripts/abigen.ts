@@ -35,7 +35,7 @@ function prettyPrintJSON(obj: any): string {
   })
 
   // Replace left over double quotes with single
-  return cleaned.replace('\"', "'")
+  return cleaned.replace(/"/g, "'")
 }
 
 /** Abi Generation */
@@ -55,11 +55,7 @@ async function main() {
     return { name: contract, exportName: camelCase(contract), abi }
   })
 
-  const fileContents = eta.render('abis', {
-    contracts,
-    prettyPrintJSON: (json: any) => JSON.stringify(json, null, 2),
-  })
-
+  const fileContents = eta.render('abis', { contracts, prettyPrintJSON })
   fs.writeFileSync(`src/abis.ts`, fileContents)
 }
 
