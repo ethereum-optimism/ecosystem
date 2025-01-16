@@ -2,14 +2,18 @@ import toml from '@iarna/toml'
 import { Eta } from 'eta'
 import fs from 'fs'
 import path from 'path'
-
 import type { Address, PublicClient } from 'viem'
 import { createPublicClient, erc20Abi, http } from 'viem'
 import { mainnet, sepolia } from 'viem/chains'
 
 // Hardcoded. Can take a more elaborate approach if needed.
 const NETWORKS = ['mainnet', 'sepolia']
-const SUPERCHAIN_REGISTRY_PATH = path.join('..', '..', 'lib', 'superchain-registry')
+const SUPERCHAIN_REGISTRY_PATH = path.join(
+  '..',
+  '..',
+  'lib',
+  'superchain-registry',
+)
 
 type ChainDefinition = {
   chainName: string
@@ -58,7 +62,11 @@ async function nativeCurrency(
 
 async function main() {
   console.log('Running chain generation...')
-  const eta = new Eta({ views: './scripts/templates', debug: true, autoTrim: [false, false] })
+  const eta = new Eta({
+    views: './scripts/templates',
+    debug: true,
+    autoTrim: [false, false],
+  })
 
   const mainnetHttp = process.env.MAINNET_RPC_URL
     ? [process.env.MAINNET_RPC_URL]
@@ -80,7 +88,12 @@ async function main() {
     console.log(`Generating ${network}`)
     const client = network === 'mainnet' ? mainnetClient : sepoliaClient
 
-    const configPath = path.join(SUPERCHAIN_REGISTRY_PATH, 'superchain', 'configs', network)
+    const configPath = path.join(
+      SUPERCHAIN_REGISTRY_PATH,
+      'superchain',
+      'configs',
+      network,
+    )
     const entries = fs
       .readdirSync(configPath)
       .filter((entry) => !entry.includes('superchain'))
