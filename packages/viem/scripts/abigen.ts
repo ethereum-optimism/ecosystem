@@ -4,7 +4,13 @@ import path from 'path'
 
 // Hardcoded. Can take a more elaborate approach if needed.
 const OPTIMISM_PATH = path.join('..', '..', 'lib', 'optimism')
-const ABI_SNAPSHOTS_PATH = path.join(OPTIMISM_PATH, 'packages', 'contracts-bedrock', 'snapshots', 'abi')
+const ABI_SNAPSHOTS_PATH = path.join(
+  OPTIMISM_PATH,
+  'packages',
+  'contracts-bedrock',
+  'snapshots',
+  'abi',
+)
 const CONTRACTS = [
   'CrossL2Inbox',
   'L2ToL2CrossDomainMessenger',
@@ -20,11 +26,27 @@ function camelCase(str: string): string {
   return start.toLowerCase() + rest.join('')
 }
 
-/** ABI Generation */
+function prettyPrintJSON(obj: any): string {
+  const str = JSON.stringify(obj, null, 2)
+
+  // Remove quotes from keys
+  const cleaned = str.replace(/^[\t ]*"[^:\n\r]+(?<!\\)":/gm, function (match) {
+    return match.replace(/"/g, '')
+  })
+
+  // Replace left over double quotes with single
+  return cleaned.replace('\"', "'")
+}
+
+/** Abi Generation */
 
 async function main() {
   console.log('Running Abi generation...')
-  const eta = new Eta({ views: './scripts/templates', debug: true, autoTrim: [false, false] })
+  const eta = new Eta({
+    views: './scripts/templates',
+    debug: true,
+    autoTrim: [false, false],
+  })
 
   const contracts = CONTRACTS.map((contract) => {
     console.log(`Generating Abi for ${contract}`)

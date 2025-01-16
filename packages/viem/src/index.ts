@@ -1,9 +1,6 @@
 // types
 export type { MessageIdentifier } from '@/types/interop.js'
 
-// abi
-export * from '@/abis.js'
-
 // contracts
 export { contracts } from '@/contracts.js'
 
