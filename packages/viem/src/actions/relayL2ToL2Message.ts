@@ -13,7 +13,7 @@ import type {
 } from 'viem'
 import { estimateContractGas, simulateContract } from 'viem/actions'
 
-import { l2ToL2CrossDomainMessengerABI } from '@/abis.js'
+import { l2ToL2CrossDomainMessengerAbi } from '@/abis.js'
 import { contracts } from '@/contracts.js'
 import {
   baseWriteAction,
@@ -51,7 +51,7 @@ export type RelayL2ToL2MessageReturnType = Hash
  * @category Types
  */
 export type RelayL2ToL2MessageContractReturnType = ContractFunctionReturnType<
-  typeof l2ToL2CrossDomainMessengerABI,
+  typeof l2ToL2CrossDomainMessengerAbi,
   'payable',
   'relayMessage'
 >
@@ -84,7 +84,7 @@ export async function relayL2ToL2Message<
   return baseWriteAction(
     client,
     {
-      abi: l2ToL2CrossDomainMessengerABI,
+      abi: l2ToL2CrossDomainMessengerAbi,
       contractAddress: contracts.l2ToL2CrossDomainMessenger.address,
       contractFunctionName: 'relayMessage',
       contractArgs: [sentMessageId, sentMessagePayload],
@@ -111,7 +111,7 @@ export async function estimateRelayL2ToL2MessageGas<
   const { sentMessageId, sentMessagePayload, ...txParameters } = parameters
 
   return estimateContractGas(client, {
-    abi: l2ToL2CrossDomainMessengerABI,
+    abi: l2ToL2CrossDomainMessengerAbi,
     address: contracts.l2ToL2CrossDomainMessenger.address,
     functionName: 'relayMessage',
     args: [sentMessageId, sentMessagePayload],
@@ -138,7 +138,7 @@ export async function simulateRelayL2ToL2Message<
 
   const res = await simulateContract(client, {
     account,
-    abi: l2ToL2CrossDomainMessengerABI,
+    abi: l2ToL2CrossDomainMessengerAbi,
     address: contracts.l2ToL2CrossDomainMessenger.address,
     chain: client.chain,
     functionName: 'relayMessage',

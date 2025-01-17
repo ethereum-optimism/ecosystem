@@ -1,9 +1,0 @@
-{
-    "contracts": [
-        "CrossL2Inbox",
-        "L2ToL2CrossDomainMessenger",
-        "SuperchainWETH",
-        "SuperchainERC20",
-        "SuperchainTokenBridge"
-    ]
-}

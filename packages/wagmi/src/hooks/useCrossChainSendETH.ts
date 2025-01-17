@@ -1,7 +1,7 @@
 import {
   contracts,
   type CrossChainSendETHParameters,
-  superchainWETHABI,
+  superchainWETHAbi,
 } from '@eth-optimism/viem'
 import { useCallback } from 'react'
 import { useConfig, useWriteContract } from 'wagmi'
@@ -16,7 +16,7 @@ export const useCrossChainSendETH = () => {
       const { to, chainId, value } = params
 
       return writeContractAsync({
-        abi: superchainWETHABI,
+        abi: superchainWETHAbi,
         address: contracts.superchainWETH.address,
         value,
         functionName: 'sendETH',

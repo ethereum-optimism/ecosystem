@@ -17,7 +17,7 @@ import {
   toHex,
 } from 'viem'
 
-import { l2ToL2CrossDomainMessengerABI } from '@/abis.js'
+import { l2ToL2CrossDomainMessengerAbi } from '@/abis.js'
 import type { MessageIdentifier, MessagePayload } from '@/types/interop.js'
 import { createInteropMessage } from '@/utils/interop.js'
 
@@ -86,7 +86,7 @@ export function decodeSentL2ToL2Messages(
   params: DecodeSentL2ToL2MessagesParameters,
 ): DecodeSentL2ToL2MessagesReturnType {
   const sentMessages = parseEventLogs({
-    abi: l2ToL2CrossDomainMessengerABI,
+    abi: l2ToL2CrossDomainMessengerAbi,
     eventName: 'SentMessage',
     logs: params.receipt.logs,
   })
@@ -108,7 +108,7 @@ export function decodeRelayedL2ToL2Messages(
 ): DecodeRelayedL2ToL2MessagesReturnType {
   const RelayedMessageEventName = 'RelayedMessage'
   const relayedMessages = parseEventLogs({
-    abi: l2ToL2CrossDomainMessengerABI,
+    abi: l2ToL2CrossDomainMessengerAbi,
     eventName: [RelayedMessageEventName],
     logs: params.receipt.logs,
     strict: true,

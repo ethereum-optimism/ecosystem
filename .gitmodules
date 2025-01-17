@@ -1,3 +1,6 @@
 [submodule "lib/superchain-registry"]
 	path = lib/superchain-registry
 	url = https://github.com/ethereum-optimism/superchain-registry
+[submodule "lib/optimism"]
+	path = lib/optimism
+	url = https://github.com/ethereum-optimism/optimism

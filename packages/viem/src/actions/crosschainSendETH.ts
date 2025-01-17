@@ -14,7 +14,7 @@ import type {
 } from 'viem'
 import { estimateContractGas, simulateContract } from 'viem/actions'
 
-import { superchainWETHABI } from '@/abis.js'
+import { superchainWETHAbi } from '@/abis.js'
 import { contracts } from '@/contracts.js'
 import type { BaseWriteContractActionParameters } from '@/core/baseWriteAction.js'
 import { baseWriteAction } from '@/core/baseWriteAction.js'
@@ -44,7 +44,7 @@ export type CrossChainSendETHParameters<
  * @category Types
  */
 export type CrossChainSendETHContractReturnType = ContractFunctionReturnType<
-  typeof superchainWETHABI,
+  typeof superchainWETHAbi,
   'payable',
   'sendETH'
 >
@@ -77,7 +77,7 @@ export async function crossChainSendETH<
   return baseWriteAction(
     client,
     {
-      abi: superchainWETHABI,
+      abi: superchainWETHAbi,
       contractAddress: contracts.superchainWETH.address,
       contractFunctionName: 'sendETH',
       contractArgs: [to, chainId],
@@ -104,7 +104,7 @@ export async function estimateCrossChainSendETHGas<
   const { to, chainId, ...txParameters } = parameters
 
   return estimateContractGas(client, {
-    abi: superchainWETHABI,
+    abi: superchainWETHAbi,
     address: contracts.superchainWETH.address,
     functionName: 'sendETH',
     args: [to, chainId],
@@ -131,7 +131,7 @@ export async function simulateCrossChainSendETH<
 
   const res = await simulateContract(client, {
     account,
-    abi: superchainWETHABI,
+    abi: superchainWETHAbi,
     address: contracts.superchainWETH.address,
     chain: client.chain,
     functionName: 'sendETH',

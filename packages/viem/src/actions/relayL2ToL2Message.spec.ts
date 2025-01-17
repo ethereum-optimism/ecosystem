@@ -9,7 +9,7 @@ import {
   walletClientA,
   walletClientB,
 } from '@/test/clients.js'
-import { ticTacToeABI, ticTacToeAddress } from '@/test/setupTicTacToe.js'
+import { ticTacToeAbi, ticTacToeAddress } from '@/test/setupTicTacToe.js'
 import {
   createInteropSentL2ToL2Messages,
   decodeRelayedL2ToL2Messages,
@@ -19,7 +19,7 @@ import {
 
 describe('relayL2ToL2Message', () => {
   const calldata = encodeFunctionData({
-    abi: ticTacToeABI,
+    abi: ticTacToeAbi,
     functionName: 'createGame',
     args: [testAccount.address],
   })
