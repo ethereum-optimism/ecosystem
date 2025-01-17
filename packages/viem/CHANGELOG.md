@@ -1,5 +1,17 @@
 # @eth-optimism/viem
 
+## 0.1.0
+
+### Minor Changes
+
+- [#621](https://github.com/ethereum-optimism/ecosystem/pull/621) [`1533601`](https://github.com/ethereum-optimism/ecosystem/commit/1533601d6a61e1648a2c8d406265d7ae48363d69) Thanks [@hamdiallam](https://github.com/hamdiallam)! - rename SupERC20 to SuperchainERC20
+
+### Patch Changes
+
+- [#615](https://github.com/ethereum-optimism/ecosystem/pull/615) [`d07cb41`](https://github.com/ethereum-optimism/ecosystem/commit/d07cb41b26c01ba3c73da9488f0e33e6e2443269) Thanks [@hamdiallam](https://github.com/hamdiallam)! - added viem chain bindings based on the superchain registry
+
+- [#619](https://github.com/ethereum-optimism/ecosystem/pull/619) [`bba9176`](https://github.com/ethereum-optimism/ecosystem/commit/bba9176c34ed46ac27bf1931aa74f3a5347d7547) Thanks [@hamdiallam](https://github.com/hamdiallam)! - update generated abi and fix imports. abi will be exported temporarily
+
 ## 0.0.12
 
 ### Patch Changes
