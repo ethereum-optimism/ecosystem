@@ -4,6 +4,9 @@ export type { MessageIdentifier } from '@/types/interop.js'
 // contracts
 export { contracts } from '@/contracts.js'
 
+// abis (TEMPORARY)
+export * from '@/abis.js'
+
 // actions
 export type {
   CrossChainSendETHContractReturnType,

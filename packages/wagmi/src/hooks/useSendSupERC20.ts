@@ -1,5 +1,5 @@
 import type { SendSupERC20Parameters } from '@eth-optimism/viem'
-import { contracts, superchainTokenBridgeABI } from '@eth-optimism/viem'
+import { contracts, superchainTokenBridgeAbi } from '@eth-optimism/viem'
 import { useCallback } from 'react'
 import { useConfig, useWriteContract } from 'wagmi'
 
@@ -14,7 +14,7 @@ export const useSendSupERC20 = () => {
       const { tokenAddress, to, amount, chainId } = params
 
       return writeContractAsync({
-        abi: superchainTokenBridgeABI,
+        abi: superchainTokenBridgeAbi,
         address: contracts.superchainTokenBridge.address,
         functionName: 'sendERC20',
         args: [tokenAddress, to, amount, BigInt(chainId)],
