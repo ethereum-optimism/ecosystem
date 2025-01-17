@@ -12,14 +12,14 @@ import { contracts } from '@/contracts.js'
 import type { BaseWriteContractActionParameters } from '@/core/baseWriteAction.js'
 
 import type {
-  SendSupERC20ContractReturnType,
-  SendSupERC20ReturnType,
-} from './sendSupERC20.js'
+  SendSuperchainERC20ContractReturnType,
+  SendSuperchainERC20ReturnType,
+} from './sendSuperchainERC20.js'
 import {
-  estimateSendSupERC20Gas,
-  sendSupERC20,
-  simulateSendSupERC20,
-} from './sendSupERC20.js'
+  estimateSendSuperchainERC20Gas,
+  sendSuperchainERC20,
+  simulateSendSuperchainERC20,
+} from './sendSuperchainERC20.js'
 
 /**
  * @category Types
@@ -48,7 +48,7 @@ export type SendSuperchainWETHParameters<
  * @category L2 Wallet Actions
  * @param client - L2 Wallet Client
  * @param parameters - {@link SendSuperchainWETHParameters}
- * @returns The sendSuperchainWETH transaction hash. {@link SendSupERC20ReturnType}
+ * @returns The sendSuperchainWETH transaction hash. {@link SendSuperchainERC20ReturnType}
  */
 export async function sendSuperchainWETH<
   chain extends Chain | undefined,
@@ -57,8 +57,8 @@ export async function sendSuperchainWETH<
 >(
   client: Client<Transport, chain, account>,
   parameters: SendSuperchainWETHParameters<chain, account, chainOverride>,
-): Promise<SendSupERC20ReturnType> {
-  return sendSupERC20(client, {
+): Promise<SendSuperchainERC20ReturnType> {
+  return sendSuperchainERC20(client, {
     ...parameters,
     tokenAddress: contracts.superchainWETH.address,
   })
@@ -79,7 +79,7 @@ export async function estimateSendSuperchainWETHGas<
   client: Client<Transport, TChain, TAccount>,
   parameters: SendSuperchainWETHParameters<TChain, TAccount, TChainOverride>,
 ): Promise<bigint> {
-  return estimateSendSupERC20Gas(client, {
+  return estimateSendSuperchainERC20Gas(client, {
     ...parameters,
     tokenAddress: contracts.superchainWETH.address,
   })
@@ -90,7 +90,7 @@ export async function estimateSendSuperchainWETHGas<
  * @category L2 Public Actions
  * @param client - L2 Public Client
  * @param parameters - {@link SendSuperchainWETHParameters}
- * @returns The contract functions return value. {@link SendSupERC20ContractReturnType}
+ * @returns The contract functions return value. {@link SendSuperchainERC20ContractReturnType}
  */
 export async function simulateSendSuperchainWETH<
   TChain extends Chain | undefined,
@@ -99,8 +99,8 @@ export async function simulateSendSuperchainWETH<
 >(
   client: Client<Transport, TChain, TAccount>,
   parameters: SendSuperchainWETHParameters<TChain, TAccount, TChainOverride>,
-): Promise<SendSupERC20ContractReturnType> {
-  return simulateSendSupERC20(client, {
+): Promise<SendSuperchainERC20ContractReturnType> {
+  return simulateSendSuperchainERC20(client, {
     ...parameters,
     tokenAddress: contracts.superchainWETH.address,
   })

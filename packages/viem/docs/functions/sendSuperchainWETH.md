@@ -6,7 +6,7 @@
 
 # sendSuperchainWETH()
 
-> **sendSuperchainWETH**\<`chain`, `account`, `chainOverride`\>(`client`, `parameters`): `Promise`\<[`SendSupERC20ReturnType`](../type-aliases/SendSupERC20ReturnType.md)\>
+> **sendSuperchainWETH**\<`chain`, `account`, `chainOverride`\>(`client`, `parameters`): `Promise`\<[`SendSuperchainERC20ReturnType`](../type-aliases/SendSuperchainERC20ReturnType.md)\>
 
 Sends SuperchainWETH to a target address on another chain. Used in the interop flow.
 
@@ -30,10 +30,10 @@ L2 Wallet Client
 
 ## Returns
 
-`Promise`\<[`SendSupERC20ReturnType`](../type-aliases/SendSupERC20ReturnType.md)\>
+`Promise`\<[`SendSuperchainERC20ReturnType`](../type-aliases/SendSuperchainERC20ReturnType.md)\>
 
-The sendSuperchainWETH transaction hash. [SendSupERC20ReturnType](../type-aliases/SendSupERC20ReturnType.md)
+The sendSuperchainWETH transaction hash. [SendSuperchainERC20ReturnType](../type-aliases/SendSuperchainERC20ReturnType.md)
 
 ## Defined in
 
-[packages/viem/src/actions/sendSuperchainWETH.ts:53](https://github.com/ethereum-optimism/ecosystem/blob/1d855f26d1024617b154d28d909dbc33a421f5de/packages/viem/src/actions/sendSuperchainWETH.ts#L53)
+[packages/viem/src/actions/sendSuperchainWETH.ts:53](https://github.com/ethereum-optimism/ecosystem/blob/6d6302cd415cfc874f1d86fa22a309bdd9314531/packages/viem/src/actions/sendSuperchainWETH.ts#L53)

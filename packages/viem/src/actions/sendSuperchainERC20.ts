@@ -1,4 +1,4 @@
-/** @module sendSupERC20 */
+/** @module sendSuperchainERC20 */
 import type {
   Account,
   Address,
@@ -24,7 +24,7 @@ import type { ErrorType } from '@/types/utils.js'
 /**
  * @category Types
  */
-export type SendSupERC20Parameters<
+export type SendSuperchainERC20Parameters<
   TChain extends Chain | undefined = Chain | undefined,
   TAccount extends Account | undefined = Account | undefined,
   TChainOverride extends Chain | undefined = Chain | undefined,
@@ -48,12 +48,12 @@ export type SendSupERC20Parameters<
 /**
  * @category Types
  */
-export type SendSupERC20ReturnType = Hash
+export type SendSuperchainERC20ReturnType = Hash
 
 /**
  * @category Types
  */
-export type SendSupERC20ContractReturnType = ContractFunctionReturnType<
+export type SendSuperchainERC20ContractReturnType = ContractFunctionReturnType<
   typeof superchainTokenBridgeAbi,
   'nonpayable',
   'sendERC20'
@@ -62,7 +62,7 @@ export type SendSupERC20ContractReturnType = ContractFunctionReturnType<
 /**
  * @category Types
  */
-export type SendSupERC20ErrorType =
+export type SendSuperchainERC20ErrorType =
   | EstimateContractGasErrorType
   | WriteContractErrorType
   | ErrorType
@@ -71,17 +71,17 @@ export type SendSupERC20ErrorType =
  * Sends tokens to a target address on another chain. Used in the interop flow.
  * @category L2 Wallet Actions
  * @param client - L2 Wallet Client
- * @param parameters - {@link SendSupERC20Parameters}
- * @returns The sendSupERC20 transaction hash. {@link SendSupERC20ReturnType}
+ * @param parameters - {@link SendSuperchainERC20Parameters}
+ * @returns The sendSuperchainERC20 transaction hash. {@link SendSuperchainERC20ReturnType}
  */
-export async function sendSupERC20<
+export async function sendSuperchainERC20<
   chain extends Chain | undefined,
   account extends Account | undefined,
   chainOverride extends Chain | undefined = undefined,
 >(
   client: Client<Transport, chain, account>,
-  parameters: SendSupERC20Parameters<chain, account, chainOverride>,
-): Promise<SendSupERC20ReturnType> {
+  parameters: SendSuperchainERC20Parameters<chain, account, chainOverride>,
+): Promise<SendSuperchainERC20ReturnType> {
   const { tokenAddress, to, amount, chainId, ...txParameters } = parameters
 
   return baseWriteAction(
@@ -97,19 +97,19 @@ export async function sendSupERC20<
 }
 
 /**
- * Estimates gas for {@link sendSupERC20}
+ * Estimates gas for {@link sendSuperchainERC20}
  * @category L2 Wallet Actions
  * @param client - L2 Wallet Client
- * @param parameters - {@link SendSupERC20Parameters}
+ * @param parameters - {@link SendSuperchainERC20Parameters}
  * @returns The estimated gas value.
  */
-export async function estimateSendSupERC20Gas<
+export async function estimateSendSuperchainERC20Gas<
   TChain extends Chain | undefined,
   TAccount extends Account | undefined,
   TChainOverride extends Chain | undefined = undefined,
 >(
   client: Client<Transport, TChain, TAccount>,
-  parameters: SendSupERC20Parameters<TChain, TAccount, TChainOverride>,
+  parameters: SendSuperchainERC20Parameters<TChain, TAccount, TChainOverride>,
 ): Promise<bigint> {
   const { tokenAddress, to, amount, chainId, ...txParameters } = parameters
 
@@ -123,20 +123,20 @@ export async function estimateSendSupERC20Gas<
 }
 
 /**
- * Simulate contract call for {@link sendSupERC20}
+ * Simulate contract call for {@link sendSuperchainERC20}
  * @category L2 Public Actions
  * @param client - L2 Public Client
- * @param parameters - {@link SendSupERC20Parameters}
- * @returns The contract functions return value. {@link SendSupERC20ContractReturnType}
+ * @param parameters - {@link SendSuperchainERC20Parameters}
+ * @returns The contract functions return value. {@link SendSuperchainERC20ContractReturnType}
  */
-export async function simulateSendSupERC20<
+export async function simulateSendSuperchainERC20<
   TChain extends Chain | undefined,
   TAccount extends Account | undefined,
   TChainOverride extends Chain | undefined = undefined,
 >(
   client: Client<Transport, TChain, TAccount>,
-  parameters: SendSupERC20Parameters<TChain, TAccount, TChainOverride>,
-): Promise<SendSupERC20ContractReturnType> {
+  parameters: SendSuperchainERC20Parameters<TChain, TAccount, TChainOverride>,
+): Promise<SendSuperchainERC20ContractReturnType> {
   const { account, tokenAddress, to, amount, chainId } = parameters
 
   const res = await simulateContract(client, {
@@ -148,5 +148,5 @@ export async function simulateSendSupERC20<
     args: [tokenAddress, to, amount, BigInt(chainId)],
   } as SimulateContractParameters)
 
-  return res.result as SendSupERC20ContractReturnType
+  return res.result as SendSuperchainERC20ContractReturnType
 }
