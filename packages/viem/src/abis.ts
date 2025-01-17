@@ -338,13 +338,7 @@ export const l2ToL2CrossDomainMessengerAbi = [
         internalType: 'bytes',
       },
     ],
-    outputs: [
-      {
-        name: 'returnData_',
-        type: 'bytes',
-        internalType: 'bytes',
-      },
-    ],
+    outputs: [], // TODO: will fix after supersim update
     stateMutability: 'payable',
   },
   {
