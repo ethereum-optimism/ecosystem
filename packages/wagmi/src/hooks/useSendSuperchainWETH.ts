@@ -1,29 +1,29 @@
 import {
   contracts,
-  type SendSupERC20Parameters,
+  type SendSuperchainERC20Parameters,
   type SendSuperchainWETHParameters,
 } from '@eth-optimism/viem'
 import { useCallback } from 'react'
 
-import { useSendSupERC20 } from './useSendSupERC20.js'
+import { useSendSuperchainERC20 } from './useSendSuperchainERC20.js'
 
 export const useSendSuperchainWETH = () => {
-  const { sendSupERC20, isError, isPending, isSuccess } = useSendSupERC20()
+  const { sendSuperchainERC20, isError, isPending, isSuccess } = useSendSuperchainERC20()
 
   const sendSuperchainWETH = useCallback(
     (params: SendSuperchainWETHParameters) => {
       const { to, amount, chainId } = params
 
-      const sendSupERC20Params = {
+      const sendSuperchainERC20Params = {
         tokenAddress: contracts.superchainWETH.address,
         to,
         amount,
         chainId,
-      } as unknown as SendSupERC20Parameters
+      } as unknown as SendSuperchainERC20Parameters
 
-      return sendSupERC20(sendSupERC20Params)
+      return sendSuperchainERC20(sendSuperchainERC20Params)
     },
-    [sendSupERC20],
+    [sendSuperchainERC20],
   )
 
   return { sendSuperchainWETH, isError, isPending, isSuccess }

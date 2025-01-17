@@ -52,16 +52,16 @@ export {
   simulateSendL2ToL2Message,
 } from '@/actions/sendL2ToL2Message.js'
 export type {
-  SendSupERC20ContractReturnType,
-  SendSupERC20ErrorType,
-  SendSupERC20Parameters,
-  SendSupERC20ReturnType,
-} from '@/actions/sendSupERC20.js'
+  SendSuperchainERC20ContractReturnType,
+  SendSuperchainERC20ErrorType,
+  SendSuperchainERC20Parameters,
+  SendSuperchainERC20ReturnType,
+} from '@/actions/sendSuperchainERC20.js'
 export {
-  estimateSendSupERC20Gas,
-  sendSupERC20,
-  simulateSendSupERC20,
-} from '@/actions/sendSupERC20.js'
+  estimateSendSuperchainERC20Gas,
+  sendSuperchainERC20,
+  simulateSendSuperchainERC20,
+} from '@/actions/sendSuperchainERC20.js'
 export type { SendSuperchainWETHParameters } from '@/actions/sendSuperchainWETH.js'
 export {
   estimateSendSuperchainWETHGas,

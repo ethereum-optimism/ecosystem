@@ -35,13 +35,13 @@ import {
   simulateSendL2ToL2Message,
 } from '@/actions/sendL2ToL2Message.js'
 import type {
-  SendSupERC20ContractReturnType,
-  SendSupERC20Parameters,
-} from '@/actions/sendSupERC20.js'
+  SendSuperchainERC20ContractReturnType,
+  SendSuperchainERC20Parameters,
+} from '@/actions/sendSuperchainERC20.js'
 import {
-  estimateSendSupERC20Gas,
-  simulateSendSupERC20,
-} from '@/actions/sendSupERC20.js'
+  estimateSendSuperchainERC20Gas,
+  simulateSendSuperchainERC20,
+} from '@/actions/sendSuperchainERC20.js'
 import type { SendSuperchainWETHParameters } from '@/actions/sendSuperchainWETH.js'
 import {
   estimateSendSuperchainWETHGas,
@@ -70,10 +70,10 @@ export type PublicActionsL2<
     parameters: RelayL2ToL2MessageParameters<TChain, TAccount, TChainOverride>,
   ) => Promise<bigint>
 
-  estimateSendSupERC20Gas: <
+  estimateSendSuperchainERC20Gas: <
     TChainOverride extends Chain | undefined = undefined,
   >(
-    parameters: SendSupERC20Parameters<TChain, TAccount, TChainOverride>,
+    parameters: SendSuperchainERC20Parameters<TChain, TAccount, TChainOverride>,
   ) => Promise<bigint>
 
   estimateDepositSuperchainWETHGas: <
@@ -120,9 +120,9 @@ export type PublicActionsL2<
     parameters: RelayL2ToL2MessageParameters<TChain, TAccount, TChainOverride>,
   ) => Promise<RelayL2ToL2MessageContractReturnType>
 
-  simulateSendSupERC20: <TChainOverride extends Chain | undefined = undefined>(
-    parameters: SendSupERC20Parameters<TChain, TAccount, TChainOverride>,
-  ) => Promise<SendSupERC20ContractReturnType>
+  simulateSendSuperchainERC20: <TChainOverride extends Chain | undefined = undefined>(
+    parameters: SendSuperchainERC20Parameters<TChain, TAccount, TChainOverride>,
+  ) => Promise<SendSuperchainERC20ContractReturnType>
 
   simulateDepositSuperchainWETH: <
     TChainOverride extends Chain | undefined = undefined,
@@ -154,7 +154,7 @@ export type PublicActionsL2<
     TChainOverride extends Chain | undefined = undefined,
   >(
     parameters: SendSuperchainWETHParameters<TChain, TAccount, TChainOverride>,
-  ) => Promise<SendSupERC20ContractReturnType>
+  ) => Promise<SendSuperchainERC20ContractReturnType>
 }
 
 export function publicActionsL2() {
@@ -171,7 +171,7 @@ export function publicActionsL2() {
         estimateSendL2ToL2MessageGas(client, args),
       estimateRelayL2ToL2MessageGas: (args) =>
         estimateRelayL2ToL2MessageGas(client, args),
-      estimateSendSupERC20Gas: (args) => estimateSendSupERC20Gas(client, args),
+      estimateSendSuperchainERC20Gas: (args) => estimateSendSuperchainERC20Gas(client, args),
       estimateSendSuperchainWETHGas: (args) =>
         estimateSendSuperchainWETHGas(client, args),
       estimateDepositSuperchainWETHGas: (args) =>
@@ -184,7 +184,7 @@ export function publicActionsL2() {
         simulateSendL2ToL2Message(client, args),
       simulateRelayL2ToL2Message: (args) =>
         simulateRelayL2ToL2Message(client, args),
-      simulateSendSupERC20: (args) => simulateSendSupERC20(client, args),
+      simulateSendSuperchainERC20: (args) => simulateSendSuperchainERC20(client, args),
       simulateDepositSuperchainWETH: (args) =>
         simulateDepositSuperchainWETH(client, args),
       simulateWithdrawSuperchainWETH: (args) =>

@@ -1,14 +1,10 @@
-import { parseAbi } from 'viem'
+import { parseAbi, erc20Abi } from 'viem'
 import { beforeAll, describe, expect, it } from 'vitest'
 
 import { supersimL2B } from '@/chains/supersim.js'
 import { contracts } from '@/contracts.js'
 import { publicClientA, testAccount, walletClientA } from '@/test/clients.js'
 import { createInteropSentL2ToL2Messages } from '@/utils/l2ToL2CrossDomainMessenger.js'
-
-const balanceOfAbi = parseAbi([
-  'function balanceOf(address account) view returns (uint256)',
-])
 
 const AMOUNT_TO_SEND = 10n
 
@@ -25,7 +21,7 @@ describe('sendSuperchainWETH', () => {
     it('should return expected request', async () => {
       const startingBalance = await publicClientA.readContract({
         address: contracts.superchainWETH.address,
-        abi: balanceOfAbi,
+        abi: erc20Abi,
         functionName: 'balanceOf',
         args: [testAccount.address],
       })
@@ -46,7 +42,7 @@ describe('sendSuperchainWETH', () => {
 
       const endingBalance = await publicClientA.readContract({
         address: contracts.superchainWETH.address,
-        abi: balanceOfAbi,
+        abi: erc20Abi,
         functionName: 'balanceOf',
         args: [testAccount.address],
       })

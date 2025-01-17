@@ -1,4 +1,4 @@
-import { parseAbi } from 'viem'
+import { parseAbi, erc20Abi } from 'viem'
 import { beforeAll, describe, expect, it } from 'vitest'
 
 import { supersimL2B } from '@/chains/supersim.js'
@@ -6,13 +6,9 @@ import { publicClientA, testAccount, walletClientA } from '@/test/clients.js'
 import { SUPERSIM_SUPERC20_ADDRESS } from '@/test/supERC20.js'
 import { createInteropSentL2ToL2Messages } from '@/utils/l2ToL2CrossDomainMessenger.js'
 
-const balanceOfAbi = parseAbi([
-  'function balanceOf(address account) view returns (uint256)',
-])
-
 const AMOUNT_TO_SEND = 10n
 
-describe('sendSupERC20', () => {
+describe('sendSuperchainERC20', () => {
   beforeAll(async () => {
     const hash = await walletClientA.writeContract({
       address: SUPERSIM_SUPERC20_ADDRESS,
@@ -28,12 +24,12 @@ describe('sendSupERC20', () => {
     it('should return expected request', async () => {
       const startingBalance = await publicClientA.readContract({
         address: SUPERSIM_SUPERC20_ADDRESS,
-        abi: balanceOfAbi,
+        abi: erc20Abi,
         functionName: 'balanceOf',
         args: [testAccount.address],
       })
 
-      const hash = await walletClientA.sendSupERC20({
+      const hash = await walletClientA.sendSuperchainERC20({
         tokenAddress: SUPERSIM_SUPERC20_ADDRESS,
         to: testAccount.address,
         amount: AMOUNT_TO_SEND,
@@ -50,7 +46,7 @@ describe('sendSupERC20', () => {
 
       const endingBalance = await publicClientA.readContract({
         address: SUPERSIM_SUPERC20_ADDRESS,
-        abi: balanceOfAbi,
+        abi: erc20Abi,
         functionName: 'balanceOf',
         args: [testAccount.address],
       })
@@ -61,7 +57,7 @@ describe('sendSupERC20', () => {
 
   describe('estimate gas', () => {
     it('should estimate gas', async () => {
-      const gas = await publicClientA.estimateSendSupERC20Gas({
+      const gas = await publicClientA.estimateSendSuperchainERC20Gas({
         account: testAccount.address,
         tokenAddress: SUPERSIM_SUPERC20_ADDRESS,
         to: testAccount.address,
@@ -76,7 +72,7 @@ describe('sendSupERC20', () => {
   describe('simulate', () => {
     it('should simulate', async () => {
       expect(() =>
-        publicClientA.simulateSendSupERC20({
+        publicClientA.simulateSendSuperchainERC20({
           account: testAccount.address,
           tokenAddress: SUPERSIM_SUPERC20_ADDRESS,
           to: testAccount.address,
