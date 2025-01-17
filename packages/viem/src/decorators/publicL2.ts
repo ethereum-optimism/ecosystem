@@ -120,7 +120,9 @@ export type PublicActionsL2<
     parameters: RelayL2ToL2MessageParameters<TChain, TAccount, TChainOverride>,
   ) => Promise<RelayL2ToL2MessageContractReturnType>
 
-  simulateSendSuperchainERC20: <TChainOverride extends Chain | undefined = undefined>(
+  simulateSendSuperchainERC20: <
+    TChainOverride extends Chain | undefined = undefined,
+  >(
     parameters: SendSuperchainERC20Parameters<TChain, TAccount, TChainOverride>,
   ) => Promise<SendSuperchainERC20ContractReturnType>
 
@@ -171,7 +173,8 @@ export function publicActionsL2() {
         estimateSendL2ToL2MessageGas(client, args),
       estimateRelayL2ToL2MessageGas: (args) =>
         estimateRelayL2ToL2MessageGas(client, args),
-      estimateSendSuperchainERC20Gas: (args) => estimateSendSuperchainERC20Gas(client, args),
+      estimateSendSuperchainERC20Gas: (args) =>
+        estimateSendSuperchainERC20Gas(client, args),
       estimateSendSuperchainWETHGas: (args) =>
         estimateSendSuperchainWETHGas(client, args),
       estimateDepositSuperchainWETHGas: (args) =>
@@ -184,7 +187,8 @@ export function publicActionsL2() {
         simulateSendL2ToL2Message(client, args),
       simulateRelayL2ToL2Message: (args) =>
         simulateRelayL2ToL2Message(client, args),
-      simulateSendSuperchainERC20: (args) => simulateSendSuperchainERC20(client, args),
+      simulateSendSuperchainERC20: (args) =>
+        simulateSendSuperchainERC20(client, args),
       simulateDepositSuperchainWETH: (args) =>
         simulateDepositSuperchainWETH(client, args),
       simulateWithdrawSuperchainWETH: (args) =>

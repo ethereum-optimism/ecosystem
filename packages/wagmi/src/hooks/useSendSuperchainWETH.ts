@@ -8,7 +8,8 @@ import { useCallback } from 'react'
 import { useSendSuperchainERC20 } from './useSendSuperchainERC20.js'
 
 export const useSendSuperchainWETH = () => {
-  const { sendSuperchainERC20, isError, isPending, isSuccess } = useSendSuperchainERC20()
+  const { sendSuperchainERC20, isError, isPending, isSuccess } =
+    useSendSuperchainERC20()
 
   const sendSuperchainWETH = useCallback(
     (params: SendSuperchainWETHParameters) => {

@@ -1,4 +1,4 @@
-import { parseAbi, erc20Abi } from 'viem'
+import { erc20Abi, parseAbi } from 'viem'
 import { beforeAll, describe, expect, it } from 'vitest'
 
 import { supersimL2B } from '@/chains/supersim.js'
