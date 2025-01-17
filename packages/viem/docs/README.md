@@ -6,11 +6,11 @@
 
 ## ABI
 
-- [crossL2InboxABI](variables/crossL2InboxABI.md)
-- [l2ToL2CrossDomainMessengerABI](variables/l2ToL2CrossDomainMessengerABI.md)
-- [superchainERC20ABI](variables/superchainERC20ABI.md)
-- [superchainTokenBridgeABI](variables/superchainTokenBridgeABI.md)
-- [superchainWETHABI](variables/superchainWETHABI.md)
+- [crossL2InboxAbi](variables/crossL2InboxAbi.md)
+- [l2ToL2CrossDomainMessengerAbi](variables/l2ToL2CrossDomainMessengerAbi.md)
+- [superchainERC20Abi](variables/superchainERC20Abi.md)
+- [superchainTokenBridgeAbi](variables/superchainTokenBridgeAbi.md)
+- [superchainWETHAbi](variables/superchainWETHAbi.md)
 
 ## L2 Public Actions
 
@@ -18,7 +18,7 @@
 - [simulateDepositSuperchainWETH](functions/simulateDepositSuperchainWETH.md)
 - [simulateRelayL2ToL2Message](functions/simulateRelayL2ToL2Message.md)
 - [simulateSendL2ToL2Message](functions/simulateSendL2ToL2Message.md)
-- [simulateSendSupERC20](functions/simulateSendSupERC20.md)
+- [simulateSendSuperchainERC20](functions/simulateSendSuperchainERC20.md)
 - [simulateSendSuperchainWETH](functions/simulateSendSuperchainWETH.md)
 - [simulateWithdrawSuperchainWETH](functions/simulateWithdrawSuperchainWETH.md)
 
@@ -30,12 +30,12 @@
 - [estimateDepositSuperchainWETHGas](functions/estimateDepositSuperchainWETHGas.md)
 - [estimateRelayL2ToL2MessageGas](functions/estimateRelayL2ToL2MessageGas.md)
 - [estimateSendL2ToL2MessageGas](functions/estimateSendL2ToL2MessageGas.md)
-- [estimateSendSupERC20Gas](functions/estimateSendSupERC20Gas.md)
+- [estimateSendSuperchainERC20Gas](functions/estimateSendSuperchainERC20Gas.md)
 - [estimateSendSuperchainWETHGas](functions/estimateSendSuperchainWETHGas.md)
 - [estimateWithdrawSuperchainWETHGas](functions/estimateWithdrawSuperchainWETHGas.md)
 - [relayL2ToL2Message](functions/relayL2ToL2Message.md)
 - [sendL2ToL2Message](functions/sendL2ToL2Message.md)
-- [sendSupERC20](functions/sendSupERC20.md)
+- [sendSuperchainERC20](functions/sendSuperchainERC20.md)
 - [sendSuperchainWETH](functions/sendSuperchainWETH.md)
 - [withdrawSuperchainWETH](functions/withdrawSuperchainWETH.md)
 
@@ -56,12 +56,6 @@
 
 - [contracts](variables/contracts.md)
 
-## Supersim
-
-- [supersimL1](variables/supersimL1.md)
-- [supersimL2A](variables/supersimL2A.md)
-- [supersimL2B](variables/supersimL2B.md)
-
 ## Types
 
 - [CrossChainSendETHContractReturnType](type-aliases/CrossChainSendETHContractReturnType.md)
@@ -80,10 +74,10 @@
 - [SendL2ToL2MessageErrorType](type-aliases/SendL2ToL2MessageErrorType.md)
 - [SendL2ToL2MessageParameters](type-aliases/SendL2ToL2MessageParameters.md)
 - [SendL2ToL2MessageReturnType](type-aliases/SendL2ToL2MessageReturnType.md)
-- [SendSupERC20ContractReturnType](type-aliases/SendSupERC20ContractReturnType.md)
-- [SendSupERC20ErrorType](type-aliases/SendSupERC20ErrorType.md)
-- [SendSupERC20Parameters](type-aliases/SendSupERC20Parameters.md)
-- [SendSupERC20ReturnType](type-aliases/SendSupERC20ReturnType.md)
+- [SendSuperchainERC20ContractReturnType](type-aliases/SendSuperchainERC20ContractReturnType.md)
+- [SendSuperchainERC20ErrorType](type-aliases/SendSuperchainERC20ErrorType.md)
+- [SendSuperchainERC20Parameters](type-aliases/SendSuperchainERC20Parameters.md)
+- [SendSuperchainERC20ReturnType](type-aliases/SendSuperchainERC20ReturnType.md)
 - [SendSuperchainWETHParameters](type-aliases/SendSuperchainWETHParameters.md)
 - [WithdrawSuperchainWETHContractReturnType](type-aliases/WithdrawSuperchainWETHContractReturnType.md)
 - [WithdrawSuperchainWETHErrorType](type-aliases/WithdrawSuperchainWETHErrorType.md)

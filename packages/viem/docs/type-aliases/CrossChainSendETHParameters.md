@@ -34,4 +34,4 @@ Address to send ETH to.
 
 ## Defined in
 
-[packages/viem/src/actions/crosschainSendETH.ts:26](https://github.com/ethereum-optimism/ecosystem/blob/1d855f26d1024617b154d28d909dbc33a421f5de/packages/viem/src/actions/crosschainSendETH.ts#L26)
+[packages/viem/src/actions/crosschainSendETH.ts:26](https://github.com/ethereum-optimism/ecosystem/blob/6d6302cd415cfc874f1d86fa22a309bdd9314531/packages/viem/src/actions/crosschainSendETH.ts#L26)
