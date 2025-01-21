@@ -9,6 +9,8 @@ const CONTRACTS = [
   'CrossDomainMessenger',
   'CrossL2Inbox',
   'L2ToL2CrossDomainMessenger',
+  'OptimismMintableERC20',
+  'OptimismMintableERC20Factory',
   'StandardBridge',
   'SuperchainERC20',
   'SuperchainWETH',
