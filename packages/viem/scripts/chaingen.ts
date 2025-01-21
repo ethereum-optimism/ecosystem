@@ -131,7 +131,12 @@ async function main() {
           .replace('.toml', '')
           .replace('-testnet', '')
 
-        const exportName = network === 'mainnet' ? normalizedName : `${normalizedName}-${network}`
+        // Apply a suffix if a network other than mainnet
+        const exportName =
+          network === 'mainnet'
+            ? normalizedName
+            : `${normalizedName}-${network}`
+
         return {
           chainName: chainConfig.name as string,
           exportName: camelCase(exportName),
