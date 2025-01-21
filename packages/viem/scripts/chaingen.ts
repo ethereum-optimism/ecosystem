@@ -7,7 +7,7 @@ import { createPublicClient, erc20Abi, http } from 'viem'
 import { mainnet, sepolia } from 'viem/chains'
 
 // Hardcoded. Can take a more elaborate approach if needed.
-const NETWORKS = ['mainnet', 'sepolia']
+const NETWORKS: Array<'mainnet' | 'sepolia'> = ['mainnet', 'sepolia']
 const SUPERCHAIN_REGISTRY_PATH = path.join(
   '..',
   '..',
@@ -131,9 +131,15 @@ async function main() {
           .replace('.toml', '')
           .replace('-testnet', '')
 
+        // Apply a suffix if a network other than mainnet
+        const exportName =
+          network === 'mainnet'
+            ? normalizedName
+            : `${normalizedName}-${network}`
+
         return {
           chainName: chainConfig.name as string,
-          exportName: camelCase(`${normalizedName}-${network}`),
+          exportName: camelCase(exportName),
           chainId: chainConfig.chain_id as number,
           sourceChainId: network === 'mainnet' ? 1 : 11155111,
           rpc: chainConfig.public_rpc as string,

@@ -5,7 +5,7 @@ import { chainConfig } from 'viem/op-stack'
 /**
  * Chain Definition for arena-z
  */
-export const arenaZMainnet = /*#__PURE__*/ defineChain({
+export const arenaZ = /*#__PURE__*/ defineChain({
   ...chainConfig,
   name: 'arena-z',
   id: 7897,
@@ -64,7 +64,7 @@ export const arenaZMainnet = /*#__PURE__*/ defineChain({
 /**
  * Chain Definition for Automata Mainnet
  */
-export const automataMainnet = /*#__PURE__*/ defineChain({
+export const automata = /*#__PURE__*/ defineChain({
   ...chainConfig,
   name: 'Automata Mainnet',
   id: 65536,
@@ -128,7 +128,7 @@ export const automataMainnet = /*#__PURE__*/ defineChain({
 /**
  * Chain Definition for Base
  */
-export const baseMainnet = /*#__PURE__*/ defineChain({
+export const base = /*#__PURE__*/ defineChain({
   ...chainConfig,
   name: 'Base',
   id: 8453,
@@ -192,7 +192,7 @@ export const baseMainnet = /*#__PURE__*/ defineChain({
 /**
  * Chain Definition for Cyber Mainnet
  */
-export const cyberMainnet = /*#__PURE__*/ defineChain({
+export const cyber = /*#__PURE__*/ defineChain({
   ...chainConfig,
   name: 'Cyber Mainnet',
   id: 7560,
@@ -256,7 +256,7 @@ export const cyberMainnet = /*#__PURE__*/ defineChain({
 /**
  * Chain Definition for Ethernity
  */
-export const ethernityMainnet = /*#__PURE__*/ defineChain({
+export const ethernity = /*#__PURE__*/ defineChain({
   ...chainConfig,
   name: 'Ethernity',
   id: 183,
@@ -320,7 +320,7 @@ export const ethernityMainnet = /*#__PURE__*/ defineChain({
 /**
  * Chain Definition for Funki
  */
-export const funkiMainnet = /*#__PURE__*/ defineChain({
+export const funki = /*#__PURE__*/ defineChain({
   ...chainConfig,
   name: 'Funki',
   id: 33979,
@@ -384,7 +384,7 @@ export const funkiMainnet = /*#__PURE__*/ defineChain({
 /**
  * Chain Definition for Ink
  */
-export const inkMainnet = /*#__PURE__*/ defineChain({
+export const ink = /*#__PURE__*/ defineChain({
   ...chainConfig,
   name: 'Ink',
   id: 57073,
@@ -443,7 +443,7 @@ export const inkMainnet = /*#__PURE__*/ defineChain({
 /**
  * Chain Definition for Lisk
  */
-export const liskMainnet = /*#__PURE__*/ defineChain({
+export const lisk = /*#__PURE__*/ defineChain({
   ...chainConfig,
   name: 'Lisk',
   id: 1135,
@@ -507,7 +507,7 @@ export const liskMainnet = /*#__PURE__*/ defineChain({
 /**
  * Chain Definition for Lyra Chain
  */
-export const lyraMainnet = /*#__PURE__*/ defineChain({
+export const lyra = /*#__PURE__*/ defineChain({
   ...chainConfig,
   name: 'Lyra Chain',
   id: 957,
@@ -566,7 +566,7 @@ export const lyraMainnet = /*#__PURE__*/ defineChain({
 /**
  * Chain Definition for Metal L2
  */
-export const metalMainnet = /*#__PURE__*/ defineChain({
+export const metal = /*#__PURE__*/ defineChain({
   ...chainConfig,
   name: 'Metal L2',
   id: 1750,
@@ -625,7 +625,7 @@ export const metalMainnet = /*#__PURE__*/ defineChain({
 /**
  * Chain Definition for Mode
  */
-export const modeMainnet = /*#__PURE__*/ defineChain({
+export const mode = /*#__PURE__*/ defineChain({
   ...chainConfig,
   name: 'Mode',
   id: 34443,
@@ -684,7 +684,7 @@ export const modeMainnet = /*#__PURE__*/ defineChain({
 /**
  * Chain Definition for OP Mainnet
  */
-export const opMainnet = /*#__PURE__*/ defineChain({
+export const op = /*#__PURE__*/ defineChain({
   ...chainConfig,
   name: 'OP Mainnet',
   id: 10,
@@ -743,7 +743,7 @@ export const opMainnet = /*#__PURE__*/ defineChain({
 /**
  * Chain Definition for Orderly Mainnet
  */
-export const orderlyMainnet = /*#__PURE__*/ defineChain({
+export const orderly = /*#__PURE__*/ defineChain({
   ...chainConfig,
   name: 'Orderly Mainnet',
   id: 291,
@@ -802,7 +802,7 @@ export const orderlyMainnet = /*#__PURE__*/ defineChain({
 /**
  * Chain Definition for RACE Mainnet
  */
-export const raceMainnet = /*#__PURE__*/ defineChain({
+export const race = /*#__PURE__*/ defineChain({
   ...chainConfig,
   name: 'RACE Mainnet',
   id: 6805,
@@ -861,7 +861,7 @@ export const raceMainnet = /*#__PURE__*/ defineChain({
 /**
  * Chain Definition for Redstone
  */
-export const redstoneMainnet = /*#__PURE__*/ defineChain({
+export const redstone = /*#__PURE__*/ defineChain({
   ...chainConfig,
   name: 'Redstone',
   id: 690,
@@ -925,7 +925,7 @@ export const redstoneMainnet = /*#__PURE__*/ defineChain({
 /**
  * Chain Definition for Shape
  */
-export const shapeMainnet = /*#__PURE__*/ defineChain({
+export const shape = /*#__PURE__*/ defineChain({
   ...chainConfig,
   name: 'Shape',
   id: 360,
@@ -989,7 +989,7 @@ export const shapeMainnet = /*#__PURE__*/ defineChain({
 /**
  * Chain Definition for Superseed
  */
-export const sseedMainnet = /*#__PURE__*/ defineChain({
+export const sseed = /*#__PURE__*/ defineChain({
   ...chainConfig,
   name: 'Superseed',
   id: 5330,
@@ -1053,7 +1053,7 @@ export const sseedMainnet = /*#__PURE__*/ defineChain({
 /**
  * Chain Definition for Swan Chain Mainnet
  */
-export const swanMainnet = /*#__PURE__*/ defineChain({
+export const swan = /*#__PURE__*/ defineChain({
   ...chainConfig,
   name: 'Swan Chain Mainnet',
   id: 254,
@@ -1117,7 +1117,7 @@ export const swanMainnet = /*#__PURE__*/ defineChain({
 /**
  * Chain Definition for Swellchain
  */
-export const swellMainnet = /*#__PURE__*/ defineChain({
+export const swell = /*#__PURE__*/ defineChain({
   ...chainConfig,
   name: 'Swellchain',
   id: 1923,
@@ -1176,7 +1176,7 @@ export const swellMainnet = /*#__PURE__*/ defineChain({
 /**
  * Chain Definition for Binary Mainnet
  */
-export const tbnMainnet = /*#__PURE__*/ defineChain({
+export const tbn = /*#__PURE__*/ defineChain({
   ...chainConfig,
   name: 'Binary Mainnet',
   id: 624,
@@ -1240,7 +1240,7 @@ export const tbnMainnet = /*#__PURE__*/ defineChain({
 /**
  * Chain Definition for World Chain
  */
-export const worldchainMainnet = /*#__PURE__*/ defineChain({
+export const worldchain = /*#__PURE__*/ defineChain({
   ...chainConfig,
   name: 'World Chain',
   id: 480,
@@ -1304,7 +1304,7 @@ export const worldchainMainnet = /*#__PURE__*/ defineChain({
 /**
  * Chain Definition for Zora
  */
-export const zoraMainnet = /*#__PURE__*/ defineChain({
+export const zora = /*#__PURE__*/ defineChain({
   ...chainConfig,
   name: 'Zora',
   id: 7777777,
@@ -1361,26 +1361,26 @@ export const zoraMainnet = /*#__PURE__*/ defineChain({
 })
 
 export const mainnetChains = [
-  arenaZMainnet,
-  automataMainnet,
-  baseMainnet,
-  cyberMainnet,
-  ethernityMainnet,
-  funkiMainnet,
-  inkMainnet,
-  liskMainnet,
-  lyraMainnet,
-  metalMainnet,
-  modeMainnet,
-  opMainnet,
-  orderlyMainnet,
-  raceMainnet,
-  redstoneMainnet,
-  shapeMainnet,
-  sseedMainnet,
-  swanMainnet,
-  swellMainnet,
-  tbnMainnet,
-  worldchainMainnet,
-  zoraMainnet,
+  arenaZ,
+  automata,
+  base,
+  cyber,
+  ethernity,
+  funki,
+  ink,
+  lisk,
+  lyra,
+  metal,
+  mode,
+  op,
+  orderly,
+  race,
+  redstone,
+  shape,
+  sseed,
+  swan,
+  swell,
+  tbn,
+  worldchain,
+  zora,
 ]
