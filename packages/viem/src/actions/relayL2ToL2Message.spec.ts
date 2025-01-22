@@ -26,7 +26,7 @@ describe('relayL2ToL2Message', () => {
 
   describe('estimate gas', () => {
     it('should estimate gas', async () => {
-      const hash = await walletClientA.sendL2ToL2Message({
+      const hash = await walletClientA.interop.sendL2ToL2Message({
         account: testAccount.address,
         destinationChainId: supersimL2B.id,
         target: ticTacToeAddress,
@@ -40,7 +40,7 @@ describe('relayL2ToL2Message', () => {
       )
       expect(sentMessages).length(1)
 
-      const gas = await publicClientB.estimateRelayL2ToL2MessageGas({
+      const gas = await publicClientB.interop.estimateRelayL2ToL2MessageGas({
         account: testAccount.address,
         sentMessageId: sentMessages[0].id,
         sentMessagePayload: sentMessages[0].payload,
@@ -52,7 +52,7 @@ describe('relayL2ToL2Message', () => {
 
   describe('simulate', () => {
     it('should simulate', async () => {
-      const hash = await walletClientA.sendL2ToL2Message({
+      const hash = await walletClientA.interop.sendL2ToL2Message({
         account: testAccount.address,
         destinationChainId: supersimL2B.id,
         target: ticTacToeAddress,
@@ -67,7 +67,7 @@ describe('relayL2ToL2Message', () => {
       expect(sentMessages).length(1)
 
       expect(() =>
-        publicClientB.simulateRelayL2ToL2Message({
+        publicClientB.interop.simulateRelayL2ToL2Message({
           account: testAccount,
           sentMessageId: sentMessages[0].id,
           sentMessagePayload: sentMessages[0].payload,
@@ -78,7 +78,7 @@ describe('relayL2ToL2Message', () => {
 
   describe('write contract', () => {
     it('should return expected request', async () => {
-      const sendTxHash = await walletClientA.sendL2ToL2Message({
+      const sendTxHash = await walletClientA.interop.sendL2ToL2Message({
         account: testAccount.address,
         destinationChainId: supersimL2B.id,
         target: ticTacToeAddress,
@@ -94,7 +94,7 @@ describe('relayL2ToL2Message', () => {
       )
       expect(sentMessages).length(1)
 
-      const relayTxHash = await walletClientB.relayL2ToL2Message({
+      const relayTxHash = await walletClientB.interop.relayL2ToL2Message({
         sentMessageId: sentMessages[0].id,
         sentMessagePayload: sentMessages[0].payload,
       })
