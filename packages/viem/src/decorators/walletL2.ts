@@ -2,38 +2,28 @@ import type { Account, Chain, Client, Transport } from 'viem'
 import type { WalletActionsL2 as OpWalletActionsL2 } from 'viem/op-stack'
 import { walletActionsL2 as opWalletActionsL2 } from 'viem/op-stack'
 
-import {
-  crossChainSendETH,
-  type CrossChainSendETHContractReturnType,
-  type CrossChainSendETHParameters,
-} from '@/actions/crosschainSendETH.js'
-import {
-  depositSuperchainWETH,
-  type DepositSuperchainWETHParameters,
-  type DepositSuperchainWETHReturnType,
-} from '@/actions/depositSuperchainWETH.js'
 import type {
+  CrossChainSendETHContractReturnType,
+  CrossChainSendETHParameters,
+  DepositSuperchainWETHParameters,
+  DepositSuperchainWETHReturnType,
   RelayL2ToL2MessageParameters,
   RelayL2ToL2MessageReturnType,
-} from '@/actions/relayL2ToL2Message.js'
-import { relayL2ToL2Message } from '@/actions/relayL2ToL2Message.js'
-import type {
   SendL2ToL2MessageParameters,
   SendL2ToL2MessageReturnType,
-} from '@/actions/sendL2ToL2Message.js'
-import { sendL2ToL2Message } from '@/actions/sendL2ToL2Message.js'
-import type {
   SendSuperchainERC20Parameters,
   SendSuperchainERC20ReturnType,
-} from '@/actions/sendSuperchainERC20.js'
-import { sendSuperchainERC20 } from '@/actions/sendSuperchainERC20.js'
-import type { SendSuperchainWETHParameters } from '@/actions/sendSuperchainWETH.js'
-import { sendSuperchainWETH } from '@/actions/sendSuperchainWETH.js'
+  WithdrawSuperchainWETHParameters,
+  WithdrawSuperchainWETHReturnType,
+} from '@/actions/interop/index.js'
 import {
+  crossChainSendETH,
+  depositSuperchainWETH,
+  relayL2ToL2Message,
+  sendL2ToL2Message,
+  sendSuperchainERC20,
   withdrawSuperchainWETH,
-  type WithdrawSuperchainWETHParameters,
-  type WithdrawSuperchainWETHReturnType,
-} from '@/actions/withdrawSuperchainWETH.js'
+} from '@/actions/interop/index.js'
 
 export type WalletInteropActionsL2<
   TChain extends Chain | undefined = Chain | undefined,
@@ -47,9 +37,6 @@ export type WalletInteropActionsL2<
   ) => Promise<RelayL2ToL2MessageReturnType>
   sendSuperchainERC20: <chainOverride extends Chain | undefined = undefined>(
     parameters: SendSuperchainERC20Parameters<TChain, TAccount, chainOverride>,
-  ) => Promise<SendSuperchainERC20ReturnType>
-  sendSuperchainWETH: <chainOverride extends Chain | undefined = undefined>(
-    parameters: SendSuperchainWETHParameters<TChain, TAccount, chainOverride>,
   ) => Promise<SendSuperchainERC20ReturnType>
   depositSuperchainWETH: <chainOverride extends Chain | undefined = undefined>(
     parameters: DepositSuperchainWETHParameters<
@@ -92,7 +79,6 @@ export function walletActionsL2() {
         sendL2ToL2Message: (args) => sendL2ToL2Message(client, args),
         relayL2ToL2Message: (args) => relayL2ToL2Message(client, args),
         sendSuperchainERC20: (args) => sendSuperchainERC20(client, args),
-        sendSuperchainWETH: (args) => sendSuperchainWETH(client, args),
         depositSuperchainWETH: (args) => depositSuperchainWETH(client, args),
         withdrawSuperchainWETH: (args) => withdrawSuperchainWETH(client, args),
         crossChainSendETH: (args) => crossChainSendETH(client, args),

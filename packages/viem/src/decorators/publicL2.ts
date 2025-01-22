@@ -5,54 +5,31 @@ import { publicActionsL2 as opPublicActionsL2 } from 'viem/op-stack'
 import type {
   CrossChainSendETHContractReturnType,
   CrossChainSendETHParameters,
-} from '@/actions/crosschainSendETH.js'
-import {
-  estimateCrossChainSendETHGas,
-  simulateCrossChainSendETH,
-} from '@/actions/crosschainSendETH.js'
-import type {
   DepositSuperchainWETHContractReturnType,
   DepositSuperchainWETHParameters,
-} from '@/actions/depositSuperchainWETH.js'
-import {
-  estimateDepositSuperchainWETHGas,
-  simulateDepositSuperchainWETH,
-} from '@/actions/depositSuperchainWETH.js'
-import type {
   RelayL2ToL2MessageContractReturnType,
   RelayL2ToL2MessageParameters,
-} from '@/actions/relayL2ToL2Message.js'
-import {
-  estimateRelayL2ToL2MessageGas,
-  simulateRelayL2ToL2Message,
-} from '@/actions/relayL2ToL2Message.js'
-import type {
   SendL2ToL2MessageContractReturnType,
   SendL2ToL2MessageParameters,
-} from '@/actions/sendL2ToL2Message.js'
-import {
-  estimateSendL2ToL2MessageGas,
-  simulateSendL2ToL2Message,
-} from '@/actions/sendL2ToL2Message.js'
-import type {
   SendSuperchainERC20ContractReturnType,
   SendSuperchainERC20Parameters,
-} from '@/actions/sendSuperchainERC20.js'
+  WithdrawSuperchainWETHContractReturnType,
+  WithdrawSuperchainWETHParameters,
+} from '@/actions/interop/index.js'
 import {
+  estimateCrossChainSendETHGas,
+  estimateDepositSuperchainWETHGas,
+  estimateRelayL2ToL2MessageGas,
+  estimateSendL2ToL2MessageGas,
   estimateSendSuperchainERC20Gas,
-  simulateSendSuperchainERC20,
-} from '@/actions/sendSuperchainERC20.js'
-import type { SendSuperchainWETHParameters } from '@/actions/sendSuperchainWETH.js'
-import {
-  estimateSendSuperchainWETHGas,
-  simulateSendSuperchainWETH,
-} from '@/actions/sendSuperchainWETH.js'
-import {
   estimateWithdrawSuperchainWETHGas,
+  simulateCrossChainSendETH,
+  simulateDepositSuperchainWETH,
+  simulateRelayL2ToL2Message,
+  simulateSendL2ToL2Message,
+  simulateSendSuperchainERC20,
   simulateWithdrawSuperchainWETH,
-  type WithdrawSuperchainWETHContractReturnType,
-  type WithdrawSuperchainWETHParameters,
-} from '@/actions/withdrawSuperchainWETH.js'
+} from '@/actions/interop/index.js'
 
 export type PublicInteropActionsL2<
   TChain extends Chain | undefined = Chain | undefined,
@@ -96,11 +73,6 @@ export type PublicInteropActionsL2<
       TChainOverride
     >,
   ) => Promise<bigint>
-  estimateSendSuperchainWETHGas: <
-    TChainOverride extends Chain | undefined = undefined,
-  >(
-    parameters: SendSuperchainWETHParameters<TChain, TAccount, TChainOverride>,
-  ) => Promise<bigint>
   simulateSendL2ToL2Message: <
     TChainOverride extends Chain | undefined = undefined,
   >(
@@ -141,11 +113,6 @@ export type PublicInteropActionsL2<
       TChainOverride
     >,
   ) => Promise<WithdrawSuperchainWETHContractReturnType>
-  simulateSendSuperchainWETH: <
-    TChainOverride extends Chain | undefined = undefined,
-  >(
-    parameters: SendSuperchainWETHParameters<TChain, TAccount, TChainOverride>,
-  ) => Promise<SendSuperchainERC20ContractReturnType>
 }
 
 export type PublicActionsL2<
@@ -173,8 +140,6 @@ export function publicActionsL2() {
           estimateRelayL2ToL2MessageGas(client, args),
         estimateSendSuperchainERC20Gas: (args) =>
           estimateSendSuperchainERC20Gas(client, args),
-        estimateSendSuperchainWETHGas: (args) =>
-          estimateSendSuperchainWETHGas(client, args),
         estimateDepositSuperchainWETHGas: (args) =>
           estimateDepositSuperchainWETHGas(client, args),
         estimateWithdrawSuperchainWETHGas: (args) =>
@@ -191,8 +156,6 @@ export function publicActionsL2() {
           simulateDepositSuperchainWETH(client, args),
         simulateWithdrawSuperchainWETH: (args) =>
           simulateWithdrawSuperchainWETH(client, args),
-        simulateSendSuperchainWETH: (args) =>
-          simulateSendSuperchainWETH(client, args),
         simulateCrossChainSendETH: (args) =>
           simulateCrossChainSendETH(client, args),
       },
