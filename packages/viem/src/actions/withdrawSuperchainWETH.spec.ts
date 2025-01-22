@@ -9,7 +9,7 @@ const AMOUNT_TO_WITHDRAW = 10n
 
 describe('withdrawSuperchainWETH', () => {
   beforeAll(async () => {
-    const hash = await walletClientA.depositSuperchainWETH({
+    const hash = await walletClientA.interop.depositSuperchainWETH({
       value: 1000n,
     })
 
@@ -28,7 +28,7 @@ describe('withdrawSuperchainWETH', () => {
         address: testAccount.address,
       })
 
-      const hash = await walletClientA.withdrawSuperchainWETH({
+      const hash = await walletClientA.interop.withdrawSuperchainWETH({
         amount: AMOUNT_TO_WITHDRAW,
       })
       const receipt = await publicClientA.waitForTransactionReceipt({ hash })
@@ -55,10 +55,12 @@ describe('withdrawSuperchainWETH', () => {
 
   describe('estimate gas', () => {
     it('should estimate gas', async () => {
-      const gas = await publicClientA.estimateWithdrawSuperchainWETHGas({
-        account: testAccount.address,
-        amount: AMOUNT_TO_WITHDRAW,
-      })
+      const gas = await publicClientA.interop.estimateWithdrawSuperchainWETHGas(
+        {
+          account: testAccount.address,
+          amount: AMOUNT_TO_WITHDRAW,
+        },
+      )
 
       expect(gas).toBeDefined()
     })
@@ -67,7 +69,7 @@ describe('withdrawSuperchainWETH', () => {
   describe('simulate', () => {
     it('should simulate', async () => {
       expect(() =>
-        publicClientA.simulateWithdrawSuperchainWETH({
+        publicClientA.interop.simulateWithdrawSuperchainWETH({
           account: testAccount.address,
           amount: AMOUNT_TO_WITHDRAW,
         }),

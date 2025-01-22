@@ -16,7 +16,7 @@ describe('depositSuperchainWETH', () => {
         args: [testAccount.address],
       })
 
-      const hash = await walletClientA.depositSuperchainWETH({
+      const hash = await walletClientA.interop.depositSuperchainWETH({
         value: AMOUNT_TO_SEND,
       })
 
@@ -35,7 +35,7 @@ describe('depositSuperchainWETH', () => {
 
   describe('estimate gas', () => {
     it('should estimate gas', async () => {
-      const gas = await publicClientA.estimateDepositSuperchainWETHGas({
+      const gas = await publicClientA.interop.estimateDepositSuperchainWETHGas({
         account: testAccount.address,
         value: AMOUNT_TO_SEND,
       })
@@ -47,7 +47,7 @@ describe('depositSuperchainWETH', () => {
   describe('simulate', () => {
     it('should simulate', async () => {
       expect(() =>
-        publicClientA.simulateDepositSuperchainWETH({
+        publicClientA.interop.simulateDepositSuperchainWETH({
           account: testAccount.address,
           value: AMOUNT_TO_SEND,
         }),

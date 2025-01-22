@@ -29,7 +29,7 @@ describe('sendSuperchainERC20', () => {
         args: [testAccount.address],
       })
 
-      const hash = await walletClientA.sendSuperchainERC20({
+      const hash = await walletClientA.interop.sendSuperchainERC20({
         tokenAddress: SUPERSIM_SUPERC20_ADDRESS,
         to: testAccount.address,
         amount: AMOUNT_TO_SEND,
@@ -57,7 +57,7 @@ describe('sendSuperchainERC20', () => {
 
   describe('estimate gas', () => {
     it('should estimate gas', async () => {
-      const gas = await publicClientA.estimateSendSuperchainERC20Gas({
+      const gas = await publicClientA.interop.estimateSendSuperchainERC20Gas({
         account: testAccount.address,
         tokenAddress: SUPERSIM_SUPERC20_ADDRESS,
         to: testAccount.address,
@@ -72,7 +72,7 @@ describe('sendSuperchainERC20', () => {
   describe('simulate', () => {
     it('should simulate', async () => {
       expect(() =>
-        publicClientA.simulateSendSuperchainERC20({
+        publicClientA.interop.simulateSendSuperchainERC20({
           account: testAccount.address,
           tokenAddress: SUPERSIM_SUPERC20_ADDRESS,
           to: testAccount.address,

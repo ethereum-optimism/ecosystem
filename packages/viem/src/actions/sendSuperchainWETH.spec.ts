@@ -10,7 +10,7 @@ const AMOUNT_TO_SEND = 10n
 
 describe('sendSuperchainWETH', () => {
   beforeAll(async () => {
-    const hash = await walletClientA.depositSuperchainWETH({
+    const hash = await walletClientA.interop.depositSuperchainWETH({
       value: 1000n,
     })
 
@@ -26,7 +26,7 @@ describe('sendSuperchainWETH', () => {
         args: [testAccount.address],
       })
 
-      const hash = await walletClientA.sendSuperchainWETH({
+      const hash = await walletClientA.interop.sendSuperchainWETH({
         to: testAccount.address,
         amount: AMOUNT_TO_SEND,
         chainId: supersimL2B.id,
@@ -53,7 +53,7 @@ describe('sendSuperchainWETH', () => {
 
   describe('estimate gas', () => {
     it('should estimate gas', async () => {
-      const gas = await publicClientA.estimateSendSuperchainWETHGas({
+      const gas = await publicClientA.interop.estimateSendSuperchainWETHGas({
         account: testAccount.address,
         to: testAccount.address,
         amount: AMOUNT_TO_SEND,
@@ -67,7 +67,7 @@ describe('sendSuperchainWETH', () => {
   describe('simulate', () => {
     it('should simulate', async () => {
       expect(() =>
-        publicClientA.simulateSendSuperchainWETH({
+        publicClientA.interop.simulateSendSuperchainWETH({
           account: testAccount.address,
           to: testAccount.address,
           amount: AMOUNT_TO_SEND,

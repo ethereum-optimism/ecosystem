@@ -15,7 +15,7 @@ describe('sendL2ToL2Message', () => {
 
   describe('write contract', () => {
     it('should return expected request', async () => {
-      const txHash = await walletClientA.sendL2ToL2Message({
+      const txHash = await walletClientA.interop.sendL2ToL2Message({
         account: testAccount.address,
         destinationChainId: supersimL2B.id,
         target: ticTacToeAddress,
@@ -42,7 +42,7 @@ describe('sendL2ToL2Message', () => {
 
   describe('estimate gas', () => {
     it('should estimate gas', async () => {
-      const gas = await publicClientA.estimateSendL2ToL2MessageGas({
+      const gas = await publicClientA.interop.estimateSendL2ToL2MessageGas({
         account: testAccount.address,
         target: ticTacToeAddress,
         destinationChainId: supersimL2B.id,
@@ -56,7 +56,7 @@ describe('sendL2ToL2Message', () => {
   describe('simulate', () => {
     it('should simulate', async () => {
       expect(() =>
-        publicClientA.simulateSendL2ToL2Message({
+        publicClientA.interop.simulateSendL2ToL2Message({
           account: testAccount.address,
           destinationChainId: supersimL2B.id,
           target: ticTacToeAddress,
