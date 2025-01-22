@@ -96,7 +96,7 @@ export const supersimL2D = defineChain({
  */
 export const supersimL2E = defineChain({
   ...chainConfig,
-  id: 904,
+  id: 905,
   name: 'Supersim L2 E',
   rpcUrls: {
     default: {
