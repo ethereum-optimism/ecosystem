@@ -27,7 +27,7 @@ describe('Generic Interop Flow', () => {
   })
 
   it('should send and relay cross chain message', async () => {
-    const sentMessageTxHash = await walletClientA.interop.sendL2ToL2Message({
+    const sentMessageTxHash = await walletClientA.interop.sendMessage({
       account: testAccount.address,
       destinationChainId: supersimL2B.id,
       target: ticTacToeAddress,
@@ -39,12 +39,14 @@ describe('Generic Interop Flow', () => {
     })
     const { sentMessages } = await createInteropSentL2ToL2Messages(
       publicClientA,
-      { receipt },
+      {
+        receipt,
+      },
     )
     expect(sentMessages).length(1)
 
     // message was relayed on the other side
-    const relayMessageTxHash = await walletClientB.interop.relayL2ToL2Message({
+    const relayMessageTxHash = await walletClientB.interop.relayMessage({
       account: testAccount.address,
       sentMessageId: sentMessages[0].id,
       sentMessagePayload: sentMessages[0].payload,
@@ -95,11 +97,13 @@ describe('SuperchainERC20 Flow', () => {
 
     const { sentMessages } = await createInteropSentL2ToL2Messages(
       publicClientA,
-      { receipt },
+      {
+        receipt,
+      },
     )
     expect(sentMessages).toHaveLength(1)
 
-    const relayMessageTxHash = await walletClientB.interop.relayL2ToL2Message({
+    const relayMessageTxHash = await walletClientB.interop.relayMessage({
       account: testAccount.address,
       sentMessageId: sentMessages[0].id,
       sentMessagePayload: sentMessages[0].payload,
@@ -133,7 +137,7 @@ describe('Cross chain ETH transfer', () => {
       address: testAccount.address,
     })
 
-    const hash = await walletClientA.interop.crossChainSendETH({
+    const hash = await walletClientA.interop.sendETH({
       to: testAccount.address,
       value: AMOUNT_TO_SEND,
       chainId: supersimL2B.id,
@@ -143,11 +147,13 @@ describe('Cross chain ETH transfer', () => {
 
     const { sentMessages } = await createInteropSentL2ToL2Messages(
       publicClientA,
-      { receipt },
+      {
+        receipt,
+      },
     )
     expect(sentMessages).toHaveLength(1)
 
-    const relayMessageTxHash = await walletClientB.interop.relayL2ToL2Message({
+    const relayMessageTxHash = await walletClientB.interop.relayMessage({
       account: testAccount.address,
       sentMessageId: sentMessages[0].id,
       sentMessagePayload: sentMessages[0].payload,
