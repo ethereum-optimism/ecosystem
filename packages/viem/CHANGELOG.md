@@ -1,5 +1,11 @@
 # @eth-optimism/viem
 
+## 0.2.0
+
+### Minor Changes
+
+- [#624](https://github.com/ethereum-optimism/ecosystem/pull/624) [`7b8ae33`](https://github.com/ethereum-optimism/ecosystem/commit/7b8ae339acad1295899211b2716dd1c279a347f5) Thanks [@hamdiallam](https://github.com/hamdiallam)! - removed Mainnet as a suffix for exported chains
+
 ## 0.1.0
 
 ### Minor Changes
