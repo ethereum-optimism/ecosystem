@@ -6,7 +6,7 @@ import { publicClientA, testAccount, walletClientA } from '@/test/clients.js'
 import { ticTacToeAbi, ticTacToeAddress } from '@/test/setupTicTacToe.js'
 import { decodeSentL2ToL2Messages } from '@/utils/l2ToL2CrossDomainMessenger.js'
 
-describe('sendL2ToL2Message', () => {
+describe('sendMessage', () => {
   const calldata = encodeFunctionData({
     abi: ticTacToeAbi,
     functionName: 'createGame',
@@ -15,7 +15,7 @@ describe('sendL2ToL2Message', () => {
 
   describe('write contract', () => {
     it('should return expected request', async () => {
-      const txHash = await walletClientA.interop.sendL2ToL2Message({
+      const txHash = await walletClientA.interop.sendMessage({
         account: testAccount.address,
         destinationChainId: supersimL2B.id,
         target: ticTacToeAddress,
@@ -42,7 +42,7 @@ describe('sendL2ToL2Message', () => {
 
   describe('estimate gas', () => {
     it('should estimate gas', async () => {
-      const gas = await publicClientA.interop.estimateSendL2ToL2MessageGas({
+      const gas = await publicClientA.interop.estimateSendMessageGas({
         account: testAccount.address,
         target: ticTacToeAddress,
         destinationChainId: supersimL2B.id,
@@ -56,7 +56,7 @@ describe('sendL2ToL2Message', () => {
   describe('simulate', () => {
     it('should simulate', async () => {
       expect(() =>
-        publicClientA.interop.simulateSendL2ToL2Message({
+        publicClientA.interop.simulateSendMessage({
           account: testAccount.address,
           destinationChainId: supersimL2B.id,
           target: ticTacToeAddress,

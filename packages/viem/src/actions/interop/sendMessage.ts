@@ -1,4 +1,4 @@
-/** @module sendL2ToL2Message */
+/** @module sendMessage */
 import type {
   Account,
   Address,
@@ -25,7 +25,7 @@ import type { ErrorType } from '@/types/utils.js'
 /**
  * @category Types
  */
-export type SendL2ToL2MessageParameters<
+export type SendMessageParameters<
   TChain extends Chain | undefined = Chain | undefined,
   TAccount extends Account | undefined = Account | undefined,
   TChainOverride extends Chain | undefined = Chain | undefined,
@@ -47,12 +47,12 @@ export type SendL2ToL2MessageParameters<
 /**
  * @category Types
  */
-export type SendL2ToL2MessageReturnType = Hash
+export type SendMessageReturnType = Hash
 
 /**
  * @category Types
  */
-export type SendL2ToL2MessageContractReturnType = ContractFunctionReturnType<
+export type SendMessageContractReturnType = ContractFunctionReturnType<
   typeof l2ToL2CrossDomainMessengerAbi,
   'nonpayable',
   'sendMessage'
@@ -61,7 +61,7 @@ export type SendL2ToL2MessageContractReturnType = ContractFunctionReturnType<
 /**
  * @category Types
  */
-export type SendL2ToL2MessageErrorType =
+export type SendMessageErrorType =
   | EstimateContractGasErrorType
   | WriteContractErrorType
   | ErrorType
@@ -70,17 +70,17 @@ export type SendL2ToL2MessageErrorType =
  * Initiates the intent of sending a L2 to L2 message. Used in the interop flow.
  * @category L2 Wallet Actions
  * @param client - L2 Wallet Client
- * @param parameters - {@link SendL2ToL2MessageParameters}
- * @returns The sendL2ToL2Message transaction hash. {@link SendL2ToL2MessageReturnType}
+ * @param parameters - {@link SendMessageParameters}
+ * @returns The sendMessage transaction hash. {@link SendMessageReturnType}
  */
-export async function sendL2ToL2Message<
+export async function sendMessage<
   chain extends Chain | undefined,
   account extends Account | undefined,
   chainOverride extends Chain | undefined = undefined,
 >(
   client: Client<Transport, chain, account>,
-  parameters: SendL2ToL2MessageParameters<chain, account, chainOverride>,
-): Promise<SendL2ToL2MessageReturnType> {
+  parameters: SendMessageParameters<chain, account, chainOverride>,
+): Promise<SendMessageReturnType> {
   const { destinationChainId, target, message, ...txParameters } = parameters
 
   return baseWriteAction(
@@ -96,19 +96,19 @@ export async function sendL2ToL2Message<
 }
 
 /**
- * Estimates gas for {@link sendL2ToL2Message}
+ * Estimates gas for {@link sendMessage}
  * @category L2 Wallet Actions
  * @param client - L2 Wallet Client
- * @param parameters - {@link SendL2ToL2MessageParameters}
+ * @param parameters - {@link SendMessageParameters}
  * @returns The estimated gas value.
  */
-export async function estimateSendL2ToL2MessageGas<
+export async function estimateSendMessageGas<
   TChain extends Chain | undefined,
   TAccount extends Account | undefined,
   TChainOverride extends Chain | undefined = undefined,
 >(
   client: Client<Transport, TChain, TAccount>,
-  parameters: SendL2ToL2MessageParameters<TChain, TAccount, TChainOverride>,
+  parameters: SendMessageParameters<TChain, TAccount, TChainOverride>,
 ): Promise<bigint> {
   const { destinationChainId, target, message, ...txParameters } = parameters
 
@@ -122,20 +122,20 @@ export async function estimateSendL2ToL2MessageGas<
 }
 
 /**
- * Simulate contract call for {@link sendL2ToL2Message}
+ * Simulate contract call for {@link sendMessage}
  * @category L2 Public Actions
  * @param client - L2 Public Client
- * @param parameters - {@link SendL2ToL2MessageParameters}
- * @returns The contract functions return value. {@link SendL2ToL2MessageContractReturnType}
+ * @param parameters - {@link SendMessageParameters}
+ * @returns The contract functions return value. {@link SendMessageContractReturnType}
  */
-export async function simulateSendL2ToL2Message<
+export async function simulateSendMessage<
   TChain extends Chain | undefined,
   TAccount extends Account | undefined,
   TChainOverride extends Chain | undefined = undefined,
 >(
   client: Client<Transport, TChain, TAccount>,
-  parameters: SendL2ToL2MessageParameters<TChain, TAccount, TChainOverride>,
-): Promise<SendL2ToL2MessageContractReturnType> {
+  parameters: SendMessageParameters<TChain, TAccount, TChainOverride>,
+): Promise<SendMessageContractReturnType> {
   const { account, destinationChainId, target, message } = parameters
 
   const res = await simulateContract(client, {
@@ -147,5 +147,5 @@ export async function simulateSendL2ToL2Message<
     args: [destinationChainId, target, message],
   } as SimulateContractParameters)
 
-  return res.result as SendL2ToL2MessageContractReturnType
+  return res.result as SendMessageContractReturnType
 }

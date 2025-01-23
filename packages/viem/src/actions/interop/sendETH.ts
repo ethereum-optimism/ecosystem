@@ -23,7 +23,7 @@ import type { ErrorType } from '@/types/utils.js'
 /**
  * @category Types
  */
-export type CrossChainSendETHParameters<
+export type SendETHParameters<
   TChain extends Chain | undefined = Chain | undefined,
   TAccount extends Account | undefined = Account | undefined,
   TChainOverride extends Chain | undefined = Chain | undefined,
@@ -43,7 +43,7 @@ export type CrossChainSendETHParameters<
 /**
  * @category Types
  */
-export type CrossChainSendETHContractReturnType = ContractFunctionReturnType<
+export type SendETHContractReturnType = ContractFunctionReturnType<
   typeof superchainWETHAbi,
   'payable',
   'sendETH'
@@ -52,7 +52,7 @@ export type CrossChainSendETHContractReturnType = ContractFunctionReturnType<
 /**
  * @category Types
  */
-export type CrossChainSendETHErrorType =
+export type SendETHErrorType =
   | EstimateContractGasErrorType
   | WriteContractErrorType
   | ErrorType
@@ -61,17 +61,17 @@ export type CrossChainSendETHErrorType =
  * Sends ETH to the specified recipient on the destination chain
  * @category L2 Wallet Actions
  * @param client - L2 Wallet Client
- * @param parameters - {@link CrossChainSendETHParameters}
- * @returns The crosschainSendETH transaction hash. {@link CrossChainSendETHContractReturnType}
+ * @param parameters - {@link SendETHParameters}
+ * @returns The crosschainSendETH transaction hash. {@link SendETHContractReturnType}
  */
-export async function crossChainSendETH<
+export async function sendETH<
   chain extends Chain | undefined,
   account extends Account | undefined,
   chainOverride extends Chain | undefined = undefined,
 >(
   client: Client<Transport, chain, account>,
-  parameters: CrossChainSendETHParameters<chain, account, chainOverride>,
-): Promise<CrossChainSendETHContractReturnType> {
+  parameters: SendETHParameters<chain, account, chainOverride>,
+): Promise<SendETHContractReturnType> {
   const { to, chainId, ...txParameters } = parameters
 
   return baseWriteAction(
@@ -87,19 +87,19 @@ export async function crossChainSendETH<
 }
 
 /**
- * Estimates gas for {@link crossChainSendETH}
+ * Estimates gas for {@link sendETH}
  * @category L2 Wallet Actions
  * @param client - L2 Wallet Client
- * @param parameters - {@link CrossChainSendETHParameters}
+ * @param parameters - {@link SendETHParameters}
  * @returns The estimated gas value.
  */
-export async function estimateCrossChainSendETHGas<
+export async function estimateSendETHGas<
   TChain extends Chain | undefined,
   TAccount extends Account | undefined,
   TChainOverride extends Chain | undefined = undefined,
 >(
   client: Client<Transport, TChain, TAccount>,
-  parameters: CrossChainSendETHParameters<TChain, TAccount, TChainOverride>,
+  parameters: SendETHParameters<TChain, TAccount, TChainOverride>,
 ): Promise<bigint> {
   const { to, chainId, ...txParameters } = parameters
 
@@ -113,20 +113,20 @@ export async function estimateCrossChainSendETHGas<
 }
 
 /**
- * Simulate contract call for {@link crossChainSendETH}
+ * Simulate contract call for {@link sendETH}
  * @category L2 Public Actions
  * @param client - L2 Public Client
- * @param parameters - {@link CrossChainSendETHParameters}
- * @returns The contract functions return value. {@link CrossChainSendETHContractReturnType}
+ * @param parameters - {@link SendETHParameters}
+ * @returns The contract functions return value. {@link SendETHContractReturnType}
  */
-export async function simulateCrossChainSendETH<
+export async function simulateSendETH<
   TChain extends Chain | undefined,
   TAccount extends Account | undefined,
   TChainOverride extends Chain | undefined = undefined,
 >(
   client: Client<Transport, TChain, TAccount>,
-  parameters: CrossChainSendETHParameters<TChain, TAccount, TChainOverride>,
-): Promise<CrossChainSendETHContractReturnType> {
+  parameters: SendETHParameters<TChain, TAccount, TChainOverride>,
+): Promise<SendETHContractReturnType> {
   const { account, value, to, chainId } = parameters
 
   const res = await simulateContract(client, {
@@ -139,5 +139,5 @@ export async function simulateCrossChainSendETH<
     value,
   } as SimulateContractParameters)
 
-  return res.result as CrossChainSendETHContractReturnType
+  return res.result as SendETHContractReturnType
 }
