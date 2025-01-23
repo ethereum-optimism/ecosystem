@@ -13,7 +13,7 @@ describe('crossChainSendETH', () => {
         address: testAccount.address,
       })
 
-      const hash = await walletClientA.interop.crossChainSendETH({
+      const hash = await walletClientA.interop.sendETH({
         to: testAccount.address,
         value: AMOUNT_TO_SEND,
         chainId: supersimL2B.id,
@@ -38,7 +38,7 @@ describe('crossChainSendETH', () => {
 
   describe('estimate gas', () => {
     it('should estimate gas', async () => {
-      const gas = await publicClientA.interop.estimateCrossChainSendETHGas({
+      const gas = await publicClientA.interop.estimateSendETHGas({
         account: testAccount.address,
         to: testAccount.address,
         value: AMOUNT_TO_SEND,
@@ -52,7 +52,7 @@ describe('crossChainSendETH', () => {
   describe('simulate', () => {
     it('should simulate', async () => {
       expect(() =>
-        publicClientA.interop.simulateCrossChainSendETH({
+        publicClientA.interop.simulateSendETH({
           account: testAccount.address,
           to: testAccount.address,
           value: AMOUNT_TO_SEND,

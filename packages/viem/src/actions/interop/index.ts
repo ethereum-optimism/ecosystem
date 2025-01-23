@@ -1,14 +1,4 @@
 export type {
-  CrossChainSendETHContractReturnType,
-  CrossChainSendETHErrorType,
-  CrossChainSendETHParameters,
-} from '@/actions/interop/crosschainSendETH.js'
-export {
-  crossChainSendETH,
-  estimateCrossChainSendETHGas,
-  simulateCrossChainSendETH,
-} from '@/actions/interop/crosschainSendETH.js'
-export type {
   DepositSuperchainWETHContractReturnType,
   DepositSuperchainWETHErrorType,
   DepositSuperchainWETHParameters,
@@ -20,27 +10,37 @@ export {
   simulateDepositSuperchainWETH,
 } from '@/actions/interop/depositSuperchainWETH.js'
 export type {
-  RelayL2ToL2MessageContractReturnType,
-  RelayL2ToL2MessageErrorType,
-  RelayL2ToL2MessageParameters,
-  RelayL2ToL2MessageReturnType,
-} from '@/actions/interop/relayL2ToL2Message.js'
+  RelayMessageContractReturnType,
+  RelayMessageErrorType,
+  RelayMessageParameters,
+  RelayMessageReturnType,
+} from '@/actions/interop/relayMessage.js'
 export {
-  estimateRelayL2ToL2MessageGas,
-  relayL2ToL2Message,
-  simulateRelayL2ToL2Message,
-} from '@/actions/interop/relayL2ToL2Message.js'
+  estimateRelayMessageGas,
+  relayMessage,
+  simulateRelayMessage,
+} from '@/actions/interop/relayMessage.js'
 export type {
-  SendL2ToL2MessageContractReturnType,
-  SendL2ToL2MessageErrorType,
-  SendL2ToL2MessageParameters,
-  SendL2ToL2MessageReturnType,
-} from '@/actions/interop/sendL2ToL2Message.js'
+  SendETHContractReturnType,
+  SendETHErrorType,
+  SendETHParameters,
+} from '@/actions/interop/sendETH.js'
 export {
-  estimateSendL2ToL2MessageGas,
-  sendL2ToL2Message,
-  simulateSendL2ToL2Message,
-} from '@/actions/interop/sendL2ToL2Message.js'
+  estimateSendETHGas,
+  sendETH,
+  simulateSendETH,
+} from '@/actions/interop/sendETH.js'
+export type {
+  SendMessageContractReturnType,
+  SendMessageErrorType,
+  SendMessageParameters,
+  SendMessageReturnType,
+} from '@/actions/interop/sendMessage.js'
+export {
+  estimateSendMessageGas,
+  sendMessage,
+  simulateSendMessage,
+} from '@/actions/interop/sendMessage.js'
 export type {
   SendSuperchainERC20ContractReturnType,
   SendSuperchainERC20ErrorType,

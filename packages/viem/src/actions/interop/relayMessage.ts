@@ -25,7 +25,7 @@ import type { ErrorType } from '@/types/utils.js'
 /**
  * @category Types
  */
-export type RelayL2ToL2MessageParameters<
+export type RelayMessageParameters<
   TChain extends Chain | undefined = Chain | undefined,
   TAccount extends Account | undefined = Account | undefined,
   TChainOverride extends Chain | undefined = Chain | undefined,
@@ -45,12 +45,12 @@ export type RelayL2ToL2MessageParameters<
 /**
  * @category Types
  */
-export type RelayL2ToL2MessageReturnType = Hash
+export type RelayMessageReturnType = Hash
 
 /**
  * @category Types
  */
-export type RelayL2ToL2MessageContractReturnType = ContractFunctionReturnType<
+export type RelayMessageContractReturnType = ContractFunctionReturnType<
   typeof l2ToL2CrossDomainMessengerAbi,
   'payable',
   'relayMessage'
@@ -59,26 +59,26 @@ export type RelayL2ToL2MessageContractReturnType = ContractFunctionReturnType<
 /**
  * @category Types
  */
-export type RelayL2ToL2MessageErrorType =
+export type RelayMessageErrorType =
   | EstimateContractGasErrorType
   | WriteContractErrorType
   | ErrorType
 
 /**
- * Relays a message emitted by the L2ToL2CrossDomainMessenger
+ * Relays a message emitted by the CrossDomainMessenger
  * @category L2 Wallet Actions
  * @param client - Client to use
- * @param parameters - {@link RelayL2ToL2MessageParameters}
- * @returns The relayMessage transaction hash. {@link RelayL2ToL2MessageReturnType}
+ * @param parameters - {@link RelayMessageParameters}
+ * @returns The relayMessage transaction hash. {@link RelayMessageReturnType}
  */
-export async function relayL2ToL2Message<
+export async function relayMessage<
   TChain extends Chain | undefined,
   TAccount extends Account | undefined,
   TChainOverride extends Chain | undefined = undefined,
 >(
   client: Client<Transport, TChain, TAccount>,
-  parameters: RelayL2ToL2MessageParameters<TChain, TAccount, TChainOverride>,
-): Promise<RelayL2ToL2MessageReturnType> {
+  parameters: RelayMessageParameters<TChain, TAccount, TChainOverride>,
+): Promise<RelayMessageReturnType> {
   const { sentMessageId, sentMessagePayload, ...txParameters } = parameters
 
   return baseWriteAction(
@@ -94,19 +94,19 @@ export async function relayL2ToL2Message<
 }
 
 /**
- * Estimates gas for {@link relayL2ToL2Message}
+ * Estimates gas for {@link relayMessage}
  * @category L2 Wallet Actions
  * @param client - Client to use
- * @param parameters - {@link RelayL2ToL2MessageParameters}
+ * @param parameters - {@link RelayMessageParameters}
  * @returns The estimated gas value.
  */
-export async function estimateRelayL2ToL2MessageGas<
+export async function estimateRelayMessageGas<
   TChain extends Chain | undefined,
   TAccount extends Account | undefined,
   TChainOverride extends Chain | undefined = undefined,
 >(
   client: Client<Transport, TChain, TAccount>,
-  parameters: RelayL2ToL2MessageParameters<TChain, TAccount, TChainOverride>,
+  parameters: RelayMessageParameters<TChain, TAccount, TChainOverride>,
 ): Promise<bigint> {
   const { sentMessageId, sentMessagePayload, ...txParameters } = parameters
 
@@ -120,20 +120,20 @@ export async function estimateRelayL2ToL2MessageGas<
 }
 
 /**
- * Simulate contract call for {@link relayL2ToL2Message}
+ * Simulate contract call for {@link relayMessage}
  * @category L2 Public Actions
  * @param client - L2 Public Client
  * @param parameters - {@link Relay2ToL2MessageParameters}
- * @returns The contract functions return value. {@link RelayL2ToL2MessageContractReturnType}
+ * @returns The contract functions return value. {@link RelayMessageContractReturnType}
  */
-export async function simulateRelayL2ToL2Message<
+export async function simulateRelayMessage<
   TChain extends Chain | undefined,
   TAccount extends Account | undefined,
   TChainOverride extends Chain | undefined = undefined,
 >(
   client: Client<Transport, TChain, TAccount>,
-  parameters: RelayL2ToL2MessageParameters<TChain, TAccount, TChainOverride>,
-): Promise<RelayL2ToL2MessageContractReturnType> {
+  parameters: RelayMessageParameters<TChain, TAccount, TChainOverride>,
+): Promise<RelayMessageContractReturnType> {
   const { account, sentMessageId, sentMessagePayload } = parameters
 
   const res = await simulateContract(client, {
@@ -145,5 +145,5 @@ export async function simulateRelayL2ToL2Message<
     args: [sentMessageId, sentMessagePayload],
   } as SimulateContractParameters)
 
-  return res.result as RelayL2ToL2MessageContractReturnType
+  return res.result as RelayMessageContractReturnType
 }
