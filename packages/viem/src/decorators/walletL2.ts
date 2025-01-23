@@ -3,12 +3,12 @@ import type { WalletActionsL2 as OpWalletActionsL2 } from 'viem/op-stack'
 import { walletActionsL2 as opWalletActionsL2 } from 'viem/op-stack'
 
 import type {
-  SendETHContractReturnType,
-  SendETHParameters,
   DepositSuperchainWETHParameters,
   DepositSuperchainWETHReturnType,
   RelayMessageParameters,
   RelayMessageReturnType,
+  SendETHContractReturnType,
+  SendETHParameters,
   SendMessageParameters,
   SendMessageReturnType,
   SendSuperchainERC20Parameters,
@@ -17,9 +17,9 @@ import type {
   WithdrawSuperchainWETHReturnType,
 } from '@/actions/interop/index.js'
 import {
-  sendETH,
   depositSuperchainWETH,
   relayMessage,
+  sendETH,
   sendMessage,
   sendSuperchainERC20,
   withdrawSuperchainWETH,

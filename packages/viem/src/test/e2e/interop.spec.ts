@@ -1,9 +1,7 @@
 import { encodeFunctionData, parseAbi } from 'viem'
 import { beforeAll, describe, expect, it } from 'vitest'
 
-import { superchainWETHAbi } from '@/abis.js'
 import { supersimL2B } from '@/chains/supersim.js'
-import { contracts } from '@/contracts.js'
 import {
   publicClientA,
   publicClientB,
