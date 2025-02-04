@@ -1,5 +1,5 @@
-import type { SendSuperchainERC20Parameters } from '@eth-optimism/viem'
 import { contracts, superchainTokenBridgeAbi } from '@eth-optimism/viem'
+import type { SendSuperchainERC20Parameters } from '@eth-optimism/viem/actions/interop'
 import { useCallback } from 'react'
 import { useConfig, useWriteContract } from 'wagmi'
 
