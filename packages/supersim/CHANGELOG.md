@@ -1,5 +1,11 @@
 # supersim
 
+## 0.0.8
+
+### Patch Changes
+
+- [#636](https://github.com/ethereum-optimism/ecosystem/pull/636) [`7d36457`](https://github.com/ethereum-optimism/ecosystem/commit/7d36457f5d7a67ef91230ef52c19734e1fb58135) Thanks [@tremarkley](https://github.com/tremarkley)! - Bump supersim package to use 0.1.0-alpha.33
+
 ## 0.0.7
 
 ### Patch Changes
