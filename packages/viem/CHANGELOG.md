@@ -1,5 +1,11 @@
 # @eth-optimism/viem
 
+## 0.3.0
+
+### Minor Changes
+
+- [#629](https://github.com/ethereum-optimism/ecosystem/pull/629) [`88408ab`](https://github.com/ethereum-optimism/ecosystem/commit/88408ab448f545a02ab0fe1530514c3d2d11ea26) Thanks [@hamdiallam](https://github.com/hamdiallam)! - scope interop actions and client/wallet extensions, removing L2ToL2 in the name
+
 ## 0.2.0
 
 ### Minor Changes
