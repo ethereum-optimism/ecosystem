@@ -11,7 +11,7 @@
 
 In this repository, you'll find numerous code references for applications & packages to help app developers build on top of the OP Stack with ease. 
 
-If the [Optimism Repository](https://github.com/ethereum-optimism/ecosystem) is a place where the protocol and its infrastructure gets built. The Ecosystem Repository is a place where utilities, applications, and examples get built to interact with the protocols and its infrastructure.
+The [Optimism Repository](https://github.com/ethereum-optimism/ecosystem) is a place where the protocol and its infrastructure are built. The Ecosystem Repository is a place where utilities, applications, and examples are built to interact with the protocols and its infrastructure.
 
 Designed to be "aggressively open source," we encourage you to explore, modify, extend, and test the code as needed. We look forward to building with you!
 
