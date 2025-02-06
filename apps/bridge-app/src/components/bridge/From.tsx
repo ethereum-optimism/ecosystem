@@ -45,7 +45,7 @@ export const From = ({
 
     const bigAmount = parseEther(amount)
     if (balance && bigAmount > balance.data.value) {
-      return 'Insufficent Balance'
+      return 'Insufficient Balance'
     }
 
     return ''
