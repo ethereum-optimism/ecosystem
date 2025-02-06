@@ -107,7 +107,7 @@ describe('relayMessage', () => {
 
       expect(relayTxHash).toBeDefined()
 
-      // succesfully relayed
+      // successfully relayed
       const relayReceipt = await publicClientB.waitForTransactionReceipt({
         hash: relayTxHash,
       })
