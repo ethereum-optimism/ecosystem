@@ -1,6 +1,7 @@
 {
   "name": "@eth-optimism/ui-component-storybook",
   "version": "1.0.0",
+  "private": true,
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -13,7 +14,7 @@
   "license": "ISC",
   "devDependencies": {
     "@chromatic-com/storybook": "^1.2.23",
-    "@eth-optimism/ui-components": "*",
+    "@eth-optimism/ui-components": "workspace:*",
     "@storybook/addon-essentials": "^8.0.1",
     "@storybook/addon-interactions": "^8.0.1",
     "@storybook/addon-links": "^8.0.1",
