@@ -19,7 +19,7 @@ import { publicClientA, testAccount, walletClientA } from '@/test/clients.js'
 
 describe('withdrawERC20', async () => {
   // Hardcoded since we don't have a good way to pull the L1 contracts for supersim yet.
-  const l1StandardBridgeAddress = '0x8d515eb0e5F293B16B6bBCA8275c060bAe0056B0'
+  const l1StandardBridgeAddress = '0x31e3C5A665B5b9dBf6D91A72415c6ad71FdD1181'
 
   const publicL1Client = createPublicClient({
     chain: supersimL1,
