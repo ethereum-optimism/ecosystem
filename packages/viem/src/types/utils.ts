@@ -20,27 +20,26 @@ export type GetAccountParameter<
       : { account?: accountOverride | Account | Address | undefined }
     : { account?: accountOverride | Account | Address | undefined }
 
-
-
 export type GetContractAddressParameter<
   chain extends Chain | undefined,
   contractName extends string,
-> = (chain extends Chain
-    ? Prettify<
-        {
-          targetChain: Prettify<TargetChain<chain, contractName>>
-        } & {
-          [_ in `${contractName}Address`]?: undefined
-        }
-      >
-    : never)
-| Prettify<
-    {
-      targetChain?: undefined
-    } & {
-      [_ in `${contractName}Address`]: Address
-    }
-  >
+> =
+  | (chain extends Chain
+      ? Prettify<
+          {
+            targetChain: Prettify<TargetChain<chain, contractName>>
+          } & {
+            [_ in `${contractName}Address`]?: undefined
+          }
+        >
+      : never)
+  | Prettify<
+      {
+        targetChain?: undefined
+      } & {
+        [_ in `${contractName}Address`]: Address
+      }
+    >
 
 export type TargetChain<
   chain extends Chain = Chain,
