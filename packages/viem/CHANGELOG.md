@@ -1,5 +1,11 @@
 # @eth-optimism/viem
 
+## 0.3.1
+
+### Patch Changes
+
+- [#646](https://github.com/ethereum-optimism/ecosystem/pull/646) [`9a4d207`](https://github.com/ethereum-optimism/ecosystem/commit/9a4d207f76f12ceb561374ac03c4f630d73f150c) Thanks [@jakim929](https://github.com/jakim929)! - add contract addresses for supersim chains
+
 ## 0.3.0
 
 ### Minor Changes
