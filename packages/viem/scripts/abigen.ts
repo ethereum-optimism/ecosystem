@@ -6,8 +6,12 @@ import path from 'path'
 // Hardcoded. Can take a more elaborate approach if needed.
 const OPTIMISM_PATH = path.join('..', '..', 'lib', 'optimism')
 const CONTRACTS = [
+  'CrossDomainMessenger',
   'CrossL2Inbox',
   'L2ToL2CrossDomainMessenger',
+  'OptimismMintableERC20',
+  'OptimismMintableERC20Factory',
+  'StandardBridge',
   'SuperchainERC20',
   'SuperchainWETH',
   'SuperchainTokenBridge',
