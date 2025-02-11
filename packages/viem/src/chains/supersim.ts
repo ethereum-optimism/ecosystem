@@ -1,6 +1,15 @@
 import { defineChain } from 'viem'
 import { chainConfig } from 'viem/op-stack'
 
+import {
+  addressesToViemContractConstant,
+  supersimL2AAddresses,
+  supersimL2BAddresses,
+  supersimL2CAddresses,
+  supersimL2DAddresses,
+  supersimL2EAddresses,
+} from '@/chains/supersimAddresses.js'
+
 /**
  * L1 chain definition for supersim in non-forked mode
  * @category Supersim
@@ -18,6 +27,8 @@ export const supersimL1 = defineChain({
   testnet: true,
 })
 
+const sourceId = supersimL1.id
+
 /**
  * L2 chain A definition for supersim in non-forked mode
  * @category Supersim
@@ -32,8 +43,12 @@ export const supersimL2A = defineChain({
     },
   },
   nativeCurrency: { name: 'Ether', symbol: 'ETH', decimals: 18 },
-  sourceId: 900,
+  sourceId,
   testnet: true,
+  contracts: {
+    ...chainConfig.contracts,
+    ...addressesToViemContractConstant(supersimL2AAddresses, sourceId),
+  },
 })
 
 /**
@@ -50,8 +65,12 @@ export const supersimL2B = defineChain({
     },
   },
   nativeCurrency: { name: 'Ether', symbol: 'ETH', decimals: 18 },
-  sourceId: 900,
+  sourceId,
   testnet: true,
+  contracts: {
+    ...chainConfig.contracts,
+    ...addressesToViemContractConstant(supersimL2BAddresses, sourceId),
+  },
 })
 
 /**
@@ -68,8 +87,12 @@ export const supersimL2C = defineChain({
     },
   },
   nativeCurrency: { name: 'Ether', symbol: 'ETH', decimals: 18 },
-  sourceId: 900,
+  sourceId,
   testnet: true,
+  contracts: {
+    ...chainConfig.contracts,
+    ...addressesToViemContractConstant(supersimL2CAddresses, sourceId),
+  },
 })
 
 /**
@@ -86,8 +109,12 @@ export const supersimL2D = defineChain({
     },
   },
   nativeCurrency: { name: 'Ether', symbol: 'ETH', decimals: 18 },
-  sourceId: 900,
+  sourceId,
   testnet: true,
+  contracts: {
+    ...chainConfig.contracts,
+    ...addressesToViemContractConstant(supersimL2DAddresses, sourceId),
+  },
 })
 
 /**
@@ -104,6 +131,18 @@ export const supersimL2E = defineChain({
     },
   },
   nativeCurrency: { name: 'Ether', symbol: 'ETH', decimals: 18 },
-  sourceId: 900,
+  sourceId,
   testnet: true,
+  contracts: {
+    ...chainConfig.contracts,
+    ...addressesToViemContractConstant(supersimL2EAddresses, sourceId),
+  },
 })
+
+export const supersimChains = [
+  supersimL2A,
+  supersimL2B,
+  supersimL2C,
+  supersimL2D,
+  supersimL2E,
+]
