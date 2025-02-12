@@ -9,15 +9,15 @@ import { describe, expect, it } from 'vitest'
 import { optimismMintableERC20FactoryAbi } from '@/abis.js'
 import { depositERC20 } from '@/actions/depositERC20.js'
 import {
-  estimateWithdrawERC20Gas,
-  simulateWithdrawERC20,
-  withdrawERC20,
-} from '@/actions/withdrawERC20.js'
+  estimateWithdrawOptimismERC20Gas,
+  simulateWithdrawOptimismERC20,
+  withdrawOptimismERC20,
+} from '@/actions/withdrawOptimismERC20.js'
 import { supersimL1 } from '@/chains/supersim.js'
 import { contracts } from '@/contracts.js'
 import { publicClientA, testAccount, walletClientA } from '@/test/clients.js'
 
-describe('withdrawERC20', async () => {
+describe('withdrawOptimismERC20', async () => {
   // Hardcoded since we don't have a good way to pull the L1 contracts for supersim yet.
   const l1StandardBridgeAddress = '0x31e3C5A665B5b9dBf6D91A72415c6ad71FdD1181'
 
@@ -103,7 +103,7 @@ describe('withdrawERC20', async () => {
 
   describe('write contract', () => {
     it('should return expected request', async () => {
-      const hash = await withdrawERC20(publicClientA, {
+      const hash = await withdrawOptimismERC20(publicClientA, {
         account: testAccount,
         tokenAddress: l2TokenAddress,
         amount: 1n,
@@ -118,7 +118,7 @@ describe('withdrawERC20', async () => {
 
   describe('estimate gas', () => {
     it('should estimate gas', async () => {
-      const gas = await estimateWithdrawERC20Gas(publicClientA, {
+      const gas = await estimateWithdrawOptimismERC20Gas(publicClientA, {
         account: testAccount,
         tokenAddress: l2TokenAddress,
         amount: 1n,
@@ -132,7 +132,7 @@ describe('withdrawERC20', async () => {
     it('should simulate', async () => {
       expect(
         async () =>
-          await simulateWithdrawERC20(publicClientA, {
+          await simulateWithdrawOptimismERC20(publicClientA, {
             account: testAccount,
             tokenAddress: l2TokenAddress,
             amount: 1n,
