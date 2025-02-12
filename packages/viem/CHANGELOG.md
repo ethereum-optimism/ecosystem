@@ -1,5 +1,11 @@
 # @eth-optimism/viem
 
+## 0.3.2
+
+### Patch Changes
+
+- [#649](https://github.com/ethereum-optimism/ecosystem/pull/649) [`b06b675`](https://github.com/ethereum-optimism/ecosystem/commit/b06b6754eed271f0dfe4d738b122750a00f2f93d) Thanks [@jakim929](https://github.com/jakim929)! - added interop-alpha chain definitions
+
 ## 0.3.1
 
 ### Patch Changes
