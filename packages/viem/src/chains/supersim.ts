@@ -1,8 +1,8 @@
 import { defineChain } from 'viem'
 import { chainConfig } from 'viem/op-stack'
 
+import { addressesToViemContractConstant } from '@/addressSet.js'
 import {
-  addressesToViemContractConstant,
   supersimL2AAddresses,
   supersimL2BAddresses,
   supersimL2CAddresses,
