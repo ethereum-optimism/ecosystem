@@ -1,7 +1,7 @@
 #!/usr/bin/env tsx
 
-import { writeFileSync, readFileSync, mkdirSync, existsSync } from 'node:fs'
-import { resolve, join, dirname, basename } from 'node:path'
+import { writeFileSync, readFileSync } from 'node:fs'
+import { resolve, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 // Get the directory name of the current module
@@ -21,25 +21,6 @@ async function checkVersionExists(version: string): Promise<boolean> {
     )
     return false
   }
-}
-
-// Function to generate a random changeset name
-function generateChangesetName(): string {
-  const adjectives = [
-    'happy',
-    'silly',
-    'grumpy',
-    'brave',
-    'clever',
-    'quiet',
-    'loud',
-  ]
-  const nouns = ['dogs', 'cats', 'birds', 'terms', 'lions', 'bears', 'fish']
-  const verbs = ['jump', 'run', 'taste', 'sleep', 'dance', 'sing', 'play']
-
-  const randomElement = (arr: string[]) =>
-    arr[Math.floor(Math.random() * arr.length)]
-  return `${randomElement(adjectives)}-${randomElement(nouns)}-${randomElement(verbs)}`
 }
 
 async function updateSupersimVersion(version: string) {
@@ -62,24 +43,18 @@ async function updateSupersimVersion(version: string) {
 
   writeFileSync(installJsPath, installJsContent)
 
-  // 2. Create changeset file
-  const changesetDir = resolve(__dirname, '../.changeset')
-  if (!existsSync(changesetDir)) {
-    mkdirSync(changesetDir, { recursive: true })
-  }
+  // 2. Update package.json version
+  const packageJsonPath = resolve(
+    __dirname,
+    '../packages/supersim/package.json',
+  )
+  const packageJson = JSON.parse(readFileSync(packageJsonPath, 'utf-8'))
+  packageJson.version = version
+  writeFileSync(packageJsonPath, JSON.stringify(packageJson, null, '  ') + '\n')
 
-  const changesetContent = `---
-'supersim': ${version}
----
-
-bumped supersim to ${version}
-`
-
-  const changesetPath = join(changesetDir, `${generateChangesetName()}.md`)
-  writeFileSync(changesetPath, changesetContent)
-
-  console.log(`✅ Updated supersim version to ${version}`)
-  console.log(`✅ Created changeset file: ${basename(changesetPath)}`)
+  console.log(`✅ Updated supersim version to ${version} in:`)
+  console.log(`  - install.js`)
+  console.log(`  - package.json`)
 }
 
 // Get version from command line argument
@@ -89,7 +64,6 @@ if (!version) {
   process.exit(1)
 }
 
-// Make the main function async
 ;(async () => {
   try {
     await updateSupersimVersion(version)
