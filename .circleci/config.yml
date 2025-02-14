@@ -92,7 +92,7 @@ workflows:
     jobs:
       - publish-release:
           context:
-            - circleci-repo-super-cli # for GITHUB_TOKEN_GOVERNANCE && NPM_TOKEN
+            - circleci-repo-ecosystem # for GITHUB_TOKEN_GOVERNANCE && NPM_TOKEN
           filters:
             branches:
               only: main
