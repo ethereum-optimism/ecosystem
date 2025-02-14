@@ -1,0 +1,98 @@
+version: 2.1
+
+orbs:
+  nx: nrwl/nx@1.6.2
+  node: circleci/node@6.3.0
+  utils: ethereum-optimism/circleci-utils@1.0.9
+
+commands:
+  setup:
+    description: "Setup"
+    steps:
+      - checkout
+      - node/install-pnpm:
+          version: "9"
+      - run:
+          name: Install pnpm dependencies
+          command: pnpm install
+      - nx/set-shas
+      - run:
+          name: Build
+          command: pnpm nx affected --base=$NX_BASE --head=$NX_HEAD --target=build
+
+jobs:
+  publish-release:
+    docker:
+      - image: cimg/node:20.11
+    steps:
+      - checkout
+      - run:
+          name: Setup
+          command: |
+            # Assuming your setup action installs dependencies
+            pnpm install
+
+      - run:
+          name: Check NPM Token
+          command: |
+            if [ -z "${NPM_TOKEN}" ]; then
+              echo "NPM_TOKEN is not set. Please set it in CircleCI project settings."
+              exit 1
+            fi
+
+      - run:
+          name: Configure NPM Token and Registry
+          command: |
+            npm config set '//registry.npmjs.org/:_authToken' "${NPM_TOKEN}"
+
+      - run:
+          name: Verify NPM Token
+          command: npm whoami
+
+      - utils/changesets:
+          createGithubReleases: false
+          publish: "pnpm release:publish"
+          version: "pnpm release:version"
+  lint:
+    executor:
+      name: node/default
+      tag: "22.10"
+    steps:
+      - setup
+      - run:
+          name: Lint
+          command: pnpm nx affected --base=$NX_BASE --head=$NX_HEAD --target=lint
+  test:
+    executor:
+      name: node/default
+      tag: "22.10"
+    steps:
+      - setup
+      - run:
+          name: Unit Tests
+          command: pnpm nx affected --base=$NX_BASE --head=$NX_HEAD --target=test
+
+  typecheck:
+    executor:
+      name: node/default
+      tag: "22.10"
+    steps:
+      - setup
+      - run:
+          name: Typecheck
+          command: pnpm nx affected --base=$NX_BASE --head=$NX_HEAD --target=typecheck
+
+workflows:
+  main:
+    jobs:
+      - lint
+      - test
+      - typecheck
+  release:
+    jobs:
+      - publish-release:
+          context:
+            - circleci-repo-super-cli # for GITHUB_TOKEN_GOVERNANCE && NPM_TOKEN
+          filters:
+            branches:
+              only: main
