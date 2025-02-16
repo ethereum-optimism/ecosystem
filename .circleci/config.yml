@@ -3,9 +3,25 @@ version: 2.1
 orbs:
   nx: nrwl/nx@1.6.2
   node: circleci/node@6.3.0
-  utils: ethereum-optimism/circleci-utils@1.0.9
+  utils: ethereum-optimism/circleci-utils@1.0.10
 
 commands:
+  prepare-snapshot:
+    description: "Prepare the snapshot name"
+    steps:
+      - run:
+          name: Setup snapshot name
+          command: |
+            SNAPSHOT_NAME=${CIRCLE_BRANCH}
+            echo "Will create snapshot using name $SNAPSHOT_NAME"
+            echo "export SNAPSHOT_NAME=${SNAPSHOT_NAME}" >> "$BASH_ENV"
+      - run:
+          name: Prepare changeset version environment
+          command: |
+            echo "export GITHUB_TOKEN=${GITHUB_TOKEN_GOVERNANCE}" >> "$BASH_ENV"
+      - run:
+          name: Create snapshot versions
+          command: pnpm release:version:snapshot
   setup:
     description: "Setup"
     steps:
@@ -21,16 +37,21 @@ commands:
           command: pnpm nx affected --base=$NX_BASE --head=$NX_HEAD --target=build
 
 jobs:
-  publish-release:
+  publish-to-npm:
     docker:
       - image: cimg/node:20.11
+    parameters:
+      prepare-snapshot:
+        type: boolean
+        default: false
     steps:
       - checkout
       - run:
           name: Setup
           command: |
-            # Assuming your setup action installs dependencies
             pnpm install
+          environment:
+            NPM_TOKEN: nada
 
       - run:
           name: Check NPM Token
@@ -48,6 +69,18 @@ jobs:
       - run:
           name: Verify NPM Token
           command: npm whoami
+
+      - run:
+          name: Build
+          command: pnpm build
+          environment:
+            NPM_TOKEN: nada
+
+      - when:
+          condition:
+            equal: [<< parameters.prepare-snapshot >>, true]
+          steps:
+            - prepare-snapshot
 
       - utils/changesets:
           createGithubReleases: false
@@ -90,7 +123,17 @@ workflows:
       - typecheck
   release:
     jobs:
-      - publish-release:
+      - publish-to-npm:
+          name: Publish new versions
+          context:
+            - circleci-repo-ecosystem # for GITHUB_TOKEN_GOVERNANCE && NPM_TOKEN
+          filters:
+            branches:
+              only: main
+
+      - publish-to-npm:
+          name: Publish snapshot versions
+          prepare-snapshot: true
           context:
             - circleci-repo-ecosystem # for GITHUB_TOKEN_GOVERNANCE && NPM_TOKEN
           filters:
