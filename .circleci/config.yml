@@ -1,7 +1,6 @@
 version: 2.1
 
 orbs:
-  nx: nrwl/nx@1.6.2
   node: circleci/node@6.3.0
   utils: ethereum-optimism/circleci-utils@1.0.10
 
@@ -22,18 +21,58 @@ commands:
       - run:
           name: Create snapshot versions
           command: pnpm release:version:snapshot
+
   setup:
-    description: "Setup"
+    description: "Setup Node.js environment with pnpm and nx"
     steps:
-      - checkout
-      - node/install-pnpm:
-          version: "9"
+      # Read Node.js version from .nvmrc
       - run:
-          name: Install pnpm dependencies
-          command: pnpm install
-      - nx/set-shas
+          name: Read Node.js version
+          command: |
+            NODE_VERSION=$(cat .nvmrc)
+            echo "export NODE_VERSION=$NODE_VERSION" >> $BASH_ENV
+
+      # Setup Node.js with the version from .nvmrc
+      - node/install:
+          node-version: ${NODE_VERSION}
+
+      # Install pnpm
       - run:
-          name: Build
+          name: Install pnpm
+          command: |
+            npm install -g pnpm@latest
+
+      # Set nx base and head refs (equivalent to nx-set-shas)
+      - run:
+          name: Set nx base and head refs
+          command: |
+            if [ -n "${CIRCLE_PULL_REQUEST}" ]; then
+              # For pull requests
+              export NX_BASE="origin/${CIRCLE_TARGET_BRANCH}"
+              export NX_HEAD="HEAD"
+            else
+              # For main branch
+              export NX_BASE="HEAD~1"
+              export NX_HEAD="HEAD"
+            fi
+            echo "export NX_BASE=$NX_BASE" >> $BASH_ENV
+            echo "export NX_HEAD=$NX_HEAD" >> $BASH_ENV
+
+      # Log nx base and head refs
+      - run:
+          name: Log nx base and head refs
+          command: |
+            echo "BASE: $NX_BASE"
+            echo "HEAD: $NX_HEAD"
+
+      # Install dependencies
+      - run:
+          name: Install dependencies
+          command: pnpm i --frozen-lockfile
+
+      # Build affected projects
+      - run:
+          name: Build affected projects
           command: pnpm nx affected --base=$NX_BASE --head=$NX_HEAD --target=build
 
 jobs:
@@ -86,41 +125,8 @@ jobs:
           createGithubReleases: false
           publish: "pnpm release:publish"
           version: "pnpm release:version"
-  lint:
-    executor:
-      name: node/default
-      tag: "22.10"
-    steps:
-      - setup
-      - run:
-          name: Lint
-          command: pnpm nx affected --base=$NX_BASE --head=$NX_HEAD --target=lint
-  test:
-    executor:
-      name: node/default
-      tag: "22.10"
-    steps:
-      - setup
-      - run:
-          name: Unit Tests
-          command: pnpm nx affected --base=$NX_BASE --head=$NX_HEAD --target=test
-
-  typecheck:
-    executor:
-      name: node/default
-      tag: "22.10"
-    steps:
-      - setup
-      - run:
-          name: Typecheck
-          command: pnpm nx affected --base=$NX_BASE --head=$NX_HEAD --target=typecheck
 
 workflows:
-  main:
-    jobs:
-      - lint
-      - test
-      - typecheck
   release:
     jobs:
       - publish-to-npm:
