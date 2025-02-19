@@ -34,7 +34,7 @@ commands:
               curl https://mise.run | sh
             fi
             echo "export PATH=\"$HOME/.local/bin:\$PATH\"" >> "$BASH_ENV"
-            echo "export MISE_DATA_DIR=/data/mise-data" >> "$BASH_ENV"
+            echo "export MISE_DATA_DIR=\"$HOME/.mise\"" >> "$BASH_ENV"
             echo "export MISE_JOBS=$(nproc)" >> "$BASH_ENV"
             echo "eval \"\$($HOME/.local/bin/mise activate --shims)\"" >> "$BASH_ENV"
       - run:
