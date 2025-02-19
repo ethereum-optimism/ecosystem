@@ -18,4 +18,4 @@ anvil = "ubi:foundry-rs/foundry[exe=anvil]"
 
 [hooks]
 # Enabling corepack will install the `pnpm` package manager specified in package.json
-postinstall = "npx corepack enable"]
+postinstall = "npx corepack enable"
