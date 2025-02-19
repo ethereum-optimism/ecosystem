@@ -108,12 +108,6 @@ jobs:
           name: Verify NPM Token
           command: npm whoami
 
-      - run:
-          name: Build
-          command: pnpm build
-          environment:
-            NPM_TOKEN: nada
-
       - when:
           condition:
             equal: [<< parameters.prepare-snapshot >>, true]
