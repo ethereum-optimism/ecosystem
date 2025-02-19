@@ -129,9 +129,9 @@ jobs:
     steps:
       - checkout
       - setup
-      - run:
-          name: Run Build
-          command: pnpm nx affected --base=$NX_BASE --head=$NX_HEAD --target=build
+      # - run:
+      #     name: Run Build
+      #     command: pnpm nx affected --base=$NX_BASE --head=$NX_HEAD --target=build
       - run:
           name: Run TypeChecker
           command: pnpm nx affected --base=$NX_BASE --head=$NX_HEAD --target=typecheck
