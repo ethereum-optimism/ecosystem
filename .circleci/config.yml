@@ -44,18 +44,20 @@ commands:
       - run:
           name: Set nx base and head refs
           command: |
-            # Fetch the target branch
-            git fetch origin ${CIRCLE_TARGET_BRANCH:-main}
+            # Fetch all branches
+            git fetch origin
 
             if [ -n "${CIRCLE_PULL_REQUEST}" ]; then
               # For pull requests
-              export NX_BASE="origin/${CIRCLE_TARGET_BRANCH}"
+              export NX_BASE="origin/${CIRCLE_TARGET_BRANCH:-main}"
               export NX_HEAD="HEAD"
             else
-              # For main branch
-              export NX_BASE="HEAD~1"
+              # For direct pushes to branches, compare against the previous commit
+              git rev-parse --verify origin/main && DEFAULT_BASE="origin/main" || DEFAULT_BASE="HEAD~1"
+              export NX_BASE="${DEFAULT_BASE}"
               export NX_HEAD="HEAD"
             fi
+
             echo "export NX_BASE=$NX_BASE" >> $BASH_ENV
             echo "export NX_HEAD=$NX_HEAD" >> $BASH_ENV
 
@@ -129,9 +131,9 @@ jobs:
     steps:
       - checkout
       - setup
-      # - run:
-      #     name: Run Build
-      #     command: pnpm nx affected --base=$NX_BASE --head=$NX_HEAD --target=build
+      - run:
+          name: Run Build
+          command: pnpm nx affected --base=$NX_BASE --head=$NX_HEAD --target=build
       - run:
           name: Run TypeChecker
           command: pnpm nx affected --base=$NX_BASE --head=$NX_HEAD --target=typecheck
