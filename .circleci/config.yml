@@ -25,7 +25,22 @@ commands:
   setup:
     description: "Setup Node.js environment with pnpm and nx"
     steps:
-      # Set nx base and head refs (equivalent to nx-set-shas)
+      - run:
+          name: Install mise
+          command: |
+            if command -v mise &> /dev/null; then
+              echo "mise already installed at $(command -v mise)"
+            else
+              curl https://mise.run | sh
+            fi
+            echo "export PATH=\"$HOME/.local/bin:\$PATH\"" >> "$BASH_ENV"
+            echo "export MISE_DATA_DIR=/data/mise-data" >> "$BASH_ENV"
+            echo "export MISE_JOBS=$(nproc)" >> "$BASH_ENV"
+            echo "eval \"\$($HOME/.local/bin/mise activate --shims)\"" >> "$BASH_ENV"
+      - run:
+          name: Install mise dependencies
+          command: |
+            mise install -v -y
       - run:
           name: Set nx base and head refs
           command: |
@@ -65,7 +80,7 @@ jobs:
         type: boolean
         default: false
     steps:
-      - utils/checkout-with-mise
+      - checkout
       - setup
       - run:
           name: Build projects
@@ -109,7 +124,7 @@ jobs:
     docker:
       - image: cimg/node:20.11
     steps:
-      - utils/checkout-with-mise
+      - checkout
       - setup
       - run:
           name: Run Build

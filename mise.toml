@@ -1,0 +1,21 @@
+[tools]
+node = "20.11.0"
+
+"ubi:ethereum-optimism/supersim"="0.1.0-alpha.38"
+
+# Foundry dependencies
+# Foundry is a special case because it supplies multiple binaries at the same
+# GitHub release, so we need to use the aliasing trick to get mise to not error
+# The git ref here should be on the `stable` branch.
+forge = "nightly-5d16800a64e5357fbb2493e4cae061756d145981"
+cast = "nightly-5d16800a64e5357fbb2493e4cae061756d145981"
+anvil = "nightly-5d16800a64e5357fbb2493e4cae061756d145981"
+
+[alias]
+forge = "ubi:foundry-rs/foundry[exe=forge]"
+cast = "ubi:foundry-rs/foundry[exe=cast]"
+anvil = "ubi:foundry-rs/foundry[exe=anvil]"
+
+[hooks]
+# Enabling corepack will install the `pnpm` package manager specified in package.json
+postinstall = "npx corepack enable"]
