@@ -44,6 +44,9 @@ commands:
       - run:
           name: Set nx base and head refs
           command: |
+            # Fetch the target branch
+            git fetch origin ${CIRCLE_TARGET_BRANCH:-main}
+
             if [ -n "${CIRCLE_PULL_REQUEST}" ]; then
               # For pull requests
               export NX_BASE="origin/${CIRCLE_TARGET_BRANCH}"
