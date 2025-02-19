@@ -1,6 +1,7 @@
 version: 2.1
 
 orbs:
+  nx: nrwl/nx@1.6.2
   node: circleci/node@6.3.0
   utils: ethereum-optimism/circleci-utils@1.0.10
 
@@ -41,27 +42,7 @@ commands:
           name: Install mise dependencies
           command: |
             mise install -v -y
-      - run:
-          name: Set nx base and head refs
-          command: |
-            # Fetch all branches
-            git fetch origin
-
-            if [ -n "${CIRCLE_PULL_REQUEST}" ]; then
-              # For pull requests
-              export NX_BASE="origin/${CIRCLE_TARGET_BRANCH:-main}"
-              export NX_HEAD="HEAD"
-            else
-              # For direct pushes to branches, compare against the previous commit
-              git rev-parse --verify origin/main && DEFAULT_BASE="origin/main" || DEFAULT_BASE="HEAD~1"
-              export NX_BASE="${DEFAULT_BASE}"
-              export NX_HEAD="HEAD"
-            fi
-
-            echo "export NX_BASE=$NX_BASE" >> $BASH_ENV
-            echo "export NX_HEAD=$NX_HEAD" >> $BASH_ENV
-
-      # Log nx base and head refs
+      - nx/set-shas
       - run:
           name: Log nx base and head refs
           command: |
