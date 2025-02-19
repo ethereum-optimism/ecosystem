@@ -1,0 +1,64 @@
+name: Release and version
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+# Always wait for previous release to finish before releasing again
+concurrency: ${{ github.workflow }}-${{ github.ref }}
+
+jobs:
+  publish-release:
+    name: Release
+    runs-on: ubuntu-latest
+    if: github.repository == 'ethereum-optimism/ecosystem'
+    # Permissions necessary for Changesets to push a new branch and open PRs
+    # (for automated Version Packages PRs), and request the JWT for provenance.
+    # More info: https://docs.github.com/en/actions/deployment/security-hardening-your-deployments/about-security-hardening-with-openid-connect#adding-permissions-settings
+    permissions:
+      contents: write
+      pull-requests: write
+      id-token: write
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+        with:
+          # This makes Actions fetch all Git history so that Changesets can generate changelogs with the correct commits
+          fetch-depth: 0
+          ref: "main"
+
+      - name: Setup
+        uses: ./.github/actions/setup
+
+      - name: Check if NPM_TOKEN is set
+        id: check_token
+        run: |
+          if [ -z "${{ secrets.NPM_TOKEN }}" ]; then
+            echo "NPM_TOKEN is not set. Is it set it in your repository secrets?"
+            exit 1
+          fi
+        shell: bash
+
+      - name: Set deployment token
+        run: npm config set '//registry.npmjs.org/:_authToken' "${NPM_TOKEN}"
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Verify NPM Token is valid
+        run: npm whoami
+
+      # Makes a pr to publish the changesets that when
+      # merged will publish to npm
+      # see https://github.com/changesets/action
+      - name: Publish To NPM or Create Release Pull Request
+        uses: changesets/action@v1
+        id: changesets
+        with:
+          createGithubReleases: false
+          publish: pnpm release:publish
+          version: pnpm release:version
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}

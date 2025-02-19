@@ -25,23 +25,6 @@ commands:
   setup:
     description: "Setup Node.js environment with pnpm and nx"
     steps:
-      # Read Node.js version from .nvmrc
-      - run:
-          name: Read Node.js version
-          command: |
-            NODE_VERSION=$(cat .nvmrc)
-            echo "export NODE_VERSION=$NODE_VERSION" >> $BASH_ENV
-
-      # Setup Node.js with the version from .nvmrc
-      - node/install:
-          node-version: ${NODE_VERSION}
-
-      # Install pnpm
-      - run:
-          name: Install pnpm
-          command: |
-            npm install -g pnpm@latest
-
       # Set nx base and head refs (equivalent to nx-set-shas)
       - run:
           name: Set nx base and head refs
@@ -68,12 +51,10 @@ commands:
       # Install dependencies
       - run:
           name: Install dependencies
-          command: pnpm i --frozen-lockfile
-
-      # Build affected projects
-      - run:
-          name: Build affected projects
-          command: pnpm nx affected --base=$NX_BASE --head=$NX_HEAD --target=build
+          environment:
+            NPM_TOKEN: nada
+          command: |
+            pnpm i --frozen-lockfile
 
 jobs:
   publish-to-npm:
@@ -84,14 +65,13 @@ jobs:
         type: boolean
         default: false
     steps:
-      - checkout
+      - utils/checkout-with-mise
+      - setup
       - run:
-          name: Setup
-          command: |
-            pnpm install
+          name: Build projects
           environment:
             NPM_TOKEN: nada
-
+          command: pnpm nx run-many --target=build
       - run:
           name: Check NPM Token
           command: |
@@ -99,7 +79,6 @@ jobs:
               echo "NPM_TOKEN is not set. Please set it in CircleCI project settings."
               exit 1
             fi
-
       - run:
           name: Configure NPM Token and Registry
           command: |
@@ -126,6 +105,25 @@ jobs:
           publish: "pnpm release:publish"
           version: "pnpm release:version"
 
+  check:
+    docker:
+      - image: cimg/node:20.11
+    steps:
+      - utils/checkout-with-mise
+      - setup
+      - run:
+          name: Run Build
+          command: pnpm nx affected --base=$NX_BASE --head=$NX_HEAD --target=build
+      - run:
+          name: Run TypeChecker
+          command: pnpm nx affected --base=$NX_BASE --head=$NX_HEAD --target=typecheck
+      - run:
+          name: Run Linters
+          command: pnpm nx affected --base=$NX_BASE --head=$NX_HEAD --target=lint
+      - run:
+          name: Run Tests
+          command: pnpm nx affected --base=$NX_BASE --head=$NX_HEAD --target=test
+
 workflows:
   release:
     jobs:
@@ -145,3 +143,6 @@ workflows:
           filters:
             branches:
               only: main
+  check-workflow:
+    jobs:
+      - check
