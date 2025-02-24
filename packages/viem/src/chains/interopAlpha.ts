@@ -57,7 +57,7 @@ const interopAlpha1Blockscout = {
 export const interopAlpha1 = defineChain({
   ...chainConfig,
   id: 420120001,
-  name: 'interop-alpha-1',
+  name: 'Interop Alpha 1',
   rpcUrls: {
     default: {
       http: ['https://interop-alpha-1.optimism.io'],
