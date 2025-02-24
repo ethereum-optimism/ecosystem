@@ -41,6 +41,20 @@ function camelCase(str: string): string {
   )
 }
 
+function pascalCase(name: string): string {
+  return name
+    .toLowerCase()
+    .split(' ')
+    .map((word) => {
+      if (word === 'op') {
+        return 'OP' // keep OP capitalized
+      }
+      return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
+    })
+    .join(' ')
+    .trim()
+}
+
 async function nativeCurrency(
   client: PublicClient,
   address: Address | undefined,
@@ -127,18 +141,31 @@ async function main() {
         }
 
         // This is an edge case handler for the `arena-z-testnet` chain name.
-        const normalizedName = entry
+        const normalizedEntryName = entry
           .replace('.toml', '')
           .replace('-testnet', '')
 
         // Apply a suffix if a network other than mainnet
         const exportName =
           network === 'mainnet'
-            ? normalizedName
-            : `${normalizedName}-${network}`
+            ? normalizedEntryName
+            : `${normalizedEntryName}-${network}`
+
+        // Remove the network and any hyphens
+        const normalizedChainName = (chainConfig.name as string)
+          .toLowerCase()
+          .replace(/(testnet|mainnet|sepolia)/gi, '')
+          .replace(/(-)/gi, ' ')
+          .trim()
+
+        // Apply a suffix if other than mainnet (other than OP)
+        const chainName =
+          network === 'mainnet' && normalizedChainName !== 'op'
+            ? normalizedChainName
+            : `${normalizedChainName} ${network}`
 
         return {
-          chainName: chainConfig.name as string,
+          chainName: pascalCase(chainName),
           exportName: camelCase(exportName),
           chainId: chainConfig.chain_id as number,
           sourceChainId: network === 'mainnet' ? 1 : 11155111,
