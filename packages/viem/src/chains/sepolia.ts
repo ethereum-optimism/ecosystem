@@ -3,11 +3,11 @@ import { defineChain } from 'viem'
 import { chainConfig } from 'viem/op-stack'
 
 /**
- * Chain Definition for arena-z-testnet
+ * Chain Definition for Arena Z Sepolia
  */
 export const arenaZSepolia = /*#__PURE__*/ defineChain({
   ...chainConfig,
-  name: 'arena-z-testnet',
+  name: 'Arena Z Sepolia',
   id: 9897,
   sourceId: 11155111,
   nativeCurrency: {
@@ -22,7 +22,7 @@ export const arenaZSepolia = /*#__PURE__*/ defineChain({
   },
   blockExplorers: {
     default: {
-      name: 'arena-z-testnet Explorer',
+      name: 'Arena Z Sepolia Explorer',
       url: 'https://arena-z.blockscout.com',
     },
   },
@@ -67,11 +67,11 @@ export const arenaZSepolia = /*#__PURE__*/ defineChain({
 })
 
 /**
- * Chain Definition for Base Sepolia Testnet
+ * Chain Definition for Base Sepolia
  */
 export const baseSepolia = /*#__PURE__*/ defineChain({
   ...chainConfig,
-  name: 'Base Sepolia Testnet',
+  name: 'Base Sepolia',
   id: 84532,
   sourceId: 11155111,
   nativeCurrency: {
@@ -86,7 +86,7 @@ export const baseSepolia = /*#__PURE__*/ defineChain({
   },
   blockExplorers: {
     default: {
-      name: 'Base Sepolia Testnet Explorer',
+      name: 'Base Sepolia Explorer',
       url: 'https://sepolia-explorer.base.org',
     },
   },
@@ -126,11 +126,11 @@ export const baseSepolia = /*#__PURE__*/ defineChain({
 })
 
 /**
- * Chain Definition for Cyber Testnet
+ * Chain Definition for Cyber Sepolia
  */
 export const cyberSepolia = /*#__PURE__*/ defineChain({
   ...chainConfig,
-  name: 'Cyber Testnet',
+  name: 'Cyber Sepolia',
   id: 111557560,
   sourceId: 11155111,
   nativeCurrency: {
@@ -145,7 +145,7 @@ export const cyberSepolia = /*#__PURE__*/ defineChain({
   },
   blockExplorers: {
     default: {
-      name: 'Cyber Testnet Explorer',
+      name: 'Cyber Sepolia Explorer',
       url: 'https://testnet.cyberscan.co/',
     },
   },
@@ -190,11 +190,11 @@ export const cyberSepolia = /*#__PURE__*/ defineChain({
 })
 
 /**
- * Chain Definition for Ethernity Testnet
+ * Chain Definition for Ethernity Sepolia
  */
 export const ethernitySepolia = /*#__PURE__*/ defineChain({
   ...chainConfig,
-  name: 'Ethernity Testnet',
+  name: 'Ethernity Sepolia',
   id: 233,
   sourceId: 11155111,
   nativeCurrency: {
@@ -209,7 +209,7 @@ export const ethernitySepolia = /*#__PURE__*/ defineChain({
   },
   blockExplorers: {
     default: {
-      name: 'Ethernity Testnet Explorer',
+      name: 'Ethernity Sepolia Explorer',
       url: 'https://testnet.ernscan.io',
     },
   },
@@ -254,11 +254,11 @@ export const ethernitySepolia = /*#__PURE__*/ defineChain({
 })
 
 /**
- * Chain Definition for Funki Sepolia Testnet
+ * Chain Definition for Funki Sepolia
  */
 export const funkiSepolia = /*#__PURE__*/ defineChain({
   ...chainConfig,
-  name: 'Funki Sepolia Testnet',
+  name: 'Funki Sepolia',
   id: 3397901,
   sourceId: 11155111,
   nativeCurrency: {
@@ -273,7 +273,7 @@ export const funkiSepolia = /*#__PURE__*/ defineChain({
   },
   blockExplorers: {
     default: {
-      name: 'Funki Sepolia Testnet Explorer',
+      name: 'Funki Sepolia Explorer',
       url: 'https://sepolia-sandbox.funkichain.com/',
     },
   },
@@ -377,11 +377,11 @@ export const inkSepolia = /*#__PURE__*/ defineChain({
 })
 
 /**
- * Chain Definition for Lisk Sepolia Testnet
+ * Chain Definition for Lisk Sepolia
  */
 export const liskSepolia = /*#__PURE__*/ defineChain({
   ...chainConfig,
-  name: 'Lisk Sepolia Testnet',
+  name: 'Lisk Sepolia',
   id: 4202,
   sourceId: 11155111,
   nativeCurrency: {
@@ -396,7 +396,7 @@ export const liskSepolia = /*#__PURE__*/ defineChain({
   },
   blockExplorers: {
     default: {
-      name: 'Lisk Sepolia Testnet Explorer',
+      name: 'Lisk Sepolia Explorer',
       url: 'https://sepolia-blockscout.lisk.com',
     },
   },
@@ -441,11 +441,11 @@ export const liskSepolia = /*#__PURE__*/ defineChain({
 })
 
 /**
- * Chain Definition for Metal L2 Testnet
+ * Chain Definition for Metal L2 Sepolia
  */
 export const metalSepolia = /*#__PURE__*/ defineChain({
   ...chainConfig,
-  name: 'Metal L2 Testnet',
+  name: 'Metal L2 Sepolia',
   id: 1740,
   sourceId: 11155111,
   nativeCurrency: {
@@ -460,7 +460,7 @@ export const metalSepolia = /*#__PURE__*/ defineChain({
   },
   blockExplorers: {
     default: {
-      name: 'Metal L2 Testnet Explorer',
+      name: 'Metal L2 Sepolia Explorer',
       url: 'https://testnet.explorer.metall2.com',
     },
   },
@@ -500,11 +500,11 @@ export const metalSepolia = /*#__PURE__*/ defineChain({
 })
 
 /**
- * Chain Definition for Minato
+ * Chain Definition for Minato Sepolia
  */
 export const minatoSepolia = /*#__PURE__*/ defineChain({
   ...chainConfig,
-  name: 'Minato',
+  name: 'Minato Sepolia',
   id: 1946,
   sourceId: 11155111,
   nativeCurrency: {
@@ -519,7 +519,7 @@ export const minatoSepolia = /*#__PURE__*/ defineChain({
   },
   blockExplorers: {
     default: {
-      name: 'Minato Explorer',
+      name: 'Minato Sepolia Explorer',
       url: 'https://soneium-minato.blockscout.com/',
     },
   },
@@ -564,11 +564,11 @@ export const minatoSepolia = /*#__PURE__*/ defineChain({
 })
 
 /**
- * Chain Definition for Mode Testnet
+ * Chain Definition for Mode Sepolia
  */
 export const modeSepolia = /*#__PURE__*/ defineChain({
   ...chainConfig,
-  name: 'Mode Testnet',
+  name: 'Mode Sepolia',
   id: 919,
   sourceId: 11155111,
   nativeCurrency: {
@@ -583,7 +583,7 @@ export const modeSepolia = /*#__PURE__*/ defineChain({
   },
   blockExplorers: {
     default: {
-      name: 'Mode Testnet Explorer',
+      name: 'Mode Sepolia Explorer',
       url: 'https://sepolia.explorer.mode.network',
     },
   },
@@ -623,11 +623,11 @@ export const modeSepolia = /*#__PURE__*/ defineChain({
 })
 
 /**
- * Chain Definition for OP Sepolia Testnet
+ * Chain Definition for OP Sepolia
  */
 export const opSepolia = /*#__PURE__*/ defineChain({
   ...chainConfig,
-  name: 'OP Sepolia Testnet',
+  name: 'OP Sepolia',
   id: 11155420,
   sourceId: 11155111,
   nativeCurrency: {
@@ -642,7 +642,7 @@ export const opSepolia = /*#__PURE__*/ defineChain({
   },
   blockExplorers: {
     default: {
-      name: 'OP Sepolia Testnet Explorer',
+      name: 'OP Sepolia Explorer',
       url: 'https://sepolia-optimistic.etherscan.io',
     },
   },
@@ -682,11 +682,11 @@ export const opSepolia = /*#__PURE__*/ defineChain({
 })
 
 /**
- * Chain Definition for RACE Testnet
+ * Chain Definition for Race Sepolia
  */
 export const raceSepolia = /*#__PURE__*/ defineChain({
   ...chainConfig,
-  name: 'RACE Testnet',
+  name: 'Race Sepolia',
   id: 6806,
   sourceId: 11155111,
   nativeCurrency: {
@@ -701,7 +701,7 @@ export const raceSepolia = /*#__PURE__*/ defineChain({
   },
   blockExplorers: {
     default: {
-      name: 'RACE Testnet Explorer',
+      name: 'Race Sepolia Explorer',
       url: 'https://testnet.racescan.io/',
     },
   },
@@ -741,11 +741,11 @@ export const raceSepolia = /*#__PURE__*/ defineChain({
 })
 
 /**
- * Chain Definition for Shape Sepolia Testnet
+ * Chain Definition for Shape Sepolia
  */
 export const shapeSepolia = /*#__PURE__*/ defineChain({
   ...chainConfig,
-  name: 'Shape Sepolia Testnet',
+  name: 'Shape Sepolia',
   id: 11011,
   sourceId: 11155111,
   nativeCurrency: {
@@ -760,7 +760,7 @@ export const shapeSepolia = /*#__PURE__*/ defineChain({
   },
   blockExplorers: {
     default: {
-      name: 'Shape Sepolia Testnet Explorer',
+      name: 'Shape Sepolia Explorer',
       url: 'https://shape-sepolia.explorer.alchemy.com/',
     },
   },
@@ -869,11 +869,11 @@ export const tbnSepolia = /*#__PURE__*/ defineChain({
 })
 
 /**
- * Chain Definition for Unichain Sepolia Testnet
+ * Chain Definition for Unichain Sepolia
  */
 export const unichainSepolia = /*#__PURE__*/ defineChain({
   ...chainConfig,
-  name: 'Unichain Sepolia Testnet',
+  name: 'Unichain Sepolia',
   id: 1301,
   sourceId: 11155111,
   nativeCurrency: {
@@ -888,7 +888,7 @@ export const unichainSepolia = /*#__PURE__*/ defineChain({
   },
   blockExplorers: {
     default: {
-      name: 'Unichain Sepolia Testnet Explorer',
+      name: 'Unichain Sepolia Explorer',
       url: 'https://sepolia.uniscan.xyz',
     },
   },
@@ -928,11 +928,11 @@ export const unichainSepolia = /*#__PURE__*/ defineChain({
 })
 
 /**
- * Chain Definition for World Chain Sepolia Testnet
+ * Chain Definition for World Chain Sepolia
  */
 export const worldchainSepolia = /*#__PURE__*/ defineChain({
   ...chainConfig,
-  name: 'World Chain Sepolia Testnet',
+  name: 'World Chain Sepolia',
   id: 4801,
   sourceId: 11155111,
   nativeCurrency: {
@@ -947,7 +947,7 @@ export const worldchainSepolia = /*#__PURE__*/ defineChain({
   },
   blockExplorers: {
     default: {
-      name: 'World Chain Sepolia Testnet Explorer',
+      name: 'World Chain Sepolia Explorer',
       url: 'https://worldchain-sepolia.explorer.alchemy.com/',
     },
   },
@@ -992,11 +992,11 @@ export const worldchainSepolia = /*#__PURE__*/ defineChain({
 })
 
 /**
- * Chain Definition for Zora Sepolia Testnet
+ * Chain Definition for Zora Sepolia
  */
 export const zoraSepolia = /*#__PURE__*/ defineChain({
   ...chainConfig,
-  name: 'Zora Sepolia Testnet',
+  name: 'Zora Sepolia',
   id: 999999999,
   sourceId: 11155111,
   nativeCurrency: {
@@ -1011,7 +1011,7 @@ export const zoraSepolia = /*#__PURE__*/ defineChain({
   },
   blockExplorers: {
     default: {
-      name: 'Zora Sepolia Testnet Explorer',
+      name: 'Zora Sepolia Explorer',
       url: 'https://sepolia.explorer.zora.energy',
     },
   },
