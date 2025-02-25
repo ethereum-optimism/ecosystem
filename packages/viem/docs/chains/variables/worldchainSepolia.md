@@ -8,7 +8,7 @@
 
 > `const` **worldchainSepolia**: `object`
 
-Chain Definition for World Chain Sepolia Testnet
+Chain Definition for World Chain Sepolia
 
 ## Type declaration
 
@@ -24,7 +24,7 @@ Collection of block explorers
 
 ### blockExplorers.default.name
 
-> `readonly` **name**: `"World Chain Sepolia Testnet Explorer"` = `'World Chain Sepolia Testnet Explorer'`
+> `readonly` **name**: `"World Chain Sepolia Explorer"` = `'World Chain Sepolia Explorer'`
 
 ### blockExplorers.default.url
 
@@ -454,7 +454,7 @@ ID in number form
 
 ### name
 
-> **name**: `"World Chain Sepolia Testnet"`
+> **name**: `"World Chain Sepolia"`
 
 Human-readable name
 
@@ -524,4 +524,4 @@ Flag for test networks
 
 ## Defined in
 
-[packages/viem/src/chains/sepolia.ts:933](https://github.com/ethereum-optimism/ecosystem/blob/8c869dbb3cc282dd35a61a60d7a8a9cae4a14cae/packages/viem/src/chains/sepolia.ts#L933)
+[packages/viem/src/chains/sepolia.ts:933](https://github.com/ethereum-optimism/ecosystem/blob/a99a99e6e8edfe86cc9b244149f498f9122cc99b/packages/viem/src/chains/sepolia.ts#L933)

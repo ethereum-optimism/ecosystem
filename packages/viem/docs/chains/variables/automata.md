@@ -8,7 +8,7 @@
 
 > `const` **automata**: `object`
 
-Chain Definition for Automata Mainnet
+Chain Definition for Automata
 
 ## Type declaration
 
@@ -24,7 +24,7 @@ Collection of block explorers
 
 ### blockExplorers.default.name
 
-> `readonly` **name**: `"Automata Mainnet Explorer"` = `'Automata Mainnet Explorer'`
+> `readonly` **name**: `"Automata Explorer"` = `'Automata Explorer'`
 
 ### blockExplorers.default.url
 
@@ -454,7 +454,7 @@ ID in number form
 
 ### name
 
-> **name**: `"Automata Mainnet"`
+> **name**: `"Automata"`
 
 Human-readable name
 
@@ -524,4 +524,4 @@ Flag for test networks
 
 ## Defined in
 
-[packages/viem/src/chains/mainnet.ts:67](https://github.com/ethereum-optimism/ecosystem/blob/8c869dbb3cc282dd35a61a60d7a8a9cae4a14cae/packages/viem/src/chains/mainnet.ts#L67)
+[packages/viem/src/chains/mainnet.ts:67](https://github.com/ethereum-optimism/ecosystem/blob/a99a99e6e8edfe86cc9b244149f498f9122cc99b/packages/viem/src/chains/mainnet.ts#L67)

@@ -8,7 +8,7 @@
 
 > `const` **shapeSepolia**: `object`
 
-Chain Definition for Shape Sepolia Testnet
+Chain Definition for Shape Sepolia
 
 ## Type declaration
 
@@ -24,7 +24,7 @@ Collection of block explorers
 
 ### blockExplorers.default.name
 
-> `readonly` **name**: `"Shape Sepolia Testnet Explorer"` = `'Shape Sepolia Testnet Explorer'`
+> `readonly` **name**: `"Shape Sepolia Explorer"` = `'Shape Sepolia Explorer'`
 
 ### blockExplorers.default.url
 
@@ -454,7 +454,7 @@ ID in number form
 
 ### name
 
-> **name**: `"Shape Sepolia Testnet"`
+> **name**: `"Shape Sepolia"`
 
 Human-readable name
 
@@ -524,4 +524,4 @@ Flag for test networks
 
 ## Defined in
 
-[packages/viem/src/chains/sepolia.ts:746](https://github.com/ethereum-optimism/ecosystem/blob/8c869dbb3cc282dd35a61a60d7a8a9cae4a14cae/packages/viem/src/chains/sepolia.ts#L746)
+[packages/viem/src/chains/sepolia.ts:746](https://github.com/ethereum-optimism/ecosystem/blob/a99a99e6e8edfe86cc9b244149f498f9122cc99b/packages/viem/src/chains/sepolia.ts#L746)
