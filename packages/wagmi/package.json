@@ -31,7 +31,7 @@
     "wagmi": "^2.12"
   },
   "peerDependencies": {
-    "@eth-optimism/viem": "workspace:^0",
+    "@eth-optimism/viem": "workspace:*",
     "@tanstack/react-query": ">=5.0.0",
     "react": ">=18",
     "viem": "^2.17.9",
