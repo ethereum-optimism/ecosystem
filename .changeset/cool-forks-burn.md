@@ -1,5 +1,5 @@
 ---
-"@eth-optimism/viem": minor
+'@eth-optimism/viem': minor
 ---
 
 prettify the viem chain names
