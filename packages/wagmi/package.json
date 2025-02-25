@@ -1,5 +1,6 @@
 {
   "name": "@eth-optimism/wagmi",
+  "description": "OP extensions for wagmi",
   "type": "module",
   "version": "0.0.14",
   "main": "dist/index.js",
