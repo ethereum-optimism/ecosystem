@@ -1,5 +1,11 @@
 # @eth-optimism/wagmi
 
+## 0.0.15
+
+### Patch Changes
+
+- [#667](https://github.com/ethereum-optimism/ecosystem/pull/667) [`d09eca1`](https://github.com/ethereum-optimism/ecosystem/commit/d09eca16ba973092d09ff2ac0e9b93f1a2048544) Thanks [@jakim929](https://github.com/jakim929)! - changed description
+
 ## 3.0.2
 
 ### Patch Changes
