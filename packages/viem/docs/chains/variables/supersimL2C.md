@@ -28,9 +28,25 @@ Collection of block explorers
 
 ### contracts
 
-> `readonly` **contracts**: `object`
+> **contracts**: `object`
 
 Collection of contracts
+
+### contracts.addressManager
+
+> `readonly` **addressManager**: `object`
+
+### contracts.anchorStateRegistry
+
+> `readonly` **anchorStateRegistry**: `object`
+
+### contracts.disputeGameFactory
+
+> `readonly` **disputeGameFactory**: `object`
+
+### contracts.faultDisputeGame
+
+> `readonly` **faultDisputeGame**: `object`
 
 ### contracts.gasPriceOracle
 
@@ -47,6 +63,18 @@ Collection of contracts
 ### contracts.l1Block.address
 
 > `readonly` **address**: `"0x4200000000000000000000000000000000000015"`
+
+### contracts.l1CrossDomainMessenger
+
+> `readonly` **l1CrossDomainMessenger**: `object`
+
+### contracts.l1Erc721BridgeProxy
+
+> `readonly` **l1Erc721BridgeProxy**: `object`
+
+### contracts.l1StandardBridge
+
+> `readonly` **l1StandardBridge**: `object`
 
 ### contracts.l2CrossDomainMessenger
 
@@ -79,6 +107,26 @@ Collection of contracts
 ### contracts.l2ToL1MessagePasser.address
 
 > `readonly` **address**: `"0x4200000000000000000000000000000000000016"`
+
+### contracts.opChainProxyAdmin
+
+> `readonly` **opChainProxyAdmin**: `object`
+
+### contracts.optimismMintableErc20FactoryProxy
+
+> `readonly` **optimismMintableErc20FactoryProxy**: `object`
+
+### contracts.optimismPortal
+
+> `readonly` **optimismPortal**: `object`
+
+### contracts.permissionedDisputeGame
+
+> `readonly` **permissionedDisputeGame**: `object`
+
+### contracts.systemConfig
+
+> `readonly` **systemConfig**: `object`
 
 ### custom?
 
@@ -436,4 +484,4 @@ Flag for test networks
 
 ## Defined in
 
-[packages/viem/src/chains/supersim.ts:61](https://github.com/ethereum-optimism/ecosystem/blob/8c869dbb3cc282dd35a61a60d7a8a9cae4a14cae/packages/viem/src/chains/supersim.ts#L61)
+[packages/viem/src/chains/supersim.ts:80](https://github.com/ethereum-optimism/ecosystem/blob/a99a99e6e8edfe86cc9b244149f498f9122cc99b/packages/viem/src/chains/supersim.ts#L80)

@@ -76,6 +76,14 @@ OP Stack Predeploy Addresses
 
 > `readonly` **address**: `"0x4200000000000000000000000000000000000023"` = `'0x4200000000000000000000000000000000000023'`
 
+### optimismMintableERC20Factory
+
+> `readonly` **optimismMintableERC20Factory**: `object`
+
+### optimismMintableERC20Factory.address
+
+> `readonly` **address**: `"0x4200000000000000000000000000000000000012"` = `'0x4200000000000000000000000000000000000012'`
+
 ### superchainTokenBridge
 
 > `readonly` **superchainTokenBridge**: `object`
@@ -92,6 +100,14 @@ OP Stack Predeploy Addresses
 
 > `readonly` **address**: `"0x4200000000000000000000000000000000000024"` = `'0x4200000000000000000000000000000000000024'`
 
+### weth
+
+> `readonly` **weth**: `object`
+
+### weth.address
+
+> `readonly` **address**: `"0x4200000000000000000000000000000000000006"` = `'0x4200000000000000000000000000000000000006'`
+
 ## Defined in
 
-[packages/viem/src/contracts.ts:8](https://github.com/ethereum-optimism/ecosystem/blob/8c869dbb3cc282dd35a61a60d7a8a9cae4a14cae/packages/viem/src/contracts.ts#L8)
+[packages/viem/src/contracts.ts:8](https://github.com/ethereum-optimism/ecosystem/blob/a99a99e6e8edfe86cc9b244149f498f9122cc99b/packages/viem/src/contracts.ts#L8)

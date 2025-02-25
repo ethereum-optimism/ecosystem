@@ -8,7 +8,7 @@
 
 > `const` **unichainSepolia**: `object`
 
-Chain Definition for Unichain Sepolia Testnet
+Chain Definition for Unichain Sepolia
 
 ## Type declaration
 
@@ -24,7 +24,7 @@ Collection of block explorers
 
 ### blockExplorers.default.name
 
-> `readonly` **name**: `"Unichain Sepolia Testnet Explorer"` = `'Unichain Sepolia Testnet Explorer'`
+> `readonly` **name**: `"Unichain Sepolia Explorer"` = `'Unichain Sepolia Explorer'`
 
 ### blockExplorers.default.url
 
@@ -442,7 +442,7 @@ ID in number form
 
 ### name
 
-> **name**: `"Unichain Sepolia Testnet"`
+> **name**: `"Unichain Sepolia"`
 
 Human-readable name
 
@@ -512,4 +512,4 @@ Flag for test networks
 
 ## Defined in
 
-[packages/viem/src/chains/sepolia.ts:874](https://github.com/ethereum-optimism/ecosystem/blob/8c869dbb3cc282dd35a61a60d7a8a9cae4a14cae/packages/viem/src/chains/sepolia.ts#L874)
+[packages/viem/src/chains/sepolia.ts:874](https://github.com/ethereum-optimism/ecosystem/blob/a99a99e6e8edfe86cc9b244149f498f9122cc99b/packages/viem/src/chains/sepolia.ts#L874)

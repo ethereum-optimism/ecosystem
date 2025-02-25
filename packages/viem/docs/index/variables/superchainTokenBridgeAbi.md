@@ -12,4 +12,4 @@ ABI for the OP Stack contract `SuperchainTokenBridge`
 
 ## Defined in
 
-[packages/viem/src/abis.ts:1537](https://github.com/ethereum-optimism/ecosystem/blob/8c869dbb3cc282dd35a61a60d7a8a9cae4a14cae/packages/viem/src/abis.ts#L1537)
+[packages/viem/src/abis.ts:3183](https://github.com/ethereum-optimism/ecosystem/blob/a99a99e6e8edfe86cc9b244149f498f9122cc99b/packages/viem/src/abis.ts#L3183)

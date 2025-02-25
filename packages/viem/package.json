@@ -19,6 +19,7 @@
     "docs": "typedoc",
     "gen:abis": "pnpm dlx tsx ./scripts/abigen",
     "gen:chains": "pnpm dlx tsx ./scripts/chaingen",
+    "gen:abi-docs": "pnpm dlx tsx ./scripts/abidocgen",
     "lint": "eslint \"**/*.{ts,tsx}\" && pnpm prettier --check \"**/*.{ts,tsx}\"",
     "lint:ci": "eslint \"**/*.{ts,tsx}\" --quiet && pnpm prettier --check \"**/*.{ts,tsx}\"",
     "lint:fix": "eslint \"**/*.{ts,tsx}\" --fix --quiet && pnpm prettier \"**/*.{ts,tsx}\" --write --loglevel=warn",
