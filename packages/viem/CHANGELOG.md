@@ -1,5 +1,13 @@
 # @eth-optimism/viem
 
+## 0.3.3
+
+### Patch Changes
+
+- [#664](https://github.com/ethereum-optimism/ecosystem/pull/664) [`a99a99e`](https://github.com/ethereum-optimism/ecosystem/commit/a99a99e6e8edfe86cc9b244149f498f9122cc99b) Thanks [@hamdiallam](https://github.com/hamdiallam)! - prettify the viem chain names
+
+- [#666](https://github.com/ethereum-optimism/ecosystem/pull/666) [`ab62f56`](https://github.com/ethereum-optimism/ecosystem/commit/ab62f568ebee6ce4fac2d257f6bb0e41eaeb7f03) Thanks [@jakim929](https://github.com/jakim929)! - updated ABI bindings
+
 ## 0.3.2
 
 ### Patch Changes
