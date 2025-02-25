@@ -629,7 +629,7 @@ importers:
   packages/wagmi:
     devDependencies:
       '@eth-optimism/viem':
-        specifier: workspace:*
+        specifier: workspace:^0.x
         version: link:../viem
       '@tanstack/react-query':
         specifier: ^5
