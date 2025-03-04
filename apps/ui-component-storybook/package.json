@@ -13,6 +13,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "typescript": "^5.2.2",
     "@chromatic-com/storybook": "^1.2.23",
     "@eth-optimism/ui-components": "workspace:*",
     "@storybook/addon-essentials": "^8.0.1",
