@@ -732,7 +732,13 @@ export const l2ToL2CrossDomainMessengerAbi = [
         internalType: 'bytes',
       },
     ],
-    outputs: [],
+    outputs: [
+      {
+        name: 'returnData_',
+        type: 'bytes',
+        internalType: 'bytes',
+      },
+    ],
     stateMutability: 'payable',
   },
   {
@@ -2945,7 +2951,7 @@ export const superchainWETHAbi = [
     name: 'withdraw',
     inputs: [
       {
-        name: '_amount',
+        name: 'wad',
         type: 'uint256',
         internalType: 'uint256',
       },
@@ -3156,11 +3162,6 @@ export const superchainWETHAbi = [
   {
     type: 'error',
     name: 'InvalidCrossDomainSender',
-    inputs: [],
-  },
-  {
-    type: 'error',
-    name: 'NotCustomGasToken',
     inputs: [],
   },
   {

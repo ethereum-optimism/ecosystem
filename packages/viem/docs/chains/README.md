@@ -23,6 +23,7 @@
 - [funkiSepolia](variables/funkiSepolia.md)
 - [ink](variables/ink.md)
 - [inkSepolia](variables/inkSepolia.md)
+- [interopAlphaChains](variables/interopAlphaChains.md)
 - [lisk](variables/lisk.md)
 - [liskSepolia](variables/liskSepolia.md)
 - [lyra](variables/lyra.md)
@@ -42,6 +43,7 @@
 - [shape](variables/shape.md)
 - [shapeSepolia](variables/shapeSepolia.md)
 - [sseed](variables/sseed.md)
+- [supersimChains](variables/supersimChains.md)
 - [swan](variables/swan.md)
 - [swell](variables/swell.md)
 - [tbn](variables/tbn.md)
@@ -60,3 +62,8 @@
 - [supersimL2C](variables/supersimL2C.md)
 - [supersimL2D](variables/supersimL2D.md)
 - [supersimL2E](variables/supersimL2E.md)
+
+### interop-alpha
+
+- [interopAlpha0](variables/interopAlpha0.md)
+- [interopAlpha1](variables/interopAlpha1.md)

@@ -3,11 +3,11 @@ import { defineChain } from 'viem'
 import { chainConfig } from 'viem/op-stack'
 
 /**
- * Chain Definition for arena-z
+ * Chain Definition for Arena Z
  */
 export const arenaZ = /*#__PURE__*/ defineChain({
   ...chainConfig,
-  name: 'arena-z',
+  name: 'Arena Z',
   id: 7897,
   sourceId: 1,
   nativeCurrency: {
@@ -22,7 +22,7 @@ export const arenaZ = /*#__PURE__*/ defineChain({
   },
   blockExplorers: {
     default: {
-      name: 'arena-z Explorer',
+      name: 'Arena Z Explorer',
       url: 'https://explorer.arena-z.gg',
     },
   },
@@ -62,11 +62,11 @@ export const arenaZ = /*#__PURE__*/ defineChain({
 })
 
 /**
- * Chain Definition for Automata Mainnet
+ * Chain Definition for Automata
  */
 export const automata = /*#__PURE__*/ defineChain({
   ...chainConfig,
-  name: 'Automata Mainnet',
+  name: 'Automata',
   id: 65536,
   sourceId: 1,
   nativeCurrency: {
@@ -81,7 +81,7 @@ export const automata = /*#__PURE__*/ defineChain({
   },
   blockExplorers: {
     default: {
-      name: 'Automata Mainnet Explorer',
+      name: 'Automata Explorer',
       url: 'https://explorer.ata.network',
     },
   },
@@ -190,11 +190,11 @@ export const base = /*#__PURE__*/ defineChain({
 })
 
 /**
- * Chain Definition for Cyber Mainnet
+ * Chain Definition for Cyber
  */
 export const cyber = /*#__PURE__*/ defineChain({
   ...chainConfig,
-  name: 'Cyber Mainnet',
+  name: 'Cyber',
   id: 7560,
   sourceId: 1,
   nativeCurrency: {
@@ -209,7 +209,7 @@ export const cyber = /*#__PURE__*/ defineChain({
   },
   blockExplorers: {
     default: {
-      name: 'Cyber Mainnet Explorer',
+      name: 'Cyber Explorer',
       url: 'https://cyberscan.co/',
     },
   },
@@ -741,11 +741,11 @@ export const op = /*#__PURE__*/ defineChain({
 })
 
 /**
- * Chain Definition for Orderly Mainnet
+ * Chain Definition for Orderly
  */
 export const orderly = /*#__PURE__*/ defineChain({
   ...chainConfig,
-  name: 'Orderly Mainnet',
+  name: 'Orderly',
   id: 291,
   sourceId: 1,
   nativeCurrency: {
@@ -760,7 +760,7 @@ export const orderly = /*#__PURE__*/ defineChain({
   },
   blockExplorers: {
     default: {
-      name: 'Orderly Mainnet Explorer',
+      name: 'Orderly Explorer',
       url: 'https://explorer.orderly.network',
     },
   },
@@ -800,11 +800,11 @@ export const orderly = /*#__PURE__*/ defineChain({
 })
 
 /**
- * Chain Definition for RACE Mainnet
+ * Chain Definition for Race
  */
 export const race = /*#__PURE__*/ defineChain({
   ...chainConfig,
-  name: 'RACE Mainnet',
+  name: 'Race',
   id: 6805,
   sourceId: 1,
   nativeCurrency: {
@@ -819,7 +819,7 @@ export const race = /*#__PURE__*/ defineChain({
   },
   blockExplorers: {
     default: {
-      name: 'RACE Mainnet Explorer',
+      name: 'Race Explorer',
       url: 'https://racescan.io/',
     },
   },
@@ -1051,11 +1051,11 @@ export const sseed = /*#__PURE__*/ defineChain({
 })
 
 /**
- * Chain Definition for Swan Chain Mainnet
+ * Chain Definition for Swan Chain
  */
 export const swan = /*#__PURE__*/ defineChain({
   ...chainConfig,
-  name: 'Swan Chain Mainnet',
+  name: 'Swan Chain',
   id: 254,
   sourceId: 1,
   nativeCurrency: {
@@ -1070,7 +1070,7 @@ export const swan = /*#__PURE__*/ defineChain({
   },
   blockExplorers: {
     default: {
-      name: 'Swan Chain Mainnet Explorer',
+      name: 'Swan Chain Explorer',
       url: 'https://swanscan.io',
     },
   },
@@ -1174,11 +1174,11 @@ export const swell = /*#__PURE__*/ defineChain({
 })
 
 /**
- * Chain Definition for Binary Mainnet
+ * Chain Definition for Binary
  */
 export const tbn = /*#__PURE__*/ defineChain({
   ...chainConfig,
-  name: 'Binary Mainnet',
+  name: 'Binary',
   id: 624,
   sourceId: 1,
   nativeCurrency: {
@@ -1193,7 +1193,7 @@ export const tbn = /*#__PURE__*/ defineChain({
   },
   blockExplorers: {
     default: {
-      name: 'Binary Mainnet Explorer',
+      name: 'Binary Explorer',
       url: 'https://explorer.thebinaryholdings.com',
     },
   },

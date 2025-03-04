@@ -8,7 +8,7 @@
 
 > `const` **swan**: `object`
 
-Chain Definition for Swan Chain Mainnet
+Chain Definition for Swan Chain
 
 ## Type declaration
 
@@ -24,7 +24,7 @@ Collection of block explorers
 
 ### blockExplorers.default.name
 
-> `readonly` **name**: `"Swan Chain Mainnet Explorer"` = `'Swan Chain Mainnet Explorer'`
+> `readonly` **name**: `"Swan Chain Explorer"` = `'Swan Chain Explorer'`
 
 ### blockExplorers.default.url
 
@@ -454,7 +454,7 @@ ID in number form
 
 ### name
 
-> **name**: `"Swan Chain Mainnet"`
+> **name**: `"Swan Chain"`
 
 Human-readable name
 
@@ -524,4 +524,4 @@ Flag for test networks
 
 ## Defined in
 
-[packages/viem/src/chains/mainnet.ts:1056](https://github.com/ethereum-optimism/ecosystem/blob/8c869dbb3cc282dd35a61a60d7a8a9cae4a14cae/packages/viem/src/chains/mainnet.ts#L1056)
+[packages/viem/src/chains/mainnet.ts:1056](https://github.com/ethereum-optimism/ecosystem/blob/a99a99e6e8edfe86cc9b244149f498f9122cc99b/packages/viem/src/chains/mainnet.ts#L1056)

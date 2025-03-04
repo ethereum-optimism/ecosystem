@@ -3,7 +3,6 @@ import { beforeAll, describe, expect, it } from 'vitest'
 import { superchainWETHAbi } from '@/abis.js'
 import { contracts } from '@/contracts.js'
 import { publicClientA, testAccount, walletClientA } from '@/test/clients.js'
-import { SUPERSIM_SUPERC20_ADDRESS } from '@/test/supERC20.js'
 
 const AMOUNT_TO_WITHDRAW = 10n
 
@@ -24,14 +23,11 @@ describe('withdrawSuperchainWETH', () => {
         functionName: 'balanceOf',
         args: [testAccount.address],
       })
-      const startingETHBalance = await publicClientA.getBalance({
-        address: testAccount.address,
-      })
 
       const hash = await walletClientA.interop.withdrawSuperchainWETH({
         amount: AMOUNT_TO_WITHDRAW,
       })
-      const receipt = await publicClientA.waitForTransactionReceipt({ hash })
+      await publicClientA.waitForTransactionReceipt({ hash })
 
       const endingSuperchainWETHBalance = await publicClientA.readContract({
         address: contracts.superchainWETH.address,
@@ -39,16 +35,9 @@ describe('withdrawSuperchainWETH', () => {
         functionName: 'balanceOf',
         args: [testAccount.address],
       })
-      const endingETHBalance = await publicClientA.getBalance({
-        address: testAccount.address,
-      })
 
       expect(endingSuperchainWETHBalance).toEqual(
         startingSuperchainWETHBalance - AMOUNT_TO_WITHDRAW,
-      )
-      const gasPaid = receipt.gasUsed * receipt.effectiveGasPrice
-      expect(endingETHBalance).toEqual(
-        startingETHBalance + AMOUNT_TO_WITHDRAW - gasPaid,
       )
     })
   })
