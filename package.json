@@ -14,6 +14,7 @@
     "create:react:library": "cd packages && pnpm create vite --template=react-ts ",
     "release:publish": "pnpm install --frozen-lockfile && pnpm nx run-many --target=build && changeset publish",
     "release:version": "changeset version && pnpm install --lockfile-only",
+    "release:version:snapshot": "changeset version --snapshot ${SNAPSHOT_NAME:-snapshot} && pnpm install --lockfile-only",
     "update:supersim": "tsx scripts/update-supersim-version.ts"
   },
   "private": true,
