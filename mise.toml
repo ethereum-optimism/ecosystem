@@ -1,5 +1,5 @@
 [tools]
-node = "18.18.1"
+node = "18.18.0"
 
 "ubi:ethereum-optimism/supersim"="0.1.0-alpha.38"
 
