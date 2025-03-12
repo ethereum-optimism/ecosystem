@@ -5,12 +5,14 @@ import { getChainId, readContract } from 'viem/actions'
 import { l2ToL2CrossDomainMessengerAbi } from '@/abis.js'
 import { contracts } from '@/contracts.js'
 import type { CrossDomainMessage } from '@/types/interop/cdm.js'
-import { crossDomainMessageHash } from '@/utils/interop/crossDomainMessageHash.js'
+import { hashCrossDomainMessage } from '@/utils/interop/hashCrossDomainMessage.js'
 
 /**
  * @category Types
  */
-export type GetCrossDomainMessageStatusParameters = { message: CrossDomainMessage }
+export type GetCrossDomainMessageStatusParameters = {
+  message: CrossDomainMessage
+}
 
 /**
  * @category Types
@@ -62,7 +64,7 @@ export async function getCrossDomainMessageStatus<
     throw new InvalidDestinationChainError(message.destination, chainId)
   }
 
-  const messageHash = crossDomainMessageHash(message)
+  const messageHash = hashCrossDomainMessage(message)
   const relayed = await readContract(client, {
     address: contracts.l2ToL2CrossDomainMessenger.address,
     abi: l2ToL2CrossDomainMessengerAbi,

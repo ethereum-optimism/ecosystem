@@ -37,7 +37,7 @@ describe('sendETH', () => {
       expect(relayTxHash).toBeDefined()
 
       await publicClientB.waitForTransactionReceipt({ hash: relayTxHash })
-      const status = await publicClientB.interop.getSentMessageStatus({
+      const status = await publicClientB.interop.getCrossDomainMessageStatus({
         message: messages[0],
       })
       expect(status).toEqual('relayed')

@@ -9,7 +9,7 @@ import type { CrossDomainMessage } from '@/types/interop/cdm.js'
  * @param message {@link CrossDomainMessage}
  * @returns Hash of the cross domain message
  */
-export function crossDomainMessageHash(message: CrossDomainMessage): Hash {
+export function hashCrossDomainMessage(message: CrossDomainMessage): Hash {
   const encoded = encodeAbiParameters(
     parseAbiParameters('uint256,uint256,uint256,address,address,bytes'),
     [
