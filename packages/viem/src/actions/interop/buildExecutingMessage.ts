@@ -2,7 +2,10 @@ import type { Account, Chain, Client, Log, Transport } from 'viem'
 import { BaseError } from 'viem'
 import { getBlock, getChainId } from 'viem/actions'
 
-import type { MessageIdentifier, MessagePayload } from '@/types/interop/executingMessage.js'
+import type {
+  MessageIdentifier,
+  MessagePayload,
+} from '@/types/interop/executingMessage.js'
 import { encodeMessagePayload } from '@/utils/interop/encodeMessagePayload.js'
 
 /**
