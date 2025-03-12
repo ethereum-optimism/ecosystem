@@ -1,5 +1,5 @@
 // types
-export type { MessageIdentifier } from '@/types/interop.js'
+export type { MessageIdentifier } from '@/types/interop/executingMessage.js'
 
 // contracts
 export { contracts } from '@/contracts.js'

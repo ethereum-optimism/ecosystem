@@ -1,7 +1,7 @@
 import type { Log } from 'viem'
 import { concat } from 'viem'
 
-import type { MessagePayload } from '@/types/interop.js'
+import type { MessagePayload } from '@/types/interop/executingMessage.js'
 
 /**
  * @description Create an executing message payload from a log

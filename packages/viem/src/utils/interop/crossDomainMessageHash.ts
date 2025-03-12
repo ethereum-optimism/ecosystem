@@ -4,7 +4,7 @@ import { encodeAbiParameters, keccak256, parseAbiParameters } from 'viem'
 import type { CrossDomainMessage } from '@/types/interop/cdm.js'
 
 /**
- * @description Hash an L2 to L2 cross domain message
+ * Hash an L2 to L2 cross domain message
  * @category Utils
  * @param message {@link CrossDomainMessage}
  * @returns Hash of the cross domain message
