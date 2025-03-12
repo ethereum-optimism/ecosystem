@@ -14,12 +14,12 @@ import type {
 import { estimateContractGas, simulateContract } from 'viem/actions'
 
 import { l2ToL2CrossDomainMessengerAbi } from '@/abis.js'
+import type { BuildExecutingMessageReturnType } from '@/actions/interop/buildExecutingMessage.js'
 import { contracts } from '@/contracts.js'
 import {
   baseWriteAction,
   type BaseWriteContractActionParameters,
 } from '@/core/baseWriteAction.js'
-import type { MessageIdentifier, MessagePayload } from '@/types/interop.js'
 import type { ErrorType } from '@/types/utils.js'
 
 /**
@@ -35,12 +35,9 @@ export type RelayMessageParameters<
   TAccount,
   TChainOverride,
   TDerivedChain
-> & {
-  /** Identifier pointing to the sent message. */
-  sentMessageId: MessageIdentifier
-  /** MessagePayload of the SentMessage event **/
-  sentMessagePayload: MessagePayload
-}
+> &
+  /** executing message built from the sent message log */
+  BuildExecutingMessageReturnType
 
 /**
  * @category Types
@@ -70,6 +67,18 @@ export type RelayMessageErrorType =
  * @param client - Client to use
  * @param parameters - {@link RelayMessageParameters}
  * @returns The relayMessage transaction hash. {@link RelayMessageReturnType}
+ * @example
+ * import { createPublicClient } from 'viem'
+ * import { http } from 'viem/transports'
+ * import { op } from '@eth-optimism/viem/chains'
+ *
+ * const publicClientOp = createPublicClient({ chain: op, transport: http() })
+ *
+ * const receipt = await publicClientOp.getTransactionReceipt({ hash: '0x...' })
+ * const messages = await getCrossDomainMessages(publicClientOp, { logs: receipt.logs })
+ *
+ * const params = await buildExecutingMessage(publicClientOp, { log: messages[0].log })
+ * const hash = await relayMessage(publicClientOp, params)
  */
 export async function relayMessage<
   TChain extends Chain | undefined,
@@ -79,7 +88,7 @@ export async function relayMessage<
   client: Client<Transport, TChain, TAccount>,
   parameters: RelayMessageParameters<TChain, TAccount, TChainOverride>,
 ): Promise<RelayMessageReturnType> {
-  const { sentMessageId, sentMessagePayload, ...txParameters } = parameters
+  const { id, payload, ...txParameters } = parameters
 
   return baseWriteAction(
     client,
@@ -87,7 +96,7 @@ export async function relayMessage<
       abi: l2ToL2CrossDomainMessengerAbi,
       contractAddress: contracts.l2ToL2CrossDomainMessenger.address,
       contractFunctionName: 'relayMessage',
-      contractArgs: [sentMessageId, sentMessagePayload],
+      contractArgs: [id, payload],
     },
     txParameters as BaseWriteContractActionParameters,
   )
@@ -108,13 +117,13 @@ export async function estimateRelayMessageGas<
   client: Client<Transport, TChain, TAccount>,
   parameters: RelayMessageParameters<TChain, TAccount, TChainOverride>,
 ): Promise<bigint> {
-  const { sentMessageId, sentMessagePayload, ...txParameters } = parameters
+  const { id, payload, ...txParameters } = parameters
 
   return estimateContractGas(client, {
     abi: l2ToL2CrossDomainMessengerAbi,
     address: contracts.l2ToL2CrossDomainMessenger.address,
     functionName: 'relayMessage',
-    args: [sentMessageId, sentMessagePayload],
+    args: [id, payload],
     ...txParameters,
   } as EstimateContractGasParameters)
 }
@@ -134,7 +143,7 @@ export async function simulateRelayMessage<
   client: Client<Transport, TChain, TAccount>,
   parameters: RelayMessageParameters<TChain, TAccount, TChainOverride>,
 ): Promise<RelayMessageContractReturnType> {
-  const { account, sentMessageId, sentMessagePayload } = parameters
+  const { account, id, payload } = parameters
 
   const res = await simulateContract(client, {
     account,
@@ -142,7 +151,7 @@ export async function simulateRelayMessage<
     address: contracts.l2ToL2CrossDomainMessenger.address,
     chain: client.chain,
     functionName: 'relayMessage',
-    args: [sentMessageId, sentMessagePayload],
+    args: [id, payload],
   } as SimulateContractParameters)
 
   return res.result as RelayMessageContractReturnType

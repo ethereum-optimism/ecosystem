@@ -12,7 +12,7 @@ import type {
   SimulateContractParameters,
   Transport,
 } from 'viem'
-import { createPublicClient, http } from 'viem'
+import { BaseError, createPublicClient, http } from 'viem'
 import { parseAccount } from 'viem/accounts'
 import {
   estimateContractGas,
@@ -80,6 +80,18 @@ export type DepositERC20ContractReturnType = ContractFunctionReturnType<
   'bridgeERC20To'
 >
 
+export type DepositERC20RemoteTokenMismatchErrorType =
+  DepositERC20RemoteTokenMismatchError & {
+    name: 'DepositERC20RemoteTokenMismatchError'
+  }
+export class DepositERC20RemoteTokenMismatchError extends BaseError {
+  constructor(local: Address, remote: Address) {
+    super(
+      `OptimismMintableERC20 remote token address mismatch. Local: ${local}, Remote: ${remote}`,
+    )
+  }
+}
+
 /**
  * Deposit an ERC20 into an OptimismMintableERC20 | OptimismSuperchainERC20.
  * @category Actions
@@ -136,8 +148,9 @@ export async function depositERC20<
     })
 
     if (_localTokenAddress !== localTokenAddress) {
-      throw new Error(
-        `OptimismMintableERC20 remote token address mismatch. Read: ${_localTokenAddress}`,
+      throw new DepositERC20RemoteTokenMismatchError(
+        localTokenAddress,
+        _localTokenAddress,
       )
     }
   }

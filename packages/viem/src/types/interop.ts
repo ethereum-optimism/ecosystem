@@ -5,7 +5,7 @@ import type { Address, Hex } from 'viem'
  * @category Types
  */
 export type MessageIdentifier = {
-  /** Account that emits the SendMessage log in L2ToL2CrossDomainMessenger. */
+  /** Account that emits log */
   origin: Address
   /** Block number in which the log was emitted */
   blockNumber: bigint
@@ -13,7 +13,7 @@ export type MessageIdentifier = {
   logIndex: bigint
   /** The timestamp that the log was emitted. Used to enforce the timestamp invariant */
   timestamp: bigint
-  /** The chain id of the chain that emitted the log */
+  /** The chain that emitted the log */
   chainId: bigint
 }
 

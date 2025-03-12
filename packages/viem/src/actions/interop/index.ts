@@ -1,4 +1,9 @@
 export type {
+  BuildExecutingMessageParameters,
+  BuildExecutingMessageReturnType,
+} from '@/actions/interop/buildExecutingMessage.js'
+export { buildExecutingMessage } from '@/actions/interop/buildExecutingMessage.js'
+export type {
   DepositSuperchainWETHContractReturnType,
   DepositSuperchainWETHErrorType,
   DepositSuperchainWETHParameters,
@@ -9,6 +14,16 @@ export {
   estimateDepositSuperchainWETHGas,
   simulateDepositSuperchainWETH,
 } from '@/actions/interop/depositSuperchainWETH.js'
+export type {
+  GetCrossDomainMessagesParameters,
+  GetCrossDomainMessagesReturnType,
+} from '@/actions/interop/getCrossDomainMessages.js'
+export { getCrossDomainMessages } from '@/actions/interop/getCrossDomainMessages.js'
+export type {
+  GetSentMessageStatusParameters,
+  GetSentMessageStatusReturnType,
+} from '@/actions/interop/getSentMessageStatus.js'
+export { getSentMessageStatus } from '@/actions/interop/getSentMessageStatus.js'
 export type {
   RelayMessageContractReturnType,
   RelayMessageErrorType,
