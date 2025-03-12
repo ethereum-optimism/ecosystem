@@ -2,9 +2,6 @@
   "$schema": "./node_modules/nx/schemas/nx-schema.json",
   "neverConnectToCloud": true,
   "projects": {
-    "apps": {
-      "bridge-app": ["type:app"]
-    },
     "packages": {
       "op-app": ["type:package"],
       "ui-components": ["type:package"]
