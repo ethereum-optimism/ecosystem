@@ -11,8 +11,8 @@ export const useRelayL2ToL2Message = () => {
   const relayMessage = useCallback(
     (params: RelayMessageParameters) => {
       const {
-        sentMessageId,
-        sentMessagePayload,
+        id,
+        payload,
         nonce,
         maxFeePerGas,
         maxPriorityFeePerGas,
@@ -24,7 +24,7 @@ export const useRelayL2ToL2Message = () => {
         abi: l2ToL2CrossDomainMessengerAbi,
         address: contracts.l2ToL2CrossDomainMessenger.address,
         functionName: 'relayMessage',
-        args: [sentMessageId, sentMessagePayload],
+        args: [id, payload],
         chain,
         gas: gas ? gas : undefined,
         nonce,

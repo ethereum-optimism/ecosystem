@@ -22,7 +22,7 @@ Estimates gas for [depositSuperchainWETH](depositSuperchainWETH.md)
 
 • **client**: `Client`\<`Transport`, `TChain`, `TAccount`\>
 
-L2 Wallet Client
+L2 Client
 
 • **parameters**: [`DepositSuperchainWETHParameters`](../type-aliases/DepositSuperchainWETHParameters.md)\<`TChain`, `TAccount`, `TChainOverride`, `DeriveChain`\<`TChain`, `TChainOverride`\>\>
 
@@ -36,4 +36,4 @@ The estimated gas value.
 
 ## Defined in
 
-[packages/viem/src/actions/interop/depositSuperchainWETH.ts:91](https://github.com/ethereum-optimism/ecosystem/blob/a99a99e6e8edfe86cc9b244149f498f9122cc99b/packages/viem/src/actions/interop/depositSuperchainWETH.ts#L91)
+[packages/viem/src/actions/interop/depositSuperchainWETH.ts:98](https://github.com/ethereum-optimism/ecosystem/blob/9a896f86e34c9a727d55fa4358d5403a7c25770a/packages/viem/src/actions/interop/depositSuperchainWETH.ts#L98)

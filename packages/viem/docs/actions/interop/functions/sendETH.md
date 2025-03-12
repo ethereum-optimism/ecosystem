@@ -22,7 +22,7 @@ Sends ETH to the specified recipient on the destination chain
 
 • **client**: `Client`\<`Transport`, `chain`, `account`\>
 
-L2 Wallet Client
+L2 Client
 
 • **parameters**: [`SendETHParameters`](../type-aliases/SendETHParameters.md)\<`chain`, `account`, `chainOverride`, `DeriveChain`\<`chain`, `chainOverride`\>\>
 
@@ -32,8 +32,8 @@ L2 Wallet Client
 
 `Promise`\<[`SendETHContractReturnType`](../type-aliases/SendETHContractReturnType.md)\>
 
-The crosschainSendETH transaction hash. [SendETHContractReturnType](../type-aliases/SendETHContractReturnType.md)
+transaction hash - [SendETHContractReturnType](../type-aliases/SendETHContractReturnType.md)
 
 ## Defined in
 
-[packages/viem/src/actions/interop/sendETH.ts:67](https://github.com/ethereum-optimism/ecosystem/blob/a99a99e6e8edfe86cc9b244149f498f9122cc99b/packages/viem/src/actions/interop/sendETH.ts#L67)
+[packages/viem/src/actions/interop/sendETH.ts:67](https://github.com/ethereum-optimism/ecosystem/blob/9a896f86e34c9a727d55fa4358d5403a7c25770a/packages/viem/src/actions/interop/sendETH.ts#L67)

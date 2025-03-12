@@ -22,7 +22,7 @@ Simulate contract call for [withdrawSuperchainWETH](withdrawSuperchainWETH.md)
 
 • **client**: `Client`\<`Transport`, `TChain`, `TAccount`\>
 
-L2 Public Client
+L2 Client
 
 • **parameters**: [`WithdrawSuperchainWETHParameters`](../type-aliases/WithdrawSuperchainWETHParameters.md)\<`TChain`, `TAccount`, `TChainOverride`, `DeriveChain`\<`TChain`, `TChainOverride`\>\>
 
@@ -32,8 +32,8 @@ L2 Public Client
 
 `Promise`\<[`WithdrawSuperchainWETHContractReturnType`](../type-aliases/WithdrawSuperchainWETHContractReturnType.md)\>
 
-The contract functions return value. withdrawSuperchainWETHContractReturnType
+contract return value - [WithdrawSuperchainWETHContractReturnType](../type-aliases/WithdrawSuperchainWETHContractReturnType.md)
 
 ## Defined in
 
-[packages/viem/src/actions/interop/withdrawSuperchainWETH.ts:126](https://github.com/ethereum-optimism/ecosystem/blob/a99a99e6e8edfe86cc9b244149f498f9122cc99b/packages/viem/src/actions/interop/withdrawSuperchainWETH.ts#L126)
+[packages/viem/src/actions/interop/withdrawSuperchainWETH.ts:126](https://github.com/ethereum-optimism/ecosystem/blob/9a896f86e34c9a727d55fa4358d5403a7c25770a/packages/viem/src/actions/interop/withdrawSuperchainWETH.ts#L126)

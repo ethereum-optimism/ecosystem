@@ -8,10 +8,6 @@ import {
   walletClientA,
   walletClientB,
 } from '@/test/clients.js'
-import {
-  createInteropSentL2ToL2Messages,
-  decodeRelayedL2ToL2Messages,
-} from '@/utils/l2ToL2CrossDomainMessenger.js'
 
 const AMOUNT_TO_SEND = 10n
 
@@ -29,24 +25,22 @@ describe('sendETH', () => {
       })
 
       const receipt = await publicClientA.waitForTransactionReceipt({ hash })
-      const { sentMessages } = await createInteropSentL2ToL2Messages(
-        publicClientA,
-        { receipt },
-      )
-      expect(sentMessages).toHaveLength(1)
+      const messages = await publicClientA.interop.getCrossDomainMessages({
+        logs: receipt.logs,
+      })
+      expect(messages).length(1)
 
-      const relayTxHash = await walletClientB.interop.relayMessage({
-        sentMessageId: sentMessages[0].id,
-        sentMessagePayload: sentMessages[0].payload,
+      const params = await publicClientA.interop.buildExecutingMessage({
+        log: messages[0].log,
       })
+      const relayTxHash = await walletClientB.interop.relayMessage(params)
       expect(relayTxHash).toBeDefined()
-      const relayReceipt = await publicClientB.waitForTransactionReceipt({
-        hash: relayTxHash,
+
+      await publicClientB.waitForTransactionReceipt({ hash: relayTxHash })
+      const status = await publicClientB.interop.getCrossDomainMessageStatus({
+        message: messages[0],
       })
-      const { successfulMessages } = decodeRelayedL2ToL2Messages({
-        receipt: relayReceipt,
-      })
-      expect(successfulMessages).length(1)
+      expect(status).toEqual('relayed')
 
       const endingBalance = await publicClientB.getBalance({
         address: testAccount.address,

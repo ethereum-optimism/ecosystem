@@ -59,10 +59,10 @@ export type SendETHErrorType =
 
 /**
  * Sends ETH to the specified recipient on the destination chain
- * @category L2 Wallet Actions
- * @param client - L2 Wallet Client
+ * @category Actions
+ * @param client - L2 Client
  * @param parameters - {@link SendETHParameters}
- * @returns The crosschainSendETH transaction hash. {@link SendETHContractReturnType}
+ * @returns transaction hash - {@link SendETHContractReturnType}
  */
 export async function sendETH<
   chain extends Chain | undefined,
@@ -88,10 +88,10 @@ export async function sendETH<
 
 /**
  * Estimates gas for {@link sendETH}
- * @category L2 Wallet Actions
- * @param client - L2 Wallet Client
+ * @category Actions
+ * @param client - L2 Client
  * @param parameters - {@link SendETHParameters}
- * @returns The estimated gas value.
+ * @returns estimated gas value.
  */
 export async function estimateSendETHGas<
   TChain extends Chain | undefined,
@@ -114,10 +114,10 @@ export async function estimateSendETHGas<
 
 /**
  * Simulate contract call for {@link sendETH}
- * @category L2 Public Actions
- * @param client - L2 Public Client
+ * @category Actions
+ * @param client - L2 Client
  * @param parameters - {@link SendETHParameters}
- * @returns The contract functions return value. {@link SendETHContractReturnType}
+ * @returns contract return value - {@link SendETHContractReturnType}
  */
 export async function simulateSendETH<
   TChain extends Chain | undefined,

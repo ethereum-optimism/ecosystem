@@ -6,21 +6,7 @@
 
 # RelayMessageParameters\<TChain, TAccount, TChainOverride, TDerivedChain\>
 
-> **RelayMessageParameters**\<`TChain`, `TAccount`, `TChainOverride`, `TDerivedChain`\>: `BaseWriteContractActionParameters`\<`TChain`, `TAccount`, `TChainOverride`, `TDerivedChain`\> & `object`
-
-## Type declaration
-
-### sentMessageId
-
-> **sentMessageId**: [`MessageIdentifier`](../../../index/type-aliases/MessageIdentifier.md)
-
-Identifier pointing to the sent message.
-
-### sentMessagePayload
-
-> **sentMessagePayload**: `MessagePayload`
-
-MessagePayload of the SentMessage event *
+> **RelayMessageParameters**\<`TChain`, `TAccount`, `TChainOverride`, `TDerivedChain`\>: `BaseWriteContractActionParameters`\<`TChain`, `TAccount`, `TChainOverride`, `TDerivedChain`\> & [`BuildExecutingMessageReturnType`](BuildExecutingMessageReturnType.md)
 
 ## Type Parameters
 
@@ -34,4 +20,4 @@ MessagePayload of the SentMessage event *
 
 ## Defined in
 
-[packages/viem/src/actions/interop/relayMessage.ts:28](https://github.com/ethereum-optimism/ecosystem/blob/a99a99e6e8edfe86cc9b244149f498f9122cc99b/packages/viem/src/actions/interop/relayMessage.ts#L28)
+[packages/viem/src/actions/interop/relayMessage.ts:28](https://github.com/ethereum-optimism/ecosystem/blob/9a896f86e34c9a727d55fa4358d5403a7c25770a/packages/viem/src/actions/interop/relayMessage.ts#L28)

@@ -4,7 +4,6 @@ import { describe, expect, it } from 'vitest'
 import { supersimL2B } from '@/chains/supersim.js'
 import { publicClientA, testAccount, walletClientA } from '@/test/clients.js'
 import { ticTacToeAbi, ticTacToeAddress } from '@/test/setupTicTacToe.js'
-import { decodeSentL2ToL2Messages } from '@/utils/l2ToL2CrossDomainMessenger.js'
 
 describe('sendMessage', () => {
   const calldata = encodeFunctionData({
@@ -28,10 +27,12 @@ describe('sendMessage', () => {
       const receipt = await publicClientA.waitForTransactionReceipt({
         hash: txHash,
       })
-      const { messages } = decodeSentL2ToL2Messages({ receipt })
+      const messages = await publicClientA.interop.getCrossDomainMessages({
+        logs: receipt.logs,
+      })
       expect(messages).length(1)
 
-      // very cross chain msg
+      // verify cross chain message
       const { destination, sender, target, message } = messages[0]
       expect(destination).toEqual(BigInt(supersimL2B.id))
       expect(sender).toEqual(testAccount.address)

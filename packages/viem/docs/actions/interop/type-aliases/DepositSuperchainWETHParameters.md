@@ -20,4 +20,4 @@
 
 ## Defined in
 
-[packages/viem/src/actions/interop/depositSuperchainWETH.ts:26](https://github.com/ethereum-optimism/ecosystem/blob/a99a99e6e8edfe86cc9b244149f498f9122cc99b/packages/viem/src/actions/interop/depositSuperchainWETH.ts#L26)
+[packages/viem/src/actions/interop/depositSuperchainWETH.ts:25](https://github.com/ethereum-optimism/ecosystem/blob/9a896f86e34c9a727d55fa4358d5403a7c25770a/packages/viem/src/actions/interop/depositSuperchainWETH.ts#L25)

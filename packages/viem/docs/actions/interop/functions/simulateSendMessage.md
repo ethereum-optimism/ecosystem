@@ -22,7 +22,7 @@ Simulate contract call for [sendMessage](sendMessage.md)
 
 • **client**: `Client`\<`Transport`, `TChain`, `TAccount`\>
 
-L2 Public Client
+L2 Client
 
 • **parameters**: [`SendMessageParameters`](../type-aliases/SendMessageParameters.md)\<`TChain`, `TAccount`, `TChainOverride`, `DeriveChain`\<`TChain`, `TChainOverride`\>\>
 
@@ -32,8 +32,8 @@ L2 Public Client
 
 `Promise`\<[`SendMessageContractReturnType`](../type-aliases/SendMessageContractReturnType.md)\>
 
-The contract functions return value. [SendMessageContractReturnType](../type-aliases/SendMessageContractReturnType.md)
+contract return value - [SendMessageContractReturnType](../type-aliases/SendMessageContractReturnType.md)
 
 ## Defined in
 
-[packages/viem/src/actions/interop/sendMessage.ts:131](https://github.com/ethereum-optimism/ecosystem/blob/a99a99e6e8edfe86cc9b244149f498f9122cc99b/packages/viem/src/actions/interop/sendMessage.ts#L131)
+[packages/viem/src/actions/interop/sendMessage.ts:131](https://github.com/ethereum-optimism/ecosystem/blob/9a896f86e34c9a727d55fa4358d5403a7c25770a/packages/viem/src/actions/interop/sendMessage.ts#L131)

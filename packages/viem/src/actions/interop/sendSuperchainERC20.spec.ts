@@ -4,7 +4,6 @@ import { beforeAll, describe, expect, it } from 'vitest'
 import { supersimL2B } from '@/chains/supersim.js'
 import { publicClientA, testAccount, walletClientA } from '@/test/clients.js'
 import { SUPERSIM_SUPERC20_ADDRESS } from '@/test/supERC20.js'
-import { createInteropSentL2ToL2Messages } from '@/utils/l2ToL2CrossDomainMessenger.js'
 
 const AMOUNT_TO_SEND = 10n
 
@@ -37,12 +36,10 @@ describe('sendSuperchainERC20', () => {
       })
 
       const receipt = await publicClientA.waitForTransactionReceipt({ hash })
-
-      const { sentMessages } = await createInteropSentL2ToL2Messages(
-        publicClientA,
-        { receipt },
-      )
-      expect(sentMessages).toHaveLength(1)
+      const messages = await publicClientA.interop.getCrossDomainMessages({
+        logs: receipt.logs,
+      })
+      expect(messages).length(1)
 
       const endingBalance = await publicClientA.readContract({
         address: SUPERSIM_SUPERC20_ADDRESS,

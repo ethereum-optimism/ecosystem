@@ -22,7 +22,7 @@ Deposits ETH to the SuperchainWETH contract.
 
 • **client**: `Client`\<`Transport`, `chain`, `account`\>
 
-L2 Wallet Client
+L2 Client
 
 • **parameters**: [`DepositSuperchainWETHParameters`](../type-aliases/DepositSuperchainWETHParameters.md)\<`chain`, `account`, `chainOverride`, `DeriveChain`\<`chain`, `chainOverride`\>\>
 
@@ -32,8 +32,20 @@ L2 Wallet Client
 
 `Promise`\<[`DepositSuperchainWETHReturnType`](../type-aliases/DepositSuperchainWETHReturnType.md)\>
 
-The depositSuperchainWETH transaction hash. [DepositSuperchainWETHReturnType](../type-aliases/DepositSuperchainWETHReturnType.md)
+transaction hash - [DepositSuperchainWETHReturnType](../type-aliases/DepositSuperchainWETHReturnType.md)
+
+## Example
+
+```ts
+import { createPublicClient } from 'viem'
+import { http } from 'viem/transports'
+import { op } from '@eth-optimism/viem/chains'
+import { depositSuperchainWETH } from '@eth-optimism/viem/actions/interop'
+
+const client = createPublicClient({ chain: op, transport: http() })
+const hash = await depositSuperchainWETH(client, { account: '0x...', value: 1n })
+```
 
 ## Defined in
 
-[packages/viem/src/actions/interop/depositSuperchainWETH.ts:64](https://github.com/ethereum-optimism/ecosystem/blob/a99a99e6e8edfe86cc9b244149f498f9122cc99b/packages/viem/src/actions/interop/depositSuperchainWETH.ts#L64)
+[packages/viem/src/actions/interop/depositSuperchainWETH.ts:71](https://github.com/ethereum-optimism/ecosystem/blob/9a896f86e34c9a727d55fa4358d5403a7c25770a/packages/viem/src/actions/interop/depositSuperchainWETH.ts#L71)

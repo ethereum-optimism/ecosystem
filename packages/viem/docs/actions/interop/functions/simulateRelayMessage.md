@@ -22,18 +22,18 @@ Simulate contract call for [relayMessage](relayMessage.md)
 
 • **client**: `Client`\<`Transport`, `TChain`, `TAccount`\>
 
-L2 Public Client
+L2 Client
 
 • **parameters**: [`RelayMessageParameters`](../type-aliases/RelayMessageParameters.md)\<`TChain`, `TAccount`, `TChainOverride`, `DeriveChain`\<`TChain`, `TChainOverride`\>\>
 
-Relay2ToL2MessageParameters
+[RelayMessageParameters](../type-aliases/RelayMessageParameters.md)
 
 ## Returns
 
 `Promise`\<[`RelayMessageContractReturnType`](../type-aliases/RelayMessageContractReturnType.md)\>
 
-The contract functions return value. [RelayMessageContractReturnType](../type-aliases/RelayMessageContractReturnType.md)
+contract return value - [RelayMessageContractReturnType](../type-aliases/RelayMessageContractReturnType.md)
 
 ## Defined in
 
-[packages/viem/src/actions/interop/relayMessage.ts:129](https://github.com/ethereum-optimism/ecosystem/blob/a99a99e6e8edfe86cc9b244149f498f9122cc99b/packages/viem/src/actions/interop/relayMessage.ts#L129)
+[packages/viem/src/actions/interop/relayMessage.ts:141](https://github.com/ethereum-optimism/ecosystem/blob/9a896f86e34c9a727d55fa4358d5403a7c25770a/packages/viem/src/actions/interop/relayMessage.ts#L141)

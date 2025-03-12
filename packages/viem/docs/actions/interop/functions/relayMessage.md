@@ -22,7 +22,7 @@ Relays a message emitted by the CrossDomainMessenger
 
 • **client**: `Client`\<`Transport`, `TChain`, `TAccount`\>
 
-Client to use
+L2 Client
 
 • **parameters**: [`RelayMessageParameters`](../type-aliases/RelayMessageParameters.md)\<`TChain`, `TAccount`, `TChainOverride`, `DeriveChain`\<`TChain`, `TChainOverride`\>\>
 
@@ -32,8 +32,27 @@ Client to use
 
 `Promise`\<[`RelayMessageReturnType`](../type-aliases/RelayMessageReturnType.md)\>
 
-The relayMessage transaction hash. [RelayMessageReturnType](../type-aliases/RelayMessageReturnType.md)
+transaction hash - [RelayMessageReturnType](../type-aliases/RelayMessageReturnType.md)
+
+## Example
+
+```ts
+import { createPublicClient } from 'viem'
+import { http } from 'viem/transports'
+import { op, unichain } from '@eth-optimism/viem/chains'
+
+const publicClientOp = createPublicClient({ chain: op, transport: http() })
+const publicClientUnichain = createPublicClient({ chain: unichain, transport: http() })
+
+const receipt = await publicClientOp.getTransactionReceipt({ hash: '0x...' })
+const messages = await getCrossDomainMessages(publicClientOp, { logs: receipt.logs })
+
+const message = messages.filter((message) => message.destination === unichain.id)[0]
+const params = await buildExecutingMessage(publicClientOp, { log: message.log })
+
+const hash = await relayMessage(publicClientUnichain, params)
+```
 
 ## Defined in
 
-[packages/viem/src/actions/interop/relayMessage.ts:74](https://github.com/ethereum-optimism/ecosystem/blob/a99a99e6e8edfe86cc9b244149f498f9122cc99b/packages/viem/src/actions/interop/relayMessage.ts#L74)
+[packages/viem/src/actions/interop/relayMessage.ts:86](https://github.com/ethereum-optimism/ecosystem/blob/9a896f86e34c9a727d55fa4358d5403a7c25770a/packages/viem/src/actions/interop/relayMessage.ts#L86)

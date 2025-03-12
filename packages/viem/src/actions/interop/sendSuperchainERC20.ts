@@ -69,10 +69,10 @@ export type SendSuperchainERC20ErrorType =
 
 /**
  * Sends tokens to a target address on another chain. Used in the interop flow.
- * @category L2 Wallet Actions
- * @param client - L2 Wallet Client
+ * @category Actions
+ * @param client - L2 Client
  * @param parameters - {@link SendSuperchainERC20Parameters}
- * @returns The sendSuperchainERC20 transaction hash. {@link SendSuperchainERC20ReturnType}
+ * @returns transaction hash - {@link SendSuperchainERC20ReturnType}
  */
 export async function sendSuperchainERC20<
   chain extends Chain | undefined,
@@ -98,10 +98,10 @@ export async function sendSuperchainERC20<
 
 /**
  * Estimates gas for {@link sendSuperchainERC20}
- * @category L2 Wallet Actions
- * @param client - L2 Wallet Client
+ * @category Actions
+ * @param client - L2 Client
  * @param parameters - {@link SendSuperchainERC20Parameters}
- * @returns The estimated gas value.
+ * @returns estimated gas value.
  */
 export async function estimateSendSuperchainERC20Gas<
   TChain extends Chain | undefined,
@@ -124,10 +124,10 @@ export async function estimateSendSuperchainERC20Gas<
 
 /**
  * Simulate contract call for {@link sendSuperchainERC20}
- * @category L2 Public Actions
- * @param client - L2 Public Client
+ * @category Actions
+ * @param client - L2 Client
  * @param parameters - {@link SendSuperchainERC20Parameters}
- * @returns The contract functions return value. {@link SendSuperchainERC20ContractReturnType}
+ * @returns contract return value - {@link SendSuperchainERC20ContractReturnType}
  */
 export async function simulateSendSuperchainERC20<
   TChain extends Chain | undefined,

@@ -22,7 +22,7 @@ Simulate contract call for [sendSuperchainERC20](sendSuperchainERC20.md)
 
 • **client**: `Client`\<`Transport`, `TChain`, `TAccount`\>
 
-L2 Public Client
+L2 Client
 
 • **parameters**: [`SendSuperchainERC20Parameters`](../type-aliases/SendSuperchainERC20Parameters.md)\<`TChain`, `TAccount`, `TChainOverride`, `DeriveChain`\<`TChain`, `TChainOverride`\>\>
 
@@ -32,8 +32,8 @@ L2 Public Client
 
 `Promise`\<[`SendSuperchainERC20ContractReturnType`](../type-aliases/SendSuperchainERC20ContractReturnType.md)\>
 
-The contract functions return value. [SendSuperchainERC20ContractReturnType](../type-aliases/SendSuperchainERC20ContractReturnType.md)
+contract return value - [SendSuperchainERC20ContractReturnType](../type-aliases/SendSuperchainERC20ContractReturnType.md)
 
 ## Defined in
 
-[packages/viem/src/actions/interop/sendSuperchainERC20.ts:132](https://github.com/ethereum-optimism/ecosystem/blob/a99a99e6e8edfe86cc9b244149f498f9122cc99b/packages/viem/src/actions/interop/sendSuperchainERC20.ts#L132)
+[packages/viem/src/actions/interop/sendSuperchainERC20.ts:132](https://github.com/ethereum-optimism/ecosystem/blob/9a896f86e34c9a727d55fa4358d5403a7c25770a/packages/viem/src/actions/interop/sendSuperchainERC20.ts#L132)

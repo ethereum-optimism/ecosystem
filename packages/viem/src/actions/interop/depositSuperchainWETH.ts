@@ -1,4 +1,3 @@
-/** @module depositSuperchainWETH */
 import type {
   Account,
   Chain,
@@ -56,10 +55,18 @@ export type DepositSuperchainWETHErrorType =
 
 /**
  * Deposits ETH to the SuperchainWETH contract.
- * @category L2 Wallet Actions
- * @param client - L2 Wallet Client
+ * @category Actions
+ * @param client - L2 Client
  * @param parameters - {@link DepositSuperchainWETHParameters}
- * @returns The depositSuperchainWETH transaction hash. {@link DepositSuperchainWETHReturnType}
+ * @returns transaction hash - {@link DepositSuperchainWETHReturnType}
+ * @example
+ * import { createPublicClient } from 'viem'
+ * import { http } from 'viem/transports'
+ * import { op } from '@eth-optimism/viem/chains'
+ * import { depositSuperchainWETH } from '@eth-optimism/viem/actions/interop'
+ *
+ * const client = createPublicClient({ chain: op, transport: http() })
+ * const hash = await depositSuperchainWETH(client, { account: '0x...', value: 1n })
  */
 export async function depositSuperchainWETH<
   chain extends Chain | undefined,
@@ -83,8 +90,8 @@ export async function depositSuperchainWETH<
 
 /**
  * Estimates gas for {@link depositSuperchainWETH}
- * @category L2 Wallet Actions
- * @param client - L2 Wallet Client
+ * @category Actions
+ * @param client - L2 Client
  * @param parameters - {@link DepositSuperchainWETHParameters}
  * @returns The estimated gas value.
  */
@@ -107,10 +114,10 @@ export async function estimateDepositSuperchainWETHGas<
 
 /**
  * Simulate contract call for {@link depositSuperchainWETH}
- * @category L2 Public Actions
- * @param client - L2 Public Client
+ * @category Actions
+ * @param client - L2 Client
  * @param parameters - {@link DepositSuperchainWETHParameters}
- * @returns The contract functions return value. {@link depositSuperchainWETHContractReturnType}
+ * @returns contract return value - {@link DepositSuperchainWETHContractReturnType}
  */
 export async function simulateDepositSuperchainWETH<
   TChain extends Chain | undefined,
