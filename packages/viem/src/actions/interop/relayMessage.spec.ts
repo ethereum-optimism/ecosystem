@@ -94,6 +94,7 @@ describe('relayMessage', () => {
       const params = await publicClientA.interop.buildExecutingMessage({
         log: messages[0].log,
       })
+
       const relayTxHash = await walletClientB.interop.relayMessage(params)
       expect(relayTxHash).toBeDefined()
 

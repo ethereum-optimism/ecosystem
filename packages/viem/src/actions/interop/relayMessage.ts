@@ -63,22 +63,25 @@ export type RelayMessageErrorType =
 
 /**
  * Relays a message emitted by the CrossDomainMessenger
- * @category L2 Wallet Actions
- * @param client - Client to use
+ * @category Actions
+ * @param client - L2 Client
  * @param parameters - {@link RelayMessageParameters}
- * @returns The relayMessage transaction hash. {@link RelayMessageReturnType}
+ * @returns transaction hash - {@link RelayMessageReturnType}
  * @example
  * import { createPublicClient } from 'viem'
  * import { http } from 'viem/transports'
- * import { op } from '@eth-optimism/viem/chains'
+ * import { op, unichain } from '@eth-optimism/viem/chains'
  *
  * const publicClientOp = createPublicClient({ chain: op, transport: http() })
+ * const publicClientUnichain = createPublicClient({ chain: unichain, transport: http() })
  *
  * const receipt = await publicClientOp.getTransactionReceipt({ hash: '0x...' })
  * const messages = await getCrossDomainMessages(publicClientOp, { logs: receipt.logs })
  *
- * const params = await buildExecutingMessage(publicClientOp, { log: messages[0].log })
- * const hash = await relayMessage(publicClientOp, params)
+ * const message = messages.filter((message) => message.destination === unichain.id)[0]
+ * const params = await buildExecutingMessage(publicClientOp, { log: message.log })
+ *
+ * const hash = await relayMessage(publicClientUnichain, params)
  */
 export async function relayMessage<
   TChain extends Chain | undefined,
@@ -104,10 +107,10 @@ export async function relayMessage<
 
 /**
  * Estimates gas for {@link relayMessage}
- * @category L2 Wallet Actions
- * @param client - Client to use
+ * @category Actions
+ * @param client - L2 Client
  * @param parameters - {@link RelayMessageParameters}
- * @returns The estimated gas value.
+ * @returns estimated gas value.
  */
 export async function estimateRelayMessageGas<
   TChain extends Chain | undefined,
@@ -130,10 +133,10 @@ export async function estimateRelayMessageGas<
 
 /**
  * Simulate contract call for {@link relayMessage}
- * @category L2 Public Actions
- * @param client - L2 Public Client
- * @param parameters - {@link Relay2ToL2MessageParameters}
- * @returns The contract functions return value. {@link RelayMessageContractReturnType}
+ * @category Actions
+ * @param client - L2 Client
+ * @param parameters - {@link RelayMessageParameters}
+ * @returns contract return value - {@link RelayMessageContractReturnType}
  */
 export async function simulateRelayMessage<
   TChain extends Chain | undefined,

@@ -34,7 +34,7 @@ export class InvalidDestinationChainError extends BaseError {
  * @category Actions
  * @param client - The client to use
  * @param parameters - {@link GetSentMessageStatusParameters}
- * @returns status - {@link GetSentMessageStatusReturnType}
+ * @returns status -{@link GetSentMessageStatusReturnType}
  * @example
  * import { createPublicClient } from 'viem'
  * import { op, unichain } from '@eth-optimism/viem/chains'
@@ -43,7 +43,7 @@ export class InvalidDestinationChainError extends BaseError {
  * const publicClientUnichain = createPublicClient({ chain: unichain, transport: http() })
  *
  * const receipt = await publicClientOp.getTransactionReceipt({ hash: '0x...' })
- * const messages = getCrossDomainMessages(op.id, { logs: receipt.logs })
+ * const messages = await getCrossDomainMessages(publicClientOp, { logs: receipt.logs })
  *
  * const message = messages.filter((message) => message.destination === unichain.id)[0]
  * const status = await getSentMessageStatus(publicClientUnichain, { message })

@@ -21,11 +21,12 @@ export type BuildExecutingMessageReturnType = {
 /**
  * @category Types
  */
-export type PendingLogChainErrorType = PendingLogChainError & {
-  name: 'PendingLogChainError'
-}
+export type ExecutingMessagePendingLogErrorType =
+  ExecutingMessagePendingLogError & {
+    name: 'ExecutingMessagePendingLogError'
+  }
 
-export class PendingLogChainError extends BaseError {
+export class ExecutingMessagePendingLogError extends BaseError {
   constructor(log: Log) {
     const txHash = log.transactionHash
     super(
@@ -62,7 +63,7 @@ export async function buildExecutingMessage<
     log.blockNumber === null ||
     log.logIndex === null
   ) {
-    throw new PendingLogChainError(log)
+    throw new ExecutingMessagePendingLogError(log)
   }
 
   const chainId = await getChainId(client)

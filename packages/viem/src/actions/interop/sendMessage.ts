@@ -68,10 +68,10 @@ export type SendMessageErrorType =
 
 /**
  * Initiates the intent of sending a L2 to L2 message. Used in the interop flow.
- * @category L2 Wallet Actions
- * @param client - L2 Wallet Client
+ * @category Actions
+ * @param client - L2 Client
  * @param parameters - {@link SendMessageParameters}
- * @returns The sendMessage transaction hash. {@link SendMessageReturnType}
+ * @returns transaction hash - {@link SendMessageReturnType}
  */
 export async function sendMessage<
   chain extends Chain | undefined,
@@ -97,10 +97,10 @@ export async function sendMessage<
 
 /**
  * Estimates gas for {@link sendMessage}
- * @category L2 Wallet Actions
- * @param client - L2 Wallet Client
+ * @category Actions
+ * @param client - L2 Client
  * @param parameters - {@link SendMessageParameters}
- * @returns The estimated gas value.
+ * @returns estimated gas value.
  */
 export async function estimateSendMessageGas<
   TChain extends Chain | undefined,
@@ -123,10 +123,10 @@ export async function estimateSendMessageGas<
 
 /**
  * Simulate contract call for {@link sendMessage}
- * @category L2 Public Actions
- * @param client - L2 Public Client
+ * @category Actions
+ * @param client - L2 Client
  * @param parameters - {@link SendMessageParameters}
- * @returns The contract functions return value. {@link SendMessageContractReturnType}
+ * @returns contract return value - {@link SendMessageContractReturnType}
  */
 export async function simulateSendMessage<
   TChain extends Chain | undefined,

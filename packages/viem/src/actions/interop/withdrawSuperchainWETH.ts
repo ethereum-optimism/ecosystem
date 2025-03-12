@@ -58,11 +58,11 @@ export type WithdrawSuperchainWETHErrorType =
   | ErrorType
 
 /**
- * Deposits ETH to the SuperchainWETH contract.
- * @category L2 Wallet Actions
- * @param client - L2 Wallet Client
+ * Withdraws ETH from the SuperchainWETH contract.
+ * @category Actions
+ * @param client - L2 Client
  * @param parameters - {@link WithdrawSuperchainWETHParameters}
- * @returns The withdrawSuperchainWETH transaction hash. {@link WithdrawSuperchainWETHReturnType}
+ * @returns transaction hash - {@link WithdrawSuperchainWETHReturnType}
  */
 export async function withdrawSuperchainWETH<
   chain extends Chain | undefined,
@@ -88,8 +88,8 @@ export async function withdrawSuperchainWETH<
 
 /**
  * Estimates gas for {@link withdrawSuperchainWETH}
- * @category L2 Wallet Actions
- * @param client - L2 Wallet Client
+ * @category Actions
+ * @param client - L2 Client
  * @param parameters - {@link WithdrawSuperchainWETHParameters}
  * @returns The estimated gas value.
  */
@@ -118,10 +118,10 @@ export async function estimateWithdrawSuperchainWETHGas<
 
 /**
  * Simulate contract call for {@link withdrawSuperchainWETH}
- * @category L2 Public Actions
- * @param client - L2 Public Client
+ * @category Actions
+ * @param client - L2 Client
  * @param parameters - {@link WithdrawSuperchainWETHParameters}
- * @returns The contract functions return value. {@link withdrawSuperchainWETHContractReturnType}
+ * @returns contract return value - {@link WithdrawSuperchainWETHContractReturnType}
  */
 export async function simulateWithdrawSuperchainWETH<
   TChain extends Chain | undefined,

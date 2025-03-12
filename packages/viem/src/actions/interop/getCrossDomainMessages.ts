@@ -16,9 +16,10 @@ export type GetCrossDomainMessagesReturnType = CrossDomainMessage[]
 
 /**
  * Get all cross domain messages from a set of logs
+ * @category Actions
  * @param client - The client to use
- * @param parameters - The parameters for the action
- * @returns The cross-domain messages
+ * @param parameters - {@link GetCrossDomainMessagesParameters}
+ * @returns cross domain messages - {@link GetCrossDomainMessagesReturnType}
  * @example
  * import { createPublicClient } from 'viem'
  * import { http } from 'viem/transports'
