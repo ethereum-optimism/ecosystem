@@ -10,12 +10,12 @@ import { crossDomainMessageHash } from '@/utils/interop/crossDomainMessageHash.j
 /**
  * @category Types
  */
-export type GetSentMessageStatusParameters = { message: CrossDomainMessage }
+export type GetCrossDomainMessageStatusParameters = { message: CrossDomainMessage }
 
 /**
  * @category Types
  */
-export type GetSentMessageStatusReturnType = 'ready-to-relay' | 'relayed'
+export type GetCrossDomainMessageStatusReturnType = 'ready-to-relay' | 'relayed'
 
 /**
  * @category Types
@@ -33,8 +33,8 @@ export class InvalidDestinationChainError extends BaseError {
  * Get the status of a cross domain message
  * @category Actions
  * @param client - The client to use
- * @param parameters - {@link GetSentMessageStatusParameters}
- * @returns status -{@link GetSentMessageStatusReturnType}
+ * @param parameters - {@link GetCrossDomainMessageStatusParameters}
+ * @returns status -{@link GetCrossDomainMessageStatusReturnType}
  * @example
  * import { createPublicClient } from 'viem'
  * import { op, unichain } from '@eth-optimism/viem/chains'
@@ -46,15 +46,15 @@ export class InvalidDestinationChainError extends BaseError {
  * const messages = await getCrossDomainMessages(publicClientOp, { logs: receipt.logs })
  *
  * const message = messages.filter((message) => message.destination === unichain.id)[0]
- * const status = await getSentMessageStatus(publicClientUnichain, { message })
+ * const status = await getCrossDomainMessageStatus(publicClientUnichain, { message })
  */
-export async function getSentMessageStatus<
+export async function getCrossDomainMessageStatus<
   TChain extends Chain | undefined,
   TAccount extends Account | undefined,
 >(
   client: Client<Transport, TChain, TAccount>,
-  parameters: GetSentMessageStatusParameters,
-): Promise<GetSentMessageStatusReturnType> {
+  parameters: GetCrossDomainMessageStatusParameters,
+): Promise<GetCrossDomainMessageStatusReturnType> {
   const { message } = parameters
 
   const chainId = BigInt(await getChainId(client))

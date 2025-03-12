@@ -86,7 +86,7 @@ describe('relayMessage', () => {
       })
       expect(messages).length(1)
 
-      const status = await publicClientB.interop.getSentMessageStatus({
+      const status = await publicClientB.interop.getCrossDomainMessageStatus({
         message: messages[0],
       })
       expect(status).toEqual('ready-to-relay')
@@ -99,7 +99,7 @@ describe('relayMessage', () => {
       expect(relayTxHash).toBeDefined()
 
       await publicClientB.waitForTransactionReceipt({ hash: relayTxHash })
-      const _status = await publicClientB.interop.getSentMessageStatus({
+      const _status = await publicClientB.interop.getCrossDomainMessageStatus({
         message: messages[0],
       })
       expect(_status).toEqual('relayed')

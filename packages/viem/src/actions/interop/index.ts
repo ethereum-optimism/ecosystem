@@ -20,10 +20,10 @@ export type {
 } from '@/actions/interop/getCrossDomainMessages.js'
 export { getCrossDomainMessages } from '@/actions/interop/getCrossDomainMessages.js'
 export type {
-  GetSentMessageStatusParameters,
-  GetSentMessageStatusReturnType,
-} from '@/actions/interop/getSentMessageStatus.js'
-export { getSentMessageStatus } from '@/actions/interop/getSentMessageStatus.js'
+  GetCrossDomainMessageStatusParameters,
+  GetCrossDomainMessageStatusReturnType,
+} from '@/actions/interop/getCrossDomainMessageStatus.js'
+export { getCrossDomainMessageStatus } from '@/actions/interop/getCrossDomainMessageStatus.js'
 export type {
   RelayMessageContractReturnType,
   RelayMessageErrorType,
