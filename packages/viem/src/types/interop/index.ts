@@ -1,2 +1,5 @@
-export * from '@/types/interop/cdm.js'
-export * from '@/types/interop/executingMessage.js'
+export type { CrossDomainMessage } from '@/types/interop/cdm.js'
+export type {
+  MessageIdentifier,
+  MessagePayload,
+} from '@/types/interop/executingMessage.js'

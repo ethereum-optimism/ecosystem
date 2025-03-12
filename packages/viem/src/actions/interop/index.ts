@@ -25,16 +25,27 @@ export type {
 } from '@/actions/interop/getCrossDomainMessageStatus.js'
 export { getCrossDomainMessageStatus } from '@/actions/interop/getCrossDomainMessageStatus.js'
 export type {
-  RelayMessageContractReturnType,
-  RelayMessageErrorType,
-  RelayMessageParameters,
-  RelayMessageReturnType,
-} from '@/actions/interop/relayMessage.js'
+  RelayCrossDomainMessageContractReturnType,
+  RelayCrossDomainMessageErrorType,
+  RelayCrossDomainMessageParameters,
+  RelayCrossDomainMessageReturnType,
+} from '@/actions/interop/relayCrossDomainMessage.js'
 export {
-  estimateRelayMessageGas,
-  relayMessage,
-  simulateRelayMessage,
-} from '@/actions/interop/relayMessage.js'
+  estimateRelayCrossDomainMessageGas,
+  relayCrossDomainMessage,
+  simulateRelayCrossDomainMessage,
+} from '@/actions/interop/relayCrossDomainMessage.js'
+export type {
+  SendCrossDomainMessageContractReturnType,
+  SendCrossDomainMessageErrorType,
+  SendCrossDomainMessageParameters,
+  SendCrossDomainMessageReturnType,
+} from '@/actions/interop/sendCrossDomainMessage.js'
+export {
+  estimateSendCrossDomainMessageGas,
+  sendCrossDomainMessage,
+  simulateSendCrossDomainMessage,
+} from '@/actions/interop/sendCrossDomainMessage.js'
 export type {
   SendETHContractReturnType,
   SendETHErrorType,
@@ -45,17 +56,6 @@ export {
   sendETH,
   simulateSendETH,
 } from '@/actions/interop/sendETH.js'
-export type {
-  SendMessageContractReturnType,
-  SendMessageErrorType,
-  SendMessageParameters,
-  SendMessageReturnType,
-} from '@/actions/interop/sendMessage.js'
-export {
-  estimateSendMessageGas,
-  sendMessage,
-  simulateSendMessage,
-} from '@/actions/interop/sendMessage.js'
 export type {
   SendSuperchainERC20ContractReturnType,
   SendSuperchainERC20ErrorType,
