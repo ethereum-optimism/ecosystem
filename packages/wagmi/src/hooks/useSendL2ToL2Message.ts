@@ -1,5 +1,5 @@
 import { contracts, l2ToL2CrossDomainMessengerAbi } from '@eth-optimism/viem'
-import type { SendMessageParameters } from '@eth-optimism/viem/actions/interop'
+import type { SendCrossDomainMessageParameters } from '@eth-optimism/viem/actions/interop'
 import { useCallback } from 'react'
 import { useConfig, useWriteContract } from 'wagmi'
 
@@ -9,7 +9,7 @@ export const useSendL2ToL2Message = () => {
     useWriteContract({ config })
 
   const sendMessage = useCallback(
-    (params: SendMessageParameters) => {
+    (params: SendCrossDomainMessageParameters) => {
       const { destinationChainId, target, message } = params
 
       return writeContractAsync({

@@ -1,4 +1,5 @@
 ---
+"@eth-optimism/wagmi": minor
 "@eth-optimism/viem": minor
 ---
 

@@ -1,5 +1,5 @@
 import { contracts, l2ToL2CrossDomainMessengerAbi } from '@eth-optimism/viem'
-import type { RelayMessageParameters } from '@eth-optimism/viem/actions/interop'
+import type { RelayCrossDomainMessageParameters } from '@eth-optimism/viem/actions/interop'
 import { useCallback } from 'react'
 import { useConfig, useWriteContract } from 'wagmi'
 
@@ -9,7 +9,7 @@ export const useRelayL2ToL2Message = () => {
     useWriteContract({ config })
 
   const relayMessage = useCallback(
-    (params: RelayMessageParameters) => {
+    (params: RelayCrossDomainMessageParameters) => {
       const {
         id,
         payload,
