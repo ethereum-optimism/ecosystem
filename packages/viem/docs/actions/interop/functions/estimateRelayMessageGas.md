@@ -22,7 +22,7 @@ Estimates gas for [relayMessage](relayMessage.md)
 
 • **client**: `Client`\<`Transport`, `TChain`, `TAccount`\>
 
-Client to use
+L2 Client
 
 • **parameters**: [`RelayMessageParameters`](../type-aliases/RelayMessageParameters.md)\<`TChain`, `TAccount`, `TChainOverride`, `DeriveChain`\<`TChain`, `TChainOverride`\>\>
 
@@ -32,8 +32,8 @@ Client to use
 
 `Promise`\<`bigint`\>
 
-The estimated gas value.
+estimated gas value.
 
 ## Defined in
 
-[packages/viem/src/actions/interop/relayMessage.ts:103](https://github.com/ethereum-optimism/ecosystem/blob/a99a99e6e8edfe86cc9b244149f498f9122cc99b/packages/viem/src/actions/interop/relayMessage.ts#L103)
+[packages/viem/src/actions/interop/relayMessage.ts:115](https://github.com/ethereum-optimism/ecosystem/blob/9a896f86e34c9a727d55fa4358d5403a7c25770a/packages/viem/src/actions/interop/relayMessage.ts#L115)

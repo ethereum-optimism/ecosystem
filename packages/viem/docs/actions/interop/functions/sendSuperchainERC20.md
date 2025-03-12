@@ -22,7 +22,7 @@ Sends tokens to a target address on another chain. Used in the interop flow.
 
 • **client**: `Client`\<`Transport`, `chain`, `account`\>
 
-L2 Wallet Client
+L2 Client
 
 • **parameters**: [`SendSuperchainERC20Parameters`](../type-aliases/SendSuperchainERC20Parameters.md)\<`chain`, `account`, `chainOverride`, `DeriveChain`\<`chain`, `chainOverride`\>\>
 
@@ -32,8 +32,8 @@ L2 Wallet Client
 
 `Promise`\<[`SendSuperchainERC20ReturnType`](../type-aliases/SendSuperchainERC20ReturnType.md)\>
 
-The sendSuperchainERC20 transaction hash. [SendSuperchainERC20ReturnType](../type-aliases/SendSuperchainERC20ReturnType.md)
+transaction hash - [SendSuperchainERC20ReturnType](../type-aliases/SendSuperchainERC20ReturnType.md)
 
 ## Defined in
 
-[packages/viem/src/actions/interop/sendSuperchainERC20.ts:77](https://github.com/ethereum-optimism/ecosystem/blob/a99a99e6e8edfe86cc9b244149f498f9122cc99b/packages/viem/src/actions/interop/sendSuperchainERC20.ts#L77)
+[packages/viem/src/actions/interop/sendSuperchainERC20.ts:77](https://github.com/ethereum-optimism/ecosystem/blob/9a896f86e34c9a727d55fa4358d5403a7c25770a/packages/viem/src/actions/interop/sendSuperchainERC20.ts#L77)

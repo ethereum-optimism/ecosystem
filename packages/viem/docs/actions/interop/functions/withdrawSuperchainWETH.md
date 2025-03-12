@@ -8,7 +8,7 @@
 
 > **withdrawSuperchainWETH**\<`chain`, `account`, `chainOverride`\>(`client`, `parameters`): `Promise`\<[`WithdrawSuperchainWETHReturnType`](../type-aliases/WithdrawSuperchainWETHReturnType.md)\>
 
-Deposits ETH to the SuperchainWETH contract.
+Withdraws ETH from the SuperchainWETH contract.
 
 ## Type Parameters
 
@@ -22,7 +22,7 @@ Deposits ETH to the SuperchainWETH contract.
 
 • **client**: `Client`\<`Transport`, `chain`, `account`\>
 
-L2 Wallet Client
+L2 Client
 
 • **parameters**: [`WithdrawSuperchainWETHParameters`](../type-aliases/WithdrawSuperchainWETHParameters.md)\<`chain`, `account`, `chainOverride`, `DeriveChain`\<`chain`, `chainOverride`\>\>
 
@@ -32,8 +32,8 @@ L2 Wallet Client
 
 `Promise`\<[`WithdrawSuperchainWETHReturnType`](../type-aliases/WithdrawSuperchainWETHReturnType.md)\>
 
-The withdrawSuperchainWETH transaction hash. [WithdrawSuperchainWETHReturnType](../type-aliases/WithdrawSuperchainWETHReturnType.md)
+transaction hash - [WithdrawSuperchainWETHReturnType](../type-aliases/WithdrawSuperchainWETHReturnType.md)
 
 ## Defined in
 
-[packages/viem/src/actions/interop/withdrawSuperchainWETH.ts:67](https://github.com/ethereum-optimism/ecosystem/blob/a99a99e6e8edfe86cc9b244149f498f9122cc99b/packages/viem/src/actions/interop/withdrawSuperchainWETH.ts#L67)
+[packages/viem/src/actions/interop/withdrawSuperchainWETH.ts:67](https://github.com/ethereum-optimism/ecosystem/blob/9a896f86e34c9a727d55fa4358d5403a7c25770a/packages/viem/src/actions/interop/withdrawSuperchainWETH.ts#L67)

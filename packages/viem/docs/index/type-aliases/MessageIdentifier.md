@@ -22,7 +22,7 @@ Block number in which the log was emitted
 
 > **chainId**: `bigint`
 
-The chain id of the chain that emitted the log
+The chain that emitted the log
 
 ### logIndex
 
@@ -34,7 +34,7 @@ The index of the log in the array of all logs emitted in the block
 
 > **origin**: `Address`
 
-Account that emits the SendMessage log in L2ToL2CrossDomainMessenger.
+Account that emits log
 
 ### timestamp
 
@@ -44,4 +44,4 @@ The timestamp that the log was emitted. Used to enforce the timestamp invariant
 
 ## Defined in
 
-[packages/viem/src/types/interop.ts:7](https://github.com/ethereum-optimism/ecosystem/blob/a99a99e6e8edfe86cc9b244149f498f9122cc99b/packages/viem/src/types/interop.ts#L7)
+[packages/viem/src/types/interop/executingMessage.ts:7](https://github.com/ethereum-optimism/ecosystem/blob/9a896f86e34c9a727d55fa4358d5403a7c25770a/packages/viem/src/types/interop/executingMessage.ts#L7)

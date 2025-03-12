@@ -12,4 +12,4 @@ ABI for the OP Stack contract `OptimismMintableERC20`
 
 ## Defined in
 
-[packages/viem/src/abis.ts:928](https://github.com/ethereum-optimism/ecosystem/blob/a99a99e6e8edfe86cc9b244149f498f9122cc99b/packages/viem/src/abis.ts#L928)
+[packages/viem/src/abis.ts:928](https://github.com/ethereum-optimism/ecosystem/blob/9a896f86e34c9a727d55fa4358d5403a7c25770a/packages/viem/src/abis.ts#L928)

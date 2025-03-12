@@ -22,7 +22,7 @@ Estimates gas for [sendMessage](sendMessage.md)
 
 • **client**: `Client`\<`Transport`, `TChain`, `TAccount`\>
 
-L2 Wallet Client
+L2 Client
 
 • **parameters**: [`SendMessageParameters`](../type-aliases/SendMessageParameters.md)\<`TChain`, `TAccount`, `TChainOverride`, `DeriveChain`\<`TChain`, `TChainOverride`\>\>
 
@@ -32,8 +32,8 @@ L2 Wallet Client
 
 `Promise`\<`bigint`\>
 
-The estimated gas value.
+estimated gas value.
 
 ## Defined in
 
-[packages/viem/src/actions/interop/sendMessage.ts:105](https://github.com/ethereum-optimism/ecosystem/blob/a99a99e6e8edfe86cc9b244149f498f9122cc99b/packages/viem/src/actions/interop/sendMessage.ts#L105)
+[packages/viem/src/actions/interop/sendMessage.ts:105](https://github.com/ethereum-optimism/ecosystem/blob/9a896f86e34c9a727d55fa4358d5403a7c25770a/packages/viem/src/actions/interop/sendMessage.ts#L105)
