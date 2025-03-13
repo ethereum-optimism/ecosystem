@@ -117,7 +117,7 @@ jobs:
           command: pnpm nx affected --base=$NX_BASE --head=$NX_HEAD --target=lint:ci
       - run:
           name: Run Tests
-          command: pnpm nx affected --base=$NX_BASE --head=$NX_HEAD --target=test:ci
+          command: pnpm nx affected --base=$NX_BASE --head=$NX_HEAD --target=test:ci --output-style=stream
 
 workflows:
   release:
