@@ -10,14 +10,15 @@
     "src/*"
   ],
   "scripts": {
-    "test": "vitest --passWithNoTests",
     "clean": "rm -rf build types tsconfig.tsbuildinfo",
-    "typecheck": "tsc --noEmit --emitDeclarationOnly false",
-    "typecheck:ci": "tsc --noEmit --emitDeclarationOnly false",
     "build": "tsc && resolve-tspaths",
     "lint": "eslint \"**/*.{ts,tsx}\" && pnpm prettier --check \"**/*.{ts,tsx}\"",
     "lint:ci": "eslint \"**/*.{ts,tsx}\" --quiet && pnpm prettier --check \"**/*.{ts,tsx}\"",
-    "lint:fix": "eslint \"**/*.{ts,tsx}\" --fix --quiet && pnpm prettier \"**/*.{ts,tsx}\" --write --loglevel=warn"
+    "lint:fix": "eslint \"**/*.{ts,tsx}\" --fix --quiet && pnpm prettier \"**/*.{ts,tsx}\" --write --loglevel=warn",
+    "test": "vitest --passWithNoTests",
+    "test:ci": "vitest --passWithNoTests --run",
+    "typecheck": "tsc --noEmit --emitDeclarationOnly false",
+    "typecheck:ci": "tsc --noEmit --emitDeclarationOnly false"
   },
   "devDependencies": {
     "@eth-optimism/viem": "workspace:^0.x",

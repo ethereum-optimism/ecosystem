@@ -7,7 +7,7 @@ orbs:
 
 commands:
   prepare-snapshot:
-    description: "Prepare the snapshot name"
+    description: 'Prepare the snapshot name'
     steps:
       - run:
           name: Setup snapshot name
@@ -24,7 +24,7 @@ commands:
           command: pnpm release:version:snapshot
 
   setup:
-    description: "Setup Node.js environment with pnpm and nx"
+    description: 'Setup Node.js environment with pnpm and nx'
     steps:
       - run:
           name: Install mise
@@ -97,8 +97,8 @@ jobs:
 
       - utils/changesets:
           createGithubReleases: false
-          publish: "pnpm release:publish"
-          version: "pnpm release:version"
+          publish: 'pnpm release:publish'
+          version: 'pnpm release:version'
 
   check:
     docker:
@@ -111,13 +111,13 @@ jobs:
           command: pnpm nx affected --base=$NX_BASE --head=$NX_HEAD --target=build
       - run:
           name: Run TypeChecker
-          command: pnpm nx affected --base=$NX_BASE --head=$NX_HEAD --target=typecheck
+          command: pnpm nx affected --base=$NX_BASE --head=$NX_HEAD --target=typecheck:ci
       - run:
           name: Run Linters
-          command: pnpm nx affected --base=$NX_BASE --head=$NX_HEAD --target=lint
+          command: pnpm nx affected --base=$NX_BASE --head=$NX_HEAD --target=lint:ci
       - run:
           name: Run Tests
-          command: pnpm nx affected --base=$NX_BASE --head=$NX_HEAD --target=test
+          command: pnpm nx affected --base=$NX_BASE --head=$NX_HEAD --target=test:ci
 
 workflows:
   release:
