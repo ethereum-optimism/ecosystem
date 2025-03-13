@@ -24,11 +24,11 @@ app/*/.env
 
 npm-debug.log*
 
-# storybook
-**/storybook-static/
+# ponder
+**/.ponder
+**/generated
 
 # cert files
 *.crt
 *.pem
 *.key
-*storybook.log

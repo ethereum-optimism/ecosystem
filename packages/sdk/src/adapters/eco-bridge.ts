@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
+ 
 import { hexStringEquals } from '@eth-optimism/core-utils'
 import { Contract } from 'ethers'
 

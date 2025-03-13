@@ -1,7 +1,6 @@
+import { defineConfig } from 'eslint/config';
 
-const rootConfig = require('../../eslint.config.js');
+import rootConfig from '../../eslint.config.js';
 
 // Create a new configuration that extends the root configuration
-module.exports = [
-  ...rootConfig,
-];
+export default defineConfig([rootConfig])
