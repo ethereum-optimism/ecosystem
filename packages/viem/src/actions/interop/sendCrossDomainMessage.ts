@@ -25,7 +25,7 @@ import type { ErrorType } from '@/types/utils.js'
 /**
  * @category Types
  */
-export type SendMessageParameters<
+export type SendCrossDomainMessageParameters<
   TChain extends Chain | undefined = Chain | undefined,
   TAccount extends Account | undefined = Account | undefined,
   TChainOverride extends Chain | undefined = Chain | undefined,
@@ -47,21 +47,22 @@ export type SendMessageParameters<
 /**
  * @category Types
  */
-export type SendMessageReturnType = Hash
+export type SendCrossDomainMessageReturnType = Hash
 
 /**
  * @category Types
  */
-export type SendMessageContractReturnType = ContractFunctionReturnType<
-  typeof l2ToL2CrossDomainMessengerAbi,
-  'nonpayable',
-  'sendMessage'
->
+export type SendCrossDomainMessageContractReturnType =
+  ContractFunctionReturnType<
+    typeof l2ToL2CrossDomainMessengerAbi,
+    'nonpayable',
+    'sendMessage'
+  >
 
 /**
  * @category Types
  */
-export type SendMessageErrorType =
+export type SendCrossDomainMessageErrorType =
   | EstimateContractGasErrorType
   | WriteContractErrorType
   | ErrorType
@@ -70,17 +71,17 @@ export type SendMessageErrorType =
  * Initiates the intent of sending a L2 to L2 message. Used in the interop flow.
  * @category Actions
  * @param client - L2 Client
- * @param parameters - {@link SendMessageParameters}
- * @returns transaction hash - {@link SendMessageReturnType}
+ * @param parameters - {@link SendCrossDomainMessageParameters}
+ * @returns transaction hash - {@link SendCrossDomainMessageReturnType}
  */
-export async function sendMessage<
+export async function sendCrossDomainMessage<
   chain extends Chain | undefined,
   account extends Account | undefined,
   chainOverride extends Chain | undefined = undefined,
 >(
   client: Client<Transport, chain, account>,
-  parameters: SendMessageParameters<chain, account, chainOverride>,
-): Promise<SendMessageReturnType> {
+  parameters: SendCrossDomainMessageParameters<chain, account, chainOverride>,
+): Promise<SendCrossDomainMessageReturnType> {
   const { destinationChainId, target, message, ...txParameters } = parameters
 
   return baseWriteAction(
@@ -99,16 +100,20 @@ export async function sendMessage<
  * Estimates gas for {@link sendMessage}
  * @category Actions
  * @param client - L2 Client
- * @param parameters - {@link SendMessageParameters}
+ * @param parameters - {@link SendCrossDomainMessageParameters}
  * @returns estimated gas value.
  */
-export async function estimateSendMessageGas<
+export async function estimateSendCrossDomainMessageGas<
   TChain extends Chain | undefined,
   TAccount extends Account | undefined,
   TChainOverride extends Chain | undefined = undefined,
 >(
   client: Client<Transport, TChain, TAccount>,
-  parameters: SendMessageParameters<TChain, TAccount, TChainOverride>,
+  parameters: SendCrossDomainMessageParameters<
+    TChain,
+    TAccount,
+    TChainOverride
+  >,
 ): Promise<bigint> {
   const { destinationChainId, target, message, ...txParameters } = parameters
 
@@ -125,17 +130,21 @@ export async function estimateSendMessageGas<
  * Simulate contract call for {@link sendMessage}
  * @category Actions
  * @param client - L2 Client
- * @param parameters - {@link SendMessageParameters}
- * @returns contract return value - {@link SendMessageContractReturnType}
+ * @param parameters - {@link SendCrossDomainMessageParameters}
+ * @returns contract return value - {@link SendCrossDomainMessageContractReturnType}
  */
-export async function simulateSendMessage<
+export async function simulateSendCrossDomainMessage<
   TChain extends Chain | undefined,
   TAccount extends Account | undefined,
   TChainOverride extends Chain | undefined = undefined,
 >(
   client: Client<Transport, TChain, TAccount>,
-  parameters: SendMessageParameters<TChain, TAccount, TChainOverride>,
-): Promise<SendMessageContractReturnType> {
+  parameters: SendCrossDomainMessageParameters<
+    TChain,
+    TAccount,
+    TChainOverride
+  >,
+): Promise<SendCrossDomainMessageContractReturnType> {
   const { account, destinationChainId, target, message } = parameters
 
   const res = await simulateContract(client, {
@@ -147,5 +156,5 @@ export async function simulateSendMessage<
     args: [destinationChainId, target, message],
   } as SimulateContractParameters)
 
-  return res.result as SendMessageContractReturnType
+  return res.result as SendCrossDomainMessageContractReturnType
 }

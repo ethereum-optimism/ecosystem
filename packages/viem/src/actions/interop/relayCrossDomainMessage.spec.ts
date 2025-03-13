@@ -20,7 +20,7 @@ describe('relayMessage', () => {
 
   describe('estimate gas', () => {
     it('should estimate gas', async () => {
-      const hash = await walletClientA.interop.sendMessage({
+      const hash = await walletClientA.interop.sendCrossDomainMessage({
         account: testAccount.address,
         destinationChainId: supersimL2B.id,
         target: ticTacToeAddress,
@@ -36,17 +36,18 @@ describe('relayMessage', () => {
       const params = await publicClientA.interop.buildExecutingMessage({
         log: messages[0].log,
       })
-      const gas = await publicClientB.interop.estimateRelayMessageGas({
-        account: testAccount.address,
-        ...params,
-      })
+      const gas =
+        await publicClientB.interop.estimateRelayCrossDomainMessageGas({
+          account: testAccount.address,
+          ...params,
+        })
       expect(gas).toBeDefined()
     })
   })
 
   describe('simulate', () => {
     it('should simulate', async () => {
-      const hash = await walletClientA.interop.sendMessage({
+      const hash = await walletClientA.interop.sendCrossDomainMessage({
         account: testAccount.address,
         destinationChainId: supersimL2B.id,
         target: ticTacToeAddress,
@@ -63,7 +64,7 @@ describe('relayMessage', () => {
         log: messages[0].log,
       })
       expect(() =>
-        publicClientB.interop.simulateRelayMessage({
+        publicClientB.interop.simulateRelayCrossDomainMessage({
           account: testAccount,
           ...params,
         }),
@@ -73,7 +74,7 @@ describe('relayMessage', () => {
 
   describe('write contract', () => {
     it('should return expected request', async () => {
-      const hash = await walletClientA.interop.sendMessage({
+      const hash = await walletClientA.interop.sendCrossDomainMessage({
         account: testAccount.address,
         destinationChainId: supersimL2B.id,
         target: ticTacToeAddress,
@@ -95,7 +96,8 @@ describe('relayMessage', () => {
         log: messages[0].log,
       })
 
-      const relayTxHash = await walletClientB.interop.relayMessage(params)
+      const relayTxHash =
+        await walletClientB.interop.relayCrossDomainMessage(params)
       expect(relayTxHash).toBeDefined()
 
       await publicClientB.waitForTransactionReceipt({ hash: relayTxHash })

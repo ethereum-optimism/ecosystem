@@ -11,12 +11,12 @@ import type {
   GetCrossDomainMessagesReturnType,
   GetCrossDomainMessageStatusParameters,
   GetCrossDomainMessageStatusReturnType,
-  RelayMessageContractReturnType,
-  RelayMessageParameters,
+  RelayCrossDomainMessageContractReturnType,
+  RelayCrossDomainMessageParameters,
+  SendCrossDomainMessageContractReturnType,
+  SendCrossDomainMessageParameters,
   SendETHContractReturnType,
   SendETHParameters,
-  SendMessageContractReturnType,
-  SendMessageParameters,
   SendSuperchainERC20ContractReturnType,
   SendSuperchainERC20Parameters,
   WithdrawSuperchainWETHContractReturnType,
@@ -25,17 +25,17 @@ import type {
 import {
   buildExecutingMessage,
   estimateDepositSuperchainWETHGas,
-  estimateRelayMessageGas,
+  estimateRelayCrossDomainMessageGas,
+  estimateSendCrossDomainMessageGas,
   estimateSendETHGas,
-  estimateSendMessageGas,
   estimateSendSuperchainERC20Gas,
   estimateWithdrawSuperchainWETHGas,
   getCrossDomainMessages,
   getCrossDomainMessageStatus,
   simulateDepositSuperchainWETH,
-  simulateRelayMessage,
+  simulateRelayCrossDomainMessage,
+  simulateSendCrossDomainMessage,
   simulateSendETH,
-  simulateSendMessage,
   simulateSendSuperchainERC20,
   simulateWithdrawSuperchainWETH,
 } from '@/actions/interop/index.js'
@@ -48,16 +48,24 @@ export type PublicInteropActionsL2<
     parameters: BuildExecutingMessageParameters,
   ) => Promise<BuildExecutingMessageReturnType>
 
-  estimateSendMessageGas: <
+  estimateSendCrossDomainMessageGas: <
     TChainOverride extends Chain | undefined = undefined,
   >(
-    parameters: SendMessageParameters<TChain, TAccount, TChainOverride>,
+    parameters: SendCrossDomainMessageParameters<
+      TChain,
+      TAccount,
+      TChainOverride
+    >,
   ) => Promise<bigint>
 
-  estimateRelayMessageGas: <
+  estimateRelayCrossDomainMessageGas: <
     TChainOverride extends Chain | undefined = undefined,
   >(
-    parameters: RelayMessageParameters<TChain, TAccount, TChainOverride>,
+    parameters: RelayCrossDomainMessageParameters<
+      TChain,
+      TAccount,
+      TChainOverride
+    >,
   ) => Promise<bigint>
 
   estimateSendSuperchainERC20Gas: <
@@ -98,13 +106,25 @@ export type PublicInteropActionsL2<
     parameters: GetCrossDomainMessageStatusParameters,
   ) => Promise<GetCrossDomainMessageStatusReturnType>
 
-  simulateSendMessage: <TChainOverride extends Chain | undefined = undefined>(
-    parameters: SendMessageParameters<TChain, TAccount, TChainOverride>,
-  ) => Promise<SendMessageContractReturnType>
+  simulateSendCrossDomainMessage: <
+    TChainOverride extends Chain | undefined = undefined,
+  >(
+    parameters: SendCrossDomainMessageParameters<
+      TChain,
+      TAccount,
+      TChainOverride
+    >,
+  ) => Promise<SendCrossDomainMessageContractReturnType>
 
-  simulateRelayMessage: <TChainOverride extends Chain | undefined = undefined>(
-    parameters: RelayMessageParameters<TChain, TAccount, TChainOverride>,
-  ) => Promise<RelayMessageContractReturnType>
+  simulateRelayCrossDomainMessage: <
+    TChainOverride extends Chain | undefined = undefined,
+  >(
+    parameters: RelayCrossDomainMessageParameters<
+      TChain,
+      TAccount,
+      TChainOverride
+    >,
+  ) => Promise<RelayCrossDomainMessageContractReturnType>
 
   simulateSendSuperchainERC20: <
     TChainOverride extends Chain | undefined = undefined,
@@ -157,9 +177,10 @@ export function publicActionsL2() {
       ...opPublicActionsL2(),
       interop: {
         buildExecutingMessage: (args) => buildExecutingMessage(client, args),
-        estimateSendMessageGas: (args) => estimateSendMessageGas(client, args),
-        estimateRelayMessageGas: (args) =>
-          estimateRelayMessageGas(client, args),
+        estimateSendCrossDomainMessageGas: (args) =>
+          estimateSendCrossDomainMessageGas(client, args),
+        estimateRelayCrossDomainMessageGas: (args) =>
+          estimateRelayCrossDomainMessageGas(client, args),
         estimateSendSuperchainERC20Gas: (args) =>
           estimateSendSuperchainERC20Gas(client, args),
         estimateDepositSuperchainWETHGas: (args) =>
@@ -170,8 +191,10 @@ export function publicActionsL2() {
         getCrossDomainMessages: (args) => getCrossDomainMessages(client, args),
         getCrossDomainMessageStatus: (args) =>
           getCrossDomainMessageStatus(client, args),
-        simulateSendMessage: (args) => simulateSendMessage(client, args),
-        simulateRelayMessage: (args) => simulateRelayMessage(client, args),
+        simulateSendCrossDomainMessage: (args) =>
+          simulateSendCrossDomainMessage(client, args),
+        simulateRelayCrossDomainMessage: (args) =>
+          simulateRelayCrossDomainMessage(client, args),
         simulateSendSuperchainERC20: (args) =>
           simulateSendSuperchainERC20(client, args),
         simulateDepositSuperchainWETH: (args) =>

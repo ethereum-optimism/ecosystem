@@ -25,7 +25,7 @@ import type { ErrorType } from '@/types/utils.js'
 /**
  * @category Types
  */
-export type RelayMessageParameters<
+export type RelayCrossDomainMessageParameters<
   TChain extends Chain | undefined = Chain | undefined,
   TAccount extends Account | undefined = Account | undefined,
   TChainOverride extends Chain | undefined = Chain | undefined,
@@ -42,21 +42,22 @@ export type RelayMessageParameters<
 /**
  * @category Types
  */
-export type RelayMessageReturnType = Hash
+export type RelayCrossDomainMessageReturnType = Hash
 
 /**
  * @category Types
  */
-export type RelayMessageContractReturnType = ContractFunctionReturnType<
-  typeof l2ToL2CrossDomainMessengerAbi,
-  'payable',
-  'relayMessage'
->
+export type RelayCrossDomainMessageContractReturnType =
+  ContractFunctionReturnType<
+    typeof l2ToL2CrossDomainMessengerAbi,
+    'payable',
+    'relayMessage'
+  >
 
 /**
  * @category Types
  */
-export type RelayMessageErrorType =
+export type RelayCrossDomainMessageErrorType =
   | EstimateContractGasErrorType
   | WriteContractErrorType
   | ErrorType
@@ -65,8 +66,8 @@ export type RelayMessageErrorType =
  * Relays a message emitted by the CrossDomainMessenger
  * @category Actions
  * @param client - L2 Client
- * @param parameters - {@link RelayMessageParameters}
- * @returns transaction hash - {@link RelayMessageReturnType}
+ * @param parameters - {@link RelayCrossDomainMessageParameters}
+ * @returns transaction hash - {@link RelayCrossDomainMessageReturnType}
  * @example
  * import { createPublicClient } from 'viem'
  * import { http } from 'viem/transports'
@@ -81,16 +82,20 @@ export type RelayMessageErrorType =
  * const message = messages.filter((message) => message.destination === unichain.id)[0]
  * const params = await buildExecutingMessage(publicClientOp, { log: message.log })
  *
- * const hash = await relayMessage(publicClientUnichain, params)
+ * const hash = await relayCrossDomainMessage(publicClientUnichain, params)
  */
-export async function relayMessage<
+export async function relayCrossDomainMessage<
   TChain extends Chain | undefined,
   TAccount extends Account | undefined,
   TChainOverride extends Chain | undefined = undefined,
 >(
   client: Client<Transport, TChain, TAccount>,
-  parameters: RelayMessageParameters<TChain, TAccount, TChainOverride>,
-): Promise<RelayMessageReturnType> {
+  parameters: RelayCrossDomainMessageParameters<
+    TChain,
+    TAccount,
+    TChainOverride
+  >,
+): Promise<RelayCrossDomainMessageReturnType> {
   const { id, payload, ...txParameters } = parameters
 
   return baseWriteAction(
@@ -106,19 +111,23 @@ export async function relayMessage<
 }
 
 /**
- * Estimates gas for {@link relayMessage}
+ * Estimates gas for {@link relayCrossDomainMessage}
  * @category Actions
  * @param client - L2 Client
- * @param parameters - {@link RelayMessageParameters}
+ * @param parameters - {@link RelayCrossDomainMessageParameters}
  * @returns estimated gas value.
  */
-export async function estimateRelayMessageGas<
+export async function estimateRelayCrossDomainMessageGas<
   TChain extends Chain | undefined,
   TAccount extends Account | undefined,
   TChainOverride extends Chain | undefined = undefined,
 >(
   client: Client<Transport, TChain, TAccount>,
-  parameters: RelayMessageParameters<TChain, TAccount, TChainOverride>,
+  parameters: RelayCrossDomainMessageParameters<
+    TChain,
+    TAccount,
+    TChainOverride
+  >,
 ): Promise<bigint> {
   const { id, payload, ...txParameters } = parameters
 
@@ -132,20 +141,24 @@ export async function estimateRelayMessageGas<
 }
 
 /**
- * Simulate contract call for {@link relayMessage}
+ * Simulate contract call for {@link relayCrossDomainMessage}
  * @category Actions
  * @param client - L2 Client
- * @param parameters - {@link RelayMessageParameters}
- * @returns contract return value - {@link RelayMessageContractReturnType}
+ * @param parameters - {@link RelayCrossDomainMessageParameters}
+ * @returns contract return value - {@link RelayCrossDomainMessageContractReturnType}
  */
-export async function simulateRelayMessage<
+export async function simulateRelayCrossDomainMessage<
   TChain extends Chain | undefined,
   TAccount extends Account | undefined,
   TChainOverride extends Chain | undefined = undefined,
 >(
   client: Client<Transport, TChain, TAccount>,
-  parameters: RelayMessageParameters<TChain, TAccount, TChainOverride>,
-): Promise<RelayMessageContractReturnType> {
+  parameters: RelayCrossDomainMessageParameters<
+    TChain,
+    TAccount,
+    TChainOverride
+  >,
+): Promise<RelayCrossDomainMessageContractReturnType> {
   const { account, id, payload } = parameters
 
   const res = await simulateContract(client, {
@@ -157,5 +170,5 @@ export async function simulateRelayMessage<
     args: [id, payload],
   } as SimulateContractParameters)
 
-  return res.result as RelayMessageContractReturnType
+  return res.result as RelayCrossDomainMessageContractReturnType
 }
