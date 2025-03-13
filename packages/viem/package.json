@@ -38,7 +38,7 @@
     "typedoc-plugin-markdown": "^4.2.8",
     "typescript": "^5.2.2",
     "viem": "^2.17.9",
-    "vitest": "^1.6.0"
+    "vitest": "^1.6.1"
   },
   "peerDependencies": {
     "viem": "^2.17.9"
