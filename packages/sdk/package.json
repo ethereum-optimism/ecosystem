@@ -20,7 +20,9 @@
     "test:next": "vitest",
     "test:next:run": "vitest run",
     "test:coverage": "nyc hardhat test && nyc merge .nyc_output coverage.json",
-    "autogen:docs": "typedoc --out docs src/index.ts"
+    "autogen:docs": "typedoc --out docs src/index.ts",
+    "test:improve-coverage": "vitest run --coverage",
+    "ci:optimize": "pnpm run build && pnpm run test:coverage"
   },
   "keywords": [
     "optimism",

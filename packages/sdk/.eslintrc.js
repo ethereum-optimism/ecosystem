@@ -7,6 +7,13 @@ module.exports = {
     'no-console': 'off',
     'no-loop-func': 'off',
     'no-lone-blocks': 'off',
+    'eol-last': 'error',
+    'semi': ['error', 'always'],
+    'quotes': ['error', 'single'],
+    'indent': ['error', 2],
+    'testing-library/no-debug': 'error',
+    'testing-library/no-dom-import': ['error', 'react'],
+    'testing-library/no-container': 'error',
   },
   overrides: [
     {
