@@ -1,0 +1,7 @@
+{
+  "tasks": {
+    "test": "nvm install && nvm use && pnpm install && pnpm nx run-many --target=test",
+    "build": "nvm install && nvm use && pnpm install && pnpm nx run-many --target=build",
+    "launch": "nvm install && nvm use && pnpm i && pnpm nx run <npm package name>:dev"
+  }
+}
