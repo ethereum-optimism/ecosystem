@@ -20,6 +20,30 @@ Once ready for review, make sure to include a thorough PR description to help re
 
 **Bonus:** Add comments to the diff under the "Files Changed" tab on the PR page to clarify any sections where you think we might have questions about the approach taken.
 
+## Following the Contributing Guidelines
+
+- Read and follow the `CONTRIBUTING.md` file to understand the workflow for pull requests.
+- Open an issue describing the change before making any non-trivial changes to solicit feedback and guidance.
+- Ensure your pull requests are small and focused to make it easier for reviewers to review quickly.
+- Add appropriate test cases for new features.
+- Use the Conventional Commits format for commit messages.
+- Mark your pull request as 'draft' if it is not ready for immediate review and merging.
+- Include a thorough pull request description to help reviewers understand the changes.
+
+## Improving Documentation
+
+- Contribute to the documentation by improving existing content or adding new sections.
+- Ensure the documentation is clear, concise, and easy to understand.
+- Follow the guidelines in the `.eslintrc.js` and `.prettierrc.js` files to maintain consistent code style and formatting.
+- Update the `README.md` files in various packages to provide better information about their usage and purpose.
+
+## Enhancing Testing and CI/CD
+
+- Improve the test coverage by adding more test cases for existing features.
+- Ensure the tests are well-organized and follow best practices.
+- Contribute to the CI/CD pipeline by optimizing the configuration in `.circleci/config.yml` to improve build times and reliability.
+- Ensure that the tests run smoothly and consistently across different environments.
+
 ### Rebasing
 
 We use the `git rebase` command to keep our commit history tidy.

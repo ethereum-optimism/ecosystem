@@ -1,4 +1,3 @@
-
 # @eth-optimism/sdk
 
 [![codecov](https://codecov.io/gh/ethereum-optimism/optimism/branch/master/graph/badge.svg?token=0VTG7PG7YR&flag=sdk-tests)](https://codecov.io/gh/ethereum-optimism/optimism)
@@ -58,3 +57,11 @@ You can also use the [`asL2Provider`](https://sdk.optimism.io/modules.html#asL2P
 
 The SDK contains other useful helper functions and constants.
 For a complete list, refer to the auto-generated [SDK documentation](https://sdk.optimism.io/)
+
+### Contributing to the SDK
+
+We welcome contributions to the SDK! If you would like to contribute, please follow the guidelines in the `CONTRIBUTING.md` file.
+
+## Link to Contributing Guidelines
+
+For more detailed information on contributing, please refer to the [CONTRIBUTING.md](../../CONTRIBUTING.md) file.

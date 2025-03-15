@@ -118,6 +118,12 @@ jobs:
       - run:
           name: Run Tests
           command: pnpm nx affected --base=$NX_BASE --head=$NX_HEAD --target=test:ci --output-style=stream
+      - run:
+          name: Run Test Coverage
+          command: pnpm nx affected --base=$NX_BASE --head=$NX_HEAD --target=test:coverage
+      - run:
+          name: Optimize CI/CD Pipeline
+          command: pnpm nx affected --base=$NX_BASE --head=$NX_HEAD --target=ci:optimize
 
 workflows:
   release:

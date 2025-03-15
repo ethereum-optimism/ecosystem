@@ -55,3 +55,11 @@ https://storybook-component-library.netlify.app/
 If you need help adding stories to components:
 
 https://storybook.js.org/docs/writing-stories
+
+## Contributing to the UI Components
+
+We welcome contributions to the UI components! If you would like to contribute, please follow the guidelines in the `CONTRIBUTING.md` file.
+
+## Link to Contributing Guidelines
+
+For more detailed information on contributing, please refer to the [CONTRIBUTING.md](../../CONTRIBUTING.md) file.
