@@ -42,7 +42,10 @@ commands:
           command: |
             echo "BASE: $NX_BASE"
             echo "HEAD: $NX_HEAD"
-
+            echo "Changed files between BASE and HEAD:"
+            git diff --name-only $NX_BASE $NX_HEAD
+            echo "Available nx projects and their targets:"
+            pnpm nx show projects --with-target test:ci
 jobs:
   publish-to-npm:
     docker:
