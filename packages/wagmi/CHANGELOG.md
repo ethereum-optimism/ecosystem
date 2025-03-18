@@ -1,5 +1,18 @@
 # @eth-optimism/wagmi
 
+## 0.1.0
+
+### Minor Changes
+
+- [#677](https://github.com/ethereum-optimism/ecosystem/pull/677) [`da13551`](https://github.com/ethereum-optimism/ecosystem/commit/da13551078f404acf06c07267623af436ce65185) Thanks [@hamdiallam](https://github.com/hamdiallam)! - refactored viem actions with builder action for executing messages and cross domain message status
+
+### Patch Changes
+
+- [#676](https://github.com/ethereum-optimism/ecosystem/pull/676) [`770e248`](https://github.com/ethereum-optimism/ecosystem/commit/770e2481a8f488b9e809954c613ba0d58363c92c) Thanks [@hamdiallam](https://github.com/hamdiallam)! - fix relay parameters based on viem refactor
+
+- Updated dependencies [[`da13551`](https://github.com/ethereum-optimism/ecosystem/commit/da13551078f404acf06c07267623af436ce65185)]:
+  - @eth-optimism/viem@0.4.0
+
 ## 0.0.15
 
 ### Patch Changes
