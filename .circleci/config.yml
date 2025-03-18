@@ -1,13 +1,12 @@
 version: 2.1
 
 orbs:
-  nx: nrwl/nx@1.6.2
-  node: circleci/node@6.3.0
-  utils: ethereum-optimism/circleci-utils@1.0.10
+  nx: nrwl/nx@1.7.0
+  utils: ethereum-optimism/circleci-utils@1.0.17
 
 commands:
   prepare-snapshot:
-    description: 'Prepare the snapshot name'
+    description: "Prepare the snapshot name"
     steps:
       - run:
           name: Setup snapshot name
@@ -24,39 +23,29 @@ commands:
           command: pnpm release:version:snapshot
 
   setup:
-    description: 'Setup Node.js environment with pnpm and nx'
+    description: "Setup Node.js environment with pnpm and nx"
     steps:
-      - run:
-          name: Install mise
-          command: |
-            if command -v mise &> /dev/null; then
-              echo "mise already installed at $(command -v mise)"
-            else
-              curl https://mise.run | sh
-            fi
-            echo "export PATH=\"$HOME/.local/bin:\$PATH\"" >> "$BASH_ENV"
-            echo "export MISE_DATA_DIR=\"$HOME/.mise\"" >> "$BASH_ENV"
-            echo "export MISE_JOBS=$(nproc)" >> "$BASH_ENV"
-            echo "eval \"\$($HOME/.local/bin/mise activate --shims)\"" >> "$BASH_ENV"
-      - run:
-          name: Install mise dependencies
-          command: |
-            mise install -v -y
-      - nx/set-shas
-      - run:
-          name: Log nx base and head refs
-          command: |
-            echo "BASE: $NX_BASE"
-            echo "HEAD: $NX_HEAD"
-
-      # Install dependencies
+      - utils/checkout-with-mise # Install dependencies
       - run:
           name: Install dependencies
           environment:
             NPM_TOKEN: nada
           command: |
             pnpm i --frozen-lockfile
-
+      - nx/set-shas
+      - run:
+          name: clean unstaged changes in case of previous failed runs
+          command: |
+            git clean -fd
+      - run:
+          name: Log nx base and head refs
+          command: |
+            echo "BASE: $NX_BASE"
+            echo "HEAD: $NX_HEAD"
+            echo "Changed files between BASE and HEAD:"
+            git diff --name-only $NX_BASE $NX_HEAD
+            echo "Available nx projects and their targets:"
+            pnpm nx show projects --with-target test:ci
 jobs:
   publish-to-npm:
     docker:
@@ -66,7 +55,6 @@ jobs:
         type: boolean
         default: false
     steps:
-      - checkout
       - setup
       - run:
           name: Build projects
@@ -97,14 +85,13 @@ jobs:
 
       - utils/changesets:
           createGithubReleases: false
-          publish: 'pnpm release:publish'
-          version: 'pnpm release:version'
+          publish: "pnpm release:publish"
+          version: "pnpm release:version"
 
   check:
     docker:
       - image: cimg/node:20.11
     steps:
-      - checkout
       - setup
       - run:
           name: Run Build
