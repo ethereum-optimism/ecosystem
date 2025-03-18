@@ -1,5 +1,11 @@
 # @eth-optimism/viem
 
+## 0.4.0
+
+### Minor Changes
+
+- [#677](https://github.com/ethereum-optimism/ecosystem/pull/677) [`da13551`](https://github.com/ethereum-optimism/ecosystem/commit/da13551078f404acf06c07267623af436ce65185) Thanks [@hamdiallam](https://github.com/hamdiallam)! - refactored viem actions with builder action for executing messages and cross domain message status
+
 ## 0.3.3
 
 ### Patch Changes
