@@ -15,7 +15,10 @@
     "release:publish": "pnpm install --frozen-lockfile && pnpm nx run-many --target=build && changeset publish",
     "release:version": "changeset version && pnpm install --lockfile-only",
     "release:version:snapshot": "changeset version --snapshot ${SNAPSHOT_NAME:-snapshot} && pnpm install --lockfile-only",
-    "update:supersim": "tsx scripts/update-supersim-version.ts"
+    "update:supersim": "tsx scripts/update-supersim-version.ts",
+    "lint": "pnpm lint:fix && pnpm lint:check",
+    "lint:check": "eslint . --max-warnings=0",
+    "lint:fix": "pnpm lint:check --fix"
   },
   "private": true,
   "devDependencies": {
@@ -34,9 +37,18 @@
     "@iarna/toml": "^2.2.5",
     "eta": "^3.1.1",
 
-    "eslint": "^8.53.0",
     "eslint-config-react-app": "^7.0.1",
     "eslint-plugin-jsdoc": "^46.9.0",
+
+    "@eslint/compat": "^1.2.7",
+    "@eslint/js": "^9.0.0",
+    "@typescript-eslint/eslint-plugin": "^7.0.0",
+    "@typescript-eslint/parser": "^7.0.0",
+    "eslint": "^9.0.0",
+    "eslint-plugin-import": "^2.29.1",
+    "eslint-plugin-react": "^7.33.2",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-refresh": "^0.4.4",
     "eslint-plugin-simple-import-sort": "^10.0.0",
 
     "tsx": "^4.7.1",
