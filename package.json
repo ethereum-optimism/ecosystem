@@ -2,6 +2,7 @@
   "name": "@eth-optimism/ecosystem",
   "author": "Optimism PBC",
   "license": "MIT",
+  "type": "module",
   "packageManager": "pnpm@9.0.2",
   "engines": {
     "pnpm": "^9.0.0",

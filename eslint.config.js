@@ -1,13 +1,14 @@
 import { fixupPluginRules } from '@eslint/compat';
 import js from '@eslint/js';
+import tseslintPlugin from '@typescript-eslint/eslint-plugin';
+import tseslintParser from '@typescript-eslint/parser';
+import importPlugin from 'eslint-plugin-import';
+import jsdocPlugin from 'eslint-plugin-jsdoc';
 import reactPlugin from 'eslint-plugin-react';
 import reactHooksPlugin from 'eslint-plugin-react-hooks';
 import reactRefreshPlugin from 'eslint-plugin-react-refresh';
-import jsdocPlugin from 'eslint-plugin-jsdoc';
 import simpleImportSortPlugin from 'eslint-plugin-simple-import-sort';
 import storybookPlugin from 'eslint-plugin-storybook';
-import importPlugin from 'eslint-plugin-import';
-import * as tseslint from 'typescript-eslint';
 
 // Fix up plugins that might not be fully compatible with ESLint 9
 const react = fixupPluginRules(reactPlugin);
@@ -17,13 +18,22 @@ const jsdoc = fixupPluginRules(jsdocPlugin);
 const simpleImportSort = fixupPluginRules(simpleImportSortPlugin);
 const storybook = fixupPluginRules(storybookPlugin);
 const importRule = fixupPluginRules(importPlugin);
+const typescript = fixupPluginRules(tseslintPlugin);
 
 export default [
   // Base configuration
   js.configs.recommended,
 
-  // TypeScript configuration
-  ...tseslint.configs.recommended,
+  // TypeScript configuration - replace the spread with proper configuration
+  {
+    files: ['**/*.{ts,tsx}'],
+    plugins: {
+      '@typescript-eslint': typescript
+    },
+    languageOptions: {
+      parser: tseslintParser
+    }
+  },
 
   // Ignore patterns
   {
@@ -46,8 +56,10 @@ export default [
       jsdoc,
       'simple-import-sort': simpleImportSort,
       import: importRule,
+      '@typescript-eslint': typescript
     },
     languageOptions: {
+      parser: tseslintParser,
       parserOptions: {
         ecmaFeatures: {
           jsx: true,
