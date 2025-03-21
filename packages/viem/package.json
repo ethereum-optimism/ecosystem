@@ -11,6 +11,7 @@
   "exports": {
     ".": "./dist/index.js",
     "./actions/interop": "./dist/actions/interop/index.js",
+    "./actions": "./dist/actions/index.js",
     "./chains": "./dist/chains/index.js"
   },
   "scripts": {
