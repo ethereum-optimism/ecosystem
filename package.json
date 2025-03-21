@@ -2,7 +2,6 @@
   "name": "@eth-optimism/ecosystem",
   "author": "Optimism PBC",
   "license": "MIT",
-  "type": "module",
   "packageManager": "pnpm@9.0.2",
   "engines": {
     "pnpm": "^9.0.0",
@@ -16,10 +15,7 @@
     "release:publish": "pnpm install --frozen-lockfile && pnpm nx run-many --target=build && changeset publish",
     "release:version": "changeset version && pnpm install --lockfile-only",
     "release:version:snapshot": "changeset version --snapshot ${SNAPSHOT_NAME:-snapshot} && pnpm install --lockfile-only",
-    "update:supersim": "tsx scripts/update-supersim-version.ts",
-    "lint": "pnpm lint:fix && pnpm lint:check",
-    "lint:check": "eslint . --max-warnings=0",
-    "lint:fix": "pnpm lint:check --fix"
+    "update:supersim": "tsx scripts/update-supersim-version.ts"
   },
   "private": true,
   "devDependencies": {
@@ -64,7 +60,9 @@
     "viem": "^2.17.9",
     "wagmi": "^2.12",
     "react": "^18",
-    "@tanstack/react-query": "^5"
+    "@tanstack/react-query": "^5",
+    "eslint-plugin-storybook": "^0.11.6",
+    "globals": "^16.0.0"
   },
   "peerDependencies": {
     "viem": "^2.17.9",
