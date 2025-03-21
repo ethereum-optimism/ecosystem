@@ -53,9 +53,9 @@ function Calendar({
       }}
       components={{
         // @ts-ignore ignore this error
-        IconLeft: ({ ...props }) => <RiArrowLeftSLine className="h-4 w-4" />,
+        IconLeft: () => <RiArrowLeftSLine className="h-4 w-4" />,
         // @ts-ignore ignore this error
-        IconRight: ({ ...props }) => <RiArrowRightSLine className="h-4 w-4" />,
+        IconRight: () => <RiArrowRightSLine className="h-4 w-4" />,
       }}
       {...props}
     />

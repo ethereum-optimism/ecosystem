@@ -1,13 +1,11 @@
-import { fixupPluginRules } from '@eslint/compat';
-import rootConfig from '../../eslint.config.js';
+import { defineConfig } from 'eslint/config';
 
+import rootConfig from '../../eslint.config.js';
 // Create a new configuration that extends the root configuration
-export default [
+export default defineConfig([
   ...rootConfig,
   {
     ignores: ['build'],
-  },
-  {
     files: ['**/*.{js,jsx,ts,tsx}'],
     rules: {
       '@typescript-eslint/no-unused-vars': [
@@ -15,5 +13,5 @@ export default [
         { varsIgnorePattern: '_', argsIgnorePattern: '_' },
       ],
     },
-  },
-];
+  }
+]);

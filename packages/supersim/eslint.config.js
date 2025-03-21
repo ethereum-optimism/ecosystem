@@ -1,7 +1,7 @@
-import { fixupPluginRules } from '@eslint/compat';
-import rootConfig from '../../eslint.config.js';
+
+const rootConfig = require('../../eslint.config.js');
 
 // Create a new configuration that extends the root configuration
-export default [
+module.exports = [
   ...rootConfig,
 ];
