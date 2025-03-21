@@ -67,14 +67,14 @@ describe('sendETH', () => {
 
   describe('simulate', () => {
     it('should simulate', async () => {
-      expect(() =>
+      await expect(
         publicClientA.interop.simulateSendETH({
           account: testAccount.address,
           to: testAccount.address,
           value: AMOUNT_TO_SEND,
           chainId: supersimL2B.id,
         }),
-      ).not.throw()
+      ).resolves.not.toThrow()
     })
   })
 })
