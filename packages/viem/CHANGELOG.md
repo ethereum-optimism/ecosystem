@@ -1,5 +1,11 @@
 # @eth-optimism/viem
 
+## 0.4.1
+
+### Patch Changes
+
+- [#695](https://github.com/ethereum-optimism/ecosystem/pull/695) [`74b7498`](https://github.com/ethereum-optimism/ecosystem/commit/74b7498c5c41cc02575b2ad4d466ced0b3a40368) Thanks [@tremarkley](https://github.com/tremarkley)! - Export all bridging action functions from the package, including depositERC20, depositCrossDomainMessage, withdrawCrossDomainMessage, and withdrawOptimismERC20
+
 ## 0.4.0
 
 ### Minor Changes
