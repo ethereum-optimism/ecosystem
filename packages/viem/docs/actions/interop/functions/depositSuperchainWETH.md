@@ -48,4 +48,4 @@ const hash = await depositSuperchainWETH(client, { account: '0x...', value: 1n }
 
 ## Defined in
 
-[packages/viem/src/actions/interop/depositSuperchainWETH.ts:71](https://github.com/ethereum-optimism/ecosystem/blob/17cffb9f4d194af60c7c1f0d0e30d41e88fba084/packages/viem/src/actions/interop/depositSuperchainWETH.ts#L71)
+[packages/viem/src/actions/interop/depositSuperchainWETH.ts:71](https://github.com/ethereum-optimism/ecosystem/blob/e811aa63ad2d81436ee2008e44d114c24dafedef/packages/viem/src/actions/interop/depositSuperchainWETH.ts#L71)

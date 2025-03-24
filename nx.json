@@ -34,7 +34,8 @@
       "{workspaceRoot}/.prettierrc.js",
       "{workspaceRoot}/tsconfig.json",
       "{workspaceRoot}/eslintrc.js",
-      "{workspaceRoot}/nx.json"
+      "{workspaceRoot}/nx.json",
+      "{workspaceRoot}/mise.toml"
     ],
     "production": ["default"]
   }

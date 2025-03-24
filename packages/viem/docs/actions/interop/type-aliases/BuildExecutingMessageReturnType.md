@@ -10,6 +10,10 @@
 
 ## Type declaration
 
+### accessList
+
+> **accessList**: `AccessList`
+
 ### id
 
 > **id**: [`MessageIdentifier`](../../../index/type-aliases/MessageIdentifier.md)
@@ -20,4 +24,4 @@
 
 ## Defined in
 
-[packages/viem/src/actions/interop/buildExecutingMessage.ts:19](https://github.com/ethereum-optimism/ecosystem/blob/17cffb9f4d194af60c7c1f0d0e30d41e88fba084/packages/viem/src/actions/interop/buildExecutingMessage.ts#L19)
+[packages/viem/src/actions/interop/buildExecutingMessage.ts:21](https://github.com/ethereum-optimism/ecosystem/blob/e811aa63ad2d81436ee2008e44d114c24dafedef/packages/viem/src/actions/interop/buildExecutingMessage.ts#L21)

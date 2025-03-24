@@ -1,12 +1,14 @@
-import type { Account, Chain, Client, Log, Transport } from 'viem'
-import { BaseError } from 'viem'
+import type { AccessList, Account, Chain, Client, Log, Transport } from 'viem'
+import { BaseError, keccak256 } from 'viem'
 import { getBlock, getChainId } from 'viem/actions'
 
+import { contracts } from '@/contracts.js'
 import type {
   MessageIdentifier,
   MessagePayload,
 } from '@/types/interop/executingMessage.js'
 import { encodeMessagePayload } from '@/utils/interop/encodeMessagePayload.js'
+import { calculateChecksum } from '@/utils/interop/index.js'
 
 /**
  * @category Types
@@ -19,6 +21,7 @@ export type BuildExecutingMessageParameters = { log: Log }
 export type BuildExecutingMessageReturnType = {
   id: MessageIdentifier
   payload: MessagePayload
+  accessList: AccessList
 }
 
 /**
@@ -80,5 +83,12 @@ export async function buildExecutingMessage<
   }
 
   const payload = encodeMessagePayload(log)
-  return { id, payload }
+  const accessList = [
+    {
+      address: contracts.crossL2Inbox.address,
+      storageKeys: [calculateChecksum(id, keccak256(payload))],
+    },
+  ]
+
+  return { id, payload, accessList }
 }

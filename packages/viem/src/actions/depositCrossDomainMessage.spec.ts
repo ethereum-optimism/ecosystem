@@ -1,4 +1,3 @@
-import type { Address } from 'viem'
 import { createPublicClient, http, parseEventLogs } from 'viem'
 import { extractTransactionDepositedLogs } from 'viem/op-stack'
 import { describe, expect, it } from 'vitest'
@@ -11,11 +10,11 @@ import {
 } from '@/actions/depositCrossDomainMessage.js'
 import { supersimL1 } from '@/chains/supersim.js'
 import { testAccount } from '@/test/clients.js'
+import { supersimL2AL1CrossDomainMessengerAddress } from '@/test/testConstants.js'
 
 describe('depositCrossDomainMessage', () => {
   // Hardcoded since we don't have a good way to pull the L1 contracts for supersim yet.
-  const l1CrossDomainMessengerAddress: Address =
-    '0x9E4EE2B682076951592Cb4da5559833fE62A8C01'
+  const l1CrossDomainMessengerAddress = supersimL2AL1CrossDomainMessengerAddress
 
   const publicL1Client = createPublicClient({
     chain: supersimL1,

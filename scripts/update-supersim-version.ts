@@ -85,11 +85,23 @@ async function updateSupersimVersion(version: string) {
   packageJson.version = version
   writeFileSync(packageJsonPath, JSON.stringify(packageJson, null, '  ') + '\n')
 
+  // 3. Update mise.toml
+  const miseTomlPath = resolve(__dirname, '../mise.toml')
+  let miseTomlContent = readFileSync(miseTomlPath, 'utf-8')
+
+  miseTomlContent = miseTomlContent.replace(
+    /^"ubi:ethereum-optimism\/supersim"=.*$/m,
+    `"ubi:ethereum-optimism/supersim"="${version}"`,
+  )
+
+  writeFileSync(miseTomlPath, miseTomlContent)
+
   console.log(
     `✅ Updated supersim version from ${currentVersion} to ${version} in:`,
   )
   console.log(`  - install.js`)
   console.log(`  - package.json`)
+  console.log(`  - mise.toml`)
 }
 
 // Get version from command line argument or fetch latest

@@ -7,6 +7,32 @@
 export const crossDomainMessengerAbi = [
   {
     type: 'function',
+    name: 'ENCODING_OVERHEAD',
+    inputs: [],
+    outputs: [
+      {
+        name: '',
+        type: 'uint64',
+        internalType: 'uint64',
+      },
+    ],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    name: 'FLOOR_CALLDATA_OVERHEAD',
+    inputs: [],
+    outputs: [
+      {
+        name: '',
+        type: 'uint64',
+        internalType: 'uint64',
+      },
+    ],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
     name: 'MESSAGE_VERSION',
     inputs: [],
     outputs: [
@@ -112,6 +138,19 @@ export const crossDomainMessengerAbi = [
   {
     type: 'function',
     name: 'RELAY_RESERVED_GAS',
+    inputs: [],
+    outputs: [
+      {
+        name: '',
+        type: 'uint64',
+        internalType: 'uint64',
+      },
+    ],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    name: 'TX_BASE_GAS',
     inputs: [],
     outputs: [
       {
@@ -401,88 +440,54 @@ export const crossDomainMessengerAbi = [
 export const crossL2InboxAbi = [
   {
     type: 'function',
-    name: 'blockNumber',
-    inputs: [],
-    outputs: [
+    name: 'calculateChecksum',
+    inputs: [
       {
-        name: '',
-        type: 'uint256',
-        internalType: 'uint256',
+        name: '_id',
+        type: 'tuple',
+        internalType: 'struct Identifier',
+        components: [
+          {
+            name: 'origin',
+            type: 'address',
+            internalType: 'address',
+          },
+          {
+            name: 'blockNumber',
+            type: 'uint256',
+            internalType: 'uint256',
+          },
+          {
+            name: 'logIndex',
+            type: 'uint256',
+            internalType: 'uint256',
+          },
+          {
+            name: 'timestamp',
+            type: 'uint256',
+            internalType: 'uint256',
+          },
+          {
+            name: 'chainId',
+            type: 'uint256',
+            internalType: 'uint256',
+          },
+        ],
+      },
+      {
+        name: '_msgHash',
+        type: 'bytes32',
+        internalType: 'bytes32',
       },
     ],
-    stateMutability: 'view',
-  },
-  {
-    type: 'function',
-    name: 'chainId',
-    inputs: [],
     outputs: [
       {
-        name: '',
-        type: 'uint256',
-        internalType: 'uint256',
+        name: 'checksum_',
+        type: 'bytes32',
+        internalType: 'bytes32',
       },
     ],
-    stateMutability: 'view',
-  },
-  {
-    type: 'function',
-    name: 'interopStart',
-    inputs: [],
-    outputs: [
-      {
-        name: 'interopStart_',
-        type: 'uint256',
-        internalType: 'uint256',
-      },
-    ],
-    stateMutability: 'view',
-  },
-  {
-    type: 'function',
-    name: 'logIndex',
-    inputs: [],
-    outputs: [
-      {
-        name: '',
-        type: 'uint256',
-        internalType: 'uint256',
-      },
-    ],
-    stateMutability: 'view',
-  },
-  {
-    type: 'function',
-    name: 'origin',
-    inputs: [],
-    outputs: [
-      {
-        name: '',
-        type: 'address',
-        internalType: 'address',
-      },
-    ],
-    stateMutability: 'view',
-  },
-  {
-    type: 'function',
-    name: 'setInteropStart',
-    inputs: [],
-    outputs: [],
-    stateMutability: 'nonpayable',
-  },
-  {
-    type: 'function',
-    name: 'timestamp',
-    inputs: [],
-    outputs: [
-      {
-        name: '',
-        type: 'uint256',
-        internalType: 'uint256',
-      },
-    ],
-    stateMutability: 'view',
+    stateMutability: 'pure',
   },
   {
     type: 'function',
@@ -590,7 +595,12 @@ export const crossL2InboxAbi = [
   },
   {
     type: 'error',
-    name: 'InteropStartAlreadySet',
+    name: 'BlockNumberTooHigh',
+    inputs: [],
+  },
+  {
+    type: 'error',
+    name: 'LogIndexTooHigh',
     inputs: [],
   },
   {
@@ -600,17 +610,12 @@ export const crossL2InboxAbi = [
   },
   {
     type: 'error',
-    name: 'NotDepositor',
+    name: 'NotInAccessList',
     inputs: [],
   },
   {
     type: 'error',
-    name: 'NotEntered',
-    inputs: [],
-  },
-  {
-    type: 'error',
-    name: 'ReentrantCall',
+    name: 'TimestampTooHigh',
     inputs: [],
   },
 ] as const
@@ -876,11 +881,6 @@ export const l2ToL2CrossDomainMessengerAbi = [
   },
   {
     type: 'error',
-    name: 'InvalidChainId',
-    inputs: [],
-  },
-  {
-    type: 'error',
     name: 'MessageAlreadyRelayed',
     inputs: [],
   },
@@ -896,11 +896,6 @@ export const l2ToL2CrossDomainMessengerAbi = [
   },
   {
     type: 'error',
-    name: 'MessageTargetCrossL2Inbox',
-    inputs: [],
-  },
-  {
-    type: 'error',
     name: 'MessageTargetL2ToL2CrossDomainMessenger',
     inputs: [],
   },
@@ -912,11 +907,6 @@ export const l2ToL2CrossDomainMessengerAbi = [
   {
     type: 'error',
     name: 'ReentrantCall',
-    inputs: [],
-  },
-  {
-    type: 'error',
-    name: 'TargetCallFailed',
     inputs: [],
   },
 ] as const
@@ -3162,6 +3152,11 @@ export const superchainWETHAbi = [
   {
     type: 'error',
     name: 'InvalidCrossDomainSender',
+    inputs: [],
+  },
+  {
+    type: 'error',
+    name: 'Permit2AllowanceIsFixedAtInfinity',
     inputs: [],
   },
   {

@@ -524,4 +524,4 @@ Flag for test networks
 
 ## Defined in
 
-[packages/viem/src/chains/mainnet.ts:992](https://github.com/ethereum-optimism/ecosystem/blob/17cffb9f4d194af60c7c1f0d0e30d41e88fba084/packages/viem/src/chains/mainnet.ts#L992)
+[packages/viem/src/chains/mainnet.ts:992](https://github.com/ethereum-optimism/ecosystem/blob/e811aa63ad2d81436ee2008e44d114c24dafedef/packages/viem/src/chains/mainnet.ts#L992)

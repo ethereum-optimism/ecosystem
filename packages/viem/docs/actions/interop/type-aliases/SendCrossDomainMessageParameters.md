@@ -40,4 +40,4 @@ Target contract or wallet address.
 
 ## Defined in
 
-[packages/viem/src/actions/interop/sendCrossDomainMessage.ts:28](https://github.com/ethereum-optimism/ecosystem/blob/17cffb9f4d194af60c7c1f0d0e30d41e88fba084/packages/viem/src/actions/interop/sendCrossDomainMessage.ts#L28)
+[packages/viem/src/actions/interop/sendCrossDomainMessage.ts:28](https://github.com/ethereum-optimism/ecosystem/blob/e811aa63ad2d81436ee2008e44d114c24dafedef/packages/viem/src/actions/interop/sendCrossDomainMessage.ts#L28)
