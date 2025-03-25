@@ -17,8 +17,8 @@
     "supersim": "./bin/supersim"
   },
   "scripts": {
-    "lint": "eslint install.js && pnpm prettier --check install.js",
-    "lint:fix": "eslint install.js --fix --quiet && pnpm prettier install.js --write --loglevel=warn",
+    "lint": "eslint install.js && pnpm prettier --check install.js --ignore-path \"../../.prettierignore\"",
+    "lint:fix": "eslint install.js --fix --quiet && pnpm prettier install.js --write --loglevel=warn --ignore-path \"../../.prettierignore\"",
     "postinstall": "node install.js"
   },
   "dependencies": {
