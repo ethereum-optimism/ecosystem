@@ -16,6 +16,7 @@ module.exports = [
   },
   {
     files: ['src/**/*.ts'],
+    ignores: ['**/dist/**'],
     rules: {
       'no-restricted-imports': [
         'error',

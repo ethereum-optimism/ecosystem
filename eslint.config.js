@@ -23,13 +23,10 @@ const typescript = fixupPluginRules(tseslintPlugin);
 
 module.exports = defineConfig(
   [
-
-
-
     // JavaScript and TypeScript files
     {
       files: ['**/*.{js,jsx,ts,tsx}'],
-      ignores: ['**/.storybook/**'],
+      ignores: ['**/.storybook/**', '**/dist/**'],
       plugins: {
         'react': react,
         'react-hooks': reactHooks,
@@ -95,6 +92,7 @@ module.exports = defineConfig(
         'src/assets/**/*',
         '**/build/**/*',
         '**/dist/**/*',
+        'dist',
         '**/typechain/**/*',
         'node_modules/**',
         'lib/**',
