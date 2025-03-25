@@ -1,5 +1,5 @@
 module.exports = {
-    extends: ['react-app', 'plugin:storybook/recommended'],
+    extends: ['react-app'],
     root: true,
     ignorePatterns: ['src/assets/**/*', '**/build/**/*', '**/dist/**/*', '**/typechain/**/*'],
     plugins: [
@@ -13,7 +13,7 @@ module.exports = {
       'prefer-const': 'error',
       'testing-library/render-result-naming-convention': 'off',
       'eol-last': 'error',
-  
+
       // START TYPESCRIPT RULES
       '@typescript-eslint/member-ordering': 'warn',
       '@typescript-eslint/no-unused-vars': 'error',
@@ -28,12 +28,12 @@ module.exports = {
       '@typescript-eslint/no-explicit-any': 'warn',
       '@typescript-eslint/array-type': ['error', { default: 'array-simple' }],
       // END TYPESCRIPT RULES
-  
+
       // REACT RULES
       "react-hooks/rules-of-hooks": "error",
       "react-hooks/exhaustive-deps": "error",
       // END REACT RULES
-  
+
       // START IMPORT LINT RULES
       'simple-import-sort/imports': 'error',
       'simple-import-sort/exports': 'error',
@@ -41,7 +41,7 @@ module.exports = {
       'import/newline-after-import': 'error',
       'import/no-duplicates': 'error',
       // END IMPORT LINT RULES
-  
+
       // START JSDOC LINT RULES
       'jsdoc/check-alignment': 'error',
       'jsdoc/check-indentation': 'error',
@@ -49,4 +49,3 @@ module.exports = {
       // END JSDOC LINT RULES
     },
   }
-  
