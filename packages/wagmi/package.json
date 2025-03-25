@@ -12,13 +12,10 @@
   "scripts": {
     "clean": "rm -rf build types tsconfig.tsbuildinfo",
     "build": "tsc && resolve-tspaths",
-    "lint": "eslint \"**/*.{ts,tsx}\" && pnpm prettier --check \"**/*.{ts,tsx}\"",
-    "lint:ci": "eslint \"**/*.{ts,tsx}\" --quiet && pnpm prettier --check \"**/*.{ts,tsx}\"",
-    "lint:fix": "eslint \"**/*.{ts,tsx}\" --fix --quiet && pnpm prettier \"**/*.{ts,tsx}\" --write --loglevel=warn",
-    "test": "vitest --passWithNoTests",
-    "test:ci": "vitest --passWithNoTests --run",
-    "typecheck": "tsc --noEmit --emitDeclarationOnly false",
-    "typecheck:ci": "tsc --noEmit --emitDeclarationOnly false"
+    "lint": "eslint \"**/*.{ts,tsx}\" && pnpm prettier --check \"**/*.{ts,tsx}\" --ignore-path \"../../.prettierignore\"",
+    "lint:fix": "eslint \"**/*.{ts,tsx}\" --fix && pnpm prettier \"**/*.{ts,tsx}\" --write --loglevel=warn --ignore-path \"../../.prettierignore\"",
+    "test": "vitest --passWithNoTests --run",
+    "typecheck": "tsc --noEmit --emitDeclarationOnly false"
   },
   "dependencies": {
     "@eth-optimism/viem": "workspace:*",

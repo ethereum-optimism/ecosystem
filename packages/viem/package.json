@@ -21,13 +21,10 @@
     "gen:abis": "pnpm dlx tsx ./scripts/abigen",
     "gen:chains": "pnpm dlx tsx ./scripts/chaingen",
     "gen:abi-docs": "pnpm dlx tsx ./scripts/abidocgen",
-    "lint": "eslint \"**/*.{ts,tsx}\" && pnpm prettier --check \"**/*.{ts,tsx}\"",
-    "lint:ci": "eslint \"**/*.{ts,tsx}\" --quiet && pnpm prettier --check \"**/*.{ts,tsx}\"",
-    "lint:fix": "eslint \"**/*.{ts,tsx}\" --fix --quiet && pnpm prettier \"**/*.{ts,tsx}\" --write --loglevel=warn",
-    "test": "vitest",
-    "test:ci": "vitest --run",
-    "typecheck": "tsc --noEmit --emitDeclarationOnly false",
-    "typecheck:ci": "tsc --noEmit --emitDeclarationOnly false"
+    "lint": "eslint \"**/*.{ts,tsx}\" && pnpm prettier --check \"**/*.{ts,tsx}\" --ignore-path \"../../.prettierignore\"",
+    "lint:fix": "eslint \"**/*.{ts,tsx}\" --fix && pnpm prettier \"**/*.{ts,tsx}\" --write --loglevel=warn --ignore-path \"../../.prettierignore\"",
+    "test": "vitest --run",
+    "typecheck": "tsc --noEmit --emitDeclarationOnly false"
   },
   "dependencies": {
     "viem": "^2.17.9"
