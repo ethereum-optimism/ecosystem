@@ -26,9 +26,6 @@
     "test": "vitest --run",
     "typecheck": "tsc --noEmit --emitDeclarationOnly false"
   },
-  "dependencies": {
-    "viem": "^2.17.9"
-  },
   "peerDependencies": {
     "viem": "^2.17.9"
   }
