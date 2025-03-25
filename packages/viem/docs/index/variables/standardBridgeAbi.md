@@ -12,4 +12,4 @@ ABI for the OP Stack contract `StandardBridge`
 
 ## Defined in
 
-[packages/viem/src/abis.ts:1740](https://github.com/ethereum-optimism/ecosystem/blob/17cffb9f4d194af60c7c1f0d0e30d41e88fba084/packages/viem/src/abis.ts#L1740)
+[packages/viem/src/abis.ts:1730](https://github.com/ethereum-optimism/ecosystem/blob/e811aa63ad2d81436ee2008e44d114c24dafedef/packages/viem/src/abis.ts#L1730)

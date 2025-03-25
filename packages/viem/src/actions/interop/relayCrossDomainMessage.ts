@@ -159,7 +159,7 @@ export async function simulateRelayCrossDomainMessage<
     TChainOverride
   >,
 ): Promise<RelayCrossDomainMessageContractReturnType> {
-  const { account, id, payload } = parameters
+  const { account, id, payload, accessList } = parameters
 
   const res = await simulateContract(client, {
     account,
@@ -168,6 +168,7 @@ export async function simulateRelayCrossDomainMessage<
     chain: client.chain,
     functionName: 'relayMessage',
     args: [id, payload],
+    accessList,
   } as SimulateContractParameters)
 
   return res.result as RelayCrossDomainMessageContractReturnType

@@ -1,4 +1,3 @@
-import type { Address } from 'viem'
 import { createPublicClient, createWalletClient, erc20Abi, http } from 'viem'
 import { extractTransactionDepositedLogs } from 'viem/op-stack'
 import { describe, expect, it } from 'vitest'
@@ -11,11 +10,11 @@ import {
 import { supersimL1 } from '@/chains/index.js'
 import { contracts } from '@/contracts.js'
 import { testAccount } from '@/test/clients.js'
+import { supersimL2AL1StandardBridgeAddress } from '@/test/testConstants.js'
 
 describe('depositERC20', async () => {
   // Hardcoded since we don't have a good way to pull the L1 contracts for supersim yet.
-  const l1StandardBridgeAddress: Address =
-    '0x31e3C5A665B5b9dBf6D91A72415c6ad71FdD1181'
+  const l1StandardBridgeAddress = supersimL2AL1StandardBridgeAddress
 
   const publicL1Client = createPublicClient({
     chain: supersimL1,
