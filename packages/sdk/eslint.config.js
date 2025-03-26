@@ -5,6 +5,7 @@ module.exports = [
   ...rootConfig,
   {
     files: ['**/*.{js,jsx,ts,tsx}'],
+    ignores: ['**/dist/**'],
     rules: {
       '@typescript-eslint/no-unused-expressions': 'off',
       '@typescript-eslint/no-explicit-any': 'off',
