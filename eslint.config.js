@@ -7,7 +7,6 @@ const reactPlugin = require('eslint-plugin-react');
 const reactHooksPlugin = require('eslint-plugin-react-hooks');
 const reactRefreshPlugin = require('eslint-plugin-react-refresh');
 const simpleImportSortPlugin = require('eslint-plugin-simple-import-sort');
-const storybookPlugin = require('eslint-plugin-storybook');
 const globals = require('globals');
 const { defineConfig } = require('eslint/config');
 
@@ -17,7 +16,6 @@ const reactHooks = fixupPluginRules(reactHooksPlugin);
 const reactRefresh = fixupPluginRules(reactRefreshPlugin);
 const jsdoc = fixupPluginRules(jsdocPlugin);
 const simpleImportSort = fixupPluginRules(simpleImportSortPlugin);
-const storybook = fixupPluginRules(storybookPlugin);
 const importRule = fixupPluginRules(importPlugin);
 const typescript = fixupPluginRules(tseslintPlugin);
 
@@ -97,16 +95,5 @@ module.exports = defineConfig(
         'node_modules/**',
         'lib/**',
       ]
-    },
-
-    // Storybook files
-    {
-      files: ['**/*.stories.{js,jsx,ts,tsx}'],
-      plugins: {
-        storybook,
-      },
-      rules: {
-        ...storybookPlugin.configs.recommended.rules,
-      },
-    },
+    }
   ]);
