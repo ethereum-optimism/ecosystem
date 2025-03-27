@@ -34,9 +34,18 @@
     "@iarna/toml": "^2.2.5",
     "eta": "^3.1.1",
 
-    "eslint": "^8.53.0",
     "eslint-config-react-app": "^7.0.1",
     "eslint-plugin-jsdoc": "^46.9.0",
+
+    "@eslint/compat": "^1.2.7",
+    "@eslint/js": "^9.0.0",
+    "@typescript-eslint/eslint-plugin": "^7.0.0",
+    "@typescript-eslint/parser": "^7.0.0",
+    "eslint": "^9.0.0",
+    "eslint-plugin-import": "^2.29.1",
+    "eslint-plugin-react": "^7.33.2",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-refresh": "^0.4.4",
     "eslint-plugin-simple-import-sort": "^10.0.0",
 
     "tsx": "^4.7.1",
@@ -51,7 +60,8 @@
     "viem": "^2.17.9",
     "wagmi": "^2.12",
     "react": "^18",
-    "@tanstack/react-query": "^5"
+    "@tanstack/react-query": "^5",
+    "globals": "^16.0.0"
   },
   "peerDependencies": {
     "viem": "^2.17.9",
