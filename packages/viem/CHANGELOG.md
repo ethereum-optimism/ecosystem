@@ -1,5 +1,11 @@
 # @eth-optimism/viem
 
+## 0.4.3
+
+### Patch Changes
+
+- [#717](https://github.com/ethereum-optimism/ecosystem/pull/717) [`4e9e73b`](https://github.com/ethereum-optimism/ecosystem/commit/4e9e73bbbbe4d8e08dd80ece8d15700db55da6fb) Thanks [@hamdiallam](https://github.com/hamdiallam)! - exported interop types & utils
+
 ## 0.4.2
 
 ### Patch Changes
