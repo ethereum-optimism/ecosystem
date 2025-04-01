@@ -50,4 +50,4 @@ const status = await getCrossDomainMessageStatus(publicClientUnichain, { message
 
 ## Defined in
 
-[packages/viem/src/actions/interop/getCrossDomainMessageStatus.ts:53](https://github.com/ethereum-optimism/ecosystem/blob/e811aa63ad2d81436ee2008e44d114c24dafedef/packages/viem/src/actions/interop/getCrossDomainMessageStatus.ts#L53)
+[packages/viem/src/actions/interop/getCrossDomainMessageStatus.ts:53](https://github.com/ethereum-optimism/ecosystem/blob/ddb96adf4653afc97ea0f64c5d67dd4ec467ac08/packages/viem/src/actions/interop/getCrossDomainMessageStatus.ts#L53)

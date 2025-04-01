@@ -110,4 +110,4 @@ OP Stack Predeploy Addresses
 
 ## Defined in
 
-[packages/viem/src/contracts.ts:8](https://github.com/ethereum-optimism/ecosystem/blob/e811aa63ad2d81436ee2008e44d114c24dafedef/packages/viem/src/contracts.ts#L8)
+[packages/viem/src/contracts.ts:8](https://github.com/ethereum-optimism/ecosystem/blob/ddb96adf4653afc97ea0f64c5d67dd4ec467ac08/packages/viem/src/contracts.ts#L8)
