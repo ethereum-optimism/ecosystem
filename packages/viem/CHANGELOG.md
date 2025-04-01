@@ -1,5 +1,11 @@
 # @eth-optimism/viem
 
+## 0.4.2
+
+### Patch Changes
+
+- [#715](https://github.com/ethereum-optimism/ecosystem/pull/715) [`886be49`](https://github.com/ethereum-optimism/ecosystem/commit/886be49a5b82d53dfae93afb54c166c242f951a1) Thanks [@tremarkley](https://github.com/tremarkley)! - Add interop rc alpha to chain definitions
+
 ## 0.4.1
 
 ### Patch Changes
