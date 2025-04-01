@@ -46,4 +46,4 @@ Token to send.
 
 ## Defined in
 
-[packages/viem/src/actions/interop/sendSuperchainERC20.ts:27](https://github.com/ethereum-optimism/ecosystem/blob/e811aa63ad2d81436ee2008e44d114c24dafedef/packages/viem/src/actions/interop/sendSuperchainERC20.ts#L27)
+[packages/viem/src/actions/interop/sendSuperchainERC20.ts:27](https://github.com/ethereum-optimism/ecosystem/blob/ddb96adf4653afc97ea0f64c5d67dd4ec467ac08/packages/viem/src/actions/interop/sendSuperchainERC20.ts#L27)

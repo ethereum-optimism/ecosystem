@@ -24,6 +24,7 @@
 - [ink](variables/ink.md)
 - [inkSepolia](variables/inkSepolia.md)
 - [interopAlphaChains](variables/interopAlphaChains.md)
+- [interopRcAlphaChains](variables/interopRcAlphaChains.md)
 - [lisk](variables/lisk.md)
 - [liskSepolia](variables/liskSepolia.md)
 - [lyra](variables/lyra.md)
@@ -67,3 +68,8 @@
 
 - [interopAlpha0](variables/interopAlpha0.md)
 - [interopAlpha1](variables/interopAlpha1.md)
+
+### interop-rc-alpha
+
+- [interopRcAlpha0](variables/interopRcAlpha0.md)
+- [interopRcAlpha1](variables/interopRcAlpha1.md)

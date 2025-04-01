@@ -2,13 +2,13 @@
 
 ***
 
-[@eth-optimism/viem](../../README.md) / [chains](../README.md) / automata
+[@eth-optimism/viem](../../README.md) / [chains](../README.md) / interopRcAlpha1
 
-# automata
+# interopRcAlpha1
 
-> `const` **automata**: `object`
+> `const` **interopRcAlpha1**: `object`
 
-Chain Definition for Automata
+L2 chain A definition for interop-rc-alpha-1
 
 ## Type declaration
 
@@ -24,11 +24,11 @@ Collection of block explorers
 
 ### blockExplorers.default.name
 
-> `readonly` **name**: `"Automata Explorer"` = `'Automata Explorer'`
+> `readonly` **name**: `"Interop RC Alpha 0 Block Explorer"` = `'Interop RC Alpha 0 Block Explorer'`
 
 ### blockExplorers.default.url
 
-> `readonly` **url**: `"https://explorer.ata.network"` = `'https://explorer.ata.network'`
+> `readonly` **url**: `""` = `''`
 
 ### contracts
 
@@ -36,17 +36,21 @@ Collection of block explorers
 
 Collection of contracts
 
+### contracts.addressManager
+
+> `readonly` **addressManager**: `object`
+
+### contracts.anchorStateRegistry
+
+> `readonly` **anchorStateRegistry**: `object`
+
 ### contracts.disputeGameFactory
 
 > `readonly` **disputeGameFactory**: `object`
 
-### contracts.disputeGameFactory.1
+### contracts.faultDisputeGame
 
-> `readonly` **1**: `object`
-
-### contracts.disputeGameFactory.1.address
-
-> `readonly` **address**: `"0xB52337F38747D6931f2976eEa24A3f3F6B7CDEA2"` = `'0xB52337F38747D6931f2976eEa24A3f3F6B7CDEA2'`
+> `readonly` **faultDisputeGame**: `object`
 
 ### contracts.gasPriceOracle
 
@@ -68,37 +72,13 @@ Collection of contracts
 
 > `readonly` **l1CrossDomainMessenger**: `object`
 
-### contracts.l1CrossDomainMessenger.1
+### contracts.l1Erc721BridgeProxy
 
-> `readonly` **1**: `object`
-
-### contracts.l1CrossDomainMessenger.1.address
-
-> `readonly` **address**: `"0x825C858149F1E775a0f4Aeb172037B970bE7B736"` = `'0x825C858149F1E775a0f4Aeb172037B970bE7B736'`
-
-### contracts.l1Erc721Bridge
-
-> `readonly` **l1Erc721Bridge**: `object`
-
-### contracts.l1Erc721Bridge.1
-
-> `readonly` **1**: `object`
-
-### contracts.l1Erc721Bridge.1.address
-
-> `readonly` **address**: `"0x00bd00c5C7F60e222D9CB8040270Ba929241A280"` = `'0x00bd00c5C7F60e222D9CB8040270Ba929241A280'`
+> `readonly` **l1Erc721BridgeProxy**: `object`
 
 ### contracts.l1StandardBridge
 
 > `readonly` **l1StandardBridge**: `object`
-
-### contracts.l1StandardBridge.1
-
-> `readonly` **1**: `object`
-
-### contracts.l1StandardBridge.1.address
-
-> `readonly` **address**: `"0xE639919b92AB6DD238aEACc6F2A8d6e355D17bd5"` = `'0xE639919b92AB6DD238aEACc6F2A8d6e355D17bd5'`
 
 ### contracts.l2CrossDomainMessenger
 
@@ -116,18 +96,6 @@ Collection of contracts
 
 > `readonly` **address**: `"0x4200000000000000000000000000000000000014"`
 
-### contracts.l2OutputOracle
-
-> `readonly` **l2OutputOracle**: `object`
-
-### contracts.l2OutputOracle.1
-
-> `readonly` **1**: `object`
-
-### contracts.l2OutputOracle.1.address
-
-> `readonly` **address**: `"0xdbf381984c4515Fe3285D3C55fDfb3054C52c261"` = `'0xdbf381984c4515Fe3285D3C55fDfb3054C52c261'`
-
 ### contracts.l2StandardBridge
 
 > `readonly` **l2StandardBridge**: `object`
@@ -144,29 +112,25 @@ Collection of contracts
 
 > `readonly` **address**: `"0x4200000000000000000000000000000000000016"`
 
-### contracts.portal
+### contracts.opChainProxyAdmin
 
-> `readonly` **portal**: `object`
+> `readonly` **opChainProxyAdmin**: `object`
 
-### contracts.portal.1
+### contracts.optimismMintableErc20FactoryProxy
 
-> `readonly` **1**: `object`
+> `readonly` **optimismMintableErc20FactoryProxy**: `object`
 
-### contracts.portal.1.address
+### contracts.optimismPortal
 
-> `readonly` **address**: `"0xD52ba64CBE1e3B44167f810622fBef36bE24d95c"` = `'0xD52ba64CBE1e3B44167f810622fBef36bE24d95c'`
+> `readonly` **optimismPortal**: `object`
+
+### contracts.permissionedDisputeGame
+
+> `readonly` **permissionedDisputeGame**: `object`
 
 ### contracts.systemConfig
 
 > `readonly` **systemConfig**: `object`
-
-### contracts.systemConfig.1
-
-> `readonly` **1**: `object`
-
-### contracts.systemConfig.1.address
-
-> `readonly` **address**: `"0x72934D7AEDC1A2d889ca89Aaf064CD9455E64d00"` = `'0x72934D7AEDC1A2d889ca89Aaf064CD9455E64d00'`
 
 ### custom?
 
@@ -448,13 +412,13 @@ Modifies how data is formatted and typed (e.g. blocks and transactions)
 
 ### id
 
-> **id**: `65536`
+> **id**: `420120004`
 
 ID in number form
 
 ### name
 
-> **name**: `"Automata"`
+> **name**: `"Interop RC Alpha 1"`
 
 Human-readable name
 
@@ -470,11 +434,11 @@ Currency used by chain
 
 ### nativeCurrency.name
 
-> `readonly` **name**: `"Automata"` = `'Automata'`
+> `readonly` **name**: `"Ether"` = `'Ether'`
 
 ### nativeCurrency.symbol
 
-> `readonly` **symbol**: `"ATA"` = `'ATA'`
+> `readonly` **symbol**: `"ETH"` = `'ETH'`
 
 ### rpcUrls
 
@@ -488,7 +452,7 @@ Collection of RPC endpoints
 
 ### rpcUrls.default.http
 
-> `readonly` **http**: readonly [`"https://rpc.ata.network"`]
+> `readonly` **http**: readonly [`"https://interop-rc-alpha-1.optimism.io"`]
 
 ### serializers
 
@@ -512,16 +476,16 @@ Modifies how data is serialized (e.g. transactions).
 
 ### sourceId
 
-> **sourceId**: `1`
+> **sourceId**: `11155111`
 
 Source Chain ID (ie. the L1 chain)
 
-### testnet?
+### testnet
 
-> `optional` **testnet**: `boolean`
+> **testnet**: `true`
 
 Flag for test networks
 
 ## Defined in
 
-[packages/viem/src/chains/mainnet.ts:67](https://github.com/ethereum-optimism/ecosystem/blob/ddb96adf4653afc97ea0f64c5d67dd4ec467ac08/packages/viem/src/chains/mainnet.ts#L67)
+packages/viem/src/chains/interopRcAlpha.ts:45

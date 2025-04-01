@@ -12,4 +12,4 @@ ABI for the OP Stack contract `L2ToL2CrossDomainMessenger`
 
 ## Defined in
 
-[packages/viem/src/abis.ts:627](https://github.com/ethereum-optimism/ecosystem/blob/e811aa63ad2d81436ee2008e44d114c24dafedef/packages/viem/src/abis.ts#L627)
+[packages/viem/src/abis.ts:627](https://github.com/ethereum-optimism/ecosystem/blob/ddb96adf4653afc97ea0f64c5d67dd4ec467ac08/packages/viem/src/abis.ts#L627)
