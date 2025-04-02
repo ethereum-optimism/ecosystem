@@ -1,5 +1,12 @@
 # @eth-optimism/wagmi
 
+## 0.1.3
+
+### Patch Changes
+
+- Updated dependencies [[`e1e91ea`](https://github.com/ethereum-optimism/ecosystem/commit/e1e91ea066952f091b6683296c6c17a262f25e28)]:
+  - @eth-optimism/viem@0.4.4
+
 ## 0.1.2
 
 ### Patch Changes
