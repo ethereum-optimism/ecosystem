@@ -96,8 +96,9 @@ describe('relayMessage', () => {
         log: messages[0].log,
       })
 
-      const relayTxHash =
-        await walletClientB.interop.relayCrossDomainMessage(params)
+      const relayTxHash = await walletClientB.interop.relayCrossDomainMessage(
+        params,
+      )
       expect(relayTxHash).toBeDefined()
 
       await publicClientB.waitForTransactionReceipt({ hash: relayTxHash })

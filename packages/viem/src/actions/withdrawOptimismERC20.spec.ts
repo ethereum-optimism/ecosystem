@@ -16,10 +16,11 @@ import {
 import { supersimL1 } from '@/chains/supersim.js'
 import { contracts } from '@/contracts.js'
 import { publicClientA, testAccount, walletClientA } from '@/test/clients.js'
+import { supersimL2AL1StandardBridgeAddress } from '@/test/testConstants.js'
 
 describe('withdrawOptimismERC20', async () => {
   // Hardcoded since we don't have a good way to pull the L1 contracts for supersim yet.
-  const l1StandardBridgeAddress = '0x31e3C5A665B5b9dBf6D91A72415c6ad71FdD1181'
+  const l1StandardBridgeAddress = supersimL2AL1StandardBridgeAddress
 
   const publicL1Client = createPublicClient({
     chain: supersimL1,

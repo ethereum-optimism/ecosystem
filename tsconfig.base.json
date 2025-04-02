@@ -12,11 +12,6 @@
     "noFallthroughCasesInSwitch": true,
     "moduleResolution": "node",
     "resolveJsonModule": true,
-    "isolatedModules": true,
-    "paths": {
-      "@eth-optimism/api-plugin": [
-        "packages/api-plugin/src/index.ts"
-      ]
-    }
+    "isolatedModules": true
   }
 }

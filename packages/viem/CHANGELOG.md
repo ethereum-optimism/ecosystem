@@ -1,5 +1,17 @@
 # @eth-optimism/viem
 
+## 0.4.3
+
+### Patch Changes
+
+- [#717](https://github.com/ethereum-optimism/ecosystem/pull/717) [`4e9e73b`](https://github.com/ethereum-optimism/ecosystem/commit/4e9e73bbbbe4d8e08dd80ece8d15700db55da6fb) Thanks [@hamdiallam](https://github.com/hamdiallam)! - exported interop types & utils
+
+## 0.4.2
+
+### Patch Changes
+
+- [#715](https://github.com/ethereum-optimism/ecosystem/pull/715) [`886be49`](https://github.com/ethereum-optimism/ecosystem/commit/886be49a5b82d53dfae93afb54c166c242f951a1) Thanks [@tremarkley](https://github.com/tremarkley)! - Add interop rc alpha to chain definitions
+
 ## 0.4.1
 
 ### Patch Changes

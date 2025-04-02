@@ -28,7 +28,6 @@ export type BaseWriteContractActionParameters<
 > = UnionEvaluate<
   UnionOmit<
     FormattedTransactionRequest<derivedChain>,
-    | 'accessList'
     | 'blobs'
     | 'data'
     | 'from'
@@ -82,6 +81,7 @@ export async function baseWriteAction<
     maxPriorityFeePerGas,
     nonce,
     value,
+    accessList,
   } = parameters
 
   const gas_ =
@@ -97,6 +97,7 @@ export async function baseWriteAction<
           maxPriorityFeePerGas,
           nonce,
           value,
+          accessList,
         } as EstimateContractGasParameters)
       : gas ?? undefined
 
@@ -112,5 +113,6 @@ export async function baseWriteAction<
     maxPriorityFeePerGas,
     nonce,
     value,
+    accessList,
   } satisfies WriteContractParameters as any)
 }

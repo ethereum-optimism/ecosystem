@@ -1,7 +1,7 @@
 {
   "name": "@eth-optimism/viem",
   "type": "module",
-  "version": "0.4.1",
+  "version": "0.4.3",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
@@ -10,9 +10,11 @@
   ],
   "exports": {
     ".": "./dist/index.js",
-    "./actions/interop": "./dist/actions/interop/index.js",
     "./actions": "./dist/actions/index.js",
-    "./chains": "./dist/chains/index.js"
+    "./actions/interop": "./dist/actions/interop/index.js",
+    "./chains": "./dist/chains/index.js",
+    "./types/interop": "./dist/types/interop/index.js",
+    "./utils/interop": "./dist/utils/interop/index.js"
   },
   "scripts": {
     "build": "tsc && resolve-tspaths",
@@ -21,25 +23,13 @@
     "gen:abis": "pnpm dlx tsx ./scripts/abigen",
     "gen:chains": "pnpm dlx tsx ./scripts/chaingen",
     "gen:abi-docs": "pnpm dlx tsx ./scripts/abidocgen",
-    "lint": "eslint \"**/*.{ts,tsx}\" && pnpm prettier --check \"**/*.{ts,tsx}\"",
-    "lint:ci": "eslint \"**/*.{ts,tsx}\" --quiet && pnpm prettier --check \"**/*.{ts,tsx}\"",
-    "lint:fix": "eslint \"**/*.{ts,tsx}\" --fix --quiet && pnpm prettier \"**/*.{ts,tsx}\" --write --loglevel=warn",
-    "test": "vitest",
-    "test:ci": "vitest --run",
-    "typecheck": "tsc --noEmit --emitDeclarationOnly false",
-    "typecheck:ci": "tsc --noEmit --emitDeclarationOnly false"
+    "lint": "eslint \"**/*.{ts,tsx}\" && pnpm prettier --check \"**/*.{ts,tsx}\" --ignore-path \"../../.prettierignore\"",
+    "lint:fix": "eslint \"**/*.{ts,tsx}\" --fix && pnpm prettier \"**/*.{ts,tsx}\" --write --loglevel=warn --ignore-path \"../../.prettierignore\"",
+    "test": "vitest --run",
+    "typecheck": "tsc --noEmit --emitDeclarationOnly false"
   },
   "devDependencies": {
-    "@types/node": "^22.5.4",
-    "@viem/anvil": "^0.0.7",
-    "@iarna/toml": "^2.2.5",
-    "eta": "^3.1.1",
-    "resolve-tspaths": "^0.8.18",
-    "typedoc": "^0.26.7",
-    "typedoc-plugin-markdown": "^4.2.8",
-    "typescript": "^5.2.2",
-    "viem": "^2.17.9",
-    "vitest": "^1.6.0"
+    "viem": "^2.17.9"
   },
   "peerDependencies": {
     "viem": "^2.17.9"
