@@ -488,4 +488,4 @@ Flag for test networks
 
 ## Defined in
 
-packages/viem/src/chains/interopRcAlpha.ts:17
+[packages/viem/src/chains/interopRcAlpha.ts:17](https://github.com/ethereum-optimism/ecosystem/blob/2dcfc34a20f23494949a213ca4b911e7876cead0/packages/viem/src/chains/interopRcAlpha.ts#L17)
