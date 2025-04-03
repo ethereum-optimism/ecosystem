@@ -2,7 +2,7 @@ const rootConfig = require('../../eslint.config.js');
 
 // Create a new configuration that extends the root configuration
 module.exports = [
-  ...rootConfig,
+  rootConfig,
   {
     files: ['**/*.{js,jsx,ts,tsx}'],
     ignores: ['**/dist/**'],

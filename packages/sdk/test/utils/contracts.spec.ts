@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-empty-function */
+ 
 import type { Signer } from 'ethers'
 import { ethers } from 'hardhat'
 

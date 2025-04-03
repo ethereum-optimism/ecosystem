@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-empty-function */
+ 
 import './setup'
 
 describe('L2Provider', () => {
