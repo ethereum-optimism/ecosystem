@@ -12,4 +12,4 @@ ABI for the OP Stack contract `SuperchainERC20`
 
 ## Defined in
 
-[packages/viem/src/abis.ts:2169](https://github.com/ethereum-optimism/ecosystem/blob/ddb96adf4653afc97ea0f64c5d67dd4ec467ac08/packages/viem/src/abis.ts#L2169)
+[packages/viem/src/abis.ts:2169](https://github.com/ethereum-optimism/ecosystem/blob/509126ba0cdf7aa275bf036a8830332f4d366781/packages/viem/src/abis.ts#L2169)

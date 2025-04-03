@@ -10,4 +10,4 @@
 
 ## Defined in
 
-packages/viem/src/chains/interopRcAlpha.ts:69
+[packages/viem/src/chains/interopRcAlpha.ts:69](https://github.com/ethereum-optimism/ecosystem/blob/509126ba0cdf7aa275bf036a8830332f4d366781/packages/viem/src/chains/interopRcAlpha.ts#L69)
