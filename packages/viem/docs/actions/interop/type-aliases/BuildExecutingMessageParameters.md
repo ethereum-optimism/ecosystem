@@ -16,4 +16,4 @@
 
 ## Defined in
 
-[packages/viem/src/actions/interop/buildExecutingMessage.ts:16](https://github.com/ethereum-optimism/ecosystem/blob/ddb96adf4653afc97ea0f64c5d67dd4ec467ac08/packages/viem/src/actions/interop/buildExecutingMessage.ts#L16)
+[packages/viem/src/actions/interop/buildExecutingMessage.ts:15](https://github.com/ethereum-optimism/ecosystem/blob/2dcfc34a20f23494949a213ca4b911e7876cead0/packages/viem/src/actions/interop/buildExecutingMessage.ts#L15)

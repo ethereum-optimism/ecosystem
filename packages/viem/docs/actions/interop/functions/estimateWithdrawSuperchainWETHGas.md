@@ -36,4 +36,4 @@ The estimated gas value.
 
 ## Defined in
 
-[packages/viem/src/actions/interop/withdrawSuperchainWETH.ts:96](https://github.com/ethereum-optimism/ecosystem/blob/ddb96adf4653afc97ea0f64c5d67dd4ec467ac08/packages/viem/src/actions/interop/withdrawSuperchainWETH.ts#L96)
+[packages/viem/src/actions/interop/withdrawSuperchainWETH.ts:96](https://github.com/ethereum-optimism/ecosystem/blob/2dcfc34a20f23494949a213ca4b911e7876cead0/packages/viem/src/actions/interop/withdrawSuperchainWETH.ts#L96)
