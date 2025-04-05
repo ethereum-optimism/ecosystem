@@ -1,19 +1,22 @@
 {
-    "name": "@eth-optimism/mock-sponsored-sender",
-    "version": "0.0.1",
-    "private": true,
-    "type": "module",
-    "scripts": {
-      "codegen": "ponder codegen",
-      "lint": "eslint \"**/*.{ts,tsx}\" && pnpm prettier --check \"**/*.{ts,tsx}\" --ignore-path \"../../.prettierignore\"",
-      "lint:fix": "eslint \"**/*.{ts,tsx}\" --fix && pnpm prettier \"**/*.{ts,tsx}\" --write --loglevel=warn --ignore-path \"../../.prettierignore\"",
-      "typecheck": "tsc"
-    },
-    "dependencies": {
-      "viem": "^2.21.3",
-      "hono": "^4.5.0",
-      "zod": "^3.24.2",
-      "zod-validation-error": "^3.4.0",
-      "@eth-optimism/viem": "workspace:*"
-    }
+  "name": "@eth-optimism/mock-sponsored-sender",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "tsc && resolve-tspaths",
+    "lint": "eslint \"**/*.{ts,tsx}\" && pnpm prettier --check \"**/*.{ts,tsx}\" --ignore-path \"../../.prettierignore\"",
+    "lint:fix": "eslint \"**/*.{ts,tsx}\" --fix && pnpm prettier \"**/*.{ts,tsx}\" --write --loglevel=warn --ignore-path \"../../.prettierignore\"",
+    "start": "tsx src/index.ts",
+    "typecheck": "tsc"
+  },
+  "dependencies": {
+    "abitype": "^1.0.8",
+    "@hono/node-server": "^1.14.0",
+    "viem": "^2.21.3",
+    "hono": "^4.5.0",
+    "zod": "^3.24.2",
+    "zod-validation-error": "^3.4.0",
+    "@eth-optimism/viem": "workspace:*"
   }
+}
