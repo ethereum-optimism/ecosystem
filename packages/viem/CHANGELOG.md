@@ -1,5 +1,11 @@
 # @eth-optimism/viem
 
+## 0.4.5
+
+### Patch Changes
+
+- [#724](https://github.com/ethereum-optimism/ecosystem/pull/724) [`fec45f7`](https://github.com/ethereum-optimism/ecosystem/commit/fec45f7d20dcd407b60315ece76259eace5cc1e5) Thanks [@tremarkley](https://github.com/tremarkley)! - fixes access list encoding for validating a cross-chain message in the CrossL2Inbox contract
+
 ## 0.4.4
 
 ### Patch Changes
