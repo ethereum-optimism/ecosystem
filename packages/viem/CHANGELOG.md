@@ -1,5 +1,11 @@
 # @eth-optimism/viem
 
+## 0.4.6
+
+### Patch Changes
+
+- [#734](https://github.com/ethereum-optimism/ecosystem/pull/734) [`3ad3c26`](https://github.com/ethereum-optimism/ecosystem/commit/3ad3c265ed0560a57f1808018d3270d4d978fdb6) Thanks [@tremarkley](https://github.com/tremarkley)! - Update readme
+
 ## 0.4.5
 
 ### Patch Changes
