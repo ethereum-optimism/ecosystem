@@ -4,11 +4,11 @@ This package is a TypeScript extension for Viem that provides actions and utilit
 
 ### Documentation
 
-- [SDK Reference](/packages/viem/docs/README.md)
+- [SDK Reference](./docs/README.md)
 
 ### Code Snippets
 
-- [Interop](/packages/viem/docs/actions/interop/README.md)
+- [Interop](./docs/actions/interop/README.md)
 
 ### Running Tests
 
