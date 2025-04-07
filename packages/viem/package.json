@@ -1,5 +1,10 @@
 {
   "name": "@eth-optimism/viem",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ethereum-optimism/ecosystem.git",
+    "directory": "packages/viem"
+  },
   "type": "module",
   "version": "0.4.4",
   "main": "dist/index.js",

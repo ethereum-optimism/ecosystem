@@ -3,10 +3,12 @@
 This package is a TypeScript extension for Viem that provides actions and utilities for working with OP stack chains. The goal of this package is to upstream as many actions and utilities as possible directly into Viem. You can view this as a playground for new features that haven't hit mainnet yet or more experimental features in the OP stack.
 
 ### Documentation
-* [SDK Reference](./docs/README.md)
+
+- [SDK Reference](/packages/viem/docs/README.md)
 
 ### Code Snippets
-* [Interop](./src/test/e2e/interop.spec.ts)
+
+- [Interop](/packages/viem/docs/actions/interop/README.md)
 
 ### Running Tests
 
