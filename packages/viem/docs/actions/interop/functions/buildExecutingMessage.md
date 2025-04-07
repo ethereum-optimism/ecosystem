@@ -46,4 +46,4 @@ const params = await buildExecutingMessage(publicClientOp, { log: receipt.logs[0
 
 ## Defined in
 
-[packages/viem/src/actions/interop/buildExecutingMessage.ts:59](https://github.com/ethereum-optimism/ecosystem/blob/ddb96adf4653afc97ea0f64c5d67dd4ec467ac08/packages/viem/src/actions/interop/buildExecutingMessage.ts#L59)
+[packages/viem/src/actions/interop/buildExecutingMessage.ts:58](https://github.com/ethereum-optimism/ecosystem/blob/509126ba0cdf7aa275bf036a8830332f4d366781/packages/viem/src/actions/interop/buildExecutingMessage.ts#L58)
