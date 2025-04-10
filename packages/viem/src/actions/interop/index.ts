@@ -4,17 +4,6 @@ export type {
 } from '@/actions/interop/buildExecutingMessage.js'
 export { buildExecutingMessage } from '@/actions/interop/buildExecutingMessage.js'
 export type {
-  DepositSuperchainWETHContractReturnType,
-  DepositSuperchainWETHErrorType,
-  DepositSuperchainWETHParameters,
-  DepositSuperchainWETHReturnType,
-} from '@/actions/interop/depositSuperchainWETH.js'
-export {
-  depositSuperchainWETH,
-  estimateDepositSuperchainWETHGas,
-  simulateDepositSuperchainWETH,
-} from '@/actions/interop/depositSuperchainWETH.js'
-export type {
   GetCrossDomainMessagesParameters,
   GetCrossDomainMessagesReturnType,
 } from '@/actions/interop/getCrossDomainMessages.js'
@@ -67,14 +56,3 @@ export {
   sendSuperchainERC20,
   simulateSendSuperchainERC20,
 } from '@/actions/interop/sendSuperchainERC20.js'
-export type {
-  WithdrawSuperchainWETHContractReturnType,
-  WithdrawSuperchainWETHErrorType,
-  WithdrawSuperchainWETHParameters,
-  WithdrawSuperchainWETHReturnType,
-} from '@/actions/interop/withdrawSuperchainWETH.js'
-export {
-  estimateWithdrawSuperchainWETHGas,
-  simulateWithdrawSuperchainWETH,
-  withdrawSuperchainWETH,
-} from '@/actions/interop/withdrawSuperchainWETH.js'

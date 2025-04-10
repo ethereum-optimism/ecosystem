@@ -13,7 +13,7 @@ const CONTRACTS = [
   'OptimismMintableERC20Factory',
   'StandardBridge',
   'SuperchainERC20',
-  'SuperchainWETH',
+  'SuperchainETHBridge',
   'SuperchainTokenBridge',
 ]
 

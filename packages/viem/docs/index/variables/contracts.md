@@ -84,6 +84,14 @@ OP Stack Predeploy Addresses
 
 > `readonly` **address**: `"0x4200000000000000000000000000000000000012"` = `'0x4200000000000000000000000000000000000012'`
 
+### superchainETHBridge
+
+> `readonly` **superchainETHBridge**: `object`
+
+### superchainETHBridge.address
+
+> `readonly` **address**: `"0x4200000000000000000000000000000000000024"` = `'0x4200000000000000000000000000000000000024'`
+
 ### superchainTokenBridge
 
 > `readonly` **superchainTokenBridge**: `object`
@@ -91,14 +99,6 @@ OP Stack Predeploy Addresses
 ### superchainTokenBridge.address
 
 > `readonly` **address**: `"0x4200000000000000000000000000000000000028"` = `'0x4200000000000000000000000000000000000028'`
-
-### superchainWETH
-
-> `readonly` **superchainWETH**: `object`
-
-### superchainWETH.address
-
-> `readonly` **address**: `"0x4200000000000000000000000000000000000024"` = `'0x4200000000000000000000000000000000000024'`
 
 ### weth
 
@@ -110,4 +110,4 @@ OP Stack Predeploy Addresses
 
 ## Defined in
 
-[packages/viem/src/contracts.ts:8](https://github.com/ethereum-optimism/ecosystem/blob/509126ba0cdf7aa275bf036a8830332f4d366781/packages/viem/src/contracts.ts#L8)
+[packages/viem/src/contracts.ts:8](https://github.com/ethereum-optimism/ecosystem/blob/11bb27f871c202b93ad6dc93c86c82f0c754075f/packages/viem/src/contracts.ts#L8)
