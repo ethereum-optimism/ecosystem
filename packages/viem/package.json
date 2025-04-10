@@ -5,6 +5,10 @@
     "url": "https://github.com/ethereum-optimism/ecosystem.git",
     "directory": "packages/viem"
   },
+  "homepage": "https://github.com/ethereum-optimism/ecosystem/tree/main/packages/viem#readme",
+  "bugs": {
+    "url": "https://github.com/ethereum-optimism/ecosystem/issues"
+  },
   "type": "module",
   "version": "0.4.6",
   "main": "dist/index.js",

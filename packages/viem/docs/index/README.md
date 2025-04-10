@@ -17,8 +17,8 @@
 - [optimismMintableERC20FactoryAbi](variables/optimismMintableERC20FactoryAbi.md)
 - [standardBridgeAbi](variables/standardBridgeAbi.md)
 - [superchainERC20Abi](variables/superchainERC20Abi.md)
+- [superchainETHBridgeAbi](variables/superchainETHBridgeAbi.md)
 - [superchainTokenBridgeAbi](variables/superchainTokenBridgeAbi.md)
-- [superchainWETHAbi](variables/superchainWETHAbi.md)
 
 ### Predeploy Addresses
 

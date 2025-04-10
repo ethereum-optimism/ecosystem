@@ -3,8 +3,6 @@ import type { WalletActionsL2 as OpWalletActionsL2 } from 'viem/op-stack'
 import { walletActionsL2 as opWalletActionsL2 } from 'viem/op-stack'
 
 import type {
-  DepositSuperchainWETHParameters,
-  DepositSuperchainWETHReturnType,
   RelayCrossDomainMessageParameters,
   RelayCrossDomainMessageReturnType,
   SendCrossDomainMessageParameters,
@@ -13,16 +11,12 @@ import type {
   SendETHParameters,
   SendSuperchainERC20Parameters,
   SendSuperchainERC20ReturnType,
-  WithdrawSuperchainWETHParameters,
-  WithdrawSuperchainWETHReturnType,
 } from '@/actions/interop/index.js'
 import {
-  depositSuperchainWETH,
   relayCrossDomainMessage,
   sendCrossDomainMessage,
   sendETH,
   sendSuperchainERC20,
-  withdrawSuperchainWETH,
 } from '@/actions/interop/index.js'
 
 export type WalletInteropActionsL2<
@@ -48,20 +42,6 @@ export type WalletInteropActionsL2<
   sendSuperchainERC20: <chainOverride extends Chain | undefined = undefined>(
     parameters: SendSuperchainERC20Parameters<TChain, TAccount, chainOverride>,
   ) => Promise<SendSuperchainERC20ReturnType>
-  depositSuperchainWETH: <chainOverride extends Chain | undefined = undefined>(
-    parameters: DepositSuperchainWETHParameters<
-      TChain,
-      TAccount,
-      chainOverride
-    >,
-  ) => Promise<DepositSuperchainWETHReturnType>
-  withdrawSuperchainWETH: <chainOverride extends Chain | undefined = undefined>(
-    parameters: WithdrawSuperchainWETHParameters<
-      TChain,
-      TAccount,
-      chainOverride
-    >,
-  ) => Promise<WithdrawSuperchainWETHReturnType>
   sendETH: <chainOverride extends Chain | undefined = undefined>(
     parameters: SendETHParameters<TChain, TAccount, chainOverride>,
   ) => Promise<SendETHContractReturnType>
@@ -90,8 +70,6 @@ export function walletActionsL2() {
         relayCrossDomainMessage: (args) =>
           relayCrossDomainMessage(client, args),
         sendSuperchainERC20: (args) => sendSuperchainERC20(client, args),
-        depositSuperchainWETH: (args) => depositSuperchainWETH(client, args),
-        withdrawSuperchainWETH: (args) => withdrawSuperchainWETH(client, args),
         sendETH: (args) => sendETH(client, args),
       },
     } as WalletActionsL2<chain, account>

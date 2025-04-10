@@ -5,8 +5,6 @@ import { publicActionsL2 as opPublicActionsL2 } from 'viem/op-stack'
 import type {
   BuildExecutingMessageParameters,
   BuildExecutingMessageReturnType,
-  DepositSuperchainWETHContractReturnType,
-  DepositSuperchainWETHParameters,
   GetCrossDomainMessagesParameters,
   GetCrossDomainMessagesReturnType,
   GetCrossDomainMessageStatusParameters,
@@ -19,25 +17,19 @@ import type {
   SendETHParameters,
   SendSuperchainERC20ContractReturnType,
   SendSuperchainERC20Parameters,
-  WithdrawSuperchainWETHContractReturnType,
-  WithdrawSuperchainWETHParameters,
 } from '@/actions/interop/index.js'
 import {
   buildExecutingMessage,
-  estimateDepositSuperchainWETHGas,
   estimateRelayCrossDomainMessageGas,
   estimateSendCrossDomainMessageGas,
   estimateSendETHGas,
   estimateSendSuperchainERC20Gas,
-  estimateWithdrawSuperchainWETHGas,
   getCrossDomainMessages,
   getCrossDomainMessageStatus,
-  simulateDepositSuperchainWETH,
   simulateRelayCrossDomainMessage,
   simulateSendCrossDomainMessage,
   simulateSendETH,
   simulateSendSuperchainERC20,
-  simulateWithdrawSuperchainWETH,
 } from '@/actions/interop/index.js'
 
 export type PublicInteropActionsL2<
@@ -74,28 +66,8 @@ export type PublicInteropActionsL2<
     parameters: SendSuperchainERC20Parameters<TChain, TAccount, TChainOverride>,
   ) => Promise<bigint>
 
-  estimateDepositSuperchainWETHGas: <
-    TChainOverride extends Chain | undefined = undefined,
-  >(
-    parameters: DepositSuperchainWETHParameters<
-      TChain,
-      TAccount,
-      TChainOverride
-    >,
-  ) => Promise<bigint>
-
   estimateSendETHGas: <TChainOverride extends Chain | undefined = undefined>(
     parameters: SendETHParameters<TChain, TAccount, TChainOverride>,
-  ) => Promise<bigint>
-
-  estimateWithdrawSuperchainWETHGas: <
-    TChainOverride extends Chain | undefined = undefined,
-  >(
-    parameters: WithdrawSuperchainWETHParameters<
-      TChain,
-      TAccount,
-      TChainOverride
-    >,
   ) => Promise<bigint>
 
   getCrossDomainMessages: (
@@ -132,29 +104,9 @@ export type PublicInteropActionsL2<
     parameters: SendSuperchainERC20Parameters<TChain, TAccount, TChainOverride>,
   ) => Promise<SendSuperchainERC20ContractReturnType>
 
-  simulateDepositSuperchainWETH: <
-    TChainOverride extends Chain | undefined = undefined,
-  >(
-    parameters: DepositSuperchainWETHParameters<
-      TChain,
-      TAccount,
-      TChainOverride
-    >,
-  ) => Promise<DepositSuperchainWETHContractReturnType>
-
   simulateSendETH: <TChainOverride extends Chain | undefined = undefined>(
     parameters: SendETHParameters<TChain, TAccount, TChainOverride>,
   ) => Promise<SendETHContractReturnType>
-
-  simulateWithdrawSuperchainWETH: <
-    TChainOverride extends Chain | undefined = undefined,
-  >(
-    parameters: WithdrawSuperchainWETHParameters<
-      TChain,
-      TAccount,
-      TChainOverride
-    >,
-  ) => Promise<WithdrawSuperchainWETHContractReturnType>
 }
 
 export type PublicActionsL2<
@@ -183,10 +135,6 @@ export function publicActionsL2() {
           estimateRelayCrossDomainMessageGas(client, args),
         estimateSendSuperchainERC20Gas: (args) =>
           estimateSendSuperchainERC20Gas(client, args),
-        estimateDepositSuperchainWETHGas: (args) =>
-          estimateDepositSuperchainWETHGas(client, args),
-        estimateWithdrawSuperchainWETHGas: (args) =>
-          estimateWithdrawSuperchainWETHGas(client, args),
         estimateSendETHGas: (args) => estimateSendETHGas(client, args),
         getCrossDomainMessages: (args) => getCrossDomainMessages(client, args),
         getCrossDomainMessageStatus: (args) =>
@@ -197,10 +145,6 @@ export function publicActionsL2() {
           simulateRelayCrossDomainMessage(client, args),
         simulateSendSuperchainERC20: (args) =>
           simulateSendSuperchainERC20(client, args),
-        simulateDepositSuperchainWETH: (args) =>
-          simulateDepositSuperchainWETH(client, args),
-        simulateWithdrawSuperchainWETH: (args) =>
-          simulateWithdrawSuperchainWETH(client, args),
         simulateSendETH: (args) => simulateSendETH(client, args),
       },
     } as PublicActionsL2<TChain, TAccount>
