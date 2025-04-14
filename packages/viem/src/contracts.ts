@@ -19,7 +19,7 @@ export const contracts = {
   superchainTokenBridge: {
     address: '0x4200000000000000000000000000000000000028',
   },
-  superchainWETH: {
+  superchainETHBridge: {
     address: '0x4200000000000000000000000000000000000024',
   },
   weth: {
