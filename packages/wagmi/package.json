@@ -2,7 +2,7 @@
   "name": "@eth-optimism/wagmi",
   "description": "OP extensions for wagmi",
   "type": "module",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
