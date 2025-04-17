@@ -1,4 +1,5 @@
 import { Hono } from 'hono'
+import type { pino } from 'pino'
 import { z } from 'zod'
 
 import type { JsonRpcHandler } from '@/jsonrpc/handler.js'
@@ -15,7 +16,10 @@ const sponsoredEndpointSchema = z.object({
  * @param handlers - A map of chain IDs to JSON RPC handlers.
  * @returns A Hono API Router.
  */
-export function createApiRouter(handlers: Record<number, JsonRpcHandler>) {
+export function createApiRouter(
+  log: pino.Logger,
+  handlers: Record<number, JsonRpcHandler>,
+): Hono {
   const api = new Hono()
 
   // global middleware
@@ -24,9 +28,7 @@ export function createApiRouter(handlers: Record<number, JsonRpcHandler>) {
     const now = Date.now()
     await next()
     const ms = Date.now() - now
-    console.log(
-      `[${new Date(now).toISOString()}] ${req.method} ${req.url} - ${ms}ms`,
-    )
+    log.info(`${req.method} ${req.path} - ${ms}ms`)
   })
 
   // route json rpc requests based on chainId
@@ -44,7 +46,7 @@ export function createApiRouter(handlers: Record<number, JsonRpcHandler>) {
     const chainId = result.data.chainId
     const handler = chainId in handlers ? handlers[chainId] : null
     if (!handler) {
-      return c.json({ error: 'unregistered chainId' }, 400)
+      return c.json({ error: 'unregistered chain id' }, 400)
     }
 
     const body = await c.req.json()
@@ -53,7 +55,7 @@ export function createApiRouter(handlers: Record<number, JsonRpcHandler>) {
       const resp = {
         jsonrpc: '2.0',
         id: null,
-        error: { code: -32600, message: 'Invalid request' },
+        error: { code: -32600, message: 'Invalid Request' },
       } satisfies JsonRpcResponse
 
       return c.json(resp)

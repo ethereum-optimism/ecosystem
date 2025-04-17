@@ -1,4 +1,4 @@
-import type { Account, Hex, PublicClient } from 'viem'
+import type { Account, PublicClient } from 'viem'
 import { createPublicClient, http, isHex } from 'viem'
 import { privateKeyToAccount } from 'viem/accounts'
 import { z } from 'zod'
@@ -6,10 +6,10 @@ import { z } from 'zod'
 export type Config = { sender: Account; clients: Record<number, PublicClient> }
 
 export async function parseClientConfig(): Promise<Config> {
-  // validate sender
-  const senderPrivateKey = process.env['SPONSORED_SENDER_PRIVATE_KEY'] as Hex
-  if (!isHex(senderPrivateKey)) {
-    throw Error('invalid sender private key')
+  // parse sender
+  const senderPrivateKey = process.env['SPONSORED_SENDER_PRIVATE_KEY']
+  if (!senderPrivateKey || !isHex(senderPrivateKey)) {
+    throw Error('missing or invalid sender private key')
   }
 
   const sender = privateKeyToAccount(senderPrivateKey)
@@ -17,7 +17,7 @@ export async function parseClientConfig(): Promise<Config> {
   // parse endpoints from environment variable
   const endpointsStr = process.env['SPONSORED_SENDER_ENDPOINTS']
   if (!endpointsStr) {
-    throw Error('missing SPONSORED_SENDER_ENDPOINTS environment variable')
+    throw Error('missing SPONSORED_SENDER_ENDPOINTS')
   }
 
   const endpoints = endpointsStr.split(',').map((url) => url.trim())
@@ -45,7 +45,7 @@ export async function parseClientConfig(): Promise<Config> {
   }
 
   if (Object.keys(clients).length === 0) {
-    throw Error('no valid endpoints configured')
+    throw Error('no endpoints configured')
   }
 
   return { sender, clients }

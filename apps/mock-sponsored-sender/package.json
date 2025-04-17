@@ -18,5 +18,9 @@
     "zod": "^3.24.2",
     "zod-validation-error": "^3.4.0",
     "@eth-optimism/viem": "workspace:*"
+  },
+  "peerDependencies": {
+    "pino": "^9.6.0",
+    "pino-pretty": "^13.0.0"
   }
 }
