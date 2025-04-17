@@ -136,7 +136,22 @@ importers:
         specifier: ^2.12
         version: 2.12.4(@react-native-async-storage/async-storage@1.23.1(react-native@0.73.6(@babel/core@7.24.9)(@babel/preset-env@7.24.4(@babel/core@7.24.9))(bufferutil@4.0.8)(encoding@0.1.13)(react@18.3.1)(utf-8-validate@5.0.10)))(@tanstack/query-core@5.29.0)(@tanstack/react-query@5.29.2(react@18.3.1))(@types/react@18.3.1)(bufferutil@4.0.8)(encoding@0.1.13)(immer@10.0.4)(ioredis@5.4.1)(react-dom@18.2.0(react@18.3.1))(react-native@0.73.6(@babel/core@7.24.9)(@babel/preset-env@7.24.4(@babel/core@7.24.9))(bufferutil@4.0.8)(encoding@0.1.13)(react@18.3.1)(utf-8-validate@5.0.10))(react@18.3.1)(rollup@4.14.3)(typescript@5.4.5)(utf-8-validate@5.0.10)(viem@2.17.9(bufferutil@4.0.8)(typescript@5.4.5)(utf-8-validate@5.0.10)(zod@3.24.2))(zod@3.24.2)
 
-  apps/mock-sponsored-sender:
+  apps/ponder-interop:
+    dependencies:
+      '@eth-optimism/viem':
+        specifier: workspace:*
+        version: link:../../packages/viem
+      hono:
+        specifier: ^4.5.0
+        version: 4.7.5
+      ponder:
+        specifier: ^0.10.6
+        version: 0.10.7(@opentelemetry/api@1.9.0)(@types/node@22.5.4)(hono@4.7.5)(terser@5.31.3)(typescript@5.4.5)(viem@2.24.3(bufferutil@4.0.8)(typescript@5.4.5)(utf-8-validate@6.0.3)(zod@3.24.2))(zod@3.24.2)
+      viem:
+        specifier: ^2.21.3
+        version: 2.24.3(bufferutil@4.0.8)(typescript@5.4.5)(utf-8-validate@6.0.3)(zod@3.24.2)
+
+  apps/sponsored-sender:
     dependencies:
       '@eth-optimism/viem':
         specifier: workspace:*
@@ -165,21 +180,6 @@ importers:
       zod-validation-error:
         specifier: ^3.4.0
         version: 3.4.0(zod@3.24.2)
-
-  apps/ponder-interop:
-    dependencies:
-      '@eth-optimism/viem':
-        specifier: workspace:*
-        version: link:../../packages/viem
-      hono:
-        specifier: ^4.5.0
-        version: 4.7.5
-      ponder:
-        specifier: ^0.10.6
-        version: 0.10.7(@opentelemetry/api@1.9.0)(@types/node@22.5.4)(hono@4.7.5)(terser@5.31.3)(typescript@5.4.5)(viem@2.24.3(bufferutil@4.0.8)(typescript@5.4.5)(utf-8-validate@6.0.3)(zod@3.24.2))(zod@3.24.2)
-      viem:
-        specifier: ^2.21.3
-        version: 2.24.3(bufferutil@4.0.8)(typescript@5.4.5)(utf-8-validate@6.0.3)(zod@3.24.2)
 
   packages/sdk:
     dependencies:
