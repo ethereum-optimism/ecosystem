@@ -1,5 +1,5 @@
 {
-  "name": "@eth-optimism/mock-sponsored-sender",
+  "name": "@eth-optimism/sponsored-sender",
   "version": "0.0.1",
   "private": true,
   "type": "module",
