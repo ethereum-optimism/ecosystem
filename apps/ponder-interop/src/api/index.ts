@@ -10,16 +10,24 @@ const app = new Hono()
 
 const chains = Object.values(publicClients).map((client) => {
   if (!client.chain) {
-    throw new Error(`missing chain id in the client ${client.name}`)
+    throw new Error(`missing chain id in client ${client.name}`)
   }
-  return { id: client.chain.id, name: client.chain.name }
+  if (!client.transport.url) {
+    throw new Error(`missing transport url in client ${client.name}`)
+  }
+
+  return {
+    id: client.chain.id,
+    name: client.chain.name,
+    url: client.transport.url,
+  }
 })
 
 const chainIds = chains.map((c) => BigInt(c.id))
 
 // List of interoperable chain
 app.get('/chains', async (c) => {
-  return c.json({ chains })
+  return c.json(chains)
 })
 
 // Count of all messages (sent, relayed, pending)
@@ -53,7 +61,11 @@ app.get('/messages/pending', async (c) => {
     )
     .where(isNull(schema.relayedMessages.messageHash))
 
-  return c.json(result.map((m) => replaceBigInts(m, (x) => Number(x))))
+  const messages = result
+    .map((m) => m.l2_to_l2_cdm_sent_messages)
+    .map((m) => replaceBigInts(m, (x) => Number(x)))
+
+  return c.json(messages)
 })
 
 // List of pending messages for an account
@@ -78,7 +90,11 @@ app.get('/messages/:account/pending', async (c) => {
       ),
     )
 
-  return c.json(result.map((m) => replaceBigInts(m, (x) => Number(x))))
+  const messages = result
+    .map((m) => m.l2_to_l2_cdm_sent_messages)
+    .map((m) => replaceBigInts(m, (x) => Number(x)))
+
+  return c.json(messages)
 })
 
 export default app

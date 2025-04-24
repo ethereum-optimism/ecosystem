@@ -1,32 +1,39 @@
-import { contracts, l2ToL2CrossDomainMessengerAbi } from '@eth-optimism/viem'
-import { supersimL2A, supersimL2B } from '@eth-optimism/viem/chains'
-import { createConfig } from 'ponder'
+import type { Transport } from 'viem'
 import { http } from 'viem'
+import { z } from 'zod'
 
-export default createConfig({
-  ordering: 'multichain',
-  networks: {
-    supersimL2A: {
-      chainId: supersimL2A.id,
-      transport: http(supersimL2A.rpcUrls.default.http[0]),
-    },
-    supersimL2B: {
-      chainId: supersimL2B.id,
-      transport: http(supersimL2B.rpcUrls.default.http[0]),
-    },
-  },
-  contracts: {
-    L2ToL2CDM: {
-      abi: l2ToL2CrossDomainMessengerAbi,
-      startBlock: 1,
-      network: {
-        supersimL2A: {
-          address: contracts.l2ToL2CrossDomainMessenger.address,
-        },
-        supersimL2B: {
-          address: contracts.l2ToL2CrossDomainMessenger.address,
-        },
-      },
-    },
-  },
-})
+import { createPonderConfig } from '@/createPonderConfig.js'
+
+// Parse Endpoints from Environment
+const endpoints: Record<string, { chainId: number; transport: Transport }> = {}
+for (const [key, value] of Object.entries(process.env)) {
+  if (!key.startsWith('PONDER_ENDPOINT_') || value === undefined) continue
+
+  const chainIdStr = key.replace('PONDER_ENDPOINT_', '')
+  const chainIdSchema = z.string().regex(/^\d+$/)
+  const chainIdResult = chainIdSchema.safeParse(chainIdStr)
+  if (!chainIdResult.success) {
+    throw new Error(
+      `invalid chain id for ${key}. Use format PONDER_ENDPOINT_<chainId>=<url>: ${chainIdStr}`,
+    )
+  }
+
+  const urlSchema = z.string().url()
+  const result = urlSchema.safeParse(value)
+  if (!result.success) {
+    throw new Error(`invalid endpoint url for ${key}: ${value}`)
+  }
+
+  endpoints[chainIdStr] = {
+    chainId: parseInt(chainIdStr),
+    transport: http(value),
+  }
+}
+
+if (Object.keys(endpoints).length === 0) {
+  throw new Error(
+    'No endpoints in environment found. Please set `PONDER_ENDPOINT_<chainId>=<url>` urls for each chain to index.',
+  )
+}
+
+export default createPonderConfig(endpoints)

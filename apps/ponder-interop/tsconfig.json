@@ -11,6 +11,11 @@
     "allowSyntheticDefaultImports": true,
     "resolveJsonModule": true,
 
+    // Paths
+    "paths": {
+      "@/*": ["./src/*"]
+    },
+
     // Language and environment
     "moduleResolution": "bundler",
     "module": "ESNext",
