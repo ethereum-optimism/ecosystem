@@ -1,21 +1,26 @@
 {
-  "name": "@eth-optimism/ponder-interop",
-  "version": "0.0.4",
+  "name": "@eth-optimism/sponsored-sender",
+  "version": "0.0.1",
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "ponder dev",
-    "start": "ponder start",
-    "db": "ponder db",
-    "codegen": "ponder codegen",
+    "build": "tsc && resolve-tspaths",
     "lint": "eslint \"**/*.{ts,tsx}\" && pnpm prettier --check \"**/*.{ts,tsx}\" --ignore-path \"../../.prettierignore\"",
     "lint:fix": "eslint \"**/*.{ts,tsx}\" --fix && pnpm prettier \"**/*.{ts,tsx}\" --write --loglevel=warn --ignore-path \"../../.prettierignore\"",
+    "start": "tsx src/index.ts",
     "typecheck": "tsc"
   },
   "dependencies": {
+    "abitype": "^1.0.8",
+    "@hono/node-server": "^1.14.0",
+    "viem": "^2.17.9",
+    "@eth-optimism/viem": "workspace:*",
     "hono": "^4.5.0",
-    "ponder": "^0.10.6",
-    "viem": "^2.21.3",
-    "@eth-optimism/viem": "workspace:*"
+    "zod": "^3.24.2",
+    "zod-validation-error": "^3.4.0"
+  },
+  "peerDependencies": {
+    "pino": "^9.6.0",
+    "pino-pretty": "^13.0.0"
   }
 }
