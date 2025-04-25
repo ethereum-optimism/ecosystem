@@ -23,7 +23,8 @@ const zodTx = z.object(
 )
 
 /**
- * Create a JSON RPC handler that sponsors `eth_sendTransaction` requests
+ * Create a JSON RPC handler that sponsors `eth_sendTransaction` requests. Also
+ * supports `eth_chainId` and `eth_accounts` for contextual information.
  * @param sender - The sponsored sender's account.
  * @param client - The client.
  * @returns A JSON RPC handler.
@@ -36,6 +37,10 @@ export function senderJsonRpcHandler(
 
   handler.method('eth_chainId', z.undefined(), async () => {
     return client.getChainId()
+  })
+
+  handler.method('eth_accounts', z.undefined(), async () => {
+    return [sender.address]
   })
 
   handler.method('eth_sendTransaction', z.tuple([zodTx]), async (params) => {
