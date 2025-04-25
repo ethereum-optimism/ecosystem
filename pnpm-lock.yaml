@@ -172,7 +172,7 @@ importers:
         specifier: ^13.0.0
         version: 13.0.0
       viem:
-        specifier: ^2.21.3
+        specifier: ^2.17.9
         version: 2.24.3(bufferutil@4.0.8)(typescript@5.4.5)(utf-8-validate@6.0.3)(zod@3.24.2)
       zod:
         specifier: ^3.24.2

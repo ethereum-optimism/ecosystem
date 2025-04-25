@@ -9,7 +9,7 @@
 
 ## Ecosystem
 
-In this repository, you'll find numerous code references for applications & packages to help app developers build on top of the OP Stack with ease. 
+In this repository, you'll find numerous code references for applications & packages to help app developers build on top of the OP Stack with ease.
 
 If the [Optimism Repository](https://github.com/ethereum-optimism/ecosystem) is a place where the protocol and its infrastructure gets built. The Ecosystem Repository is a place where utilities, applications, and examples get built to interact with the protocols and its infrastructure.
 
@@ -30,6 +30,7 @@ Governance discussion can also be found on the [Optimism Governance Forum](https
 
 <pre>
 ├── <a href="./apps">apps</a>
+├── ├── <a href="./apps/sponsored-sender">sponsored-sender</a>: Util service that locally spins up single-url tx submission json-rpc endpoint
 ├── <a href="./packages">packages</a>
 ├── ├── <a href="./packages/supersim">supersim</a>: Util supersim package that works with npx
 │   ├── <a href="./packages/viem">viem</a>: Optimism Viem Extensions
@@ -42,10 +43,10 @@ Governance discussion can also be found on the [Optimism Governance Forum](https
 
 You'll need the following:
 
-* [Git](https://git-scm.com/downloads)
-* [NodeJS](https://nodejs.org/en/download/)
-* [Node Version Manager](https://github.com/nvm-sh/nvm)
-* [pnpm](https://pnpm.io/installation)
+- [Git](https://git-scm.com/downloads)
+- [NodeJS](https://nodejs.org/en/download/)
+- [Node Version Manager](https://github.com/nvm-sh/nvm)
+- [pnpm](https://pnpm.io/installation)
 
 ### Setup
 
@@ -83,18 +84,19 @@ pnpm nx run <npm package name>:<target>
 ```
 
 For example if we wanted to build the `viem` package or development we could run this
+
 ```bash
 pnpm nx run @eth-optimism/viem:build
 ```
 
 There will be a few common targets that you will most likely see across all applications and packages in the repo.
 
-* `build`
-* `clean`
-* `dev`
-* `typecheck`
-* `lint`
-* `lint:fix`
+- `build`
+- `clean`
+- `dev`
+- `typecheck`
+- `lint`
+- `lint:fix`
 
 ## Contributing
 
