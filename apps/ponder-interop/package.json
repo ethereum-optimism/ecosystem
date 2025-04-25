@@ -5,6 +5,9 @@
   "type": "module",
   "scripts": {
     "dev": "ponder dev",
+    "dev:devnet": "pnpm dev --config ponder.config.devnet.ts",
+    "dev:alphanet": "pnpm dev --config ponder.config.alphanet.ts",
+    "dev:supersim": "pnpm dev --config ponder.config.supersim.ts",
     "start": "ponder start",
     "db": "ponder db",
     "codegen": "ponder codegen",
@@ -15,7 +18,9 @@
   "dependencies": {
     "hono": "^4.5.0",
     "ponder": "^0.10.6",
-    "viem": "^2.21.3",
-    "@eth-optimism/viem": "workspace:*"
+    "viem": "^2.17.9",
+    "@eth-optimism/viem": "workspace:*",
+    "zod": "^3.24.2",
+    "zod-validation-error": "^3.4.0"
   }
 }

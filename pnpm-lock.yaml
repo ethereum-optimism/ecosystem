@@ -148,8 +148,14 @@ importers:
         specifier: ^0.10.6
         version: 0.10.7(@opentelemetry/api@1.9.0)(@types/node@22.5.4)(hono@4.7.5)(terser@5.31.3)(typescript@5.4.5)(viem@2.24.3(bufferutil@4.0.8)(typescript@5.4.5)(utf-8-validate@6.0.3)(zod@3.24.2))(zod@3.24.2)
       viem:
-        specifier: ^2.21.3
+        specifier: ^2.17.9
         version: 2.24.3(bufferutil@4.0.8)(typescript@5.4.5)(utf-8-validate@6.0.3)(zod@3.24.2)
+      zod:
+        specifier: ^3.24.2
+        version: 3.24.2
+      zod-validation-error:
+        specifier: ^3.4.0
+        version: 3.4.0(zod@3.24.2)
 
   apps/sponsored-sender:
     dependencies:
