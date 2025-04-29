@@ -79,8 +79,8 @@ export async function relayPendingMessages(log: Logger, config: Config) {
     const client = config.clients[message.destination]
     const submissionClient = config.submissionClients[message.destination]
 
-    // If no account is configured (sponsored), use a random
-    // account owned by the sponsored endpoint.
+    // If no account is configured (sponsored), specify
+    // a random account owned by the sponsored endpoint.
     let account = submissionClient.account
     if (!account) {
       const accounts = await submissionClient.getAddresses()
@@ -103,6 +103,7 @@ export async function relayPendingMessages(log: Logger, config: Config) {
     }
     const payload = message.logPayload
     const accessList = encodeAccessList(id, payload)
+
     const params = { id, payload, accessList, account, chain: null }
 
     // simulate
@@ -113,8 +114,11 @@ export async function relayPendingMessages(log: Logger, config: Config) {
       continue
     }
 
-    // submit
-    const txHash = await relayCrossDomainMessage(submissionClient, params)
-    msgLog.info(`submitted message relay: ${txHash}`)
+    // submit (skip local gas estimation)
+    const relayTxHash = await relayCrossDomainMessage(submissionClient, {
+      ...params,
+      gas: null,
+    })
+    msgLog.info({ relayTxHash }, 'submitted message relay')
   }
 }

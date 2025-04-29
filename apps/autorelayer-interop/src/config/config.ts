@@ -44,16 +44,17 @@ export async function parseConfig(log: Logger): Promise<Config> {
 
   // parse the relaying private key or use the sponsored endpoint
   const senderPrivateKey = process.env['AUTORELAYER_PRIVATE_KEY']
-  const sponsoredEndpoint = process.env['AUTORELAYER_SPONSORED_ENDPOINT']
+  let sponsoredEndpoint = process.env['AUTORELAYER_SPONSORED_ENDPOINT']
   if (sponsoredEndpoint && senderPrivateKey) {
     throw new Error(
       'AUTORELAYER_SPONSORED_ENDPOINT and AUTORELAYER_PRIVATE_KEY are both set.',
     )
   }
   if (!senderPrivateKey && !sponsoredEndpoint) {
-    throw new Error(
-      'either AUTORELAYER_PRIVATE_KEY or AUTORELAYER_SPONSORED_ENDPOINT must be set.',
+    log.warn(
+      'AUTORELAYER_PRIVATE_KEY not set. defaulting to sponsored endpoint :3000',
     )
+    sponsoredEndpoint = 'http://127.0.0.1:3000'
   }
 
   // parse ponder api url
@@ -93,14 +94,14 @@ export async function parseConfig(log: Logger): Promise<Config> {
     const client = createPublicClient({ transport })
     clients[chain.id] = client
 
-    // Either Local / Sponsored.
-
+    // If Local, setup the account
     if (senderPrivateKey) {
       const account = privateKeyToAccount(senderPrivateKey as Hex)
       submissionClients[chain.id] = createWalletClient({ account, transport })
       log.debug('configured sender %s', account.address)
     }
 
+    // If Sponsored, setup the wallet client on the endpoint
     if (sponsoredEndpoint) {
       const url = `${sponsoredEndpoint}/${chain.id}`
       const walletClient = createWalletClient({ transport: http(url) })
