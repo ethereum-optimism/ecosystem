@@ -71,7 +71,10 @@ export async function relayPendingMessages(log: Logger, config: Config) {
       txHash: message.transactionHash,
     })
 
-    if (!config.clients[message.destination]) {
+    if (
+      !config.clients[message.destination] ||
+      !config.submissionClients[message.destination]
+    ) {
       msgLog.warn('no client for destination, skipping...')
       continue
     }
@@ -114,10 +117,11 @@ export async function relayPendingMessages(log: Logger, config: Config) {
       continue
     }
 
-    // submit (skip local gas estimation)
+    // submit (skip local gas estimation if sponsored)
+    const gas = !submissionClient.account ? null : undefined
     const relayTxHash = await relayCrossDomainMessage(submissionClient, {
       ...params,
-      gas: null,
+      gas,
     })
     msgLog.info({ relayTxHash }, 'submitted message relay')
   }
