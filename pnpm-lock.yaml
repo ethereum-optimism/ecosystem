@@ -14,12 +14,18 @@ importers:
       abitype:
         specifier: ^1.0.8
         version: 1.0.8(typescript@5.4.5)(zod@3.24.2)
+      commander:
+        specifier: ^13.1.0
+        version: 13.1.0
       hono:
         specifier: ^4.5.0
         version: 4.7.5
       ponder:
         specifier: ^0.10.6
         version: 0.10.7(@opentelemetry/api@1.9.0)(@types/node@22.5.4)(hono@4.7.5)(terser@5.31.3)(typescript@5.4.5)(viem@2.17.9(bufferutil@4.0.8)(typescript@5.4.5)(utf-8-validate@5.0.10)(zod@3.24.2))(zod@3.24.2)
+      prom-client:
+        specifier: ^15.1.0
+        version: 15.1.3
       zod:
         specifier: ^3.24.2
         version: 3.24.2
@@ -138,9 +144,15 @@ importers:
 
   apps/autorelayer-interop:
     dependencies:
+      '@eth-optimism/utils-app':
+        specifier: workspace:*
+        version: link:../../packages/utils/utils-app
       '@eth-optimism/viem':
         specifier: workspace:*
         version: link:../../packages/viem
+      commander:
+        specifier: ^13.1.0
+        version: 13.1.0
       pino:
         specifier: ^9.6.0
         version: 9.6.0
@@ -174,6 +186,9 @@ importers:
 
   apps/sponsored-sender:
     dependencies:
+      '@eth-optimism/utils-app':
+        specifier: workspace:*
+        version: link:../../packages/utils/utils-app
       '@eth-optimism/viem':
         specifier: workspace:*
         version: link:../../packages/viem
@@ -183,6 +198,9 @@ importers:
       abitype:
         specifier: ^1.0.8
         version: 1.0.8(typescript@5.4.5)(zod@3.24.2)
+      commander:
+        specifier: ^13.1.0
+        version: 13.1.0
       hono:
         specifier: ^4.5.0
         version: 4.7.5
@@ -192,6 +210,9 @@ importers:
       pino-pretty:
         specifier: ^13.0.0
         version: 13.0.0
+      prom-client:
+        specifier: ^15.1.0
+        version: 15.1.3
       viem:
         specifier: ^2.17.9
         version: 2.24.3(bufferutil@4.0.8)(typescript@5.4.5)(utf-8-validate@6.0.3)(zod@3.24.2)
@@ -301,6 +322,21 @@ importers:
       follow-redirects:
         specifier: ^1.15.9
         version: 1.15.9
+
+  packages/utils/utils-app:
+    dependencies:
+      commander:
+        specifier: ^13.1.0
+        version: 13.1.0
+      pino:
+        specifier: ^9.6.0
+        version: 9.6.0
+      pino-pretty:
+        specifier: ^13.0.0
+        version: 13.0.0
+      prom-client:
+        specifier: ^15.1.0
+        version: 15.1.3
 
   packages/viem:
     devDependencies:
@@ -4773,6 +4809,10 @@ packages:
 
   commander@12.1.0:
     resolution: {integrity: sha512-Vw8qHK3bZM9y/P10u3Vib8o/DdkvA2OtPtZvD871QKjy74Wj1WSKFILMPRPSdUSx5RFK1arlJzEtA4PkFgnbuA==}
+    engines: {node: '>=18'}
+
+  commander@13.1.0:
+    resolution: {integrity: sha512-/rFeCpNJQbhSZjGVwO9RFV3xPqbnERS8MmIQzCtD/zl6gpJuV/bMLuN92oG3F7d8oDEHHRrujSXNUr8fpjntKw==}
     engines: {node: '>=18'}
 
   commander@2.20.3:
@@ -17025,6 +17065,8 @@ snapshots:
 
   commander@12.1.0: {}
 
+  commander@13.1.0: {}
+
   commander@2.20.3: {}
 
   commander@3.0.2: {}
@@ -19436,10 +19478,6 @@ snapshots:
   isows@1.0.4(ws@8.17.1(bufferutil@4.0.8)(utf-8-validate@5.0.10)):
     dependencies:
       ws: 8.17.1(bufferutil@4.0.8)(utf-8-validate@5.0.10)
-
-  isows@1.0.4(ws@8.17.1(bufferutil@4.0.8)(utf-8-validate@6.0.3)):
-    dependencies:
-      ws: 8.17.1(bufferutil@4.0.8)(utf-8-validate@6.0.3)
 
   isows@1.0.6(ws@8.18.1(bufferutil@4.0.8)(utf-8-validate@6.0.3)):
     dependencies:
@@ -23288,7 +23326,7 @@ snapshots:
       '@scure/bip32': 1.4.0
       '@scure/bip39': 1.3.0
       abitype: 1.0.5(typescript@5.4.5)(zod@3.24.2)
-      isows: 1.0.4(ws@8.17.1(bufferutil@4.0.8)(utf-8-validate@6.0.3))
+      isows: 1.0.4(ws@8.17.1(bufferutil@4.0.8)(utf-8-validate@5.0.10))
       ws: 8.17.1(bufferutil@4.0.8)(utf-8-validate@6.0.3)
     optionalDependencies:
       typescript: 5.4.5

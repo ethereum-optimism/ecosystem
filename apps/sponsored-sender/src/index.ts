@@ -1,37 +1,105 @@
+import { App } from '@eth-optimism/utils-app'
 import { serve } from '@hono/node-server'
-import { pino } from 'pino'
+import { Option } from 'commander'
+import type { Account, Hex, PublicClient } from 'viem'
+import { createPublicClient, http, isHex } from 'viem'
+import { privateKeyToAccount } from 'viem/accounts'
+import { z } from 'zod'
 
 import { createApiRouter } from '@/api.js'
-import { parseClientConfig } from '@/config/config.js'
 import type { JsonRpcHandler } from '@/jsonrpc/handler.js'
 import { senderJsonRpcHandler } from '@/sender/senderJsonRpcHandler.js'
 
-export const log = pino({
-  level: process.env.LOG_LEVEL || 'debug',
-  transport: {
-    // TODO: adjust target pased on dev/prod
-    target: 'pino-pretty',
-    options: {
-      colorize: true,
-      translateTime: true,
-      ignore: 'pid,hostname',
-    },
-  },
+const ConfigSchema = z.object({
+  port: z.number().min(1024).max(65535),
+  endpoints: z.array(z.string().url()).min(1),
+  senderPrivateKey: z.string().refine((key) => {
+    if (!key) return true
+    return isHex(key) && privateKeyToAccount(key) !== undefined
+  }, 'private key must be a valid hex string'),
 })
 
-// create the sponsored senders
-const { sender, clients } = await parseClientConfig()
-log.debug(`configured sender ${sender.address}`)
+class SponsoredSenderApp extends App {
+  protected clients: Record<number, PublicClient> = {}
+  protected sender!: Account
 
-// create json-rpc handlers for each endpoint
-const handlers: Record<number, JsonRpcHandler> = {}
-for (const [chainId, client] of Object.entries(clients)) {
-  log.debug(`configured chain ${chainId}`)
-  handlers[Number(chainId)] = senderJsonRpcHandler(sender, client)
+  constructor() {
+    super({
+      name: 'sponsored-sender',
+      version: '0.0.1',
+      description: 'A single endpoint for sending sponsored transactions',
+    })
+  }
+
+  protected additionalOptions(): Option[] {
+    return [
+      new Option('--port <port>', 'port to listen on').default(3000),
+      new Option(
+        '--endpoints <endpoints>',
+        'comma separated list of endpoints to send transactions to',
+      ).default(['http://127.0.0.1:9545', 'http://127.0.0.1:9546']),
+      new Option(
+        '--sender-private-key <key>',
+        'local private key to use for the relayer',
+      ).default(
+        '0x2a871d0798f97d79848a013d4936a73bf4cc922c825d33c1cf7073dff6d409c6',
+      ),
+    ]
+  }
+
+  protected async preMain(): Promise<void> {
+    const { data: config, error } = ConfigSchema.safeParse(this.options)
+    if (error) {
+      throw new Error(`invalid configuration: ${error}`)
+    }
+
+    this.sender = privateKeyToAccount(config.senderPrivateKey as Hex)
+    this.logger.debug(`configured sender ${this.sender.address}`)
+
+    // Create clients
+    for (const url of config.endpoints) {
+      try {
+        const client = createPublicClient({ transport: http(url) })
+        const chainId = await client.getChainId()
+        const balance = await client.getBalance({
+          address: this.sender.address,
+        })
+
+        if (balance == 0n) {
+          throw Error(`zero sender balance: ${chainId}`)
+        }
+
+        this.clients[chainId] = client
+        this.logger.debug(`configured chain ${chainId}`)
+      } catch (err) {
+        throw Error(`failed endpoint ${url} check: ${err}`)
+      }
+    }
+  }
+
+  protected async main(): Promise<void> {
+    // create a router for each endpoint
+    const handlers: Record<number, JsonRpcHandler> = {}
+    for (const [chainId, client] of Object.entries(this.clients)) {
+      handlers[Number(chainId)] = senderJsonRpcHandler(this.sender, client)
+    }
+
+    const api = createApiRouter(this.logger, handlers)
+
+    // serve the api
+    this.logger.info(`starting server on port ${this.options.port}`)
+    return new Promise((resolve, reject) => {
+      const server = serve({ ...api, port: this.options.port })
+
+      server.on('close', () => {
+        resolve()
+      })
+
+      server.on('error', (err) => {
+        reject(err)
+      })
+    })
+  }
 }
 
-// serve the api
-const api = createApiRouter(log, handlers)
-serve(api, (info) => {
-  log.info(`started listening server on ${info.address}:${info.port}`)
-})
+await new SponsoredSenderApp().run()
