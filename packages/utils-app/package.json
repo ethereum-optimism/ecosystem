@@ -1,10 +1,27 @@
 {
   "name": "@eth-optimism/utils-app",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ethereum-optimism/ecosystem.git",
+    "directory": "packages/utils-app"
+  },
+  "homepage": "https://github.com/ethereum-optimism/ecosystem/tree/main/packages/viem#readme",
+  "bugs": {
+    "url": "https://github.com/ethereum-optimism/ecosystem/issues"
+  },
   "version": "0.0.1",
-  "private": true,
   "type": "module",
+  "main": "./dist/App.js",
+  "module": "./dist/App.js",
+  "types": "./dist/App.d.ts",
+  "files": [
+    "dist/*"
+  ],
   "exports": {
-    ".": "./src/App.ts"
+    ".": {
+      "types": "./dist/App.d.ts",
+      "import": "./dist/App.js"
+    }
   },
   "scripts": {
     "build": "tsc && resolve-tspaths",
