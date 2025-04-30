@@ -31,7 +31,7 @@ const PendingMessagesSchema = z.array(
 type PendingMessages = z.infer<typeof PendingMessagesSchema>
 
 interface RelayerConfig {
-  interopPonderApiUrl: string
+  ponderInteropApi: string
   clients: Record<number, PublicClient>
   walletClients: Record<number, WalletClient>
 }
@@ -115,7 +115,7 @@ export class Relayer {
 
   private async __fetchPendingMessages(): Promise<PendingMessages> {
     try {
-      const url = `${this.config.interopPonderApiUrl}/messages/pending`
+      const url = `${this.config.ponderInteropApi}/messages/pending`
       const resp = await fetch(url, jsonFetchParams)
       if (!resp.ok) {
         throw new Error(`invalid http response: ${resp.statusText}`)

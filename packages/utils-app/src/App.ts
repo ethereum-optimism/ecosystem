@@ -149,10 +149,14 @@ export abstract class App {
 
   private __setupSignalHandlers() {
     const signals = ['SIGINT', 'SIGTERM'] as const
+    let shutdownCount = 0
+
     signals.forEach((signal) => {
       process.on(signal, async () => {
-        this.logger.info(`received ${signal}, shutting down gracefully (3s)...`)
-        if (this.isShuttingDown) {
+        this.logger.info(`received ${signal}, shutting down...`)
+
+        shutdownCount++
+        if (this.isShuttingDown && shutdownCount > 5) {
           this.logger.warn('forcing shutdown')
           process.exit(1)
         }
@@ -172,17 +176,7 @@ export abstract class App {
     this.isShuttingDown = true
 
     // shutdown processes
-    const shutdown = Promise.allSettled([
-      this.shutdown(),
-      this.__stopMetricsServer(),
-    ])
-
-    // timeout if shutdown takes too long
-    const timeout = new Promise((_, reject) => {
-      setTimeout(() => reject(new Error('shutdown timed out after 3s')), 3000)
-    })
-
-    await Promise.race([shutdown, timeout])
+    await Promise.allSettled([this.shutdown(), this.__stopMetricsServer()])
   }
 
   protected abstract main(): Promise<void>
