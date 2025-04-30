@@ -23,6 +23,9 @@ export class SponsoredSenderApp extends App {
   protected clients: Record<number, PublicClient> = {}
   protected sender!: Account
 
+  // Must be set on main()
+  private server!: ReturnType<typeof serve>
+
   constructor() {
     super({
       name: 'sponsored-sender',
@@ -78,7 +81,6 @@ export class SponsoredSenderApp extends App {
   }
 
   protected async main(): Promise<void> {
-    // create a router for each endpoint
     const handlers: Record<number, JsonRpcHandler> = {}
     for (const [chainId, client] of Object.entries(this.clients)) {
       handlers[Number(chainId)] = senderJsonRpcHandler(this.sender, client)
@@ -87,16 +89,25 @@ export class SponsoredSenderApp extends App {
     const api = createApiRouter(this.logger, handlers)
 
     // serve the api
-    this.logger.info(`starting server on port ${this.options.port}`)
+    this.logger.info(`starting server on port :${this.options.port}`)
+    this.server = serve({ ...api, port: this.options.port })
+
+    // unsatisfied promise as long as the server is running
     return new Promise((resolve, reject) => {
-      const server = serve({ ...api, port: this.options.port })
+      this.server.on('close', resolve)
+      this.server.on('error', reject)
+    })
+  }
 
-      server.on('close', () => {
-        resolve()
-      })
-
-      server.on('error', (err) => {
-        reject(err)
+  protected async shutdown(): Promise<void> {
+    return new Promise((resolve, reject) => {
+      this.server.close((error) => {
+        if (error) {
+          this.logger.error({ error }, 'error closing server')
+          reject(error)
+        } else {
+          resolve()
+        }
       })
     })
   }

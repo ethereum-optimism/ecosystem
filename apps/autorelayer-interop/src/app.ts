@@ -33,7 +33,6 @@ type Chains = z.infer<typeof ChainSchema>
 
 export class RelayerApp extends App {
   private relayer!: Relayer
-  private isShutDown = false
 
   constructor() {
     super({
@@ -129,7 +128,7 @@ export class RelayerApp extends App {
   protected async main(): Promise<void> {
     this.logger.info('worker interval: %dms', this.options.loopIntervalMs)
 
-    while (!this.isShutDown) {
+    while (!this.isShuttingDown) {
       try {
         await this.relayer.run()
       } catch (error) {
@@ -138,10 +137,5 @@ export class RelayerApp extends App {
 
       await new Promise((res) => setTimeout(res, this.options.loopIntervalMs))
     }
-  }
-
-  protected async shutdown(): Promise<void> {
-    this.logger.info('shutting down...')
-    this.isShutDown = true
   }
 }

@@ -15,10 +15,14 @@ export abstract class App {
   protected readonly program: Command
   protected readonly metricsRegistry: Registry
 
+  // Must be set on run(), available to all hookds
   protected logger!: Logger
   protected options!: OptionValues
 
-  private isShuttingDown = false
+  // A signal available to main() to resolve the
+  // main promise during something like an interrupt.
+  protected isShuttingDown = false
+
   private metricsServer: ReturnType<typeof createServer> | null = null
 
   constructor(config: Config) {
@@ -101,7 +105,7 @@ export abstract class App {
       this.logger.info('application completed successfully')
     } catch (error) {
       this.logger.error({ err: error }, 'application failed')
-      process.exit(1)
+      process.exitCode = 1
     }
   }
 
@@ -136,9 +140,10 @@ export abstract class App {
     if (this.metricsServer) {
       return new Promise((resolve, reject) => {
         this.logger.info('stopping metrics server...')
-        this.metricsServer!.close((err) => {
-          if (err) {
-            reject(new Error(`failed stopping metrics server: ${err}`))
+        this.metricsServer!.close((error) => {
+          if (error) {
+            this.logger.error({ error }, 'error closing metrics server')
+            reject(error)
           } else {
             resolve()
           }
