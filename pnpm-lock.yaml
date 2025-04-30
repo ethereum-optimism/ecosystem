@@ -146,7 +146,7 @@ importers:
     dependencies:
       '@eth-optimism/utils-app':
         specifier: workspace:*
-        version: link:../../packages/utils/utils-app
+        version: link:../../packages/utils-app
       '@eth-optimism/viem':
         specifier: workspace:*
         version: link:../../packages/viem
@@ -188,7 +188,7 @@ importers:
     dependencies:
       '@eth-optimism/utils-app':
         specifier: workspace:*
-        version: link:../../packages/utils/utils-app
+        version: link:../../packages/utils-app
       '@eth-optimism/viem':
         specifier: workspace:*
         version: link:../../packages/viem
@@ -323,7 +323,7 @@ importers:
         specifier: ^1.15.9
         version: 1.15.9
 
-  packages/utils/utils-app:
+  packages/utils-app:
     dependencies:
       commander:
         specifier: ^13.1.0
