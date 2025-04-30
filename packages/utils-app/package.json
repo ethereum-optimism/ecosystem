@@ -1,8 +1,11 @@
 {
-  "name": "@eth-optimism/autorelayer-interop",
+  "name": "@eth-optimism/utils-app",
   "version": "0.0.1",
   "private": true,
   "type": "module",
+  "exports": {
+    ".": "./src/App.ts"
+  },
   "scripts": {
     "build": "tsc && resolve-tspaths",
     "lint": "eslint \"**/*.{ts,tsx}\" && pnpm prettier --check \"**/*.{ts,tsx}\" --ignore-path \"../../.prettierignore\"",
@@ -12,9 +15,7 @@
   },
   "dependencies": {
     "commander": "^13.1.0",
-    "viem": "2.17.9",
-    "@eth-optimism/utils-app": "workspace:*",
-    "@eth-optimism/viem": "workspace:*"
+    "prom-client": "^15.1.0"
   },
   "peerDependencies": {
     "pino": "^9.6.0",

@@ -32,8 +32,9 @@
     "default": ["{projectRoot}/**/*", "sharedGlobals"],
     "sharedGlobals": [
       "{workspaceRoot}/.prettierrc.js",
-      "{workspaceRoot}/tsconfig.json",
-      "{workspaceRoot}/eslintrc.js",
+      "{workspaceRoot}/.prettierignore",
+      "{workspaceRoot}/tsconfig.base.json",
+      "{workspaceRoot}/eslint.config.js",
       "{workspaceRoot}/nx.json",
       "{workspaceRoot}/mise.toml"
     ],
