@@ -7,14 +7,16 @@ import { createPonderConfig } from '@/createPonderConfig.js'
 // Parse Endpoints from Environment
 const endpoints: Record<string, { chainId: number; transport: Transport }> = {}
 for (const [key, value] of Object.entries(process.env)) {
-  if (!key.startsWith('PONDER_ENDPOINT_') || value === undefined) continue
+  if (!key.startsWith('PONDER_INTEROP_ENDPOINT_') || value === undefined) {
+    continue
+  }
 
-  const chainIdStr = key.replace('PONDER_ENDPOINT_', '')
+  const chainIdStr = key.replace('PONDER_INTEROP_ENDPOINT_', '')
   const chainIdSchema = z.string().regex(/^\d+$/)
   const chainIdResult = chainIdSchema.safeParse(chainIdStr)
   if (!chainIdResult.success) {
     throw new Error(
-      `invalid chain id for ${key}. Use format PONDER_ENDPOINT_<chainId>=<url>: ${chainIdStr}`,
+      `invalid chain id for ${key}. Use format PONDER_INTEROP_ENDPOINT_<chainId>=<url>: ${chainIdStr}`,
     )
   }
 
@@ -32,7 +34,7 @@ for (const [key, value] of Object.entries(process.env)) {
 
 if (Object.keys(endpoints).length === 0) {
   throw new Error(
-    'No endpoints in environment found. Please set `PONDER_ENDPOINT_<chainId>=<url>` urls for each chain to index.',
+    'No endpoints in environment found. Please set `PONDER_INTEROP_ENDPOINT_<chainId>=<url>` urls for each chain to index.',
   )
 }
 
