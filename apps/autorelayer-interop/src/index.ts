@@ -1,3 +1,2 @@
-import { RelayerApp } from '@/app.js'
-
-await new RelayerApp().run()
+export * from './app.js'
+export * from './relayer.js'
