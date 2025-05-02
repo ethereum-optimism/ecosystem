@@ -1,5 +1,11 @@
 # @eth-optimism/utils-app
 
+## 0.0.3
+
+### Patch Changes
+
+- [#770](https://github.com/ethereum-optimism/ecosystem/pull/770) [`4a7f3be`](https://github.com/ethereum-optimism/ecosystem/commit/4a7f3be47fd7ebef846341c499588bdcb2a00773) Thanks [@tremarkley](https://github.com/tremarkley)! - initialize autorelayer-interop package
+
 ## 0.0.2
 
 ### Patch Changes
