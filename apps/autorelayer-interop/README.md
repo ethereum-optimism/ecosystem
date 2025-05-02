@@ -1,6 +1,6 @@
 # AutoRelayer
 
-A simple autorelayer to use between interoperable networks. This relies on a stateful api to return a list of pending messages between the set of interoperable chains. The [ponder-interop](../ponder-interop/) app implements the expected API service, indexing all interopable messages from the [L2ToL2CrossDomainMessenger](https://github.com/ethereum-optimism/optimism/blob/develop/packages/contracts-bedrock/src/L2/L2ToL2CrossDomainMessenger.sol).
+A simple autorelayer to use between interoperable networks. This relies on a stateful api to return a list of pending messages between the set of interoperable chains. The [ponder-interop](../ponder-interop/README.md) app implements the expected API service, indexing all interopable messages from the [L2ToL2CrossDomainMessenger](https://github.com/ethereum-optimism/optimism/blob/develop/packages/contracts-bedrock/src/L2/L2ToL2CrossDomainMessenger.sol).
 
 ## Configuration
 
