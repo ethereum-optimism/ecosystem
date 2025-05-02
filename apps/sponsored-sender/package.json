@@ -14,7 +14,6 @@
     "abitype": "^1.0.8",
     "commander": "^13.1.0",
     "@hono/node-server": "^1.14.0",
-    "prom-client": "^15.1.0",
     "viem": "^2.17.9",
     "@eth-optimism/viem": "workspace:*",
     "@eth-optimism/utils-app": "workspace:*",
