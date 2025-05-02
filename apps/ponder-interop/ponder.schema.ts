@@ -1,3 +1,6 @@
+// Hack to resolve https://github.com/ponder-sh/ponder/issues/1722
+import 'drizzle-orm/pg-core'
+
 import { onchainTable } from 'ponder'
 
 export const sentMessages = onchainTable('l2_to_l2_cdm_sent_messages', (t) => ({

@@ -1,5 +1,7 @@
 {
   "compilerOptions": {
+    "baseUrl": ".",
+    "declaration": true,
     // Type checking
     "strict": true,
     "noUncheckedIndexedAccess": true,
@@ -19,7 +21,6 @@
     // Language and environment
     "moduleResolution": "bundler",
     "module": "ESNext",
-    "noEmit": true,
     "lib": ["ES2022"],
     "target": "ES2022",
     "outDir": "dist",
