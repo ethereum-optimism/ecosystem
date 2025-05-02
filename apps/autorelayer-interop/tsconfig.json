@@ -14,6 +14,10 @@
       "outDir": "dist",
       "moduleResolution": "NodeNext",
       "module": "NodeNext",
-      "sourceMap": true
+      "sourceMap": true,
+      "declaration": true,
+      "declarationMap": true,
+      "emitDeclarationOnly": false,
+      "noEmit": false
     }
   }

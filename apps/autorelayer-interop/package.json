@@ -1,10 +1,27 @@
 {
   "name": "@eth-optimism/autorelayer-interop",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ethereum-optimism/ecosystem.git",
+    "directory": "apps/autorelayer-interop"
+  },
+  "homepage": "https://github.com/ethereum-optimism/ecosystem/tree/main/apps/autorelayer-interop#readme",
+  "bugs": {
+    "url": "https://github.com/ethereum-optimism/ecosystem/issues"
+  },
   "version": "0.0.2",
-  "private": true,
   "type": "module",
+  "main": "./dist/app.js",
+  "types": "./dist/app.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/app.d.ts",
+      "import": "./dist/app.js"
+    }
+  },
   "scripts": {
-    "build": "tsc && resolve-tspaths",
+    "build": "pnpm clean && tsc && resolve-tspaths",
+    "clean": "rm -rf dist tsconfig.tsbuildinfo",
     "lint": "eslint \"**/*.{ts,tsx}\" && pnpm prettier --check \"**/*.{ts,tsx}\" --ignore-path \"../../.prettierignore\"",
     "lint:fix": "eslint \"**/*.{ts,tsx}\" --fix && pnpm prettier \"**/*.{ts,tsx}\" --write --loglevel=warn --ignore-path \"../../.prettierignore\"",
     "start": "tsx src/index.ts",

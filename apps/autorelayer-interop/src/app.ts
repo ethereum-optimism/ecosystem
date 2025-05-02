@@ -31,7 +31,7 @@ const ConfigSchema = z.object({
 
 type Chains = z.infer<typeof ChainSchema>
 
-export class RelayerApp extends App {
+class RelayerApp extends App {
   private relayer!: Relayer
 
   constructor() {
@@ -139,3 +139,5 @@ export class RelayerApp extends App {
     }
   }
 }
+
+export { Relayer, RelayerApp }
