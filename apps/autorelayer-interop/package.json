@@ -11,12 +11,12 @@
   },
   "version": "0.0.2",
   "type": "module",
-  "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
+  "main": "./dist/app.js",
+  "types": "./dist/app.d.ts",
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.js"
+      "types": "./dist/app.d.ts",
+      "import": "./dist/app.js"
     }
   },
   "scripts": {
