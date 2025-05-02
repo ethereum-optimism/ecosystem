@@ -5,7 +5,7 @@ import { createPublicClient, createWalletClient, http, isHex } from 'viem'
 import { privateKeyToAccount } from 'viem/accounts'
 import { z } from 'zod'
 
-import { Relayer } from '@/relayer.js'
+import { Relayer } from '@/Relayer.js'
 import { jsonFetchParams } from '@/utils/jsonFetchParams.js'
 
 const ChainSchema = z.array(

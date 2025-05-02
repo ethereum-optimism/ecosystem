@@ -14,6 +14,7 @@
     "commander": "^13.1.0",
     "viem": "2.17.9",
     "@eth-optimism/utils-app": "workspace:*",
+    "@eth-optimism/utils-relayer-app": "workspace:*",
     "@eth-optimism/viem": "workspace:*"
   },
   "peerDependencies": {
