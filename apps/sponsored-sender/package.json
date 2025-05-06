@@ -3,18 +3,19 @@
   "version": "0.0.3",
   "private": true,
   "type": "module",
+  "files": ["dist"],
   "scripts": {
     "build": "tsc && resolve-tspaths",
     "lint": "eslint \"**/*.{ts,tsx}\" && pnpm prettier --check \"**/*.{ts,tsx}\" --ignore-path \"../../.prettierignore\"",
     "lint:fix": "eslint \"**/*.{ts,tsx}\" --fix && pnpm prettier \"**/*.{ts,tsx}\" --write --loglevel=warn --ignore-path \"../../.prettierignore\"",
-    "start": "tsx src/index.ts",
+    "dev": "tsx src/index.ts",
+    "start": "node dist/index.js",
     "typecheck": "tsc"
   },
   "dependencies": {
     "abitype": "^1.0.8",
     "commander": "^13.1.0",
     "@hono/node-server": "^1.14.0",
-    "prom-client": "^15.1.0",
     "viem": "^2.17.9",
     "@eth-optimism/viem": "workspace:*",
     "@eth-optimism/utils-app": "workspace:*",
