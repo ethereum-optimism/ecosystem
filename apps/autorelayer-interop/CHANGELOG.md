@@ -1,5 +1,11 @@
 # @eth-optimism/autorelayer-interop
 
+## 0.0.4
+
+### Patch Changes
+
+- [#777](https://github.com/ethereum-optimism/ecosystem/pull/777) [`d216930`](https://github.com/ethereum-optimism/ecosystem/commit/d216930f1d1cd72144a4da7d199c30c06bde3abb) Thanks [@tremarkley](https://github.com/tremarkley)! - Allow specifying sponsored endpoint and sender key by env
+
 ## 0.0.3
 
 ### Patch Changes
