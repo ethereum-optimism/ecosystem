@@ -5,7 +5,6 @@
     "rootDir": "src",
     "baseUrl": ".",
     "paths": {
-      "@": ["./src"],
       "@/*": ["./src/*"]
     },
     "target": "es2021",

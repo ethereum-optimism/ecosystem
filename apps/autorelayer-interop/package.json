@@ -11,6 +11,7 @@
   },
   "version": "0.0.3",
   "type": "module",
+  "files": ["dist"],
   "main": "./dist/app.js",
   "types": "./dist/app.d.ts",
   "exports": {
@@ -24,7 +25,8 @@
     "clean": "rm -rf dist tsconfig.tsbuildinfo",
     "lint": "eslint \"**/*.{ts,tsx}\" && pnpm prettier --check \"**/*.{ts,tsx}\" --ignore-path \"../../.prettierignore\"",
     "lint:fix": "eslint \"**/*.{ts,tsx}\" --fix && pnpm prettier \"**/*.{ts,tsx}\" --write --loglevel=warn --ignore-path \"../../.prettierignore\"",
-    "start": "tsx src/index.ts",
+    "dev": "tsx src/index.ts",
+    "start": "node dist/index.js",
     "typecheck": "tsc"
   },
   "dependencies": {
