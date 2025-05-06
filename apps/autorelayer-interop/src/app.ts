@@ -53,11 +53,15 @@ class RelayerApp extends App {
       new Option(
         '--sponsored-endpoint <url>',
         'sponsored endpoint to use for the relayer',
-      ).default('http://127.0.0.1:3000'),
+      )
+        .default('http://127.0.0.1:3000')
+        .env('SPONSORED_ENDPOINT_URL'),
       new Option(
         '--sender-private-key <key>',
         'local private key to use for the relayer',
-      ).conflicts('sponsoredEndpoint'),
+      )
+        .conflicts('sponsoredEndpoint')
+        .env('SENDER_PRIVATE_KEY'),
     ]
   }
 
