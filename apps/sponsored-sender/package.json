@@ -1,9 +1,11 @@
 {
   "name": "@eth-optimism/sponsored-sender",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "private": true,
   "type": "module",
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "tsc && resolve-tspaths",
     "lint": "eslint \"**/*.{ts,tsx}\" && pnpm prettier --check \"**/*.{ts,tsx}\" --ignore-path \"../../.prettierignore\"",
