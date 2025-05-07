@@ -1,5 +1,11 @@
 # @eth-optimism/viem
 
+## 0.4.8
+
+### Patch Changes
+
+- [#779](https://github.com/ethereum-optimism/ecosystem/pull/779) [`c9dbca4`](https://github.com/ethereum-optimism/ecosystem/commit/c9dbca401eed763eb20b05437e3e460cdaadd711) Thanks [@tremarkley](https://github.com/tremarkley)! - update chains based on latest superchain registry
+
 ## 0.4.7
 
 ### Patch Changes

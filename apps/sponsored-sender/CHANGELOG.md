@@ -1,5 +1,12 @@
 # @eth-optimism/sponsored-sender
 
+## 0.0.4
+
+### Patch Changes
+
+- Updated dependencies [[`c9dbca4`](https://github.com/ethereum-optimism/ecosystem/commit/c9dbca401eed763eb20b05437e3e460cdaadd711)]:
+  - @eth-optimism/viem@0.4.8
+
 ## 0.0.3
 
 ### Patch Changes
