@@ -126,6 +126,129 @@ export const baseSepolia = /*#__PURE__*/ defineChain({
 })
 
 /**
+ * Chain Definition for Boba Sepolia
+ */
+export const bobaSepolia = /*#__PURE__*/ defineChain({
+  ...chainConfig,
+  name: 'Boba Sepolia',
+  id: 28882,
+  sourceId: 11155111,
+  nativeCurrency: {
+    name: 'Ether',
+    symbol: 'ETH',
+    decimals: 18,
+  },
+  rpcUrls: {
+    default: {
+      http: ['https://sepolia.boba.network'],
+    },
+  },
+  blockExplorers: {
+    default: {
+      name: 'Boba Sepolia Explorer',
+      url: 'https://testnet.bobascan.com',
+    },
+  },
+  contracts: {
+    ...chainConfig.contracts,
+    portal: {
+      11155111: {
+        address: '0xB079E6FA9B3eb072fEbf7F746044834eab308dB6',
+      },
+    },
+    l1StandardBridge: {
+      11155111: {
+        address: '0x244d7b81EE3949788Da5F1178D911e83bA24E157',
+      },
+    },
+    l1Erc721Bridge: {
+      11155111: {
+        address: '0x13B397A08322973B45e063F29746Fb278f189916',
+      },
+    },
+    l1CrossDomainMessenger: {
+      11155111: {
+        address: '0x9253E76E2fA3f72aF18e08914b3528F725779495',
+      },
+    },
+    systemConfig: {
+      11155111: {
+        address: '0xfDC9bCE032cEF55a71b4fde9B9a2198ad1551965',
+      },
+    },
+    l2OutputOracle: {
+      11155111: {
+        address: '0xdBdb238185f9BB40f742aE249f9a083381EC39eC',
+      },
+    },
+  },
+})
+
+/**
+ * Chain Definition for Creator Chain Sepolia
+ */
+export const creatorChainSepolia = /*#__PURE__*/ defineChain({
+  ...chainConfig,
+  name: 'Creator Chain Sepolia',
+  id: 66665,
+  sourceId: 11155111,
+  nativeCurrency: {
+    name: 'Ether',
+    symbol: 'ETH',
+    decimals: 18,
+  },
+  rpcUrls: {
+    default: {
+      http: ['https://rpc.creatorchain.io'],
+    },
+  },
+  blockExplorers: {
+    default: {
+      name: 'Creator Chain Sepolia Explorer',
+      url: 'https://explorer.creatorchain.io',
+    },
+  },
+  contracts: {
+    ...chainConfig.contracts,
+    portal: {
+      11155111: {
+        address: '0x1Cb215554f36f518791B2e7359a73c96bFcadf69',
+      },
+    },
+    l1StandardBridge: {
+      11155111: {
+        address: '0x78558fd5C8DC65D10753f004Bfc4cFA8E199C668',
+      },
+    },
+    l1Erc721Bridge: {
+      11155111: {
+        address: '0xe82526042dae3F8800f87232b5146ED4012eE426',
+      },
+    },
+    l1CrossDomainMessenger: {
+      11155111: {
+        address: '0x19f3D95A281F9Cf6aA2c6e8b7cA7c6Be83e41F3A',
+      },
+    },
+    systemConfig: {
+      11155111: {
+        address: '0x978e8311A5A710ef6413abA3A6b89092ce4a58f5',
+      },
+    },
+    disputeGameFactory: {
+      11155111: {
+        address: '0x5Eb3040aeebc69595B4Bdc4eCB97323330f14517',
+      },
+    },
+    l2OutputOracle: {
+      11155111: {
+        address: '0x54E9BE93b9a1aca9C0293dB7710D9D18273aFE1D',
+      },
+    },
+  },
+})
+
+/**
  * Chain Definition for Cyber Sepolia
  */
 export const cyberSepolia = /*#__PURE__*/ defineChain({
@@ -500,70 +623,6 @@ export const metalSepolia = /*#__PURE__*/ defineChain({
 })
 
 /**
- * Chain Definition for Minato Sepolia
- */
-export const minatoSepolia = /*#__PURE__*/ defineChain({
-  ...chainConfig,
-  name: 'Minato Sepolia',
-  id: 1946,
-  sourceId: 11155111,
-  nativeCurrency: {
-    name: 'Ether',
-    symbol: 'ETH',
-    decimals: 18,
-  },
-  rpcUrls: {
-    default: {
-      http: ['https://rpc.minato.soneium.org'],
-    },
-  },
-  blockExplorers: {
-    default: {
-      name: 'Minato Sepolia Explorer',
-      url: 'https://soneium-minato.blockscout.com/',
-    },
-  },
-  contracts: {
-    ...chainConfig.contracts,
-    portal: {
-      11155111: {
-        address: '0x65ea1489741A5D72fFdD8e6485B216bBdcC15Af3',
-      },
-    },
-    l1StandardBridge: {
-      11155111: {
-        address: '0x5f5a404A5edabcDD80DB05E8e54A78c9EBF000C2',
-      },
-    },
-    l1Erc721Bridge: {
-      11155111: {
-        address: '0x2bfb22cd534a462028771a1cA9D6240166e450c4',
-      },
-    },
-    l1CrossDomainMessenger: {
-      11155111: {
-        address: '0x0184245D202724dc28a2b688952Cb56C882c226F',
-      },
-    },
-    systemConfig: {
-      11155111: {
-        address: '0x4Ca9608Fef202216bc21D543798ec854539bAAd3',
-      },
-    },
-    disputeGameFactory: {
-      11155111: {
-        address: '0xB3Ad2c38E6e0640d7ce6aA952AB3A60E81bf7a01',
-      },
-    },
-    l2OutputOracle: {
-      11155111: {
-        address: '0x710e5286C746eC38beeB7538d0146f60D27be343',
-      },
-    },
-  },
-})
-
-/**
  * Chain Definition for Mode Sepolia
  */
 export const modeSepolia = /*#__PURE__*/ defineChain({
@@ -682,6 +741,70 @@ export const opSepolia = /*#__PURE__*/ defineChain({
 })
 
 /**
+ * Chain Definition for Pivotal Sepolia
+ */
+export const pivotalSepolia = /*#__PURE__*/ defineChain({
+  ...chainConfig,
+  name: 'Pivotal Sepolia',
+  id: 16481,
+  sourceId: 11155111,
+  nativeCurrency: {
+    name: 'Ether',
+    symbol: 'ETH',
+    decimals: 18,
+  },
+  rpcUrls: {
+    default: {
+      http: ['https://sepolia.pivotalprotocol.com/'],
+    },
+  },
+  blockExplorers: {
+    default: {
+      name: 'Pivotal Sepolia Explorer',
+      url: 'https://sepolia.pivotalscan.org/',
+    },
+  },
+  contracts: {
+    ...chainConfig.contracts,
+    portal: {
+      11155111: {
+        address: '0x923B28e0037A799A1e60368e60c92dFfba982162',
+      },
+    },
+    l1StandardBridge: {
+      11155111: {
+        address: '0x788De2B0Dd35808a05eAFf7aAf5578B21E0dd9A7',
+      },
+    },
+    l1Erc721Bridge: {
+      11155111: {
+        address: '0x079ba88EDD1BE4FEFb5011B61714Df9eF092Ad8f',
+      },
+    },
+    l1CrossDomainMessenger: {
+      11155111: {
+        address: '0x1F6393C113b9C221fbcFB17c163C88d4bDa172b0',
+      },
+    },
+    systemConfig: {
+      11155111: {
+        address: '0x5C72CE6EA707037bC476dA8f4f969bC1f8abc78b',
+      },
+    },
+    disputeGameFactory: {
+      11155111: {
+        address: '0xcB97C9224Af16C95b8D8959A2752eF1832EB8BA9',
+      },
+    },
+    l2OutputOracle: {
+      11155111: {
+        address: '0x8A5F3B0897d9B9bA09fd2974F3aBE038C15AaBa9',
+      },
+    },
+  },
+})
+
+/**
  * Chain Definition for Race Sepolia
  */
 export const raceSepolia = /*#__PURE__*/ defineChain({
@@ -735,6 +858,65 @@ export const raceSepolia = /*#__PURE__*/ defineChain({
     l2OutputOracle: {
       11155111: {
         address: '0xccac2B8FFc4f778242105F3a9E6B3Ae3F827fC6a',
+      },
+    },
+  },
+})
+
+/**
+ * Chain Definition for Settlus Sepolia
+ */
+export const settlusSepoliaSepolia = /*#__PURE__*/ defineChain({
+  ...chainConfig,
+  name: 'Settlus Sepolia',
+  id: 5373,
+  sourceId: 11155111,
+  nativeCurrency: {
+    name: 'Ether',
+    symbol: 'ETH',
+    decimals: 18,
+  },
+  rpcUrls: {
+    default: {
+      http: ['https://settlus-septestnet.g.alchemy.com/public'],
+    },
+  },
+  blockExplorers: {
+    default: {
+      name: 'Settlus Sepolia Explorer',
+      url: 'sepolia.settlus.network',
+    },
+  },
+  contracts: {
+    ...chainConfig.contracts,
+    portal: {
+      11155111: {
+        address: '0x55585368857DcC7E0F89475d28963977DB0b1Ee1',
+      },
+    },
+    l1StandardBridge: {
+      11155111: {
+        address: '0x1Fe9c3b11Ed334fC049aE9a92Ec290aA69C39267',
+      },
+    },
+    l1Erc721Bridge: {
+      11155111: {
+        address: '0xbD07617F0Ce47DB1cd51Eb6b9b5E7b3c109410F2',
+      },
+    },
+    l1CrossDomainMessenger: {
+      11155111: {
+        address: '0xffAe0c2cf1547057CD0828e3B01aF11C266C1b3C',
+      },
+    },
+    systemConfig: {
+      11155111: {
+        address: '0x7f73514A7eC19f3F51E3c607D536560818dF4205',
+      },
+    },
+    disputeGameFactory: {
+      11155111: {
+        address: '0x017D15a6854CCAaa89c63d1A9fea8da45Ced97Cf',
       },
     },
   },
@@ -799,6 +981,70 @@ export const shapeSepolia = /*#__PURE__*/ defineChain({
     l2OutputOracle: {
       11155111: {
         address: '0x532dDCed3440Eab81c529Ac8b0d7e429B5C05c52',
+      },
+    },
+  },
+})
+
+/**
+ * Chain Definition for Soneium  Minato Sepolia
+ */
+export const soneiumMinatoSepolia = /*#__PURE__*/ defineChain({
+  ...chainConfig,
+  name: 'Soneium  Minato Sepolia',
+  id: 1946,
+  sourceId: 11155111,
+  nativeCurrency: {
+    name: 'Ether',
+    symbol: 'ETH',
+    decimals: 18,
+  },
+  rpcUrls: {
+    default: {
+      http: ['https://rpc.minato.soneium.org'],
+    },
+  },
+  blockExplorers: {
+    default: {
+      name: 'Soneium  Minato Sepolia Explorer',
+      url: 'https://soneium-minato.blockscout.com/',
+    },
+  },
+  contracts: {
+    ...chainConfig.contracts,
+    portal: {
+      11155111: {
+        address: '0x65ea1489741A5D72fFdD8e6485B216bBdcC15Af3',
+      },
+    },
+    l1StandardBridge: {
+      11155111: {
+        address: '0x5f5a404A5edabcDD80DB05E8e54A78c9EBF000C2',
+      },
+    },
+    l1Erc721Bridge: {
+      11155111: {
+        address: '0x2bfb22cd534a462028771a1cA9D6240166e450c4',
+      },
+    },
+    l1CrossDomainMessenger: {
+      11155111: {
+        address: '0x0184245D202724dc28a2b688952Cb56C882c226F',
+      },
+    },
+    systemConfig: {
+      11155111: {
+        address: '0x4Ca9608Fef202216bc21D543798ec854539bAAd3',
+      },
+    },
+    disputeGameFactory: {
+      11155111: {
+        address: '0xB3Ad2c38E6e0640d7ce6aA952AB3A60E81bf7a01',
+      },
+    },
+    l2OutputOracle: {
+      11155111: {
+        address: '0x710e5286C746eC38beeB7538d0146f60D27be343',
       },
     },
   },
@@ -980,7 +1226,7 @@ export const worldchainSepolia = /*#__PURE__*/ defineChain({
     },
     disputeGameFactory: {
       11155111: {
-        address: '0x8cF97Ee616C986a070F5020d973b456D0120C253',
+        address: '0x8Ec1111f67Dad6b6A93B3F42DfBC92D81c98449A',
       },
     },
     l2OutputOracle: {
@@ -1053,17 +1299,21 @@ export const zoraSepolia = /*#__PURE__*/ defineChain({
 export const sepoliaChains = [
   arenaZSepolia,
   baseSepolia,
+  bobaSepolia,
+  creatorChainSepolia,
   cyberSepolia,
   ethernitySepolia,
   funkiSepolia,
   inkSepolia,
   liskSepolia,
   metalSepolia,
-  minatoSepolia,
   modeSepolia,
   opSepolia,
+  pivotalSepolia,
   raceSepolia,
+  settlusSepoliaSepolia,
   shapeSepolia,
+  soneiumMinatoSepolia,
   tbnSepolia,
   unichainSepolia,
   worldchainSepolia,
