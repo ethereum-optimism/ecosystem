@@ -1,5 +1,11 @@
 # @eth-optimism/autorelayer-interop
 
+## 0.0.7
+
+### Patch Changes
+
+- [#784](https://github.com/ethereum-optimism/ecosystem/pull/784) [`da3016d`](https://github.com/ethereum-optimism/ecosystem/commit/da3016d639fd95304ab81363c2c9db96bf7d046b) Thanks [@tremarkley](https://github.com/tremarkley)! - Add pending message validation hooks to Relayer
+
 ## 0.0.6
 
 ### Patch Changes
