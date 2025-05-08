@@ -1,5 +1,11 @@
 # @eth-optimism/autorelayer-interop
 
+## 0.0.8
+
+### Patch Changes
+
+- [#786](https://github.com/ethereum-optimism/ecosystem/pull/786) [`ad65e1d`](https://github.com/ethereum-optimism/ecosystem/commit/ad65e1d44415099871f7dd1d4886f92bcc8fe0ce) Thanks [@tremarkley](https://github.com/tremarkley)! - export RelayerConfig type
+
 ## 0.0.7
 
 ### Patch Changes
