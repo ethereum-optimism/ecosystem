@@ -20,6 +20,7 @@ export const sentMessages = onchainTable('l2_to_l2_cdm_sent_messages', (t) => ({
   timestamp: t.bigint().notNull(),
   blockNumber: t.bigint().notNull(),
   transactionHash: t.hex().notNull(),
+  txOrigin: t.hex().notNull(),
 }))
 
 export const relayedMessages = onchainTable(

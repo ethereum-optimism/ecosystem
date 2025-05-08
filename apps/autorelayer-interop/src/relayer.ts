@@ -7,7 +7,7 @@ import type { MessageIdentifier } from '@eth-optimism/viem/types/interop'
 import { encodeAccessList } from '@eth-optimism/viem/utils/interop'
 import type { Logger } from 'pino'
 import type { PublicClient, WalletClient } from 'viem'
-import { isHash, isHex } from 'viem'
+import { isAddress, isHash, isHex } from 'viem'
 import { z } from 'zod'
 
 import { jsonFetchParams } from '@/utils/jsonFetchParams.js'
@@ -18,6 +18,8 @@ const PendingMessageSchema = z.object({
   // Message Direction
   source: z.number(),
   destination: z.number(),
+  target: z.string().refine(isAddress, 'invalid target'),
+  txOrigin: z.string().refine(isAddress, 'invalid transaction origin'),
   // ExecutingMessage
   logIndex: z.number(),
   logPayload: z.string().refine(isHex, 'invalid log payload'),
@@ -57,6 +59,7 @@ export class Relayer {
         destination: message.destination,
         messageHash: message.messageHash,
         txHash: message.transactionHash,
+        txOrigin: message.txOrigin,
       })
 
       if (
