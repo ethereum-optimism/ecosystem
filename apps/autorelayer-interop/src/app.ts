@@ -20,6 +20,7 @@ const ConfigSchema = z.object({
   loopIntervalMs: z.number().min(2000),
   ponderInteropApi: z.string().url(),
   sponsoredEndpoint: z.string().url(),
+  chainEndpointOverrides: z.array(z.string().url()).optional(),
   senderPrivateKey: z
     .string()
     .optional()
@@ -57,6 +58,12 @@ class RelayerApp extends App {
         .default('http://127.0.0.1:3000')
         .env('SPONSORED_ENDPOINT_URL'),
       new Option(
+        '--chain-endpoint-overrides <endpoints>',
+        'comma separated list of chain rpc urls',
+      )
+        .env('CHAIN_ENDPOINT_OVERRIDES')
+        .argParser((val) => val.split(',')),
+      new Option(
         '--sender-private-key <key>',
         'local private key to use for the relayer',
       )
@@ -93,6 +100,21 @@ class RelayerApp extends App {
       if (chains.length === 0) throw new Error('no chains found')
     } catch (error) {
       throw new Error(`failed to fetch chains: ${error}`)
+    }
+
+    if (config.chainEndpointOverrides) {
+      for (const url of config.chainEndpointOverrides) {
+        try {
+          const client = createPublicClient({ transport: http(url) })
+          const chainId = await client.getChainId()
+          const chain = chains.find((c) => c.id === chainId)
+          if (chain) chain.url = url
+        } catch (error) {
+          throw new Error(
+            `failed to configure chain endpoint override: ${error}`,
+          )
+        }
+      }
     }
 
     // Setup Clients
