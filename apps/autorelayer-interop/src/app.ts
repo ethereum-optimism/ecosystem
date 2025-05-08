@@ -178,4 +178,4 @@ class RelayerApp extends App {
   }
 }
 
-export { type PendingMessage, Relayer, RelayerApp }
+export { type PendingMessage, Relayer, RelayerApp, type RelayerConfig }
