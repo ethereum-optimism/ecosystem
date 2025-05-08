@@ -8,6 +8,9 @@ RUN npm install -g corepack@0.32.0
 RUN corepack enable
 ENV COREPACK_ENABLE_DOWNLOAD_PROMPT=0
 
+## provide a path for extra certs to be injected into the container
+ENV NODE_EXTRA_CA_CERTS=/usr/local/share/ca-certificates/extra-ca-certificates.crt
+
 ########################################################
 # STAGE 1: Monorepo Builder
 ########################################################
