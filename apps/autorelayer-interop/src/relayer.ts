@@ -12,25 +12,27 @@ import { z } from 'zod'
 
 import { jsonFetchParams } from '@/utils/jsonFetchParams.js'
 
-const PendingMessagesSchema = z.array(
-  z.object({
-    // Identifier
-    messageHash: z.string().refine(isHex, 'invalid message hash'),
-    // Message Direction
-    source: z.number(),
-    destination: z.number(),
-    // ExecutingMessage
-    logIndex: z.number(),
-    logPayload: z.string().refine(isHex, 'invalid log payload'),
-    timestamp: z.number(),
-    blockNumber: z.number(),
-    transactionHash: z.string().refine(isHash, 'invalid transaction hash'),
-  }),
-)
+const PendingMessageSchema = z.object({
+  // Identifier
+  messageHash: z.string().refine(isHex, 'invalid message hash'),
+  // Message Direction
+  source: z.number(),
+  destination: z.number(),
+  // ExecutingMessage
+  logIndex: z.number(),
+  logPayload: z.string().refine(isHex, 'invalid log payload'),
+  timestamp: z.number(),
+  blockNumber: z.number(),
+  transactionHash: z.string().refine(isHash, 'invalid transaction hash'),
+})
+
+const PendingMessagesSchema = z.array(PendingMessageSchema)
+
+export type PendingMessage = z.infer<typeof PendingMessageSchema>
 
 type PendingMessages = z.infer<typeof PendingMessagesSchema>
 
-interface RelayerConfig {
+export interface RelayerConfig {
   ponderInteropApi: string
   clients: Record<number, PublicClient>
   walletClients: Record<number, WalletClient>
@@ -82,6 +84,16 @@ export class Relayer {
         account = { address: accounts[randomIndex], type: 'json-rpc' }
       }
 
+      try {
+        await this.validate(message)
+      } catch (error) {
+        msgLog.warn(
+          { error },
+          `message validation failed, skipping message ${message.messageHash}...`,
+        )
+        continue
+      }
+
       // build the executing message params
       const id: MessageIdentifier = {
         origin: contracts.l2ToL2CrossDomainMessenger.address,
@@ -112,6 +124,13 @@ export class Relayer {
       msgLog.info({ relayTxHash }, 'submitted message relay')
     }
   }
+
+  /**
+   * Validates a pending message
+   * @param message - The message to validate
+   * @throws Error if validation fails
+   */
+  protected async validate(_message: PendingMessage): Promise<void> {}
 
   private async __fetchPendingMessages(): Promise<PendingMessages> {
     try {

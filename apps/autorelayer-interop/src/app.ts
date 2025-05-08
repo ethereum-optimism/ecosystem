@@ -1,10 +1,12 @@
 import { App } from '@eth-optimism/utils-app'
 import { Option } from 'commander'
+import type { Logger } from 'pino'
 import type { Hex, PublicClient, WalletClient } from 'viem'
 import { createPublicClient, createWalletClient, http, isHex } from 'viem'
 import { privateKeyToAccount } from 'viem/accounts'
 import { z } from 'zod'
 
+import type { PendingMessage, RelayerConfig } from '@/relayer.js'
 import { Relayer } from '@/relayer.js'
 import { jsonFetchParams } from '@/utils/jsonFetchParams.js'
 
@@ -41,6 +43,16 @@ class RelayerApp extends App {
       version: '0.0.1',
       description: 'autorelay l2-to-l2 interop txs',
     })
+  }
+
+  /**
+   * Creates a Relayer instance with the given configuration
+   * @param log - The logger to use for the relayer
+   * @param relayerConfig - The configuration for the relayer
+   * @returns A configured Relayer instance
+   */
+  protected createRelayer(log: Logger, relayerConfig: RelayerConfig): Relayer {
+    return new Relayer(log, relayerConfig)
   }
 
   protected additionalOptions(): Option[] {
@@ -144,7 +156,7 @@ class RelayerApp extends App {
     }
 
     // Setup the relayer
-    this.relayer = new Relayer(this.logger, {
+    this.relayer = this.createRelayer(this.logger, {
       ponderInteropApi: config.ponderInteropApi,
       clients,
       walletClients,
@@ -166,4 +178,4 @@ class RelayerApp extends App {
   }
 }
 
-export { Relayer, RelayerApp }
+export { type PendingMessage, Relayer, RelayerApp }
