@@ -1,5 +1,11 @@
 # @eth-optimism/autorelayer-interop
 
+## 0.0.6
+
+### Patch Changes
+
+- [#781](https://github.com/ethereum-optimism/ecosystem/pull/781) [`1cc1e82`](https://github.com/ethereum-optimism/ecosystem/commit/1cc1e82488fa1d8e3eb2f6a8e950186a07cce457) Thanks [@tremarkley](https://github.com/tremarkley)! - add chain endpoint override option to RelayerApp
+
 ## 0.0.5
 
 ### Patch Changes
