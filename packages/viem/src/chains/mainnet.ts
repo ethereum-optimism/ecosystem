@@ -190,6 +190,65 @@ export const base = /*#__PURE__*/ defineChain({
 })
 
 /**
+ * Chain Definition for Bob
+ */
+export const bob = /*#__PURE__*/ defineChain({
+  ...chainConfig,
+  name: 'Bob',
+  id: 60808,
+  sourceId: 1,
+  nativeCurrency: {
+    name: 'Ether',
+    symbol: 'ETH',
+    decimals: 18,
+  },
+  rpcUrls: {
+    default: {
+      http: ['https://rpc.gobob.xyz'],
+    },
+  },
+  blockExplorers: {
+    default: {
+      name: 'Bob Explorer',
+      url: 'https://explorer.gobob.xyz',
+    },
+  },
+  contracts: {
+    ...chainConfig.contracts,
+    portal: {
+      1: {
+        address: '0x8AdeE124447435fE03e3CD24dF3f4cAE32E65a3E',
+      },
+    },
+    l1StandardBridge: {
+      1: {
+        address: '0x3F6cE1b36e5120BBc59D0cFe8A5aC8b6464ac1f7',
+      },
+    },
+    l1Erc721Bridge: {
+      1: {
+        address: '0x5fF93263D5181b2A826f8c51d54BC0da2d20D50a',
+      },
+    },
+    l1CrossDomainMessenger: {
+      1: {
+        address: '0xE3d981643b806FB8030CDB677D6E60892E547EdA',
+      },
+    },
+    systemConfig: {
+      1: {
+        address: '0xACB886b75D76d1c8d9248cFdDfA09b70C71c5393',
+      },
+    },
+    l2OutputOracle: {
+      1: {
+        address: '0xdDa53E23f8a32640b04D7256e651C1db98dB11C1',
+      },
+    },
+  },
+})
+
+/**
  * Chain Definition for Cyber
  */
 export const cyber = /*#__PURE__*/ defineChain({
@@ -376,6 +435,70 @@ export const funki = /*#__PURE__*/ defineChain({
     l2OutputOracle: {
       1: {
         address: '0x1A9aE6486caEc0504657351ac473B3dF8A1367cb',
+      },
+    },
+  },
+})
+
+/**
+ * Chain Definition for Hashkey Chain
+ */
+export const hashkeychain = /*#__PURE__*/ defineChain({
+  ...chainConfig,
+  name: 'Hashkey Chain',
+  id: 177,
+  sourceId: 1,
+  nativeCurrency: {
+    name: 'HashKey Platform Token',
+    symbol: 'HSK',
+    decimals: 18,
+  },
+  rpcUrls: {
+    default: {
+      http: ['https://mainnet.hsk.xyz'],
+    },
+  },
+  blockExplorers: {
+    default: {
+      name: 'Hashkey Chain Explorer',
+      url: 'https://explorer.hsk.xyz',
+    },
+  },
+  contracts: {
+    ...chainConfig.contracts,
+    portal: {
+      1: {
+        address: '0xe7Aa79B59CAc06F9706D896a047fEb9d3BDA8bD3',
+      },
+    },
+    l1StandardBridge: {
+      1: {
+        address: '0x2171E6d3B7964fA9654Ce41dA8a8fFAff2Cc70be',
+      },
+    },
+    l1Erc721Bridge: {
+      1: {
+        address: '0xd4C83D93c6fAE3E0804B785F9Cf465BE95449D04',
+      },
+    },
+    l1CrossDomainMessenger: {
+      1: {
+        address: '0x899F07862D3A03F70E07b7f01183934b485d2e97',
+      },
+    },
+    systemConfig: {
+      1: {
+        address: '0x43F8DeFe3E9286D152E91BB16a248808E7247198',
+      },
+    },
+    disputeGameFactory: {
+      1: {
+        address: '0x04Ec030f362CE5A0b5Fe2d4B4219f287C2EBDE50',
+      },
+    },
+    l2OutputOracle: {
+      1: {
+        address: '0x1c8D97E21f868f8b87fa9B16Fc77d46d7B0b48A2',
       },
     },
   },
@@ -623,6 +746,65 @@ export const metal = /*#__PURE__*/ defineChain({
 })
 
 /**
+ * Chain Definition for Mint
+ */
+export const mint = /*#__PURE__*/ defineChain({
+  ...chainConfig,
+  name: 'Mint',
+  id: 185,
+  sourceId: 1,
+  nativeCurrency: {
+    name: 'Ether',
+    symbol: 'ETH',
+    decimals: 18,
+  },
+  rpcUrls: {
+    default: {
+      http: ['https://rpc.mintchain.io'],
+    },
+  },
+  blockExplorers: {
+    default: {
+      name: 'Mint Explorer',
+      url: 'https://explorer.mintchain.io',
+    },
+  },
+  contracts: {
+    ...chainConfig.contracts,
+    portal: {
+      1: {
+        address: '0x59625d1FE0Eeb8114a4d13c863978F39b3471781',
+      },
+    },
+    l1StandardBridge: {
+      1: {
+        address: '0x2b3F201543adF73160bA42E1a5b7750024F30420',
+      },
+    },
+    l1Erc721Bridge: {
+      1: {
+        address: '0xC2C908F3226d9082130D8e48378CD2eFb08B521D',
+      },
+    },
+    l1CrossDomainMessenger: {
+      1: {
+        address: '0xf80be9f7a74ab776b69d3F0dC5C08c39b3A0bA19',
+      },
+    },
+    systemConfig: {
+      1: {
+        address: '0xC975862927797812371A9Fb631f83F8f5e2240D5',
+      },
+    },
+    l2OutputOracle: {
+      1: {
+        address: '0xB751A613f2Db932c6cdeF5048E6D2af05F9B98ED',
+      },
+    },
+  },
+})
+
+/**
  * Chain Definition for Mode
  */
 export const mode = /*#__PURE__*/ defineChain({
@@ -800,6 +982,65 @@ export const orderly = /*#__PURE__*/ defineChain({
 })
 
 /**
+ * Chain Definition for Polynomial
+ */
+export const polynomial = /*#__PURE__*/ defineChain({
+  ...chainConfig,
+  name: 'Polynomial',
+  id: 8008,
+  sourceId: 1,
+  nativeCurrency: {
+    name: 'Ether',
+    symbol: 'ETH',
+    decimals: 18,
+  },
+  rpcUrls: {
+    default: {
+      http: ['https://rpc.polynomial.fi'],
+    },
+  },
+  blockExplorers: {
+    default: {
+      name: 'Polynomial Explorer',
+      url: 'https://polynomialscan.io',
+    },
+  },
+  contracts: {
+    ...chainConfig.contracts,
+    portal: {
+      1: {
+        address: '0x034cbb620d1e0e4C2E29845229bEAc57083b04eC',
+      },
+    },
+    l1StandardBridge: {
+      1: {
+        address: '0x3Be64BF2b9C2dE637067C7AAb6baE5EDf9fEBA55',
+      },
+    },
+    l1Erc721Bridge: {
+      1: {
+        address: '0xD5890BBAFaFdce942597757385E55174569e8d1A',
+      },
+    },
+    l1CrossDomainMessenger: {
+      1: {
+        address: '0x36725a5e0040deB7C697d46C0e24390702b202e0',
+      },
+    },
+    systemConfig: {
+      1: {
+        address: '0x58b51fb9FeeD00DD846f91D265Eba3cdd855A413',
+      },
+    },
+    l2OutputOracle: {
+      1: {
+        address: '0xe512D477Cc89196AF2cE837f6AB8EA30e199f757',
+      },
+    },
+  },
+})
+
+/**
  * Chain Definition for Race
  */
 export const race = /*#__PURE__*/ defineChain({
@@ -923,6 +1164,65 @@ export const redstone = /*#__PURE__*/ defineChain({
 })
 
 /**
+ * Chain Definition for Settlus
+ */
+export const settlusMainnet = /*#__PURE__*/ defineChain({
+  ...chainConfig,
+  name: 'Settlus',
+  id: 5371,
+  sourceId: 1,
+  nativeCurrency: {
+    name: 'Ether',
+    symbol: 'ETH',
+    decimals: 18,
+  },
+  rpcUrls: {
+    default: {
+      http: ['https://settlus-mainnet.g.alchemy.com/public'],
+    },
+  },
+  blockExplorers: {
+    default: {
+      name: 'Settlus Explorer',
+      url: 'mainnet.settlus.network',
+    },
+  },
+  contracts: {
+    ...chainConfig.contracts,
+    portal: {
+      1: {
+        address: '0xFc1D560eB01443e31B0EB56620703E80e42A7E4e',
+      },
+    },
+    l1StandardBridge: {
+      1: {
+        address: '0xFD4918e51d1e5aa2195C42654CF769b152C9d9C0',
+      },
+    },
+    l1Erc721Bridge: {
+      1: {
+        address: '0xCcfa1f8A93640488E3E1AE90A0edAf44680E9f82',
+      },
+    },
+    l1CrossDomainMessenger: {
+      1: {
+        address: '0x9BdA922e6f1bD53c24F9bCFb88B9638199A82CEb',
+      },
+    },
+    systemConfig: {
+      1: {
+        address: '0x15C1dAED5443A77b4DcF6FE35cAFcCEBb0c6da0E',
+      },
+    },
+    disputeGameFactory: {
+      1: {
+        address: '0xde9FDA9C499bA1C0168AC083acF5BEc5cC67fA76',
+      },
+    },
+  },
+})
+
+/**
  * Chain Definition for Shape
  */
 export const shape = /*#__PURE__*/ defineChain({
@@ -981,6 +1281,129 @@ export const shape = /*#__PURE__*/ defineChain({
     l2OutputOracle: {
       1: {
         address: '0x6Ef8c69CfE4635d866e3E02732068022c06e724D',
+      },
+    },
+  },
+})
+
+/**
+ * Chain Definition for Snaxchain
+ */
+export const snax = /*#__PURE__*/ defineChain({
+  ...chainConfig,
+  name: 'Snaxchain',
+  id: 2192,
+  sourceId: 1,
+  nativeCurrency: {
+    name: 'Ether',
+    symbol: 'ETH',
+    decimals: 18,
+  },
+  rpcUrls: {
+    default: {
+      http: ['https://mainnet.snaxchain.io'],
+    },
+  },
+  blockExplorers: {
+    default: {
+      name: 'Snaxchain Explorer',
+      url: 'https://explorer.snaxchain.io',
+    },
+  },
+  contracts: {
+    ...chainConfig.contracts,
+    portal: {
+      1: {
+        address: '0x936D881b4760D5e9b6D55b774f65c509236b4743',
+      },
+    },
+    l1StandardBridge: {
+      1: {
+        address: '0xA5fb68C24b02852e8B514E98A1014faf12547Fa5',
+      },
+    },
+    l1Erc721Bridge: {
+      1: {
+        address: '0x45561F85e43Ac0d2258c0F0C16540ce128EA1634',
+      },
+    },
+    l1CrossDomainMessenger: {
+      1: {
+        address: '0x2A4fC0E3B365052d71B9853Efd0123985559f62E',
+      },
+    },
+    systemConfig: {
+      1: {
+        address: '0x9c9B78f798F821C2f6398f603825fd175e2427f9',
+      },
+    },
+    disputeGameFactory: {
+      1: {
+        address: '0x8aF5b3ED56D4a822532A07a84C499d600eCD5cf5',
+      },
+    },
+    l2OutputOracle: {
+      1: {
+        address: '0xF8f3EbF2469C00A00EA9D1D04913B73896268B25',
+      },
+    },
+  },
+})
+
+/**
+ * Chain Definition for Soneium
+ */
+export const soneium = /*#__PURE__*/ defineChain({
+  ...chainConfig,
+  name: 'Soneium',
+  id: 1868,
+  sourceId: 1,
+  nativeCurrency: {
+    name: 'Ether',
+    symbol: 'ETH',
+    decimals: 18,
+  },
+  rpcUrls: {
+    default: {
+      http: ['https://rpc.soneium.org'],
+    },
+  },
+  blockExplorers: {
+    default: {
+      name: 'Soneium Explorer',
+      url: 'https://soneium.blockscout.com/',
+    },
+  },
+  contracts: {
+    ...chainConfig.contracts,
+    portal: {
+      1: {
+        address: '0x88e529A6ccd302c948689Cd5156C83D4614FAE92',
+      },
+    },
+    l1StandardBridge: {
+      1: {
+        address: '0xeb9bf100225c214Efc3E7C651ebbaDcF85177607',
+      },
+    },
+    l1Erc721Bridge: {
+      1: {
+        address: '0x5933e323bE8896DfaCd1cD671442F27dAA10a053',
+      },
+    },
+    l1CrossDomainMessenger: {
+      1: {
+        address: '0x9CF951E3F74B644e621b36Ca9cea147a78D4c39f',
+      },
+    },
+    systemConfig: {
+      1: {
+        address: '0x7A8Ed66B319911A0F3E7288BDdAB30d9c0C875c3',
+      },
+    },
+    disputeGameFactory: {
+      1: {
+        address: '0x512A3d2c7a43BD9261d2B8E8C9c70D4bd4D503C0',
       },
     },
   },
@@ -1238,6 +1661,65 @@ export const tbn = /*#__PURE__*/ defineChain({
 })
 
 /**
+ * Chain Definition for Unichain
+ */
+export const unichain = /*#__PURE__*/ defineChain({
+  ...chainConfig,
+  name: 'Unichain',
+  id: 130,
+  sourceId: 1,
+  nativeCurrency: {
+    name: 'Ether',
+    symbol: 'ETH',
+    decimals: 18,
+  },
+  rpcUrls: {
+    default: {
+      http: ['https://mainnet.unichain.org'],
+    },
+  },
+  blockExplorers: {
+    default: {
+      name: 'Unichain Explorer',
+      url: 'https://explorer.unichain.org',
+    },
+  },
+  contracts: {
+    ...chainConfig.contracts,
+    portal: {
+      1: {
+        address: '0x0bd48f6B86a26D3a217d0Fa6FfE2B491B956A7a2',
+      },
+    },
+    l1StandardBridge: {
+      1: {
+        address: '0x81014F44b0a345033bB2b3B21C7a1A308B35fEeA',
+      },
+    },
+    l1Erc721Bridge: {
+      1: {
+        address: '0xD04D0D87E0bd4D2E50286760a3EF323FeA6849Cf',
+      },
+    },
+    l1CrossDomainMessenger: {
+      1: {
+        address: '0x9A3D64E386C18Cb1d6d5179a9596A4B5736e98A6',
+      },
+    },
+    systemConfig: {
+      1: {
+        address: '0xc407398d063f942feBbcC6F80a156b47F3f1BDA6',
+      },
+    },
+    disputeGameFactory: {
+      1: {
+        address: '0x2F12d621a16e2d3285929C9996f478508951dFe4',
+      },
+    },
+  },
+})
+
+/**
  * Chain Definition for World Chain
  */
 export const worldchain = /*#__PURE__*/ defineChain({
@@ -1290,12 +1772,76 @@ export const worldchain = /*#__PURE__*/ defineChain({
     },
     disputeGameFactory: {
       1: {
-        address: '0x0E90dCAFBC242D2C861A20Bb20EC8E7182965a52',
+        address: '0x069c4c579671f8c120b1327a73217D01Ea2EC5ea',
       },
     },
     l2OutputOracle: {
       1: {
         address: '0x19A6d1E9034596196295CF148509796978343c5D',
+      },
+    },
+  },
+})
+
+/**
+ * Chain Definition for Xterio Chain (eth)
+ */
+export const xterioEth = /*#__PURE__*/ defineChain({
+  ...chainConfig,
+  name: 'Xterio Chain (eth)',
+  id: 2702128,
+  sourceId: 1,
+  nativeCurrency: {
+    name: 'Ether',
+    symbol: 'ETH',
+    decimals: 18,
+  },
+  rpcUrls: {
+    default: {
+      http: ['https://xterio-eth.alt.technology/'],
+    },
+  },
+  blockExplorers: {
+    default: {
+      name: 'Xterio Chain (eth) Explorer',
+      url: 'https://eth.xterscan.io/',
+    },
+  },
+  contracts: {
+    ...chainConfig.contracts,
+    portal: {
+      1: {
+        address: '0xBC2bEDA4ce7A1f40aa458322A33B44081b2F545A',
+      },
+    },
+    l1StandardBridge: {
+      1: {
+        address: '0x2AD84AbD52050956AcC9c490D024b821A59e3FB6',
+      },
+    },
+    l1Erc721Bridge: {
+      1: {
+        address: '0x28d56C3BBbe4807c19Cc81E6D5207Fb681C3726b',
+      },
+    },
+    l1CrossDomainMessenger: {
+      1: {
+        address: '0x702dF90E92A6841c9013faE6D724ddFA8F141d5C',
+      },
+    },
+    systemConfig: {
+      1: {
+        address: '0x6E99cdE188DAAFeEcb6eD8AC28B98dE4c8eE5D6C',
+      },
+    },
+    disputeGameFactory: {
+      1: {
+        address: '0x443164F044D8840479234e00E7aD5bb06b85fC78',
+      },
+    },
+    l2OutputOracle: {
+      1: {
+        address: '0x5A0492D20D984eE904E46E6Ff24572bc755abb28',
       },
     },
   },
@@ -1364,23 +1910,32 @@ export const mainnetChains = [
   arenaZ,
   automata,
   base,
+  bob,
   cyber,
   ethernity,
   funki,
+  hashkeychain,
   ink,
   lisk,
   lyra,
   metal,
+  mint,
   mode,
   op,
   orderly,
+  polynomial,
   race,
   redstone,
+  settlusMainnet,
   shape,
+  snax,
+  soneium,
   sseed,
   swan,
   swell,
   tbn,
+  unichain,
   worldchain,
+  xterioEth,
   zora,
 ]

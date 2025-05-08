@@ -1,3 +1,5 @@
+import 'dotenv/config'
+
 import toml from '@iarna/toml'
 import { Eta } from 'eta'
 import fs from 'fs'

@@ -9,9 +9,11 @@
   "bugs": {
     "url": "https://github.com/ethereum-optimism/ecosystem/issues"
   },
-  "version": "0.0.3",
+  "version": "0.0.6",
   "type": "module",
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "main": "./dist/app.js",
   "types": "./dist/app.d.ts",
   "exports": {

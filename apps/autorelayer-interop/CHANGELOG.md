@@ -1,5 +1,24 @@
 # @eth-optimism/autorelayer-interop
 
+## 0.0.6
+
+### Patch Changes
+
+- [#781](https://github.com/ethereum-optimism/ecosystem/pull/781) [`1cc1e82`](https://github.com/ethereum-optimism/ecosystem/commit/1cc1e82488fa1d8e3eb2f6a8e950186a07cce457) Thanks [@tremarkley](https://github.com/tremarkley)! - add chain endpoint override option to RelayerApp
+
+## 0.0.5
+
+### Patch Changes
+
+- Updated dependencies [[`c9dbca4`](https://github.com/ethereum-optimism/ecosystem/commit/c9dbca401eed763eb20b05437e3e460cdaadd711)]:
+  - @eth-optimism/viem@0.4.8
+
+## 0.0.4
+
+### Patch Changes
+
+- [#777](https://github.com/ethereum-optimism/ecosystem/pull/777) [`d216930`](https://github.com/ethereum-optimism/ecosystem/commit/d216930f1d1cd72144a4da7d199c30c06bde3abb) Thanks [@tremarkley](https://github.com/tremarkley)! - Allow specifying sponsored endpoint and sender key by env
+
 ## 0.0.3
 
 ### Patch Changes

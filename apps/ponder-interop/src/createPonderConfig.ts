@@ -5,7 +5,11 @@ import {
 import { createConfig } from 'ponder'
 import type { Transport } from 'viem'
 
-export type Endpoint = { chainId: number; transport: Transport }
+export type Endpoint = {
+  chainId: number
+  transport: Transport
+  disableCache?: boolean
+}
 
 /**
  * A map of name to {@link Endpoint}
