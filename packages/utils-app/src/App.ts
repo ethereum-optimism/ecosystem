@@ -18,7 +18,7 @@ export abstract class App {
   protected readonly program: Command
   protected readonly metricsRegistry: Registry
 
-  // Must be set on run(), available to all hookds
+  // Must be set on run(), available to all hooks
   protected logger!: Logger
   protected options!: OptionValues
   protected adminApi!: Hono
@@ -152,7 +152,7 @@ export abstract class App {
 
     this.logger.info(`starting metrics server on port :${port}`)
     this.metricsServer = serve({
-      ...metricsApi,
+      fetch: metricsApi.fetch,
       port: Number(port),
     })
   }
