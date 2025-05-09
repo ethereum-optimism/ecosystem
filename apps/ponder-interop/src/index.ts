@@ -37,6 +37,7 @@ ponder.on('L2ToL2CDM:SentMessage', async ({ event, context }) => {
     timestamp: event.block.timestamp,
     blockNumber: event.block.number,
     transactionHash: event.transaction.hash,
+    txOrigin: event.transaction.from,
   })
 })
 
