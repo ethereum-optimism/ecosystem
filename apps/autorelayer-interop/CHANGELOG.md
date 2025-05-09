@@ -1,5 +1,11 @@
 # @eth-optimism/autorelayer-interop
 
+## 0.0.9
+
+### Patch Changes
+
+- [#788](https://github.com/ethereum-optimism/ecosystem/pull/788) [`6241bfa`](https://github.com/ethereum-optimism/ecosystem/commit/6241bfab30a3e297b67b8249e2937ffeba48535e) Thanks [@tremarkley](https://github.com/tremarkley)! - add tx origin to indexed sent messages
+
 ## 0.0.8
 
 ### Patch Changes
