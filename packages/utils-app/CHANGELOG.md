@@ -1,5 +1,11 @@
 # @eth-optimism/utils-app
 
+## 0.0.4
+
+### Patch Changes
+
+- [#790](https://github.com/ethereum-optimism/ecosystem/pull/790) [`03b307c`](https://github.com/ethereum-optimism/ecosystem/commit/03b307c9744beb834746182f402bc8f1705c8ea4) Thanks [@hamdiallam](https://github.com/hamdiallam)! - support spinning up a default admin server for every App
+
 ## 0.0.3
 
 ### Patch Changes
