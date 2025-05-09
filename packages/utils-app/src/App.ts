@@ -6,6 +6,8 @@ import type { Logger } from 'pino'
 import { pino } from 'pino'
 import { Registry } from 'prom-client'
 
+import { requestLoggingMiddleware } from './middleware.js'
+
 export interface Config {
   name: string
   version: string
@@ -142,6 +144,7 @@ export abstract class App {
 
   private async __startMetricsServer(port: string): Promise<void> {
     const metricsApi = new Hono()
+    metricsApi.use(requestLoggingMiddleware(this.logger))
     metricsApi.get('/metrics', async (c) => {
       c.header('Content-Type', this.metricsRegistry.contentType)
       return c.body(await this.metricsRegistry.metrics())
@@ -156,9 +159,15 @@ export abstract class App {
 
   private async __startAdminApiServer(port: string): Promise<void> {
     this.adminApi = new Hono()
+    this.adminApi.use(requestLoggingMiddleware(this.logger))
     this.adminApi.get('/healthz', (c) => c.text('OK'))
     this.adminApi.get('/readyz', async (c) => {
-      return c.body((await this.ready()) ? 'OK' : 'NOT_READY')
+      const ready = await this.ready().catch((error) => {
+        this.logger.error({ error }, 'failed ready check')
+        return false
+      })
+
+      return c.body(ready ? 'OK' : 'NOT_READY')
     })
 
     this.logger.info(`starting admin api server on port :${port}`)
