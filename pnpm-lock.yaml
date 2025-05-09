@@ -322,9 +322,15 @@ importers:
 
   packages/utils-app:
     dependencies:
+      '@hono/node-server':
+        specifier: ^1.14.0
+        version: 1.14.0(hono@4.7.5)
       commander:
         specifier: ^13.1.0
         version: 13.1.0
+      hono:
+        specifier: ^4.5.0
+        version: 4.7.5
       pino:
         specifier: ^9.6.0
         version: 9.6.0
