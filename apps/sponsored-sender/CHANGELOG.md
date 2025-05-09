@@ -1,5 +1,12 @@
 # @eth-optimism/sponsored-sender
 
+## 0.0.5
+
+### Patch Changes
+
+- Updated dependencies [[`03b307c`](https://github.com/ethereum-optimism/ecosystem/commit/03b307c9744beb834746182f402bc8f1705c8ea4)]:
+  - @eth-optimism/utils-app@0.0.4
+
 ## 0.0.4
 
 ### Patch Changes

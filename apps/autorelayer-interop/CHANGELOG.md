@@ -1,5 +1,12 @@
 # @eth-optimism/autorelayer-interop
 
+## 0.0.10
+
+### Patch Changes
+
+- Updated dependencies [[`03b307c`](https://github.com/ethereum-optimism/ecosystem/commit/03b307c9744beb834746182f402bc8f1705c8ea4)]:
+  - @eth-optimism/utils-app@0.0.4
+
 ## 0.0.9
 
 ### Patch Changes
