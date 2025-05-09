@@ -1,9 +1,12 @@
+import { serve } from '@hono/node-server'
 import type { OptionValues } from 'commander'
 import { Command, Option } from 'commander'
-import { createServer } from 'http'
+import { Hono } from 'hono'
 import type { Logger } from 'pino'
 import { pino } from 'pino'
 import { Registry } from 'prom-client'
+
+import { requestLoggingMiddleware } from './middleware.js'
 
 export interface Config {
   name: string
@@ -15,15 +18,17 @@ export abstract class App {
   protected readonly program: Command
   protected readonly metricsRegistry: Registry
 
-  // Must be set on run(), available to all hookds
+  // Must be set on run(), available to all hooks
   protected logger!: Logger
   protected options!: OptionValues
+  protected adminApi!: Hono
 
   // A signal available to main() to resolve the
   // main promise during something like an interrupt.
   protected isShuttingDown = false
 
-  private metricsServer: ReturnType<typeof createServer> | null = null
+  private metricsServer: ReturnType<typeof serve> | null = null
+  private adminServer: ReturnType<typeof serve> | null = null
 
   constructor(config: Config) {
     this.program = new Command()
@@ -43,6 +48,16 @@ export abstract class App {
           .default('debug')
           .choices(['debug', 'info', 'warn', 'error', 'silent'])
           .env('LOG_LEVEL'),
+      )
+      .addOption(
+        new Option('--admin-enabled', 'Enable admin API server')
+          .default(false)
+          .env('ADMIN_ENABLED'),
+      )
+      .addOption(
+        new Option('--admin-port <port>', 'Port for admin API')
+          .default('9000')
+          .env('ADMIN_PORT'),
       )
       .addOption(
         new Option('--metrics-enabled', 'Enable metrics collection')
@@ -90,14 +105,16 @@ export abstract class App {
         await this.__startMetricsServer(this.options.metricsPort)
       }
 
+      // Start admin api server if enabled
+      if (this.options.adminEnabled) {
+        await this.__startAdminApiServer(this.options.adminPort)
+      }
+
       // Run pre-main hook
       await this.preMain()
 
       // Run main hook
       await this.main()
-
-      // Run post-main hook
-      await this.postMain()
 
       // Run shutdown
       await this.__shutdown()
@@ -116,24 +133,48 @@ export abstract class App {
 
   /** Optional hook to run before the main function, after parsing arguments */
   protected async preMain(): Promise<void> {}
-  /** Optional hook to run after main returns */
-  protected async postMain(): Promise<void> {}
+
+  /** Optional hook to signal ready state for admin api */
+  protected async ready(): Promise<boolean> {
+    return true
+  }
+
   /** Optional hook to run on interruption */
   protected async shutdown(): Promise<void> {}
 
   private async __startMetricsServer(port: string): Promise<void> {
-    this.metricsServer = createServer(async (req, res) => {
-      if (req.url === '/metrics') {
-        res.setHeader('Content-Type', this.metricsRegistry.contentType)
-        res.end(await this.metricsRegistry.metrics())
-      } else {
-        res.statusCode = 404
-        res.end('Not found')
-      }
+    const metricsApi = new Hono()
+    metricsApi.use(requestLoggingMiddleware(this.logger))
+    metricsApi.get('/metrics', async (c) => {
+      c.header('Content-Type', this.metricsRegistry.contentType)
+      return c.body(await this.metricsRegistry.metrics())
     })
 
     this.logger.info(`starting metrics server on port :${port}`)
-    this.metricsServer.listen(port, () => {})
+    this.metricsServer = serve({
+      fetch: metricsApi.fetch,
+      port: Number(port),
+    })
+  }
+
+  private async __startAdminApiServer(port: string): Promise<void> {
+    this.adminApi = new Hono()
+    this.adminApi.use(requestLoggingMiddleware(this.logger))
+    this.adminApi.get('/healthz', (c) => c.text('OK'))
+    this.adminApi.get('/readyz', async (c) => {
+      const ready = await this.ready().catch((error) => {
+        this.logger.error({ error }, 'failed ready check')
+        return false
+      })
+
+      return c.body(ready ? 'OK' : 'NOT_READY')
+    })
+
+    this.logger.info(`starting admin api server on port :${port}`)
+    this.adminServer = serve({
+      fetch: this.adminApi.fetch,
+      port: Number(port),
+    })
   }
 
   private async __stopMetricsServer(): Promise<void> {
@@ -143,6 +184,22 @@ export abstract class App {
         this.metricsServer!.close((error) => {
           if (error) {
             this.logger.error({ error }, 'error closing metrics server')
+            reject(error)
+          } else {
+            resolve()
+          }
+        })
+      })
+    }
+  }
+
+  private async __stopAdminServer(): Promise<void> {
+    if (this.adminServer) {
+      return new Promise((resolve, reject) => {
+        this.logger.info('stopping admin server...')
+        this.adminServer!.close((error) => {
+          if (error) {
+            this.logger.error({ error }, 'error closing admin api server')
             reject(error)
           } else {
             resolve()
@@ -181,7 +238,11 @@ export abstract class App {
     this.isShuttingDown = true
 
     // shutdown processes
-    await Promise.allSettled([this.shutdown(), this.__stopMetricsServer()])
+    await Promise.allSettled([
+      this.shutdown(),
+      this.__stopMetricsServer(),
+      this.__stopAdminServer(),
+    ])
   }
 
   protected abstract main(): Promise<void>
