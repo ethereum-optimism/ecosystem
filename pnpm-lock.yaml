@@ -368,12 +368,6 @@ importers:
         specifier: ^2.12
         version: 2.12.4(@react-native-async-storage/async-storage@1.23.1(react-native@0.73.6(@babel/core@7.24.9)(@babel/preset-env@7.24.4(@babel/core@7.24.9))(bufferutil@4.0.8)(encoding@0.1.13)(react@18.3.1)(utf-8-validate@6.0.3)))(@tanstack/query-core@5.29.0)(@tanstack/react-query@5.29.2(react@18.3.1))(@types/react@18.3.1)(bufferutil@4.0.8)(encoding@0.1.13)(immer@10.0.4)(ioredis@5.4.1)(react-dom@18.2.0(react@18.3.1))(react-native@0.73.6(@babel/core@7.24.9)(@babel/preset-env@7.24.4(@babel/core@7.24.9))(bufferutil@4.0.8)(encoding@0.1.13)(react@18.3.1)(utf-8-validate@6.0.3))(react@18.3.1)(rollup@4.14.3)(typescript@5.4.5)(utf-8-validate@6.0.3)(viem@2.17.9(bufferutil@4.0.8)(typescript@5.4.5)(utf-8-validate@6.0.3)(zod@3.24.2))(zod@3.24.2)
 
-  temp-patch:
-    dependencies:
-      '@eth-optimism/ponder-interop':
-        specifier: file:../apps/ponder-interop/eth-optimism-ponder-interop-0.0.6.tgz
-        version: file:apps/ponder-interop/eth-optimism-ponder-interop-0.0.6.tgz(@electric-sql/pglite@0.2.13)(@opentelemetry/api@1.9.0)(@types/node@22.5.4)(bufferutil@4.0.8)(kysely@0.26.3)(pg@8.14.1)(terser@5.31.3)(typescript@5.4.5)(utf-8-validate@6.0.3)
-
 packages:
 
   '@adraffy/ens-normalize@1.10.0':
@@ -2101,15 +2095,6 @@ packages:
   '@eth-optimism/core-utils@0.13.2':
     resolution: {integrity: sha512-u7TOKm1RxH1V5zw7dHmfy91bOuEAZU68LT/9vJPkuWEjaTl+BgvPDRDTurjzclHzN0GbWdcpOqPZg4ftjkJGaw==}
 
-  '@eth-optimism/ponder-interop@file:apps/ponder-interop/eth-optimism-ponder-interop-0.0.6.tgz':
-    resolution: {integrity: sha512-x+oQHiw8UJu/SXsBvVvmng98A2LCk3p0CC5ZIhFpUvIMure9RnJlbhqBXFHtuH/V+lyyIRgAPtTHVOWnsHdlxw==, tarball: file:apps/ponder-interop/eth-optimism-ponder-interop-0.0.6.tgz}
-    version: 0.0.6
-
-  '@eth-optimism/viem@0.4.8':
-    resolution: {integrity: sha512-IZDe8WzDe69g8f1oHDGddXra080OjRohR1xxlryHlRyLumZvt9ulkQ7Nh6TtVk6k6s0+OILBVFawCIGr+XVfjQ==}
-    peerDependencies:
-      viem: ^2.17.9
-
   '@ethereum-waffle/chai@4.0.10':
     resolution: {integrity: sha512-X5RepE7Dn8KQLFO7HHAAe+KeGaX/by14hn90wePGBhzL54tq4Y8JscZFu+/LCwCl6TnkAAy5ebiMoqJ37sFtWw==}
     engines: {node: '>=10.0'}
@@ -3803,6 +3788,7 @@ packages:
 
   '@walletconnect/ethereum-provider@2.14.0':
     resolution: {integrity: sha512-Cc2/DCn85VciA10BrsNWFM//3VC1D8yjwrjfUKjGndLPDz0YIdAxTgYZViIlMjE0lzQC/DMvPYEAnGfW0O1Bwg==}
+    deprecated: 'Reliability and performance improvements. See: https://github.com/WalletConnect/walletconnect-monorepo/releases'
 
   '@walletconnect/events@1.0.1':
     resolution: {integrity: sha512-NPTqaoi0oPBVNuLv7qPaJazmGHs5JGyO8eEAk5VGKmJzDR7AHzD4k6ilox5kxk1iwiOnFopBOOMLs86Oa76HpQ==}
@@ -3856,6 +3842,7 @@ packages:
 
   '@walletconnect/sign-client@2.14.0':
     resolution: {integrity: sha512-UrB3S3eLjPYfBLCN3WJ5u7+WcZ8kFMe/QIDqLf76Jk6TaLwkSUy563LvnSw4KW/kA+/cY1KBSdUDfX1tzYJJXg==}
+    deprecated: 'Reliability and performance improvements. See: https://github.com/WalletConnect/walletconnect-monorepo/releases'
 
   '@walletconnect/time@1.0.2':
     resolution: {integrity: sha512-uzdd9woDcJ1AaBZRhqy5rNC9laqWGErfc4dxA9a87mPdKOgWMD85mcFo9dIYIts/Jwocfwn07EC6EzclKubk/g==}
@@ -7294,6 +7281,7 @@ packages:
 
   lodash.isequal@4.5.0:
     resolution: {integrity: sha512-pDo3lu8Jhfjqls6GkMgpahsF9kCyayhgykjyLMNFTKWrpVdAQtYyB4muAMWozBB4ig/dtWAmsMxLEI8wuz+DYQ==}
+    deprecated: This package is deprecated. Use require('node:util').isDeepStrictEqual instead.
 
   lodash.merge@4.6.2:
     resolution: {integrity: sha512-0KpjqXRVvrYyCsX1swR/XTK0va6VQkQM6MNo7PqW77ByjAhoARA8EfrP1N4+KlKj8YS0ZUCtRT/YUuhyYDujIQ==}
@@ -12939,60 +12927,6 @@ snapshots:
       - bufferutil
       - encoding
       - utf-8-validate
-
-  '@eth-optimism/ponder-interop@file:apps/ponder-interop/eth-optimism-ponder-interop-0.0.6.tgz(@electric-sql/pglite@0.2.13)(@opentelemetry/api@1.9.0)(@types/node@22.5.4)(bufferutil@4.0.8)(kysely@0.26.3)(pg@8.14.1)(terser@5.31.3)(typescript@5.4.5)(utf-8-validate@6.0.3)':
-    dependencies:
-      '@eth-optimism/viem': 0.4.8(viem@2.24.3(bufferutil@4.0.8)(typescript@5.4.5)(utf-8-validate@6.0.3)(zod@3.24.2))
-      drizzle-orm: 0.39.3(@electric-sql/pglite@0.2.13)(@opentelemetry/api@1.9.0)(kysely@0.26.3)(pg@8.14.1)
-      hono: 4.7.5
-      ponder: 0.10.7(@opentelemetry/api@1.9.0)(@types/node@22.5.4)(hono@4.7.5)(terser@5.31.3)(typescript@5.4.5)(viem@2.24.3(bufferutil@4.0.8)(typescript@5.4.5)(utf-8-validate@6.0.3)(zod@3.24.2))(zod@3.24.2)
-      viem: 2.24.3(bufferutil@4.0.8)(typescript@5.4.5)(utf-8-validate@6.0.3)(zod@3.24.2)
-      zod: 3.24.2
-      zod-validation-error: 3.4.0(zod@3.24.2)
-    transitivePeerDependencies:
-      - '@aws-sdk/client-rds-data'
-      - '@cloudflare/workers-types'
-      - '@electric-sql/pglite'
-      - '@libsql/client'
-      - '@libsql/client-wasm'
-      - '@neondatabase/serverless'
-      - '@op-engineering/op-sqlite'
-      - '@opentelemetry/api'
-      - '@planetscale/database'
-      - '@prisma/client'
-      - '@tidbcloud/serverless'
-      - '@types/better-sqlite3'
-      - '@types/node'
-      - '@types/pg'
-      - '@types/sql.js'
-      - '@vercel/postgres'
-      - '@xata.io/client'
-      - better-sqlite3
-      - bufferutil
-      - bun-types
-      - expo-sqlite
-      - knex
-      - kysely
-      - less
-      - lightningcss
-      - mysql2
-      - pg
-      - pg-native
-      - postgres
-      - prisma
-      - sass
-      - sql.js
-      - sqlite3
-      - stylus
-      - sugarss
-      - supports-color
-      - terser
-      - typescript
-      - utf-8-validate
-
-  '@eth-optimism/viem@0.4.8(viem@2.24.3(bufferutil@4.0.8)(typescript@5.4.5)(utf-8-validate@6.0.3)(zod@3.24.2))':
-    dependencies:
-      viem: 2.24.3(bufferutil@4.0.8)(typescript@5.4.5)(utf-8-validate@6.0.3)(zod@3.24.2)
 
   '@ethereum-waffle/chai@4.0.10(@ensdomains/ens@0.4.5)(@ensdomains/resolver@0.2.4)(ethers@5.7.2(bufferutil@4.0.8)(utf-8-validate@6.0.3))':
     dependencies:

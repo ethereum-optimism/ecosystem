@@ -1,5 +1,11 @@
 # @eth-optimism/ponder-interop
 
+## 0.0.7
+
+### Patch Changes
+
+- [#771](https://github.com/ethereum-optimism/ecosystem/pull/771) [`500c777`](https://github.com/ethereum-optimism/ecosystem/commit/500c7777aae36678478d17db2816c3a690c8a493) Thanks [@tremarkley](https://github.com/tremarkley)! - publish ponder.schema.ts to npm
+
 ## 0.0.6
 
 ### Patch Changes
