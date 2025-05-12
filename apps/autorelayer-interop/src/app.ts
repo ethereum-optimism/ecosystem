@@ -6,8 +6,16 @@ import { createPublicClient, createWalletClient, http, isHex } from 'viem'
 import { privateKeyToAccount } from 'viem/accounts'
 import { z } from 'zod'
 
-import type { PendingMessage, RelayerConfig } from '@/relayer.js'
-import { Relayer } from '@/relayer.js'
+import type {
+  PendingMessage,
+  PendingMessages,
+  RelayerConfig,
+} from '@/relayer.js'
+import {
+  PendingMessageSchema,
+  PendingMessagesSchema,
+  Relayer,
+} from '@/relayer.js'
 import { jsonFetchParams } from '@/utils/jsonFetchParams.js'
 
 const ChainSchema = z.array(
@@ -178,4 +186,12 @@ class RelayerApp extends App {
   }
 }
 
-export { type PendingMessage, Relayer, RelayerApp, type RelayerConfig }
+export {
+  type PendingMessage,
+  PendingMessages,
+  PendingMessageSchema,
+  PendingMessagesSchema,
+  Relayer,
+  RelayerApp,
+  type RelayerConfig,
+}
