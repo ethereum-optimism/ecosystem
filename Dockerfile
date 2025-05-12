@@ -29,7 +29,7 @@ RUN pnpm nx run-many --target=build --projects=@eth-optimism/autorelayer-interop
 
 ## bundle individually with their node_modules
 RUN pnpm deploy --filter autorelayer-interop --prod /prod/autorelayer-interop
-RUN pnpm deploy --filter ponder-interop --prod /prod/ponder-interop
+RUN rm -f apps/ponder-interop/.npmignore && pnpm deploy --filter ponder-interop --prod /prod/ponder-interop
 RUN pnpm deploy --filter sponsored-sender --prod /prod/sponsored-sender
 
 ########################################################
