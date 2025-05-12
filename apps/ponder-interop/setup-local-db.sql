@@ -8,6 +8,8 @@ GRANT read_write TO "local-db-user";
 
 CREATE DATABASE "ponder-interop";
 
+\c "ponder-interop"
+
 -- read_only
 GRANT CONNECT ON DATABASE "ponder-interop" TO read_only;
 
