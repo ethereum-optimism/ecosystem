@@ -1,5 +1,11 @@
 # @eth-optimism/ponder-interop
 
+## 0.0.8
+
+### Patch Changes
+
+- [#794](https://github.com/ethereum-optimism/ecosystem/pull/794) [`0104eb1`](https://github.com/ethereum-optimism/ecosystem/commit/0104eb11ae5d4ca839db700ad051d9fe77ada80d) Thanks [@tremarkley](https://github.com/tremarkley)! - remove files field from package.json
+
 ## 0.0.7
 
 ### Patch Changes
