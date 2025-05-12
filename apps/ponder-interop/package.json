@@ -11,9 +11,6 @@
   },
   "version": "0.0.7",
   "type": "module",
-  "files": [
-    "dist"
-  ],
   "main": "./dist/ponder.schema.js",
   "types": "./dist/ponder.schema.d.ts",
   "exports": {
