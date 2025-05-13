@@ -1,5 +1,11 @@
 # @eth-optimism/autorelayer-interop
 
+## 0.0.11
+
+### Patch Changes
+
+- [#798](https://github.com/ethereum-optimism/ecosystem/pull/798) [`ebbbe50`](https://github.com/ethereum-optimism/ecosystem/commit/ebbbe50d8e014b7507afa0b8d8102a06ce5024d3) Thanks [@tremarkley](https://github.com/tremarkley)! - make fetchPendingMessages overridable
+
 ## 0.0.10
 
 ### Patch Changes
