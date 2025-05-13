@@ -12,7 +12,7 @@ import { z } from 'zod'
 
 import { jsonFetchParams } from '@/utils/jsonFetchParams.js'
 
-const PendingMessageSchema = z.object({
+export const PendingMessageSchema = z.object({
   // Identifier
   messageHash: z.string().refine(isHex, 'invalid message hash'),
   // Message Direction
@@ -28,11 +28,11 @@ const PendingMessageSchema = z.object({
   transactionHash: z.string().refine(isHash, 'invalid transaction hash'),
 })
 
-const PendingMessagesSchema = z.array(PendingMessageSchema)
+export const PendingMessagesSchema = z.array(PendingMessageSchema)
 
 export type PendingMessage = z.infer<typeof PendingMessageSchema>
 
-type PendingMessages = z.infer<typeof PendingMessagesSchema>
+export type PendingMessages = z.infer<typeof PendingMessagesSchema>
 
 export interface RelayerConfig {
   ponderInteropApi: string
@@ -50,7 +50,7 @@ export class Relayer {
   }
 
   async run(): Promise<void> {
-    const pendingMessages = await this.__fetchPendingMessages()
+    const pendingMessages = await this.fetchPendingMessages()
     this.log.info(`${pendingMessages.length} pending messages`)
 
     for (const message of pendingMessages) {
@@ -135,7 +135,12 @@ export class Relayer {
    */
   protected async validate(_message: PendingMessage): Promise<void> {}
 
-  private async __fetchPendingMessages(): Promise<PendingMessages> {
+  /**
+   * Fetches pending messages to be relayed
+   * @returns An array of pending messages
+   * @throws Error if the pending messages fetch fails
+   */
+  protected async fetchPendingMessages(): Promise<PendingMessages> {
     try {
       const url = `${this.config.ponderInteropApi}/messages/pending`
       const resp = await fetch(url, jsonFetchParams)
