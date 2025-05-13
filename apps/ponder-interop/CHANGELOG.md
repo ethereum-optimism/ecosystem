@@ -1,5 +1,11 @@
 # @eth-optimism/ponder-interop
 
+## 0.0.9
+
+### Patch Changes
+
+- [#808](https://github.com/ethereum-optimism/ecosystem/pull/808) [`f6b7d08`](https://github.com/ethereum-optimism/ecosystem/commit/f6b7d08a5b7a276826a1a02a0bcf5b62e2c6166e) Thanks [@tremarkley](https://github.com/tremarkley)! - add messageIdentifierHash column to l2_to_l2_cdm_relayed_messages and l2_to_l2_cdm_sent_messages tables
+
 ## 0.0.8
 
 ### Patch Changes
