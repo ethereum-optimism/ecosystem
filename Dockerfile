@@ -25,12 +25,18 @@ RUN pnpm fetch
 
 COPY . ./
 RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile --prefer-offline
-RUN pnpm nx run-many --target=build --projects=@eth-optimism/autorelayer-interop,@eth-optimism/ponder-interop,@eth-optimism/sponsored-sender
+RUN rm -f apps/ponder-interop/.npmignore
 
-## bundle individually with their node_modules
-RUN pnpm deploy --filter autorelayer-interop --prod /prod/autorelayer-interop
-RUN rm -f apps/ponder-interop/.npmignore && pnpm deploy --filter ponder-interop --prod /prod/ponder-interop
-RUN pnpm deploy --filter sponsored-sender --prod /prod/sponsored-sender
+# provide the ability to build a single projects
+ARG DOCKER_TARGET
+
+RUN if [ -z "$DOCKER_TARGET" ] || [ "$DOCKER_TARGET" = "ponder-interop" ]; then pnpm nx build @eth-optimism/ponder-interop; fi
+RUN if [ -z "$DOCKER_TARGET" ] || [ "$DOCKER_TARGET" = "autorelayer-interop" ]; then pnpm nx build @eth-optimism/autorelayer-interop; fi
+RUN if [ -z "$DOCKER_TARGET" ] || [ "$DOCKER_TARGET" = "sponsored-sender" ]; then pnpm nx build @eth-optimism/sponsored-sender;  fi
+
+RUN if [ -z "$DOCKER_TARGET" ] || [ "$DOCKER_TARGET" = "autorelayer-interop" ]; then pnpm deploy --filter autorelayer-interop --prod /prod/autorelayer-interop; fi
+RUN if [ -z "$DOCKER_TARGET" ] || [ "$DOCKER_TARGET" = "ponder-interop" ]; then pnpm deploy --filter ponder-interop --prod /prod/ponder-interop; fi
+RUN if [ -z "$DOCKER_TARGET" ] || [ "$DOCKER_TARGET" = "sponsored-sender" ]; then pnpm deploy --filter sponsored-sender --prod /prod/sponsored-sender; fi
 
 ########################################################
 # STAGE 2: Images
