@@ -1,5 +1,11 @@
 # @eth-optimism/autorelayer-interop
 
+## 0.0.12
+
+### Patch Changes
+
+- [#814](https://github.com/ethereum-optimism/ecosystem/pull/814) [`0f1dadb`](https://github.com/ethereum-optimism/ecosystem/commit/0f1dadb349cff4576f6a88881be8a2fe29df271c) Thanks [@tremarkley](https://github.com/tremarkley)! - make logger protected
+
 ## 0.0.11
 
 ### Patch Changes
