@@ -69,4 +69,6 @@ Object.entries(abis).forEach(([abiName, abi]) => {
 
 // Write to file
 fs.writeFileSync(path.join(__dirname, '../docs', fileName), mdContent)
+
+// eslint-disable-next-line no-console
 console.log(`Generated ${fileName} documentation`)

@@ -7,6 +7,7 @@ import {
   interopRcAlpha0Addresses,
   interopRcAlpha1Addresses,
 } from '@/chains/interopRcAlphaAddresses.js'
+import type { Network } from '@/chains/types.js'
 
 const sourceId = sepolia.id
 
@@ -67,3 +68,9 @@ export const interopRcAlpha1 = defineChain({
 })
 
 export const interopRcAlphaChains = [interopRcAlpha0, interopRcAlpha1]
+
+export const interopRcAlphaNetwork: Network = {
+  name: 'interop-rc-alpha',
+  sourceChain: sepolia,
+  chains: interopRcAlphaChains,
+}
