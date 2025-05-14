@@ -41,8 +41,8 @@ export interface RelayerConfig {
 }
 
 export class Relayer {
+  protected readonly log: Logger
   private readonly config: RelayerConfig
-  private readonly log: Logger
 
   constructor(log: Logger, config: RelayerConfig) {
     this.config = config
