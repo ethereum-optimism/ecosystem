@@ -1,5 +1,11 @@
 # @eth-optimism/ponder-interop
 
+## 0.0.10
+
+### Patch Changes
+
+- [#810](https://github.com/ethereum-optimism/ecosystem/pull/810) [`c34638f`](https://github.com/ethereum-optimism/ecosystem/commit/c34638f4fb34a02c7a0c1462468001d58588688c) Thanks [@tremarkley](https://github.com/tremarkley)! - remove messageIdentifier from l2_to_l2_cdm_relayed_messages schema
+
 ## 0.0.9
 
 ### Patch Changes
