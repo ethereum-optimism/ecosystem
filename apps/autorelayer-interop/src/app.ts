@@ -178,7 +178,7 @@ class RelayerApp extends App {
       try {
         await this.relayer.run()
       } catch (error) {
-        this.logger.error({ error }, 'failed run')
+        this.logger.error({ err: error }, 'failed run')
       }
 
       await new Promise((res) => setTimeout(res, this.options.loopIntervalMs))
