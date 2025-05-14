@@ -1,5 +1,5 @@
 import { Hono } from 'hono'
-import { and, count, eq, inArray, isNull, replaceBigInts } from 'ponder'
+import { and, count, desc, eq, inArray, isNull, replaceBigInts } from 'ponder'
 import { db, publicClients } from 'ponder:api'
 import schema from 'ponder:schema'
 import { isAddress } from 'viem'
@@ -60,6 +60,7 @@ app.get('/messages/pending', async (c) => {
       eq(schema.sentMessages.messageHash, schema.relayedMessages.messageHash),
     )
     .where(isNull(schema.relayedMessages.messageHash))
+    .orderBy(desc(schema.sentMessages.timestamp))
 
   const messages = result
     .map((m) => m.l2_to_l2_cdm_sent_messages)
@@ -89,6 +90,7 @@ app.get('/messages/:account/pending', async (c) => {
         eq(schema.sentMessages.sender, account),
       ),
     )
+    .orderBy(desc(schema.sentMessages.timestamp))
 
   const messages = result
     .map((m) => m.l2_to_l2_cdm_sent_messages)
