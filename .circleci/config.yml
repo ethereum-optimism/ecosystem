@@ -284,13 +284,13 @@ workflows:
       - docker-build:
           name: ponder-interop-docker-build
           docker_file: ./Dockerfile
-          docker_name: ponder-interop
+          docker_name: ecosystem-ponder-interop
           docker_tags: <<pipeline.git.revision>>,<<pipeline.git.branch>>,latest
           docker_context: .
           docker_target: ponder-interop
       - docker-publish:
           name: ponder-interop-docker-publish
-          docker_name: ponder-interop
+          docker_name: ecosystem-ponder-interop
           docker_tags: <<pipeline.git.revision>>,<<pipeline.git.branch>>,latest
           context:
             - oplabs-gcr
@@ -304,13 +304,13 @@ workflows:
       - docker-build:
           name: autorelayer-interop-docker-build
           docker_file: ./Dockerfile
-          docker_name: autorelayer-interop
+          docker_name: ecosystem-autorelayer-interop
           docker_tags: <<pipeline.git.revision>>,<<pipeline.git.branch>>,latest
           docker_context: .
           docker_target: autorelayer-interop
       - docker-publish:
           name: autorelayer-interop-docker-publish
-          docker_name: autorelayer-interop
+          docker_name: ecosystem-autorelayer-interop
           docker_tags: <<pipeline.git.revision>>,<<pipeline.git.branch>>,latest
           context:
             - oplabs-gcr
@@ -325,13 +325,13 @@ workflows:
       - docker-build:
           name: sponsored-sender-docker-build
           docker_file: ./Dockerfile
-          docker_name: sponsored-sender
+          docker_name: ecosystem-sponsored-sender
           docker_tags: <<pipeline.git.revision>>,<<pipeline.git.branch>>,latest
           docker_context: .
           docker_target: sponsored-sender
       - docker-publish:
           name: sponsored-sender-docker-publish
-          docker_name: sponsored-sender
+          docker_name: ecosystem-sponsored-sender
           docker_tags: <<pipeline.git.revision>>,<<pipeline.git.branch>>,latest
           context:
             - oplabs-gcr

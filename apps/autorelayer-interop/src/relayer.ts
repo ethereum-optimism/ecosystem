@@ -59,7 +59,6 @@ export class Relayer {
         destination: message.destination,
         messageHash: message.messageHash,
         txHash: message.transactionHash,
-        txOrigin: message.txOrigin,
       })
 
       if (
@@ -91,8 +90,8 @@ export class Relayer {
         await this.validate(message)
       } catch (error) {
         msgLog.warn(
-          { error },
-          `message validation failed, skipping message ${message.messageHash}...`,
+          { err: error },
+          `validation failed, skipping message ${message.messageHash}`,
         )
         continue
       }
@@ -114,7 +113,7 @@ export class Relayer {
       try {
         await simulateRelayCrossDomainMessage(client, params)
       } catch (error) {
-        msgLog.warn({ error }, 'failed simulation, skipping...')
+        msgLog.warn({ err: error }, 'failed simulation, skipping...')
         continue
       }
 
@@ -145,13 +144,17 @@ export class Relayer {
       const url = `${this.config.ponderInteropApi}/messages/pending`
       const resp = await fetch(url, jsonFetchParams)
       if (!resp.ok) {
-        throw new Error(`invalid http response: ${resp.statusText}`)
+        throw new Error(`http response: ${resp.statusText}`)
       }
 
       const body = await resp.json()
       const { data: msgs, error } = PendingMessagesSchema.safeParse(body)
       if (error) {
-        throw new Error(`parsing api response: ${error.format()}`)
+        throw new Error(
+          `api response: ${error.errors
+            .map((e) => `{${e.path.join('.')}: ${e.message}}`)
+            .join(', ')}`,
+        )
       }
 
       return msgs
