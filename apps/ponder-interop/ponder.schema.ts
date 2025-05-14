@@ -10,7 +10,7 @@ export const sentMessages = onchainTable(
     messageIdentifierHash: t.hex().primaryKey(),
 
     // parsed message fields
-    messageHash: t.hex(),
+    messageHash: t.hex().notNull(),
     source: t.bigint().notNull(),
     destination: t.bigint().notNull(),
     nonce: t.bigint().notNull(),
