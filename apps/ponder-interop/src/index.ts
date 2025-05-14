@@ -1,4 +1,4 @@
-import { contracts, l2ToL2CrossDomainMessengerAbi } from '@eth-optimism/viem'
+import { contracts } from '@eth-optimism/viem'
 import type {
   CrossDomainMessage,
   MessageIdentifier,
@@ -9,7 +9,7 @@ import {
 } from '@eth-optimism/viem/utils/interop'
 import { ponder } from 'ponder:registry'
 import { relayedMessages, sentMessages } from 'ponder:schema'
-import { decodeFunctionData, type Log } from 'viem'
+import { type Log } from 'viem'
 
 import { hashMessageIdentifier } from '@/utils/hashMessageIdentifier.js'
 
@@ -58,21 +58,7 @@ ponder.on('L2ToL2CDM:SentMessage', async ({ event, context }) => {
 })
 
 ponder.on('L2ToL2CDM:RelayedMessage', async ({ event, context }) => {
-  const relayMessageInput = event.transaction.input
-  const { functionName, args } = decodeFunctionData({
-    abi: l2ToL2CrossDomainMessengerAbi,
-    data: relayMessageInput,
-  })
-
-  if (functionName !== 'relayMessage') {
-    return
-  }
-
-  const messageIdentifier = args[0]
-
   await context.db.insert(relayedMessages).values({
-    messageIdentifierHash: hashMessageIdentifier(messageIdentifier),
-
     messageHash: event.args.messageHash,
 
     // metadata

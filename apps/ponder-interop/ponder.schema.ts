@@ -1,7 +1,7 @@
 // Hack to resolve https://github.com/ponder-sh/ponder/issues/1722
 import 'drizzle-orm/pg-core'
 
-import { index, onchainTable, uniqueIndex } from 'ponder'
+import { index, onchainTable } from 'ponder'
 
 export const sentMessages = onchainTable(
   'l2_to_l2_cdm_sent_messages',
@@ -39,9 +39,6 @@ export const relayedMessages = onchainTable(
     // unique identifier
     messageHash: t.hex().primaryKey(),
 
-    // message fields
-    messageIdentifierHash: t.hex(),
-
     // Some unique metadata on the relaying side
     relayer: t.hex().notNull(),
 
@@ -53,8 +50,5 @@ export const relayedMessages = onchainTable(
     timestamp: t.bigint().notNull(),
     blockNumber: t.bigint().notNull(),
     transactionHash: t.hex().notNull(),
-  }),
-  (table) => ({
-    messageIdentifierHashIdx: uniqueIndex().on(table.messageIdentifierHash),
   }),
 )
