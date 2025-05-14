@@ -1,5 +1,11 @@
 # @eth-optimism/ponder-interop
 
+## 0.0.11
+
+### Patch Changes
+
+- [#816](https://github.com/ethereum-optimism/ecosystem/pull/816) [`8c44347`](https://github.com/ethereum-optimism/ecosystem/commit/8c44347e20399126bd35103ada4d30f0d972b7c5) Thanks [@tremarkley](https://github.com/tremarkley)! - make l2_to_l2_cdm_sent_messages.messageHash not null
+
 ## 0.0.10
 
 ### Patch Changes
