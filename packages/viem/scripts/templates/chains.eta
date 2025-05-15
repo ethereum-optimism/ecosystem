@@ -52,5 +52,5 @@ export const <%= it.network %>Chains = [
 export const <%= it.network %>Network: Network = {
   name: '<%= it.network %>',
   sourceChain: <%= it.sourceChainImport %>,
-  chains: <%= it.network %>Chains
+  chains: <%= it.network %>Chains,
 }
