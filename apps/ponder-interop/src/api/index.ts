@@ -30,6 +30,10 @@ app.get('/chains', async (c) => {
   return c.json(chains)
 })
 
+app.get('/schema', async (c) => {
+  return c.json(process.env.DATABASE_SCHEMA)
+})
+
 // Count of all messages (sent, relayed, pending)
 app.get('/messages/count', async (c) => {
   const sent = await db
