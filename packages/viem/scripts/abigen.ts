@@ -27,6 +27,7 @@ function camelCase(str: string): string {
 /** Abi Generation */
 
 async function main() {
+  // eslint-disable-next-line no-console
   console.log('Generating forge artifacts...')
   const contractsBedrockPath = path.join(
     OPTIMISM_PATH,
@@ -39,6 +40,7 @@ async function main() {
     throw new Error(`Failed to generate forge artifacts: ${error}`)
   }
 
+  // eslint-disable-next-line no-console
   console.log('Extracting abi generation...')
   const eta = new Eta({
     views: './scripts/templates',
@@ -47,6 +49,7 @@ async function main() {
   })
 
   const contracts = CONTRACTS.map((contract) => {
+    // eslint-disable-next-line no-console
     console.log(`Generating Abi for ${contract}`)
     const abiPath = path.join(
       contractsBedrockPath,

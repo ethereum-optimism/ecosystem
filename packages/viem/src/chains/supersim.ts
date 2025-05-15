@@ -9,6 +9,7 @@ import {
   supersimL2DAddresses,
   supersimL2EAddresses,
 } from '@/chains/supersimAddresses.js'
+import type { Network } from '@/chains/types.js'
 
 /**
  * L1 chain definition for supersim in non-forked mode
@@ -146,3 +147,9 @@ export const supersimChains = [
   supersimL2D,
   supersimL2E,
 ]
+
+export const supersimNetwork: Network = {
+  name: 'supersim',
+  sourceChain: supersimL1,
+  chains: supersimChains,
+}
