@@ -24,7 +24,7 @@
     "commander": "^13.1.0",
     "@hono/node-server": "^1.14.0",
     "hono": "^4.5.0",
-    "ponder": "^0.10.6",
+    "ponder": "0.11.1",
     "prom-client": "^15.1.0",
     "zod": "^3.24.2",
     "zod-validation-error": "^3.4.0"

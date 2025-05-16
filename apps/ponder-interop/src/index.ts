@@ -15,7 +15,7 @@ import { hashMessageIdentifier } from '@/utils/hashMessageIdentifier.js'
 
 ponder.on('L2ToL2CDM:SentMessage', async ({ event, context }) => {
   const cdm = {
-    source: BigInt(context.network.chainId),
+    source: BigInt(context.chain.id),
     destination: event.args.destination,
     nonce: event.args.messageNonce,
     sender: event.args.sender,

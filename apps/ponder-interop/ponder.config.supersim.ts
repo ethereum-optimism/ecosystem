@@ -1,18 +1,17 @@
 import { supersimL2A, supersimL2B } from '@eth-optimism/viem/chains'
 import { http } from 'viem'
 
-import type { Endpoints } from '@/createPonderConfig.js'
-import { createPonderConfig } from '@/createPonderConfig.js'
+import { type ChainConfigs, createPonderConfig } from '@/createPonderConfig.js'
 
-const endpoints: Endpoints = {
+const endpoints: ChainConfigs = {
   supersimL2A: {
-    chainId: supersimL2A.id,
-    transport: http(supersimL2A.rpcUrls.default.http[0]),
+    id: supersimL2A.id,
+    rpc: http(supersimL2A.rpcUrls.default.http[0]),
     disableCache: true,
   },
   supersimL2B: {
-    chainId: supersimL2B.id,
-    transport: http(supersimL2B.rpcUrls.default.http[0]),
+    id: supersimL2B.id,
+    rpc: http(supersimL2B.rpcUrls.default.http[0]),
     disableCache: true,
   },
 }

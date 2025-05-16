@@ -1,17 +1,16 @@
 import { interopAlpha0, interopAlpha1 } from '@eth-optimism/viem/chains'
 import { http } from 'viem'
 
-import type { Endpoints } from '@/createPonderConfig.js'
-import { createPonderConfig } from '@/createPonderConfig.js'
+import { type ChainConfigs, createPonderConfig } from '@/createPonderConfig.js'
 
-const endpoints: Endpoints = {
+const endpoints: ChainConfigs = {
   interopAlpha0: {
-    chainId: interopAlpha0.id,
-    transport: http(interopAlpha0.rpcUrls.default.http[0]),
+    id: interopAlpha0.id,
+    rpc: http(interopAlpha0.rpcUrls.default.http[0]),
   },
   interopAlpha1: {
-    chainId: interopAlpha1.id,
-    transport: http(interopAlpha1.rpcUrls.default.http[0]),
+    id: interopAlpha1.id,
+    rpc: http(interopAlpha1.rpcUrls.default.http[0]),
   },
 }
 
