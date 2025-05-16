@@ -1,11 +1,10 @@
-import type { Transport } from 'viem'
 import { http } from 'viem'
 import { z } from 'zod'
 
-import { createPonderConfig } from '@/createPonderConfig.js'
+import { type ChainConfigs, createPonderConfig } from '@/createPonderConfig.js'
 
 // Parse Endpoints from Environment
-const endpoints: Record<string, { chainId: number; transport: Transport }> = {}
+const chainConfigs: ChainConfigs = {}
 for (const [key, value] of Object.entries(process.env)) {
   if (!key.startsWith('PONDER_INTEROP_ENDPOINT_') || value === undefined) {
     continue
@@ -26,16 +25,16 @@ for (const [key, value] of Object.entries(process.env)) {
     throw new Error(`invalid endpoint url for ${key}: ${value}`)
   }
 
-  endpoints[chainIdStr] = {
-    chainId: parseInt(chainIdStr),
-    transport: http(value),
+  chainConfigs[chainIdStr] = {
+    id: parseInt(chainIdStr),
+    rpc: http(value),
   }
 }
 
-if (Object.keys(endpoints).length === 0) {
+if (Object.keys(chainConfigs).length === 0) {
   throw new Error(
-    'No endpoints in environment found. Please set `PONDER_INTEROP_ENDPOINT_<chainId>=<url>` urls for each chain to index.',
+    'No chain configs in environment found. Please set `PONDER_INTEROP_ENDPOINT_<chainId>=<url>` urls for each chain to index.',
   )
 }
 
-export default createPonderConfig(endpoints)
+export default createPonderConfig(chainConfigs)
