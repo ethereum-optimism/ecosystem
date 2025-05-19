@@ -75,6 +75,9 @@ importers:
       '@typescript-eslint/parser':
         specifier: ^7.0.0
         version: 7.18.0(eslint@9.22.0(jiti@1.21.0))(typescript@5.4.5)
+      dotenv:
+        specifier: 16.5.0
+        version: 16.5.0
       eslint:
         specifier: ^9.0.0
         version: 9.22.0(jiti@1.21.0)
@@ -252,6 +255,9 @@ importers:
 
   packages/viem:
     devDependencies:
+      dotenv:
+        specifier: 16.5.0
+        version: 16.5.0
       viem:
         specifier: ^2.17.9
         version: 2.17.9(bufferutil@4.0.8)(typescript@5.4.5)(utf-8-validate@6.0.3)(zod@3.24.2)
@@ -4404,6 +4410,10 @@ packages:
 
   dotenv@16.3.2:
     resolution: {integrity: sha512-HTlk5nmhkm8F6JcdXvHIzaorzCoziNQT9mGxLPVXW8wJF1TiGSL60ZGB4gHWabHOaMmWmhvk2/lPHfnBiT78AQ==}
+    engines: {node: '>=12'}
+
+  dotenv@16.5.0:
+    resolution: {integrity: sha512-m/C+AwOAr9/W1UOIZUo232ejMNnJAJtYQjUbHoNTBNTJSvqzzDh7vnrei3o3r3m9blf6ZoDkvcw0VmozNRFJxg==}
     engines: {node: '>=12'}
 
   dotenv@8.6.0:
@@ -14657,6 +14667,8 @@ snapshots:
 
   dotenv@16.3.2: {}
 
+  dotenv@16.5.0: {}
+
   dotenv@8.6.0: {}
 
   drizzle-orm@0.39.3(@electric-sql/pglite@0.2.13)(@opentelemetry/api@1.9.0)(kysely@0.26.3)(pg@8.14.1):
@@ -17801,7 +17813,7 @@ snapshots:
       conf: 12.0.0
       dataloader: 2.2.3
       detect-package-manager: 3.0.2
-      dotenv: 16.3.2
+      dotenv: 16.5.0
       drizzle-orm: 0.39.3(@electric-sql/pglite@0.2.13)(@opentelemetry/api@1.9.0)(kysely@0.26.3)(pg@8.14.1)
       glob: 10.4.5
       graphql: 16.10.0
@@ -17878,7 +17890,7 @@ snapshots:
       conf: 12.0.0
       dataloader: 2.2.3
       detect-package-manager: 3.0.2
-      dotenv: 16.3.2
+      dotenv: 16.5.0
       drizzle-orm: 0.39.3(@electric-sql/pglite@0.2.13)(@opentelemetry/api@1.9.0)(kysely@0.26.3)(pg@8.14.1)
       glob: 10.4.5
       graphql: 16.10.0

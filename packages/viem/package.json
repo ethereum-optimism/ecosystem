@@ -38,6 +38,7 @@
     "typecheck": "tsc --noEmit --emitDeclarationOnly false"
   },
   "devDependencies": {
+    "dotenv": "16.5.0",
     "viem": "^2.17.9"
   },
   "peerDependencies": {

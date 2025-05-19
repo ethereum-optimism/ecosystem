@@ -77,6 +77,7 @@ async function nativeCurrency(
 /** Chain Generation **/
 
 async function main() {
+  // eslint-disable-next-line no-console
   console.log('Running chain generation...')
   const eta = new Eta({
     views: './scripts/templates',
@@ -101,8 +102,11 @@ async function main() {
   })
 
   for (const network of NETWORKS) {
+    // eslint-disable-next-line no-console
     console.log(`Generating ${network}`)
     const client = network === 'mainnet' ? mainnetClient : sepoliaClient
+    const sourceChainId = network === 'mainnet' ? 1 : 11155111
+    const sourceChainImport = `viemChains.${network}`
 
     const configPath = path.join(
       SUPERCHAIN_REGISTRY_PATH,
@@ -170,7 +174,7 @@ async function main() {
           chainName: pascalCase(chainName),
           exportName: camelCase(exportName),
           chainId: chainConfig.chain_id as number,
-          sourceChainId: network === 'mainnet' ? 1 : 11155111,
+          sourceChainId: sourceChainId,
           rpc: chainConfig.public_rpc as string,
           explorer: chainConfig.explorer as string,
           nativeCurrency: await nativeCurrency(
@@ -182,8 +186,13 @@ async function main() {
       }),
     )
 
-    const fileContents = eta.render('chains', { chainDefs, network })
+    const fileContents = eta.render('chains', {
+      chainDefs,
+      network,
+      sourceChainImport,
+    })
 
+    // eslint-disable-next-line no-console
     console.log(`Writing chains to file...`)
     fs.writeFileSync(`src/chains/${network}.ts`, fileContents)
   }
@@ -194,6 +203,7 @@ async function main() {
     await main()
     process.exit(0)
   } catch (e) {
+    // eslint-disable-next-line no-console
     console.error(e)
     process.exit(-1)
   }
