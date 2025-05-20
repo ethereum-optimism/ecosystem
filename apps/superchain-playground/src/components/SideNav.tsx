@@ -69,7 +69,7 @@ export const SideNav = () => {
                 icon={ArrowBigRight}
               />
               <NavItem
-                to="/multisend-bridge"
+                to="/bridge-multisend"
                 title="L1 to L2 Multisend Bridge"
                 icon={ArrowBigRight}
               />
