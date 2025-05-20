@@ -1,5 +1,5 @@
 import { contracts, l2ToL2CrossDomainMessengerAbi } from '@eth-optimism/viem'
-import type { NetworkName} from '@eth-optimism/viem/chains';
+import type { NetworkName } from '@eth-optimism/viem/chains'
 import { chainById, supersimL2A } from '@eth-optimism/viem/chains'
 import {
   AlertCircle,
@@ -55,15 +55,12 @@ import type { L2ToL2CrossDomainMessage } from '@/types/L2ToL2CrossDomainMessage'
 
 const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
 
-const supportedNetworkNames: NetworkName[] = [
-  'interop-alpha',
-  'supersim',
-]
+const supportedNetworkNames: NetworkName[] = ['interop-alpha', 'supersim']
 
 export const SuperchainMessageRelayer = () => {
   return (
     <div className="flex flex-col gap-8 w-full max-w-3xl mx-auto px-4 sm:px-6 py-8">
-      <SupportedNetworks networks={supportedNetworkNames} >
+      <SupportedNetworks networks={supportedNetworkNames}>
         <div className="space-y-2">
           <h1 className="text-3xl font-bold">Superchain Message Relayer</h1>
           <p className="text-muted-foreground text-sm max-w-prose">

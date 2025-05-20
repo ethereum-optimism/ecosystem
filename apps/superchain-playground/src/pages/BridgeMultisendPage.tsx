@@ -1,4 +1,4 @@
-import type { NetworkName} from '@eth-optimism/viem/chains';
+import type { NetworkName } from '@eth-optimism/viem/chains'
 import { networks } from '@eth-optimism/viem/chains'
 
 import { MultisendBridgeCard } from '@/components/MultisendBridgeCard'
@@ -21,27 +21,26 @@ export const BridgeMultisendPage = () => {
       <SupportedNetworks networks={supportedNetworkNames}>
         <Tabs defaultValue={networkName} value={networkName}>
           <TabsList className="w-full flex">
-          {supportedNetworks.map((network) => (
-            <TabsTrigger
-              onClick={() => setNetworkName(network.name)}
-              className="flex-1 relative"
-              key={network.name}
-              value={network.name}
-            >
-              {network.name}
-            </TabsTrigger>
-          ))}
-        </TabsList>
+            {supportedNetworks.map((network) => (
+              <TabsTrigger
+                onClick={() => setNetworkName(network.name)}
+                className="flex-1 relative"
+                key={network.name}
+                value={network.name}
+              >
+                {network.name}
+              </TabsTrigger>
+            ))}
+          </TabsList>
 
-        {supportedNetworks.map((network) => {
-          return (
-            <TabsContent key={network.name} value={network.name}>
-              <MultisendBridgeCard network={network} />
-            </TabsContent>
-          )
-        })}
-
-      </Tabs>
+          {supportedNetworks.map((network) => {
+            return (
+              <TabsContent key={network.name} value={network.name}>
+                <MultisendBridgeCard network={network} />
+              </TabsContent>
+            )
+          })}
+        </Tabs>
       </SupportedNetworks>
     </div>
   )

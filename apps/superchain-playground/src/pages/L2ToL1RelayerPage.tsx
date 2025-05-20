@@ -1,4 +1,4 @@
-import type { NetworkName} from '@eth-optimism/viem/chains';
+import type { NetworkName } from '@eth-optimism/viem/chains'
 import { networks } from '@eth-optimism/viem/chains'
 import { Search } from 'lucide-react'
 import { useState } from 'react'
@@ -101,7 +101,9 @@ export const L2ToL1RelayerPage = () => {
             {selectedTransactionHash && selectedL2ChainId && (
               <WithdrawalTransactionStatus
                 transactionHash={selectedTransactionHash}
-                l2Chain={network.chains.find((c) => c.id === selectedL2ChainId)!}
+                l2Chain={
+                  network.chains.find((c) => c.id === selectedL2ChainId)!
+                }
               />
             )}
           </CardContent>

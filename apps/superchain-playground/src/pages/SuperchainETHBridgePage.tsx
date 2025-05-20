@@ -1,5 +1,5 @@
 import { contracts, superchainETHBridgeAbi } from '@eth-optimism/viem'
-import type { NetworkName} from '@eth-optimism/viem/chains';
+import type { NetworkName } from '@eth-optimism/viem/chains'
 import { networks } from '@eth-optimism/viem/chains'
 import { CheckCircle2, Loader2, Send } from 'lucide-react'
 import { useState } from 'react'
@@ -38,10 +38,7 @@ import {
 import { useConfig } from '@/stores/useConfig'
 import { useTransactionStore } from '@/stores/useTransactionStore'
 
-const supportedNetworkNames: NetworkName[] = [
-  'interop-alpha',
-  'supersim',
-]
+const supportedNetworkNames: NetworkName[] = ['interop-alpha', 'supersim']
 
 export const SuperchainETHBridgePage = () => {
   const { address } = useAccount()

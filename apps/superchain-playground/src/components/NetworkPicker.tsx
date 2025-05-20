@@ -28,10 +28,10 @@ export const NetworkPicker = ({ networks }: NetworkPickerProps) => {
         </SelectTrigger>
         <SelectContent>
           {networks.map((network) => (
-              <SelectItem key={network} value={network}>
-                {network}
-              </SelectItem>
-            ))}
+            <SelectItem key={network} value={network}>
+              {network}
+            </SelectItem>
+          ))}
         </SelectContent>
       </Select>
     </div>
