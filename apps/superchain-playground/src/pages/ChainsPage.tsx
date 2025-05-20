@@ -1,6 +1,4 @@
 import { networks } from '@eth-optimism/viem/chains'
-import { format } from 'date-fns'
-import { Clock } from 'lucide-react'
 import type { Chain } from 'viem'
 import { useSwitchChain } from 'wagmi'
 
@@ -117,10 +115,6 @@ export const ChainsPage = () => {
               >
                 Superchain Registry
               </a>
-            </div>
-            <div className="flex items-center gap-1 text-muted-foreground text-sm">
-              <Clock className="h-4 w-4" />
-              <span>Last updated: {format(new Date(), 'PPpp')}</span>
             </div>
           </CardDescription>
         </CardHeader>

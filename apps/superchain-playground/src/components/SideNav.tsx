@@ -2,7 +2,6 @@ import {
   ArrowBigLeft,
   ArrowBigRight,
   ArrowLeftRight,
-  FileCode,
   Github,
   LayersIcon,
   MessageSquare,
@@ -58,6 +57,7 @@ export const SideNav = () => {
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarHeader>
+
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupLabel>L1 / L2</SidebarGroupLabel>
@@ -102,11 +102,6 @@ export const SideNav = () => {
                 title="Superchain Message Relayer"
                 icon={MessageSquare}
               />
-              <NavItem
-                to="/contracts"
-                title="Superchain Contracts"
-                icon={FileCode}
-              />
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
@@ -120,17 +115,17 @@ export const SideNav = () => {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
+
       <SidebarFooter>
         <div className="flex justify-between items-center">
           <Link
             to="/"
             className="ml-2 font-mono text-xs font-bold leading-none"
           >
-            SUPERCHAIN
-            <br /> TOOLS
+            SUPERCHAIN <br /> PLAYGROUND
           </Link>
           <a
-            href="https://github.com/jakim929/superchain-tools"
+            href="https://github.com/ethereum-optimism/ecosystem/tree/main/apps/superchain-playground"
             target="_blank"
             rel="noopener noreferrer"
             className="p-3 flex justify-center items-center hover:bg-gray-200 transition-colors rounded-full"
