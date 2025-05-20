@@ -30,12 +30,15 @@ Governance discussion can also be found on the [Optimism Governance Forum](https
 
 <pre>
 ├── <a href="./apps">apps</a>
-├── ├── <a href="./apps/sponsored-sender">sponsored-sender</a>: Util service that locally spins up single-url tx submission json-rpc endpoint
+├── ├── <a href="./apps/autorelayer-interop">autorelayer-interop</a>: Superchain interop relayer service
 ├── ├── <a href="./apps/ponder-interop">ponder-interop</a>: Ponder indexer for Superchain interop contracts.
+├── ├── <a href="./apps/sponsored-sender">sponsored-sender</a>: Util service that locally spins up single-url tx submission json-rpc endpoint
+├── ├── <a href="./apps/superchain-playground">superchain-playground</a>: Playground with demo components for various op-stack features.
 ├── <a href="./packages">packages</a>
 ├── ├── <a href="./packages/supersim">supersim</a>: Util supersim package that works with npx
 │   ├── <a href="./packages/viem">viem</a>: Optimism Viem Extensions
 │   ├── <a href="./packages/wagmi">wagmi</a>: Optimism Wagmi Extensions
+│   ├── <a href="./packages/utils-app">utils-app</a>: Optimism Application lifeycle package
 </pre>
 
 ## Development Quick Start
