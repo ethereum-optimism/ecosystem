@@ -1,4 +1,4 @@
-export const Multicall3Abi = [
+export const multicall3Abi = [
   {
     inputs: [
       {

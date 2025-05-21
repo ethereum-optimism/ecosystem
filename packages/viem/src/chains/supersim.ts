@@ -1,4 +1,4 @@
-import { defineChain } from 'viem'
+import { defineChain, multicall3Abi } from 'viem'
 import { chainConfig } from 'viem/op-stack'
 
 import { addressesToViemContractConstant } from '@/addressSet.js'
@@ -26,6 +26,12 @@ export const supersimL1 = defineChain({
   },
   nativeCurrency: { name: 'Ether', symbol: 'ETH', decimals: 18 },
   testnet: true,
+  contracts: {
+    multicall3: {
+      address: '0xca11bde05977b3631167028862be2a173976ca11',
+      abi: multicall3Abi,
+    },
+  },
 })
 
 const sourceId = supersimL1.id

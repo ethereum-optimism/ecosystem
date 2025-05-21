@@ -1,7 +1,6 @@
 import { createBrowserRouter, Navigate, RouterProvider } from 'react-router-dom'
 
 import { NavBarLayout } from '@/layouts/NavBarLayout'
-import { BridgeMultisendPage } from '@/pages/BridgeMultisendPage'
 import { BridgePage } from '@/pages/BridgePage'
 import { ChainsPage } from '@/pages/ChainsPage'
 import { ConfigPage } from '@/pages/ConfigPage'
@@ -21,10 +20,6 @@ const router = createBrowserRouter([
       {
         path: '/bridge',
         element: <BridgePage />,
-      },
-      {
-        path: '/bridge-multisend',
-        element: <BridgeMultisendPage />,
       },
       {
         path: '/chains',

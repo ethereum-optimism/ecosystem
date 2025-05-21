@@ -1,8 +1,7 @@
 import type { Network } from '@eth-optimism/viem/chains'
-import { produce } from 'immer'
 import { ArrowRight } from 'lucide-react'
 import { useState } from 'react'
-import type { Address, Chain, ChainContract, Hex } from 'viem'
+import type { Chain, ChainContract, Hex } from 'viem'
 import { encodeFunctionData, formatEther, parseEther, toHex } from 'viem'
 import {
   useAccount,
@@ -22,7 +21,6 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
-import { Checkbox } from '@/components/ui/checkbox'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Separator } from '@/components/ui/separator'
@@ -30,41 +28,10 @@ import { Switch } from '@/components/ui/switch'
 import { ToastAction } from '@/components/ui/toast'
 import { useToast } from '@/components/ui/use-toast'
 import { l1StandardBridgeAbi } from '@/constants/l1StandardBridgeAbi'
-import { Multicall3Abi } from '@/constants/Multicall3Abi'
+import { multicall3Abi } from '@/constants/multicall3Abi'
 import { truncateHash } from '@/lib/truncateHash'
 import { cn } from '@/lib/utils'
-
-const truncateDecimal = (
-  decimalString: string,
-  maxLengthAfterDecimal = 5,
-): string => {
-  // Check if there's a decimal point
-  if (decimalString.includes('.')) {
-    const parts = decimalString.split('.')
-    const integerPart = parts[0]
-    const decimalPart = parts[1]!
-
-    return `${integerPart}.${decimalPart.substring(0, maxLengthAfterDecimal)}`
-  }
-  return decimalString // Return as it is if no decimal point
-}
-
-const useFormattedBalance = (chainId: number) => {
-  const { address } = useAccount()
-  const { data } = useBalance({
-    address: address!,
-    chainId: chainId,
-    query: {
-      enabled: !!address,
-    },
-  })
-
-  if (!address || !data) {
-    return undefined
-  }
-
-  return `${truncateDecimal(data.formatted)} ${data.symbol}`
-}
+import { truncateDecimal } from '@/utils/truncateDecimal'
 
 const NetworkSwitch = ({
   chain,
@@ -75,60 +42,40 @@ const NetworkSwitch = ({
   onChange: (isSelected: boolean) => void
   isSelected: boolean
 }) => {
-  const { name, id } = chain
-  const formattedBalance = useFormattedBalance(id)
+  const { address } = useAccount()
+  const { data } = useBalance({ address: address!, chainId: chain.id, query: { enabled: !!address } })
+  const { formatted: balance, symbol } = data ?? { formatted: '-', symbol: '' }
+
   return (
     <div
-      className="w-full flex cursor-pointer hover:bg-muted/50 rounded-lg py-2 px-2 items-center"
+      className={cn(
+        "w-full flex rounded-lg py-2 px-2 items-center",
+        data ? "cursor-pointer hover:bg-muted/50" : "opacity-50 cursor-not-allowed"
+      )}
       onClick={(e) => {
+        if (!data) return
         e.stopPropagation()
         onChange(!isSelected)
-      }}
-    >
+      }}>
       <Switch
-        id={`${id}-network-switch`}
-        onCheckedChange={(checked) => {
-          onChange(checked)
-        }}
+        id={`${chain.id}-network-switch`}
         checked={isSelected}
+        disabled={!data}
         className="self-center data-[state=checked]:bg-primary"
-      />
-      <div className="pl-2 w-full cursor-pointer flex items-center justify-between select-none pr-2 text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-        <div className="flex items-center gap-2">{name}</div>
-        {formattedBalance && (
+        onCheckedChange={(checked) => {
+          if (!data) return
+          onChange(checked)
+        }} />
+      <div className={cn(
+        "pl-2 w-full flex items-center justify-between select-none pr-2 text-sm font-medium leading-none",
+      )}>
+        <div className="flex items-center gap-2">{chain.name}</div>
           <div className="text-muted-foreground text-sm">
-            {formattedBalance}
+            {truncateDecimal(balance)} {symbol}
           </div>
-        )}
       </div>
     </div>
   )
-}
-
-const useNetworkSelection = (chains: Chain[]) => {
-  const [isSelectedByChainId, setIsSelectedByChainId] = useState<
-    Record<number, boolean>
-  >(
-    chains.reduce<Record<number, boolean>>((acc, chain) => {
-      acc[chain.id] = false
-      return acc
-    }, {}),
-  )
-
-  return {
-    allChains: chains,
-    selectedChains: chains.filter((l2Chain) => {
-      return !!isSelectedByChainId[l2Chain.id]
-    }),
-    setIsSelected: (chainId: number, isSelected: boolean) => {
-      setIsSelectedByChainId((prevVal) =>
-        produce(prevVal, (draft) => {
-          draft[chainId] = isSelected
-        }),
-      )
-    },
-    isSelectedByChainId,
-  }
 }
 
 const NetworkSwitches = ({
@@ -137,33 +84,14 @@ const NetworkSwitches = ({
   setIsSelected,
 }: {
   chains: Chain[]
-  isSelectedByChainId: Record<number, boolean>
+  isSelectedByChainId: { [key: number]: boolean }
   setIsSelected: (chainId: number, isSelected: boolean) => void
 }) => {
-  const allSelected = chains.every((chain) => isSelectedByChainId[chain.id])
-
   return (
     <div className="flex flex-col gap-4">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
           <Label>Networks</Label>
-          <div className="flex items-center gap-2">
-            <Checkbox
-              id="select-all"
-              checked={allSelected}
-              onCheckedChange={(checked) => {
-                chains.forEach((chain) => {
-                  setIsSelected(chain.id, checked === true)
-                })
-              }}
-            />
-            <Label
-              htmlFor="select-all"
-              className="text-sm font-normal text-muted-foreground"
-            >
-              Select all
-            </Label>
-          </div>
         </div>
         <div className="text-sm text-muted-foreground">Current balance</div>
       </div>
@@ -174,9 +102,7 @@ const NetworkSwitches = ({
               key={chain.id}
               chain={chain}
               isSelected={isSelectedByChainId[chain.id] ?? false}
-              onChange={(isChecked) => {
-                setIsSelected(chain.id, isChecked)
-              }}
+              onChange={(isChecked) => setIsSelected(chain.id, isChecked) }
             />
           )
         })}
@@ -185,39 +111,6 @@ const NetworkSwitches = ({
   )
 }
 
-const AmountQuickInputButton = ({
-  amount,
-  isSelected,
-  onClick,
-}: {
-  isSelected: boolean
-  onClick: () => void
-  amount: bigint
-}) => {
-  return (
-    <Button
-      variant="outline"
-      size="sm"
-      onClick={onClick}
-      className={cn(
-        'flex-1 transition-all',
-        isSelected
-          ? 'border-primary/90 bg-primary text-primary-foreground hover:bg-primary/90'
-          : 'hover:border-primary/50',
-      )}
-    >
-      {formatEther(amount)} ETH
-    </Button>
-  )
-}
-
-const QUICK_INPUT_AMOUNTS = [
-  parseEther('10'),
-  parseEther('1'),
-  parseEther('0.1'),
-  parseEther('0.01'),
-]
-
 const AmountInput = ({
   amount,
   setAmount,
@@ -225,6 +118,13 @@ const AmountInput = ({
   amount: bigint
   setAmount: (amount: bigint) => void
 }) => {
+  const quickInputAmounts = [
+    parseEther('10'),
+    parseEther('1'),
+    parseEther('0.1'),
+    parseEther('0.01'),
+  ]
+
   return (
     <div className="flex flex-col gap-2">
       <Label htmlFor="bridge-amount-input">Amount</Label>
@@ -236,14 +136,21 @@ const AmountInput = ({
         onChange={(e) => setAmount(parseEther(e.target.value))}
       />
       <div className="flex gap-2">
-        {QUICK_INPUT_AMOUNTS.map((quickInputAmount) => {
+        {quickInputAmounts.map((quickInputAmount) => {
           return (
-            <AmountQuickInputButton
-              key={`quick-input-${quickInputAmount}`}
-              amount={quickInputAmount}
-              isSelected={quickInputAmount === amount}
+            <Button
+              variant="outline"
+              size="sm"
               onClick={() => setAmount(quickInputAmount)}
-            />
+              className={cn(
+                'flex-1 transition-all',
+                quickInputAmount === amount
+                  ? 'border-primary/90 bg-primary text-primary-foreground hover:bg-primary/90'
+                  : 'hover:border-primary/50',
+              )}
+            >
+              {formatEther(quickInputAmount)} ETH
+            </Button>
           )
         })}
       </div>
@@ -285,84 +192,62 @@ const Preview = ({
   )
 }
 
-const getBridgeFundsFunctionData = (address?: Address) => {
-  if (!address) {
-    return null
-  }
-  return encodeFunctionData({
-    abi: l1StandardBridgeAbi,
-    functionName: 'bridgeETHTo',
-    args: [address, 1000000, toHex('')],
-  })
-}
-
-const getBlockExplorerLink = (chain: Chain, transactionHash: Hex) => {
-  const baseUrl = chain.blockExplorers!.default.url
-  return `${baseUrl}/tx/${transactionHash}`
-}
-
-const SwitchToChainButton = ({ chain }: { chain: Chain }) => {
-  const { switchChain, isPending } = useSwitchChain()
-  return (
-    <Button
-      className="w-full"
-      disabled={!switchChain || isPending}
-      onClick={() => {
-        switchChain?.({ chainId: chain.id })
-      }}
-    >
-      Switch network to {chain.name}
-    </Button>
-  )
-}
-
 export const BridgeCard = ({ network }: { network: Network }) => {
-  const chainId = network.sourceChain.id
+  const sourceChainId = network.sourceChain.id
   const chains = network.chains
 
-  const formattedL1Balance = useFormattedBalance(chainId)
-  const { chain } = useAccount()
-
   const { toast } = useToast()
+  const { address, chainId } = useAccount()
+  const { switchChain, isPending: switchChainPending } = useSwitchChain()
 
-  const { selectedChains, allChains, setIsSelected, isSelectedByChainId } =
-    useNetworkSelection(chains)
+  const { data } = useBalance({ address, chainId: sourceChainId, query: { enabled: !!address } })
+  const { formatted: balance, symbol } = data ?? { formatted: '-', symbol: '' }
 
-  const [amount, setAmount] = useState<bigint>(0n)
+  const [amount, setAmount] = useState(0n)
+  const [isSelectedByChainId, setIsSelectedByChainId] = useState(
+    chains.reduce<{ [key: number]: boolean }>((acc, chain) => {
+      acc[chain.id] = false
+      return acc
+    }, {}),
+  )
 
-  const { address } = useAccount()
+  const selectedChains = chains.filter((chain) => isSelectedByChainId[chain.id])
+  const setIsSelected = (chainId: number, isSelected: boolean) => {
+    setIsSelectedByChainId({...isSelectedByChainId, [chainId]: isSelected})
+  }
 
   const { data: simulatedData, error } = useSimulateContract({
-    abi: Multicall3Abi,
+    abi: multicall3Abi,
     functionName: 'aggregate3Value',
-    address: '0xcA11bde05977b3631167028862bE2a173976CA11',
-    args: [
-      [
-        ...selectedChains.map((selectedChain) => {
-          const l1StandardBridge = selectedChain.contracts
-            ?.l1StandardBridge as { [key: number]: ChainContract }
-
-          return {
-            target: l1StandardBridge[chainId]!.address,
-            allowFailure: false,
-            callData: getBridgeFundsFunctionData(address!)!,
-            value: amount,
-          }
-        }),
-      ],
-    ],
+    address: network.sourceChain.contracts?.multicall3?.address,
     value: amount * BigInt(selectedChains.length),
-    // enabled: !!address && amount > 0n && opStackChains.length > 0,
+    args: [selectedChains.map((selectedChain) => {
+        const l1StandardBridge = selectedChain.contracts
+          ?.l1StandardBridge as { [key: number]: ChainContract }
+
+        const calldata = encodeFunctionData({
+          abi: l1StandardBridgeAbi,
+          functionName: 'bridgeETHTo',
+          args: [address ?? '0x', 0, toHex('')],
+        })
+
+        return {
+          target: l1StandardBridge[sourceChainId]!.address,
+          allowFailure: false,
+          callData: calldata,
+          value: amount,
+        }
+      }) ],
   })
 
   if (error) {
-    console.error(error)
+    console.error(`FAILED TO SIMULATE L1 BRIDGE TRANSACTION: ${error}`)
   }
 
   const {
     writeContract,
     isPending,
-    data: response,
+    data: hash,
   } = useWriteContract({
     mutation: {
       onSuccess: (hash: Hex) => {
@@ -374,7 +259,7 @@ export const BridgeCard = ({ network }: { network: Network }) => {
               altText="View on explorer"
               onClick={() => {
                 window.open(
-                  getBlockExplorerLink(network.sourceChain, hash),
+                  `${network.sourceChain.blockExplorers!.default.url}/tx/${hash}`,
                   '_blank',
                 )
               }}
@@ -387,10 +272,7 @@ export const BridgeCard = ({ network }: { network: Network }) => {
     },
   })
 
-  const { isLoading: isConfirmationLoading } = useWaitForTransactionReceipt({
-    hash: response,
-    confirmations: 5,
-  })
+  const { isLoading } = useWaitForTransactionReceipt({ hash })
 
   return (
     <Card className="flex-1">
@@ -402,17 +284,17 @@ export const BridgeCard = ({ network }: { network: Network }) => {
               Balance:
             </span>
             <span className="text-md font-medium">
-              {formattedL1Balance || '   '}
+              {truncateDecimal(balance)} {symbol}
             </span>
           </div>
         </div>
         <CardDescription className="mt-2">
-          Bridge your ETH to OP Stack chains
+          Bridge ETH to OP Stack chains
         </CardDescription>
       </CardHeader>
       <CardContent className="flex flex-col gap-8">
         <NetworkSwitches
-          chains={allChains}
+          chains={chains}
           isSelectedByChainId={isSelectedByChainId}
           setIsSelected={setIsSelected}
         />
@@ -421,23 +303,29 @@ export const BridgeCard = ({ network }: { network: Network }) => {
         <Preview selectedChains={selectedChains} amount={amount} />
       </CardContent>
       <CardFooter className="flex gap-2">
-        {chain?.id === network.sourceChain.id ? (
+        {chainId !== sourceChainId ? (
           <Button
-            className="w-full gap-2"
-            disabled={
-              isPending ||
-              !writeContract ||
-              isConfirmationLoading ||
-              !simulatedData?.request
-            }
+            className="w-full"
+            disabled={!switchChain || switchChainPending}
             onClick={() => {
-              writeContract(simulatedData!.request)
-            }}
+              switchChain?.({ chainId: sourceChainId })
+            }}>
+            Switch network to {network.sourceChain.name}
+          </Button>
+        ) : (
+        <Button
+          className="w-full gap-2"
+          onClick={() => writeContract(simulatedData!.request)}
+          disabled={
+            isPending ||
+            isLoading ||
+            selectedChains.length === 0 ||
+            amount === 0n ||
+            !writeContract ||
+            !simulatedData?.request}
           >
             Bridge <ArrowRight className="w-4 h-4" />
           </Button>
-        ) : (
-          <SwitchToChainButton chain={network.sourceChain} />
         )}
       </CardFooter>
     </Card>
