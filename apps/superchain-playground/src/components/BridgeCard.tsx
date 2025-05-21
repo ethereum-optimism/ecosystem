@@ -43,20 +43,27 @@ const NetworkSwitch = ({
   isSelected: boolean
 }) => {
   const { address } = useAccount()
-  const { data } = useBalance({ address: address!, chainId: chain.id, query: { enabled: !!address } })
+  const { data } = useBalance({
+    address: address!,
+    chainId: chain.id,
+    query: { enabled: !!address },
+  })
   const { formatted: balance, symbol } = data ?? { formatted: '-', symbol: '' }
 
   return (
     <div
       className={cn(
-        "w-full flex rounded-lg py-2 px-2 items-center",
-        data ? "cursor-pointer hover:bg-muted/50" : "opacity-50 cursor-not-allowed"
+        'w-full flex rounded-lg py-2 px-2 items-center',
+        data
+          ? 'cursor-pointer hover:bg-muted/50'
+          : 'opacity-50 cursor-not-allowed',
       )}
       onClick={(e) => {
         if (!data) return
         e.stopPropagation()
         onChange(!isSelected)
-      }}>
+      }}
+    >
       <Switch
         id={`${chain.id}-network-switch`}
         checked={isSelected}
@@ -65,14 +72,17 @@ const NetworkSwitch = ({
         onCheckedChange={(checked) => {
           if (!data) return
           onChange(checked)
-        }} />
-      <div className={cn(
-        "pl-2 w-full flex items-center justify-between select-none pr-2 text-sm font-medium leading-none",
-      )}>
+        }}
+      />
+      <div
+        className={cn(
+          'pl-2 w-full flex items-center justify-between select-none pr-2 text-sm font-medium leading-none',
+        )}
+      >
         <div className="flex items-center gap-2">{chain.name}</div>
-          <div className="text-muted-foreground text-sm">
-            {truncateDecimal(balance)} {symbol}
-          </div>
+        <div className="text-muted-foreground text-sm">
+          {truncateDecimal(balance)} {symbol}
+        </div>
       </div>
     </div>
   )
@@ -102,7 +112,7 @@ const NetworkSwitches = ({
               key={chain.id}
               chain={chain}
               isSelected={isSelectedByChainId[chain.id] ?? false}
-              onChange={(isChecked) => setIsSelected(chain.id, isChecked) }
+              onChange={(isChecked) => setIsSelected(chain.id, isChecked)}
             />
           )
         })}
@@ -200,7 +210,11 @@ export const BridgeCard = ({ network }: { network: Network }) => {
   const { address, chainId } = useAccount()
   const { switchChain, isPending: switchChainPending } = useSwitchChain()
 
-  const { data } = useBalance({ address, chainId: sourceChainId, query: { enabled: !!address } })
+  const { data } = useBalance({
+    address,
+    chainId: sourceChainId,
+    query: { enabled: !!address },
+  })
   const { formatted: balance, symbol } = data ?? { formatted: '-', symbol: '' }
 
   const [amount, setAmount] = useState(0n)
@@ -213,7 +227,7 @@ export const BridgeCard = ({ network }: { network: Network }) => {
 
   const selectedChains = chains.filter((chain) => isSelectedByChainId[chain.id])
   const setIsSelected = (chainId: number, isSelected: boolean) => {
-    setIsSelectedByChainId({...isSelectedByChainId, [chainId]: isSelected})
+    setIsSelectedByChainId({ ...isSelectedByChainId, [chainId]: isSelected })
   }
 
   const { data: simulatedData, error } = useSimulateContract({
@@ -221,9 +235,11 @@ export const BridgeCard = ({ network }: { network: Network }) => {
     functionName: 'aggregate3Value',
     address: network.sourceChain.contracts?.multicall3?.address,
     value: amount * BigInt(selectedChains.length),
-    args: [selectedChains.map((selectedChain) => {
-        const l1StandardBridge = selectedChain.contracts
-          ?.l1StandardBridge as { [key: number]: ChainContract }
+    args: [
+      selectedChains.map((selectedChain) => {
+        const l1StandardBridge = selectedChain.contracts?.l1StandardBridge as {
+          [key: number]: ChainContract
+        }
 
         const calldata = encodeFunctionData({
           abi: l1StandardBridgeAbi,
@@ -237,7 +253,8 @@ export const BridgeCard = ({ network }: { network: Network }) => {
           callData: calldata,
           value: amount,
         }
-      }) ],
+      }),
+    ],
   })
 
   if (error) {
@@ -259,7 +276,9 @@ export const BridgeCard = ({ network }: { network: Network }) => {
               altText="View on explorer"
               onClick={() => {
                 window.open(
-                  `${network.sourceChain.blockExplorers!.default.url}/tx/${hash}`,
+                  `${
+                    network.sourceChain.blockExplorers!.default.url
+                  }/tx/${hash}`,
                   '_blank',
                 )
               }}
@@ -309,20 +328,22 @@ export const BridgeCard = ({ network }: { network: Network }) => {
             disabled={!switchChain || switchChainPending}
             onClick={() => {
               switchChain?.({ chainId: sourceChainId })
-            }}>
+            }}
+          >
             Switch network to {network.sourceChain.name}
           </Button>
         ) : (
-        <Button
-          className="w-full gap-2"
-          onClick={() => writeContract(simulatedData!.request)}
-          disabled={
-            isPending ||
-            isLoading ||
-            selectedChains.length === 0 ||
-            amount === 0n ||
-            !writeContract ||
-            !simulatedData?.request}
+          <Button
+            className="w-full gap-2"
+            onClick={() => writeContract(simulatedData!.request)}
+            disabled={
+              isPending ||
+              isLoading ||
+              selectedChains.length === 0 ||
+              amount === 0n ||
+              !writeContract ||
+              !simulatedData?.request
+            }
           >
             Bridge <ArrowRight className="w-4 h-4" />
           </Button>
