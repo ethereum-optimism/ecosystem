@@ -1,3 +1,4 @@
+import type { NetworkName } from '@eth-optimism/viem/chains'
 import { networks } from '@eth-optimism/viem/chains'
 import { Search } from 'lucide-react'
 import { useState } from 'react'
@@ -5,9 +6,9 @@ import type { Chain, Hash } from 'viem'
 import { extractWithdrawalMessageLogs, optimismSepolia } from 'viem/op-stack'
 import { useTransactionReceipt } from 'wagmi'
 
-import { AvailableNetworks } from '@/components/AvailableNetworks'
 import { L2ChainPicker } from '@/components/L2ChainPicker'
 import { NetworkPicker } from '@/components/NetworkPicker'
+import { SupportedNetworks } from '@/components/SupportedNetworks'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { Button } from '@/components/ui/button'
 import {
@@ -27,10 +28,10 @@ import { ReadyToProve } from '@/withdrawal-status/ReadyToProve'
 import { WaitingToFinalize } from '@/withdrawal-status/WaitingToFinalize'
 import { WaitingToProve } from '@/withdrawal-status/WaitingToProve'
 
-const requiredNetworks = [
-  networks['mainnet']!,
-  networks['sepolia']!,
-  networks['interop-alpha']!,
+const supportedNetworkNames: NetworkName[] = [
+  'mainnet',
+  'sepolia',
+  'interop-alpha',
 ]
 
 export const L2ToL1RelayerPage = () => {
@@ -50,62 +51,64 @@ export const L2ToL1RelayerPage = () => {
 
   return (
     <div className="flex flex-col gap-8 w-full max-w-3xl mx-auto px-4 sm:px-6 py-8">
-      <AvailableNetworks requiredNetworks={requiredNetworks} />
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-2xl">
-            L2 to L1 Withdrawal Relayer
-          </CardTitle>
-          <CardDescription>
-            Search for your L2 transaction to execute a manual withdrawal
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="flex flex-col gap-4 sm:flex-row">
-            <NetworkPicker />
+      <SupportedNetworks networks={supportedNetworkNames}>
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-2xl">
+              L2 to L1 Withdrawal Relayer
+            </CardTitle>
+            <CardDescription>
+              Search for your L2 transaction to execute a manual withdrawal
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="flex flex-col gap-4 sm:flex-row">
+              <NetworkPicker networks={supportedNetworkNames} />
+              {network && (
+                <L2ChainPicker
+                  label="Select L2 Chain"
+                  chainId={selectedL2ChainId ?? undefined}
+                  onChange={setSelectedL2ChainId}
+                />
+              )}
+            </div>
 
-            {network && (
-              <L2ChainPicker
-                label="Select L2 Chain"
-                chainId={selectedL2ChainId ?? undefined}
-                onChange={setSelectedL2ChainId}
+            <div className="flex flex-1 gap-2 items-end">
+              <div className="flex-1 space-y-2">
+                <Label htmlFor="txHash">Transaction Hash</Label>
+                <Input
+                  id="txHash"
+                  placeholder="0xabcdbeef..."
+                  value={withdrawalTransactionHashText}
+                  onChange={(e) =>
+                    setWithdrawalTransactionHashText(e.target.value)
+                  }
+                  className="font-mono"
+                />
+              </div>
+              <Button
+                onClick={() =>
+                  setSelectedTransactionHash(
+                    withdrawalTransactionHashText as Hash,
+                  )
+                }
+              >
+                <Search className="w-4 h-4 mr-2" />
+                Search
+              </Button>
+            </div>
+
+            {selectedTransactionHash && selectedL2ChainId && (
+              <WithdrawalTransactionStatus
+                transactionHash={selectedTransactionHash}
+                l2Chain={
+                  network.chains.find((c) => c.id === selectedL2ChainId)!
+                }
               />
             )}
-          </div>
-
-          <div className="flex flex-1 gap-2 items-end">
-            <div className="flex-1 space-y-2">
-              <Label htmlFor="txHash">Transaction Hash</Label>
-              <Input
-                id="txHash"
-                placeholder="0xabcdbeef..."
-                value={withdrawalTransactionHashText}
-                onChange={(e) =>
-                  setWithdrawalTransactionHashText(e.target.value)
-                }
-                className="font-mono"
-              />
-            </div>
-            <Button
-              onClick={() =>
-                setSelectedTransactionHash(
-                  withdrawalTransactionHashText as Hash,
-                )
-              }
-            >
-              <Search className="w-4 h-4 mr-2" />
-              Search
-            </Button>
-          </div>
-
-          {selectedTransactionHash && selectedL2ChainId && (
-            <WithdrawalTransactionStatus
-              transactionHash={selectedTransactionHash}
-              l2Chain={network.chains.find((c) => c.id === selectedL2ChainId)!}
-            />
-          )}
-        </CardContent>
-      </Card>
+          </CardContent>
+        </Card>
+      </SupportedNetworks>
     </div>
   )
 }

@@ -1,7 +1,7 @@
 import type { NetworkName } from '@eth-optimism/viem/chains'
 import { networks } from '@eth-optimism/viem/chains'
 
-import { BridgeCard } from '@/components/BridgeCard'
+import { MultisendBridgeCard } from '@/components/MultisendBridgeCard'
 import { SupportedNetworks } from '@/components/SupportedNetworks'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { useConfig } from '@/stores/useConfig'
@@ -12,7 +12,7 @@ const supportedNetworkNames: NetworkName[] = [
   'supersim',
 ]
 
-export const BridgePage = () => {
+export const BridgeMultisendPage = () => {
   const { networkName, setNetworkName } = useConfig()
   const supportedNetworks = supportedNetworkNames.map((name) => networks[name])
 
@@ -36,7 +36,7 @@ export const BridgePage = () => {
           {supportedNetworks.map((network) => {
             return (
               <TabsContent key={network.name} value={network.name}>
-                <BridgeCard network={network} />
+                <MultisendBridgeCard network={network} />
               </TabsContent>
             )
           })}

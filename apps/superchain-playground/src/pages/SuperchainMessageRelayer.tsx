@@ -1,5 +1,6 @@
 import { contracts, l2ToL2CrossDomainMessengerAbi } from '@eth-optimism/viem'
-import { chainById, networks, supersimL2A } from '@eth-optimism/viem/chains'
+import type { NetworkName } from '@eth-optimism/viem/chains'
+import { chainById, supersimL2A } from '@eth-optimism/viem/chains'
 import {
   AlertCircle,
   AlertTriangle,
@@ -25,9 +26,9 @@ import {
   useWriteContract,
 } from 'wagmi'
 
-import { AvailableNetworks } from '@/components/AvailableNetworks'
 import { DecodedMessageData } from '@/components/DecodedMessageData'
 import { L2ChainPicker } from '@/components/L2ChainPicker'
+import { SupportedNetworks } from '@/components/SupportedNetworks'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Button } from '@/components/ui/button'
 import {
@@ -54,22 +55,21 @@ import type { L2ToL2CrossDomainMessage } from '@/types/L2ToL2CrossDomainMessage'
 
 const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
 
-const requiredNetworks = [networks['interop-alpha']!, networks['supersim']!]
+const supportedNetworkNames: NetworkName[] = ['interop-alpha', 'supersim']
 
 export const SuperchainMessageRelayer = () => {
   return (
     <div className="flex flex-col gap-8 w-full max-w-3xl mx-auto px-4 sm:px-6 py-8">
-      <div className="space-y-2">
-        <h1 className="text-3xl font-bold">Superchain Message Relayer</h1>
-        <p className="text-muted-foreground text-sm max-w-prose">
-          Inspect L2 transactions and relay cross-chain messages within the
-          Superchain. Begin by choosing a source L2 chain and entering a
-          transaction hash.
-        </p>
-      </div>
-
-      <AvailableNetworks requiredNetworks={requiredNetworks} />
-
+      <SupportedNetworks networks={supportedNetworkNames}>
+        <div className="space-y-2">
+          <h1 className="text-3xl font-bold">Superchain Message Relayer</h1>
+          <p className="text-muted-foreground text-sm max-w-prose">
+            Inspect L2 transactions and relay cross-chain messages within the
+            Superchain. Begin by choosing a source L2 chain and entering a
+            transaction hash.
+          </p>
+        </div>
+      </SupportedNetworks>
       <Relayer />
     </div>
   )

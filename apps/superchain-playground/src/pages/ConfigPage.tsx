@@ -128,9 +128,6 @@ export const ConfigPage = () => {
           </Select>
         </div>
         <div key={network.sourceChain.id} className="space-y-3">
-          <h3 className="text-lg font-semibold border-b pb-2">
-            {network.sourceChain.name}
-          </h3>
           <div className="grid grid-cols-[200px,1fr] gap-4 items-center mb-4">
             <Label
               htmlFor={`chain-${network.sourceChain.id}`}

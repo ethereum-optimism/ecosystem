@@ -69,7 +69,7 @@ export const SideNav = () => {
                 icon={ArrowBigRight}
               />
               <NavItem
-                to="/multisend-bridge"
+                to="/bridge-multisend"
                 title="L1 to L2 Multisend Bridge"
                 icon={ArrowBigRight}
               />
@@ -86,7 +86,6 @@ export const SideNav = () => {
           <SidebarGroupLabel>Superchain</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              <NavItem to="/chains" title="Chains" icon={LayersIcon} />
               <NavItem
                 to="/superchain-eth-bridge"
                 title="Superchain ETH Bridge"
@@ -110,6 +109,7 @@ export const SideNav = () => {
           <SidebarGroupLabel>Configuration</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
+              <NavItem to="/chains" title="Chains" icon={LayersIcon} />
               <NavItem to="/config" title="RPC Overrides" icon={Settings} />
             </SidebarMenu>
           </SidebarGroupContent>

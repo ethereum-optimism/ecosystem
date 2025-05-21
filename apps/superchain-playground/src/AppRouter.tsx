@@ -1,11 +1,11 @@
 import { createBrowserRouter, Navigate, RouterProvider } from 'react-router-dom'
 
 import { NavBarLayout } from '@/layouts/NavBarLayout'
+import { BridgeMultisendPage } from '@/pages/BridgeMultisendPage'
 import { BridgePage } from '@/pages/BridgePage'
 import { ChainsPage } from '@/pages/ChainsPage'
 import { ConfigPage } from '@/pages/ConfigPage'
 import { L2ToL1RelayerPage } from '@/pages/L2ToL1RelayerPage'
-import { MultisendBridgePage } from '@/pages/MultisendBridgePage'
 import { SuperchainETHBridgePage } from '@/pages/SuperchainETHBridgePage'
 import { SuperchainMessageRelayer } from '@/pages/SuperchainMessageRelayer'
 import { SuperchainTokenBridgePage } from '@/pages/SuperchainTokenBridgePage'
@@ -23,8 +23,8 @@ const router = createBrowserRouter([
         element: <BridgePage />,
       },
       {
-        path: '/multisend-bridge',
-        element: <MultisendBridgePage />,
+        path: '/bridge-multisend',
+        element: <BridgeMultisendPage />,
       },
       {
         path: '/chains',

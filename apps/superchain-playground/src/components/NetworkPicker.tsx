@@ -1,5 +1,4 @@
 import type { NetworkName } from '@eth-optimism/viem/chains'
-import { networks } from '@eth-optimism/viem/chains'
 
 import {
   Select,
@@ -11,10 +10,10 @@ import {
 import { useConfig } from '@/stores/useConfig'
 
 interface NetworkPickerProps {
-  allowedNetworkNames?: NetworkName[]
+  networks: NetworkName[]
 }
 
-export const NetworkPicker = ({ allowedNetworkNames }: NetworkPickerProps) => {
+export const NetworkPicker = ({ networks }: NetworkPickerProps) => {
   const { networkName, setNetworkName } = useConfig()
 
   return (
@@ -28,17 +27,11 @@ export const NetworkPicker = ({ allowedNetworkNames }: NetworkPickerProps) => {
           <SelectValue placeholder="Select a network" />
         </SelectTrigger>
         <SelectContent>
-          {Object.values(networks)
-            .filter(
-              (network) =>
-                !allowedNetworkNames ||
-                allowedNetworkNames.includes(network.name),
-            )
-            .map((network) => (
-              <SelectItem key={network.name} value={network.name}>
-                {network.name}
-              </SelectItem>
-            ))}
+          {networks.map((network) => (
+            <SelectItem key={network} value={network}>
+              {network}
+            </SelectItem>
+          ))}
         </SelectContent>
       </Select>
     </div>
