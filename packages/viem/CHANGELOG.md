@@ -1,5 +1,11 @@
 # @eth-optimism/viem
 
+## 0.4.9
+
+### Patch Changes
+
+- [#825](https://github.com/ethereum-optimism/ecosystem/pull/825) [`1e7472f`](https://github.com/ethereum-optimism/ecosystem/commit/1e7472f0582288583b5e6807892025f12172092a) Thanks [@hamdiallam](https://github.com/hamdiallam)! - add multicall3 address to supersim l1 chain def
+
 ## 0.4.8
 
 ### Patch Changes
