@@ -1,42 +1,35 @@
 import type { Address } from 'viem'
 import { erc20Abi } from 'viem'
-import { useReadContracts } from 'wagmi'
+import { useBytecode, useReadContracts } from 'wagmi'
 
 export const useTokenInfo = ({
   address,
   chainId,
 }: {
-  address: Address
+  address?: Address
   chainId: number
 }) => {
-  const result = useReadContracts({
+  const { data: code, isLoading: isCodeLoading } = useBytecode({
+    address,
+    chainId,
+  })
+
+  const abi = erc20Abi
+  const { data: tokenData, isLoading: isTokenDataLoading } = useReadContracts({
     contracts: [
-      {
-        address,
-        abi: erc20Abi,
-        functionName: 'symbol',
-        chainId,
-      },
-      {
-        address,
-        abi: erc20Abi,
-        functionName: 'decimals',
-        chainId,
-      },
-      {
-        address,
-        abi: erc20Abi,
-        functionName: 'name',
-        chainId,
-      },
+      { chainId, address, abi, functionName: 'symbol' },
+      { chainId, address, abi, functionName: 'decimals' },
+      { chainId, address, abi, functionName: 'name' },
     ],
   })
-  const [symbol, decimals, name] = result.data || []
+
+  const exists = code && code.length > 2
+  const name = tokenData?.[2]?.result
+  const symbol = tokenData?.[0]?.result
+  const decimals = tokenData?.[1]?.result
 
   return {
-    isLoading: result.isLoading,
-    symbol: symbol?.result,
-    decimals: decimals?.result,
-    name: name?.result,
+    isLoading: isCodeLoading || isTokenDataLoading,
+    tokenData: exists ? { name, symbol, decimals } : undefined,
   }
 }

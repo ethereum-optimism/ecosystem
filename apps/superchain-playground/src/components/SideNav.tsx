@@ -92,6 +92,11 @@ export const SideNav = () => {
                 icon={ArrowLeftRight}
               />
               <NavItem
+                to="/superchain-rct-swaps"
+                title="Superchain RCT Swaps"
+                icon={ArrowLeftRight}
+              />
+              <NavItem
                 to="/superchain-message-relayer"
                 title="Superchain Message Relayer"
                 icon={MessageSquare}

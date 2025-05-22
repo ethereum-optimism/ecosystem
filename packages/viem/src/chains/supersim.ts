@@ -1,15 +1,15 @@
 import { defineChain, multicall3Abi } from 'viem'
 import { chainConfig } from 'viem/op-stack'
 
-import { addressesToViemContractConstant } from '@/addressSet.js'
 import {
-  supersimL2AAddresses,
-  supersimL2BAddresses,
-  supersimL2CAddresses,
-  supersimL2DAddresses,
-  supersimL2EAddresses,
-} from '@/chains/supersimAddresses.js'
+  supersimL2AContracts,
+  supersimL2BContracts,
+  supersimL2CContracts,
+  supersimL2DContracts,
+  supersimL2EContracts,
+} from '@/chains/supersimContracts.js'
 import type { Network } from '@/chains/types.js'
+import { contracts } from '@/contracts.js'
 
 /**
  * L1 chain definition for supersim in non-forked mode
@@ -53,8 +53,8 @@ export const supersimL2A = defineChain({
   sourceId,
   testnet: true,
   contracts: {
-    ...chainConfig.contracts,
-    ...addressesToViemContractConstant(supersimL2AAddresses, sourceId),
+    ...contracts,
+    ...supersimL2AContracts,
   },
 })
 
@@ -75,8 +75,8 @@ export const supersimL2B = defineChain({
   sourceId,
   testnet: true,
   contracts: {
-    ...chainConfig.contracts,
-    ...addressesToViemContractConstant(supersimL2BAddresses, sourceId),
+    ...contracts,
+    ...supersimL2BContracts,
   },
 })
 
@@ -97,8 +97,8 @@ export const supersimL2C = defineChain({
   sourceId,
   testnet: true,
   contracts: {
-    ...chainConfig.contracts,
-    ...addressesToViemContractConstant(supersimL2CAddresses, sourceId),
+    ...contracts,
+    supersimL2CContracts,
   },
 })
 
@@ -119,8 +119,8 @@ export const supersimL2D = defineChain({
   sourceId,
   testnet: true,
   contracts: {
-    ...chainConfig.contracts,
-    ...addressesToViemContractConstant(supersimL2DAddresses, sourceId),
+    ...contracts,
+    supersimL2DContracts,
   },
 })
 
@@ -141,8 +141,8 @@ export const supersimL2E = defineChain({
   sourceId,
   testnet: true,
   contracts: {
-    ...chainConfig.contracts,
-    ...addressesToViemContractConstant(supersimL2EAddresses, sourceId),
+    ...contracts,
+    supersimL2EContracts,
   },
 })
 

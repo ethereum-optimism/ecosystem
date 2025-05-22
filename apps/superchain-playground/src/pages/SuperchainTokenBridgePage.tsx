@@ -59,14 +59,14 @@ export const SuperchainTokenBridgePage = () => {
   const { addTransaction } = useTransactionStore()
 
   const {
-    symbol,
-    decimals = 18,
-    name,
+    tokenData,
     isLoading: isTokenLoading,
   } = useTokenInfo({
     address: tokenAddress as Address,
     chainId: fromChainId,
   })
+
+  const { name, symbol, decimals = 18 } = tokenData || { name: '', symbol: '' }
 
   const amountUnits = parseUnits(amount, decimals)
 
