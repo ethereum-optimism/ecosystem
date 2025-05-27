@@ -105,13 +105,13 @@ export abstract class App {
         await this.__startMetricsServer(this.options.metricsPort)
       }
 
+      // Run pre-main hook
+      await this.preMain()
+
       // Start admin api server if enabled
       if (this.options.adminEnabled) {
         await this.__startAdminApiServer(this.options.adminPort)
       }
-
-      // Run pre-main hook
-      await this.preMain()
 
       // Run main hook
       await this.main()
