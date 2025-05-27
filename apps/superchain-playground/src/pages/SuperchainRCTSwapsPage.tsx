@@ -3,7 +3,7 @@ import type { Network } from '@eth-optimism/viem/chains';
 import { networks, op, unichain } from '@eth-optimism/viem/chains'
 import { useBytecode } from 'wagmi'
 
-import { RCTSwaps } from '@/components/RCTSwaps';
+import { RCTSwapsCard } from '@/components/RCTSwapsCard';
 import { SupportedNetworks } from '@/components/SupportedNetworks'
 import { useConfig } from '@/stores/useConfig'
 
@@ -13,7 +13,6 @@ const InteropActivated = ({network, children}: {network: Network, children: Reac
     chainId: network.chains[0]!.id,
   })
 
-  console.log('bytecode', bytecode)
   if (isLoading) {
     return <div>Verifying interop contracts...</div>
   }
@@ -28,13 +27,11 @@ export const SuperchainRctSwapsPage = () => {
   const { networkName } = useConfig()
   const network = networks[networkName]
 
-  const interopNetwork = networkName !== 'mainnet' ? network : {...network, chains: [op, unichain]}
+  //const interopNetwork = networkName !== 'mainnet' ? network : {...network, chains: [op, unichain]}
   return (
     <div className="flex flex-col gap-4 max-w-2xl mx-auto">
       <SupportedNetworks networks={['mainnet', 'interop-alpha', 'supersim']}>
-        <InteropActivated network={interopNetwork}>
-          <RCTSwaps network={interopNetwork} />
-        </InteropActivated>
+        <RCTSwapsCard />
       </SupportedNetworks>
     </div>
   )
