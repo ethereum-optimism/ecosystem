@@ -1,5 +1,11 @@
 # @eth-optimism/utils-app
 
+## 0.0.6
+
+### Patch Changes
+
+- [#830](https://github.com/ethereum-optimism/ecosystem/pull/830) [`1ef3b6b`](https://github.com/ethereum-optimism/ecosystem/commit/1ef3b6b777619ec85a5f6848f8eca8491279268e) Thanks [@tremarkley](https://github.com/tremarkley)! - fix: start admin api server after preMain hook
+
 ## 0.0.5
 
 ### Patch Changes
