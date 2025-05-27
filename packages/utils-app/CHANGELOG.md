@@ -1,5 +1,11 @@
 # @eth-optimism/utils-app
 
+## 0.0.5
+
+### Patch Changes
+
+- [#829](https://github.com/ethereum-optimism/ecosystem/pull/829) [`40a535f`](https://github.com/ethereum-optimism/ecosystem/commit/40a535fb51f751cf0db265b4c26fb2f1badf6f46) Thanks [@tremarkley](https://github.com/tremarkley)! - Add initializeAdminApi hook
+
 ## 0.0.4
 
 ### Patch Changes
