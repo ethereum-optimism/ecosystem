@@ -21,7 +21,7 @@ export abstract class App {
   // Must be set on run(), available to all hooks
   protected logger!: Logger
   protected options!: OptionValues
-  protected adminApi!: Hono
+  protected adminApi?: Hono
 
   // A signal available to main() to resolve the
   // main promise during something like an interrupt.
@@ -142,6 +142,23 @@ export abstract class App {
   /** Optional hook to run on interruption */
   protected async shutdown(): Promise<void> {}
 
+  /** Optional hook to initialize the admin api */
+  protected initializeAdminApi(): Hono {
+    const adminApi = new Hono()
+    adminApi.use(requestLoggingMiddleware(this.logger))
+
+    adminApi.get('/healthz', (c) => c.text('OK'))
+    adminApi.get('/readyz', async (c) => {
+      const ready = await this.ready().catch((error) => {
+        this.logger.error({ error }, 'failed ready check')
+        return false
+      })
+
+      return c.body(ready ? 'OK' : 'NOT_READY')
+    })
+    return adminApi
+  }
+
   private async __startMetricsServer(port: string): Promise<void> {
     const metricsApi = new Hono()
     metricsApi.use(requestLoggingMiddleware(this.logger))
@@ -158,17 +175,7 @@ export abstract class App {
   }
 
   private async __startAdminApiServer(port: string): Promise<void> {
-    this.adminApi = new Hono()
-    this.adminApi.use(requestLoggingMiddleware(this.logger))
-    this.adminApi.get('/healthz', (c) => c.text('OK'))
-    this.adminApi.get('/readyz', async (c) => {
-      const ready = await this.ready().catch((error) => {
-        this.logger.error({ error }, 'failed ready check')
-        return false
-      })
-
-      return c.body(ready ? 'OK' : 'NOT_READY')
-    })
+    this.adminApi = this.initializeAdminApi()
 
     this.logger.info(`starting admin api server on port :${port}`)
     this.adminServer = serve({

@@ -27,6 +27,8 @@ services:
       context: ../../
       dockerfile: Dockerfile
       target: ponder-interop
+      args:
+        - DOCKER_TARGET=ponder-interop
     env_file: .env
     environment:
       - DATABASE_URL=postgresql://local-db-user:@postgres:5432/ponder-interop
