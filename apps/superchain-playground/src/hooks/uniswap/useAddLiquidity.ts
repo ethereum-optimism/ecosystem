@@ -1,3 +1,4 @@
+import { switchChain } from '@wagmi/core'
 import {
   type AbiParameter,
   type Address,
@@ -5,7 +6,11 @@ import {
   encodeAbiParameters,
   zeroAddress,
 } from 'viem'
-import { useWaitForTransactionReceipt, useWriteContract } from 'wagmi'
+import {
+  useConfig,
+  useWaitForTransactionReceipt,
+  useWriteContract,
+} from 'wagmi'
 
 import { posmAbi } from '@/constants/posmAbi'
 import { POSM_ADDRESS } from '@/hooks/uniswap/addresses'
@@ -39,30 +44,44 @@ const routerAbiParameters: AbiParameter[] = [
   { name: 'params', type: 'bytes[]' },
 ]
 
-// 1 yr from now
-const deadline = BigInt(Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 365)
+interface Token {
+  symbol: string
+  name: string
+  decimals: number
+  address?: Address
+
+  nativeChainId?: number
+  refAddress?: Address
+}
 
 export const useAddLiquidity = ({
   token0,
-  amount0Max,
   token1,
+  amount0Max,
   amount1Max,
   owner,
   liquidityAmount,
 }: {
-  token0: Address
+  token0: Token
+  token1: Token
   amount0Max: number
-  token1: Address
   amount1Max: number
   owner: Address
   liquidityAmount: number
 }) => {
+  const config = useConfig()
+
   const { poolKey } = getPoolId({
-    buyToken: token0,
-    sellToken: token1,
+    token0Address: token0.refAddress ?? token0.address ?? zeroAddress,
+    token1Address: token1.refAddress ?? token1.address ?? zeroAddress,
   })
 
-  const { data: hash, writeContract, isPending, error } = useWriteContract()
+  const {
+    data: hash,
+    writeContractAsync,
+    isPending,
+    error,
+  } = useWriteContract()
   const { isLoading: isConfirming } = useWaitForTransactionReceipt({ hash })
 
   if (error) {
@@ -92,8 +111,12 @@ export const useAddLiquidity = ({
       [mintPositionData, settlePairData],
     ])
 
-    const value = token0 === zeroAddress ? amount0Max : 0
-    writeContract({
+    // todo: fix this (can be token 1)
+    const value = !token0.address ? amount0Max : 0
+    const deadline = BigInt(Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 365)
+
+    await switchChain(config, { chainId: 901 })
+    await writeContractAsync({
       address: POSM_ADDRESS,
       abi: posmAbi,
       functionName: 'modifyLiquidities',

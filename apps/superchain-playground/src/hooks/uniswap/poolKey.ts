@@ -10,16 +10,16 @@ export const poolKeyAbiParameters: AbiParameter[] = [
 ]
 
 export const getPoolId = ({
-  buyToken,
-  sellToken,
+  token0Address,
+  token1Address,
 }: {
-  buyToken: Address
-  sellToken: Address
+  token0Address: Address
+  token1Address: Address
 }) => {
   const [currency0, currency1] =
-    sellToken.toLowerCase() < buyToken.toLowerCase()
-      ? [sellToken, buyToken]
-      : [buyToken, sellToken]
+    token0Address.toLowerCase() < token1Address.toLowerCase()
+      ? [token0Address, token1Address]
+      : [token1Address, token0Address]
 
   const [fee, tickSpacing, hooks] = [0, 60, zeroAddress]
   const encodedPoolKey = encodeAbiParameters(poolKeyAbiParameters, [

@@ -1,4 +1,4 @@
-import type { Address } from 'viem'
+import { type Address, zeroAddress } from 'viem'
 import { useWaitForTransactionReceipt, useWriteContract } from 'wagmi'
 
 import { poolManagerAbi } from '@/constants/poolManagerAbi'
@@ -7,14 +7,27 @@ import { getPoolId } from '@/hooks/uniswap/poolKey'
 
 const SQRT_PRICE_X96_1_1 = 79228162514264337593543950336n
 
+interface Token {
+  symbol: string
+  name: string
+  decimals: number
+  address?: Address
+
+  nativeChainId?: number
+  refAddress?: Address
+}
+
 export const useInitializePool = ({
-  buyToken,
-  sellToken,
+  token0,
+  token1,
 }: {
-  buyToken: Address
-  sellToken: Address
+  token0: Token
+  token1: Token
 }) => {
-  const { poolKey } = getPoolId({ buyToken, sellToken })
+  const { poolKey } = getPoolId({
+    token0Address: token0.refAddress ?? token0.address ?? zeroAddress,
+    token1Address: token1.refAddress ?? token1.address ?? zeroAddress,
+  })
 
   const { data: hash, writeContract, isPending, error } = useWriteContract()
   const { isLoading: isConfirming } = useWaitForTransactionReceipt({ hash })
@@ -28,6 +41,7 @@ export const useInitializePool = ({
 
     writeContract({
       address: POOLMANAGER_ADDRESS,
+      chainId: 901,
       abi: poolManagerAbi,
       functionName: 'initialize',
       args: [poolKey, SQRT_PRICE_X96_1_1],

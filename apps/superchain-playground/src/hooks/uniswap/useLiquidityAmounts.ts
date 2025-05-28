@@ -8,7 +8,7 @@ export const MAX_SQRT_PRICE =
   BigInt(1461446703485210103287273052203988822378723970342)
 
 export const usePriceFromSqrtPriceX96 = (sqrtPriceX96: bigint) => {
-  const sqrt = sqrtPriceX96 / Q96
+  const sqrt = Number(sqrtPriceX96) / Number(Q96)
   return sqrt * sqrt
 }
 

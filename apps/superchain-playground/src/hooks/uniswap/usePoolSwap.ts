@@ -1,79 +1,123 @@
-import type { Address } from 'viem'
+import { switchChain } from '@wagmi/core'
 import {
-  useSimulateContract,
+  type AbiParameter,
+  type Address,
+  concat,
+  encodeAbiParameters,
+  zeroAddress,
+} from 'viem'
+import {
+  useConfig,
   useWaitForTransactionReceipt,
   useWriteContract,
 } from 'wagmi'
 
-import { v4QuoterAbi } from '@/constants/v4QuoterAbi'
-import { V4_QUOTER_ADDRESS } from '@/hooks/uniswap/addresses'
-import { getPoolId } from '@/hooks/uniswap/poolKey'
+import { v4RouterAbi } from '@/constants/v4RouterAbi'
+import { V4_ROUTER_ADDRESS } from '@/hooks/uniswap/addresses'
+import { getPoolId, poolKeyAbiParameters } from '@/hooks/uniswap/poolKey'
+
+const SWAP_EXACT_IN_SINGLE = '0x06'
+const SETTLE_ALL = '0x0c'
+const TAKE_ALL = '0x0f'
+
+const exactInputSingleParameters: AbiParameter[] = [
+  { name: 'poolKey', type: 'tuple', components: poolKeyAbiParameters },
+  { name: 'zeroForOne', type: 'bool' },
+  { name: 'amountIn', type: 'uint256' },
+  { name: 'minAmountOut', type: 'uint256' },
+  { name: 'hookData', type: 'bytes' },
+]
+
+const routerAbiParameters: AbiParameter[] = [
+  { name: 'actions', type: 'bytes' },
+  { name: 'params', type: 'bytes[]' },
+]
+
+const settleAllParameters: AbiParameter[] = [
+  { name: 'currency0', type: 'address' },
+  { name: 'amountIn', type: 'uint256' },
+]
+
+const takeAllParameters: AbiParameter[] = [
+  { name: 'currency0', type: 'address' },
+  { name: 'minAmountOut', type: 'uint256' },
+]
+
+interface Token {
+  symbol: string
+  name: string
+  decimals: number
+  address?: Address
+
+  nativeChainId?: number
+  refAddress?: Address
+}
 
 export const usePoolSwap = ({
-  sellToken,
-  buyToken,
-  amountIn,
+  token0,
+  token1,
+  amount0In,
 }: {
-  sellToken: Address
-  buyToken: Address
-  amountIn: number
+  token0: Token
+  token1: Token
+  amount0In: number
 }) => {
-  const { poolKey } = getPoolId({ buyToken, sellToken })
-  const zeroForOne = sellToken === poolKey.currency0
-  const swapParams = {
-    zeroForOne,
-    amountSpecified: BigInt(amountIn),
-    sqrtPriceLimitX96: 0n,
-  }
+  const config = useConfig()
 
-  const { data, error: simulationError } = useSimulateContract({
-    address: V4_QUOTER_ADDRESS,
-    abi: v4QuoterAbi,
-    functionName: 'quoteExactInputSingle',
-    args: [
-      {
-        poolKey,
-        zeroForOne,
-        exactAmount: swapParams.amountSpecified,
-        hookData: '0x',
-      },
-    ],
+  const { poolKey } = getPoolId({
+    token0Address: token0.refAddress ?? token0.address ?? zeroAddress,
+    token1Address: token1.refAddress ?? token1.address ?? zeroAddress,
   })
-
-  const estimatedAmountOut = data?.result?.[0]
-
-  if (simulationError) {
-    console.error(`ERROR V4 QUOTE SIMULATION: ${simulationError}`)
-  }
-  if (data?.result) {
-    console.log(`QUOTE: ${data.result}`)
-  }
 
   const {
     data: hash,
-    writeContract,
+    writeContractAsync,
     isPending,
-    error: writeError,
+    error,
   } = useWriteContract()
-
   const { isLoading: isConfirming } = useWaitForTransactionReceipt({ hash })
-  if (writeError) {
-    console.error(`ERROR SWAPROUTER WRITE: ${writeError}`)
+
+  if (error) {
+    console.error(`ERROR SWAPPING: ${error}`)
   }
 
-  const swap = () => {
-    if (!estimatedAmountOut) {
-      console.error('SWAP WITH NO DATA')
-      return
-    }
+  const swap = async () => {
+    const actions = concat([SWAP_EXACT_IN_SINGLE, SETTLE_ALL, TAKE_ALL])
+    const swapExactInSingleData = encodeAbiParameters(
+      exactInputSingleParameters,
+      [
+        poolKey,
+        true, // always ETH IN
+        BigInt(amount0In),
+        BigInt(0), // accept any amount out
+        '0x',
+      ],
+    )
 
-    //writeContract({
-    //  address: SWAPROUTER_ADDRESS,
-    //  abi: swapRouterAbi,
-    //  functionName: 'swap',
-    //  args: [poolKey, swapParams],
-    //})
+    const settleAllData = encodeAbiParameters(settleAllParameters, [
+      poolKey.currency0,
+      BigInt(amount0In),
+    ])
+
+    const takeAllData = encodeAbiParameters(takeAllParameters, [
+      poolKey.currency1,
+      BigInt(0),
+    ])
+
+    const routerData = encodeAbiParameters(routerAbiParameters, [
+      actions,
+      [swapExactInSingleData, settleAllData, takeAllData],
+    ])
+
+    await switchChain(config, { chainId: 901 })
+    await writeContractAsync({
+      address: V4_ROUTER_ADDRESS,
+      abi: v4RouterAbi,
+      value: BigInt(amount0In),
+      functionName: 'executeActions',
+      args: [routerData],
+    })
   }
 
-  return { swap, estimatedAmountOut, isPending: isPending || isConfirming }
+  return { swap, isPending: isPending || isConfirming }
 }
