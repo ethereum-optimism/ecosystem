@@ -33,6 +33,7 @@ export const useStateViewPool = ({
     abi: stateViewAbi,
     functionName: 'getSlot0',
     args: [poolId],
+    query: { refetchInterval: 100 },
   })
 
   const sqrtPriceX96 = data?.[0] ?? 0n

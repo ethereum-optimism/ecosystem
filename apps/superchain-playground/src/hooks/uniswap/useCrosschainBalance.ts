@@ -24,7 +24,7 @@ export const useCrosschainBalance = ({
     address: owner,
     chainId: 901,
     token: token.address,
-    query: { enabled: useLocalBalance },
+    query: { enabled: useLocalBalance, refetchInterval: 100 },
   })
 
   // remote balance (native tokens on chain B)
@@ -34,7 +34,7 @@ export const useCrosschainBalance = ({
     address: owner,
     token: token.address,
     chainId: token.nativeChainId,
-    query: { enabled: useRemoteBalance },
+    query: { enabled: useRemoteBalance, refetchInterval: 100 },
   })
 
   // ref balance (native token on other chain)
@@ -44,12 +44,19 @@ export const useCrosschainBalance = ({
     address: owner,
     chainId: 901,
     token: token.refAddress,
-    query: { enabled: useLocalRefBalance },
+    query: { enabled: useLocalRefBalance, refetchInterval: 100 },
   })
 
-  return (
-    (useLocalBalance ? localBalance?.value ?? 0n : 0n) +
-    (useRemoteBalance ? remoteBalance?.value ?? 0n : 0n) +
-    (useLocalRefBalance ? localRefBalance?.value ?? 0n : 0n)
-  )
+  const localBalanceValue = useLocalBalance ? localBalance?.value ?? 0n : 0n
+  const remoteBalanceValue = useRemoteBalance ? remoteBalance?.value ?? 0n : 0n
+  const localRefBalanceValue = useLocalRefBalance
+    ? localRefBalance?.value ?? 0n
+    : 0n
+
+  const balance = localBalanceValue + localRefBalanceValue + remoteBalanceValue
+  return {
+    balance,
+    localRefBalance: localRefBalanceValue,
+    remoteBalance: remoteBalanceValue,
+  }
 }

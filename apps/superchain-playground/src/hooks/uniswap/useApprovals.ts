@@ -50,7 +50,7 @@ export const useApproval = ({
     address: owner,
     chainId: 901,
     token: token.refAddress ?? token.address ?? zeroAddress,
-    query: { enabled: !!owner },
+    query: { enabled: !!owner, refetchInterval: 100 },
   })
 
   const { data: localPermit2Allowance } = useReadContract({
@@ -58,7 +58,7 @@ export const useApproval = ({
     chainId: 901,
     abi: permit2Abi,
     functionName: 'allowance',
-    query: { enabled: !!token.address },
+    query: { enabled: !!token.address, refetchInterval: 100 },
     args: [
       owner,
       token.refAddress ?? token.address ?? zeroAddress,
@@ -72,7 +72,7 @@ export const useApproval = ({
     chainId: token.refAddress ? 902 : 901,
     functionName: 'allowance',
     args: [owner, token.refAddress ?? PERMIT2_ADDRESS],
-    query: { enabled: !!token.address },
+    query: { enabled: !!token.address, refetchInterval: 100 },
   })
 
   const requiresApproval = (() => {

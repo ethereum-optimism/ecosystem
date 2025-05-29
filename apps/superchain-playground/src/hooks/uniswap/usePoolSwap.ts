@@ -7,6 +7,7 @@ import {
   zeroAddress,
 } from 'viem'
 import {
+  useAccount,
   useConfig,
   useWaitForTransactionReceipt,
   useWriteContract,
@@ -69,6 +70,10 @@ export const usePoolSwap = ({
     token1Address: token1.refAddress ?? token1.address ?? zeroAddress,
   })
 
+  const inputAddress = token0.address ?? zeroAddress
+  const zeroForOne = inputAddress === poolKey.currency0
+  const isInputEth = inputAddress === zeroAddress
+
   const {
     data: hash,
     writeContractAsync,
@@ -87,7 +92,7 @@ export const usePoolSwap = ({
       exactInputSingleParameters,
       [
         poolKey,
-        true, // always ETH IN
+        zeroForOne,
         BigInt(amount0In),
         BigInt(0), // accept any amount out
         '0x',
@@ -95,12 +100,16 @@ export const usePoolSwap = ({
     )
 
     const settleAllData = encodeAbiParameters(settleAllParameters, [
-      poolKey.currency0,
+      inputAddress === poolKey.currency0
+        ? poolKey.currency0
+        : poolKey.currency1,
       BigInt(amount0In),
     ])
 
     const takeAllData = encodeAbiParameters(takeAllParameters, [
-      poolKey.currency1,
+      inputAddress === poolKey.currency0
+        ? poolKey.currency1
+        : poolKey.currency0,
       BigInt(0),
     ])
 
@@ -113,7 +122,7 @@ export const usePoolSwap = ({
     await writeContractAsync({
       address: V4_ROUTER_ADDRESS,
       abi: v4RouterAbi,
-      value: BigInt(amount0In),
+      value: BigInt(isInputEth ? amount0In : 0),
       functionName: 'executeActions',
       args: [routerData],
     })

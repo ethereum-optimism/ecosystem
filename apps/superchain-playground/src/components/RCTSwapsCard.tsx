@@ -64,8 +64,12 @@ function TokenAmountInput({
 }: TokenAmountInputProps) {
   const { address } = useAccount()
 
-  const balance = useCrosschainBalance({ owner: address, token: selectedToken })
+  const { balance, remoteBalance, localRefBalance } = useCrosschainBalance({ owner: address, token: selectedToken })
   const formattedBalance = balance ? truncateDecimal((Number(balance) / 10 ** selectedToken.decimals).toString()) : '-'
+
+  if (selectedToken.refAddress) {
+    console.log(`LocalRefBalance: ${truncateDecimal((Number(localRefBalance) / 10 ** selectedToken.decimals).toString())}, RemoteBalance: ${truncateDecimal((Number(remoteBalance) / 10 ** selectedToken.decimals).toString())}`)
+  }
 
   return (
     <div className="flex flex-col gap-2">
@@ -236,9 +240,13 @@ export const RCTSwaps = () => {
   const [amount0, setAmount0] = useState(0)
 
   const price = usePriceFromSqrtPriceX96(sqrtPriceX96)
-  const amount1 = sqrtPriceX96 ? amount0 * Number(price) : 0
+  const amount1 = sqrtPriceX96 ? !token0.address ? amount0 * Number(price) : amount0 / Number(price) : 0
 
-  const balance = useCrosschainBalance({ owner: address, token: token0 })
+  const { approve: approve0, isPending: pendingApproval0, requiresApproval: requiresApproval0 } = useApproval({
+    token: token0!,
+    amount: BigInt(amount0 * 10 ** token0!.decimals) + 1n,
+    owner: address ?? zeroAddress,
+  })
 
   const { swap, isPending } = usePoolSwap({
     ...tokenPair,
@@ -254,7 +262,6 @@ export const RCTSwaps = () => {
         onTokenChange={setToken0}
         amount={amount0}
         onAmountChange={setAmount0}
-        balance={truncateDecimal(balance.toString())}
       />
       <TokenAmountInput
         label="Buy"
@@ -266,11 +273,21 @@ export const RCTSwaps = () => {
         readOnly
       />
       <Button
-        onClick={() => swap()}
+        onClick={() => {
+          if (requiresApproval0) approve0()
+          else swap()
+        }}
         disabled={!initialized || !amount0 || amount0 === 0 || isPending}
         className="w-full"
       >
-        {initialized ? (isPending ? 'Swapping...' : 'Swap') : 'Uninitialized Pool'}
+        { !address ? 'Connect Wallet' :
+
+            !initialized ? 'Uninitialized Pool' :
+
+            (requiresApproval0) ? (pendingApproval0) ? 'Approving...' : 'Approve' :
+
+            isPending ? 'Swapping...' : 'Swap'
+        }
       </Button>
     </div>
   )
