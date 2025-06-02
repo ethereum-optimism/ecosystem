@@ -1,44 +1,79 @@
-import { type Address, zeroAddress } from 'viem'
-import { useReadContract } from 'wagmi'
+import { switchChain } from '@wagmi/core'
+import { type Chain, zeroAddress } from 'viem'
+import {
+  useConfig,
+  useReadContract,
+  useWaitForTransactionReceipt,
+  useWriteContract,
+} from 'wagmi'
 
+import { getPoolId } from '@/actions/uniswap/getPoolId'
+import { poolManagerAbi } from '@/constants/poolManagerAbi'
 import { stateViewAbi } from '@/constants/stateViewAbi'
-import { STATEVIEW_ADDRESS } from '@/hooks/uniswap/addresses'
-import { getPoolId } from '@/hooks/uniswap/poolKey'
+import {
+  POOLMANAGER_ADDRESS,
+  STATEVIEW_ADDRESS,
+} from '@/hooks/uniswap/addresses'
+import type { Token } from '@/types/Token'
 
-interface Token {
-  symbol: string
-  name: string
-  decimals: number
-  address?: Address
+const SQRT_PRICE_X96_1_1 = 79228162514264337593543950336n
 
-  nativeChainId?: number
-  refAddress?: Address
-}
-
-export const useStateViewPool = ({
-  token0,
-  token1,
+export const usePool = ({
+  tokenPair,
+  selectedChain,
 }: {
-  token0: Token
-  token1: Token
+  tokenPair: { token0: Token; token1: Token }
+  selectedChain: Chain
 }) => {
-  const { poolId } = getPoolId({
+  const { token0, token1 } = tokenPair
+
+  const config = useConfig()
+  const { poolKey, poolId } = getPoolId({
     token0Address: token0.refAddress ?? token0.address ?? zeroAddress,
     token1Address: token1.refAddress ?? token1.address ?? zeroAddress,
   })
 
+  const {
+    data: hash,
+    writeContractAsync,
+    isPending,
+    error,
+  } = useWriteContract()
+
+  if (error) {
+    console.error(`ERROR INITIALIZING POOL: ${error}`)
+  }
+
+  const { isLoading: isConfirming } = useWaitForTransactionReceipt({ hash })
+
+  const initializePool = async () => {
+    const { currency0: c0, currency1: c1 } = poolKey
+    console.log(`INITIALIZING POOL: (${c0},${c1})`)
+
+    await switchChain(config, { chainId: selectedChain.id })
+    await writeContractAsync({
+      address: POOLMANAGER_ADDRESS,
+      chainId: selectedChain.id,
+      abi: poolManagerAbi,
+      functionName: 'initialize',
+      args: [poolKey, SQRT_PRICE_X96_1_1],
+    })
+  }
+
   const { data } = useReadContract({
     address: STATEVIEW_ADDRESS,
-    chainId: 901,
+    chainId: selectedChain.id,
     abi: stateViewAbi,
     functionName: 'getSlot0',
     args: [poolId],
-    query: { refetchInterval: 100 },
+    query: { refetchInterval: 200 },
   })
 
   const sqrtPriceX96 = data?.[0] ?? 0n
   return {
     sqrtPriceX96,
     initialized: sqrtPriceX96 > 0n,
+    initializePool,
+    isPending: isPending || isConfirming,
   }
 }

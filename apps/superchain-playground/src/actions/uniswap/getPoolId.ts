@@ -9,19 +9,26 @@ export const poolKeyAbiParameters: AbiParameter[] = [
   { name: 'hooks', type: 'address' },
 ]
 
+export interface GetPoolIdParams {
+  token0Address: Address
+  token1Address: Address
+  fee?: number
+  tickSpacing?: number
+  hooks?: Address
+}
+
 export const getPoolId = ({
   token0Address,
   token1Address,
-}: {
-  token0Address: Address
-  token1Address: Address
-}) => {
+  fee = 0,
+  tickSpacing = 60,
+  hooks = zeroAddress,
+}: GetPoolIdParams) => {
   const [currency0, currency1] =
     token0Address.toLowerCase() < token1Address.toLowerCase()
       ? [token0Address, token1Address]
       : [token1Address, token0Address]
 
-  const [fee, tickSpacing, hooks] = [0, 60, zeroAddress]
   const encodedPoolKey = encodeAbiParameters(poolKeyAbiParameters, [
     getAddress(currency0),
     getAddress(currency1),
@@ -32,5 +39,5 @@ export const getPoolId = ({
 
   const poolId = keccak256(encodedPoolKey)
   const poolKey = { currency0, currency1, fee, tickSpacing, hooks }
-  return { poolId, poolKey, encodedPoolKey }
+  return { poolId, poolKey }
 }

@@ -7,15 +7,14 @@ import {
   zeroAddress,
 } from 'viem'
 import {
-  useAccount,
   useConfig,
   useWaitForTransactionReceipt,
   useWriteContract,
 } from 'wagmi'
 
+import { getPoolId, poolKeyAbiParameters } from '@/actions/uniswap/getPoolId'
 import { v4RouterAbi } from '@/constants/v4RouterAbi'
 import { V4_ROUTER_ADDRESS } from '@/hooks/uniswap/addresses'
-import { getPoolId, poolKeyAbiParameters } from '@/hooks/uniswap/poolKey'
 
 const SWAP_EXACT_IN_SINGLE = '0x06'
 const SETTLE_ALL = '0x0c'

@@ -12,9 +12,9 @@ import {
   useWriteContract,
 } from 'wagmi'
 
+import { getPoolId, poolKeyAbiParameters } from '@/actions/uniswap/getPoolId'
 import { posmAbi } from '@/constants/posmAbi'
 import { POSM_ADDRESS } from '@/hooks/uniswap/addresses'
-import { getPoolId, poolKeyAbiParameters } from '@/hooks/uniswap/poolKey'
 import {
   MAX_USABLE_TICK,
   MIN_USABLE_TICK,
