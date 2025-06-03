@@ -1,15 +1,7 @@
 import { type Address } from 'viem'
 import { useBalance as useBalanceWagmi } from 'wagmi'
 
-interface Token {
-  symbol: string
-  name: string
-  decimals: number
-  address?: Address
-
-  nativeChainId?: number
-  refAddress?: Address
-}
+import type { Token } from '@/types/Token'
 
 export const useCrosschainBalance = ({
   token,

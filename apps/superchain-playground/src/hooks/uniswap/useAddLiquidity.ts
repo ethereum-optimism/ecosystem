@@ -1,12 +1,8 @@
 import { switchChain } from '@wagmi/core'
+import { type AbiParameter, type Chain } from 'viem'
+import { concat, encodeAbiParameters, zeroAddress } from 'viem'
 import {
-  type AbiParameter,
-  type Address,
-  concat,
-  encodeAbiParameters,
-  zeroAddress,
-} from 'viem'
-import {
+  useAccount,
   useConfig,
   useWaitForTransactionReceipt,
   useWriteContract,
@@ -19,6 +15,7 @@ import {
   MAX_USABLE_TICK,
   MIN_USABLE_TICK,
 } from '@/hooks/uniswap/useLiquidityAmounts'
+import type { Token } from '@/types/Token'
 
 const MINT_LIQUIDITY_ACTION = '0x02'
 const SETTLE_PAIR_ACTION = '0x0d'
@@ -44,37 +41,25 @@ const routerAbiParameters: AbiParameter[] = [
   { name: 'params', type: 'bytes[]' },
 ]
 
-interface Token {
-  symbol: string
-  name: string
-  decimals: number
-  address?: Address
-
-  nativeChainId?: number
-  refAddress?: Address
-}
-
 export const useAddLiquidity = ({
-  token0,
-  token1,
-  amount0Max,
-  amount1Max,
-  owner,
-  liquidityAmount,
+  tokenPair,
+  amounts,
+  chain,
 }: {
-  token0: Token
-  token1: Token
-  amount0Max: number
-  amount1Max: number
-  owner: Address
-  liquidityAmount: number
+  tokenPair: { token0: Token; token1: Token }
+  amounts: { amount0Max: number; amount1Max: number; liquidityAmount: number }
+  chain: Chain
 }) => {
-  const config = useConfig()
+  const { token0, token1 } = tokenPair
+  const { amount0Max, amount1Max, liquidityAmount } = amounts
 
   const { poolKey } = getPoolId({
     token0Address: token0.refAddress ?? token0.address ?? zeroAddress,
     token1Address: token1.refAddress ?? token1.address ?? zeroAddress,
   })
+
+  const { address } = useAccount()
+  const config = useConfig()
 
   const {
     data: hash,
@@ -97,7 +82,7 @@ export const useAddLiquidity = ({
       BigInt(liquidityAmount),
       BigInt(amount0Max),
       BigInt(amount1Max),
-      owner,
+      address,
       '0x',
     ])
 
@@ -115,7 +100,7 @@ export const useAddLiquidity = ({
     const value = !token0.address ? amount0Max : 0
     const deadline = BigInt(Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 365)
 
-    await switchChain(config, { chainId: 901 })
+    await switchChain(config, { chainId: chain.id })
     await writeContractAsync({
       address: POSM_ADDRESS,
       abi: posmAbi,

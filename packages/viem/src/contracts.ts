@@ -7,6 +7,9 @@ import { chainConfig } from 'viem/op-stack'
  */
 export const contracts = {
   ...chainConfig.contracts,
+  create2Deployer: {
+    address: '0x13b0D85CcB8bf860b6b79AF3029fCA081AE9beF2',
+  },
   crossL2Inbox: {
     address: '0x4200000000000000000000000000000000000022',
   },

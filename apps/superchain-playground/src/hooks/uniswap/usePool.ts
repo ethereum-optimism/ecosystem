@@ -20,10 +20,10 @@ const SQRT_PRICE_X96_1_1 = 79228162514264337593543950336n
 
 export const usePool = ({
   tokenPair,
-  selectedChain,
+  chain,
 }: {
   tokenPair: { token0: Token; token1: Token }
-  selectedChain: Chain
+  chain: Chain
 }) => {
   const { token0, token1 } = tokenPair
 
@@ -39,21 +39,19 @@ export const usePool = ({
     isPending,
     error,
   } = useWriteContract()
+  const { isLoading: isConfirming } = useWaitForTransactionReceipt({ hash })
 
   if (error) {
     console.error(`ERROR INITIALIZING POOL: ${error}`)
   }
 
-  const { isLoading: isConfirming } = useWaitForTransactionReceipt({ hash })
-
   const initializePool = async () => {
     const { currency0: c0, currency1: c1 } = poolKey
     console.log(`INITIALIZING POOL: (${c0},${c1})`)
 
-    await switchChain(config, { chainId: selectedChain.id })
+    await switchChain(config, { chainId: chain.id })
     await writeContractAsync({
       address: POOLMANAGER_ADDRESS,
-      chainId: selectedChain.id,
       abi: poolManagerAbi,
       functionName: 'initialize',
       args: [poolKey, SQRT_PRICE_X96_1_1],
@@ -62,7 +60,7 @@ export const usePool = ({
 
   const { data } = useReadContract({
     address: STATEVIEW_ADDRESS,
-    chainId: selectedChain.id,
+    chainId: chain.id,
     abi: stateViewAbi,
     functionName: 'getSlot0',
     args: [poolId],

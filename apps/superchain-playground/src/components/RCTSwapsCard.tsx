@@ -1,17 +1,19 @@
 import type { Network } from '@eth-optimism/viem/chains'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@radix-ui/react-tabs';
 import { useState } from 'react'
-import { type Chain, zeroAddress } from 'viem';
+import { type Chain } from 'viem';
 import { useAccount } from 'wagmi'
 
+import { getReferenceAddress } from '@/actions/uniswap/getReferenceAddress'
 import { TokenAmountInput } from '@/components/TokenAmountInput'
 import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
+import { ERC20_ADDRESS, ERC20REF_ADDRESS, POSM_ADDRESS } from '@/hooks/uniswap/addresses';
 import { useAddLiquidity } from '@/hooks/uniswap/useAddLiquidity';
 import { useApproval } from '@/hooks/uniswap/useApprovals';
 import { getLiquidityForAmounts, MAX_SQRT_PRICE, MIN_SQRT_PRICE, usePriceFromSqrtPriceX96 } from '@/hooks/uniswap/useLiquidityAmounts';
+import { usePool } from '@/hooks/uniswap/usePool'
 import { usePoolSwap } from '@/hooks/uniswap/usePoolSwap';
-import { usePool } from '@/hooks/uniswap/useStateViewPool'
 import { useTokenList } from '@/stores/useTokenList'
 import type { Token } from '@/types/Token'
 
@@ -48,7 +50,7 @@ export const RCTPools = ({ network, selectedChain }: { network: Network, selecte
   const [token1, setToken1] = useState<Token>(tokens[1]!)
   const tokenPair = { token0, token1 }
 
-  const { sqrtPriceX96, initialized, initializePool, isPending: pendingInitialization } = usePool({ tokenPair, selectedChain })
+  const { sqrtPriceX96, initialized, initializePool, isPending: pendingInitialization } = usePool({ tokenPair, chain: selectedChain })
 
   const [amount0, setAmount0] = useState(0)
 
@@ -62,24 +64,23 @@ export const RCTPools = ({ network, selectedChain }: { network: Network, selecte
   const { approve: approve0, isPending: pendingApproval0, requiresApproval: requiresApproval0 } = useApproval({
     token: token0!,
     amount: BigInt(amount0 * 10 ** token0!.decimals) + 1n,
-    owner: address ?? zeroAddress,
+    chain: selectedChain,
   })
 
   const { approve: approve1, isPending: pendingApproval1, requiresApproval: requiresApproval1 } = useApproval({
     token: token1!,
     amount: BigInt(amount1 * 10 ** token1!.decimals) + 1n,
-    owner: address ?? zeroAddress,
+    chain: selectedChain,
   })
 
   const { addLiquidity, isPending: pendingAddLiquidity } = useAddLiquidity({
-    ...tokenPair,
-
-    // pad with 1 for some rounding errors
-    amount0Max: amount0 * 10 ** token0!.decimals + 1,
-    amount1Max: amount1 * 10 ** token1!.decimals + 1,
-
-    owner: address ?? zeroAddress,
-    liquidityAmount: Number(liquidityAmount),
+    tokenPair,
+    amounts: {
+      amount0Max: amount0 * 10 ** token0!.decimals + 1,
+      amount1Max: amount1 * 10 ** token1!.decimals + 1,
+      liquidityAmount: Number(liquidityAmount),
+    },
+    chain: selectedChain,
   })
 
   return (
@@ -143,7 +144,19 @@ export const RCTSwaps = ({ network, selectedChain }: { network: Network, selecte
   const [token1, setToken1] = useState<Token>(tokens[1]!)
   const tokenPair = { token0, token1 }
 
-  const { initialized, sqrtPriceX96 } = usePool({ tokenPair, selectedChain })
+  const token = {
+    symbol: 'TST.B',
+    name: 'Test Coin',
+    address: ERC20_ADDRESS,
+    decimals: 18,
+    nativeChainId: 902,
+    refAddress: ERC20REF_ADDRESS,
+  } as Token
+
+  const refAddress = getReferenceAddress(token, 901, POSM_ADDRESS)
+  console.log(`EXPECTED: ${token.refAddress}, GOT: ${refAddress}`)
+
+  const { initialized, sqrtPriceX96 } = usePool({ tokenPair, chain: selectedChain })
 
   const [amount0, setAmount0] = useState(0)
 
@@ -153,12 +166,13 @@ export const RCTSwaps = ({ network, selectedChain }: { network: Network, selecte
   const { approve: approve0, isPending: pendingApproval0, requiresApproval: requiresApproval0 } = useApproval({
     token: token0!,
     amount: BigInt(amount0 * 10 ** token0!.decimals) + 1n,
-    owner: address ?? zeroAddress,
+    chain: selectedChain,
   })
 
   const { swap, isPending } = usePoolSwap({
-    ...tokenPair,
+    tokenPair,
     amount0In: amount0 * 10 ** token0!.decimals,
+    chain: selectedChain,
   })
 
   return (

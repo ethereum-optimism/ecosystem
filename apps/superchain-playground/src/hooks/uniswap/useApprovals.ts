@@ -1,6 +1,7 @@
 import { switchChain } from '@wagmi/core'
-import { type Address, erc20Abi, zeroAddress } from 'viem'
+import { type Chain, erc20Abi, zeroAddress } from 'viem'
 import {
+  useAccount,
   useBalance,
   useConfig,
   useReadContract,
@@ -10,16 +11,7 @@ import {
 
 import { permit2Abi } from '@/constants/permit2Abi'
 import { PERMIT2_ADDRESS, POSM_ADDRESS } from '@/hooks/uniswap/addresses'
-
-interface Token {
-  symbol: string
-  name: string
-  decimals: number
-  address?: Address
-
-  nativeChainId?: number
-  refAddress?: Address
-}
+import type { Token } from '@/types/Token'
 
 const MAX_UINT160 = 2n ** 160n - 1n
 const MAX_UINT48 = 2n ** 48n - 1n
@@ -27,12 +19,13 @@ const MAX_UINT48 = 2n ** 48n - 1n
 export const useApproval = ({
   token,
   amount,
-  owner,
+  chain,
 }: {
   token: Token
   amount: bigint
-  owner: Address
+  chain: Chain
 }) => {
+  const { address } = useAccount()
   const config = useConfig()
   const {
     data: hash,
@@ -47,20 +40,20 @@ export const useApproval = ({
   }
 
   const { data: balance } = useBalance({
-    address: owner,
-    chainId: 901,
+    address,
+    chainId: chain.id,
     token: token.refAddress ?? token.address ?? zeroAddress,
-    query: { enabled: !!owner, refetchInterval: 100 },
+    query: { enabled: !!address, refetchInterval: 100 },
   })
 
   const { data: localPermit2Allowance } = useReadContract({
     address: PERMIT2_ADDRESS,
-    chainId: 901,
+    chainId: chain.id,
     abi: permit2Abi,
     functionName: 'allowance',
     query: { enabled: !!token.address, refetchInterval: 100 },
     args: [
-      owner,
+      address!,
       token.refAddress ?? token.address ?? zeroAddress,
       POSM_ADDRESS,
     ],
@@ -69,9 +62,9 @@ export const useApproval = ({
   const { data: remoteRefAllowance } = useReadContract({
     abi: erc20Abi,
     address: token.address,
-    chainId: token.refAddress ? 902 : 901,
+    chainId: token.nativeChainId ?? chain.id,
     functionName: 'allowance',
-    args: [owner, token.refAddress ?? PERMIT2_ADDRESS],
+    args: [address!, token.refAddress ?? PERMIT2_ADDRESS],
     query: { enabled: !!token.address, refetchInterval: 100 },
   })
 
@@ -94,7 +87,7 @@ export const useApproval = ({
     if (!requiresApproval) return
 
     if (token.refAddress) {
-      await switchChain(config, { chainId: 902 })
+      await switchChain(config, { chainId: token.nativeChainId ?? chain.id })
 
       // globally approve ref token if needed
       if (!remoteRefAllowance || remoteRefAllowance < amount) {
@@ -136,7 +129,7 @@ export const useApproval = ({
         })
       }
     } else {
-      await switchChain(config, { chainId: 901 })
+      await switchChain(config, { chainId: chain.id })
 
       // approve permit2
       if (!remoteRefAllowance || remoteRefAllowance < amount) {

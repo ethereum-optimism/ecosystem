@@ -1,11 +1,6 @@
 import { switchChain } from '@wagmi/core'
-import {
-  type AbiParameter,
-  type Address,
-  concat,
-  encodeAbiParameters,
-  zeroAddress,
-} from 'viem'
+import { type AbiParameter, type Chain } from 'viem'
+import { concat, encodeAbiParameters, zeroAddress } from 'viem'
 import {
   useConfig,
   useWaitForTransactionReceipt,
@@ -15,6 +10,7 @@ import {
 import { getPoolId, poolKeyAbiParameters } from '@/actions/uniswap/getPoolId'
 import { v4RouterAbi } from '@/constants/v4RouterAbi'
 import { V4_ROUTER_ADDRESS } from '@/hooks/uniswap/addresses'
+import type { Token } from '@/types/Token'
 
 const SWAP_EXACT_IN_SINGLE = '0x06'
 const SETTLE_ALL = '0x0c'
@@ -43,31 +39,22 @@ const takeAllParameters: AbiParameter[] = [
   { name: 'minAmountOut', type: 'uint256' },
 ]
 
-interface Token {
-  symbol: string
-  name: string
-  decimals: number
-  address?: Address
-
-  nativeChainId?: number
-  refAddress?: Address
-}
-
 export const usePoolSwap = ({
-  token0,
-  token1,
+  tokenPair,
   amount0In,
+  chain,
 }: {
-  token0: Token
-  token1: Token
+  tokenPair: { token0: Token; token1: Token }
   amount0In: number
+  chain: Chain
 }) => {
-  const config = useConfig()
-
+  const { token0, token1 } = tokenPair
   const { poolKey } = getPoolId({
     token0Address: token0.refAddress ?? token0.address ?? zeroAddress,
     token1Address: token1.refAddress ?? token1.address ?? zeroAddress,
   })
+
+  const config = useConfig()
 
   const inputAddress = token0.address ?? zeroAddress
   const zeroForOne = inputAddress === poolKey.currency0
@@ -117,7 +104,7 @@ export const usePoolSwap = ({
       [swapExactInSingleData, settleAllData, takeAllData],
     ])
 
-    await switchChain(config, { chainId: 901 })
+    await switchChain(config, { chainId: chain.id })
     await writeContractAsync({
       address: V4_ROUTER_ADDRESS,
       abi: v4RouterAbi,
