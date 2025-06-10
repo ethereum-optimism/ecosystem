@@ -1,4 +1,5 @@
-import { contracts, l2ToL2CrossDomainMessengerAbi } from '@eth-optimism/viem'
+import { contracts } from '@eth-optimism/viem'
+import { l2ToL2CrossDomainMessengerAbi } from '@eth-optimism/viem/abis'
 import type { RelayCrossDomainMessageParameters } from '@eth-optimism/viem/actions/interop'
 import { useCallback } from 'react'
 import { useConfig, useWriteContract } from 'wagmi'

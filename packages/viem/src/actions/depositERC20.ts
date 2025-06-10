@@ -20,7 +20,7 @@ import {
   simulateContract,
 } from 'viem/actions'
 
-import { optimismMintableERC20Abi, standardBridgeAbi } from '@/abis.js'
+import { optimismMintableERC20Abi, standardBridgeAbi } from '@/abis/index.js'
 import type { BaseWriteContractActionParameters } from '@/core/baseWriteAction.js'
 import { baseWriteAction } from '@/core/baseWriteAction.js'
 import type { GetContractAddressParameter } from '@/types/utils.js'

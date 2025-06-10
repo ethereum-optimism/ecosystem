@@ -13,7 +13,7 @@ import type {
 } from 'viem'
 import { estimateContractGas, simulateContract } from 'viem/actions'
 
-import { l2ToL2CrossDomainMessengerAbi } from '@/abis.js'
+import { l2ToL2CrossDomainMessengerAbi } from '@/abis/index.js'
 import type { BuildExecutingMessageReturnType } from '@/actions/interop/buildExecutingMessage.js'
 import { contracts } from '@/contracts.js'
 import {

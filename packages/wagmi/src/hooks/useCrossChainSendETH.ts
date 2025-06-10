@@ -1,4 +1,5 @@
-import { contracts, superchainETHBridgeAbi } from '@eth-optimism/viem'
+import { contracts } from '@eth-optimism/viem'
+import { superchainETHBridgeAbi } from '@eth-optimism/viem/abis'
 import type { SendETHParameters } from '@eth-optimism/viem/actions/interop'
 import { useCallback } from 'react'
 import { useConfig, useWriteContract } from 'wagmi'

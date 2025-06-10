@@ -16,6 +16,11 @@ const CONTRACTS = [
   'SuperchainETHBridge',
   'SuperchainTokenBridge',
 ]
+const OPTIMISM_CONTRACT_VERSIONS = {
+  SuperchainERC20: '0.8.28',
+}
+const INTEROP_LIB_PATH = path.join('..', '..', 'lib', 'interop-lib')
+const EXPERIMENTAL_INTEROP_LIB_CONTRACTS = ['GasTank']
 
 /** Utility Functions */
 
@@ -37,7 +42,16 @@ async function main() {
   try {
     execSync('forge build', { cwd: contractsBedrockPath, stdio: 'inherit' })
   } catch (error) {
-    throw new Error(`Failed to generate forge artifacts: ${error}`)
+    throw new Error(
+      `Failed to generate contracts-bedrock forge artifacts: ${error}`,
+    )
+  }
+
+  const interopLibPath = path.join(INTEROP_LIB_PATH)
+  try {
+    execSync('forge build', { cwd: interopLibPath, stdio: 'inherit' })
+  } catch (error) {
+    throw new Error(`Failed to generate interop-lib forge artifacts: ${error}`)
   }
 
   // eslint-disable-next-line no-console
@@ -55,18 +69,46 @@ async function main() {
       contractsBedrockPath,
       'forge-artifacts',
       `${contract}.sol`,
-      `${contract}.json`,
+      `${contract}${
+        OPTIMISM_CONTRACT_VERSIONS[contract]
+          ? `.${OPTIMISM_CONTRACT_VERSIONS[contract]}`
+          : ''
+      }.json`,
     )
     const abi = JSON.parse(fs.readFileSync(abiPath, 'utf8')).abi
     return { name: contract, exportName: camelCase(contract), abi }
   })
+
+  const experimentalInteropLibContracts =
+    EXPERIMENTAL_INTEROP_LIB_CONTRACTS.map((contract) => {
+      // eslint-disable-next-line no-console
+      console.log(`Generating Abi for ${contract}`)
+      const abiPath = path.join(
+        interopLibPath,
+        'out',
+        `${contract}.sol`,
+        `${contract}.json`,
+      )
+      const abi = JSON.parse(fs.readFileSync(abiPath, 'utf8')).abi
+      return { name: contract, exportName: camelCase(contract), abi }
+    })
 
   const fileContents = eta.render('abis', {
     contracts,
     prettyPrintJSON: (obj: any) => JSON.stringify(obj, null, 2),
   })
 
-  fs.writeFileSync(`src/abis.ts`, fileContents)
+  fs.writeFileSync(`src/abis/index.ts`, fileContents)
+
+  const experimentalInteropLibFileContents = eta.render('abis', {
+    contracts: experimentalInteropLibContracts,
+    prettyPrintJSON: (obj: any) => JSON.stringify(obj, null, 2),
+  })
+
+  fs.writeFileSync(
+    `src/abis/experimental/index.ts`,
+    experimentalInteropLibFileContents,
+  )
 }
 
 ;(async () => {

@@ -1,4 +1,4 @@
-import { l2ToL2CrossDomainMessengerAbi } from '@eth-optimism/viem'
+import { l2ToL2CrossDomainMessengerAbi } from '@eth-optimism/viem/abis'
 import {
   encodeAbiParameters,
   encodeEventTopics,

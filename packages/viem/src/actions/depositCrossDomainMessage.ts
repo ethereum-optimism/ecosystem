@@ -14,7 +14,7 @@ import type {
 } from 'viem'
 import { estimateContractGas, simulateContract } from 'viem/actions'
 
-import { crossDomainMessengerAbi } from '@/abis.js'
+import { crossDomainMessengerAbi } from '@/abis/index.js'
 import {
   baseWriteAction,
   type BaseWriteContractActionParameters,

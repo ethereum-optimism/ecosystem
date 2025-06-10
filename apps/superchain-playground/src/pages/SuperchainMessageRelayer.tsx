@@ -1,4 +1,5 @@
-import { contracts, l2ToL2CrossDomainMessengerAbi } from '@eth-optimism/viem'
+import { contracts } from '@eth-optimism/viem'
+import { l2ToL2CrossDomainMessengerAbi } from '@eth-optimism/viem/abis'
 import type { NetworkName } from '@eth-optimism/viem/chains'
 import { chainById, supersimL2A } from '@eth-optimism/viem/chains'
 import {
