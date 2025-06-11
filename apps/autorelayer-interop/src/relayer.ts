@@ -1,4 +1,5 @@
 import { contracts } from '@eth-optimism/viem'
+import { gasTankAbi } from '@eth-optimism/viem/abis/experimental'
 import {
   relayCrossDomainMessage,
   simulateRelayCrossDomainMessage,
@@ -6,8 +7,18 @@ import {
 import type { MessageIdentifier } from '@eth-optimism/viem/types/interop'
 import { encodeAccessList } from '@eth-optimism/viem/utils/interop'
 import type { Logger } from 'pino'
-import type { PublicClient, WalletClient } from 'viem'
+import type {
+  AccessList,
+  Account,
+  Address,
+  Chain,
+  Client,
+  Hex,
+  PublicClient,
+  WalletClient,
+} from 'viem'
 import { isAddress, isHash, isHex } from 'viem'
+import { simulateContract, writeContract } from 'viem/actions'
 import { z } from 'zod'
 
 import { jsonFetchParams } from '@/utils/jsonFetchParams.js'
@@ -38,6 +49,15 @@ export interface RelayerConfig {
   ponderInteropApi: string
   clients: Record<number, PublicClient>
   walletClients: Record<number, WalletClient>
+  gasTankAddress?: Address
+}
+
+export interface RelayMessageParams {
+  id: MessageIdentifier
+  payload: Hex
+  account: Account
+  accessList: AccessList
+  chain: Chain | null
 }
 
 export class Relayer {
@@ -109,21 +129,18 @@ export class Relayer {
 
       const params = { id, payload, accessList, account, chain: null }
 
-      // simulate
       try {
-        await simulateRelayCrossDomainMessage(client, params)
+        const relayTxHash = await this.relayMessage({
+          publicClient: client,
+          walletClient,
+          params,
+          msgLog,
+        })
+        msgLog.info({ relayTxHash }, 'submitted message relay')
       } catch (error) {
-        msgLog.warn({ err: error }, 'failed simulation, skipping...')
+        msgLog.warn('relay failed, skipping...')
         continue
       }
-
-      // submit (skip local gas estimation if sponsored)
-      const gas = !walletClient.account ? null : undefined
-      const relayTxHash = await relayCrossDomainMessage(walletClient, {
-        ...params,
-        gas,
-      })
-      msgLog.info({ relayTxHash }, 'submitted message relay')
     }
   }
 
@@ -160,6 +177,109 @@ export class Relayer {
       return msgs
     } catch (error) {
       throw new Error(`failed pending messages fetch: ${error}`)
+    }
+  }
+
+  private async relayMessage({
+    publicClient,
+    walletClient,
+    params,
+    msgLog,
+  }: {
+    publicClient: PublicClient
+    walletClient: WalletClient
+    params: RelayMessageParams
+    msgLog: Logger
+  }): Promise<Hex> {
+    if (this.config.gasTankAddress) {
+      return this.relayMessageViaGasTank({
+        publicClient,
+        walletClient,
+        gasTankAddress: this.config.gasTankAddress,
+        params,
+        msgLog,
+      })
+    }
+
+    return this.relayMessageViaL2ToL2CrossDomainMessenger({
+      publicClient,
+      walletClient,
+      params,
+      msgLog,
+    })
+  }
+
+  private async relayMessageViaL2ToL2CrossDomainMessenger({
+    publicClient,
+    walletClient,
+    params,
+    msgLog,
+  }: {
+    publicClient: PublicClient
+    walletClient: Client
+    params: RelayMessageParams
+    msgLog: Logger
+  }): Promise<Hex> {
+    try {
+      await simulateRelayCrossDomainMessage(publicClient, params)
+    } catch (error) {
+      msgLog.warn({ err: error }, 'relay failed simulation')
+      throw error
+    }
+
+    // submit (skip local gas estimation if sponsored)
+    const gas = !walletClient.account ? null : undefined
+    try {
+      return relayCrossDomainMessage(walletClient, {
+        ...params,
+        gas,
+      })
+    } catch (error) {
+      msgLog.warn({ err: error }, 'relay failed')
+      throw error
+    }
+  }
+
+  private async relayMessageViaGasTank({
+    publicClient,
+    walletClient,
+    gasTankAddress,
+    params,
+    msgLog,
+  }: {
+    publicClient: PublicClient
+    walletClient: WalletClient
+    gasTankAddress: Address
+    params: RelayMessageParams
+    msgLog: Logger
+  }): Promise<Hex> {
+    const { id, payload, account, accessList, chain } = params
+    try {
+      await simulateContract(publicClient, {
+        address: gasTankAddress,
+        abi: gasTankAbi,
+        functionName: 'relayMessage',
+        args: [id, payload],
+        account,
+        accessList,
+      })
+    } catch (error) {
+      msgLog.warn({ err: error }, 'relay failed simulation')
+      throw error
+    }
+    try {
+      return await writeContract(walletClient, {
+        abi: gasTankAbi,
+        address: gasTankAddress,
+        functionName: 'relayMessage',
+        args: [id, payload],
+        account,
+        accessList,
+        chain,
+      })
+    } catch (error) {
+      msgLog.warn({ err: error }, 'relay failed')
+      throw error
     }
   }
 }
