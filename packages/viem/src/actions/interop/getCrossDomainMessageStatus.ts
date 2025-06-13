@@ -2,7 +2,7 @@ import type { Account, Chain, Client, Transport } from 'viem'
 import { BaseError } from 'viem'
 import { getChainId, readContract } from 'viem/actions'
 
-import { l2ToL2CrossDomainMessengerAbi } from '@/abis.js'
+import { l2ToL2CrossDomainMessengerAbi } from '@/abis/index.js'
 import { contracts } from '@/contracts.js'
 import type { CrossDomainMessage } from '@/types/interop/cdm.js'
 import { hashCrossDomainMessage } from '@/utils/interop/hashCrossDomainMessage.js'

@@ -23,11 +23,13 @@
     "./actions/interop": "./dist/actions/interop/index.js",
     "./chains": "./dist/chains/index.js",
     "./types/interop": "./dist/types/interop/index.js",
-    "./utils/interop": "./dist/utils/interop/index.js"
+    "./utils/interop": "./dist/utils/interop/index.js",
+    "./abis": "./dist/abis/index.js",
+    "./abis/experimental": "./dist/abis/experimental/index.js"
   },
   "scripts": {
     "build": "tsc && resolve-tspaths",
-    "clean": "rm -rf build types tsconfig.tsbuildinfo",
+    "clean": "rm -rf dist types tsconfig.tsbuildinfo",
     "docs": "typedoc",
     "gen:abis": "pnpm dlx tsx ./scripts/abigen",
     "gen:chains": "pnpm dlx tsx ./scripts/chaingen",

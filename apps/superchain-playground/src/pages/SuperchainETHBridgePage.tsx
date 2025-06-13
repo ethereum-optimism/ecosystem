@@ -1,4 +1,5 @@
-import { contracts, superchainETHBridgeAbi } from '@eth-optimism/viem'
+import { contracts } from '@eth-optimism/viem'
+import { superchainETHBridgeAbi } from '@eth-optimism/viem/abis'
 import type { NetworkName } from '@eth-optimism/viem/chains'
 import { networks } from '@eth-optimism/viem/chains'
 import { CheckCircle2, Loader2, Send } from 'lucide-react'

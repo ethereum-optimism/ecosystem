@@ -4,9 +4,6 @@ export type { MessageIdentifier } from '@/types/interop/executingMessage.js'
 // contracts
 export { contracts } from '@/contracts.js'
 
-// abis (TEMPORARY)
-export * from '@/abis.js'
-
 // utils
 // fix
 

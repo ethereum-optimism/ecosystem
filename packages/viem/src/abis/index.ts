@@ -605,11 +605,6 @@ export const crossL2InboxAbi = [
   },
   {
     type: 'error',
-    name: 'NoExecutingDeposits',
-    inputs: [],
-  },
-  {
-    type: 'error',
     name: 'NotInAccessList',
     inputs: [],
   },
@@ -748,6 +743,45 @@ export const l2ToL2CrossDomainMessengerAbi = [
   },
   {
     type: 'function',
+    name: 'resendMessage',
+    inputs: [
+      {
+        name: '_destination',
+        type: 'uint256',
+        internalType: 'uint256',
+      },
+      {
+        name: '_nonce',
+        type: 'uint256',
+        internalType: 'uint256',
+      },
+      {
+        name: '_sender',
+        type: 'address',
+        internalType: 'address',
+      },
+      {
+        name: '_target',
+        type: 'address',
+        internalType: 'address',
+      },
+      {
+        name: '_message',
+        type: 'bytes',
+        internalType: 'bytes',
+      },
+    ],
+    outputs: [
+      {
+        name: 'messageHash_',
+        type: 'bytes32',
+        internalType: 'bytes32',
+      },
+    ],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
     name: 'sendMessage',
     inputs: [
       {
@@ -768,12 +802,31 @@ export const l2ToL2CrossDomainMessengerAbi = [
     ],
     outputs: [
       {
-        name: '',
+        name: 'messageHash_',
         type: 'bytes32',
         internalType: 'bytes32',
       },
     ],
     stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    name: 'sentMessages',
+    inputs: [
+      {
+        name: '',
+        type: 'bytes32',
+        internalType: 'bytes32',
+      },
+    ],
+    outputs: [
+      {
+        name: '',
+        type: 'bool',
+        internalType: 'bool',
+      },
+    ],
+    stateMutability: 'view',
   },
   {
     type: 'function',
@@ -829,6 +882,12 @@ export const l2ToL2CrossDomainMessengerAbi = [
         indexed: true,
         internalType: 'bytes32',
       },
+      {
+        name: 'returnDataHash',
+        type: 'bytes32',
+        indexed: false,
+        internalType: 'bytes32',
+      },
     ],
     anonymous: false,
   },
@@ -877,6 +936,11 @@ export const l2ToL2CrossDomainMessengerAbi = [
   {
     type: 'error',
     name: 'IdOriginNotL2ToL2CrossDomainMessenger',
+    inputs: [],
+  },
+  {
+    type: 'error',
+    name: 'InvalidMessage',
     inputs: [],
   },
   {

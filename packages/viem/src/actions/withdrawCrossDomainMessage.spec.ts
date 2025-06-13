@@ -2,7 +2,7 @@ import { parseEventLogs } from 'viem'
 import { extractWithdrawalMessageLogs } from 'viem/op-stack'
 import { describe, expect, it } from 'vitest'
 
-import { crossDomainMessengerAbi } from '@/abis.js'
+import { crossDomainMessengerAbi } from '@/abis/index.js'
 import {
   estimateWithdrawCrossDomainMessageGas,
   simulateWithdrawCrossDomainMessage,

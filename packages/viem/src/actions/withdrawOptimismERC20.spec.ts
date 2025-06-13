@@ -6,7 +6,7 @@ import {
 } from 'viem/op-stack'
 import { describe, expect, it } from 'vitest'
 
-import { optimismMintableERC20FactoryAbi } from '@/abis.js'
+import { optimismMintableERC20FactoryAbi } from '@/abis/index.js'
 import { depositERC20 } from '@/actions/depositERC20.js'
 import {
   estimateWithdrawOptimismERC20Gas,

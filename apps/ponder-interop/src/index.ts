@@ -57,20 +57,44 @@ ponder.on('L2ToL2CDM:SentMessage', async ({ event, context }) => {
   })
 })
 
-ponder.on('L2ToL2CDM:RelayedMessage', async ({ event, context }) => {
-  await context.db.insert(relayedMessages).values({
-    messageHash: event.args.messageHash,
+ponder.on(
+  'L2ToL2CDM:RelayedMessage(uint256 indexed source, uint256 indexed messageNonce, bytes32 indexed messageHash)',
+  async ({ event, context }) => {
+    await context.db.insert(relayedMessages).values({
+      messageHash: event.args.messageHash,
 
-    // metadata
-    relayer: event.transaction.from,
+      // metadata
+      relayer: event.transaction.from,
 
-    // log fields
-    logIndex: BigInt(event.log.logIndex),
-    logPayload: encodeMessagePayload(event.log as Log),
+      // log fields
+      logIndex: BigInt(event.log.logIndex),
+      logPayload: encodeMessagePayload(event.log as Log),
 
-    // general info
-    timestamp: event.block.timestamp,
-    blockNumber: event.block.number,
-    transactionHash: event.transaction.hash,
-  })
-})
+      // general info
+      timestamp: event.block.timestamp,
+      blockNumber: event.block.number,
+      transactionHash: event.transaction.hash,
+    })
+  },
+)
+
+ponder.on(
+  'L2ToL2CDM:RelayedMessage(uint256 indexed source, uint256 indexed messageNonce, bytes32 indexed messageHash, bytes32 returnDataHash)',
+  async ({ event, context }) => {
+    await context.db.insert(relayedMessages).values({
+      messageHash: event.args.messageHash,
+
+      // metadata
+      relayer: event.transaction.from,
+
+      // log fields
+      logIndex: BigInt(event.log.logIndex),
+      logPayload: encodeMessagePayload(event.log as Log),
+
+      // general info
+      timestamp: event.block.timestamp,
+      blockNumber: event.block.number,
+      transactionHash: event.transaction.hash,
+    })
+  },
+)

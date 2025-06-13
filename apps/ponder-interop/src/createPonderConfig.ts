@@ -1,9 +1,9 @@
-import {
-  contracts as addrs,
-  l2ToL2CrossDomainMessengerAbi,
-} from '@eth-optimism/viem'
-import { createConfig } from 'ponder'
+import { contracts as addrs } from '@eth-optimism/viem'
+import { l2ToL2CrossDomainMessengerAbi } from '@eth-optimism/viem/abis'
+import { createConfig, mergeAbis } from 'ponder'
 import type { Transport } from 'viem'
+
+import { l2ToL2CrossDomainMessengerAbi as l2ToL2CrossDomainMessengerDevnetAbi } from '@/abis/devnetAbis'
 
 export type Endpoint = {
   chainId: number
@@ -29,7 +29,10 @@ export function createPonderConfig(endpoints: Endpoints) {
   // relevant interop contracts
   const contracts = {
     L2ToL2CDM: {
-      abi: l2ToL2CrossDomainMessengerAbi,
+      abi: mergeAbis([
+        l2ToL2CrossDomainMessengerAbi,
+        l2ToL2CrossDomainMessengerDevnetAbi,
+      ]),
       startBlock: 1,
       network: Object.fromEntries(
         Object.keys(endpoints).map((key) => [

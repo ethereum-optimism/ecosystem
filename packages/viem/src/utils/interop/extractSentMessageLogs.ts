@@ -1,7 +1,7 @@
 import type { Log } from 'viem'
 import { parseEventLogs } from 'viem'
 
-import { l2ToL2CrossDomainMessengerAbi } from '@/abis.js'
+import { l2ToL2CrossDomainMessengerAbi } from '@/abis/index.js'
 
 export type ExtractSentMessageLogsParameters = { logs: Log[] }
 export type ExtractSentMessageLogsReturnType = Array<
