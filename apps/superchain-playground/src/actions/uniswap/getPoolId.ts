@@ -10,24 +10,25 @@ export const poolKeyAbiParameters: AbiParameter[] = [
 ]
 
 export interface GetPoolIdParams {
-  token0Address: Address
-  token1Address: Address
+  currency0: Address
+  currency1: Address
   fee?: number
   tickSpacing?: number
   hooks?: Address
 }
 
 export const getPoolId = ({
-  token0Address,
-  token1Address,
+  currency0,
+  currency1,
   fee = 0,
   tickSpacing = 60,
   hooks = zeroAddress,
 }: GetPoolIdParams) => {
-  const [currency0, currency1] =
-    token0Address.toLowerCase() < token1Address.toLowerCase()
-      ? [token0Address, token1Address]
-      : [token1Address, token0Address]
+  // Enforced ordering of currency0 and currency1
+  ;[currency0, currency1] =
+    currency0.toLowerCase() < currency1.toLowerCase()
+      ? [currency0, currency1]
+      : [currency1, currency0]
 
   const encodedPoolKey = encodeAbiParameters(poolKeyAbiParameters, [
     getAddress(currency0),

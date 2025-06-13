@@ -6,6 +6,5 @@ export type Token = {
   decimals: number
 
   address?: Address
-  refAddress?: Address // TODO: Remove this
   nativeChainId?: number
 }

@@ -1,5 +1,5 @@
 import { switchChain } from '@wagmi/core'
-import { type AbiParameter, type Chain } from 'viem'
+import type { AbiParameter, Chain, ChainContract } from 'viem'
 import { concat, encodeAbiParameters, zeroAddress } from 'viem'
 import {
   useConfig,
@@ -7,9 +7,9 @@ import {
   useWriteContract,
 } from 'wagmi'
 
+import { getCurrency } from '@/actions/uniswap/getCurrency'
 import { getPoolId, poolKeyAbiParameters } from '@/actions/uniswap/getPoolId'
 import { v4RouterAbi } from '@/constants/v4RouterAbi'
-import { V4_ROUTER_ADDRESS } from '@/hooks/uniswap/addresses'
 import type { Token } from '@/types/Token'
 
 const SWAP_EXACT_IN_SINGLE = '0x06'
@@ -50,8 +50,8 @@ export const usePoolSwap = ({
 }) => {
   const { token0, token1 } = tokenPair
   const { poolKey } = getPoolId({
-    token0Address: token0.refAddress ?? token0.address ?? zeroAddress,
-    token1Address: token1.refAddress ?? token1.address ?? zeroAddress,
+    currency0: getCurrency(token0, chain),
+    currency1: getCurrency(token1, chain),
   })
 
   const config = useConfig()
@@ -60,17 +60,10 @@ export const usePoolSwap = ({
   const zeroForOne = inputAddress === poolKey.currency0
   const isInputEth = inputAddress === zeroAddress
 
-  const {
-    data: hash,
-    writeContractAsync,
-    isPending,
-    error,
-  } = useWriteContract()
-  const { isLoading: isConfirming } = useWaitForTransactionReceipt({ hash })
+  const routerAddress = (chain.contracts?.uniV4Router as ChainContract).address
 
-  if (error) {
-    console.error(`ERROR SWAPPING: ${error}`)
-  }
+  const { data: hash, writeContractAsync, isPending } = useWriteContract()
+  const { isLoading: isConfirming } = useWaitForTransactionReceipt({ hash })
 
   const swap = async () => {
     const actions = concat([SWAP_EXACT_IN_SINGLE, SETTLE_ALL, TAKE_ALL])
@@ -104,14 +97,18 @@ export const usePoolSwap = ({
       [swapExactInSingleData, settleAllData, takeAllData],
     ])
 
-    await switchChain(config, { chainId: chain.id })
-    await writeContractAsync({
-      address: V4_ROUTER_ADDRESS,
-      abi: v4RouterAbi,
-      value: BigInt(isInputEth ? amount0In : 0),
-      functionName: 'executeActions',
-      args: [routerData],
-    })
+    try {
+      await switchChain(config, { chainId: chain.id })
+      await writeContractAsync({
+        address: routerAddress,
+        abi: v4RouterAbi,
+        value: BigInt(isInputEth ? amount0In : 0),
+        functionName: 'executeActions',
+        args: [routerData],
+      })
+    } catch (error) {
+      console.error(`ERROR SWAPPING: ${error}`)
+    }
   }
 
   return { swap, isPending: isPending || isConfirming }

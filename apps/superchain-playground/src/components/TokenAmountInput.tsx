@@ -1,5 +1,4 @@
 import type { Network } from '@eth-optimism/viem/chains'
-import { useAccount } from 'wagmi'
 
 import { TokenPicker } from '@/components/TokenPicker'
 import { Input } from '@/components/ui/input'
@@ -25,10 +24,9 @@ export const TokenAmountInput = ({
   onAmountChange,
   readOnly = false,
 }: TokenAmountInputProps) => {
-  const { address } = useAccount()
 
   // TODO: Remove cross chain balance when executor contract is used
-  const { balance } = useCrosschainBalance({ owner: address, token: selectedToken })
+  const { balance } = useCrosschainBalance({ token: selectedToken })
   const formattedBalance = balance ? truncateDecimal((Number(balance) / 10 ** selectedToken.decimals).toString()) : '-'
 
   return (

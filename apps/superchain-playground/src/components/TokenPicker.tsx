@@ -48,7 +48,6 @@ export const TokenPicker = ({ tokens, selectedToken, setSelectedToken }: TokenPi
               </div>
               </SelectItem>
             ))}
-
           <AddTokenModal network={networks[networkName]} />
         </SelectContent>
       </Select>

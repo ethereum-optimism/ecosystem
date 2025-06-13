@@ -1,5 +1,5 @@
 import { switchChain } from '@wagmi/core'
-import { type Chain, zeroAddress } from 'viem'
+import type { Chain, ChainContract } from 'viem'
 import {
   useConfig,
   useReadContract,
@@ -7,13 +7,10 @@ import {
   useWriteContract,
 } from 'wagmi'
 
+import { getCurrency } from '@/actions/uniswap/getCurrency'
 import { getPoolId } from '@/actions/uniswap/getPoolId'
 import { poolManagerAbi } from '@/constants/poolManagerAbi'
 import { stateViewAbi } from '@/constants/stateViewAbi'
-import {
-  POOLMANAGER_ADDRESS,
-  STATEVIEW_ADDRESS,
-} from '@/hooks/uniswap/addresses'
 import type { Token } from '@/types/Token'
 
 const SQRT_PRICE_X96_1_1 = 79228162514264337593543950336n
@@ -27,39 +24,23 @@ export const usePool = ({
 }) => {
   const { token0, token1 } = tokenPair
 
-  const config = useConfig()
-  const { poolKey, poolId } = getPoolId({
-    token0Address: token0.refAddress ?? token0.address ?? zeroAddress,
-    token1Address: token1.refAddress ?? token1.address ?? zeroAddress,
-  })
+  const currency0 = getCurrency(token0, chain)
+  const currency1 = getCurrency(token1, chain)
+  const { poolKey, poolId } = getPoolId({ currency0, currency1 })
 
-  const {
-    data: hash,
-    writeContractAsync,
-    isPending,
-    error,
-  } = useWriteContract()
+  const config = useConfig()
+  const { data: hash, writeContractAsync, isPending } = useWriteContract()
   const { isLoading: isConfirming } = useWaitForTransactionReceipt({ hash })
 
-  if (error) {
-    console.error(`ERROR INITIALIZING POOL: ${error}`)
-  }
+  const poolManagerAddress = (
+    chain.contracts?.uniV4PoolManager as ChainContract
+  ).address
 
-  const initializePool = async () => {
-    const { currency0: c0, currency1: c1 } = poolKey
-    console.log(`INITIALIZING POOL: (${c0},${c1})`)
+  const stateViewAddress = (chain.contracts?.uniV4StateView as ChainContract)
+    .address
 
-    await switchChain(config, { chainId: chain.id })
-    await writeContractAsync({
-      address: POOLMANAGER_ADDRESS,
-      abi: poolManagerAbi,
-      functionName: 'initialize',
-      args: [poolKey, SQRT_PRICE_X96_1_1],
-    })
-  }
-
-  const { data } = useReadContract({
-    address: STATEVIEW_ADDRESS,
+  const { data: slot0 } = useReadContract({
+    address: stateViewAddress,
     chainId: chain.id,
     abi: stateViewAbi,
     functionName: 'getSlot0',
@@ -67,7 +48,23 @@ export const usePool = ({
     query: { refetchInterval: 200 },
   })
 
-  const sqrtPriceX96 = data?.[0] ?? 0n
+  const initializePool = async () => {
+    console.log(`INITIALIZING POOL: (${currency0},${currency1})`)
+
+    try {
+      await switchChain(config, { chainId: chain.id })
+      await writeContractAsync({
+        abi: poolManagerAbi,
+        address: poolManagerAddress,
+        functionName: 'initialize',
+        args: [poolKey, SQRT_PRICE_X96_1_1],
+      })
+    } catch (error) {
+      console.error(`ERROR INITIALIZING POOL: ${error}`)
+    }
+  }
+
+  const sqrtPriceX96 = slot0?.[0] ?? 0n
   return {
     sqrtPriceX96,
     initialized: sqrtPriceX96 > 0n,

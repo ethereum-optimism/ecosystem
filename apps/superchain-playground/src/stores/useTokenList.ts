@@ -2,7 +2,6 @@ import { contracts } from '@eth-optimism/viem'
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 
-import { ERC20_ADDRESS, ERC20REF_ADDRESS } from '@/hooks/uniswap/addresses'
 import type { Token } from '@/types/Token'
 
 export const DEFAULT_TOKENS: Token[] = [
@@ -16,10 +15,9 @@ export const DEFAULT_TOKENS: Token[] = [
   {
     symbol: 'TST.B',
     name: 'Test Coin',
-    address: ERC20_ADDRESS,
+    address: '0x0DB6AcbF5F2A2C9144acb5D7C22932E758cb4D30',
     decimals: 18,
     nativeChainId: 902,
-    refAddress: ERC20REF_ADDRESS,
   } as Token,
 
   // TODO: Add OP/UNI/USDC etc etc

@@ -1,19 +1,14 @@
-import { type Address } from 'viem'
-import { useBalance as useBalanceWagmi } from 'wagmi'
+import { useAccount, useBalance as useBalanceWagmi } from 'wagmi'
 
 import type { Token } from '@/types/Token'
 
-export const useCrosschainBalance = ({
-  token,
-  owner,
-}: {
-  token: Token
-  owner?: Address
-}) => {
+export const useCrosschainBalance = ({ token }: { token: Token }) => {
+  const { address } = useAccount()
+
   // native balance (native tokens + eth)
-  const useLocalBalance = !!owner && !token.refAddress
+  const useLocalBalance = !!address && !token.refAddress
   const { data: localBalance } = useBalanceWagmi({
-    address: owner,
+    address: address,
     chainId: 901,
     token: token.address,
     query: { enabled: useLocalBalance, refetchInterval: 100 },
@@ -21,9 +16,9 @@ export const useCrosschainBalance = ({
 
   // remote balance (native tokens on chain B)
   const useRemoteBalance =
-    !!owner && !!token.address && token.nativeChainId === 902
+    !!address && !!token.address && token.nativeChainId === 902
   const { data: remoteBalance } = useBalanceWagmi({
-    address: owner,
+    address: address,
     token: token.address,
     chainId: token.nativeChainId,
     query: { enabled: useRemoteBalance, refetchInterval: 100 },
@@ -31,9 +26,9 @@ export const useCrosschainBalance = ({
 
   // ref balance (native token on other chain)
   const useLocalRefBalance =
-    !!owner && !!token.refAddress && token.nativeChainId === 902
+    !!address && !!token.refAddress && token.nativeChainId === 902
   const { data: localRefBalance } = useBalanceWagmi({
-    address: owner,
+    address: address,
     chainId: 901,
     token: token.refAddress,
     query: { enabled: useLocalRefBalance, refetchInterval: 100 },

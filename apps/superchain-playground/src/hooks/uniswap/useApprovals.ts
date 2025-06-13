@@ -1,5 +1,6 @@
+import { contracts } from '@eth-optimism/viem'
 import { switchChain } from '@wagmi/core'
-import { type Chain, erc20Abi, zeroAddress } from 'viem'
+import { type Chain, type ChainContract, erc20Abi } from 'viem'
 import {
   useAccount,
   useBalance,
@@ -9,8 +10,8 @@ import {
   useWriteContract,
 } from 'wagmi'
 
+import { getCurrency } from '@/actions/uniswap/getCurrency'
 import { permit2Abi } from '@/constants/permit2Abi'
-import { PERMIT2_ADDRESS, POSM_ADDRESS } from '@/hooks/uniswap/addresses'
 import type { Token } from '@/types/Token'
 
 const MAX_UINT160 = 2n ** 160n - 1n
@@ -27,6 +28,11 @@ export const useApproval = ({
 }) => {
   const { address } = useAccount()
   const config = useConfig()
+  const currency = getCurrency(token, chain)
+
+  const permit2Address = contracts.permit2.address
+  const posmAddress = (chain.contracts?.uniV4Posm as ChainContract).address
+
   const {
     data: hash,
     writeContractAsync,
@@ -42,43 +48,42 @@ export const useApproval = ({
   const { data: balance } = useBalance({
     address,
     chainId: chain.id,
-    token: token.refAddress ?? token.address ?? zeroAddress,
-    query: { enabled: !!address, refetchInterval: 100 },
+    token: currency,
+    query: { refetchInterval: 200 },
   })
 
-  const { data: localPermit2Allowance } = useReadContract({
-    address: PERMIT2_ADDRESS,
+  const { data: permit2Allowance } = useReadContract({
+    address: permit2Address,
     chainId: chain.id,
     abi: permit2Abi,
     functionName: 'allowance',
-    query: { enabled: !!token.address, refetchInterval: 100 },
-    args: [
-      address!,
-      token.refAddress ?? token.address ?? zeroAddress,
-      POSM_ADDRESS,
-    ],
+    query: { enabled: !!token.address, refetchInterval: 200 },
+    args: [address!, currency, posmAddress],
   })
 
-  const { data: remoteRefAllowance } = useReadContract({
+  const { data: allowance } = useReadContract({
     abi: erc20Abi,
-    address: token.address,
     chainId: token.nativeChainId ?? chain.id,
+    address: token.address,
     functionName: 'allowance',
-    args: [address!, token.refAddress ?? PERMIT2_ADDRESS],
-    query: { enabled: !!token.address, refetchInterval: 100 },
+    args: [address!, currency !== token.address ? currency : permit2Address],
+    query: { enabled: !!token.address, refetchInterval: 200 },
   })
 
   const requiresApproval = (() => {
     // native token
-    if (!token.refAddress && !token.address) return false
+    if (!token.address) return false
 
     // local token allowance is not enough
-    if (!localPermit2Allowance || localPermit2Allowance?.[0] < amount)
-      return true
+    if (!permit2Allowance || permit2Allowance?.[0] < amount) return true
 
     // ref token but not enough locked (remote approval)
-    if (token.refAddress && (!balance?.value || balance.value < amount))
+    if (
+      currency !== token.address &&
+      (!balance?.value || balance.value < amount)
+    ) {
       return true
+    }
 
     return false
   })()
@@ -86,68 +91,61 @@ export const useApproval = ({
   const approve = async () => {
     if (!requiresApproval) return
 
-    if (token.refAddress) {
-      await switchChain(config, { chainId: token.nativeChainId ?? chain.id })
+    if (currency !== token.address) {
+      await switchChain(config, { chainId: token.nativeChainId! })
 
       // globally approve ref token if needed
-      if (!remoteRefAllowance || remoteRefAllowance < amount) {
+      if (!allowance || allowance < amount) {
         await writeContractAsync({
           abi: erc20Abi,
           functionName: 'approve',
           address: token.address!,
-          args: [token.refAddress, MAX_UINT160],
+          args: [currency, MAX_UINT160],
         })
       }
 
       // remote approval for the posm
       if (!balance?.value || balance.value < amount) {
+        const approvalAmount = amount - (balance?.value ?? 0n)
         await writeContractAsync({
           abi: erc20Abi,
           functionName: 'approve',
-          address: token.refAddress,
-          args: [
-            POSM_ADDRESS,
-            !balance?.value ? amount : amount - balance.value,
-          ],
+          address: currency,
+          args: [contracts.permit2.address, approvalAmount],
         })
       }
 
-      await switchChain(config, { chainId: 901 })
+      await switchChain(config, { chainId: chain.id })
 
       // local Permit2 approval if needed
-      if (!localPermit2Allowance || localPermit2Allowance?.[0] < amount) {
+      if (!permit2Allowance || permit2Allowance?.[0] < amount) {
         await writeContractAsync({
           abi: permit2Abi,
           functionName: 'approve',
-          address: PERMIT2_ADDRESS,
-          args: [
-            token.refAddress,
-            POSM_ADDRESS,
-            MAX_UINT160,
-            Number(MAX_UINT48),
-          ],
+          address: permit2Address,
+          args: [currency, posmAddress, MAX_UINT160, Number(MAX_UINT48)],
         })
       }
     } else {
       await switchChain(config, { chainId: chain.id })
 
       // approve permit2
-      if (!remoteRefAllowance || remoteRefAllowance < amount) {
+      if (!allowance || allowance < amount) {
         await writeContractAsync({
           abi: erc20Abi,
           functionName: 'approve',
           address: token.address!,
-          args: [PERMIT2_ADDRESS, MAX_UINT160],
+          args: [permit2Address, MAX_UINT160],
         })
       }
 
       // permit2 approve POSM
-      if (!localPermit2Allowance || localPermit2Allowance?.[0] < amount) {
+      if (!permit2Allowance || permit2Allowance?.[0] < amount) {
         await writeContractAsync({
           abi: permit2Abi,
           functionName: 'approve',
-          address: PERMIT2_ADDRESS,
-          args: [token.address!, POSM_ADDRESS, MAX_UINT160, Number(MAX_UINT48)],
+          address: permit2Address,
+          args: [token.address!, posmAddress, MAX_UINT160, Number(MAX_UINT48)],
         })
       }
     }

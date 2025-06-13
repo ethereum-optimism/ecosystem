@@ -2,11 +2,10 @@ import { defineChain } from 'viem'
 import { sepolia } from 'viem/chains'
 import { chainConfig } from 'viem/op-stack'
 
-import { addressesToViemContractConstant } from '@/addressSet.js'
 import {
-  interopRcAlpha0Addresses,
-  interopRcAlpha1Addresses,
-} from '@/chains/interopRcAlphaAddresses.js'
+  interopRcAlpha0Contracts,
+  interopRcAlpha1Contracts,
+} from '@/chains/interopRcAlphaContracts.js'
 import type { Network } from '@/chains/types.js'
 
 const sourceId = sepolia.id
@@ -35,7 +34,7 @@ export const interopRcAlpha0 = defineChain({
   testnet: true,
   contracts: {
     ...chainConfig.contracts,
-    ...addressesToViemContractConstant(interopRcAlpha0Addresses, sourceId),
+    ...interopRcAlpha0Contracts,
   },
 })
 
@@ -63,7 +62,7 @@ export const interopRcAlpha1 = defineChain({
   testnet: true,
   contracts: {
     ...chainConfig.contracts,
-    ...addressesToViemContractConstant(interopRcAlpha1Addresses, sourceId),
+    ...interopRcAlpha1Contracts,
   },
 })
 

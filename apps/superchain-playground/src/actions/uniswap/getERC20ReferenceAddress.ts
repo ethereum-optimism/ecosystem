@@ -2,8 +2,8 @@ import { contracts } from '@eth-optimism/viem'
 import {
   type AbiParameter,
   type Address,
+  concat,
   encodeAbiParameters,
-  encodePacked,
   getCreate2Address,
   zeroHash,
 } from 'viem'
@@ -18,7 +18,22 @@ const erc20RefConstructorParameters: AbiParameter[] = [
   { name: 'spender', type: 'address' },
 ]
 
-export const getReferenceAddress = (
+export const getRequiresReference = (token: Token, chainId: number) => {
+  return !!token.nativeChainId && token.nativeChainId !== chainId
+}
+
+export const getERC20ReferenceInitCode = (
+  token: Token,
+  remoteChainId: number,
+  spender: Address,
+) => {
+  const params = [token.nativeChainId, token.address, remoteChainId, spender]
+  const initData = encodeAbiParameters(erc20RefConstructorParameters, params)
+  const initCode = concat([erc20RefBytecode, initData])
+  return initCode
+}
+
+export const getERC20ReferenceAddress = (
   token: Token,
   remoteChainId: number,
   spender: Address,
@@ -32,20 +47,8 @@ export const getReferenceAddress = (
     )
   }
 
-  const constructorData = encodeAbiParameters(erc20RefConstructorParameters, [
-    token.nativeChainId,
-    token.address,
-    remoteChainId,
-    spender,
-  ])
-
-  const initCode = encodePacked(
-    ['bytes', 'bytes'],
-    [erc20RefBytecode, constructorData],
-  )
-
   return getCreate2Address({
-    bytecode: initCode,
+    bytecode: getERC20ReferenceInitCode(token, remoteChainId, spender),
     from: contracts.create2Deployer.address,
     salt: zeroHash,
   })

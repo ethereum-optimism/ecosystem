@@ -1,6 +1,6 @@
 import { switchChain } from '@wagmi/core'
-import { type AbiParameter, type Chain } from 'viem'
-import { concat, encodeAbiParameters, zeroAddress } from 'viem'
+import type { AbiParameter, Chain, ChainContract } from 'viem'
+import { concat, encodeAbiParameters } from 'viem'
 import {
   useAccount,
   useConfig,
@@ -8,9 +8,9 @@ import {
   useWriteContract,
 } from 'wagmi'
 
+import { getCurrency } from '@/actions/uniswap/getCurrency'
 import { getPoolId, poolKeyAbiParameters } from '@/actions/uniswap/getPoolId'
 import { posmAbi } from '@/constants/posmAbi'
-import { POSM_ADDRESS } from '@/hooks/uniswap/addresses'
 import {
   MAX_USABLE_TICK,
   MIN_USABLE_TICK,
@@ -41,7 +41,7 @@ const routerAbiParameters: AbiParameter[] = [
   { name: 'params', type: 'bytes[]' },
 ]
 
-export const useAddLiquidity = ({
+export const usePoolLiquidity = ({
   tokenPair,
   amounts,
   chain,
@@ -51,15 +51,18 @@ export const useAddLiquidity = ({
   chain: Chain
 }) => {
   const { token0, token1 } = tokenPair
-  const { amount0Max, amount1Max, liquidityAmount } = amounts
-
   const { poolKey } = getPoolId({
-    token0Address: token0.refAddress ?? token0.address ?? zeroAddress,
-    token1Address: token1.refAddress ?? token1.address ?? zeroAddress,
+    currency0: getCurrency(token0, chain),
+    currency1: getCurrency(token1, chain),
   })
+
+  const { amount0Max, amount1Max, liquidityAmount } = amounts
+  const { currency0, currency1 } = poolKey
 
   const { address } = useAccount()
   const config = useConfig()
+
+  const posmAddress = (chain.contracts?.uniV4Posm as ChainContract).address
 
   const {
     data: hash,
@@ -74,6 +77,8 @@ export const useAddLiquidity = ({
   }
 
   const addLiquidity = async () => {
+    console.log(`ADDING LIQUIDITY: (${currency0},${currency1})`)
+
     const actions = concat([MINT_LIQUIDITY_ACTION, SETTLE_PAIR_ACTION])
     const mintPositionData = encodeAbiParameters(mintLiquidityParameters, [
       poolKey,
@@ -87,8 +92,8 @@ export const useAddLiquidity = ({
     ])
 
     const settlePairData = encodeAbiParameters(settlePairParameters, [
-      poolKey.currency0,
-      poolKey.currency1,
+      currency0,
+      currency1,
     ])
 
     const routerData = encodeAbiParameters(routerAbiParameters, [
@@ -102,7 +107,7 @@ export const useAddLiquidity = ({
 
     await switchChain(config, { chainId: chain.id })
     await writeContractAsync({
-      address: POSM_ADDRESS,
+      address: posmAddress,
       abi: posmAbi,
       functionName: 'modifyLiquidities',
       value: BigInt(value),
