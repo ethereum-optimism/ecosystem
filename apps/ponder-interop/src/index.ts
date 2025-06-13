@@ -8,7 +8,15 @@ import {
   hashCrossDomainMessage,
 } from '@eth-optimism/viem/utils/interop'
 import { ponder } from 'ponder:registry'
-import { relayedMessages, sentMessages } from 'ponder:schema'
+import {
+  gasTankClaimedMessages,
+  gasTankFlaggedMessages,
+  gasTankGasProviders,
+  gasTankPendingWithdrawals,
+  gasTankRelayedMessageReceipts,
+  relayedMessages,
+  sentMessages,
+} from 'ponder:schema'
 import { type Log } from 'viem'
 
 import { hashMessageIdentifier } from '@/utils/hashMessageIdentifier.js'
@@ -98,3 +106,94 @@ ponder.on(
     })
   },
 )
+
+ponder.on('GasTank:Deposit', async ({ event, context }) => {
+  await context.db
+    .insert(gasTankGasProviders)
+    .values({
+      chainId: BigInt(context.network.chainId),
+      address: event.args.depositor,
+      balance: event.args.amount,
+      lastUpdatedAt: event.block.timestamp,
+    })
+    .onConflictDoUpdate((row) => ({
+      balance: row.balance + event.args.amount,
+      lastUpdatedAt: event.block.timestamp,
+    }))
+})
+
+ponder.on('GasTank:WithdrawalInitiated', async ({ event, context }) => {
+  await context.db
+    .insert(gasTankPendingWithdrawals)
+    .values({
+      chainId: BigInt(context.network.chainId),
+      address: event.args.from,
+      amount: event.args.amount,
+      initiatedAt: event.block.timestamp,
+    })
+    .onConflictDoUpdate({
+      amount: event.args.amount,
+      initiatedAt: event.block.timestamp,
+    })
+})
+
+ponder.on('GasTank:WithdrawalFinalized', async ({ event, context }) => {
+  await context.db.delete(gasTankPendingWithdrawals, {
+    chainId: BigInt(context.network.chainId),
+    address: event.args.from,
+  })
+
+  await context.db
+    .update(gasTankGasProviders, {
+      chainId: BigInt(context.network.chainId),
+      address: event.args.from,
+    })
+    .set((row) => ({
+      balance: row.balance - event.args.amount,
+      lastUpdatedAt: event.block.timestamp,
+    }))
+})
+
+ponder.on('GasTank:Flagged', async ({ event, context }) => {
+  await context.db
+    .insert(gasTankFlaggedMessages)
+    .values({
+      chainId: BigInt(context.network.chainId),
+      gasProvider: event.args.gasProvider,
+      originMessageHash: event.args.originMsgHash,
+      flaggedAt: event.block.timestamp,
+    })
+    .onConflictDoNothing()
+})
+
+ponder.on('GasTank:Claimed', async ({ event, context }) => {
+  await context.db
+    .update(gasTankGasProviders, {
+      chainId: BigInt(context.network.chainId),
+      address: event.args.gasProvider,
+    })
+    .set((row) => ({
+      balance: row.balance - event.args.amount,
+      lastUpdatedAt: event.block.timestamp,
+    }))
+
+  await context.db.insert(gasTankClaimedMessages).values({
+    originMessageHash: event.args.originMsgHash,
+    chainId: BigInt(context.network.chainId),
+    relayer: event.args.relayer,
+    gasProvider: event.args.gasProvider,
+    amountClaimed: event.args.amount,
+    claimedAt: event.block.timestamp,
+  })
+})
+
+ponder.on('GasTank:RelayedMessageGasReceipt', async ({ event, context }) => {
+  await context.db.insert(gasTankRelayedMessageReceipts).values({
+    originMessageHash: event.args.originMsgHash,
+    chainId: BigInt(context.network.chainId),
+    relayer: event.args.relayer,
+    gasCost: event.args.gasCost,
+    destinationMessageHashes: [...event.args.destinationMessageHashes],
+    relayedAt: event.block.timestamp,
+  })
+})

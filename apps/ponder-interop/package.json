@@ -40,10 +40,12 @@
   },
   "dependencies": {
     "@eth-optimism/viem": "workspace:*",
+    "dotenv": "16.5.0",
     "drizzle-orm": "0.39.3",
     "hono": "^4.5.0",
     "ponder": "^0.10.6",
     "viem": "^2.17.9",
+    "znv": "^0.4.0",
     "zod": "^3.24.2",
     "zod-validation-error": "^3.4.0"
   }
