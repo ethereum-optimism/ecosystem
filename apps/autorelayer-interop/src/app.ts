@@ -1,8 +1,14 @@
 import { App } from '@eth-optimism/utils-app'
 import { Option } from 'commander'
 import type { Logger } from 'pino'
-import type { Hex, PublicClient, WalletClient } from 'viem'
-import { createPublicClient, createWalletClient, http, isHex } from 'viem'
+import type { Address, Hex, PublicClient, WalletClient } from 'viem'
+import {
+  createPublicClient,
+  createWalletClient,
+  getAddress,
+  http,
+  isHex,
+} from 'viem'
 import { privateKeyToAccount } from 'viem/accounts'
 import { z } from 'zod'
 
@@ -38,6 +44,8 @@ const ConfigSchema = z.object({
       if (!key) return true
       return isHex(key) && privateKeyToAccount(key) !== undefined
     }, 'private key must be a valid hex string'),
+  useGasTank: z.boolean().optional().default(false),
+  gasTankAddress: z.custom<Address>().optional(),
 })
 
 type Chains = z.infer<typeof ChainSchema>
@@ -89,6 +97,15 @@ class RelayerApp extends App {
       )
         .conflicts('sponsoredEndpoint')
         .env('SENDER_PRIVATE_KEY'),
+      new Option('--use-gas-tank', 'use the gas tank to relay messages')
+        .env('USE_GAS_TANK')
+        .default(false),
+      new Option(
+        '--gas-tank-address <address>',
+        'address of the gas tank to use for the relayer',
+      )
+        .env('GAS_TANK_ADDRESS')
+        .argParser((val) => getAddress(val)),
     ]
   }
 
@@ -97,6 +114,9 @@ class RelayerApp extends App {
     const { data: config, error } = ConfigSchema.safeParse(this.options)
     if (error) {
       throw new Error(`invalid configuration: ${error}`)
+    }
+    if (config.useGasTank && !config.gasTankAddress) {
+      throw new Error('gas tank address is required when using gas tank')
     }
 
     // Fetch chains for the interop api
@@ -168,6 +188,8 @@ class RelayerApp extends App {
       ponderInteropApi: config.ponderInteropApi,
       clients,
       walletClients,
+      useGasTank: config.useGasTank,
+      gasTankAddress: config.gasTankAddress,
     })
   }
 
