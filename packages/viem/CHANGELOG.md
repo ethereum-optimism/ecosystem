@@ -1,5 +1,11 @@
 # @eth-optimism/viem
 
+## 0.4.10
+
+### Patch Changes
+
+- [#834](https://github.com/ethereum-optimism/ecosystem/pull/834) [`5df7d6d`](https://github.com/ethereum-optimism/ecosystem/commit/5df7d6d5da8f5a374ebb53a63692cdb4eee563b5) Thanks [@tremarkley](https://github.com/tremarkley)! - add abis for experimental GasTank contract and update abis to latest interop contracts
+
 ## 0.4.9
 
 ### Patch Changes
