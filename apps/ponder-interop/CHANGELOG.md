@@ -1,5 +1,11 @@
 # @eth-optimism/ponder-interop
 
+## 0.0.14
+
+### Patch Changes
+
+- [#833](https://github.com/ethereum-optimism/ecosystem/pull/833) [`4f9b647`](https://github.com/ethereum-optimism/ecosystem/commit/4f9b6474f0a5facbc677993d70767825604bdd48) Thanks [@tremarkley](https://github.com/tremarkley)! - added new tables to track gas providers and relay claims
+
 ## 0.0.13
 
 ### Patch Changes
