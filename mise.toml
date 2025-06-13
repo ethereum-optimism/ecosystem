@@ -1,7 +1,7 @@
 [tools]
 node = "18.18.1"
 
-"ubi:ethereum-optimism/supersim"="0.1.0-alpha.51"
+"ubi:ethereum-optimism/supersim"="0.1.0-alpha.52"
 
 # Foundry dependencies
 # Foundry is a special case because it supplies multiple binaries at the same
