@@ -1,5 +1,5 @@
 import { switchChain } from '@wagmi/core'
-import type { AbiParameter, Chain, ChainContract } from 'viem'
+import type { AbiParameter, Chain } from 'viem'
 import { concat, encodeAbiParameters } from 'viem'
 import {
   useAccount,
@@ -11,6 +11,7 @@ import {
 import { getCurrency } from '@/actions/uniswap/getCurrency'
 import { getPoolId, poolKeyAbiParameters } from '@/actions/uniswap/getPoolId'
 import { posmAbi } from '@/constants/posmAbi'
+import { POSM_ADDRESS } from '@/hooks/uniswap/addresses'
 import {
   MAX_USABLE_TICK,
   MIN_USABLE_TICK,
@@ -62,7 +63,7 @@ export const usePoolLiquidity = ({
   const { address } = useAccount()
   const config = useConfig()
 
-  const posmAddress = (chain.contracts?.uniV4Posm as ChainContract).address
+  const posmAddress = POSM_ADDRESS
 
   const {
     data: hash,

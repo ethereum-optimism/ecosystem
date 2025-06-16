@@ -12,21 +12,13 @@ export const DEFAULT_TOKENS: Token[] = [
     address: contracts.weth.address,
     decimals: 18,
   },
-  {
-    symbol: 'TST.B',
-    name: 'Test Coin',
-    address: '0x0DB6AcbF5F2A2C9144acb5D7C22932E758cb4D30',
-    decimals: 18,
-    nativeChainId: 902,
-  } as Token,
-
-  // TODO: Add OP/UNI/USDC etc etc
 ]
 
 export type TokenList = {
   tokens: Token[]
   addToken: (token: Token) => void
   removeToken: (token: Token) => void
+  clearTokens: () => void
 }
 
 export const useTokenList = create<TokenList>()(
@@ -47,6 +39,9 @@ export const useTokenList = create<TokenList>()(
       },
       removeToken: (token: Token) => {
         set({ tokens: get().tokens.filter((t) => t.symbol !== token.symbol) })
+      },
+      clearTokens: () => {
+        set({ tokens: DEFAULT_TOKENS })
       },
     }),
     { name: 'token-list' },

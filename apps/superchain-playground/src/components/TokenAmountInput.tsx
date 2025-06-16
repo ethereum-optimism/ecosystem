@@ -1,39 +1,45 @@
-import type { Network } from '@eth-optimism/viem/chains'
+import { useAccount, useBalance } from 'wagmi'
 
 import { TokenPicker } from '@/components/TokenPicker'
 import { Input } from '@/components/ui/input'
-import { useCrosschainBalance } from '@/hooks/uniswap/useCrosschainBalance'
 import type { Token } from '@/types/Token'
 import { truncateDecimal } from '@/utils/truncateDecimal'
 
 interface TokenAmountInputProps {
-  tokenList: Token[]
+  chainId?: number
+  tokens: Token[]
   selectedToken: Token
   onTokenChange: (token: Token) => void
   amount: number
   onAmountChange: (amount: number) => void
-  network: Network
   readOnly?: boolean
 }
 
 export const TokenAmountInput = ({
-  tokenList,
+  chainId,
+  tokens,
   selectedToken,
   onTokenChange,
   amount,
   onAmountChange,
   readOnly = false,
 }: TokenAmountInputProps) => {
+  const { address, chain } = useAccount()
 
-  // TODO: Remove cross chain balance when executor contract is used
-  const { balance } = useCrosschainBalance({ token: selectedToken })
+  const { data } = useBalance({
+    address: address,
+    token: selectedToken.address,
+    chainId: chainId ?? chain?.id,
+  })
+
+  const balance = data?.value
   const formattedBalance = balance ? truncateDecimal((Number(balance) / 10 ** selectedToken.decimals).toString()) : '-'
 
   return (
     <div className="flex flex-col gap-2">
       <div className="flex gap-2">
         <TokenPicker
-          tokens={tokenList}
+          tokens={tokens}
           selectedToken={selectedToken}
           setSelectedToken={onTokenChange}
         />

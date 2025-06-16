@@ -17,6 +17,7 @@ interface ChainPickerProps {
 }
 
 export const ChainPicker = ({ network, selectedChain, setSelectedChain }: ChainPickerProps) => {
+  // chore: should filter to just live networks
   return (
     <div className="w-full">
       <Select
@@ -27,8 +28,8 @@ export const ChainPicker = ({ network, selectedChain, setSelectedChain }: ChainP
           <SelectValue placeholder="Select a chain" />
         </SelectTrigger>
         <SelectContent>
-          {network.chains
-            .map((chain) => (
+          {network.chains.map((chain) => {
+            return (
               <SelectItem
                 key={chain.id}
                 value={chain.id.toString()}
@@ -36,7 +37,8 @@ export const ChainPicker = ({ network, selectedChain, setSelectedChain }: ChainP
               >
                 {chain.name}
               </SelectItem>
-            ))}
+            )
+          })}
         </SelectContent>
       </Select>
     </div>

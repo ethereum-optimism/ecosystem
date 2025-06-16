@@ -1,5 +1,5 @@
 import { switchChain } from '@wagmi/core'
-import type { Chain, ChainContract } from 'viem'
+import type { Chain } from 'viem'
 import {
   useConfig,
   useReadContract,
@@ -11,6 +11,10 @@ import { getCurrency } from '@/actions/uniswap/getCurrency'
 import { getPoolId } from '@/actions/uniswap/getPoolId'
 import { poolManagerAbi } from '@/constants/poolManagerAbi'
 import { stateViewAbi } from '@/constants/stateViewAbi'
+import {
+  POOLMANAGER_ADDRESS,
+  STATEVIEW_ADDRESS,
+} from '@/hooks/uniswap/addresses'
 import type { Token } from '@/types/Token'
 
 const SQRT_PRICE_X96_1_1 = 79228162514264337593543950336n
@@ -32,12 +36,8 @@ export const usePool = ({
   const { data: hash, writeContractAsync, isPending } = useWriteContract()
   const { isLoading: isConfirming } = useWaitForTransactionReceipt({ hash })
 
-  const poolManagerAddress = (
-    chain.contracts?.uniV4PoolManager as ChainContract
-  ).address
-
-  const stateViewAddress = (chain.contracts?.uniV4StateView as ChainContract)
-    .address
+  const poolManagerAddress = POOLMANAGER_ADDRESS
+  const stateViewAddress = STATEVIEW_ADDRESS
 
   const { data: slot0 } = useReadContract({
     address: stateViewAddress,

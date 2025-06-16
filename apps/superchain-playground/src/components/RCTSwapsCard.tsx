@@ -17,7 +17,16 @@ import { useTokenList } from '@/stores/useTokenList'
 import type { Token } from '@/types/Token'
 
 export const RCTSwapsCard = ({ network, selectedChain }: { network: Network, selectedChain: Chain }) => {
+  const { tokens } = useTokenList()
+
+  const chainIds = network.chains.map(c => c.id)
+  const eligibleTokens = tokens.filter(t => !t.nativeChainId || chainIds.includes(t.nativeChainId))
+
   const [tab, setTab] = useState('swaps')
+
+  // ETH & WETH are the first two default tokens
+  const [token0, setToken0] = useState<Token>(tokens[0]!)
+  const [token1, setToken1] = useState<Token>(tokens[1]!)
 
   return (
     <div className="max-w-md w-full mx-auto flex flex-col gap-6 p-6 border rounded-xl bg-background">
@@ -31,25 +40,50 @@ export const RCTSwapsCard = ({ network, selectedChain }: { network: Network, sel
           </TabsTrigger>
         </TabsList>
         <TabsContent key="swaps" value="swaps">
-          <RCTSwaps network={network} selectedChain={selectedChain} />
+          <RCTSwaps
+            selectedChain={selectedChain}
+            tokens={eligibleTokens}
+            token0={token0}
+            setToken0={setToken0}
+            token1={token1}
+            setToken1={setToken1}
+          />
         </TabsContent>
         <TabsContent key="pools" value="pools">
-          <RCTPools network={network} selectedChain={selectedChain} />
+          <RCTPools
+            selectedChain={selectedChain}
+            tokens={eligibleTokens}
+            token0={token0}
+            setToken0={setToken0}
+            token1={token1}
+            setToken1={setToken1}
+          />
         </TabsContent>
       </Tabs>
     </div>
   )
 }
 
-export const RCTPools = ({ network, selectedChain }: { network: Network, selectedChain: Chain }) => {
+export const RCTPools = ({
+  selectedChain,
+  tokens,
+  token0,
+  setToken0,
+  token1,
+  setToken1,
+}: {
+  selectedChain: Chain,
+  tokens: Token[],
+  token0: Token,
+  setToken0: (token: Token) => void,
+  token1: Token,
+  setToken1: (token: Token) => void,
+}) => {
   const { address } = useAccount()
-  const { tokens } = useTokenList()
+
+  const tokenPair = { token0, token1 }
 
   const [amount0, setAmount0] = useState(0)
-
-  const [token0, setToken0] = useState<Token>(tokens[0]!)
-  const [token1, setToken1] = useState<Token>(tokens[1]!)
-  const tokenPair = { token0, token1 }
 
   const {
     requiresReference: requiresReferenceToken0,
@@ -105,23 +139,23 @@ export const RCTPools = ({ network, selectedChain }: { network: Network, selecte
       <div className="flex flex-col gap-2">
         <Label>Token 0</Label>
         <TokenAmountInput
-          tokenList={tokens.filter(t => t.symbol !== token1!.symbol)}
+          chainId={selectedChain.id}
+          tokens={tokens.filter(t => t.symbol !== token1!.symbol)}
           selectedToken={token0!}
           onTokenChange={setToken0}
           amount={amount0}
           onAmountChange={setAmount0}
-          network={network}
         />
       </div>
       <div className="flex flex-col gap-2">
         <Label>Token 1</Label>
         <TokenAmountInput
-          tokenList={tokens.filter(t => t.symbol !== token0!.symbol)}
+          chainId={selectedChain.id}
+          tokens={tokens.filter(t => t.symbol !== token0!.symbol)}
           selectedToken={token1!}
           onTokenChange={setToken1}
           amount={amount1}
           onAmountChange={() => {}}
-          network={network}
           readOnly
         />
       </div>
@@ -164,14 +198,24 @@ export const RCTPools = ({ network, selectedChain }: { network: Network, selecte
   )
 }
 
-export const RCTSwaps = ({ network, selectedChain }: { network: Network, selectedChain: Chain }) => {
+export const RCTSwaps = ({
+  selectedChain,
+  tokens,
+  token0,
+  setToken0,
+  token1,
+  setToken1,
+}: {
+  selectedChain: Chain,
+  tokens: Token[],
+  token0: Token,
+  setToken0: (token: Token) => void,
+  token1: Token,
+  setToken1: (token: Token) => void,
+}) => {
   const { address } = useAccount()
-  const { tokens } = useTokenList()
 
-  const [token0, setToken0] = useState<Token>(tokens[0]!)
-  const [token1, setToken1] = useState<Token>(tokens[1]!)
   const tokenPair = { token0, token1 }
-
   const { initialized, sqrtPriceX96 } = usePool({ tokenPair, chain: selectedChain })
 
   const [amount0, setAmount0] = useState(0)
@@ -183,6 +227,7 @@ export const RCTSwaps = ({ network, selectedChain }: { network: Network, selecte
     token: token0!,
     amount: BigInt(amount0 * 10 ** token0!.decimals) + 1n,
     chain: selectedChain,
+    swapping: true,
   })
 
   const { swap, isPending } = usePoolSwap({
@@ -196,23 +241,23 @@ export const RCTSwaps = ({ network, selectedChain }: { network: Network, selecte
       <div className="flex flex-col gap-2">
         <Label>Sell</Label>
         <TokenAmountInput
-          tokenList={tokens.filter(t => t.symbol !== token1.symbol)}
+          chainId={selectedChain.id}
+          tokens={tokens.filter(t => t.symbol !== token1.symbol)}
           selectedToken={token0!}
           onTokenChange={setToken0}
           amount={amount0}
           onAmountChange={setAmount0}
-          network={network}
         />
       </div>
       <div className="flex flex-col gap-2">
         <Label>Buy</Label>
         <TokenAmountInput
-          tokenList={tokens.filter(t => t.symbol !== token0.symbol)}
+          chainId={selectedChain.id}
+          tokens={tokens.filter(t => t.symbol !== token0.symbol)}
           selectedToken={token1!}
           onTokenChange={setToken1}
           amount={amount1}
           onAmountChange={() => {}}
-          network={network}
           readOnly
         />
       </div>

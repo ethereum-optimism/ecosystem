@@ -4,7 +4,6 @@ import type { Address, Chain } from 'viem'
 
 import { ChainPicker } from '@/components/ChainPicker'
 import { Button } from '@/components/ui/button'
-import { Checkbox } from '@/components/ui/checkbox'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -17,13 +16,12 @@ interface AddTokenModalProps {
 
 export const AddTokenModal = ({ network }: AddTokenModalProps) => {
   const [address, setAddress] = useState<Address>()
-  const { addToken } = useTokenList()
+  const { addToken, clearTokens } = useTokenList()
 
   const [name, setName] = useState<string | undefined>()
   const [symbol, setSymbol] = useState<string | undefined>()
   const [decimals, setDecimals] = useState<number>(18)
   const [selectedChain, setSelectedChain] = useState<Chain | undefined>()
-  const [isSuperchainERC20, setIsSuperchainERC20] = useState(false)
   const [open, setOpen] = useState(false)
 
   const { tokenData, isLoading } = useTokenInfo({ address, chainId: selectedChain?.id ?? 0 })
@@ -33,7 +31,6 @@ export const AddTokenModal = ({ network }: AddTokenModalProps) => {
     setName(undefined)
     setSymbol(undefined)
     setDecimals(18)
-    setIsSuperchainERC20(false)
   }
 
   return (
@@ -43,9 +40,20 @@ export const AddTokenModal = ({ network }: AddTokenModalProps) => {
           + Add / Change Token
         </Button>
       </DialogTrigger>
-      <DialogContent>
-        <DialogHeader>
+      <DialogContent className="pr-8">
+        <DialogHeader className="flex flex-row items-center justify-between space-y-0 pb-4">
           <DialogTitle>Set Token Details</DialogTitle>
+          <Button
+            variant="ghost"
+            size="sm"
+            className="text-muted-foreground hover:text-destructive"
+            onClick={() => {
+              clearTokens()
+              setOpen(false)
+            }}
+          >
+            Reset to defaults
+          </Button>
         </DialogHeader>
         <div className="flex flex-col gap-4">
           <div className="flex items-center gap-4">
@@ -61,19 +69,6 @@ export const AddTokenModal = ({ network }: AddTokenModalProps) => {
               placeholder="0x..."
               required
             />
-          </div>
-
-          <div className="flex items-center gap-4">
-            <Label className="w-20">Type</Label>
-            <div className="flex items-center gap-2">
-              <Checkbox
-                id="superchain-erc20"
-                checked={isSuperchainERC20}
-                onCheckedChange={(checked) => setIsSuperchainERC20(checked as boolean)}
-                disabled={isLoading || !tokenData}
-              />
-              <label htmlFor="superchain-erc20" className="text-sm">SuperchainERC20</label>
-            </div>
           </div>
 
           <div className="flex items-center gap-4">
@@ -112,7 +107,7 @@ export const AddTokenModal = ({ network }: AddTokenModalProps) => {
                 name: name || tokenData?.name || '',
                 symbol: symbol || tokenData?.symbol || '',
                 decimals: decimals || tokenData?.decimals || 18,
-                nativeChainId: isSuperchainERC20 ? selectedChain?.id : undefined,
+                nativeChainId: selectedChain?.id,
               })
               setOpen(false)
               clearInputs()

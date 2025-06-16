@@ -1,12 +1,17 @@
+import { chainById } from '@eth-optimism/viem/chains'
 import { useAccount, useBalance as useBalanceWagmi } from 'wagmi'
 
+import { getCurrency } from '@/actions/uniswap/getCurrency'
 import type { Token } from '@/types/Token'
 
 export const useCrosschainBalance = ({ token }: { token: Token }) => {
   const { address } = useAccount()
 
+  const chain = chainById[901]
+  const currency = getCurrency(token, chain!)
+
   // native balance (native tokens + eth)
-  const useLocalBalance = !!address && !token.refAddress
+  const useLocalBalance = !!address && !token.nativeChainId
   const { data: localBalance } = useBalanceWagmi({
     address: address,
     chainId: 901,
@@ -26,11 +31,11 @@ export const useCrosschainBalance = ({ token }: { token: Token }) => {
 
   // ref balance (native token on other chain)
   const useLocalRefBalance =
-    !!address && !!token.refAddress && token.nativeChainId === 902
+    !!address && currency !== token.address && token.nativeChainId === 902
   const { data: localRefBalance } = useBalanceWagmi({
     address: address,
     chainId: 901,
-    token: token.refAddress,
+    token: currency,
     query: { enabled: useLocalRefBalance, refetchInterval: 100 },
   })
 

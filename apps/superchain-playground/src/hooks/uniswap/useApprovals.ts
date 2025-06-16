@@ -1,6 +1,6 @@
 import { contracts } from '@eth-optimism/viem'
 import { switchChain } from '@wagmi/core'
-import { type Chain, type ChainContract, erc20Abi } from 'viem'
+import { type Chain, erc20Abi } from 'viem'
 import {
   useAccount,
   useBalance,
@@ -12,6 +12,7 @@ import {
 
 import { getCurrency } from '@/actions/uniswap/getCurrency'
 import { permit2Abi } from '@/constants/permit2Abi'
+import { POSM_ADDRESS, V4_ROUTER_ADDRESS } from '@/hooks/uniswap/addresses'
 import type { Token } from '@/types/Token'
 
 const MAX_UINT160 = 2n ** 160n - 1n
@@ -21,17 +22,20 @@ export const useApproval = ({
   token,
   amount,
   chain,
+  swapping = false,
 }: {
   token: Token
   amount: bigint
   chain: Chain
+  swapping?: boolean
 }) => {
   const { address } = useAccount()
   const config = useConfig()
   const currency = getCurrency(token, chain)
 
-  const permit2Address = contracts.permit2.address
-  const posmAddress = (chain.contracts?.uniV4Posm as ChainContract).address
+  const posmAddress = POSM_ADDRESS
+  const routerAddress = V4_ROUTER_ADDRESS
+  const spender = swapping ? routerAddress : posmAddress
 
   const {
     data: hash,
@@ -53,12 +57,12 @@ export const useApproval = ({
   })
 
   const { data: permit2Allowance } = useReadContract({
-    address: permit2Address,
+    address: contracts.permit2.address,
     chainId: chain.id,
     abi: permit2Abi,
     functionName: 'allowance',
     query: { enabled: !!token.address, refetchInterval: 200 },
-    args: [address!, currency, posmAddress],
+    args: [address!, currency, spender],
   })
 
   const { data: allowance } = useReadContract({
@@ -66,7 +70,10 @@ export const useApproval = ({
     chainId: token.nativeChainId ?? chain.id,
     address: token.address,
     functionName: 'allowance',
-    args: [address!, currency !== token.address ? currency : permit2Address],
+    args: [
+      address!,
+      currency !== token.address ? currency : contracts.permit2.address,
+    ],
     query: { enabled: !!token.address, refetchInterval: 200 },
   })
 
@@ -104,7 +111,7 @@ export const useApproval = ({
         })
       }
 
-      // remote approval for the posm
+      // remote approval for the spender
       if (!balance?.value || balance.value < amount) {
         const approvalAmount = amount - (balance?.value ?? 0n)
         await writeContractAsync({
@@ -122,8 +129,8 @@ export const useApproval = ({
         await writeContractAsync({
           abi: permit2Abi,
           functionName: 'approve',
-          address: permit2Address,
-          args: [currency, posmAddress, MAX_UINT160, Number(MAX_UINT48)],
+          address: contracts.permit2.address,
+          args: [currency, spender, MAX_UINT160, Number(MAX_UINT48)],
         })
       }
     } else {
@@ -135,17 +142,17 @@ export const useApproval = ({
           abi: erc20Abi,
           functionName: 'approve',
           address: token.address!,
-          args: [permit2Address, MAX_UINT160],
+          args: [contracts.permit2.address, MAX_UINT160],
         })
       }
 
-      // permit2 approve POSM
+      // permit2 approve spender
       if (!permit2Allowance || permit2Allowance?.[0] < amount) {
         await writeContractAsync({
           abi: permit2Abi,
           functionName: 'approve',
-          address: permit2Address,
-          args: [token.address!, posmAddress, MAX_UINT160, Number(MAX_UINT48)],
+          address: contracts.permit2.address,
+          args: [token.address!, spender, MAX_UINT160, Number(MAX_UINT48)],
         })
       }
     }
