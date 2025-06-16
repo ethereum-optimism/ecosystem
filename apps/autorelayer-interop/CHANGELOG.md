@@ -1,5 +1,11 @@
 # @eth-optimism/autorelayer-interop
 
+## 0.0.16
+
+### Patch Changes
+
+- [#846](https://github.com/ethereum-optimism/ecosystem/pull/846) [`6ee7f14`](https://github.com/ethereum-optimism/ecosystem/commit/6ee7f14a3c95ccfc26687fdcf33fb2cc025bfa5a) Thanks [@tremarkley](https://github.com/tremarkley)! - add GAS_TANK_ADDRESS option for enabling relays via GasTank
+
 ## 0.0.15
 
 ### Patch Changes
