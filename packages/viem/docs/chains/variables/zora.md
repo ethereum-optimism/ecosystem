@@ -512,4 +512,4 @@ Flag for test networks
 
 ## Defined in
 
-[packages/viem/src/chains/mainnet.ts:1307](https://github.com/ethereum-optimism/ecosystem/blob/11bb27f871c202b93ad6dc93c86c82f0c754075f/packages/viem/src/chains/mainnet.ts#L1307)
+[packages/viem/src/chains/mainnet.ts:1856](https://github.com/ethereum-optimism/ecosystem/blob/8c0ceae82d8e909c0d00b4601d7c7276090774cc/packages/viem/src/chains/mainnet.ts#L1856)

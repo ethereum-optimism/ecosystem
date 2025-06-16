@@ -28,57 +28,21 @@ Collection of block explorers
 
 ### contracts
 
-> `readonly` **contracts**: `object`
+> **contracts**: `object`
 
 Collection of contracts
 
-### contracts.gasPriceOracle
+### contracts.multicall3
 
-> `readonly` **gasPriceOracle**: `object`
+> `readonly` **multicall3**: `object`
 
-### contracts.gasPriceOracle.address
+### contracts.multicall3.abi
 
-> `readonly` **address**: `"0x420000000000000000000000000000000000000F"`
+> `readonly` **abi**: readonly [`object`] = `multicall3Abi`
 
-### contracts.l1Block
+### contracts.multicall3.address
 
-> `readonly` **l1Block**: `object`
-
-### contracts.l1Block.address
-
-> `readonly` **address**: `"0x4200000000000000000000000000000000000015"`
-
-### contracts.l2CrossDomainMessenger
-
-> `readonly` **l2CrossDomainMessenger**: `object`
-
-### contracts.l2CrossDomainMessenger.address
-
-> `readonly` **address**: `"0x4200000000000000000000000000000000000007"`
-
-### contracts.l2Erc721Bridge
-
-> `readonly` **l2Erc721Bridge**: `object`
-
-### contracts.l2Erc721Bridge.address
-
-> `readonly` **address**: `"0x4200000000000000000000000000000000000014"`
-
-### contracts.l2StandardBridge
-
-> `readonly` **l2StandardBridge**: `object`
-
-### contracts.l2StandardBridge.address
-
-> `readonly` **address**: `"0x4200000000000000000000000000000000000010"`
-
-### contracts.l2ToL1MessagePasser
-
-> `readonly` **l2ToL1MessagePasser**: `object`
-
-### contracts.l2ToL1MessagePasser.address
-
-> `readonly` **address**: `"0x4200000000000000000000000000000000000016"`
+> `readonly` **address**: `"0xca11bde05977b3631167028862be2a173976ca11"` = `'0xca11bde05977b3631167028862be2a173976ca11'`
 
 ### custom?
 
@@ -436,4 +400,4 @@ Flag for test networks
 
 ## Defined in
 
-[packages/viem/src/chains/supersim.ts:17](https://github.com/ethereum-optimism/ecosystem/blob/11bb27f871c202b93ad6dc93c86c82f0c754075f/packages/viem/src/chains/supersim.ts#L17)
+[packages/viem/src/chains/supersim.ts:18](https://github.com/ethereum-optimism/ecosystem/blob/8c0ceae82d8e909c0d00b4601d7c7276090774cc/packages/viem/src/chains/supersim.ts#L18)
