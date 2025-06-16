@@ -2,13 +2,13 @@
 
 ***
 
-[@eth-optimism/viem](../../README.md) / [chains](../README.md) / minatoSepolia
+[@eth-optimism/viem](../../README.md) / [chains](../README.md) / bob
 
-# minatoSepolia
+# bob
 
-> `const` **minatoSepolia**: `object`
+> `const` **bob**: `object`
 
-Chain Definition for Minato Sepolia
+Chain Definition for Bob
 
 ## Type declaration
 
@@ -24,29 +24,17 @@ Collection of block explorers
 
 ### blockExplorers.default.name
 
-> `readonly` **name**: `"Minato Sepolia Explorer"` = `'Minato Sepolia Explorer'`
+> `readonly` **name**: `"Bob Explorer"` = `'Bob Explorer'`
 
 ### blockExplorers.default.url
 
-> `readonly` **url**: `"https://soneium-minato.blockscout.com/"` = `'https://soneium-minato.blockscout.com/'`
+> `readonly` **url**: `"https://explorer.gobob.xyz"` = `'https://explorer.gobob.xyz'`
 
 ### contracts
 
 > **contracts**: `object`
 
 Collection of contracts
-
-### contracts.disputeGameFactory
-
-> `readonly` **disputeGameFactory**: `object`
-
-### contracts.disputeGameFactory.11155111
-
-> `readonly` **11155111**: `object`
-
-### contracts.disputeGameFactory.11155111.address
-
-> `readonly` **address**: `"0xB3Ad2c38E6e0640d7ce6aA952AB3A60E81bf7a01"` = `'0xB3Ad2c38E6e0640d7ce6aA952AB3A60E81bf7a01'`
 
 ### contracts.gasPriceOracle
 
@@ -68,37 +56,37 @@ Collection of contracts
 
 > `readonly` **l1CrossDomainMessenger**: `object`
 
-### contracts.l1CrossDomainMessenger.11155111
+### contracts.l1CrossDomainMessenger.1
 
-> `readonly` **11155111**: `object`
+> `readonly` **1**: `object`
 
-### contracts.l1CrossDomainMessenger.11155111.address
+### contracts.l1CrossDomainMessenger.1.address
 
-> `readonly` **address**: `"0x0184245D202724dc28a2b688952Cb56C882c226F"` = `'0x0184245D202724dc28a2b688952Cb56C882c226F'`
+> `readonly` **address**: `"0xE3d981643b806FB8030CDB677D6E60892E547EdA"` = `'0xE3d981643b806FB8030CDB677D6E60892E547EdA'`
 
 ### contracts.l1Erc721Bridge
 
 > `readonly` **l1Erc721Bridge**: `object`
 
-### contracts.l1Erc721Bridge.11155111
+### contracts.l1Erc721Bridge.1
 
-> `readonly` **11155111**: `object`
+> `readonly` **1**: `object`
 
-### contracts.l1Erc721Bridge.11155111.address
+### contracts.l1Erc721Bridge.1.address
 
-> `readonly` **address**: `"0x2bfb22cd534a462028771a1cA9D6240166e450c4"` = `'0x2bfb22cd534a462028771a1cA9D6240166e450c4'`
+> `readonly` **address**: `"0x5fF93263D5181b2A826f8c51d54BC0da2d20D50a"` = `'0x5fF93263D5181b2A826f8c51d54BC0da2d20D50a'`
 
 ### contracts.l1StandardBridge
 
 > `readonly` **l1StandardBridge**: `object`
 
-### contracts.l1StandardBridge.11155111
+### contracts.l1StandardBridge.1
 
-> `readonly` **11155111**: `object`
+> `readonly` **1**: `object`
 
-### contracts.l1StandardBridge.11155111.address
+### contracts.l1StandardBridge.1.address
 
-> `readonly` **address**: `"0x5f5a404A5edabcDD80DB05E8e54A78c9EBF000C2"` = `'0x5f5a404A5edabcDD80DB05E8e54A78c9EBF000C2'`
+> `readonly` **address**: `"0x3F6cE1b36e5120BBc59D0cFe8A5aC8b6464ac1f7"` = `'0x3F6cE1b36e5120BBc59D0cFe8A5aC8b6464ac1f7'`
 
 ### contracts.l2CrossDomainMessenger
 
@@ -120,13 +108,13 @@ Collection of contracts
 
 > `readonly` **l2OutputOracle**: `object`
 
-### contracts.l2OutputOracle.11155111
+### contracts.l2OutputOracle.1
 
-> `readonly` **11155111**: `object`
+> `readonly` **1**: `object`
 
-### contracts.l2OutputOracle.11155111.address
+### contracts.l2OutputOracle.1.address
 
-> `readonly` **address**: `"0x710e5286C746eC38beeB7538d0146f60D27be343"` = `'0x710e5286C746eC38beeB7538d0146f60D27be343'`
+> `readonly` **address**: `"0xdDa53E23f8a32640b04D7256e651C1db98dB11C1"` = `'0xdDa53E23f8a32640b04D7256e651C1db98dB11C1'`
 
 ### contracts.l2StandardBridge
 
@@ -148,25 +136,25 @@ Collection of contracts
 
 > `readonly` **portal**: `object`
 
-### contracts.portal.11155111
+### contracts.portal.1
 
-> `readonly` **11155111**: `object`
+> `readonly` **1**: `object`
 
-### contracts.portal.11155111.address
+### contracts.portal.1.address
 
-> `readonly` **address**: `"0x65ea1489741A5D72fFdD8e6485B216bBdcC15Af3"` = `'0x65ea1489741A5D72fFdD8e6485B216bBdcC15Af3'`
+> `readonly` **address**: `"0x8AdeE124447435fE03e3CD24dF3f4cAE32E65a3E"` = `'0x8AdeE124447435fE03e3CD24dF3f4cAE32E65a3E'`
 
 ### contracts.systemConfig
 
 > `readonly` **systemConfig**: `object`
 
-### contracts.systemConfig.11155111
+### contracts.systemConfig.1
 
-> `readonly` **11155111**: `object`
+> `readonly` **1**: `object`
 
-### contracts.systemConfig.11155111.address
+### contracts.systemConfig.1.address
 
-> `readonly` **address**: `"0x4Ca9608Fef202216bc21D543798ec854539bAAd3"` = `'0x4Ca9608Fef202216bc21D543798ec854539bAAd3'`
+> `readonly` **address**: `"0xACB886b75D76d1c8d9248cFdDfA09b70C71c5393"` = `'0xACB886b75D76d1c8d9248cFdDfA09b70C71c5393'`
 
 ### custom?
 
@@ -448,13 +436,13 @@ Modifies how data is formatted and typed (e.g. blocks and transactions)
 
 ### id
 
-> **id**: `1946`
+> **id**: `60808`
 
 ID in number form
 
 ### name
 
-> **name**: `"Minato Sepolia"`
+> **name**: `"Bob"`
 
 Human-readable name
 
@@ -488,7 +476,7 @@ Collection of RPC endpoints
 
 ### rpcUrls.default.http
 
-> `readonly` **http**: readonly [`"https://rpc.minato.soneium.org"`]
+> `readonly` **http**: readonly [`"https://rpc.gobob.xyz"`]
 
 ### serializers
 
@@ -512,7 +500,7 @@ Modifies how data is serialized (e.g. transactions).
 
 ### sourceId
 
-> **sourceId**: `11155111`
+> **sourceId**: `1`
 
 Source Chain ID (ie. the L1 chain)
 
@@ -524,4 +512,4 @@ Flag for test networks
 
 ## Defined in
 
-[packages/viem/src/chains/sepolia.ts:505](https://github.com/ethereum-optimism/ecosystem/blob/11bb27f871c202b93ad6dc93c86c82f0c754075f/packages/viem/src/chains/sepolia.ts#L505)
+[packages/viem/src/chains/mainnet.ts:198](https://github.com/ethereum-optimism/ecosystem/blob/8c0ceae82d8e909c0d00b4601d7c7276090774cc/packages/viem/src/chains/mainnet.ts#L198)
