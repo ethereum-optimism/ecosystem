@@ -1,8 +1,14 @@
 import { App } from '@eth-optimism/utils-app'
 import { Option } from 'commander'
 import type { Logger } from 'pino'
-import type { Hex, PublicClient, WalletClient } from 'viem'
-import { createPublicClient, createWalletClient, http, isHex } from 'viem'
+import type { Address, Hex, PublicClient, WalletClient } from 'viem'
+import {
+  createPublicClient,
+  createWalletClient,
+  getAddress,
+  http,
+  isHex,
+} from 'viem'
 import { privateKeyToAccount } from 'viem/accounts'
 import { z } from 'zod'
 
@@ -38,6 +44,7 @@ const ConfigSchema = z.object({
       if (!key) return true
       return isHex(key) && privateKeyToAccount(key) !== undefined
     }, 'private key must be a valid hex string'),
+  gasTankAddress: z.custom<Address>().optional(),
 })
 
 type Chains = z.infer<typeof ChainSchema>
@@ -89,6 +96,12 @@ class RelayerApp extends App {
       )
         .conflicts('sponsoredEndpoint')
         .env('SENDER_PRIVATE_KEY'),
+      new Option(
+        '--gas-tank-address <address>',
+        'address of the gas tank to use for the relayer',
+      )
+        .env('GAS_TANK_ADDRESS')
+        .argParser((val) => getAddress(val)),
     ]
   }
 
@@ -168,6 +181,7 @@ class RelayerApp extends App {
       ponderInteropApi: config.ponderInteropApi,
       clients,
       walletClients,
+      gasTankAddress: config.gasTankAddress,
     })
   }
 
