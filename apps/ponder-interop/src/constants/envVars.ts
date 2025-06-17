@@ -1,6 +1,6 @@
 import 'dotenv/config'
 
-import { getAddress, isAddress } from 'viem'
+import { getAddress } from 'viem'
 import { inferSchemas, parseEnv } from 'znv'
 import { z } from 'zod'
 
@@ -9,12 +9,8 @@ export const envVarsSchema = inferSchemas({
     schema: z
       .string()
       .optional()
-      .refine(
-        (address) => address === undefined || isAddress(address),
-        'must be a valid address',
-      )
       .transform((address) =>
-        address === undefined ? address : getAddress(address),
+        address === undefined ? undefined : getAddress(address),
       ),
   },
 })
