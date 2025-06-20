@@ -79,17 +79,17 @@ export const gasTankPendingWithdrawals = onchainTable(
   }),
 )
 
-export const gasTankFlaggedMessages = onchainTable(
-  'gas_tank_flagged_messages',
+export const gasTankAuthorizedMessages = onchainTable(
+  'gas_tank_authorized_messages',
   (t) => ({
     chainId: t.bigint().notNull(),
     gasProvider: t.hex().notNull(),
-    originMessageHash: t.hex().notNull(),
-    flaggedAt: t.bigint().notNull(),
+    messageHash: t.hex().notNull(),
+    authorizedAt: t.bigint().notNull(),
   }),
   (table) => ({
     pk: primaryKey({
-      columns: [table.chainId, table.gasProvider, table.originMessageHash],
+      columns: [table.chainId, table.gasProvider, table.messageHash],
     }),
   }),
 )
@@ -100,8 +100,10 @@ export const gasTankClaimedMessages = onchainTable(
     originMessageHash: t.hex().notNull(),
     chainId: t.bigint().notNull(),
     relayer: t.hex().notNull(),
+    claimer: t.hex().notNull(),
     gasProvider: t.hex().notNull(),
-    amountClaimed: t.bigint().notNull(),
+    claimCost: t.bigint().notNull(),
+    relayCost: t.bigint().notNull(),
     claimedAt: t.bigint().notNull(),
   }),
   (table) => ({
@@ -114,11 +116,11 @@ export const gasTankClaimedMessages = onchainTable(
 export const gasTankRelayedMessageReceipts = onchainTable(
   'gas_tank_relayed_message_receipts',
   (t) => ({
-    originMessageHash: t.hex().notNull().primaryKey(),
+    messageHash: t.hex().notNull().primaryKey(),
     chainId: t.bigint().notNull(),
     relayer: t.hex().notNull(),
     gasCost: t.bigint().notNull(),
-    destinationMessageHashes: t.hex().array().notNull(),
+    nestedMessageHashes: t.hex().array().notNull(),
     relayedAt: t.bigint().notNull(),
   }),
 )
