@@ -15,11 +15,15 @@ import { z } from 'zod'
 import type {
   PendingMessage,
   PendingMessages,
+  PendingMessagesWithGasTank,
+  PendingMessageWithGasTank,
   RelayerConfig,
 } from '@/relayer.js'
 import {
   PendingMessageSchema,
   PendingMessagesSchema,
+  PendingMessagesWithGasTankSchema,
+  PendingMessageWithGasTankSchema,
   Relayer,
 } from '@/relayer.js'
 import { jsonFetchParams } from '@/utils/jsonFetchParams.js'
@@ -202,9 +206,13 @@ class RelayerApp extends App {
 
 export {
   type PendingMessage,
-  PendingMessages,
+  type PendingMessages,
   PendingMessageSchema,
   PendingMessagesSchema,
+  type PendingMessagesWithGasTank,
+  PendingMessagesWithGasTankSchema,
+  type PendingMessageWithGasTank,
+  PendingMessageWithGasTankSchema,
   Relayer,
   RelayerApp,
   type RelayerConfig,
