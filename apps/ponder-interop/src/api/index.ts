@@ -1,5 +1,15 @@
+import type { InferSelectModel } from 'drizzle-orm'
 import { Hono } from 'hono'
-import { and, count, desc, eq, inArray, isNull, replaceBigInts } from 'ponder'
+import {
+  and,
+  count,
+  desc,
+  eq,
+  gt,
+  inArray,
+  isNull,
+  replaceBigInts,
+} from 'ponder'
 import { db, publicClients } from 'ponder:api'
 import schema from 'ponder:schema'
 import { isAddress } from 'viem'
@@ -101,6 +111,86 @@ app.get('/messages/:account/pending', async (c) => {
     .map((m) => replaceBigInts(m, (x) => Number(x)))
 
   return c.json(messages)
+})
+
+// List of pending messages that have been authorized and have funds
+app.get('/messages/pending/gas-tank', async (c) => {
+  const query = db
+    .select({
+      message: schema.sentMessages,
+      gasTankChainId: schema.gasTankGasProviders.chainId,
+      gasProviderBalance: schema.gasTankGasProviders.balance,
+      gasProviderAddress: schema.gasTankFlaggedMessages.gasProvider,
+    })
+    .from(schema.sentMessages)
+    .limit(LIMIT)
+    .leftJoin(
+      schema.relayedMessages,
+      eq(schema.sentMessages.messageHash, schema.relayedMessages.messageHash),
+    )
+    .innerJoin(
+      schema.gasTankFlaggedMessages,
+      eq(
+        schema.sentMessages.messageHash,
+        schema.gasTankFlaggedMessages.messageHash,
+      ),
+    )
+    .innerJoin(
+      schema.gasTankGasProviders,
+      eq(
+        schema.gasTankFlaggedMessages.gasProvider,
+        schema.gasTankGasProviders.address,
+      ),
+    )
+    .where(
+      and(
+        isNull(schema.relayedMessages.messageHash),
+        eq(
+          schema.gasTankFlaggedMessages.chainId,
+          schema.gasTankGasProviders.chainId,
+        ),
+        gt(schema.gasTankGasProviders.balance, 0n),
+      ),
+    )
+    .orderBy(desc(schema.sentMessages.timestamp))
+
+  const result = await query
+
+  // Group by messageIdentifierHash
+  const groupedMessages = result.reduce(
+    (acc, m) => {
+      const messageId = m.message.messageIdentifierHash
+      const gasTankInfo = {
+        gasTankChainId: Number(m.gasTankChainId),
+        gasProviderBalance: Number(m.gasProviderBalance),
+        gasProviderAddress: m.gasProviderAddress,
+      }
+
+      if (!acc[messageId]) {
+        acc[messageId] = {
+          ...m.message,
+          gasTankProviders: [],
+        }
+      }
+
+      acc[messageId]!.gasTankProviders.push(gasTankInfo)
+      return acc
+    },
+    {} as Record<
+      string,
+      InferSelectModel<typeof schema.sentMessages> & {
+        gasTankProviders: Array<{
+          gasTankChainId: number
+          gasProviderBalance: number
+          gasProviderAddress: string
+        }>
+      }
+    >,
+  )
+
+  const messages = Object.values(groupedMessages)
+
+  return c.json(messages.map((m) => replaceBigInts(m, (x) => Number(x))))
 })
 
 export default app
