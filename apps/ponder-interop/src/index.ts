@@ -154,13 +154,13 @@ ponder.on('GasTank:WithdrawalFinalized', async ({ event, context }) => {
     }))
 })
 
-ponder.on('GasTank:Flagged', async ({ event, context }) => {
+ponder.on('GasTank:AuthorizedClaim', async ({ event, context }) => {
   await context.db
     .insert(gasTankFlaggedMessages)
     .values({
       chainId: BigInt(context.network.chainId),
       gasProvider: event.args.gasProvider,
-      originMessageHash: event.args.originMsgHash,
+      messageHash: event.args.messageHash,
       flaggedAt: event.block.timestamp,
     })
     .onConflictDoNothing()
@@ -189,11 +189,11 @@ ponder.on('GasTank:Claimed', async ({ event, context }) => {
 
 ponder.on('GasTank:RelayedMessageGasReceipt', async ({ event, context }) => {
   await context.db.insert(gasTankRelayedMessageReceipts).values({
-    originMessageHash: event.args.originMsgHash,
+    originMessageHash: event.args.messageHash,
     chainId: BigInt(context.network.chainId),
     relayer: event.args.relayer,
     gasCost: event.args.gasCost,
-    destinationMessageHashes: [...event.args.destinationMessageHashes],
+    nestedMessageHashes: [...event.args.nestedMessageHashes],
     relayedAt: event.block.timestamp,
   })
 })

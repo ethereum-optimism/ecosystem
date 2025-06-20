@@ -84,12 +84,12 @@ export const gasTankFlaggedMessages = onchainTable(
   (t) => ({
     chainId: t.bigint().notNull(),
     gasProvider: t.hex().notNull(),
-    originMessageHash: t.hex().notNull(),
+    messageHash: t.hex().notNull(),
     flaggedAt: t.bigint().notNull(),
   }),
   (table) => ({
     pk: primaryKey({
-      columns: [table.chainId, table.gasProvider, table.originMessageHash],
+      columns: [table.chainId, table.gasProvider, table.messageHash],
     }),
   }),
 )
@@ -118,7 +118,7 @@ export const gasTankRelayedMessageReceipts = onchainTable(
     chainId: t.bigint().notNull(),
     relayer: t.hex().notNull(),
     gasCost: t.bigint().notNull(),
-    destinationMessageHashes: t.hex().array().notNull(),
+    nestedMessageHashes: t.hex().array().notNull(),
     relayedAt: t.bigint().notNull(),
   }),
 )
