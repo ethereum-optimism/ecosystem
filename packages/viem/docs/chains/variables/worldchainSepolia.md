@@ -46,7 +46,7 @@ Collection of contracts
 
 ### contracts.disputeGameFactory.11155111.address
 
-> `readonly` **address**: `"0x8cF97Ee616C986a070F5020d973b456D0120C253"` = `'0x8cF97Ee616C986a070F5020d973b456D0120C253'`
+> `readonly` **address**: `"0x8Ec1111f67Dad6b6A93B3F42DfBC92D81c98449A"` = `'0x8Ec1111f67Dad6b6A93B3F42DfBC92D81c98449A'`
 
 ### contracts.gasPriceOracle
 
@@ -524,4 +524,4 @@ Flag for test networks
 
 ## Defined in
 
-[packages/viem/src/chains/sepolia.ts:933](https://github.com/ethereum-optimism/ecosystem/blob/11bb27f871c202b93ad6dc93c86c82f0c754075f/packages/viem/src/chains/sepolia.ts#L933)
+[packages/viem/src/chains/sepolia.ts:1182](https://github.com/ethereum-optimism/ecosystem/blob/8c0ceae82d8e909c0d00b4601d7c7276090774cc/packages/viem/src/chains/sepolia.ts#L1182)
