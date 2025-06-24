@@ -116,11 +116,24 @@ export const gasTankClaimedMessages = onchainTable(
 export const gasTankRelayedMessageReceipts = onchainTable(
   'gas_tank_relayed_message_receipts',
   (t) => ({
+    // unique identifier
     messageHash: t.hex().notNull().primaryKey(),
+
+    // message fields
+    origin: t.hex().notNull(),
+    blockNumber: t.bigint().notNull(),
+    logIndex: t.bigint().notNull(),
+    timestamp: t.bigint().notNull(),
     chainId: t.bigint().notNull(),
+    logPayload: t.hex().notNull(),
+
+    // receipt fields
     relayer: t.hex().notNull(),
     relayCost: t.bigint().notNull(),
     nestedMessageHashes: t.hex().array().notNull(),
     relayedAt: t.bigint().notNull(),
+  }),
+  (table) => ({
+    relayerIdx: index().on(table.relayer),
   }),
 )

@@ -12,7 +12,8 @@ import {
 } from 'ponder'
 import { db, publicClients } from 'ponder:api'
 import schema from 'ponder:schema'
-import { isAddress } from 'viem'
+import type { Address } from 'viem'
+import { getAddress, isAddress } from 'viem'
 
 type GasProvider = {
   gasTankChainId: number
@@ -21,7 +22,8 @@ type GasProvider = {
 }
 
 // TODO: Pagination & Limits
-const LIMIT = 10
+const MESSAGE_LIMIT = 10
+const CLAIM_LIMIT = 10
 const app = new Hono()
 
 const chains = Object.values(publicClients).map((client) => {
@@ -74,7 +76,7 @@ app.get('/messages/pending', async (c) => {
   const result = await db
     .select()
     .from(schema.sentMessages)
-    .limit(LIMIT)
+    .limit(MESSAGE_LIMIT)
     .leftJoin(
       schema.relayedMessages,
       eq(schema.sentMessages.messageHash, schema.relayedMessages.messageHash),
@@ -99,7 +101,7 @@ app.get('/messages/:account/pending', async (c) => {
   const result = await db
     .select()
     .from(schema.sentMessages)
-    .limit(LIMIT)
+    .limit(MESSAGE_LIMIT)
     .leftJoin(
       schema.relayedMessages,
       eq(schema.sentMessages.messageHash, schema.relayedMessages.messageHash),
@@ -156,7 +158,107 @@ app.get('/messages/pending/gas-tank', async (c) => {
   return c.json(messages.map((m) => replaceBigInts(m, (x) => Number(x))))
 })
 
-export default app
+app.get('/messages/pending/claims', async (c) => {
+  const relayersParam = c.req.query('relayers')
+
+  if (!relayersParam) {
+    return c.json({ error: 'No relayers provided' }, 400)
+  }
+
+  const relayers: Address[] = []
+  try {
+    for (const relayer of JSON.parse(relayersParam)) {
+      if (!isAddress(relayer, { strict: false })) {
+        return c.json({ error: 'Invalid relayer' }, 400)
+      }
+      relayers.push(getAddress(relayer))
+    }
+  } catch (error) {
+    return c.json({ error: 'Invalid relayers parameter format' }, 400)
+  }
+
+  const result = await getPendingClaimsQuery(relayers)
+
+  // Group by messageHash
+  const groupedMessages = result.reduce(
+    (acc, m) => {
+      const messageId = m.messageReceipt.messageHash
+      const gasTankInfo = {
+        gasTankChainId: Number(m.gasTankChainId),
+        gasProviderBalance: Number(m.gasProviderBalance),
+        gasProviderAddress: m.gasProviderAddress,
+      }
+
+      if (!acc[messageId]) {
+        acc[messageId] = {
+          relayReceipt: m.messageReceipt,
+          gasTankProviders: [],
+        }
+      }
+
+      acc[messageId]!.gasTankProviders.push(gasTankInfo)
+      return acc
+    },
+    {} as Record<
+      string,
+      {
+        relayReceipt: InferSelectModel<
+          typeof schema.gasTankRelayedMessageReceipts
+        >
+      } & {
+        gasTankProviders: GasProvider[]
+      }
+    >,
+  )
+
+  const messages = Object.values(groupedMessages)
+
+  return c.json(messages.map((m) => replaceBigInts(m, (x) => Number(x))))
+})
+
+function getPendingClaimsQuery(relayers: Address[]) {
+  return db
+    .select({
+      messageReceipt: schema.gasTankRelayedMessageReceipts,
+      gasTankChainId: schema.gasTankGasProviders.chainId,
+      gasProviderBalance: schema.gasTankGasProviders.balance,
+      gasProviderAddress: schema.gasTankAuthorizedMessages.gasProvider,
+    })
+    .from(schema.gasTankRelayedMessageReceipts)
+    .limit(CLAIM_LIMIT)
+    .leftJoin(
+      schema.gasTankClaimedMessages,
+      eq(
+        schema.gasTankRelayedMessageReceipts.messageHash,
+        schema.gasTankClaimedMessages.messageHash,
+      ),
+    )
+    .innerJoin(
+      schema.gasTankAuthorizedMessages,
+      eq(
+        schema.gasTankRelayedMessageReceipts.messageHash,
+        schema.gasTankAuthorizedMessages.messageHash,
+      ),
+    )
+    .innerJoin(
+      schema.gasTankGasProviders,
+      eq(
+        schema.gasTankAuthorizedMessages.gasProvider,
+        schema.gasTankGasProviders.address,
+      ),
+    )
+    .where(
+      and(
+        isNull(schema.gasTankClaimedMessages.messageHash),
+        inArray(schema.gasTankRelayedMessageReceipts.relayer, relayers),
+        eq(
+          schema.gasTankAuthorizedMessages.chainId,
+          schema.gasTankGasProviders.chainId,
+        ),
+      ),
+    )
+    .orderBy(desc(schema.gasTankRelayedMessageReceipts.relayedAt))
+}
 
 function getPendingMessagesQuery() {
   return db
@@ -167,7 +269,7 @@ function getPendingMessagesQuery() {
       gasProviderAddress: schema.gasTankAuthorizedMessages.gasProvider,
     })
     .from(schema.sentMessages)
-    .limit(LIMIT)
+    .limit(MESSAGE_LIMIT)
     .leftJoin(
       schema.relayedMessages,
       eq(schema.sentMessages.messageHash, schema.relayedMessages.messageHash),
@@ -198,3 +300,5 @@ function getPendingMessagesQuery() {
     )
     .orderBy(desc(schema.sentMessages.timestamp))
 }
+
+export default app

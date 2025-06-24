@@ -17,7 +17,7 @@ import {
   relayedMessages,
   sentMessages,
 } from 'ponder:schema'
-import { type Log } from 'viem'
+import type { Log } from 'viem'
 
 import { hashMessageIdentifier } from '@/utils/hashMessageIdentifier.js'
 
@@ -192,9 +192,28 @@ ponder.on('GasTank:Claimed', async ({ event, context }) => {
 })
 
 ponder.on('GasTank:RelayedMessageGasReceipt', async ({ event, context }) => {
+  const messageIdentifier: MessageIdentifier = {
+    origin: event.log.address,
+    chainId: BigInt(context.network.chainId),
+    logIndex: BigInt(event.log.logIndex),
+    blockNumber: event.block.number,
+    timestamp: BigInt(event.block.timestamp),
+  }
+
   await context.db.insert(gasTankRelayedMessageReceipts).values({
     messageHash: event.args.messageHash,
-    chainId: BigInt(context.network.chainId),
+
+    // message fields
+    origin: messageIdentifier.origin,
+    blockNumber: messageIdentifier.blockNumber,
+    logIndex: messageIdentifier.logIndex,
+    timestamp: messageIdentifier.timestamp,
+    chainId: messageIdentifier.chainId,
+    logPayload: encodeMessagePayload({
+      ...event.log,
+      topics: event.log.topics.filter((topic) => topic !== null),
+    } as Log),
+
     relayer: event.args.relayer,
     relayCost: event.args.relayCost,
     nestedMessageHashes: [...event.args.nestedMessageHashes],
