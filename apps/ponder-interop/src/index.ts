@@ -9,8 +9,8 @@ import {
 } from '@eth-optimism/viem/utils/interop'
 import { ponder } from 'ponder:registry'
 import {
+  gasTankAuthorizedMessages,
   gasTankClaimedMessages,
-  gasTankFlaggedMessages,
   gasTankGasProviders,
   gasTankPendingWithdrawals,
   gasTankRelayedMessageReceipts,
@@ -154,14 +154,14 @@ ponder.on('GasTank:WithdrawalFinalized', async ({ event, context }) => {
     }))
 })
 
-ponder.on('GasTank:Flagged', async ({ event, context }) => {
+ponder.on('GasTank:AuthorizedClaim', async ({ event, context }) => {
   await context.db
-    .insert(gasTankFlaggedMessages)
+    .insert(gasTankAuthorizedMessages)
     .values({
       chainId: BigInt(context.network.chainId),
       gasProvider: event.args.gasProvider,
-      originMessageHash: event.args.originMsgHash,
-      flaggedAt: event.block.timestamp,
+      messageHash: event.args.messageHash,
+      authorizedAt: event.block.timestamp,
     })
     .onConflictDoNothing()
 })
@@ -173,7 +173,7 @@ ponder.on('GasTank:Claimed', async ({ event, context }) => {
       address: event.args.gasProvider,
     })
     .set((row) => ({
-      balance: row.balance - event.args.amount,
+      balance: row.balance - event.args.claimCost - event.args.relayCost,
       lastUpdatedAt: event.block.timestamp,
     }))
 
@@ -181,19 +181,21 @@ ponder.on('GasTank:Claimed', async ({ event, context }) => {
     originMessageHash: event.args.originMsgHash,
     chainId: BigInt(context.network.chainId),
     relayer: event.args.relayer,
+    claimer: event.args.claimer,
     gasProvider: event.args.gasProvider,
-    amountClaimed: event.args.amount,
+    claimCost: event.args.claimCost,
+    relayCost: event.args.relayCost,
     claimedAt: event.block.timestamp,
   })
 })
 
 ponder.on('GasTank:RelayedMessageGasReceipt', async ({ event, context }) => {
   await context.db.insert(gasTankRelayedMessageReceipts).values({
-    originMessageHash: event.args.originMsgHash,
+    messageHash: event.args.messageHash,
     chainId: BigInt(context.network.chainId),
     relayer: event.args.relayer,
     gasCost: event.args.gasCost,
-    destinationMessageHashes: [...event.args.destinationMessageHashes],
+    nestedMessageHashes: [...event.args.nestedMessageHashes],
     relayedAt: event.block.timestamp,
   })
 })

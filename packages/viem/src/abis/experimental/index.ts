@@ -7,32 +7,6 @@
 export const gasTankAbi = [
   {
     type: 'function',
-    name: 'CLAIM_OVERHEAD',
-    inputs: [],
-    outputs: [
-      {
-        name: '',
-        type: 'uint256',
-        internalType: 'uint256',
-      },
-    ],
-    stateMutability: 'view',
-  },
-  {
-    type: 'function',
-    name: 'GAS_RECEIPT_EVENT_OVERHEAD',
-    inputs: [],
-    outputs: [
-      {
-        name: '',
-        type: 'uint256',
-        internalType: 'uint256',
-      },
-    ],
-    stateMutability: 'view',
-  },
-  {
-    type: 'function',
     name: 'MAX_DEPOSIT',
     inputs: [],
     outputs: [
@@ -72,6 +46,43 @@ export const gasTankAbi = [
   },
   {
     type: 'function',
+    name: 'authorizeClaim',
+    inputs: [
+      {
+        name: '_messageHash',
+        type: 'bytes32',
+        internalType: 'bytes32',
+      },
+    ],
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    name: 'authorizedMessages',
+    inputs: [
+      {
+        name: 'gasProvider',
+        type: 'address',
+        internalType: 'address',
+      },
+      {
+        name: 'msgHash',
+        type: 'bytes32',
+        internalType: 'bytes32',
+      },
+    ],
+    outputs: [
+      {
+        name: 'authorized',
+        type: 'bool',
+        internalType: 'bool',
+      },
+    ],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
     name: 'balanceOf',
     inputs: [
       {
@@ -94,7 +105,7 @@ export const gasTankAbi = [
     name: 'claim',
     inputs: [
       {
-        name: 'id',
+        name: '_id',
         type: 'tuple',
         internalType: 'struct Identifier',
         components: [
@@ -126,18 +137,42 @@ export const gasTankAbi = [
         ],
       },
       {
-        name: 'gasProvider',
+        name: '_gasProvider',
         type: 'address',
         internalType: 'address',
       },
       {
-        name: 'payload',
+        name: '_payload',
         type: 'bytes',
         internalType: 'bytes',
       },
     ],
     outputs: [],
     stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    name: 'claimOverhead',
+    inputs: [
+      {
+        name: '_numHashes',
+        type: 'uint256',
+        internalType: 'uint256',
+      },
+      {
+        name: '_baseFee',
+        type: 'uint256',
+        internalType: 'uint256',
+      },
+    ],
+    outputs: [
+      {
+        name: 'overhead_',
+        type: 'uint256',
+        internalType: 'uint256',
+      },
+    ],
+    stateMutability: 'pure',
   },
   {
     type: 'function',
@@ -163,29 +198,29 @@ export const gasTankAbi = [
     name: 'decodeGasReceiptPayload',
     inputs: [
       {
-        name: 'payload',
+        name: '_payload',
         type: 'bytes',
         internalType: 'bytes',
       },
     ],
     outputs: [
       {
-        name: 'originMessageHash',
+        name: 'originMessageHash_',
         type: 'bytes32',
         internalType: 'bytes32',
       },
       {
-        name: 'relayer',
+        name: 'relayer_',
         type: 'address',
         internalType: 'address',
       },
       {
-        name: 'relayCost',
+        name: 'relayCost_',
         type: 'uint256',
         internalType: 'uint256',
       },
       {
-        name: 'destinationMessageHashes',
+        name: 'destinationMessageHashes_',
         type: 'bytes32[]',
         internalType: 'bytes32[]',
       },
@@ -210,57 +245,20 @@ export const gasTankAbi = [
     name: 'finalizeWithdrawal',
     inputs: [
       {
-        name: 'to',
+        name: '_to',
         type: 'address',
         internalType: 'address',
       },
     ],
     outputs: [],
     stateMutability: 'nonpayable',
-  },
-  {
-    type: 'function',
-    name: 'flag',
-    inputs: [
-      {
-        name: 'messageHash',
-        type: 'bytes32',
-        internalType: 'bytes32',
-      },
-    ],
-    outputs: [],
-    stateMutability: 'nonpayable',
-  },
-  {
-    type: 'function',
-    name: 'flaggedMessages',
-    inputs: [
-      {
-        name: 'gasProvider',
-        type: 'address',
-        internalType: 'address',
-      },
-      {
-        name: 'msgHash',
-        type: 'bytes32',
-        internalType: 'bytes32',
-      },
-    ],
-    outputs: [
-      {
-        name: 'flagged',
-        type: 'bool',
-        internalType: 'bool',
-      },
-    ],
-    stateMutability: 'view',
   },
   {
     type: 'function',
     name: 'initiateWithdrawal',
     inputs: [
       {
-        name: 'amount',
+        name: '_amount',
         type: 'uint256',
         internalType: 'uint256',
       },
@@ -310,7 +308,18 @@ export const gasTankAbi = [
         internalType: 'bytes',
       },
     ],
-    outputs: [],
+    outputs: [
+      {
+        name: 'gasCost_',
+        type: 'uint256',
+        internalType: 'uint256',
+      },
+      {
+        name: 'nestedMessageHashes_',
+        type: 'bytes32[]',
+        internalType: 'bytes32[]',
+      },
+    ],
     stateMutability: 'nonpayable',
   },
   {
@@ -339,6 +348,25 @@ export const gasTankAbi = [
   },
   {
     type: 'event',
+    name: 'AuthorizedClaim',
+    inputs: [
+      {
+        name: 'gasProvider',
+        type: 'address',
+        indexed: true,
+        internalType: 'address',
+      },
+      {
+        name: 'messageHash',
+        type: 'bytes32',
+        indexed: true,
+        internalType: 'bytes32',
+      },
+    ],
+    anonymous: false,
+  },
+  {
+    type: 'event',
     name: 'Claimed',
     inputs: [
       {
@@ -360,7 +388,19 @@ export const gasTankAbi = [
         internalType: 'address',
       },
       {
-        name: 'amount',
+        name: 'claimer',
+        type: 'address',
+        indexed: false,
+        internalType: 'address',
+      },
+      {
+        name: 'relayCost',
+        type: 'uint256',
+        indexed: false,
+        internalType: 'uint256',
+      },
+      {
+        name: 'claimCost',
         type: 'uint256',
         indexed: false,
         internalType: 'uint256',
@@ -389,29 +429,10 @@ export const gasTankAbi = [
   },
   {
     type: 'event',
-    name: 'Flagged',
-    inputs: [
-      {
-        name: 'originMsgHash',
-        type: 'bytes32',
-        indexed: true,
-        internalType: 'bytes32',
-      },
-      {
-        name: 'gasProvider',
-        type: 'address',
-        indexed: true,
-        internalType: 'address',
-      },
-    ],
-    anonymous: false,
-  },
-  {
-    type: 'event',
     name: 'RelayedMessageGasReceipt',
     inputs: [
       {
-        name: 'originMsgHash',
+        name: 'messageHash',
         type: 'bytes32',
         indexed: true,
         internalType: 'bytes32',
@@ -429,7 +450,7 @@ export const gasTankAbi = [
         internalType: 'uint256',
       },
       {
-        name: 'destinationMessageHashes',
+        name: 'nestedMessageHashes',
         type: 'bytes32[]',
         indexed: false,
         internalType: 'bytes32[]',
@@ -503,22 +524,17 @@ export const gasTankAbi = [
   },
   {
     type: 'error',
-    name: 'InvalidPayer',
-    inputs: [],
-  },
-  {
-    type: 'error',
     name: 'InvalidPayload',
     inputs: [],
   },
   {
     type: 'error',
-    name: 'InvalidRootMessage',
+    name: 'MaxDepositExceeded',
     inputs: [],
   },
   {
     type: 'error',
-    name: 'MaxDepositExceeded',
+    name: 'MessageNotAuthorized',
     inputs: [],
   },
   {
