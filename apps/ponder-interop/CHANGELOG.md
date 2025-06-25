@@ -1,5 +1,14 @@
 # @eth-optimism/ponder-interop
 
+## 0.0.15
+
+### Patch Changes
+
+- [#863](https://github.com/ethereum-optimism/ecosystem/pull/863) [`187601c`](https://github.com/ethereum-optimism/ecosystem/commit/187601c7d870f4f6a62b9338b58d36099d14ccec) Thanks [@tremarkley](https://github.com/tremarkley)! - update GasTank abi to latest version of contract and update GasTank ponder schema
+
+- Updated dependencies [[`187601c`](https://github.com/ethereum-optimism/ecosystem/commit/187601c7d870f4f6a62b9338b58d36099d14ccec)]:
+  - @eth-optimism/viem@0.4.11
+
 ## 0.0.14
 
 ### Patch Changes

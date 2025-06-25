@@ -1,5 +1,11 @@
 # @eth-optimism/viem
 
+## 0.4.11
+
+### Patch Changes
+
+- [#863](https://github.com/ethereum-optimism/ecosystem/pull/863) [`187601c`](https://github.com/ethereum-optimism/ecosystem/commit/187601c7d870f4f6a62b9338b58d36099d14ccec) Thanks [@tremarkley](https://github.com/tremarkley)! - update GasTank abi to latest version of contract and update GasTank ponder schema
+
 ## 0.4.10
 
 ### Patch Changes
