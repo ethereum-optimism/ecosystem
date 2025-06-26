@@ -67,7 +67,7 @@ export const gasTankAbi = [
         internalType: 'address',
       },
       {
-        name: 'msgHash',
+        name: 'messageHash',
         type: 'bytes32',
         internalType: 'bytes32',
       },
@@ -179,7 +179,7 @@ export const gasTankAbi = [
     name: 'claimed',
     inputs: [
       {
-        name: 'rootMsgHash',
+        name: 'messageHash',
         type: 'bytes32',
         internalType: 'bytes32',
       },
@@ -205,7 +205,7 @@ export const gasTankAbi = [
     ],
     outputs: [
       {
-        name: 'originMessageHash_',
+        name: 'messageHash_',
         type: 'bytes32',
         internalType: 'bytes32',
       },
@@ -220,7 +220,7 @@ export const gasTankAbi = [
         internalType: 'uint256',
       },
       {
-        name: 'destinationMessageHashes_',
+        name: 'nestedMessageHashes_',
         type: 'bytes32[]',
         internalType: 'bytes32[]',
       },
@@ -310,7 +310,7 @@ export const gasTankAbi = [
     ],
     outputs: [
       {
-        name: 'gasCost_',
+        name: 'relayCost_',
         type: 'uint256',
         internalType: 'uint256',
       },
@@ -348,7 +348,7 @@ export const gasTankAbi = [
   },
   {
     type: 'event',
-    name: 'AuthorizedClaim',
+    name: 'AuthorizedClaims',
     inputs: [
       {
         name: 'gasProvider',
@@ -357,10 +357,10 @@ export const gasTankAbi = [
         internalType: 'address',
       },
       {
-        name: 'messageHash',
-        type: 'bytes32',
-        indexed: true,
-        internalType: 'bytes32',
+        name: 'messageHashes',
+        type: 'bytes32[]',
+        indexed: false,
+        internalType: 'bytes32[]',
       },
     ],
     anonymous: false,
@@ -370,7 +370,7 @@ export const gasTankAbi = [
     name: 'Claimed',
     inputs: [
       {
-        name: 'originMsgHash',
+        name: 'messageHash',
         type: 'bytes32',
         indexed: true,
         internalType: 'bytes32',
@@ -413,7 +413,7 @@ export const gasTankAbi = [
     name: 'Deposit',
     inputs: [
       {
-        name: 'depositor',
+        name: 'gasProvider',
         type: 'address',
         indexed: true,
         internalType: 'address',
@@ -444,7 +444,7 @@ export const gasTankAbi = [
         internalType: 'address',
       },
       {
-        name: 'gasCost',
+        name: 'relayCost',
         type: 'uint256',
         indexed: false,
         internalType: 'uint256',
