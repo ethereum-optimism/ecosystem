@@ -31,7 +31,7 @@
     "build": "tsc && resolve-tspaths",
     "clean": "rm -rf dist types tsconfig.tsbuildinfo",
     "docs": "typedoc",
-    "gen:abis": "pnpm dlx tsx ./scripts/abigen",
+    "gen:abis": "pnpm dlx tsx ./scripts/abigen && pnpm lint:fix",
     "gen:chains": "pnpm dlx tsx ./scripts/chaingen",
     "gen:abi-docs": "pnpm dlx tsx ./scripts/abidocgen",
     "lint": "eslint \"**/*.{ts,tsx}\" && pnpm prettier --check \"**/*.{ts,tsx}\" --ignore-path \"../../.prettierignore\"",

@@ -112,7 +112,7 @@ ponder.on('GasTank:Deposit', async ({ event, context }) => {
     .insert(gasTankGasProviders)
     .values({
       chainId: BigInt(context.network.chainId),
-      address: event.args.depositor,
+      address: event.args.gasProvider,
       balance: event.args.amount,
       lastUpdatedAt: event.block.timestamp,
     })
@@ -154,16 +154,18 @@ ponder.on('GasTank:WithdrawalFinalized', async ({ event, context }) => {
     }))
 })
 
-ponder.on('GasTank:AuthorizedClaim', async ({ event, context }) => {
-  await context.db
-    .insert(gasTankAuthorizedMessages)
-    .values({
-      chainId: BigInt(context.network.chainId),
-      gasProvider: event.args.gasProvider,
-      messageHash: event.args.messageHash,
-      authorizedAt: event.block.timestamp,
-    })
-    .onConflictDoNothing()
+ponder.on('GasTank:AuthorizedClaims', async ({ event, context }) => {
+  for (const messageHash of event.args.messageHashes) {
+    await context.db
+      .insert(gasTankAuthorizedMessages)
+      .values({
+        chainId: BigInt(context.network.chainId),
+        gasProvider: event.args.gasProvider,
+        messageHash,
+        authorizedAt: event.block.timestamp,
+      })
+      .onConflictDoNothing()
+  }
 })
 
 ponder.on('GasTank:Claimed', async ({ event, context }) => {
@@ -178,7 +180,7 @@ ponder.on('GasTank:Claimed', async ({ event, context }) => {
     }))
 
   await context.db.insert(gasTankClaimedMessages).values({
-    originMessageHash: event.args.originMsgHash,
+    messageHash: event.args.messageHash,
     chainId: BigInt(context.network.chainId),
     relayer: event.args.relayer,
     claimer: event.args.claimer,
@@ -194,7 +196,7 @@ ponder.on('GasTank:RelayedMessageGasReceipt', async ({ event, context }) => {
     messageHash: event.args.messageHash,
     chainId: BigInt(context.network.chainId),
     relayer: event.args.relayer,
-    gasCost: event.args.gasCost,
+    relayCost: event.args.relayCost,
     nestedMessageHashes: [...event.args.nestedMessageHashes],
     relayedAt: event.block.timestamp,
   })

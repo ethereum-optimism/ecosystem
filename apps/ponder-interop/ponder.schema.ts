@@ -97,7 +97,7 @@ export const gasTankAuthorizedMessages = onchainTable(
 export const gasTankClaimedMessages = onchainTable(
   'gas_tank_claimed_messages',
   (t) => ({
-    originMessageHash: t.hex().notNull(),
+    messageHash: t.hex().notNull(),
     chainId: t.bigint().notNull(),
     relayer: t.hex().notNull(),
     claimer: t.hex().notNull(),
@@ -108,7 +108,7 @@ export const gasTankClaimedMessages = onchainTable(
   }),
   (table) => ({
     pk: primaryKey({
-      columns: [table.chainId, table.originMessageHash],
+      columns: [table.chainId, table.messageHash],
     }),
   }),
 )
@@ -119,7 +119,7 @@ export const gasTankRelayedMessageReceipts = onchainTable(
     messageHash: t.hex().notNull().primaryKey(),
     chainId: t.bigint().notNull(),
     relayer: t.hex().notNull(),
-    gasCost: t.bigint().notNull(),
+    relayCost: t.bigint().notNull(),
     nestedMessageHashes: t.hex().array().notNull(),
     relayedAt: t.bigint().notNull(),
   }),
