@@ -7,7 +7,7 @@ const { exec } = require('child_process')
 const PLATFORM = os.platform()
 const ARCH = os.arch()
 const BIN_PATH = path.join(__dirname, 'bin')
-const SUPERSIM_VERSION = '0.1.0-alpha.54'
+const SUPERSIM_VERSION = '0.1.0-alpha.55'
 
 const archiveFilename = {
   darwin: {
