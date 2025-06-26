@@ -1,5 +1,13 @@
 # @eth-optimism/superchain-playground
 
+## 0.0.5
+
+### Patch Changes
+
+- Updated dependencies [[`e489b1a`](https://github.com/ethereum-optimism/ecosystem/commit/e489b1a1add3351c517769d82b7fa7542a16e7b8)]:
+  - @eth-optimism/viem@0.4.12
+  - @eth-optimism/wagmi@0.1.11
+
 ## 0.0.4
 
 ### Patch Changes

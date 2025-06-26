@@ -1,5 +1,11 @@
 # @eth-optimism/viem
 
+## 0.4.12
+
+### Patch Changes
+
+- [#875](https://github.com/ethereum-optimism/ecosystem/pull/875) [`e489b1a`](https://github.com/ethereum-optimism/ecosystem/commit/e489b1a1add3351c517769d82b7fa7542a16e7b8) Thanks [@tremarkley](https://github.com/tremarkley)! - update GasTank abi to latest version
+
 ## 0.4.11
 
 ### Patch Changes
