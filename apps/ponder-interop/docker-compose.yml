@@ -6,11 +6,7 @@ services:
     environment:
       - POSTGRES_HOST_AUTH_METHOD=trust
     healthcheck:
-      test:
-        [
-          'CMD-SHELL',
-          'pg_isready -q -U local-db-user -d ponder-interop',
-        ]
+      test: ['CMD-SHELL', 'pg_isready -q -U local-db-user -d ponder-interop']
       interval: 5s
       timeout: 10s
       retries: 3
@@ -32,6 +28,7 @@ services:
     env_file: .env
     environment:
       - DATABASE_URL=postgresql://local-db-user:@postgres:5432/ponder-interop
+      - GAS_TANK_CONTRACT_ADDRESS=0x420beeF000000000000000000000000000000002
     volumes:
       - ../../certs/extra-ca-certificates.crt:/usr/local/share/ca-certificates/extra-ca-certificates.crt
     healthcheck:
