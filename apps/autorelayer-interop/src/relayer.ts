@@ -45,6 +45,30 @@ export type PendingMessage = z.infer<typeof PendingMessageSchema>
 
 export type PendingMessages = z.infer<typeof PendingMessagesSchema>
 
+export const PendingMessageWithGasTankSchema = PendingMessageSchema.extend({
+  gasTankProviders: z.array(
+    z.object({
+      gasTankChainId: z.number(),
+      gasProviderBalance: z.number(),
+      gasProviderAddress: z
+        .string()
+        .refine(isAddress, 'invalid gas provider address'),
+    }),
+  ),
+})
+
+export const PendingMessagesWithGasTankSchema = z.array(
+  PendingMessageWithGasTankSchema,
+)
+
+export type PendingMessageWithGasTank = z.infer<
+  typeof PendingMessageWithGasTankSchema
+>
+
+export type PendingMessagesWithGasTank = z.infer<
+  typeof PendingMessagesWithGasTankSchema
+>
+
 export interface RelayerConfig {
   ponderInteropApi: string
   clients: Record<number, PublicClient>
@@ -59,6 +83,8 @@ export interface RelayMessageParams {
   accessList: AccessList
   chain: Chain | null
 }
+
+const GAS_BUFFER = 125n
 
 export class Relayer {
   protected readonly log: Logger
@@ -130,12 +156,21 @@ export class Relayer {
       const params = { id, payload, accessList, account, chain: null }
 
       try {
-        const relayTxHash = await this.relayMessage({
-          publicClient: client,
-          walletClient,
-          params,
-          msgLog,
-        })
+        const relayTxHash = this.config.gasTankAddress
+          ? await this.relayMessageViaGasTank({
+              publicClient: client,
+              walletClient,
+              gasTankAddress: this.config.gasTankAddress,
+              params,
+              msgLog,
+              message: message as PendingMessageWithGasTank,
+            })
+          : await this.relayMessageViaL2ToL2CrossDomainMessenger({
+              publicClient: client,
+              walletClient,
+              params,
+              msgLog,
+            })
         msgLog.info({ relayTxHash }, 'submitted message relay')
       } catch (error) {
         msgLog.warn('relay failed, skipping...')
@@ -156,57 +191,58 @@ export class Relayer {
    * @returns An array of pending messages
    * @throws Error if the pending messages fetch fails
    */
-  protected async fetchPendingMessages(): Promise<PendingMessages> {
+  protected async fetchPendingMessages(): Promise<
+    PendingMessages | PendingMessagesWithGasTank
+  > {
     try {
-      const url = `${this.config.ponderInteropApi}/messages/pending`
-      const resp = await fetch(url, jsonFetchParams)
-      if (!resp.ok) {
-        throw new Error(`http response: ${resp.statusText}`)
+      if (this.config.gasTankAddress) {
+        return await this.fetchPendingMessagesWithGasTankFunds()
       }
 
-      const body = await resp.json()
-      const { data: msgs, error } = PendingMessagesSchema.safeParse(body)
-      if (error) {
-        throw new Error(
-          `api response: ${error.errors
-            .map((e) => `{${e.path.join('.')}: ${e.message}}`)
-            .join(', ')}`,
-        )
-      }
-
-      return msgs
+      return await this.fetchAllPendingMessages()
     } catch (error) {
       throw new Error(`failed pending messages fetch: ${error}`)
     }
   }
 
-  private async relayMessage({
-    publicClient,
-    walletClient,
-    params,
-    msgLog,
-  }: {
-    publicClient: PublicClient
-    walletClient: WalletClient
-    params: RelayMessageParams
-    msgLog: Logger
-  }): Promise<Hex> {
-    if (this.config.gasTankAddress) {
-      return this.relayMessageViaGasTank({
-        publicClient,
-        walletClient,
-        gasTankAddress: this.config.gasTankAddress,
-        params,
-        msgLog,
-      })
+  private async fetchAllPendingMessages(): Promise<PendingMessages> {
+    const url = `${this.config.ponderInteropApi}/messages/pending`
+    const resp = await fetch(url, jsonFetchParams)
+    if (!resp.ok) {
+      throw new Error(`http response: ${resp.statusText}`)
     }
 
-    return this.relayMessageViaL2ToL2CrossDomainMessenger({
-      publicClient,
-      walletClient,
-      params,
-      msgLog,
-    })
+    const body = await resp.json()
+    const { data: msgs, error } = PendingMessagesSchema.safeParse(body)
+    if (error) {
+      throw new Error(
+        `api response: ${error.errors
+          .map((e) => `{${e.path.join('.')}: ${e.message}}`)
+          .join(', ')}`,
+      )
+    }
+
+    return msgs
+  }
+
+  private async fetchPendingMessagesWithGasTankFunds(): Promise<PendingMessagesWithGasTank> {
+    const url = `${this.config.ponderInteropApi}/messages/pending/gas-tank`
+    const resp = await fetch(url, jsonFetchParams)
+    if (!resp.ok) {
+      throw new Error(`http response: ${resp.statusText}`)
+    }
+
+    const body = await resp.json()
+    const { data: msgs, error } =
+      PendingMessagesWithGasTankSchema.safeParse(body)
+    if (error) {
+      throw new Error(
+        `api response: ${error.errors
+          .map((e) => `{${e.path.join('.')}: ${e.message}}`)
+          .join(', ')}`,
+      )
+    }
+    return msgs
   }
 
   private async relayMessageViaL2ToL2CrossDomainMessenger({
@@ -246,37 +282,69 @@ export class Relayer {
     gasTankAddress,
     params,
     msgLog,
+    message,
   }: {
     publicClient: PublicClient
     walletClient: WalletClient
     gasTankAddress: Address
     params: RelayMessageParams
     msgLog: Logger
+    message: PendingMessageWithGasTank
   }): Promise<Hex> {
     const { id, payload, account, accessList, chain } = params
-    try {
+    const contractArgs = {
+      address: gasTankAddress,
+      abi: gasTankAbi,
+      functionName: 'relayMessage',
+      args: [id, payload],
+      account,
+      accessList,
+    } as const
+    const block = await publicClient.getBlock()
+
+    const [simulatedRelayGasCost, simulatedNestedMessages] = (
       await simulateContract(publicClient, {
-        address: gasTankAddress,
-        abi: gasTankAbi,
-        functionName: 'relayMessage',
-        args: [id, payload],
-        account,
-        accessList,
+        ...contractArgs,
+        blockNumber: block.number,
+      }).catch((error) => {
+        msgLog.warn({ err: error }, 'relay failed simulation')
+        throw error
       })
-    } catch (error) {
-      msgLog.warn({ err: error }, 'relay failed simulation')
-      throw error
+    ).result
+
+    const baseFee = block.baseFeePerGas || 0n
+    const estimatedClaimGasCost = await publicClient.readContract({
+      address: gasTankAddress,
+      abi: gasTankAbi,
+      functionName: 'claimOverhead',
+      args: [BigInt(simulatedNestedMessages.length), baseFee],
+    })
+    // Add a buffer to the simulated gas cost to account for base fee increases.
+    const totalGasCost =
+      ((simulatedRelayGasCost + estimatedClaimGasCost) * GAS_BUFFER) / 100n
+    const hasEnoughFunds = message.gasTankProviders.some(
+      (provider) => provider.gasProviderBalance >= totalGasCost,
+    )
+    if (!hasEnoughFunds) {
+      msgLog.warn(
+        {
+          message,
+          estimatedClaimGasCost,
+          simulatedRelayGasCost,
+          totalGasCost,
+        },
+        'gas tank has insufficient funds',
+      )
+      throw new Error('gas tank has insufficient funds')
     }
+
     try {
       return await writeContract(walletClient, {
-        abi: gasTankAbi,
-        address: gasTankAddress,
-        functionName: 'relayMessage',
-        args: [id, payload],
-        account,
-        accessList,
+        ...contractArgs,
         chain,
       })
+      // TODO: when configuring monitoring add a check that verifies the accuracy of the gas estimate and the
+      // actual gas cost of the relay transaction.
     } catch (error) {
       msgLog.warn({ err: error }, 'relay failed')
       throw error
