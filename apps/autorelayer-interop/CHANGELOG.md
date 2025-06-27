@@ -1,5 +1,11 @@
 # @eth-optimism/autorelayer-interop
 
+## 0.0.19
+
+### Patch Changes
+
+- [#861](https://github.com/ethereum-optimism/ecosystem/pull/861) [`177a682`](https://github.com/ethereum-optimism/ecosystem/commit/177a682c8f6262221c166c2bd51861ff5914db4a) Thanks [@tremarkley](https://github.com/tremarkley)! - Only relay pending messages with gas tank funds when gasTankAddress option is set
+
 ## 0.0.18
 
 ### Patch Changes

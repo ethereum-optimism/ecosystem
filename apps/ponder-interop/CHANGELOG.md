@@ -1,5 +1,13 @@
 # @eth-optimism/ponder-interop
 
+## 0.0.17
+
+### Patch Changes
+
+- [#869](https://github.com/ethereum-optimism/ecosystem/pull/869) [`7abd6ae`](https://github.com/ethereum-optimism/ecosystem/commit/7abd6ae69e0b02752fb822bcf2c1cca46490f818) Thanks [@tremarkley](https://github.com/tremarkley)! - add api endpoint for fetching pending GasTank claims
+
+- [#860](https://github.com/ethereum-optimism/ecosystem/pull/860) [`7002a6b`](https://github.com/ethereum-optimism/ecosystem/commit/7002a6b8a36ce7cac43a5df9366349ebf4c54976) Thanks [@tremarkley](https://github.com/tremarkley)! - Add /messages/pending/gas-tank endpoint for fetching pending messages with gas tank funds
+
 ## 0.0.16
 
 ### Patch Changes
