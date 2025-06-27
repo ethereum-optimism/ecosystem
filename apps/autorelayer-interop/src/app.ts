@@ -13,6 +13,7 @@ import { privateKeyToAccount } from 'viem/accounts'
 import { z } from 'zod'
 
 import type {
+  PendingClaim,
   PendingMessage,
   PendingMessages,
   PendingMessagesWithGasTank,
@@ -20,6 +21,8 @@ import type {
   RelayerConfig,
 } from '@/relayer.js'
 import {
+  PendingClaimSchema,
+  PendingClaimsSchema,
   PendingMessageSchema,
   PendingMessagesSchema,
   PendingMessagesWithGasTankSchema,
@@ -205,6 +208,9 @@ class RelayerApp extends App {
 }
 
 export {
+  type PendingClaim,
+  PendingClaimSchema,
+  PendingClaimsSchema,
   type PendingMessage,
   type PendingMessages,
   PendingMessageSchema,
