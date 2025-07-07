@@ -51,7 +51,15 @@ const gasTankProviderSchema = z.object({
   gasProviderAddress: z
     .string()
     .refine(isAddress, 'invalid gas provider address'),
+  pendingWithdrawal: z
+    .object({
+      amount: z.number(),
+      initiatedAt: z.number(),
+    })
+    .optional(),
 })
+
+type GasTankProvider = z.infer<typeof gasTankProviderSchema>
 
 export const PendingMessageWithGasTankSchema = PendingMessageSchema.extend({
   gasTankProviders: z.array(gasTankProviderSchema),
@@ -169,6 +177,7 @@ export class Relayer {
     message: PendingMessage | PendingMessageWithGasTank,
   ): Promise<void> {
     const msgLog = this.log.child({
+      action: 'relayMessage',
       source: message.source,
       destination: message.destination,
       messageHash: message.messageHash,
@@ -260,10 +269,17 @@ export class Relayer {
 
   private async processClaim(claim: PendingClaim): Promise<void> {
     const msgLog = this.log.child({
+      action: 'processClaim',
       messageHash: claim.relayReceipt.messageHash,
+      relayer: claim.relayReceipt.relayer,
+      relayCost: claim.relayReceipt.relayCost,
+      relayedAt: claim.relayReceipt.relayedAt,
+      chainId: claim.relayReceipt.chainId,
+      timestamp: claim.relayReceipt.timestamp,
     })
 
     const gasProvider = this.selectGasProvider(claim, msgLog)
+    msgLog.info({ gasProvider }, 'selected gas provider')
     if (!gasProvider) return
 
     const clientsAndAccount = await this.getClientsAndAccount(
@@ -330,6 +346,15 @@ export class Relayer {
     return { client, walletClient, account }
   }
 
+  private getGasProviderBalance(gasProvider: GasTankProvider) {
+    if (gasProvider.pendingWithdrawal) {
+      const balance =
+        gasProvider.gasProviderBalance - gasProvider.pendingWithdrawal.amount
+      return balance > 0 ? balance : 0
+    }
+    return gasProvider.gasProviderBalance
+  }
+
   /**
    * Selects the gas provider with the highest balance
    * @param claim - The pending claim
@@ -337,19 +362,47 @@ export class Relayer {
    * @returns The gas provider with the highest balance
    */
   private selectGasProvider(claim: PendingClaim, msgLog: Logger) {
-    const gasTankProvidersWithFunds = claim.gasTankProviders.filter(
-      (provider) => provider.gasProviderBalance >= claim.relayReceipt.relayCost,
+    // First, check for providers with sufficient funds accounting for pending withdrawals
+    const providersWithSufficientFunds = claim.gasTankProviders.filter(
+      (provider) =>
+        this.getGasProviderBalance(provider) >= claim.relayReceipt.relayCost,
     )
 
-    if (gasTankProvidersWithFunds.length === 0) {
-      msgLog.warn('no gas tank providers with funds, skipping...')
-      return null
+    if (providersWithSufficientFunds.length === 0) {
+      msgLog.warn(
+        'no gas tank providers with sufficient funds, checking raw funds...',
+      )
+      // Fallback: check providers without accounting for pending withdrawals
+      const providersWithRawFunds = claim.gasTankProviders.filter(
+        (provider) =>
+          provider.gasProviderBalance >= claim.relayReceipt.relayCost,
+      )
+      if (providersWithRawFunds.length === 0) {
+        msgLog.warn(
+          'no gas tank providers with sufficient raw funds, skipping...',
+        )
+        return null
+      }
+
+      // Return provider with highest raw balance
+      return providersWithRawFunds.reduce(
+        (highestBalanceProvider, provider) =>
+          provider.gasProviderBalance >
+          highestBalanceProvider.gasProviderBalance
+            ? provider
+            : highestBalanceProvider,
+        providersWithRawFunds[0],
+      )
     }
 
-    return gasTankProvidersWithFunds.reduce(
-      (max, provider) =>
-        provider.gasProviderBalance > max.gasProviderBalance ? provider : max,
-      gasTankProvidersWithFunds[0],
+    // Return provider with highest available balance (accounting for pending withdrawals)
+    return providersWithSufficientFunds.reduce(
+      (highestBalanceProvider, provider) =>
+        this.getGasProviderBalance(provider) >
+        this.getGasProviderBalance(highestBalanceProvider)
+          ? provider
+          : highestBalanceProvider,
+      providersWithSufficientFunds[0],
     )
   }
 
@@ -528,7 +581,7 @@ export class Relayer {
     const totalGasCost =
       ((simulatedRelayGasCost + estimatedClaimGasCost) * GAS_BUFFER) / 100n
     const hasEnoughFunds = message.gasTankProviders.some(
-      (provider) => provider.gasProviderBalance >= totalGasCost,
+      (provider) => this.getGasProviderBalance(provider) >= totalGasCost,
     )
     if (!hasEnoughFunds) {
       msgLog.warn(
