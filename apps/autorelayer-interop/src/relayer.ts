@@ -103,6 +103,21 @@ export type PendingClaim = z.infer<typeof PendingClaimSchema>
 
 export type PendingClaims = z.infer<typeof PendingClaimsSchema>
 
+const PendingRelayCostForGasProviderSchema = z
+  .object({
+    gasProviderAddress: z
+      .string()
+      .refine(isAddress, 'invalid gas provider address'),
+    gasProviderChainId: z.number(),
+    totalPendingRelayCost: z.coerce.number(),
+    pendingReceiptsCount: z.number(),
+  })
+  .nullable()
+
+type PendingRelayCostForGasProvider = z.infer<
+  typeof PendingRelayCostForGasProviderSchema
+>
+
 export interface RelayerConfig {
   ponderInteropApi: string
   clients: Record<number, PublicClient>
@@ -237,7 +252,7 @@ export class Relayer {
    */
   private async relayMessagesViaGasTank(messages: PendingMessageWithGasTank[]) {
     const gasTankProviderToMessages =
-      this.groupPendingMessagesByGasTankProvider(messages)
+      await this.groupPendingMessagesByGasTankProvider(messages)
 
     // relay messages across all gas tank providers in parallel and relay messages within each gas provider in series
     return Promise.allSettled(
@@ -294,28 +309,59 @@ export class Relayer {
    * @param messages - The pending messages to group
    * @returns A mapping of gas tank provider to pending messages
    */
-  private groupPendingMessagesByGasTankProvider(
+  private async groupPendingMessagesByGasTankProvider(
     messages: PendingMessageWithGasTank[],
-  ): Map<GasTankProvider, { messages: PendingMessageWithGasTank[] }> {
-    return messages.reduce((acc, message) => {
-      // Find the gas provider with highest balance for this message
-      const bestGasProvider = message.gasTankProviders.reduce(
-        (best, provider) =>
-          this.getGasProviderBalance(provider) >
-          this.getGasProviderBalance(best)
-            ? provider
-            : best,
-        message.gasTankProviders[0],
-      )
+  ): Promise<Map<GasTankProvider, { messages: PendingMessageWithGasTank[] }>> {
+    // Cache balance calculations to avoid repeated calls
+    const balanceCache = new Map<GasTankProvider, number>()
 
-      if (!acc.has(bestGasProvider)) {
-        acc.set(bestGasProvider, {
+    /**
+     * Gets the cached balance for a gas tank provider
+     * @param provider - The gas tank provider
+     * @returns The cached balance
+     */
+    const getCachedBalance = async (
+      provider: GasTankProvider,
+    ): Promise<number> => {
+      if (!balanceCache.has(provider)) {
+        balanceCache.set(
+          provider,
+          await this.getGasProviderBalance(provider).catch((error) => {
+            this.log.error(
+              { err: error },
+              `failed to get gas provider balance ${provider.gasProviderAddress}`,
+            )
+            throw error
+          }),
+        )
+      }
+      return balanceCache.get(provider)!
+    }
+
+    const result = new Map<
+      GasTankProvider,
+      { messages: PendingMessageWithGasTank[] }
+    >()
+
+    for (const message of messages) {
+      let bestGasProvider = message.gasTankProviders[0]
+
+      // Find the gas provider with highest balance for this message
+      for (const provider of message.gasTankProviders) {
+        const balance = await getCachedBalance(provider)
+        if (balance > bestGasProvider.gasProviderBalance) {
+          bestGasProvider = provider
+        }
+      }
+
+      if (!result.has(bestGasProvider)) {
+        result.set(bestGasProvider, {
           messages: [],
         })
       }
-      acc.get(bestGasProvider)!.messages.push(message)
-      return acc
-    }, new Map<GasTankProvider, { messages: PendingMessageWithGasTank[] }>())
+      result.get(bestGasProvider)!.messages.push(message)
+    }
+    return result
   }
 
   /**
@@ -415,6 +461,39 @@ export class Relayer {
   }
 
   /**
+   * Fetches pending claims for a given gas provider
+   * @param gasProvider - The gas provider to fetch pending claims for
+   * @param gasProviderChainId - The chain ID to fetch pending claims for
+   * @returns The pending claims
+   */
+  private async fetchPendingClaimsForGasProvider(
+    gasProvider: Address,
+    gasProviderChainId: number,
+  ): Promise<PendingRelayCostForGasProvider> {
+    const url = `${
+      this.config.ponderInteropApi
+    }/messages/pending/claims/${encodeURIComponent(
+      gasProvider,
+    )}/${encodeURIComponent(gasProviderChainId)}`
+    const resp = await fetch(url, jsonFetchParams)
+    if (!resp.ok) {
+      throw new Error(`pending claims fetch http response: ${resp.statusText}`)
+    }
+
+    const body = await resp.json()
+    const { data: pendingRelayCosts, error } =
+      PendingRelayCostForGasProviderSchema.safeParse(body)
+    if (error) {
+      throw new Error(
+        `api response: ${error.errors
+          .map((e) => `{${e.path.join('.')}: ${e.message}}`)
+          .join(', ')}`,
+      )
+    }
+    return pendingRelayCosts
+  }
+
+  /**
    * Processes a pending claim
    * @param claim - The pending claim
    * @returns void
@@ -492,13 +571,21 @@ export class Relayer {
     return { client, walletClient, account }
   }
 
-  private getGasProviderBalance(gasProvider: GasTankProvider) {
-    if (gasProvider.pendingWithdrawal) {
-      const balance =
-        gasProvider.gasProviderBalance - gasProvider.pendingWithdrawal.amount
-      return balance > 0 ? balance : 0
-    }
-    return gasProvider.gasProviderBalance
+  /**
+   * Gets the balance of a gas provider taking into account pending claims and pending withdrawals
+   * @param gasProvider - The gas provider
+   * @returns The balance of the gas provider
+   */
+  private async getGasProviderBalance(gasProvider: GasTankProvider) {
+    const pendingClaimsCost = await this.fetchPendingClaimsForGasProvider(
+      gasProvider.gasProviderAddress,
+      gasProvider.gasTankChainId,
+    )
+    const balance =
+      gasProvider.gasProviderBalance -
+      (pendingClaimsCost?.totalPendingRelayCost || 0) -
+      (gasProvider.pendingWithdrawal?.amount || 0)
+    return balance > 0 ? balance : 0
   }
 
   /**
@@ -697,9 +784,17 @@ export class Relayer {
     // Add a buffer to the simulated gas cost to account for base fee increases.
     const totalGasCost =
       ((simulatedRelayGasCost + estimatedClaimOverhead) * GAS_BUFFER) / 100n
-    const hasEnoughFunds = message.gasTankProviders.some(
-      (provider) => this.getGasProviderBalance(provider) >= totalGasCost,
+    const balance = await this.getGasProviderBalance(gasTankProvider).catch(
+      (error) => {
+        msgLog.warn(
+          { err: error },
+          `failed to get gas provider balance ${gasTankProvider.gasProviderAddress}`,
+        )
+        throw error
+      },
     )
+    const hasEnoughFunds = balance >= totalGasCost
+
     if (!hasEnoughFunds) {
       msgLog.warn(
         {
