@@ -1,5 +1,13 @@
 # @eth-optimism/autorelayer-interop
 
+## 0.0.20
+
+### Patch Changes
+
+- [#870](https://github.com/ethereum-optimism/ecosystem/pull/870) [`b884495`](https://github.com/ethereum-optimism/ecosystem/commit/b884495be17c4f96d8cafae3368c1688f06d6f11) Thanks [@tremarkley](https://github.com/tremarkley)! - Updates the relayer to fetch and claim funds for all unclaimed relayed messages from the GasTank on each loop interval
+
+- [#883](https://github.com/ethereum-optimism/ecosystem/pull/883) [`9dcabbc`](https://github.com/ethereum-optimism/ecosystem/commit/9dcabbc2739afd4ea23c7c766876d3e93727f813) Thanks [@tremarkley](https://github.com/tremarkley)! - deduct pending withdrawals from gas tank provider balance
+
 ## 0.0.19
 
 ### Patch Changes
