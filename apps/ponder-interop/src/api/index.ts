@@ -8,6 +8,7 @@ import {
   gt,
   inArray,
   isNull,
+  max,
   replaceBigInts,
 } from 'ponder'
 import { db, publicClients } from 'ponder:api'
@@ -19,6 +20,10 @@ type GasProvider = {
   gasTankChainId: number
   gasProviderBalance: number
   gasProviderAddress: string
+  pendingWithdrawal?: {
+    amount: number
+    initiatedAt: number
+  }
 }
 
 // TODO: Pagination & Limits
@@ -123,7 +128,7 @@ app.get('/messages/:account/pending', async (c) => {
 
 // List of pending messages that have been authorized and have funds
 app.get('/messages/pending/gas-tank', async (c) => {
-  const result = await getPendingMessagesQuery()
+  const result = await getPendingGasTankMessagesQuery()
 
   // Group by messageIdentifierHash
   const groupedMessages = result.reduce(
@@ -133,6 +138,12 @@ app.get('/messages/pending/gas-tank', async (c) => {
         gasTankChainId: Number(m.gasTankChainId),
         gasProviderBalance: Number(m.gasProviderBalance),
         gasProviderAddress: m.gasProviderAddress,
+        pendingWithdrawal: m.pendingWithdrawal
+          ? {
+              amount: Number(m.pendingWithdrawal?.amount),
+              initiatedAt: Number(m.pendingWithdrawal?.initiatedAt),
+            }
+          : undefined,
       }
 
       if (!acc[messageId]) {
@@ -187,6 +198,12 @@ app.get('/messages/pending/claims', async (c) => {
         gasTankChainId: Number(m.gasTankChainId),
         gasProviderBalance: Number(m.gasProviderBalance),
         gasProviderAddress: m.gasProviderAddress,
+        pendingWithdrawal: m.pendingWithdrawal
+          ? {
+              amount: Number(m.pendingWithdrawal?.amount),
+              initiatedAt: Number(m.pendingWithdrawal?.initiatedAt),
+            }
+          : undefined,
       }
 
       if (!acc[messageId]) {
@@ -217,12 +234,9 @@ app.get('/messages/pending/claims', async (c) => {
 })
 
 function getPendingClaimsQuery(relayers: Address[]) {
-  return db
+  const mostRecentPendingMessageReceiptsQuery = db
     .select({
-      messageReceipt: schema.gasTankRelayedMessageReceipts,
-      gasTankChainId: schema.gasTankGasProviders.chainId,
-      gasProviderBalance: schema.gasTankGasProviders.balance,
-      gasProviderAddress: schema.gasTankAuthorizedMessages.gasProvider,
+      messageHash: schema.gasTankRelayedMessageReceipts.messageHash,
     })
     .from(schema.gasTankRelayedMessageReceipts)
     .limit(CLAIM_LIMIT)
@@ -231,6 +245,31 @@ function getPendingClaimsQuery(relayers: Address[]) {
       eq(
         schema.gasTankRelayedMessageReceipts.messageHash,
         schema.gasTankClaimedMessages.messageHash,
+      ),
+    )
+    .where(
+      and(
+        isNull(schema.gasTankClaimedMessages.messageHash),
+        inArray(schema.gasTankRelayedMessageReceipts.relayer, relayers),
+      ),
+    )
+    .orderBy(desc(schema.gasTankRelayedMessageReceipts.relayedAt))
+    .as('mostRecentPendingMessageReceiptsQuery')
+
+  return db
+    .select({
+      messageReceipt: schema.gasTankRelayedMessageReceipts,
+      pendingWithdrawal: schema.gasTankPendingWithdrawals,
+      gasTankChainId: schema.gasTankGasProviders.chainId,
+      gasProviderBalance: schema.gasTankGasProviders.balance,
+      gasProviderAddress: schema.gasTankAuthorizedMessages.gasProvider,
+    })
+    .from(schema.gasTankRelayedMessageReceipts)
+    .innerJoin(
+      mostRecentPendingMessageReceiptsQuery,
+      eq(
+        schema.gasTankRelayedMessageReceipts.messageHash,
+        mostRecentPendingMessageReceiptsQuery.messageHash,
       ),
     )
     .innerJoin(
@@ -242,33 +281,44 @@ function getPendingClaimsQuery(relayers: Address[]) {
     )
     .innerJoin(
       schema.gasTankGasProviders,
-      eq(
-        schema.gasTankAuthorizedMessages.gasProvider,
-        schema.gasTankGasProviders.address,
-      ),
-    )
-    .where(
       and(
-        isNull(schema.gasTankClaimedMessages.messageHash),
-        inArray(schema.gasTankRelayedMessageReceipts.relayer, relayers),
+        eq(
+          schema.gasTankAuthorizedMessages.gasProvider,
+          schema.gasTankGasProviders.address,
+        ),
         eq(
           schema.gasTankAuthorizedMessages.chainId,
           schema.gasTankGasProviders.chainId,
         ),
       ),
     )
+    .leftJoin(
+      schema.gasTankPendingWithdrawals,
+      and(
+        eq(
+          schema.gasTankGasProviders.address,
+          schema.gasTankPendingWithdrawals.address,
+        ),
+        eq(
+          schema.gasTankGasProviders.chainId,
+          schema.gasTankPendingWithdrawals.chainId,
+        ),
+      ),
+    )
     .orderBy(desc(schema.gasTankRelayedMessageReceipts.relayedAt))
 }
 
-function getPendingMessagesQuery() {
-  return db
+function getPendingGasTankMessagesQuery() {
+  const distinctMessagesAndMaxTimestampQuery = db
     .select({
-      message: schema.sentMessages,
-      gasTankChainId: schema.gasTankGasProviders.chainId,
-      gasProviderBalance: schema.gasTankGasProviders.balance,
-      gasProviderAddress: schema.gasTankAuthorizedMessages.gasProvider,
+      messageHash: schema.sentMessages.messageHash,
+      // A messageHash can be sent multiple times, so we need to
+      // get the latest timestamp for each messageHash in order
+      // to get the latest message for each messageHash
+      maxTimestamp: max(schema.sentMessages.timestamp).as('maxTimestamp'),
     })
     .from(schema.sentMessages)
+    .groupBy(schema.sentMessages.messageHash)
     .limit(MESSAGE_LIMIT)
     .leftJoin(
       schema.relayedMessages,
@@ -283,19 +333,97 @@ function getPendingMessagesQuery() {
     )
     .innerJoin(
       schema.gasTankGasProviders,
-      eq(
-        schema.gasTankAuthorizedMessages.gasProvider,
-        schema.gasTankGasProviders.address,
-      ),
-    )
-    .where(
       and(
-        isNull(schema.relayedMessages.messageHash),
         eq(
-          schema.gasTankAuthorizedMessages.chainId,
+          schema.gasTankAuthorizedMessages.gasProvider,
+          schema.gasTankGasProviders.address,
+        ),
+        eq(
           schema.gasTankGasProviders.chainId,
+          schema.gasTankAuthorizedMessages.chainId,
         ),
         gt(schema.gasTankGasProviders.balance, 0n),
+      ),
+    )
+    .where(isNull(schema.relayedMessages.messageHash))
+    .orderBy(desc(max(schema.sentMessages.timestamp)))
+    .as('distinctMessagesAndMaxTimestampQuery')
+
+  const distinctMessages = db
+    .select({
+      messageHash: schema.sentMessages.messageHash,
+      timestamp: max(schema.sentMessages.timestamp).as('maxTimestamp'),
+      // technically a message could be sent and resent in the same block
+      // so we get the latest logIndex for each messageHash in order
+      // to get the latest message emitted for each messageHash.
+      logIndex: max(schema.sentMessages.logIndex).as('maxLogIndex'),
+    })
+    .from(schema.sentMessages)
+    .groupBy(schema.sentMessages.messageHash)
+    .innerJoin(
+      distinctMessagesAndMaxTimestampQuery,
+      and(
+        eq(
+          schema.sentMessages.messageHash,
+          distinctMessagesAndMaxTimestampQuery.messageHash,
+        ),
+        eq(
+          schema.sentMessages.timestamp,
+          distinctMessagesAndMaxTimestampQuery.maxTimestamp,
+        ),
+      ),
+    )
+    .as('distinctMessages')
+
+  return db
+    .select({
+      message: schema.sentMessages,
+      pendingWithdrawal: schema.gasTankPendingWithdrawals,
+      gasTankChainId: schema.gasTankGasProviders.chainId,
+      gasProviderBalance: schema.gasTankGasProviders.balance,
+      gasProviderAddress: schema.gasTankAuthorizedMessages.gasProvider,
+    })
+    .from(schema.sentMessages)
+    .innerJoin(
+      distinctMessages,
+      and(
+        eq(schema.sentMessages.messageHash, distinctMessages.messageHash),
+        eq(schema.sentMessages.timestamp, distinctMessages.timestamp),
+        eq(schema.sentMessages.logIndex, distinctMessages.logIndex),
+      ),
+    )
+    .innerJoin(
+      schema.gasTankAuthorizedMessages,
+      eq(
+        schema.sentMessages.messageHash,
+        schema.gasTankAuthorizedMessages.messageHash,
+      ),
+    )
+    .innerJoin(
+      schema.gasTankGasProviders,
+      and(
+        eq(
+          schema.gasTankAuthorizedMessages.gasProvider,
+          schema.gasTankGasProviders.address,
+        ),
+        eq(
+          schema.gasTankGasProviders.chainId,
+          schema.gasTankAuthorizedMessages.chainId,
+        ),
+        gt(schema.gasTankGasProviders.balance, 0n),
+      ),
+    )
+    .leftJoin(
+      schema.gasTankPendingWithdrawals,
+      and(
+        eq(
+          schema.gasTankGasProviders.address,
+          schema.gasTankPendingWithdrawals.address,
+        ),
+        eq(
+          schema.gasTankGasProviders.chainId,
+          schema.gasTankPendingWithdrawals.chainId,
+        ),
       ),
     )
     .orderBy(desc(schema.sentMessages.timestamp))
