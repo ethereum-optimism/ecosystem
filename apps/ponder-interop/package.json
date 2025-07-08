@@ -9,7 +9,7 @@
   "bugs": {
     "url": "https://github.com/ethereum-optimism/ecosystem/issues"
   },
-  "version": "0.0.17",
+  "version": "0.0.18",
   "type": "module",
   "main": "./dist/ponder.schema.js",
   "types": "./dist/ponder.schema.d.ts",

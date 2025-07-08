@@ -1,5 +1,11 @@
 # @eth-optimism/ponder-interop
 
+## 0.0.18
+
+### Patch Changes
+
+- [#879](https://github.com/ethereum-optimism/ecosystem/pull/879) [`87be200`](https://github.com/ethereum-optimism/ecosystem/commit/87be200a758892b837f63171a9afea1bd1479e63) Thanks [@tremarkley](https://github.com/tremarkley)! - Return pending withdrawals alongside pending messages and fix query limits
+
 ## 0.0.17
 
 ### Patch Changes
