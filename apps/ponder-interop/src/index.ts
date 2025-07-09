@@ -214,6 +214,8 @@ ponder.on('GasTank:RelayedMessageGasReceipt', async ({ event, context }) => {
       topics: event.log.topics.filter((topic) => topic !== null),
     } as Log),
 
+    gasProvider: event.args.gasProvider,
+    gasProviderChainId: event.args.gasProviderChainID,
     relayer: event.args.relayer,
     relayCost: event.args.relayCost,
     nestedMessageHashes: [...event.args.nestedMessageHashes],
