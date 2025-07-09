@@ -18,7 +18,7 @@ import type {
   WalletClient,
 } from 'viem'
 import { isAddress, isHash, isHex } from 'viem'
-import { simulateContract, writeContract } from 'viem/actions'
+import { readContract, simulateContract, writeContract } from 'viem/actions'
 import { z } from 'zod'
 
 import { jsonFetchParams } from '@/utils/jsonFetchParams.js'
@@ -86,11 +86,15 @@ export const PendingClaimSchema = z.object({
     timestamp: z.number(),
     chainId: z.number(),
     logPayload: z.string().refine(isHex, 'invalid log payload'),
+    gasProvider: z.string().refine(isAddress, 'invalid gas provider'),
+    gasProviderChainId: z.number(),
     relayer: z.string().refine(isAddress, 'invalid relayer'),
     relayCost: z.number(),
     relayedAt: z.number(),
+    nestedMessageHashes: z.array(
+      z.string().refine(isHex, 'invalid nested message hash'),
+    ),
   }),
-  gasTankProviders: z.array(gasTankProviderSchema),
 })
 
 export const PendingClaimsSchema = z.array(PendingClaimSchema)
@@ -145,96 +149,239 @@ export class Relayer {
   protected async validate(_message: PendingMessage): Promise<void> {}
 
   /**
-   * Fetches pending messages to be relayed
-   * @returns An array of pending messages
-   * @throws Error if the pending messages fetch fails
+   * Relays pending messages
+   * @returns void
    */
-  protected async fetchPendingMessages(): Promise<
-    PendingMessages | PendingMessagesWithGasTank
-  > {
-    try {
-      if (this.config.gasTankAddress) {
-        return await this.fetchPendingMessagesWithGasTankFunds()
-      }
-
-      return await this.fetchAllPendingMessages()
-    } catch (error) {
-      throw new Error(`failed pending messages fetch: ${error}`)
+  private async relayPendingMessages() {
+    if (this.config.gasTankAddress) {
+      const pendingMessages =
+        await this.fetchPendingMessagesWithGasTankFunds().catch((error) => {
+          this.log.error(
+            { err: error },
+            'failed to fetch pending messages with gas tank funds',
+          )
+          throw error
+        })
+      this.log.info(`${pendingMessages.length} pending messages`)
+      return this.relayMessagesViaGasTank(pendingMessages).catch((error) => {
+        this.log.error({ err: error }, 'failed to relay gas tank messages')
+        throw error
+      })
     }
+
+    const pendingMessages = await this.fetchAllPendingMessages().catch(
+      (error) => {
+        this.log.error({ err: error }, 'failed to fetch pending messages')
+        throw error
+      },
+    )
+    this.log.info(`${pendingMessages.length} pending messages`)
+    return this.relayMessagesViaL2ToL2CrossDomainMessenger(
+      pendingMessages,
+    ).catch((error) => {
+      this.log.error({ err: error }, 'failed to relay messages')
+      throw error
+    })
   }
 
-  private async relayPendingMessages(): Promise<void> {
-    const pendingMessages = await this.fetchPendingMessages()
-    this.log.info(`${pendingMessages.length} pending messages`)
-
+  /**
+   * Relays messages via the L2ToL2CrossDomainMessenger contract
+   * @param messages - The messages to relay
+   * @returns void
+   */
+  private async relayMessagesViaL2ToL2CrossDomainMessenger(
+    messages: PendingMessage[],
+  ): Promise<void> {
     // Process all messages in parallel
     await Promise.allSettled(
-      pendingMessages.map((message) => this.relayMessage(message)),
+      messages.map(async (message) => {
+        const msgLog = this.log.child({
+          action: 'relayMessageViaL2ToL2CrossDomainMessenger',
+          source: message.source,
+          destination: message.destination,
+          messageHash: message.messageHash,
+          txHash: message.transactionHash,
+        })
+
+        const prepared = await this.validateAndPrepareMessage(
+          message,
+          msgLog,
+        ).catch((error) => {
+          msgLog.error({ err: error }, 'failed to validate and prepare message')
+        })
+        if (!prepared) {
+          msgLog.warn('invalid message, skipping...')
+          return
+        }
+        const { params, clientsAndAccount } = prepared
+        const { client, walletClient } = clientsAndAccount
+        this.relayMessageViaL2ToL2CrossDomainMessenger({
+          client,
+          walletClient,
+          params,
+          msgLog,
+        }).catch((error) => {
+          msgLog.warn(
+            { err: error },
+            'L2ToL2CrossDomainMessenger message relay failed, skipping...',
+          )
+        })
+      }),
     )
   }
 
-  private async relayMessage(
-    message: PendingMessage | PendingMessageWithGasTank,
-  ): Promise<void> {
-    const msgLog = this.log.child({
-      action: 'relayMessage',
-      source: message.source,
-      destination: message.destination,
-      messageHash: message.messageHash,
-      txHash: message.transactionHash,
-    })
+  /**
+   * Relays messages via the GasTank contract
+   * @param messages - The messages to relay
+   * @returns void
+   */
+  private async relayMessagesViaGasTank(messages: PendingMessageWithGasTank[]) {
+    const gasTankProviderToMessages =
+      this.groupPendingMessagesByGasTankProvider(messages)
 
+    // relay messages across all gas tank providers in parallel and relay messages within each gas provider in series
+    return Promise.allSettled(
+      Array.from(gasTankProviderToMessages.entries()).map(
+        async ([gasTankProvider, { messages }]) => {
+          for (const message of messages) {
+            const msgLog = this.log.child({
+              action: 'relayMessageViaGasTank',
+              source: message.source,
+              destination: message.destination,
+              messageHash: message.messageHash,
+              txHash: message.transactionHash,
+              gasTankProvider: gasTankProvider.gasProviderAddress,
+              gasTankProviderChainId: gasTankProvider.gasTankChainId,
+            })
+
+            const prepared = await this.validateAndPrepareMessage(
+              message,
+              msgLog,
+            ).catch((error) => {
+              msgLog.error(
+                { err: error },
+                'failed to validate and prepare message',
+              )
+            })
+            if (!prepared) {
+              msgLog.warn('invalid message, skipping...')
+              continue
+            }
+            const { params, clientsAndAccount } = prepared
+            const { client, walletClient } = clientsAndAccount
+            try {
+              const relayTxHash = await this.relayMessageViaGasTank({
+                client,
+                walletClient,
+                gasTankAddress: this.config.gasTankAddress!,
+                params,
+                msgLog,
+                message,
+                gasTankProvider,
+              })
+              msgLog.info({ relayTxHash }, 'submitted gas tank message relay')
+            } catch (error) {
+              msgLog.warn({ err: error }, 'gas tank relay failed, skipping...')
+            }
+          }
+        },
+      ),
+    )
+  }
+
+  /**
+   * Groups pending messages by gas tank provider with the most funds
+   * @param messages - The pending messages to group
+   * @returns A mapping of gas tank provider to pending messages
+   */
+  private groupPendingMessagesByGasTankProvider(
+    messages: PendingMessageWithGasTank[],
+  ): Map<GasTankProvider, { messages: PendingMessageWithGasTank[] }> {
+    return messages.reduce((acc, message) => {
+      // Find the gas provider with highest balance for this message
+      const bestGasProvider = message.gasTankProviders.reduce(
+        (best, provider) =>
+          this.getGasProviderBalance(provider) >
+          this.getGasProviderBalance(best)
+            ? provider
+            : best,
+        message.gasTankProviders[0],
+      )
+
+      if (!acc.has(bestGasProvider)) {
+        acc.set(bestGasProvider, {
+          messages: [],
+        })
+      }
+      acc.get(bestGasProvider)!.messages.push(message)
+      return acc
+    }, new Map<GasTankProvider, { messages: PendingMessageWithGasTank[] }>())
+  }
+
+  /**
+   * Validates and prepares message for relaying
+   * @param message - The message to validate and prepare
+   * @param msgLog - The logger
+   * @returns Prepared message params or null if validation fails
+   */
+  private async validateAndPrepareMessage(
+    message: PendingMessage | PendingMessageWithGasTank,
+    msgLog: Logger,
+  ): Promise<{
+    params: RelayMessageParams
+    clientsAndAccount: {
+      client: PublicClient
+      walletClient: WalletClient
+      account: Account
+    }
+  } | null> {
     const clientsAndAccount = await this.getClientsAndAccount(
       message.destination,
       msgLog,
     )
-    if (!clientsAndAccount) return
+    if (!clientsAndAccount) {
+      msgLog.warn(`no client for destination ${message.destination}`)
+      return null
+    }
 
-    const { client, walletClient, account } = clientsAndAccount
+    const { account } = clientsAndAccount
 
     try {
       await this.validate(message)
     } catch (error) {
-      msgLog.warn(
-        { err: error },
-        `validation failed, skipping message ${message.messageHash}`,
-      )
-      return
+      msgLog.warn({ err: error }, `message validation failed`)
+      return null
     }
 
     const params = this.buildMessageParams(message, account)
 
-    try {
-      const relayTxHash = this.config.gasTankAddress
-        ? await this.relayMessageViaGasTank({
-            publicClient: client,
-            walletClient,
-            gasTankAddress: this.config.gasTankAddress,
-            params,
-            msgLog,
-            message: message as PendingMessageWithGasTank,
-          })
-        : await this.relayMessageViaL2ToL2CrossDomainMessenger({
-            publicClient: client,
-            walletClient,
-            params,
-            msgLog,
-          })
-      msgLog.info({ relayTxHash }, 'submitted message relay')
-    } catch (error) {
-      msgLog.warn('relay failed, skipping...')
-    }
+    return { params, clientsAndAccount }
   }
 
+  /**
+   * Processes pending claims
+   * @returns void
+   */
   private async processPendingClaims(): Promise<void> {
-    const accounts = await this.fetchAllAccounts()
-    const pendingClaims = await this.fetchPendingClaims(accounts)
+    const accounts = await this.fetchAllAccounts().catch((error) => {
+      this.log.error({ err: error }, 'failed to fetch accounts')
+      throw error
+    })
+    const pendingClaims = await this.fetchPendingClaims(accounts).catch(
+      (error) => {
+        this.log.error({ err: error }, 'failed to fetch pending claims')
+        throw error
+      },
+    )
     this.log.info(`${pendingClaims.length} pending claims found`)
 
     // Process all claims in parallel
     await Promise.allSettled(
       pendingClaims.map((claim) => this.processClaim(claim)),
-    )
+    ).catch((error) => {
+      this.log.error({ err: error }, 'failed to process pending claims')
+      throw error
+    })
   }
 
   /**
@@ -267,6 +414,11 @@ export class Relayer {
     return claims
   }
 
+  /**
+   * Processes a pending claim
+   * @param claim - The pending claim
+   * @returns void
+   */
   private async processClaim(claim: PendingClaim): Promise<void> {
     const msgLog = this.log.child({
       action: 'processClaim',
@@ -276,29 +428,23 @@ export class Relayer {
       relayedAt: claim.relayReceipt.relayedAt,
       chainId: claim.relayReceipt.chainId,
       timestamp: claim.relayReceipt.timestamp,
+      gasTankProvider: claim.relayReceipt.gasProvider,
+      gasTankProviderChainId: claim.relayReceipt.gasProviderChainId,
     })
 
-    const gasProvider = this.selectGasProvider(claim, msgLog)
-    msgLog.info({ gasProvider }, 'selected gas provider')
-    if (!gasProvider) return
-
     const clientsAndAccount = await this.getClientsAndAccount(
-      gasProvider.gasTankChainId,
+      claim.relayReceipt.gasProviderChainId,
       msgLog,
     )
     if (!clientsAndAccount) return
 
-    const { client: publicClient, walletClient, account } = clientsAndAccount
+    const { client, walletClient, account } = clientsAndAccount
 
-    const params = this.buildClaimParams(
-      claim,
-      account,
-      gasProvider.gasProviderAddress,
-    )
+    const params = this.buildClaimParams(claim, account)
 
     try {
       const claimTxHash = await this.claimMessageViaGasTank({
-        publicClient,
+        client,
         walletClient,
         gasTankAddress: this.config.gasTankAddress!,
         params,
@@ -306,7 +452,7 @@ export class Relayer {
       })
       msgLog.info({ claimTxHash }, 'submitted message claim')
     } catch (error) {
-      msgLog.warn('claim failed, skipping...')
+      msgLog.warn({ err: error }, 'claim failed, skipping...')
     }
   }
 
@@ -356,57 +502,6 @@ export class Relayer {
   }
 
   /**
-   * Selects the gas provider with the highest balance
-   * @param claim - The pending claim
-   * @param msgLog - The logger
-   * @returns The gas provider with the highest balance
-   */
-  private selectGasProvider(claim: PendingClaim, msgLog: Logger) {
-    // First, check for providers with sufficient funds accounting for pending withdrawals
-    const providersWithSufficientFunds = claim.gasTankProviders.filter(
-      (provider) =>
-        this.getGasProviderBalance(provider) >= claim.relayReceipt.relayCost,
-    )
-
-    if (providersWithSufficientFunds.length === 0) {
-      msgLog.warn(
-        'no gas tank providers with sufficient funds, checking raw funds...',
-      )
-      // Fallback: check providers without accounting for pending withdrawals
-      const providersWithRawFunds = claim.gasTankProviders.filter(
-        (provider) =>
-          provider.gasProviderBalance >= claim.relayReceipt.relayCost,
-      )
-      if (providersWithRawFunds.length === 0) {
-        msgLog.warn(
-          'no gas tank providers with sufficient raw funds, skipping...',
-        )
-        return null
-      }
-
-      // Return provider with highest raw balance
-      return providersWithRawFunds.reduce(
-        (highestBalanceProvider, provider) =>
-          provider.gasProviderBalance >
-          highestBalanceProvider.gasProviderBalance
-            ? provider
-            : highestBalanceProvider,
-        providersWithRawFunds[0],
-      )
-    }
-
-    // Return provider with highest available balance (accounting for pending withdrawals)
-    return providersWithSufficientFunds.reduce(
-      (highestBalanceProvider, provider) =>
-        this.getGasProviderBalance(provider) >
-        this.getGasProviderBalance(highestBalanceProvider)
-          ? provider
-          : highestBalanceProvider,
-      providersWithSufficientFunds[0],
-    )
-  }
-
-  /**
    * Builds the message parameters for the message to be relayed
    * @param message - The message to be relayed
    * @param account - The account to be used for the relay
@@ -436,11 +531,7 @@ export class Relayer {
    * @param gasProvider - The gas provider to be used for the claim
    * @returns The claim parameters
    */
-  private buildClaimParams(
-    claim: PendingClaim,
-    account: Account,
-    gasProvider: Address,
-  ) {
+  private buildClaimParams(claim: PendingClaim, account: Account) {
     const id: MessageIdentifier = {
       origin: claim.relayReceipt.origin,
       chainId: BigInt(claim.relayReceipt.chainId),
@@ -451,7 +542,7 @@ export class Relayer {
     const payload = claim.relayReceipt.logPayload
     const accessList = encodeAccessList(id, payload)
 
-    return { id, payload, accessList, account, gasProvider }
+    return { id, payload, accessList, account }
   }
 
   private async fetchAllAccounts(): Promise<Address[]> {
@@ -503,19 +594,27 @@ export class Relayer {
     return msgs
   }
 
+  /**
+   * Relays a message via the L2ToL2CrossDomainMessenger contract
+   * @param client - The public client
+   * @param walletClient - The wallet client
+   * @param params - The message parameters
+   * @param msgLog - The logger
+   * @returns The transaction hash of the relayed message
+   */
   private async relayMessageViaL2ToL2CrossDomainMessenger({
-    publicClient,
+    client,
     walletClient,
     params,
     msgLog,
   }: {
-    publicClient: PublicClient
+    client: PublicClient
     walletClient: Client
     params: RelayMessageParams
     msgLog: Logger
   }): Promise<Hex> {
     try {
-      await simulateRelayCrossDomainMessage(publicClient, params)
+      await simulateRelayCrossDomainMessage(client, params)
     } catch (error) {
       msgLog.warn({ err: error }, 'relay failed simulation')
       throw error
@@ -534,34 +633,52 @@ export class Relayer {
     }
   }
 
+  /**
+   * Relays a message via the GasTank contract
+   * @param client - The public client
+   * @param walletClient - The wallet client
+   * @param gasTankAddress - The address of the gas tank
+   * @param params - The message parameters
+   * @param msgLog - The logger
+   * @param message - The message to relay
+   * @param gasTankProvider - The gas tank provider
+   * @returns The transaction hash of the relayed message
+   */
   private async relayMessageViaGasTank({
-    publicClient,
+    client,
     walletClient,
     gasTankAddress,
     params,
     msgLog,
     message,
+    gasTankProvider,
   }: {
-    publicClient: PublicClient
+    client: PublicClient
     walletClient: WalletClient
     gasTankAddress: Address
     params: RelayMessageParams
     msgLog: Logger
     message: PendingMessageWithGasTank
+    gasTankProvider: GasTankProvider
   }): Promise<Hex> {
     const { id, payload, account, accessList, chain } = params
     const contractArgs = {
       address: gasTankAddress,
       abi: gasTankAbi,
       functionName: 'relayMessage',
-      args: [id, payload],
+      args: [
+        id,
+        payload,
+        gasTankProvider.gasProviderAddress,
+        BigInt(gasTankProvider.gasTankChainId),
+      ],
       account,
       accessList,
     } as const
-    const block = await publicClient.getBlock()
+    const block = await client.getBlock()
 
     const [simulatedRelayGasCost, simulatedNestedMessages] = (
-      await simulateContract(publicClient, {
+      await simulateContract(client, {
         ...contractArgs,
         blockNumber: block.number,
       }).catch((error) => {
@@ -571,15 +688,15 @@ export class Relayer {
     ).result
 
     const baseFee = block.baseFeePerGas || 0n
-    const estimatedClaimGasCost = await publicClient.readContract({
+    const estimatedClaimOverhead = await readContract(client, {
       address: gasTankAddress,
       abi: gasTankAbi,
-      functionName: 'claimOverhead',
+      functionName: 'simulateClaimOverhead',
       args: [BigInt(simulatedNestedMessages.length), baseFee],
     })
     // Add a buffer to the simulated gas cost to account for base fee increases.
     const totalGasCost =
-      ((simulatedRelayGasCost + estimatedClaimGasCost) * GAS_BUFFER) / 100n
+      ((simulatedRelayGasCost + estimatedClaimOverhead) * GAS_BUFFER) / 100n
     const hasEnoughFunds = message.gasTankProviders.some(
       (provider) => this.getGasProviderBalance(provider) >= totalGasCost,
     )
@@ -587,9 +704,10 @@ export class Relayer {
       msgLog.warn(
         {
           message,
-          estimatedClaimGasCost,
+          estimatedClaimOverhead,
           simulatedRelayGasCost,
           totalGasCost,
+          gasTankProvider,
         },
         'gas tank has insufficient funds',
       )
@@ -609,37 +727,45 @@ export class Relayer {
     }
   }
 
+  /**
+   * Claims the gas cost of a relayed message via the GasTank contract
+   * @param client - The public client
+   * @param walletClient - The wallet client
+   * @param gasTankAddress - The address of the gas tank
+   * @param params - The message parameters
+   * @param msgLog - The logger
+   * @returns The transaction hash of the claimed message
+   */
   private async claimMessageViaGasTank({
-    publicClient,
+    client,
     walletClient,
     gasTankAddress,
     params,
     msgLog,
   }: {
-    publicClient: PublicClient
+    client: PublicClient
     walletClient: WalletClient
     gasTankAddress: Address
     params: {
       id: MessageIdentifier
       payload: Hex
-      gasProvider: Address
       account: Account
       accessList: AccessList
     }
     msgLog: Logger
   }): Promise<Hex> {
-    const { id, payload, gasProvider, account, accessList } = params
+    const { id, payload, account, accessList } = params
     const contractArgs = {
       address: gasTankAddress,
       abi: gasTankAbi,
       functionName: 'claim',
-      args: [id, gasProvider, payload],
+      args: [id, payload],
       account,
       accessList,
     } as const
 
     try {
-      await simulateContract(publicClient, {
+      await simulateContract(client, {
         ...contractArgs,
       })
     } catch (error) {

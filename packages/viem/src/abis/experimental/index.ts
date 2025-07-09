@@ -147,35 +147,6 @@ export const gasTankAbi = [
   },
   {
     type: 'function',
-    name: 'claimOverhead',
-    inputs: [
-      {
-        name: '_numHashes',
-        type: 'uint256',
-        internalType: 'uint256',
-      },
-      {
-        name: '_baseFee',
-        type: 'uint256',
-        internalType: 'uint256',
-      },
-      {
-        name: '_data',
-        type: 'bytes',
-        internalType: 'bytes',
-      },
-    ],
-    outputs: [
-      {
-        name: 'overhead_',
-        type: 'uint256',
-        internalType: 'uint256',
-      },
-    ],
-    stateMutability: 'view',
-  },
-  {
-    type: 'function',
     name: 'claimed',
     inputs: [
       {
@@ -341,6 +312,30 @@ export const gasTankAbi = [
       },
     ],
     stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    name: 'simulateClaimOverhead',
+    inputs: [
+      {
+        name: '_numHashes',
+        type: 'uint256',
+        internalType: 'uint256',
+      },
+      {
+        name: '_baseFee',
+        type: 'uint256',
+        internalType: 'uint256',
+      },
+    ],
+    outputs: [
+      {
+        name: 'overhead_',
+        type: 'uint256',
+        internalType: 'uint256',
+      },
+    ],
+    stateMutability: 'pure',
   },
   {
     type: 'function',
