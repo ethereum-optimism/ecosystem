@@ -1,5 +1,14 @@
 # @eth-optimism/ponder-interop
 
+## 0.0.19
+
+### Patch Changes
+
+- [#889](https://github.com/ethereum-optimism/ecosystem/pull/889) [`2f85631`](https://github.com/ethereum-optimism/ecosystem/commit/2f856315b9e59b92b9eebda5904a29a9da11da0f) Thanks [@tremarkley](https://github.com/tremarkley)! - Update relays through the GasTank to specify GasProvider when relaying message
+
+- Updated dependencies [[`2f85631`](https://github.com/ethereum-optimism/ecosystem/commit/2f856315b9e59b92b9eebda5904a29a9da11da0f)]:
+  - @eth-optimism/viem@0.4.13
+
 ## 0.0.18
 
 ### Patch Changes
