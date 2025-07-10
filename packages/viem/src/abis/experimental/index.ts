@@ -7,13 +7,13 @@
 export const gasTankAbi = [
   {
     type: 'function',
-    name: 'MAX_DEPOSIT',
+    name: 'GAS_PRICE_ORACLE',
     inputs: [],
     outputs: [
       {
         name: '',
-        type: 'uint256',
-        internalType: 'uint256',
+        type: 'address',
+        internalType: 'contract IGasPriceOracle',
       },
     ],
     stateMutability: 'view',
@@ -49,9 +49,9 @@ export const gasTankAbi = [
     name: 'authorizeClaim',
     inputs: [
       {
-        name: '_messageHash',
-        type: 'bytes32',
-        internalType: 'bytes32',
+        name: '_messageHashes',
+        type: 'bytes32[]',
+        internalType: 'bytes32[]',
       },
     ],
     outputs: [],
@@ -137,11 +137,6 @@ export const gasTankAbi = [
         ],
       },
       {
-        name: '_gasProvider',
-        type: 'address',
-        internalType: 'address',
-      },
-      {
         name: '_payload',
         type: 'bytes',
         internalType: 'bytes',
@@ -149,30 +144,6 @@ export const gasTankAbi = [
     ],
     outputs: [],
     stateMutability: 'nonpayable',
-  },
-  {
-    type: 'function',
-    name: 'claimOverhead',
-    inputs: [
-      {
-        name: '_numHashes',
-        type: 'uint256',
-        internalType: 'uint256',
-      },
-      {
-        name: '_baseFee',
-        type: 'uint256',
-        internalType: 'uint256',
-      },
-    ],
-    outputs: [
-      {
-        name: 'overhead_',
-        type: 'uint256',
-        internalType: 'uint256',
-      },
-    ],
-    stateMutability: 'pure',
   },
   {
     type: 'function',
@@ -213,6 +184,16 @@ export const gasTankAbi = [
         name: 'relayer_',
         type: 'address',
         internalType: 'address',
+      },
+      {
+        name: 'gasProvider_',
+        type: 'address',
+        internalType: 'address',
+      },
+      {
+        name: 'gasProviderChainID_',
+        type: 'uint256',
+        internalType: 'uint256',
       },
       {
         name: 'relayCost_',
@@ -307,6 +288,16 @@ export const gasTankAbi = [
         type: 'bytes',
         internalType: 'bytes',
       },
+      {
+        name: '_gasProvider',
+        type: 'address',
+        internalType: 'address',
+      },
+      {
+        name: '_gasProviderChainID',
+        type: 'uint256',
+        internalType: 'uint256',
+      },
     ],
     outputs: [
       {
@@ -321,6 +312,30 @@ export const gasTankAbi = [
       },
     ],
     stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    name: 'simulateClaimOverhead',
+    inputs: [
+      {
+        name: '_numHashes',
+        type: 'uint256',
+        internalType: 'uint256',
+      },
+      {
+        name: '_baseFee',
+        type: 'uint256',
+        internalType: 'uint256',
+      },
+    ],
+    outputs: [
+      {
+        name: 'overhead_',
+        type: 'uint256',
+        internalType: 'uint256',
+      },
+    ],
+    stateMutability: 'pure',
   },
   {
     type: 'function',
@@ -444,6 +459,18 @@ export const gasTankAbi = [
         internalType: 'address',
       },
       {
+        name: 'gasProvider',
+        type: 'address',
+        indexed: false,
+        internalType: 'address',
+      },
+      {
+        name: 'gasProviderChainID',
+        type: 'uint256',
+        indexed: false,
+        internalType: 'uint256',
+      },
+      {
         name: 'relayCost',
         type: 'uint256',
         indexed: false,
@@ -514,6 +541,11 @@ export const gasTankAbi = [
   },
   {
     type: 'error',
+    name: 'InvalidChainID',
+    inputs: [],
+  },
+  {
+    type: 'error',
     name: 'InvalidLength',
     inputs: [],
   },
@@ -525,11 +557,6 @@ export const gasTankAbi = [
   {
     type: 'error',
     name: 'InvalidPayload',
-    inputs: [],
-  },
-  {
-    type: 'error',
-    name: 'MaxDepositExceeded',
     inputs: [],
   },
   {

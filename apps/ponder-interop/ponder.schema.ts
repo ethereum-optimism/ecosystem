@@ -128,6 +128,8 @@ export const gasTankRelayedMessageReceipts = onchainTable(
     logPayload: t.hex().notNull(),
 
     // receipt fields
+    gasProvider: t.hex().notNull(),
+    gasProviderChainId: t.bigint().notNull(),
     relayer: t.hex().notNull(),
     relayCost: t.bigint().notNull(),
     nestedMessageHashes: t.hex().array().notNull(),

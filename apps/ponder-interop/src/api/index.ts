@@ -190,53 +190,13 @@ app.get('/messages/pending/claims', async (c) => {
 
   const result = await getPendingClaimsQuery(relayers)
 
-  // Group by messageHash
-  const groupedMessages = result.reduce(
-    (acc, m) => {
-      const messageId = m.messageReceipt.messageHash
-      const gasTankInfo = {
-        gasTankChainId: Number(m.gasTankChainId),
-        gasProviderBalance: Number(m.gasProviderBalance),
-        gasProviderAddress: m.gasProviderAddress,
-        pendingWithdrawal: m.pendingWithdrawal
-          ? {
-              amount: Number(m.pendingWithdrawal?.amount),
-              initiatedAt: Number(m.pendingWithdrawal?.initiatedAt),
-            }
-          : undefined,
-      }
-
-      if (!acc[messageId]) {
-        acc[messageId] = {
-          relayReceipt: m.messageReceipt,
-          gasTankProviders: [],
-        }
-      }
-
-      acc[messageId]!.gasTankProviders.push(gasTankInfo)
-      return acc
-    },
-    {} as Record<
-      string,
-      {
-        relayReceipt: InferSelectModel<
-          typeof schema.gasTankRelayedMessageReceipts
-        >
-      } & {
-        gasTankProviders: GasProvider[]
-      }
-    >,
-  )
-
-  const messages = Object.values(groupedMessages)
-
-  return c.json(messages.map((m) => replaceBigInts(m, (x) => Number(x))))
+  return c.json(result.map((m) => replaceBigInts(m, (x) => Number(x))))
 })
 
 function getPendingClaimsQuery(relayers: Address[]) {
-  const mostRecentPendingMessageReceiptsQuery = db
+  return db
     .select({
-      messageHash: schema.gasTankRelayedMessageReceipts.messageHash,
+      relayReceipt: schema.gasTankRelayedMessageReceipts,
     })
     .from(schema.gasTankRelayedMessageReceipts)
     .limit(CLAIM_LIMIT)
@@ -247,62 +207,27 @@ function getPendingClaimsQuery(relayers: Address[]) {
         schema.gasTankClaimedMessages.messageHash,
       ),
     )
+    .innerJoin(
+      schema.gasTankAuthorizedMessages,
+      and(
+        eq(
+          schema.gasTankRelayedMessageReceipts.messageHash,
+          schema.gasTankAuthorizedMessages.messageHash,
+        ),
+        eq(
+          schema.gasTankRelayedMessageReceipts.gasProvider,
+          schema.gasTankAuthorizedMessages.gasProvider,
+        ),
+        eq(
+          schema.gasTankRelayedMessageReceipts.gasProviderChainId,
+          schema.gasTankAuthorizedMessages.chainId,
+        ),
+      ),
+    )
     .where(
       and(
         isNull(schema.gasTankClaimedMessages.messageHash),
         inArray(schema.gasTankRelayedMessageReceipts.relayer, relayers),
-      ),
-    )
-    .orderBy(desc(schema.gasTankRelayedMessageReceipts.relayedAt))
-    .as('mostRecentPendingMessageReceiptsQuery')
-
-  return db
-    .select({
-      messageReceipt: schema.gasTankRelayedMessageReceipts,
-      pendingWithdrawal: schema.gasTankPendingWithdrawals,
-      gasTankChainId: schema.gasTankGasProviders.chainId,
-      gasProviderBalance: schema.gasTankGasProviders.balance,
-      gasProviderAddress: schema.gasTankAuthorizedMessages.gasProvider,
-    })
-    .from(schema.gasTankRelayedMessageReceipts)
-    .innerJoin(
-      mostRecentPendingMessageReceiptsQuery,
-      eq(
-        schema.gasTankRelayedMessageReceipts.messageHash,
-        mostRecentPendingMessageReceiptsQuery.messageHash,
-      ),
-    )
-    .innerJoin(
-      schema.gasTankAuthorizedMessages,
-      eq(
-        schema.gasTankRelayedMessageReceipts.messageHash,
-        schema.gasTankAuthorizedMessages.messageHash,
-      ),
-    )
-    .innerJoin(
-      schema.gasTankGasProviders,
-      and(
-        eq(
-          schema.gasTankAuthorizedMessages.gasProvider,
-          schema.gasTankGasProviders.address,
-        ),
-        eq(
-          schema.gasTankAuthorizedMessages.chainId,
-          schema.gasTankGasProviders.chainId,
-        ),
-      ),
-    )
-    .leftJoin(
-      schema.gasTankPendingWithdrawals,
-      and(
-        eq(
-          schema.gasTankGasProviders.address,
-          schema.gasTankPendingWithdrawals.address,
-        ),
-        eq(
-          schema.gasTankGasProviders.chainId,
-          schema.gasTankPendingWithdrawals.chainId,
-        ),
       ),
     )
     .orderBy(desc(schema.gasTankRelayedMessageReceipts.relayedAt))
