@@ -10,11 +10,12 @@ import {
   isNull,
   max,
   replaceBigInts,
+  sum,
 } from 'ponder'
 import { db, publicClients } from 'ponder:api'
 import schema from 'ponder:schema'
 import type { Address } from 'viem'
-import { getAddress, isAddress } from 'viem'
+import { isAddress } from 'viem'
 
 type GasProvider = {
   gasTankChainId: number
@@ -170,28 +171,58 @@ app.get('/messages/pending/gas-tank', async (c) => {
 })
 
 app.get('/messages/pending/claims', async (c) => {
-  const relayersParam = c.req.query('relayers')
+  const [relayers, error] = extractRelayers(c.req.query('relayers'))
 
-  if (!relayersParam) {
-    return c.json({ error: 'No relayers provided' }, 400)
-  }
-
-  const relayers: Address[] = []
-  try {
-    for (const relayer of JSON.parse(relayersParam)) {
-      if (!isAddress(relayer, { strict: false })) {
-        return c.json({ error: 'Invalid relayer' }, 400)
-      }
-      relayers.push(getAddress(relayer))
-    }
-  } catch (error) {
-    return c.json({ error: 'Invalid relayers parameter format' }, 400)
+  if (error) {
+    return c.json({ error }, 400)
   }
 
   const result = await getPendingClaimsQuery(relayers)
 
   return c.json(result.map((m) => replaceBigInts(m, (x) => Number(x))))
 })
+
+/**
+ * Fetches pending claims for a given gas provider
+ * @param gasProvider - The gas provider address
+ * @param chainId - The chain ID to fetch pending claims for
+ * @param relayers - The relayers to fetch pending claims for
+ * @returns The pending claims
+ */
+app.get('/messages/pending/claims/:gasProvider/:chainId', async (c) => {
+  const gasProvider = c.req.param('gasProvider').toLowerCase()
+  if (!gasProvider || !isAddress(gasProvider)) {
+    return c.json({ error: 'Invalid gas provider' }, 400)
+  }
+
+  const gasProviderChainId = parseChainId(c.req.param('chainId'))
+  if (!gasProviderChainId) {
+    return c.json({ error: 'Invalid chain id' }, 400)
+  }
+
+  const result = await getPendingClaimsForGasProviderQuery(
+    gasProvider,
+    gasProviderChainId,
+  )
+
+  if (result.length === 0) {
+    return c.json(null)
+  }
+
+  if (result.length > 1) {
+    return c.json({ error: 'Multiple gas providers found' }, 500)
+  }
+
+  return c.json(replaceBigInts(result[0], (x) => Number(x)))
+})
+
+function parseChainId(chainIdParam: string): bigint | null {
+  try {
+    return BigInt(chainIdParam)
+  } catch (error) {
+    return null
+  }
+}
 
 function getPendingClaimsQuery(relayers: Address[]) {
   return db
@@ -231,6 +262,78 @@ function getPendingClaimsQuery(relayers: Address[]) {
       ),
     )
     .orderBy(desc(schema.gasTankRelayedMessageReceipts.relayedAt))
+}
+
+/**
+ * Fetches pending claims for a given gas provider
+ * @param gasProvider - The gas provider address
+ * @param gasProviderChainId - The chain ID of the gas provider
+ * @returns The pending claims
+ */
+function getPendingClaimsForGasProviderQuery(
+  gasProvider: Address,
+  gasProviderChainId: bigint,
+) {
+  return db
+    .select({
+      gasProviderAddress: schema.gasTankGasProviders.address,
+      gasProviderChainId: schema.gasTankGasProviders.chainId,
+      totalPendingRelayCost: sum(
+        schema.gasTankRelayedMessageReceipts.relayCost,
+      ),
+      pendingReceiptsCount: count(
+        schema.gasTankRelayedMessageReceipts.messageHash,
+      ),
+    })
+    .from(schema.gasTankRelayedMessageReceipts)
+    .leftJoin(
+      schema.gasTankClaimedMessages,
+      eq(
+        schema.gasTankRelayedMessageReceipts.messageHash,
+        schema.gasTankClaimedMessages.messageHash,
+      ),
+    )
+    .innerJoin(
+      schema.gasTankAuthorizedMessages,
+      and(
+        eq(
+          schema.gasTankRelayedMessageReceipts.messageHash,
+          schema.gasTankAuthorizedMessages.messageHash,
+        ),
+        eq(
+          schema.gasTankRelayedMessageReceipts.gasProvider,
+          schema.gasTankAuthorizedMessages.gasProvider,
+        ),
+        eq(
+          schema.gasTankRelayedMessageReceipts.gasProviderChainId,
+          schema.gasTankAuthorizedMessages.chainId,
+        ),
+      ),
+    )
+    .innerJoin(
+      schema.gasTankGasProviders,
+      and(
+        eq(
+          schema.gasTankAuthorizedMessages.gasProvider,
+          schema.gasTankGasProviders.address,
+        ),
+        eq(
+          schema.gasTankAuthorizedMessages.chainId,
+          schema.gasTankGasProviders.chainId,
+        ),
+      ),
+    )
+    .where(
+      and(
+        isNull(schema.gasTankClaimedMessages.messageHash),
+        eq(schema.gasTankGasProviders.address, gasProvider),
+        eq(schema.gasTankGasProviders.chainId, gasProviderChainId),
+      ),
+    )
+    .groupBy(
+      schema.gasTankGasProviders.address,
+      schema.gasTankGasProviders.chainId,
+    )
 }
 
 function getPendingGasTankMessagesQuery() {
@@ -352,6 +455,33 @@ function getPendingGasTankMessagesQuery() {
       ),
     )
     .orderBy(desc(schema.sentMessages.timestamp))
+}
+
+/**
+ * Extracts and validates relayers from query parameter
+ * @param relayersParam - The raw relayers query parameter
+ * @returns Tuple of [relayers, error] where error is null if successful
+ */
+function extractRelayers(
+  relayersParam: string | undefined,
+): [Address[], string | null] {
+  if (!relayersParam) {
+    return [[], 'No relayers provided']
+  }
+
+  const relayers: Address[] = []
+  try {
+    for (const relayer of JSON.parse(relayersParam)) {
+      if (!isAddress(relayer)) {
+        return [[], 'Invalid relayer']
+      }
+      relayers.push(relayer.toLowerCase() as Address)
+    }
+  } catch (error) {
+    return [[], 'Invalid relayers parameter format']
+  }
+
+  return [relayers, null]
 }
 
 export default app
