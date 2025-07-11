@@ -1,5 +1,11 @@
 # @eth-optimism/ponder-interop
 
+## 0.0.20
+
+### Patch Changes
+
+- [#886](https://github.com/ethereum-optimism/ecosystem/pull/886) [`ee65a8c`](https://github.com/ethereum-optimism/ecosystem/commit/ee65a8cd63da7471beee23f5492a09a1e4c307be) Thanks [@tremarkley](https://github.com/tremarkley)! - added api endpoint for fetching pending claims for a given gas provider
+
 ## 0.0.19
 
 ### Patch Changes
