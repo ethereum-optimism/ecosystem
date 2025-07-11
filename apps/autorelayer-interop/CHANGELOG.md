@@ -1,5 +1,11 @@
 # @eth-optimism/autorelayer-interop
 
+## 0.0.22
+
+### Patch Changes
+
+- [#887](https://github.com/ethereum-optimism/ecosystem/pull/887) [`9327346`](https://github.com/ethereum-optimism/ecosystem/commit/9327346fe9eca31f1d8e350f920714fd9723795f) Thanks [@tremarkley](https://github.com/tremarkley)! - incorporate pending claims into GasProvider balance calculations
+
 ## 0.0.21
 
 ### Patch Changes

@@ -9,7 +9,7 @@
   "bugs": {
     "url": "https://github.com/ethereum-optimism/ecosystem/issues"
   },
-  "version": "0.0.21",
+  "version": "0.0.22",
   "type": "module",
   "files": [
     "dist"
