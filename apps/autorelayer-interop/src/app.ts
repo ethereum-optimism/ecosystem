@@ -12,23 +12,8 @@ import {
 import { privateKeyToAccount } from 'viem/accounts'
 import { z } from 'zod'
 
-import type {
-  PendingClaim,
-  PendingMessage,
-  PendingMessages,
-  PendingMessagesWithGasTank,
-  PendingMessageWithGasTank,
-  RelayerConfig,
-} from '@/relayer.js'
-import {
-  PendingClaimSchema,
-  PendingClaimsSchema,
-  PendingMessageSchema,
-  PendingMessagesSchema,
-  PendingMessagesWithGasTankSchema,
-  PendingMessageWithGasTankSchema,
-  Relayer,
-} from '@/relayer.js'
+import type { RelayerConfig } from '@/config/relayerConfig.js'
+import { Relayer } from '@/relayer.js'
 import { jsonFetchParams } from '@/utils/jsonFetchParams.js'
 
 const ChainSchema = z.array(
@@ -51,6 +36,14 @@ const ConfigSchema = z.object({
       if (!key) return true
       return isHex(key) && privateKeyToAccount(key) !== undefined
     }, 'private key must be a valid hex string'),
+  sponsoredTargets: z
+    .array(
+      z.object({
+        address: z.custom<Address>(),
+        chainId: z.bigint(),
+      }),
+    )
+    .optional(),
   gasTankAddress: z.custom<Address>().optional(),
 })
 
@@ -109,6 +102,20 @@ class RelayerApp extends App {
       )
         .env('GAS_TANK_ADDRESS')
         .argParser((val) => getAddress(val)),
+      new Option(
+        '--sponsored-targets <targets>',
+        'comma separated list of sponsored targets in the format <address>:<chainId>',
+      )
+        .env('SPONSORED_TARGETS')
+        .argParser((val) =>
+          val.split(',').map((target) => {
+            const [address, chainId] = target.trim().split(':')
+            return {
+              address: getAddress(address),
+              chainId: BigInt(chainId),
+            }
+          }),
+        ),
     ]
   }
 
@@ -188,6 +195,7 @@ class RelayerApp extends App {
       ponderInteropApi: config.ponderInteropApi,
       clients,
       walletClients,
+      sponsoredTargets: config.sponsoredTargets,
       gasTankAddress: config.gasTankAddress,
     })
   }
@@ -207,19 +215,6 @@ class RelayerApp extends App {
   }
 }
 
-export {
-  type PendingClaim,
-  PendingClaimSchema,
-  PendingClaimsSchema,
-  type PendingMessage,
-  type PendingMessages,
-  PendingMessageSchema,
-  PendingMessagesSchema,
-  type PendingMessagesWithGasTank,
-  PendingMessagesWithGasTankSchema,
-  type PendingMessageWithGasTank,
-  PendingMessageWithGasTankSchema,
-  Relayer,
-  RelayerApp,
-  type RelayerConfig,
-}
+export { Relayer, RelayerApp, type RelayerConfig }
+export * from '@/schemas/index.js'
+export * from '@/types/index.js'
