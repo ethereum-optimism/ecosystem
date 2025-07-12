@@ -17,113 +17,28 @@ import type {
   PublicClient,
   WalletClient,
 } from 'viem'
-import { isAddress, isHash, isHex } from 'viem'
 import { readContract, simulateContract, writeContract } from 'viem/actions'
-import { z } from 'zod'
 
+import {
+  fetchPendingMessagesWithGasTankFunds,
+  fetchSponsoredMessages,
+} from '@/api/ponderApi.js'
+import type { RelayerConfig } from '@/config/relayerConfig.js'
+import {
+  PendingClaimsSchema,
+  PendingMessagesSchema,
+  PendingRelayCostForGasProviderSchema,
+} from '@/schemas/index.js'
+import type {
+  GasTankProvider,
+  PendingClaim,
+  PendingClaims,
+  PendingMessage,
+  PendingMessages,
+  PendingMessageWithGasTank,
+  PendingRelayCostForGasProvider,
+} from '@/types/index.js'
 import { jsonFetchParams } from '@/utils/jsonFetchParams.js'
-
-export const PendingMessageSchema = z.object({
-  // Identifier
-  messageHash: z.string().refine(isHex, 'invalid message hash'),
-  // Message Direction
-  source: z.number(),
-  destination: z.number(),
-  target: z.string().refine(isAddress, 'invalid target'),
-  txOrigin: z.string().refine(isAddress, 'invalid transaction origin'),
-  // ExecutingMessage
-  logIndex: z.number(),
-  logPayload: z.string().refine(isHex, 'invalid log payload'),
-  timestamp: z.number(),
-  blockNumber: z.number(),
-  transactionHash: z.string().refine(isHash, 'invalid transaction hash'),
-})
-
-export const PendingMessagesSchema = z.array(PendingMessageSchema)
-
-export type PendingMessage = z.infer<typeof PendingMessageSchema>
-
-export type PendingMessages = z.infer<typeof PendingMessagesSchema>
-
-const gasTankProviderSchema = z.object({
-  gasTankChainId: z.number(),
-  gasProviderBalance: z.number(),
-  gasProviderAddress: z
-    .string()
-    .refine(isAddress, 'invalid gas provider address'),
-  pendingWithdrawal: z
-    .object({
-      amount: z.number(),
-      initiatedAt: z.number(),
-    })
-    .optional(),
-})
-
-type GasTankProvider = z.infer<typeof gasTankProviderSchema>
-
-export const PendingMessageWithGasTankSchema = PendingMessageSchema.extend({
-  gasTankProviders: z.array(gasTankProviderSchema),
-})
-
-export const PendingMessagesWithGasTankSchema = z.array(
-  PendingMessageWithGasTankSchema,
-)
-
-export type PendingMessageWithGasTank = z.infer<
-  typeof PendingMessageWithGasTankSchema
->
-
-export type PendingMessagesWithGasTank = z.infer<
-  typeof PendingMessagesWithGasTankSchema
->
-
-export const PendingClaimSchema = z.object({
-  relayReceipt: z.object({
-    messageHash: z.string().refine(isHex, 'invalid message hash'),
-    origin: z.string().refine(isAddress, 'invalid origin'),
-    blockNumber: z.number(),
-    logIndex: z.number(),
-    timestamp: z.number(),
-    chainId: z.number(),
-    logPayload: z.string().refine(isHex, 'invalid log payload'),
-    gasProvider: z.string().refine(isAddress, 'invalid gas provider'),
-    gasProviderChainId: z.number(),
-    relayer: z.string().refine(isAddress, 'invalid relayer'),
-    relayCost: z.number(),
-    relayedAt: z.number(),
-    nestedMessageHashes: z.array(
-      z.string().refine(isHex, 'invalid nested message hash'),
-    ),
-  }),
-})
-
-export const PendingClaimsSchema = z.array(PendingClaimSchema)
-
-export type PendingClaim = z.infer<typeof PendingClaimSchema>
-
-export type PendingClaims = z.infer<typeof PendingClaimsSchema>
-
-const PendingRelayCostForGasProviderSchema = z
-  .object({
-    gasProviderAddress: z
-      .string()
-      .refine(isAddress, 'invalid gas provider address'),
-    gasProviderChainId: z.number(),
-    totalPendingRelayCost: z.coerce.number(),
-    pendingReceiptsCount: z.number(),
-  })
-  .nullable()
-
-type PendingRelayCostForGasProvider = z.infer<
-  typeof PendingRelayCostForGasProviderSchema
->
-
-export interface RelayerConfig {
-  ponderInteropApi: string
-  clients: Record<number, PublicClient>
-  walletClients: Record<number, WalletClient>
-  gasTankAddress?: Address
-}
 
 export interface RelayMessageParams {
   id: MessageIdentifier
@@ -169,19 +84,48 @@ export class Relayer {
    */
   private async relayPendingMessages() {
     if (this.config.gasTankAddress) {
-      const pendingMessages =
-        await this.fetchPendingMessagesWithGasTankFunds().catch((error) => {
+      // Fetch both gas tank and sponsored messages
+      const [pendingMessages, sponsoredMessages] = await Promise.all([
+        fetchPendingMessagesWithGasTankFunds({
+          sponsoredTargets: this.config.sponsoredTargets,
+          ponderInteropApi: this.config.ponderInteropApi,
+        }).catch((error) => {
           this.log.error(
             { err: error },
             'failed to fetch pending messages with gas tank funds',
           )
+          return []
+        }),
+        this.config.sponsoredTargets
+          ? fetchSponsoredMessages({
+              sponsoredTargets: this.config.sponsoredTargets,
+              ponderInteropApi: this.config.ponderInteropApi,
+            }).catch((error) => {
+              this.log.error(
+                { err: error },
+                'failed to fetch sponsored messages',
+              )
+              return []
+            })
+          : Promise.resolve([]),
+      ])
+
+      this.log.info(
+        `${pendingMessages.length} pending messages with gas tank funds, ${sponsoredMessages.length} sponsored messages`,
+      )
+
+      return Promise.allSettled([
+        this.relayMessagesViaGasTank(pendingMessages).catch((error) => {
+          this.log.error({ err: error }, 'failed to relay gas tank messages')
           throw error
-        })
-      this.log.info(`${pendingMessages.length} pending messages`)
-      return this.relayMessagesViaGasTank(pendingMessages).catch((error) => {
-        this.log.error({ err: error }, 'failed to relay gas tank messages')
-        throw error
-      })
+        }),
+        this.relayMessagesViaL2ToL2CrossDomainMessenger(
+          sponsoredMessages,
+        ).catch((error) => {
+          this.log.error({ err: error }, 'failed to relay sponsored messages')
+          throw error
+        }),
+      ])
     }
 
     const pendingMessages = await this.fetchAllPendingMessages().catch(
@@ -230,17 +174,24 @@ export class Relayer {
         }
         const { params, clientsAndAccount } = prepared
         const { client, walletClient } = clientsAndAccount
-        this.relayMessageViaL2ToL2CrossDomainMessenger({
-          client,
-          walletClient,
-          params,
-          msgLog,
-        }).catch((error) => {
+        try {
+          const relayTxHash =
+            await this.relayMessageViaL2ToL2CrossDomainMessenger({
+              client,
+              walletClient,
+              params,
+              msgLog,
+            })
+          msgLog.info(
+            { relayTxHash },
+            'submitted L2ToL2CrossDomainMessenger message relay',
+          )
+        } catch (error) {
           msgLog.warn(
             { err: error },
             'L2ToL2CrossDomainMessenger message relay failed, skipping...',
           )
-        })
+        }
       }),
     )
   }
@@ -661,26 +612,6 @@ export class Relayer {
     return msgs
   }
 
-  private async fetchPendingMessagesWithGasTankFunds(): Promise<PendingMessagesWithGasTank> {
-    const url = `${this.config.ponderInteropApi}/messages/pending/gas-tank`
-    const resp = await fetch(url, jsonFetchParams)
-    if (!resp.ok) {
-      throw new Error(`http response: ${resp.statusText}`)
-    }
-
-    const body = await resp.json()
-    const { data: msgs, error } =
-      PendingMessagesWithGasTankSchema.safeParse(body)
-    if (error) {
-      throw new Error(
-        `api response: ${error.errors
-          .map((e) => `{${e.path.join('.')}: ${e.message}}`)
-          .join(', ')}`,
-      )
-    }
-    return msgs
-  }
-
   /**
    * Relays a message via the L2ToL2CrossDomainMessenger contract
    * @param client - The public client
@@ -710,7 +641,7 @@ export class Relayer {
     // submit (skip local gas estimation if sponsored)
     const gas = !walletClient.account ? null : undefined
     try {
-      return relayCrossDomainMessage(walletClient, {
+      return await relayCrossDomainMessage(walletClient, {
         ...params,
         gas,
       })
