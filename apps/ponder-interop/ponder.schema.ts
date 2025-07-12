@@ -30,6 +30,7 @@ export const sentMessages = onchainTable(
   }),
   (table) => ({
     messageHashIdx: index().on(table.messageHash),
+    destinationTargetCompositeIdx: index().on(table.destination, table.target),
   }),
 )
 

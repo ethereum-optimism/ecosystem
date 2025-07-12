@@ -9,6 +9,9 @@ import {
   inArray,
   isNull,
   max,
+  ne,
+  notInArray,
+  or,
   replaceBigInts,
   sum,
 } from 'ponder'
@@ -129,7 +132,15 @@ app.get('/messages/:account/pending', async (c) => {
 
 // List of pending messages that have been authorized and have funds
 app.get('/messages/pending/gas-tank', async (c) => {
-  const result = await getPendingGasTankMessagesQuery()
+  // sponsoredTargets is an optional query parameter
+  const [sponsoredTargets, error] = c.req.query('sponsoredTargets')
+    ? extractSponsoredTargets(c.req.query('sponsoredTargets'))
+    : [[], null]
+
+  if (error) {
+    return c.json({ error }, 400)
+  }
+  const result = await getPendingGasTankMessagesQuery(sponsoredTargets)
 
   // Group by messageIdentifierHash
   const groupedMessages = result.reduce(
@@ -168,6 +179,29 @@ app.get('/messages/pending/gas-tank', async (c) => {
   const messages = Object.values(groupedMessages)
 
   return c.json(messages.map((m) => replaceBigInts(m, (x) => Number(x))))
+})
+
+/**
+ * Fetches pending sponsored messages for a given set of targets
+ * @param sponsoredTargets - The sponsored targets to fetch pending messages for
+ * in the format Array<{address: <address>, chainId: <chainId>}>
+ * @returns The pending sponsored messages
+ */
+app.get('/messages/pending/sponsored', async (c) => {
+  const [sponsoredTargets, error] = extractSponsoredTargets(
+    c.req.query('sponsoredTargets'),
+  )
+  if (error) {
+    return c.json({ error }, 400)
+  }
+
+  const result = await getPendingSponsoredMessagesQuery(sponsoredTargets)
+
+  const messages = result
+    .map((m) => m.l2_to_l2_cdm_sent_messages)
+    .map((m) => replaceBigInts(m, (x) => Number(x)))
+
+  return c.json(messages)
 })
 
 app.get('/messages/pending/claims', async (c) => {
@@ -222,6 +256,42 @@ function parseChainId(chainIdParam: string): bigint | null {
   } catch (error) {
     return null
   }
+}
+
+/**
+ * Fetches pending sponsored messages for a given set of targets
+ * @param sponsoredTargets - The sponsored targets to fetch pending messages for
+ * in the format Array<{address: <address>, chainId: <chainId>}>
+ * @returns The pending sponsored messages
+ */
+function getPendingSponsoredMessagesQuery(
+  sponsoredTargets: Array<{ address: Address; chainId: bigint }>,
+) {
+  const targetsByChain = getSponsoredTargetsByChain(sponsoredTargets)
+
+  return db
+    .select()
+    .from(schema.sentMessages)
+    .limit(MESSAGE_LIMIT)
+    .leftJoin(
+      schema.relayedMessages,
+      eq(schema.sentMessages.messageHash, schema.relayedMessages.messageHash),
+    )
+    .where(
+      and(
+        isNull(schema.relayedMessages.messageHash),
+        // ensure that at least one target is sponsored
+        or(
+          ...Object.entries(targetsByChain).map(([chainId, addresses]) =>
+            and(
+              eq(schema.sentMessages.destination, BigInt(chainId)),
+              inArray(schema.sentMessages.target, addresses),
+            ),
+          ),
+        ),
+      ),
+    )
+    .orderBy(desc(schema.sentMessages.timestamp))
 }
 
 function getPendingClaimsQuery(relayers: Address[]) {
@@ -336,7 +406,17 @@ function getPendingClaimsForGasProviderQuery(
     )
 }
 
-function getPendingGasTankMessagesQuery() {
+/**
+ * Fetches pending messages that have been authorized and have funds
+ * @param sponsoredTargets - The sponsored targets to exclude from the query
+ * in the format Array<{address: <address>, chainId: <chainId>}>
+ * @returns The pending messages
+ */
+function getPendingGasTankMessagesQuery(
+  sponsoredTargets: Array<{ address: Address; chainId: bigint }>,
+) {
+  const targetsByChain = getSponsoredTargetsByChain(sponsoredTargets)
+
   const distinctMessagesAndMaxTimestampQuery = db
     .select({
       messageHash: schema.sentMessages.messageHash,
@@ -373,7 +453,19 @@ function getPendingGasTankMessagesQuery() {
         gt(schema.gasTankGasProviders.balance, 0n),
       ),
     )
-    .where(isNull(schema.relayedMessages.messageHash))
+    .where(
+      and(
+        isNull(schema.relayedMessages.messageHash),
+        ...(targetsByChain
+          ? Object.entries(targetsByChain).map(([chainId, addresses]) =>
+              or(
+                ne(schema.sentMessages.destination, BigInt(chainId)),
+                notInArray(schema.sentMessages.target, addresses),
+              ),
+            )
+          : []),
+      ),
+    )
     .orderBy(desc(max(schema.sentMessages.timestamp)))
     .as('distinctMessagesAndMaxTimestampQuery')
 
@@ -482,6 +574,46 @@ function extractRelayers(
   }
 
   return [relayers, null]
+}
+
+function extractSponsoredTargets(
+  sponsoredTargetsParam: string | undefined,
+): [Array<{ address: Address; chainId: bigint }>, string | null] {
+  if (!sponsoredTargetsParam) {
+    return [[], 'No sponsored targets provided']
+  }
+
+  const sponsoredTargets: Array<{ address: Address; chainId: bigint }> = []
+  try {
+    for (const target of JSON.parse(sponsoredTargetsParam)) {
+      if (!isAddress(target.address)) {
+        return [[], 'Invalid sponsored target']
+      }
+      if (!parseChainId(target.chainId)) {
+        return [[], 'Invalid chain id']
+      }
+      sponsoredTargets.push({
+        address: target.address.toLowerCase() as Address,
+        chainId: parseChainId(target.chainId)!,
+      })
+    }
+  } catch (error) {
+    return [[], 'Invalid sponsored targets parameter format']
+  }
+
+  return [sponsoredTargets, null]
+}
+
+function getSponsoredTargetsByChain(
+  sponsoredTargets: Array<{ address: Address; chainId: bigint }>,
+): Record<string, Address[]> {
+  return sponsoredTargets.reduce((acc, target) => {
+    if (!acc[`${target.chainId}`]) {
+      acc[`${target.chainId}`] = []
+    }
+    acc[`${target.chainId}`]!.push(target.address)
+    return acc
+  }, {} as Record<string, Address[]>)
 }
 
 export default app
