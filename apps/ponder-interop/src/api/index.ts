@@ -9,6 +9,9 @@ import {
   inArray,
   isNull,
   max,
+  ne,
+  notInArray,
+  or,
   replaceBigInts,
   sum,
 } from 'ponder'
@@ -77,8 +80,23 @@ app.get('/messages/count', async (c) => {
   return c.json({ sent, relayed, pending })
 })
 
-// List of pending messages
+/**
+ * List of pending messages
+ * @param filteredTargets - Optional. Only messages that match these targets will be included in the query.
+ * If not provided, all pending messages will be returned. Param is in the format Array<{address: <address>, chainId: <chainId>}>.
+ * @returns The messages that have not been relayed yet.
+ */
 app.get('/messages/pending', async (c) => {
+  const [filteredTargets, error] = c.req.query('filteredTargets')
+    ? parseChainAddressPairs(c.req.query('filteredTargets'))
+    : [[], null]
+
+  if (error) {
+    return c.json({ error }, 400)
+  }
+
+  const filteredTargetsByChain = getChainAddressPairsByChain(filteredTargets)
+
   const result = await db
     .select()
     .from(schema.sentMessages)
@@ -87,7 +105,20 @@ app.get('/messages/pending', async (c) => {
       schema.relayedMessages,
       eq(schema.sentMessages.messageHash, schema.relayedMessages.messageHash),
     )
-    .where(isNull(schema.relayedMessages.messageHash))
+    .where(
+      and(
+        isNull(schema.relayedMessages.messageHash),
+        or(
+          ...Object.entries(filteredTargetsByChain).map(
+            ([chainId, addresses]) =>
+              and(
+                eq(schema.sentMessages.destination, BigInt(chainId)),
+                inArray(schema.sentMessages.target, addresses),
+              ),
+          ),
+        ),
+      ),
+    )
     .orderBy(desc(schema.sentMessages.timestamp))
 
   const messages = result
@@ -127,9 +158,21 @@ app.get('/messages/:account/pending', async (c) => {
   return c.json(messages)
 })
 
-// List of pending messages that have been authorized and have funds
+/**
+ * Fetches pending messages that have been authorized and have funds
+ * @param excludedTargets - Any messages that match these targets will be excluded from the query.
+ * Param is in the format Array<{address: <address>, chainId: <chainId>}>
+ * @returns The pending messages
+ */
 app.get('/messages/pending/gas-tank', async (c) => {
-  const result = await getPendingGasTankMessagesQuery()
+  const [excludedTargets, error] = c.req.query('excludedTargets')
+    ? parseChainAddressPairs(c.req.query('excludedTargets'))
+    : [[], null]
+
+  if (error) {
+    return c.json({ error }, 400)
+  }
+  const result = await getPendingGasTankMessagesQuery(excludedTargets)
 
   // Group by messageIdentifierHash
   const groupedMessages = result.reduce(
@@ -336,7 +379,16 @@ function getPendingClaimsForGasProviderQuery(
     )
 }
 
-function getPendingGasTankMessagesQuery() {
+/**
+ * Fetches pending messages that have been authorized and have funds
+ * @param excludedTargets - Any messages that match these targets will be excluded from the query
+ * @returns The pending messages
+ */
+function getPendingGasTankMessagesQuery(
+  excludedTargets: Array<{ address: Address; chainId: bigint }>,
+) {
+  const excludedTargetsByChain = getChainAddressPairsByChain(excludedTargets)
+
   const distinctMessagesAndMaxTimestampQuery = db
     .select({
       messageHash: schema.sentMessages.messageHash,
@@ -373,7 +425,17 @@ function getPendingGasTankMessagesQuery() {
         gt(schema.gasTankGasProviders.balance, 0n),
       ),
     )
-    .where(isNull(schema.relayedMessages.messageHash))
+    .where(
+      and(
+        isNull(schema.relayedMessages.messageHash),
+        ...Object.entries(excludedTargetsByChain).map(([chainId, addresses]) =>
+          or(
+            ne(schema.sentMessages.destination, BigInt(chainId)),
+            notInArray(schema.sentMessages.target, addresses),
+          ),
+        ),
+      ),
+    )
     .orderBy(desc(max(schema.sentMessages.timestamp)))
     .as('distinctMessagesAndMaxTimestampQuery')
 
@@ -482,6 +544,60 @@ function extractRelayers(
   }
 
   return [relayers, null]
+}
+
+/**
+ * Parses a JSON string of chainId/address pairs into an array of objects
+ * @param chainAddressPairsParam - The raw chainAddressPairs query parameter in JSON string format of
+ * Array<{address: <address>, chainId: <chainId>}>
+ * @returns Tuple of [chainAddressPairs, error] where error is null if successful
+ */
+function parseChainAddressPairs(
+  chainAddressPairsParam: string | undefined,
+): [Array<{ address: Address; chainId: bigint }>, string | null] {
+  if (!chainAddressPairsParam) {
+    return [[], 'No chain address pairs provided']
+  }
+
+  const chainAddressPairs: Array<{ address: Address; chainId: bigint }> = []
+  try {
+    for (const chainAddressPair of JSON.parse(chainAddressPairsParam) as Array<{
+      address: string
+      chainId: string
+    }>) {
+      if (!isAddress(chainAddressPair.address)) {
+        return [[], 'Invalid address']
+      }
+      if (!parseChainId(chainAddressPair.chainId)) {
+        return [[], 'Invalid chain id']
+      }
+      chainAddressPairs.push({
+        address: chainAddressPair.address.toLowerCase() as Address,
+        chainId: parseChainId(chainAddressPair.chainId)!,
+      })
+    }
+  } catch (error) {
+    return [[], 'Invalid chain address pairs parameter format']
+  }
+
+  return [chainAddressPairs, null]
+}
+
+/**
+ * Groups chainAddressPairs by chainId
+ * @param chainAddressPairs - The chainAddressPairs to group
+ * @returns A record of chainId to addresses
+ */
+function getChainAddressPairsByChain(
+  chainAddressPairs: Array<{ address: Address; chainId: bigint }>,
+): Record<string, Address[]> {
+  return chainAddressPairs.reduce((acc, chainAddressPair) => {
+    if (!acc[`${chainAddressPair.chainId}`]) {
+      acc[`${chainAddressPair.chainId}`] = []
+    }
+    acc[`${chainAddressPair.chainId}`]!.push(chainAddressPair.address)
+    return acc
+  }, {} as Record<string, Address[]>)
 }
 
 export default app
