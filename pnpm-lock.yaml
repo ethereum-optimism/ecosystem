@@ -488,6 +488,30 @@ importers:
         specifier: ^4.4.5
         version: 4.5.14(@types/node@18.19.101)(terser@5.31.3)
 
+  apps/verbs-service:
+    dependencies:
+      '@eth-optimism/utils-app':
+        specifier: workspace:*
+        version: link:../../packages/utils-app
+      '@eth-optimism/verbs':
+        specifier: workspace:*
+        version: link:../../packages/verbs
+      '@hono/node-server':
+        specifier: ^1.14.0
+        version: 1.14.0(hono@4.7.5)
+      commander:
+        specifier: ^13.1.0
+        version: 13.1.0
+      hono:
+        specifier: ^4.5.0
+        version: 4.7.5
+      pino:
+        specifier: ^9.6.0
+        version: 9.6.0
+      pino-pretty:
+        specifier: ^13.0.0
+        version: 13.0.0
+
   packages/supersim:
     dependencies:
       follow-redirects:
@@ -516,17 +540,10 @@ importers:
         version: 15.1.3
 
   packages/verbs:
-    dependencies:
-      '@eth-optimism/utils-app':
-        specifier: workspace:*
-        version: link:../utils-app
-      hono:
-        specifier: ^4.8.5
-        version: 4.8.5
     devDependencies:
-      '@types/bun':
-        specifier: latest
-        version: 1.2.18(@types/react@18.3.1)
+      typescript:
+        specifier: ^5.2.2
+        version: 5.4.5
 
   packages/viem:
     devDependencies:
@@ -4090,9 +4107,6 @@ packages:
   '@types/babel__traverse@7.20.5':
     resolution: {integrity: sha512-WXCyOcRtH37HAUkpXhUduaxdm82b4GSlyTqajXviN4EfiuPgNYR109xMCKvpl6zPIpua0DGlMEDCq+g8EdoheQ==}
 
-  '@types/bun@1.2.18':
-    resolution: {integrity: sha512-Xf6RaWVheyemaThV0kUfaAUvCNokFr+bH8Jxp+tTZfx7dAPA8z9ePnP9S9+Vspzuxxx9JRAXhnyccRj3GyCMdQ==}
-
   '@types/debug@4.1.12':
     resolution: {integrity: sha512-vIChWdVG3LG1SMxEvI/AK+FWJthlrqlTu7fbrlywTkkaONwk/UAGaULXRlf8vkzFBLVm0zkMdCquhL5aOjhXPQ==}
 
@@ -6612,10 +6626,6 @@ packages:
 
   hono@4.7.5:
     resolution: {integrity: sha512-fDOK5W2C1vZACsgLONigdZTRZxuBqFtcKh7bUQ5cVSbwI2RWjloJDcgFOVzbQrlI6pCmhlTsVYZ7zpLj4m4qMQ==}
-    engines: {node: '>=16.9.0'}
-
-  hono@4.8.5:
-    resolution: {integrity: sha512-Up2cQbtNz1s111qpnnECdTGqSIUIhZJMLikdKkshebQSEBcoUKq6XJayLGqSZWidiH0zfHRCJqFu062Mz5UuRA==}
     engines: {node: '>=16.9.0'}
 
   hosted-git-info@2.8.9:
@@ -15916,12 +15926,6 @@ snapshots:
     dependencies:
       '@babel/types': 7.24.0
 
-  '@types/bun@1.2.18(@types/react@18.3.1)':
-    dependencies:
-      bun-types: 1.2.18(@types/react@18.3.1)
-    transitivePeerDependencies:
-      - '@types/react'
-
   '@types/debug@4.1.12':
     dependencies:
       '@types/ms': 0.7.34
@@ -17438,6 +17442,7 @@ snapshots:
     dependencies:
       '@types/node': 18.19.101
       '@types/react': 18.3.1
+    optional: true
 
   busboy@1.6.0:
     dependencies:
@@ -19260,8 +19265,6 @@ snapshots:
       minimalistic-crypto-utils: 1.0.1
 
   hono@4.7.5: {}
-
-  hono@4.8.5: {}
 
   hosted-git-info@2.8.9: {}
 
