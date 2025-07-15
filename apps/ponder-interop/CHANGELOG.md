@@ -1,5 +1,11 @@
 # @eth-optimism/ponder-interop
 
+## 0.0.21
+
+### Patch Changes
+
+- [#899](https://github.com/ethereum-optimism/ecosystem/pull/899) [`cf26ba9`](https://github.com/ethereum-optimism/ecosystem/commit/cf26ba96a49541d47dccfb08840e22f8a97acd02) Thanks [@tremarkley](https://github.com/tremarkley)! - add api support for fetching pending messages of sponsored targets
+
 ## 0.0.20
 
 ### Patch Changes

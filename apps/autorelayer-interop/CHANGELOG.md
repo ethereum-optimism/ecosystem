@@ -1,5 +1,11 @@
 # @eth-optimism/autorelayer-interop
 
+## 0.0.23
+
+### Patch Changes
+
+- [#900](https://github.com/ethereum-optimism/ecosystem/pull/900) [`bfbe209`](https://github.com/ethereum-optimism/ecosystem/commit/bfbe209aff7eede190d07c99586d94217a8929c2) Thanks [@tremarkley](https://github.com/tremarkley)! - Add support for sponsoring relays for specific message targets
+
 ## 0.0.22
 
 ### Patch Changes
