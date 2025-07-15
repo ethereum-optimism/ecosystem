@@ -36,6 +36,10 @@
   ],
   "author": "Optimism PBC",
   "license": "MIT",
+  "dependencies": {
+    "@privy-io/server-auth": "latest",
+    "viem": "^2.24.1"
+  },
   "devDependencies": {
     "typescript": "^5.2.2"
   }
