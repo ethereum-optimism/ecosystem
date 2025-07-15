@@ -1,0 +1,42 @@
+{
+  "name": "@eth-optimism/verbs",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ethereum-optimism/ecosystem.git",
+    "directory": "packages/verbs"
+  },
+  "homepage": "https://github.com/ethereum-optimism/ecosystem/tree/main/packages/verbs#readme",
+  "bugs": {
+    "url": "https://github.com/ethereum-optimism/ecosystem/issues"
+  },
+  "type": "module",
+  "version": "0.0.1",
+  "description": "TypeScript SDK for Verbs",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist/*",
+    "src/*"
+  ],
+  "exports": {
+    ".": "./dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc && resolve-tspaths",
+    "clean": "rm -rf dist types tsconfig.tsbuildinfo",
+    "lint": "eslint \"**/*.{ts,tsx}\" && pnpm prettier --check \"**/*.{ts,tsx}\" --ignore-path \"../../.prettierignore\"",
+    "lint:fix": "eslint \"**/*.{ts,tsx}\" --fix && pnpm prettier \"**/*.{ts,tsx}\" --write --loglevel=warn --ignore-path \"../../.prettierignore\"",
+    "test": "echo \"No tests yet\"",
+    "typecheck": "tsc --noEmit --emitDeclarationOnly false"
+  },
+  "keywords": [
+    "verbs",
+    "typescript",
+    "sdk"
+  ],
+  "author": "Optimism PBC",
+  "license": "MIT",
+  "devDependencies": {
+    "typescript": "^5.2.2"
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "name": "@eth-optimism/verbs-service",
+  "description": "Node service running Verbs SDK.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ethereum-optimism/ecosystem.git",
+    "directory": "apps/verbs-service"
+  },
+  "homepage": "https://github.com/ethereum-optimism/ecosystem/tree/main/apps/verbs-service#readme",
+  "bugs": {
+    "url": "https://github.com/ethereum-optimism/ecosystem/issues"
+  },
+  "version": "0.0.1",
+  "type": "module",
+  "files": [
+    "dist"
+  ],
+  "main": "./dist/app.js",
+  "types": "./dist/app.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/app.d.ts",
+      "import": "./dist/app.js"
+    }
+  },
+  "scripts": {
+    "build": "pnpm clean && tsc && resolve-tspaths",
+    "clean": "rm -rf dist tsconfig.tsbuildinfo",
+    "lint": "eslint \"**/*.{ts,tsx}\" && pnpm prettier --check \"**/*.{ts,tsx}\" --ignore-path \"../../.prettierignore\"",
+    "lint:fix": "eslint \"**/*.{ts,tsx}\" --fix && pnpm prettier \"**/*.{ts,tsx}\" --write --loglevel=warn --ignore-path \"../../.prettierignore\"",
+    "dev": "tsx src/index.ts",
+    "start": "node dist/index.js",
+    "typecheck": "tsc"
+  },
+  "dependencies": {
+    "@hono/node-server": "^1.14.0",
+    "hono": "^4.5.0",
+    "commander": "^13.1.0",
+    "@eth-optimism/utils-app": "workspace:*",
+    "@eth-optimism/verbs": "workspace:*"
+  },
+  "peerDependencies": {
+    "pino": "^9.6.0",
+    "pino-pretty": "^13.0.0"
+  }
+}
