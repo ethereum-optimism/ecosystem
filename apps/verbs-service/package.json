@@ -33,11 +33,17 @@
     "typecheck": "tsc"
   },
   "dependencies": {
-    "@hono/node-server": "^1.14.0",
-    "hono": "^4.5.0",
-    "commander": "^13.1.0",
     "@eth-optimism/utils-app": "workspace:*",
-    "@eth-optimism/verbs": "workspace:*"
+    "@eth-optimism/verbs": "workspace:*",
+    "@hono/node-server": "^1.14.0",
+    "commander": "^13.1.0",
+    "dotenv": "^16.4.5",
+    "envalid": "^8.1.0",
+    "hono": "^4.5.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.19.8",
+    "typescript": "^5.2.2"
   },
   "peerDependencies": {
     "pino": "^9.6.0",

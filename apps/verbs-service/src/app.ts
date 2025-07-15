@@ -3,6 +3,9 @@ import { serve } from '@hono/node-server'
 import { Option } from 'commander'
 import { Hono } from 'hono'
 
+import { env } from '@/config/env.js'
+import { initializeVerbs } from '@/config/verbs.js'
+import { verbsMiddleware } from '@/middleware/verbs.js'
 import { router } from '@/router.js'
 
 class VerbsApp extends App {
@@ -19,14 +22,21 @@ class VerbsApp extends App {
   protected additionalOptions(): Option[] {
     return [
       new Option('--port <port>', 'port to run the service on')
-        .default('3000')
+        .default(env.PORT.toString())
         .env('PORT'),
     ]
+  }
+
+  protected async preMain(): Promise<void> {
+    // Initialize Verbs SDK once at startup
+    initializeVerbs()
   }
 
   protected async main(): Promise<void> {
     const app = new Hono()
 
+    // Apply Verbs middleware (initialization already happened at startup)
+    app.use('*', verbsMiddleware)
     app.route('/', router)
 
     this.logger.info('starting verbs service on port %s', this.options.port)

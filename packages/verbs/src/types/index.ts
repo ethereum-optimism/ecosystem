@@ -18,7 +18,7 @@ export interface Wallet {
 }
 
 export interface VerbsConfig {
-  walletConfig: WalletConfig
+  wallet: WalletConfig
 }
 
 export type WalletConfig = PrivyWalletConfig

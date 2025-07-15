@@ -10,17 +10,17 @@ export class Verbs implements VerbsSDK {
   }
 
   private createWalletProvider(config: VerbsConfig): WalletProvider {
-    const { walletConfig } = config
+    const { wallet } = config
 
-    switch (walletConfig.type) {
+    switch (wallet.type) {
       case 'privy':
         return new PrivyWalletProvider(
-          walletConfig.appId,
-          walletConfig.appSecret,
+          wallet.appId,
+          wallet.appSecret,
         )
       default:
         throw new Error(
-          `Unsupported wallet provider type: ${walletConfig.type}`,
+          `Unsupported wallet provider type: ${wallet.type}`,
         )
     }
   }
