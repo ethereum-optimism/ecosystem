@@ -7,11 +7,17 @@ interface TerminalLine {
   timestamp: Date
 }
 
+interface PendingPrompt {
+  type: 'userId'
+  message: string
+}
+
 const Terminal = () => {
   const [lines, setLines] = useState<TerminalLine[]>([])
   const [currentInput, setCurrentInput] = useState('')
   const [commandHistory, setCommandHistory] = useState<string[]>([])
   const [historyIndex, setHistoryIndex] = useState(-1)
+  const [pendingPrompt, setPendingPrompt] = useState<PendingPrompt | null>(null)
   const inputRef = useRef<HTMLInputElement>(null)
   const terminalRef = useRef<HTMLDivElement>(null)
 
@@ -126,9 +132,38 @@ const Terminal = () => {
     setLines(welcomeLines)
   }, [])
 
+  const createWallet = async (userId: string) => {
+    try {
+      const response = await fetch(`http://localhost:3000/wallet/${userId}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+
+      if (!response.ok) {
+        const error = await response.json()
+        throw new Error(error.message || 'Failed to create wallet')
+      }
+
+      const data = await response.json()
+      return data
+    } catch (error) {
+      throw error
+    }
+  }
+
   const processCommand = (command: string) => {
     const trimmed = command.trim()
     if (!trimmed) return
+
+    // Handle pending prompts
+    if (pendingPrompt) {
+      if (pendingPrompt.type === 'userId') {
+        handleWalletCreation(trimmed)
+        return
+      }
+    }
 
     // Add command to history
     setCommandHistory((prev) => [...prev, trimmed])
@@ -156,7 +191,7 @@ const Terminal = () => {
   wallet create - Create a new wallet
   wallet list   - List all wallets
   status        - Show system status
-  exit          - Exit terminal (just kidding!)`,
+  exit          - Exit terminal`,
           timestamp: new Date(),
         }
         break
@@ -164,18 +199,18 @@ const Terminal = () => {
         setLines([])
         return
       case 'wallet create':
-        response = {
-          id: responseId,
-          type: 'success',
-          content: 'Creating wallet... (not implemented yet)',
-          timestamp: new Date(),
-        }
-        break
+        setPendingPrompt({
+          type: 'userId',
+          message: 'Enter unique userId:',
+        })
+        // Add the command line to display but don't add a response yet
+        setLines((prev) => [...prev, commandLine])
+        return
       case 'wallet list':
         response = {
           id: responseId,
           type: 'output',
-          content: 'No wallets found. Use "wallet create" to create one.',
+          content: 'COMING SOON',
           timestamp: new Date(),
         }
         break
@@ -210,6 +245,51 @@ Active Wallets: 0`,
     setLines((prev) => [...prev, commandLine, response])
   }
 
+  const handleWalletCreation = async (userId: string) => {
+    const userInputLine: TerminalLine = {
+      id: `input-${Date.now()}`,
+      type: 'input',
+      content: `Enter userId for the new wallet: ${userId}`,
+      timestamp: new Date(),
+    }
+
+    const loadingLine: TerminalLine = {
+      id: `loading-${Date.now()}`,
+      type: 'output',
+      content: 'Creating wallet...',
+      timestamp: new Date(),
+    }
+
+    setLines((prev) => [...prev, userInputLine, loadingLine])
+    setPendingPrompt(null)
+
+    try {
+      const result = await createWallet(userId)
+
+      const successLine: TerminalLine = {
+        id: `success-${Date.now()}`,
+        type: 'success',
+        content: `Wallet created successfully!
+Address: ${result.address}
+User ID: ${result.userId}`,
+        timestamp: new Date(),
+      }
+
+      setLines((prev) => [...prev.slice(0, -1), successLine])
+    } catch (error) {
+      const errorLine: TerminalLine = {
+        id: `error-${Date.now()}`,
+        type: 'error',
+        content: `Failed to create wallet: ${
+          error instanceof Error ? error.message : 'Unknown error'
+        }`,
+        timestamp: new Date(),
+      }
+
+      setLines((prev) => [...prev.slice(0, -1), errorLine])
+    }
+  }
+
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       processCommand(currentInput)
@@ -239,7 +319,18 @@ Active Wallets: 0`,
     }
   }
 
-  const handleClick = () => {
+  const handleClick = (e: React.MouseEvent) => {
+    // Don't refocus if user is selecting text
+    const selection = window.getSelection()
+    if (selection && selection.toString().length > 0) {
+      return
+    }
+
+    // Don't refocus if click is on selected text
+    if (selection && !selection.isCollapsed) {
+      return
+    }
+
     if (inputRef.current) {
       inputRef.current.focus()
     }
@@ -285,7 +376,9 @@ Active Wallets: 0`,
 
         {/* Current Input Line */}
         <div className="terminal-line">
-          <span className="terminal-prompt">verbs@terminal:~$</span>
+          <span className="terminal-prompt">
+            {pendingPrompt ? pendingPrompt.message : 'verbs@terminal:~$'}
+          </span>
           <div className="flex-1 flex items-center">
             <input
               ref={inputRef}
