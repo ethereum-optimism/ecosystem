@@ -179,7 +179,7 @@ const Terminal = () => {
           id: responseId,
           type: 'success',
           content: `System Status: ONLINE
-SDK Version: v0.0.1
+SDK Version: v0.0.2
 Connected Networks: None
 Active Wallets: 0`,
           timestamp: new Date(),
@@ -318,28 +318,40 @@ User ID: ${result.userId}`,
         className="flex-1 overflow-y-auto p-4 space-y-1 scrollbar-thin scrollbar-thumb-terminal-border scrollbar-track-transparent"
       >
         {lines.map((line) => (
-          <div key={line.id} className={line.id === 'welcome-ascii' ? '' : 'terminal-line'}>
+          <div
+            key={line.id}
+            className={line.id === 'welcome-ascii' ? '' : 'terminal-line'}
+          >
             <div
-              className={line.id === 'welcome-ascii' ? '' : `terminal-output ${
-                line.type === 'error'
-                  ? 'terminal-error'
-                  : line.type === 'success'
-                  ? 'terminal-success'
-                  : line.type === 'warning'
-                  ? 'terminal-warning'
-                  : line.type === 'input'
-                  ? 'text-terminal-muted'
-                  : 'terminal-output'
-              }`}
-              style={line.id === 'welcome-ascii' ? { 
-                fontFamily: 'JetBrains Mono, Monaco, Menlo, Consolas, monospace',
-                color: '#b8bb26',
-                whiteSpace: 'pre',
-                lineHeight: '1.2',
-                margin: 0,
-                padding: 0,
-                border: 'none'
-              } : {}}
+              className={
+                line.id === 'welcome-ascii'
+                  ? ''
+                  : `terminal-output ${
+                      line.type === 'error'
+                        ? 'terminal-error'
+                        : line.type === 'success'
+                        ? 'terminal-success'
+                        : line.type === 'warning'
+                        ? 'terminal-warning'
+                        : line.type === 'input'
+                        ? 'text-terminal-muted'
+                        : 'terminal-output'
+                    }`
+              }
+              style={
+                line.id === 'welcome-ascii'
+                  ? {
+                      fontFamily:
+                        'JetBrains Mono, Monaco, Menlo, Consolas, monospace',
+                      color: '#b8bb26',
+                      whiteSpace: 'pre',
+                      lineHeight: '1.2',
+                      margin: 0,
+                      padding: 0,
+                      border: 'none',
+                    }
+                  : {}
+              }
             >
               {line.content}
             </div>
