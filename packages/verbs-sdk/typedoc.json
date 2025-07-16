@@ -1,0 +1,14 @@
+{
+  "$schema": "https://typedoc.org/schema.json",
+  "out": "./docs",
+  "plugin": ["typedoc-plugin-markdown"],
+  "entryPoints": [
+    "./src/index.ts"
+  ],
+  "exclude": ["**/*.spec.ts", "**/*.test.ts"],
+  "readme": "none",
+  "excludeInternal": true,
+  "textContentMappings": {
+    "title.memberPage": "{name}"
+  }
+}

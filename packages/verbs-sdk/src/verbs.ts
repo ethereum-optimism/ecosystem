@@ -3,6 +3,10 @@ import type { VerbsConfig, VerbsInterface } from './types/verbs.js'
 import type { WalletProvider } from './types/wallet.js'
 import type { Wallet } from './wallet.js'
 
+/**
+ * Main Verbs SDK class
+ * @description Core implementation of the Verbs SDK
+ */
 export class Verbs implements VerbsInterface {
   createWallet!: () => Promise<Wallet>
   getWallet!: (walletId: string) => Promise<Wallet | null>
@@ -29,6 +33,12 @@ export class Verbs implements VerbsInterface {
   }
 }
 
+/**
+ * Initialize Verbs SDK
+ * @description Factory function to create a new Verbs SDK instance
+ * @param config - SDK configuration
+ * @returns Initialized Verbs SDK instance
+ */
 export function initVerbs(config: VerbsConfig): VerbsInterface {
   return new Verbs(config)
 }
