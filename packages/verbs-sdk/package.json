@@ -1,11 +1,11 @@
 {
-  "name": "@eth-optimism/verbs",
+  "name": "@eth-optimism/verbs-sdk",
   "repository": {
     "type": "git",
     "url": "https://github.com/ethereum-optimism/ecosystem.git",
-    "directory": "packages/verbs"
+    "directory": "packages/verbs-sdk"
   },
-  "homepage": "https://github.com/ethereum-optimism/ecosystem/tree/main/packages/verbs#readme",
+  "homepage": "https://github.com/ethereum-optimism/ecosystem/tree/main/packages/verbs-sdk#readme",
   "bugs": {
     "url": "https://github.com/ethereum-optimism/ecosystem/issues"
   },
@@ -24,6 +24,7 @@
   "scripts": {
     "build": "tsc && resolve-tspaths",
     "clean": "rm -rf dist types tsconfig.tsbuildinfo",
+    "docs": "typedoc",
     "lint": "eslint \"**/*.{ts,tsx}\" && pnpm prettier --check \"**/*.{ts,tsx}\" --ignore-path \"../../.prettierignore\"",
     "lint:fix": "eslint \"**/*.{ts,tsx}\" --fix && pnpm prettier \"**/*.{ts,tsx}\" --write --loglevel=warn --ignore-path \"../../.prettierignore\"",
     "test": "echo \"No tests yet\"",
@@ -36,6 +37,10 @@
   ],
   "author": "Optimism PBC",
   "license": "MIT",
+  "dependencies": {
+    "@privy-io/server-auth": "latest",
+    "viem": "^2.24.1"
+  },
   "devDependencies": {
     "typescript": "^5.2.2"
   }

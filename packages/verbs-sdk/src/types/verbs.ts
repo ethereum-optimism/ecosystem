@@ -1,0 +1,48 @@
+import type { Wallet } from './wallet.js'
+
+/**
+ * Core Verbs SDK interface
+ * @description Main interface for interacting with the Verbs SDK
+ */
+export interface VerbsInterface {
+  /**
+   * Create a new wallet
+   * @param userId - User identifier for the wallet
+   * @returns Promise resolving to new wallet instance
+   */
+  createWallet(userId: string): Promise<Wallet>
+  /**
+   * Get wallet by user ID
+   * @param userId - User identifier
+   * @returns Promise resolving to wallet or null if not found
+   */
+  getWallet(userId: string): Promise<Wallet | null>
+}
+
+/**
+ * Verbs SDK configuration
+ * @description Configuration object for initializing the Verbs SDK
+ */
+export interface VerbsConfig {
+  /** Wallet provider configuration */
+  wallet: WalletConfig
+}
+
+/**
+ * Wallet provider configuration
+ * @description Configuration for wallet providers
+ */
+export type WalletConfig = PrivyWalletConfig
+
+/**
+ * Privy wallet provider configuration
+ * @description Configuration specific to Privy wallet provider
+ */
+export interface PrivyWalletConfig {
+  /** Wallet provider type */
+  type: 'privy'
+  /** Privy app ID */
+  appId: string
+  /** Privy app secret */
+  appSecret: string
+}
