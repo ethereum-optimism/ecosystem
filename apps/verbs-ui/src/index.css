@@ -15,7 +15,9 @@
     @apply selection:bg-terminal-muted selection:text-terminal-bg;
   }
 
-  html, body, #root {
+  html,
+  body,
+  #root {
     @apply w-full h-full;
   }
 }
