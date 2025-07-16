@@ -10,5 +10,5 @@ router.get('/', (c) => {
   return c.text('OK')
 })
 
-router.get('/wallet', walletController.createWallet)
-router.post('/wallet/:userId/lend', walletController.lendFunds)
+router.post('/wallet/:userId', walletController.createWallet)
+router.get('/wallet/:userId', walletController.getWallet)
