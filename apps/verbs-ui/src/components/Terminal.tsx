@@ -121,24 +121,20 @@ const Terminal = () => {
   }, [])
 
   const createWallet = async (userId: string) => {
-    try {
-      const response = await fetch(`http://localhost:3000/wallet/${userId}`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      })
+    const response = await fetch(`http://localhost:3000/wallet/${userId}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
 
-      if (!response.ok) {
-        const error = await response.json()
-        throw new Error(error.message || 'Failed to create wallet')
-      }
-
-      const data = await response.json()
-      return data
-    } catch (error) {
-      throw error
+    if (!response.ok) {
+      const error = await response.json()
+      throw new Error(error.message || 'Failed to create wallet')
     }
+
+    const data = await response.json()
+    return data
   }
 
   const processCommand = (command: string) => {
