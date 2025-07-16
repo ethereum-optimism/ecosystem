@@ -50,6 +50,11 @@ export interface RelayMessageParams {
 
 const GAS_BUFFER = 125n
 
+type GasTankProviderToMessages = {
+  gasTankProvider: GasTankProvider
+  messages: PendingMessageWithGasTank[]
+}
+
 export class Relayer {
   protected readonly log: Logger
   private readonly config: RelayerConfig
@@ -207,64 +212,65 @@ export class Relayer {
 
     // relay messages across all gas tank providers in parallel and relay messages within each gas provider in series
     return Promise.allSettled(
-      Array.from(gasTankProviderToMessages.entries()).map(
-        async ([gasTankProvider, { messages }]) => {
-          for (const message of messages) {
-            const msgLog = this.log.child({
-              action: 'relayMessageViaGasTank',
-              source: message.source,
-              destination: message.destination,
-              messageHash: message.messageHash,
-              txHash: message.transactionHash,
-              gasTankProvider: gasTankProvider.gasProviderAddress,
-              gasTankProviderChainId: gasTankProvider.gasTankChainId,
-            })
+      gasTankProviderToMessages.map(async ({ gasTankProvider, messages }) => {
+        for (const message of messages) {
+          const msgLog = this.log.child({
+            action: 'relayMessageViaGasTank',
+            source: message.source,
+            destination: message.destination,
+            messageHash: message.messageHash,
+            txHash: message.transactionHash,
+            gasTankProvider: gasTankProvider.gasProviderAddress,
+            gasTankProviderChainId: gasTankProvider.gasTankChainId,
+          })
 
-            const prepared = await this.validateAndPrepareMessage(
-              message,
-              msgLog,
-            ).catch((error) => {
-              msgLog.error(
-                { err: error },
-                'failed to validate and prepare message',
-              )
-            })
-            if (!prepared) {
-              msgLog.warn('invalid message, skipping...')
-              continue
-            }
-            const { params, clientsAndAccount } = prepared
-            const { client, walletClient } = clientsAndAccount
-            try {
-              const relayTxHash = await this.relayMessageViaGasTank({
-                client,
-                walletClient,
-                gasTankAddress: this.config.gasTankAddress!,
-                params,
-                msgLog,
-                message,
-                gasTankProvider,
-              })
-              msgLog.info({ relayTxHash }, 'submitted gas tank message relay')
-            } catch (error) {
-              msgLog.warn({ err: error }, 'gas tank relay failed, skipping...')
-            }
+          const prepared = await this.validateAndPrepareMessage(
+            message,
+            msgLog,
+          ).catch((error) => {
+            msgLog.error(
+              { err: error },
+              'failed to validate and prepare message',
+            )
+          })
+          if (!prepared) {
+            msgLog.warn('invalid message, skipping...')
+            continue
           }
-        },
-      ),
+          const { params, clientsAndAccount } = prepared
+          const { client, walletClient } = clientsAndAccount
+          try {
+            const relayTxHash = await this.relayMessageViaGasTank({
+              client,
+              walletClient,
+              gasTankAddress: this.config.gasTankAddress!,
+              params,
+              msgLog,
+              message,
+              gasTankProvider,
+            })
+            msgLog.info({ relayTxHash }, 'submitted gas tank message relay')
+          } catch (error) {
+            msgLog.warn({ err: error }, 'gas tank relay failed, skipping...')
+          }
+        }
+      }),
     )
   }
 
   /**
    * Groups pending messages by gas tank provider with the most funds
    * @param messages - The pending messages to group
-   * @returns A mapping of gas tank provider to pending messages
+   * @returns An array of gas tank providers with their pending messages.
    */
   private async groupPendingMessagesByGasTankProvider(
     messages: PendingMessageWithGasTank[],
-  ): Promise<Map<GasTankProvider, { messages: PendingMessageWithGasTank[] }>> {
+  ): Promise<GasTankProviderToMessages[]> {
     // Cache balance calculations to avoid repeated calls
-    const balanceCache = new Map<GasTankProvider, number>()
+    const balanceCache: Record<string, bigint> = {}
+
+    const getGasTankProviderKey = (provider: GasTankProvider) =>
+      `${provider.gasProviderAddress}.${provider.gasTankChainId}`
 
     /**
      * Gets the cached balance for a gas tank provider
@@ -273,26 +279,23 @@ export class Relayer {
      */
     const getCachedBalance = async (
       provider: GasTankProvider,
-    ): Promise<number> => {
-      if (!balanceCache.has(provider)) {
-        balanceCache.set(
-          provider,
-          await this.getGasProviderBalance(provider).catch((error) => {
+    ): Promise<bigint> => {
+      const key = getGasTankProviderKey(provider)
+      if (!balanceCache[key]) {
+        balanceCache[key] = await this.getGasProviderBalance(provider).catch(
+          (error) => {
             this.log.error(
               { err: error },
               `failed to get gas provider balance ${provider.gasProviderAddress}`,
             )
             throw error
-          }),
+          },
         )
       }
-      return balanceCache.get(provider)!
+      return balanceCache[key]
     }
 
-    const result = new Map<
-      GasTankProvider,
-      { messages: PendingMessageWithGasTank[] }
-    >()
+    const result: Record<string, GasTankProviderToMessages> = {}
 
     for (const message of messages) {
       let bestGasProvider = message.gasTankProviders[0]
@@ -305,14 +308,16 @@ export class Relayer {
         }
       }
 
-      if (!result.has(bestGasProvider)) {
-        result.set(bestGasProvider, {
+      const key = getGasTankProviderKey(bestGasProvider)
+      if (!result[key]) {
+        result[key] = {
+          gasTankProvider: bestGasProvider,
           messages: [],
-        })
+        }
       }
-      result.get(bestGasProvider)!.messages.push(message)
+      result[key].messages.push(message)
     }
-    return result
+    return Object.values(result)
   }
 
   /**
@@ -419,13 +424,13 @@ export class Relayer {
    */
   private async fetchPendingClaimsForGasProvider(
     gasProvider: Address,
-    gasProviderChainId: number,
+    gasProviderChainId: bigint,
   ): Promise<PendingRelayCostForGasProvider> {
     const url = `${
       this.config.ponderInteropApi
     }/messages/pending/claims/${encodeURIComponent(
       gasProvider,
-    )}/${encodeURIComponent(gasProviderChainId)}`
+    )}/${encodeURIComponent(`${gasProviderChainId}`)}`
     const resp = await fetch(url, jsonFetchParams)
     if (!resp.ok) {
       throw new Error(`pending claims fetch http response: ${resp.statusText}`)
@@ -487,20 +492,23 @@ export class Relayer {
   }
 
   private async getClientsAndAccount(
-    chainId: number,
+    chainId: bigint,
     msgLog: Logger,
   ): Promise<{
     client: PublicClient
     walletClient: WalletClient
     account: Account
   } | null> {
-    if (!this.config.clients[chainId] || !this.config.walletClients[chainId]) {
+    if (
+      !this.config.clients[`${chainId}`] ||
+      !this.config.walletClients[`${chainId}`]
+    ) {
       msgLog.warn('no client for destination, skipping...')
       return null
     }
 
-    const client = this.config.clients[chainId]
-    const walletClient = this.config.walletClients[chainId]
+    const client = this.config.clients[`${chainId}`]
+    const walletClient = this.config.walletClients[`${chainId}`]
 
     // If no account is configured (sponsored), specify
     // a random account owned by the sponsored endpoint
@@ -534,9 +542,9 @@ export class Relayer {
     )
     const balance =
       gasProvider.gasProviderBalance -
-      (pendingClaimsCost?.totalPendingRelayCost || 0) -
-      (gasProvider.pendingWithdrawal?.amount || 0)
-    return balance > 0 ? balance : 0
+      (pendingClaimsCost?.totalPendingRelayCost || 0n) -
+      (gasProvider.pendingWithdrawal?.amount || 0n)
+    return balance > 0n ? balance : 0n
   }
 
   /**

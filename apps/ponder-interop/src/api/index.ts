@@ -21,12 +21,12 @@ import type { Address } from 'viem'
 import { isAddress } from 'viem'
 
 type GasProvider = {
-  gasTankChainId: number
-  gasProviderBalance: number
+  gasTankChainId: bigint
+  gasProviderBalance: bigint
   gasProviderAddress: string
   pendingWithdrawal?: {
-    amount: number
-    initiatedAt: number
+    amount: bigint
+    initiatedAt: bigint
   }
 }
 
@@ -123,7 +123,7 @@ app.get('/messages/pending', async (c) => {
 
   const messages = result
     .map((m) => m.l2_to_l2_cdm_sent_messages)
-    .map((m) => replaceBigInts(m, (x) => Number(x)))
+    .map((m) => replaceBigInts(m, (x) => String(x)))
 
   return c.json(messages)
 })
@@ -153,7 +153,7 @@ app.get('/messages/:account/pending', async (c) => {
 
   const messages = result
     .map((m) => m.l2_to_l2_cdm_sent_messages)
-    .map((m) => replaceBigInts(m, (x) => Number(x)))
+    .map((m) => replaceBigInts(m, (x) => String(x)))
 
   return c.json(messages)
 })
@@ -179,13 +179,13 @@ app.get('/messages/pending/gas-tank', async (c) => {
     (acc, m) => {
       const messageId = m.message.messageIdentifierHash
       const gasTankInfo = {
-        gasTankChainId: Number(m.gasTankChainId),
-        gasProviderBalance: Number(m.gasProviderBalance),
+        gasTankChainId: m.gasTankChainId,
+        gasProviderBalance: m.gasProviderBalance,
         gasProviderAddress: m.gasProviderAddress,
         pendingWithdrawal: m.pendingWithdrawal
           ? {
-              amount: Number(m.pendingWithdrawal?.amount),
-              initiatedAt: Number(m.pendingWithdrawal?.initiatedAt),
+              amount: m.pendingWithdrawal?.amount,
+              initiatedAt: m.pendingWithdrawal?.initiatedAt,
             }
           : undefined,
       }
@@ -210,7 +210,7 @@ app.get('/messages/pending/gas-tank', async (c) => {
 
   const messages = Object.values(groupedMessages)
 
-  return c.json(messages.map((m) => replaceBigInts(m, (x) => Number(x))))
+  return c.json(messages.map((m) => replaceBigInts(m, (x) => String(x))))
 })
 
 app.get('/messages/pending/claims', async (c) => {
@@ -222,7 +222,7 @@ app.get('/messages/pending/claims', async (c) => {
 
   const result = await getPendingClaimsQuery(relayers)
 
-  return c.json(result.map((m) => replaceBigInts(m, (x) => Number(x))))
+  return c.json(result.map((m) => replaceBigInts(m, (x) => String(x))))
 })
 
 /**
@@ -256,7 +256,7 @@ app.get('/messages/pending/claims/:gasProvider/:chainId', async (c) => {
     return c.json({ error: 'Multiple gas providers found' }, 500)
   }
 
-  return c.json(replaceBigInts(result[0], (x) => Number(x)))
+  return c.json(replaceBigInts(result[0], (x) => String(x)))
 })
 
 function parseChainId(chainIdParam: string): bigint | null {

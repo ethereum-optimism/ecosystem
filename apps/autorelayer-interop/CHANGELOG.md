@@ -1,5 +1,11 @@
 # @eth-optimism/autorelayer-interop
 
+## 0.0.24
+
+### Patch Changes
+
+- [#902](https://github.com/ethereum-optimism/ecosystem/pull/902) [`1023356`](https://github.com/ethereum-optimism/ecosystem/commit/10233560e76a003753790aac96e8a467b0f7bba8) Thanks [@tremarkley](https://github.com/tremarkley)! - Fix BigInt serialization on ponder api and fix GasProvider concurrency bug
+
 ## 0.0.23
 
 ### Patch Changes
