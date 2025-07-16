@@ -303,9 +303,9 @@ User ID: ${result.userId}`,
     >
       {/* Terminal Header */}
       <div className="flex items-center justify-between p-4 border-b border-terminal-border bg-terminal-secondary">
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 cursor-pointer" onClick={() => window.location.href = '/'}>
           <VerbsLogo />
-          <div className="text-terminal-muted text-sm">verbs-terminal</div>
+          <div className="text-terminal-muted text-sm hover:text-terminal-accent transition-colors">verbs-terminal</div>
         </div>
         <div className="text-terminal-dim text-xs">
           {new Date().toLocaleTimeString()}
