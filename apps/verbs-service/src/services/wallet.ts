@@ -1,4 +1,4 @@
-import type { Wallet } from '@eth-optimism/verbs'
+import type { Wallet } from '@eth-optimism/verbs-sdk'
 
 import { getVerbs } from '../config/verbs.js'
 

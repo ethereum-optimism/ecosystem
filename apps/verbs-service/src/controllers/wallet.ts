@@ -5,12 +5,12 @@ import * as walletService from '../services/wallet.js'
 export class WalletController {
   async createWallet(c: Context) {
     try {
-      const wallet = await walletService.createWallet('user-123') // TODO: replace with actual user id
+      const wallet = await walletService.createWallet('user-123') // TODO: placeholder
 
       return c.json({
         message: 'Wallet created successfully',
         address: wallet.address,
-        userId: 'user-123',
+        userId: 'user-123', // TODO: placeholder
       })
     } catch (error) {
       return c.json(

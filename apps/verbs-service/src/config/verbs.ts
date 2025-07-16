@@ -1,8 +1,8 @@
-import { initVerbs, type VerbsConfig, type VerbsSDK } from '@eth-optimism/verbs'
+import { initVerbs, type VerbsConfig, type VerbsInterface } from '@eth-optimism/verbs-sdk'
 
 import { env } from './env.js'
 
-let verbsInstance: VerbsSDK
+let verbsInstance: VerbsInterface
 
 export function createVerbsConfig(): VerbsConfig {
   return {
@@ -19,7 +19,7 @@ export function initializeVerbs(config?: VerbsConfig): void {
   verbsInstance = initVerbs(verbsConfig)
 }
 
-export function getVerbs(): VerbsSDK {
+export function getVerbs(): VerbsInterface {
   if (!verbsInstance) {
     throw new Error('Verbs SDK not initialized. Call initializeVerbs() first.')
   }

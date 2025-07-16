@@ -493,9 +493,9 @@ importers:
       '@eth-optimism/utils-app':
         specifier: workspace:*
         version: link:../../packages/utils-app
-      '@eth-optimism/verbs':
+      '@eth-optimism/verbs-sdk':
         specifier: workspace:*
-        version: link:../../packages/verbs
+        version: link:../../packages/verbs-sdk
       '@hono/node-server':
         specifier: ^1.14.0
         version: 1.14.0(hono@4.7.5)
@@ -552,7 +552,7 @@ importers:
         specifier: ^15.1.0
         version: 15.1.3
 
-  packages/verbs:
+  packages/verbs-sdk:
     dependencies:
       '@privy-io/server-auth':
         specifier: latest
@@ -16270,7 +16270,7 @@ snapshots:
 
   '@types/connect@3.4.38':
     dependencies:
-      '@types/node': 18.19.101
+      '@types/node': 20.19.8
 
   '@types/debug@4.1.12':
     dependencies:
@@ -16367,11 +16367,11 @@ snapshots:
 
   '@types/ws@7.4.7':
     dependencies:
-      '@types/node': 18.19.101
+      '@types/node': 20.19.8
 
   '@types/ws@8.18.1':
     dependencies:
-      '@types/node': 18.19.101
+      '@types/node': 20.19.8
 
   '@types/yargs-parser@21.0.3': {}
 

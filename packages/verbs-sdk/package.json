@@ -1,11 +1,11 @@
 {
-  "name": "@eth-optimism/verbs",
+  "name": "@eth-optimism/verbs-sdk",
   "repository": {
     "type": "git",
     "url": "https://github.com/ethereum-optimism/ecosystem.git",
-    "directory": "packages/verbs"
+    "directory": "packages/verbs-sdk"
   },
-  "homepage": "https://github.com/ethereum-optimism/ecosystem/tree/main/packages/verbs#readme",
+  "homepage": "https://github.com/ethereum-optimism/ecosystem/tree/main/packages/verbs-sdk#readme",
   "bugs": {
     "url": "https://github.com/ethereum-optimism/ecosystem/issues"
   },
