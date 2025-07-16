@@ -11,6 +11,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@eth-optimism/verbs-sdk": "workspace:*",
     "react": "^18",
     "react-dom": "^18"
   },

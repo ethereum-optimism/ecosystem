@@ -1,4 +1,8 @@
 import { useState, useEffect, useRef } from 'react'
+import type {
+  CreateWalletResponse,
+  GetAllWalletsResponse,
+} from '@eth-optimism/verbs-sdk'
 import VerbsLogo from './VerbsLogo'
 
 interface TerminalLine {
@@ -75,7 +79,7 @@ const Terminal = () => {
       {
         id: 'welcome-8',
         type: 'output',
-        content: '    Web2 -> Web3 library for the OP Stack',
+        content: '   Money Verbs library for the OP Stack',
         timestamp: new Date(),
       },
       {
@@ -87,7 +91,7 @@ const Terminal = () => {
       {
         id: 'help-cmd',
         type: 'input',
-        content: 'verbs@terminal:~$ help',
+        content: 'verbs: $ help',
         timestamp: new Date(),
       },
       {
@@ -106,7 +110,9 @@ const Terminal = () => {
     setLines(welcomeLines)
   }, [])
 
-  const createWallet = async (userId: string) => {
+  const createWallet = async (
+    userId: string,
+  ): Promise<CreateWalletResponse> => {
     const response = await fetch(`http://localhost:3000/wallet/${userId}`, {
       method: 'POST',
       headers: {
@@ -123,7 +129,7 @@ const Terminal = () => {
     return data
   }
 
-  const getAllWallets = async () => {
+  const getAllWallets = async (): Promise<GetAllWalletsResponse> => {
     const response = await fetch('http://localhost:3000/wallets', {
       method: 'GET',
       headers: {
@@ -160,7 +166,7 @@ const Terminal = () => {
     const commandLine: TerminalLine = {
       id: `cmd-${Date.now()}`,
       type: 'input',
-      content: `verbs@terminal:~$ ${trimmed}`,
+      content: `verbs: $ ${trimmed}`,
       timestamp: new Date(),
     }
 
@@ -303,12 +309,7 @@ User ID: ${result.userId}`,
       }
 
       const walletList = result.wallets
-        .map(
-          (
-            wallet: { id: string; address: string; chainType: number },
-            index: number,
-          ) => `${index + 1}. ${wallet.address}`,
-        )
+        .map((wallet, index) => `${index + 1}. ${wallet.address}`)
         .join('\n')
 
       const successLine: TerminalLine = {
@@ -451,7 +452,7 @@ ${walletList}`,
         {/* Current Input Line */}
         <div className="terminal-line">
           <span className="terminal-prompt">
-            {pendingPrompt ? pendingPrompt.message : 'verbs@terminal:~$'}
+            {pendingPrompt ? pendingPrompt.message : 'verbs: $'}
           </span>
           <div className="flex-1 flex items-center">
             <input

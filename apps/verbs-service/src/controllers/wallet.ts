@@ -1,5 +1,6 @@
 import type { Context } from 'hono'
 import { z } from 'zod'
+import type { CreateWalletResponse, GetAllWalletsResponse, GetWalletResponse } from '@eth-optimism/verbs-sdk'
 
 import * as walletService from '../services/wallet.js'
 
@@ -40,10 +41,9 @@ export class WalletController {
       const wallet = await walletService.createWallet(userId)
 
       return c.json({
-        message: 'Wallet created successfully',
         address: wallet.address,
         userId,
-      })
+      } satisfies CreateWalletResponse)
     } catch (error) {
       return c.json(
         {
@@ -74,10 +74,9 @@ export class WalletController {
       }
 
       return c.json({
-        message: 'Wallet retrieved successfully',
         address: wallet.address,
         userId,
-      })
+      } satisfies GetWalletResponse)
     } catch (error) {
       return c.json(
         {
@@ -95,20 +94,19 @@ export class WalletController {
       const options = {
         limit: query.limit ? parseInt(query.limit, 10) : undefined,
         cursor: query.cursor || undefined,
-        chainType: query.chainType as 'ethereum' | 'solana' | undefined,
+        chainType: query.chainType as 'ethereum' | undefined,
       }
 
       const wallets = await walletService.getAllWallets(options)
 
       return c.json({
-        message: 'Wallets retrieved successfully',
         wallets: wallets.map((wallet) => ({
           id: wallet.id,
           address: wallet.address,
           chainType: wallet.chainType,
         })),
         count: wallets.length,
-      })
+      } satisfies GetAllWalletsResponse)
     } catch (error) {
       return c.json(
         {
