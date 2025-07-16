@@ -40,39 +40,14 @@ const Terminal = () => {
   useEffect(() => {
     const welcomeLines: TerminalLine[] = [
       {
-        id: 'welcome-1',
+        id: 'welcome-ascii',
         type: 'success',
-        content: '██╗   ██╗███████╗██████╗ ██████╗ ███████╗',
-        timestamp: new Date(),
-      },
-      {
-        id: 'welcome-2',
-        type: 'success',
-        content: '██║   ██║██╔════╝██╔══██╗██╔══██╗██╔════╝',
-        timestamp: new Date(),
-      },
-      {
-        id: 'welcome-3',
-        type: 'success',
-        content: '██║   ██║█████╗  ██████╔╝██████╔╝███████╗',
-        timestamp: new Date(),
-      },
-      {
-        id: 'welcome-4',
-        type: 'success',
-        content: '╚██╗ ██╔╝██╔══╝  ██╔══██╗██╔══██╗╚════██║',
-        timestamp: new Date(),
-      },
-      {
-        id: 'welcome-5',
-        type: 'success',
-        content: ' ╚████╔╝ ███████╗██║  ██║██████╔╝███████║',
-        timestamp: new Date(),
-      },
-      {
-        id: 'welcome-6',
-        type: 'success',
-        content: '  ╚═══╝  ╚══════╝╚═╝  ╚═╝╚═════╝ ╚══════╝',
+        content: `██╗   ██╗███████╗██████╗ ██████╗ ███████╗
+██║   ██║██╔════╝██╔══██╗██╔══██╗██╔════╝
+██║   ██║█████╗  ██████╔╝██████╔╝███████╗
+╚██╗ ██╔╝██╔══╝  ██╔══██╗██╔══██╗╚════██║
+ ╚████╔╝ ███████╗██║  ██║██████╔╝███████║
+  ╚═══╝  ╚══════╝╚═╝  ╚═╝╚═════╝ ╚══════╝`,
         timestamp: new Date(),
       },
       {
@@ -343,9 +318,9 @@ User ID: ${result.userId}`,
         className="flex-1 overflow-y-auto p-4 space-y-1 scrollbar-thin scrollbar-thumb-terminal-border scrollbar-track-transparent"
       >
         {lines.map((line) => (
-          <div key={line.id} className="terminal-line">
+          <div key={line.id} className={line.id === 'welcome-ascii' ? '' : 'terminal-line'}>
             <div
-              className={`terminal-output ${
+              className={line.id === 'welcome-ascii' ? '' : `terminal-output ${
                 line.type === 'error'
                   ? 'terminal-error'
                   : line.type === 'success'
@@ -356,6 +331,15 @@ User ID: ${result.userId}`,
                   ? 'text-terminal-muted'
                   : 'terminal-output'
               }`}
+              style={line.id === 'welcome-ascii' ? { 
+                fontFamily: 'JetBrains Mono, Monaco, Menlo, Consolas, monospace',
+                color: '#b8bb26',
+                whiteSpace: 'pre',
+                lineHeight: '1.2',
+                margin: 0,
+                padding: 0,
+                border: 'none'
+              } : {}}
             >
               {line.content}
             </div>
