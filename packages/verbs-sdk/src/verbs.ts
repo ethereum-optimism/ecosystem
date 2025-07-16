@@ -1,6 +1,6 @@
 import { PrivyWalletProvider } from './adapters/privy.js'
 import type { VerbsConfig, VerbsInterface } from './types/verbs.js'
-import type { WalletProvider } from './types/wallet.js'
+import type { GetAllWalletsOptions, WalletProvider } from './types/wallet.js'
 import type { Wallet } from './wallet.js'
 
 /**
@@ -10,6 +10,7 @@ import type { Wallet } from './wallet.js'
 export class Verbs implements VerbsInterface {
   createWallet!: (userId: string) => Promise<Wallet>
   getWallet!: (userId: string) => Promise<Wallet | null>
+  getAllWallets!: (options?: GetAllWalletsOptions) => Promise<Wallet[]>
 
   private walletProvider: WalletProvider
 
@@ -21,6 +22,9 @@ export class Verbs implements VerbsInterface {
       this.walletProvider,
     )
     this.getWallet = this.walletProvider.getWallet.bind(this.walletProvider)
+    this.getAllWallets = this.walletProvider.getAllWallets.bind(
+      this.walletProvider,
+    )
   }
 
   private createWalletProvider(config: VerbsConfig): WalletProvider {

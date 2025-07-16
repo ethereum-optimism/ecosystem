@@ -1,4 +1,4 @@
-import type { Wallet } from './wallet.js'
+import type { GetAllWalletsOptions, Wallet } from './wallet.js'
 
 /**
  * Core Verbs SDK interface
@@ -17,6 +17,12 @@ export interface VerbsInterface {
    * @returns Promise resolving to wallet or null if not found
    */
   getWallet(userId: string): Promise<Wallet | null>
+  /**
+   * Get all wallets
+   * @param options - Optional parameters for filtering and pagination
+   * @returns Promise resolving to array of wallets
+   */
+  getAllWallets(options?: GetAllWalletsOptions): Promise<Wallet[]>
 }
 
 /**

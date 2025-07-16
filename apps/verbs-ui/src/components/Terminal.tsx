@@ -123,6 +123,23 @@ const Terminal = () => {
     return data
   }
 
+  const getAllWallets = async () => {
+    const response = await fetch('http://localhost:3000/wallets', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+
+    if (!response.ok) {
+      const error = await response.json()
+      throw new Error(error.message || 'Failed to fetch wallets')
+    }
+
+    const data = await response.json()
+    return data
+  }
+
   const processCommand = (command: string) => {
     const trimmed = command.trim()
     if (!trimmed) return
@@ -167,17 +184,12 @@ const Terminal = () => {
           type: 'userId',
           message: 'Enter unique userId:',
         })
-        // Add the command line to display but don't add a response yet
         setLines((prev) => [...prev, commandLine])
         return
       case 'wallet list':
-        response = {
-          id: responseId,
-          type: 'output',
-          content: 'COMING SOON',
-          timestamp: new Date(),
-        }
-        break
+        setLines((prev) => [...prev, commandLine])
+        handleWalletList()
+        return
       case 'status':
         response = {
           id: responseId,
@@ -257,6 +269,63 @@ User ID: ${result.userId}`,
         id: `error-${Date.now()}`,
         type: 'error',
         content: `Failed to create wallet: ${
+          error instanceof Error ? error.message : 'Unknown error'
+        }`,
+        timestamp: new Date(),
+      }
+
+      setLines((prev) => [...prev.slice(0, -1), errorLine])
+    }
+  }
+
+  const handleWalletList = async () => {
+    const loadingLine: TerminalLine = {
+      id: `loading-${Date.now()}`,
+      type: 'output',
+      content: 'Fetching wallets...',
+      timestamp: new Date(),
+    }
+
+    setLines((prev) => [...prev, loadingLine])
+
+    try {
+      const result = await getAllWallets()
+
+      if (result.wallets.length === 0) {
+        const emptyLine: TerminalLine = {
+          id: `empty-${Date.now()}`,
+          type: 'output',
+          content: 'No wallets found. Create one with "wallet create".',
+          timestamp: new Date(),
+        }
+        setLines((prev) => [...prev.slice(0, -1), emptyLine])
+        return
+      }
+
+      const walletList = result.wallets
+        .map(
+          (
+            wallet: { id: string; address: string; chainType: number },
+            index: number,
+          ) => `${index + 1}. ${wallet.address}`,
+        )
+        .join('\n')
+
+      const successLine: TerminalLine = {
+        id: `success-${Date.now()}`,
+        type: 'success',
+        content: `Found ${result.count} wallet(s):
+
+${walletList}`,
+        timestamp: new Date(),
+      }
+
+      setLines((prev) => [...prev.slice(0, -1), successLine])
+    } catch (error) {
+      const errorLine: TerminalLine = {
+        id: `error-${Date.now()}`,
+        type: 'error',
+        content: `Failed to fetch wallets: ${
           error instanceof Error ? error.message : 'Unknown error'
         }`,
         timestamp: new Date(),

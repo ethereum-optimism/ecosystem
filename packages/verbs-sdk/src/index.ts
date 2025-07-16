@@ -1,5 +1,6 @@
 export { PrivyWalletProvider } from './adapters/privy.js'
 export type {
+  GetAllWalletsOptions,
   PrivyWalletConfig,
   VerbsConfig,
   VerbsInterface,

@@ -88,4 +88,35 @@ export class WalletController {
       )
     }
   }
+
+  async getAllWallets(c: Context) {
+    try {
+      const query = c.req.query()
+      const options = {
+        limit: query.limit ? parseInt(query.limit, 10) : undefined,
+        cursor: query.cursor || undefined,
+        chainType: query.chainType as 'ethereum' | 'solana' | undefined,
+      }
+
+      const wallets = await walletService.getAllWallets(options)
+
+      return c.json({
+        message: 'Wallets retrieved successfully',
+        wallets: wallets.map((wallet) => ({
+          id: wallet.id,
+          address: wallet.address,
+          chainType: wallet.chainType,
+        })),
+        count: wallets.length,
+      })
+    } catch (error) {
+      return c.json(
+        {
+          error: 'Failed to get wallets',
+          message: error instanceof Error ? error.message : 'Unknown error',
+        },
+        500,
+      )
+    }
+  }
 }
