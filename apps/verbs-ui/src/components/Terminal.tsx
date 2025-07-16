@@ -83,7 +83,13 @@ const Terminal = () => {
   wallet create - Create a new wallet
   wallet list   - List all wallets
   status        - Show system status
-  exit          - Exit terminal`,
+  exit          - Exit terminal
+
+Verbs (Coming soon):
+  lend          - Open Morpho loan
+  borrow        - Borrow via Morpho
+  repay         - Repay Morpho loan
+  swap          - Trade via Uniswap`,
         timestamp: new Date(),
       },
       {
@@ -151,7 +157,13 @@ const Terminal = () => {
   wallet create - Create a new wallet
   wallet list   - List all wallets
   status        - Show system status
-  exit          - Exit terminal`,
+  exit          - Exit terminal
+
+Verbs (Coming soon):
+  lend          - Open Morpho loan
+  borrow        - Borrow via Morpho
+  repay         - Repay Morpho loan
+  swap          - Trade via Uniswap`,
           timestamp: new Date(),
         }
         break
@@ -190,6 +202,17 @@ Active Wallets: 0`,
           id: responseId,
           type: 'warning',
           content: 'Nice try! But the ride never ends...',
+          timestamp: new Date(),
+        }
+        break
+      case 'lend':
+      case 'borrow':
+      case 'repay':
+      case 'swap':
+        response = {
+          id: responseId,
+          type: 'error',
+          content: 'Soon.™',
           timestamp: new Date(),
         }
         break
