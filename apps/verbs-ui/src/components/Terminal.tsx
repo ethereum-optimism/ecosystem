@@ -36,73 +36,73 @@ const Terminal = () => {
         id: 'welcome-1',
         type: 'success',
         content: '██╗   ██╗███████╗██████╗ ██████╗ ███████╗',
-        timestamp: new Date()
+        timestamp: new Date(),
       },
       {
         id: 'welcome-2',
         type: 'success',
         content: '██║   ██║██╔════╝██╔══██╗██╔══██╗██╔════╝',
-        timestamp: new Date()
+        timestamp: new Date(),
       },
       {
         id: 'welcome-3',
         type: 'success',
         content: '██║   ██║█████╗  ██████╔╝██████╔╝███████╗',
-        timestamp: new Date()
+        timestamp: new Date(),
       },
       {
         id: 'welcome-4',
         type: 'success',
         content: '╚██╗ ██╔╝██╔══╝  ██╔══██╗██╔══██╗╚════██║',
-        timestamp: new Date()
+        timestamp: new Date(),
       },
       {
         id: 'welcome-5',
         type: 'success',
         content: ' ╚████╔╝ ███████╗██║  ██║██████╔╝███████║',
-        timestamp: new Date()
+        timestamp: new Date(),
       },
       {
         id: 'welcome-6',
         type: 'success',
         content: '  ╚═══╝  ╚══════╝╚═╝  ╚═╝╚═════╝ ╚══════╝',
-        timestamp: new Date()
+        timestamp: new Date(),
       },
       {
         id: 'welcome-7',
         type: 'output',
         content: '',
-        timestamp: new Date()
+        timestamp: new Date(),
       },
       {
         id: 'welcome-8',
         type: 'output',
-        content: '           Web3 Abstractions & Adapters',
-        timestamp: new Date()
+        content: '    Web2 -> Web3 library for the OP Stack',
+        timestamp: new Date(),
       },
       {
         id: 'welcome-9',
         type: 'output',
         content: '',
-        timestamp: new Date()
+        timestamp: new Date(),
       },
       {
         id: 'welcome-10',
         type: 'output',
         content: 'Welcome to Verbs Terminal!',
-        timestamp: new Date()
+        timestamp: new Date(),
       },
       {
         id: 'welcome-11',
         type: 'output',
         content: '',
-        timestamp: new Date()
+        timestamp: new Date(),
       },
       {
         id: 'help-cmd',
         type: 'input',
         content: 'verbs@terminal:~$ help',
-        timestamp: new Date()
+        timestamp: new Date(),
       },
       {
         id: 'help-output',
@@ -113,15 +113,15 @@ const Terminal = () => {
   wallet create - Create a new wallet
   wallet list   - List all wallets
   status        - Show system status
-  exit          - Exit terminal (just kidding!)`,
-        timestamp: new Date()
+  exit          - Exit terminal`,
+        timestamp: new Date(),
       },
       {
         id: 'help-end',
         type: 'output',
         content: '',
-        timestamp: new Date()
-      }
+        timestamp: new Date(),
+      },
     ]
     setLines(welcomeLines)
   }, [])
@@ -131,7 +131,7 @@ const Terminal = () => {
     if (!trimmed) return
 
     // Add command to history
-    setCommandHistory(prev => [...prev, trimmed])
+    setCommandHistory((prev) => [...prev, trimmed])
     setHistoryIndex(-1)
 
     // Add the command line to display
@@ -139,7 +139,7 @@ const Terminal = () => {
       id: `cmd-${Date.now()}`,
       type: 'input',
       content: `verbs@terminal:~$ ${trimmed}`,
-      timestamp: new Date()
+      timestamp: new Date(),
     }
 
     let response: TerminalLine
@@ -157,7 +157,7 @@ const Terminal = () => {
   wallet list   - List all wallets
   status        - Show system status
   exit          - Exit terminal (just kidding!)`,
-          timestamp: new Date()
+          timestamp: new Date(),
         }
         break
       case 'clear':
@@ -168,7 +168,7 @@ const Terminal = () => {
           id: responseId,
           type: 'success',
           content: 'Creating wallet... (not implemented yet)',
-          timestamp: new Date()
+          timestamp: new Date(),
         }
         break
       case 'wallet list':
@@ -176,7 +176,7 @@ const Terminal = () => {
           id: responseId,
           type: 'output',
           content: 'No wallets found. Use "wallet create" to create one.',
-          timestamp: new Date()
+          timestamp: new Date(),
         }
         break
       case 'status':
@@ -187,15 +187,15 @@ const Terminal = () => {
 SDK Version: v0.0.1
 Connected Networks: None
 Active Wallets: 0`,
-          timestamp: new Date()
+          timestamp: new Date(),
         }
         break
       case 'exit':
         response = {
           id: responseId,
           type: 'warning',
-          content: 'Nice try! But you cannot escape the terminal... 😈',
-          timestamp: new Date()
+          content: 'Nice try! But the ride never ends...',
+          timestamp: new Date(),
         }
         break
       default:
@@ -203,11 +203,11 @@ Active Wallets: 0`,
           id: responseId,
           type: 'error',
           content: `Command not found: ${trimmed}. Type "help" for available commands.`,
-          timestamp: new Date()
+          timestamp: new Date(),
         }
     }
 
-    setLines(prev => [...prev, commandLine, response])
+    setLines((prev) => [...prev, commandLine, response])
   }
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -217,7 +217,10 @@ Active Wallets: 0`,
     } else if (e.key === 'ArrowUp') {
       e.preventDefault()
       if (commandHistory.length > 0) {
-        const newIndex = historyIndex === -1 ? commandHistory.length - 1 : Math.max(0, historyIndex - 1)
+        const newIndex =
+          historyIndex === -1
+            ? commandHistory.length - 1
+            : Math.max(0, historyIndex - 1)
         setHistoryIndex(newIndex)
         setCurrentInput(commandHistory[newIndex])
       }
@@ -243,7 +246,7 @@ Active Wallets: 0`,
   }
 
   return (
-    <div 
+    <div
       className="w-full h-full flex flex-col bg-terminal-bg shadow-terminal-inner cursor-text"
       onClick={handleClick}
     >
@@ -256,24 +259,30 @@ Active Wallets: 0`,
       </div>
 
       {/* Terminal Content */}
-      <div 
+      <div
         ref={terminalRef}
         className="flex-1 overflow-y-auto p-4 space-y-1 scrollbar-thin scrollbar-thumb-terminal-border scrollbar-track-transparent"
       >
         {lines.map((line) => (
           <div key={line.id} className="terminal-line">
-            <div className={`terminal-output ${
-              line.type === 'error' ? 'terminal-error' :
-              line.type === 'success' ? 'terminal-success' :
-              line.type === 'warning' ? 'terminal-warning' :
-              line.type === 'input' ? 'text-terminal-muted' :
-              'terminal-output'
-            }`}>
+            <div
+              className={`terminal-output ${
+                line.type === 'error'
+                  ? 'terminal-error'
+                  : line.type === 'success'
+                  ? 'terminal-success'
+                  : line.type === 'warning'
+                  ? 'terminal-warning'
+                  : line.type === 'input'
+                  ? 'text-terminal-muted'
+                  : 'terminal-output'
+              }`}
+            >
               {line.content}
             </div>
           </div>
         ))}
-        
+
         {/* Current Input Line */}
         <div className="terminal-line">
           <span className="terminal-prompt">verbs@terminal:~$</span>
