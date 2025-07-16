@@ -37,11 +37,14 @@ class VerbsApp extends App {
     const app = new Hono()
 
     // Enable CORS for frontend communication
-    app.use('*', cors({
-      origin: ['http://localhost:5173', 'http://localhost:3000'],
-      allowMethods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-      allowHeaders: ['Content-Type', 'Authorization'],
-    }))
+    app.use(
+      '*',
+      cors({
+        origin: ['http://localhost:5173', 'http://localhost:3000'],
+        allowMethods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+        allowHeaders: ['Content-Type', 'Authorization'],
+      }),
+    )
 
     // Apply Verbs middleware (initialization already happened at startup)
     app.use('*', verbsMiddleware)
