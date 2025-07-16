@@ -307,7 +307,7 @@ User ID: ${result.userId}`,
     }
   }
 
-  const handleClick = (e: React.MouseEvent) => {
+  const handleClick = () => {
     // Don't refocus if user is selecting text
     const selection = window.getSelection()
     if (selection && selection.toString().length > 0) {
