@@ -93,18 +93,6 @@ const Terminal = () => {
         timestamp: new Date(),
       },
       {
-        id: 'welcome-10',
-        type: 'output',
-        content: 'Welcome to Verbs Terminal!',
-        timestamp: new Date(),
-      },
-      {
-        id: 'welcome-11',
-        type: 'output',
-        content: '',
-        timestamp: new Date(),
-      },
-      {
         id: 'help-cmd',
         type: 'input',
         content: 'verbs@terminal:~$ help',
