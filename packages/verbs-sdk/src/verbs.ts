@@ -8,8 +8,8 @@ import type { Wallet } from './wallet.js'
  * @description Core implementation of the Verbs SDK
  */
 export class Verbs implements VerbsInterface {
-  createWallet!: () => Promise<Wallet>
-  getWallet!: (walletId: string) => Promise<Wallet | null>
+  createWallet!: (userId: string) => Promise<Wallet>
+  getWallet!: (userId: string) => Promise<Wallet | null>
 
   private walletProvider: WalletProvider
 

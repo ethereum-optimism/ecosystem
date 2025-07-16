@@ -24,10 +24,11 @@ export class PrivyWalletProvider implements WalletProvider {
   /**
    * Create new wallet via Privy
    * @description Creates a new wallet using Privy's wallet API
+   * @param userId - User identifier for the wallet
    * @returns Promise resolving to new wallet instance
    * @throws Error if wallet creation fails
    */
-  async createWallet(): Promise<Wallet> {
+  async createWallet(userId: string): Promise<Wallet> {
     try {
       const wallet = await this.privy.walletApi.createWallet({
         chainType: 'ethereum',
@@ -36,19 +37,20 @@ export class PrivyWalletProvider implements WalletProvider {
       return new Wallet(wallet.id, wallet.address as Address, this.chainId)
     } catch (error) {
       console.error('Error creating wallet:', error)
-      throw new Error('Failed to create wallet')
+      throw new Error(`Failed to create wallet for user ${userId}`)
     }
   }
 
   /**
-   * Get wallet by ID via Privy
+   * Get wallet by user ID via Privy
    * @description Retrieves wallet information from Privy service
-   * @param walletId - Unique wallet identifier
+   * @param userId - User identifier
    * @returns Promise resolving to wallet or null if not found
    */
-  async getWallet(walletId: string): Promise<Wallet | null> {
+  async getWallet(userId: string): Promise<Wallet | null> {
     try {
-      const wallet = await this.privy.walletApi.getWallet({ id: walletId })
+      // TODO: Implement proper user-to-wallet lookup
+      const wallet = await this.privy.walletApi.getWallet({ id: userId })
 
       return new Wallet(wallet.id, wallet.address as Address, this.chainId)
     } catch (error) {

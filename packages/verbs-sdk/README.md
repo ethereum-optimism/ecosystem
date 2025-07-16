@@ -30,21 +30,22 @@ const verbs = initVerbs({
 ### Creating a Wallet
 
 ```typescript
-// Create a new wallet
-const wallet = await verbs.createWallet('userId')
+// Create a new wallet for a user
+const wallet = await verbs.createWallet('user123')
 
 console.log(`Wallet created: ${wallet.address}`)
+console.log(`Wallet ID: ${wallet.id}`)
 
 // Get wallet balance
 const balance = await wallet.getBalance()
-console.log(`Balance: ${balance}`)
+console.log(`Balance: ${balance} wei`)
 ```
 
 ### Retrieving a Wallet
 
 ```typescript
-// Get existing wallet by ID
-const wallet = await verbs.getWallet('userId')
+// Get existing wallet by user ID
+const wallet = await verbs.getWallet('user123')
 
 if (wallet) {
   console.log(`Found wallet: ${wallet.address}`)

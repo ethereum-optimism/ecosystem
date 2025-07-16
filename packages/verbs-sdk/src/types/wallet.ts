@@ -7,15 +7,16 @@ import type { Address } from 'viem'
 export interface WalletProvider {
   /**
    * Create a new wallet
+   * @param userId - User identifier for the wallet
    * @returns Promise resolving to new wallet instance
    */
-  createWallet(): Promise<Wallet>
+  createWallet(userId: string): Promise<Wallet>
   /**
-   * Get wallet by ID
-   * @param walletId - Unique wallet identifier
+   * Get wallet by user ID
+   * @param userId - User identifier
    * @returns Promise resolving to wallet or null if not found
    */
-  getWallet(walletId: string): Promise<Wallet | null>
+  getWallet(userId: string): Promise<Wallet | null>
 }
 
 /**

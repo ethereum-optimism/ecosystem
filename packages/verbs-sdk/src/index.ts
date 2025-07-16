@@ -1,11 +1,11 @@
 export { PrivyWalletProvider } from './adapters/privy.js'
 export type {
+  PrivyWalletConfig,
+  VerbsConfig,
+  VerbsInterface,
+  WalletConfig,
   Wallet as WalletInterface,
   WalletProvider,
-  VerbsConfig,
-  WalletConfig,
-  PrivyWalletConfig,
-  VerbsSDK,
 } from './types/index.js'
-export { initVerbs, Wallet } from './wallet.js'
-export { Verbs } from './verbs.js'
+export { initVerbs, Verbs } from './verbs.js'
+export { Wallet } from './wallet.js'

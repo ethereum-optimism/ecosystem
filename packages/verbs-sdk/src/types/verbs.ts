@@ -7,15 +7,16 @@ import type { Wallet } from './wallet.js'
 export interface VerbsInterface {
   /**
    * Create a new wallet
+   * @param userId - User identifier for the wallet
    * @returns Promise resolving to new wallet instance
    */
-  createWallet(): Promise<Wallet>
+  createWallet(userId: string): Promise<Wallet>
   /**
-   * Get wallet by ID
-   * @param walletId - Unique wallet identifier
+   * Get wallet by user ID
+   * @param userId - User identifier
    * @returns Promise resolving to wallet or null if not found
    */
-  getWallet(walletId: string): Promise<Wallet | null>
+  getWallet(userId: string): Promise<Wallet | null>
 }
 
 /**
@@ -24,12 +25,24 @@ export interface VerbsInterface {
  */
 export interface VerbsConfig {
   /** Wallet provider configuration */
-  wallet: {
-    /** Wallet provider type */
-    type: 'privy'
-    /** Privy app ID */
-    appId: string
-    /** Privy app secret */
-    appSecret: string
-  }
+  wallet: WalletConfig
+}
+
+/**
+ * Wallet provider configuration
+ * @description Configuration for wallet providers
+ */
+export type WalletConfig = PrivyWalletConfig
+
+/**
+ * Privy wallet provider configuration
+ * @description Configuration specific to Privy wallet provider
+ */
+export interface PrivyWalletConfig {
+  /** Wallet provider type */
+  type: 'privy'
+  /** Privy app ID */
+  appId: string
+  /** Privy app secret */
+  appSecret: string
 }
