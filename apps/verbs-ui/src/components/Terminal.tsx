@@ -13,6 +13,21 @@ interface PendingPrompt {
   message: string
 }
 
+const HELP_CONTENT = `Available commands:
+  help          - Show this help message
+  clear         - Clear the terminal
+  wallet create - Create a new wallet
+  wallet list   - List all wallets
+  status        - Show system status
+  exit          - Exit terminal
+
+Verbs (coming soon):
+  fund          - Onramp to stables
+  lend          - Open Morpho loan
+  borrow        - Borrow via Morpho
+  repay         - Repay Morpho loan
+  swap          - Trade via Uniswap`
+
 const Terminal = () => {
   const [lines, setLines] = useState<TerminalLine[]>([])
   const [currentInput, setCurrentInput] = useState('')
@@ -42,7 +57,8 @@ const Terminal = () => {
       {
         id: 'welcome-ascii',
         type: 'success',
-        content: `██╗   ██╗███████╗██████╗ ██████╗ ███████╗
+        content: `
+██╗   ██╗███████╗██████╗ ██████╗ ███████╗
 ██║   ██║██╔════╝██╔══██╗██╔══██╗██╔════╝
 ██║   ██║█████╗  ██████╔╝██████╔╝███████╗
 ╚██╗ ██╔╝██╔══╝  ██╔══██╗██╔══██╗╚════██║
@@ -77,19 +93,7 @@ const Terminal = () => {
       {
         id: 'help-output',
         type: 'output',
-        content: `Available commands:
-  help          - Show this help message
-  clear         - Clear the terminal
-  wallet create - Create a new wallet
-  wallet list   - List all wallets
-  status        - Show system status
-  exit          - Exit terminal
-
-Verbs (Coming soon):
-  lend          - Open Morpho loan
-  borrow        - Borrow via Morpho
-  repay         - Repay Morpho loan
-  swap          - Trade via Uniswap`,
+        content: HELP_CONTENT,
         timestamp: new Date(),
       },
       {
@@ -151,19 +155,7 @@ Verbs (Coming soon):
         response = {
           id: responseId,
           type: 'output',
-          content: `Available commands:
-  help          - Show this help message
-  clear         - Clear the terminal
-  wallet create - Create a new wallet
-  wallet list   - List all wallets
-  status        - Show system status
-  exit          - Exit terminal
-
-Verbs (Coming soon):
-  lend          - Open Morpho loan
-  borrow        - Borrow via Morpho
-  repay         - Repay Morpho loan
-  swap          - Trade via Uniswap`,
+          content: HELP_CONTENT,
           timestamp: new Date(),
         }
         break
@@ -205,6 +197,7 @@ Active Wallets: 0`,
           timestamp: new Date(),
         }
         break
+      case 'fund':
       case 'lend':
       case 'borrow':
       case 'repay':
@@ -326,9 +319,14 @@ User ID: ${result.userId}`,
     >
       {/* Terminal Header */}
       <div className="flex items-center justify-between p-4 border-b border-terminal-border bg-terminal-secondary">
-        <div className="flex items-center gap-2 cursor-pointer" onClick={() => window.location.href = '/'}>
+        <div
+          className="flex items-center gap-2 cursor-pointer"
+          onClick={() => (window.location.href = '/')}
+        >
           <VerbsLogo />
-          <div className="text-terminal-muted text-sm hover:text-terminal-accent transition-colors">verbs-terminal</div>
+          <div className="text-terminal-muted text-sm hover:text-terminal-accent transition-colors">
+            verbs-terminal
+          </div>
         </div>
         <div className="text-terminal-dim text-xs">
           {new Date().toLocaleTimeString()}
