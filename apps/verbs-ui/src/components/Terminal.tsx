@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
+import VerbsLogo from './VerbsLogo'
 
 interface TerminalLine {
   id: string
@@ -327,7 +328,10 @@ User ID: ${result.userId}`,
     >
       {/* Terminal Header */}
       <div className="flex items-center justify-between p-4 border-b border-terminal-border bg-terminal-secondary">
-        <div className="text-terminal-muted text-sm">verbs-terminal</div>
+        <div className="flex items-center gap-2">
+          <VerbsLogo />
+          <div className="text-terminal-muted text-sm">verbs-terminal</div>
+        </div>
         <div className="text-terminal-dim text-xs">
           {new Date().toLocaleTimeString()}
         </div>
