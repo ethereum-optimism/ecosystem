@@ -17,7 +17,9 @@ export class Verbs implements VerbsInterface {
     this.walletProvider = this.createWalletProvider(config)
 
     // Delegate wallet methods to wallet provider
-    this.createWallet = this.walletProvider.createWallet.bind(this.walletProvider)
+    this.createWallet = this.walletProvider.createWallet.bind(
+      this.walletProvider,
+    )
     this.getWallet = this.walletProvider.getWallet.bind(this.walletProvider)
   }
 

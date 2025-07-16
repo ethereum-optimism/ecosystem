@@ -29,7 +29,6 @@ export class Wallet implements WalletInterface {
    * @returns Promise resolving to balance in wei
    */
   async getBalance(): Promise<bigint> {
-    console.log(`Getting balance for wallet ${this.address}`)
-    return 0n // Placeholder implementation
+    return 0n // TODO: placeholder
   }
 }

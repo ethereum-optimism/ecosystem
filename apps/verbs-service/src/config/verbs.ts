@@ -1,4 +1,8 @@
-import { initVerbs, type VerbsConfig, type VerbsInterface } from '@eth-optimism/verbs-sdk'
+import {
+  initVerbs,
+  type VerbsConfig,
+  type VerbsInterface,
+} from '@eth-optimism/verbs-sdk'
 
 import { env } from './env.js'
 

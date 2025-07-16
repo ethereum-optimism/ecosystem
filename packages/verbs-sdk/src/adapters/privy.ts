@@ -10,7 +10,7 @@ import { Wallet } from '../wallet.js'
  */
 export class PrivyWalletProvider implements WalletProvider {
   private privy: PrivyClient
-  private chainId: number = 10 // TODO: make configurable
+  private chainId: number = 130 // TODO: make configurable
 
   /**
    * Create a new Privy wallet provider
@@ -36,7 +36,6 @@ export class PrivyWalletProvider implements WalletProvider {
 
       return new Wallet(wallet.id, wallet.address as Address, this.chainId)
     } catch (error) {
-      console.error('Error creating wallet:', error)
       throw new Error(`Failed to create wallet for user ${userId}`)
     }
   }
@@ -54,7 +53,6 @@ export class PrivyWalletProvider implements WalletProvider {
 
       return new Wallet(wallet.id, wallet.address as Address, this.chainId)
     } catch (error) {
-      console.error('Error getting wallet:', error)
       return null
     }
   }
