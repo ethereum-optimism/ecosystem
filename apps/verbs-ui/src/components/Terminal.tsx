@@ -30,7 +30,8 @@ Verbs (coming soon):
   lend          - Open Morpho loan
   borrow        - Borrow via Morpho
   repay         - Repay Morpho loan
-  swap          - Trade via Uniswap`
+  swap          - Trade via Uniswap
+  earn          - Earn DeFi yield`
 
 const Terminal = () => {
   const [lines, setLines] = useState<TerminalLine[]>([])

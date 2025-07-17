@@ -1,5 +1,6 @@
 import type { Address } from 'viem'
 
+import type { LendTransaction } from './types/lending.js'
 import type { Wallet as WalletInterface } from './types/wallet.js'
 
 /**
@@ -30,5 +31,19 @@ export class Wallet implements WalletInterface {
    */
   async getBalance(): Promise<bigint> {
     return 0n // TODO: placeholder
+  }
+
+  /**
+   * Lend assets to a lending protocol
+   * @description Delegates lending operations to configured lending provider
+   * @param asset - Asset token address to lend
+   * @param amount - Amount to lend (in wei)
+   * @param marketId - Optional specific market ID
+   * @returns Promise resolving to lending transaction details
+   */
+  async lend(asset: Address, amount: bigint, marketId?: string): Promise<LendTransaction> {
+    // TODO: Implement lending delegation to LendProvider
+    // This will be implemented when we integrate with VerbsInterface
+    throw new Error('Lending not yet implemented - requires LendProvider integration')
   }
 }

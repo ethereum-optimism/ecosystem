@@ -1,3 +1,4 @@
+export { MorphoLendProvider } from './adapters/morpho.js'
 export { PrivyWalletProvider } from './adapters/privy.js'
 export type {
   CreateWalletResponse,
@@ -5,6 +6,13 @@ export type {
   GetAllWalletsOptions,
   GetAllWalletsResponse,
   GetWalletResponse,
+  LendConfig,
+  LendMarket,
+  LendMarketInfo,
+  LendOptions,
+  LendProvider,
+  LendTransaction,
+  MorphoLendConfig,
   PrivyWalletConfig,
   VerbsConfig,
   VerbsInterface,
