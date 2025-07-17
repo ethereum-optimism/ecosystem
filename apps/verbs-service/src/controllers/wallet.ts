@@ -1,6 +1,10 @@
+import type {
+  CreateWalletResponse,
+  GetAllWalletsResponse,
+  GetWalletResponse,
+} from '@eth-optimism/verbs-sdk'
 import type { Context } from 'hono'
 import { z } from 'zod'
-import type { CreateWalletResponse, GetAllWalletsResponse, GetWalletResponse } from '@eth-optimism/verbs-sdk'
 
 import * as walletService from '../services/wallet.js'
 
