@@ -1,3 +1,4 @@
+import type { LendConfig, LendMarket, LendMarketInfo, LendProvider } from './lending.js'
 import type { GetAllWalletsOptions, Wallet } from './wallet.js'
 
 /**
@@ -23,6 +24,17 @@ export interface VerbsInterface {
    * @returns Promise resolving to array of wallets
    */
   getAllWallets(options?: GetAllWalletsOptions): Promise<Wallet[]>
+  /**
+   * Get available lending markets
+   * @returns Promise resolving to array of available markets
+   */
+  getAvailableLendingMarkets(): Promise<LendMarket[]>
+  /**
+   * Get detailed lending market information
+   * @param marketId - Market identifier
+   * @returns Promise resolving to detailed market information
+   */
+  getLendingMarketInfo(marketId: string): Promise<LendMarketInfo>
 }
 
 /**
@@ -32,6 +44,8 @@ export interface VerbsInterface {
 export interface VerbsConfig {
   /** Wallet provider configuration */
   wallet: WalletConfig
+  /** Lending provider configuration */
+  lending?: LendConfig
 }
 
 /**

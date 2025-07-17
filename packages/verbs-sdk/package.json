@@ -27,7 +27,8 @@
     "docs": "typedoc",
     "lint": "eslint \"**/*.{ts,tsx}\" && pnpm prettier --check \"**/*.{ts,tsx}\" --ignore-path \"../../.prettierignore\"",
     "lint:fix": "eslint \"**/*.{ts,tsx}\" --fix && pnpm prettier \"**/*.{ts,tsx}\" --write --loglevel=warn --ignore-path \"../../.prettierignore\"",
-    "test": "echo \"No tests yet\"",
+    "test": "vitest run",
+    "test:watch": "vitest",
     "typecheck": "tsc --noEmit --emitDeclarationOnly false"
   },
   "keywords": [
@@ -46,6 +47,8 @@
     "viem": "^2.24.1"
   },
   "devDependencies": {
-    "typescript": "^5.2.2"
+    "@types/node": "^20.0.0",
+    "typescript": "^5.2.2",
+    "vitest": "^1.0.0"
   }
 }

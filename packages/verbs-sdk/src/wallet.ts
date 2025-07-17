@@ -15,13 +15,11 @@ export class Wallet implements WalletInterface {
   /**
    * Create a new wallet instance
    * @param id - Unique wallet identifier
-   * @param address - Blockchain address
-   * @param chainType - Chain type identifier
    */
-  constructor(id: string, address: Address, chainType: number) {
+  constructor(id: string) {
     this.id = id
-    this.address = address
-    this.chainType = chainType
+    this.address = '0x' + '0'.repeat(40) as Address // TODO: Fetch from provider
+    this.chainType = 0 // TODO: Fetch from provider
   }
 
   /**
@@ -43,7 +41,8 @@ export class Wallet implements WalletInterface {
    */
   async lend(asset: Address, amount: bigint, marketId?: string): Promise<LendTransaction> {
     // TODO: Implement lending delegation to LendProvider
-    // This will be implemented when we integrate with VerbsInterface
-    throw new Error('Lending not yet implemented - requires LendProvider integration')
+    // This will need to be connected to the VerbsInterface lending provider
+    // For now, throw an error indicating the integration is needed
+    throw new Error('Lending delegation not yet implemented - requires VerbsInterface integration')
   }
 }
