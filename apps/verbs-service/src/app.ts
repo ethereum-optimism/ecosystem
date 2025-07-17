@@ -2,6 +2,7 @@ import { App } from '@eth-optimism/utils-app'
 import { serve } from '@hono/node-server'
 import { Option } from 'commander'
 import { Hono } from 'hono'
+import { cors } from 'hono/cors'
 
 import { env } from '@/config/env.js'
 import { initializeVerbs } from '@/config/verbs.js'
@@ -34,6 +35,16 @@ class VerbsApp extends App {
 
   protected async main(): Promise<void> {
     const app = new Hono()
+
+    // Enable CORS for frontend communication
+    app.use(
+      '*',
+      cors({
+        origin: ['http://localhost:5173', 'http://localhost:3000'],
+        allowMethods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+        allowHeaders: ['Content-Type', 'Authorization'],
+      }),
+    )
 
     // Apply Verbs middleware (initialization already happened at startup)
     app.use('*', verbsMiddleware)
