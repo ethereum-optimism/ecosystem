@@ -79,7 +79,7 @@ const Terminal = () => {
       {
         id: 'welcome-8',
         type: 'output',
-        content: '   Money Verbs library for the OP Stack',
+        content: '   Verbs library for the OP Stack',
         timestamp: new Date(),
       },
       {
