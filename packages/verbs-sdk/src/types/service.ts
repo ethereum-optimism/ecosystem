@@ -13,8 +13,6 @@ export interface WalletData {
   id: string
   /** Wallet address */
   address: Address
-  /** Chain type */
-  chainType: number
 }
 
 /**

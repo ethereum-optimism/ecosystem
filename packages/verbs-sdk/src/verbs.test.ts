@@ -1,8 +1,8 @@
-import { describe, it, expect, beforeEach, vi } from 'vitest'
-import { createPublicClient, http, type Address } from 'viem'
-import { mainnet } from 'viem/chains'
-import { Verbs, initVerbs } from './verbs.js'
+import { type Address } from 'viem'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
+
 import type { VerbsConfig } from './types/verbs.js'
+import { initVerbs, Verbs } from './verbs.js'
 
 // Mock the adapters
 vi.mock('./adapters/privy.js', () => ({
@@ -58,7 +58,9 @@ describe('Verbs', () => {
 
     it('should initialize with full config including lending', () => {
       // This will throw due to missing publicClient, but the structure should be correct
-      expect(() => new Verbs(fullConfig)).toThrow('Morpho lending provider requires publicClient')
+      expect(() => new Verbs(fullConfig)).toThrow(
+        'Morpho lending provider requires publicClient',
+      )
     })
   })
 
@@ -71,17 +73,21 @@ describe('Verbs', () => {
 
     it('should delegate createWallet to wallet provider', async () => {
       const userId = 'test-user-id'
-      
+
       // Mock the wallet provider method
       const mockWallet = {
         id: 'wallet-id',
         address: '0x0000000000000000000000000000000000000000' as Address,
-        chainType: 0,
         getBalance: vi.fn(),
         lend: vi.fn(),
       }
 
-      vi.spyOn(verbs as any, 'createWallet').mockResolvedValue(mockWallet)
+      vi.spyOn(
+        verbs as unknown as {
+          createWallet: (userId: string) => Promise<unknown>
+        },
+        'createWallet',
+      ).mockResolvedValue(mockWallet)
 
       const result = await verbs.createWallet(userId)
       expect(result).toBe(mockWallet)
@@ -89,16 +95,18 @@ describe('Verbs', () => {
 
     it('should delegate getWallet to wallet provider', async () => {
       const userId = 'test-user-id'
-      
+
       const mockWallet = {
         id: 'wallet-id',
         address: '0x0000000000000000000000000000000000000000' as Address,
-        chainType: 0,
         getBalance: vi.fn(),
         lend: vi.fn(),
       }
 
-      vi.spyOn(verbs as any, 'getWallet').mockResolvedValue(mockWallet)
+      vi.spyOn(
+        verbs as unknown as { getWallet: (userId: string) => Promise<unknown> },
+        'getWallet',
+      ).mockResolvedValue(mockWallet)
 
       const result = await verbs.getWallet(userId)
       expect(result).toBe(mockWallet)
@@ -109,20 +117,21 @@ describe('Verbs', () => {
         {
           id: 'wallet-1',
           address: '0x1111111111111111111111111111111111111111' as Address,
-          chainType: 0,
           getBalance: vi.fn(),
           lend: vi.fn(),
         },
         {
           id: 'wallet-2',
           address: '0x2222222222222222222222222222222222222222' as Address,
-          chainType: 0,
           getBalance: vi.fn(),
           lend: vi.fn(),
         },
       ]
 
-      vi.spyOn(verbs as any, 'getAllWallets').mockResolvedValue(mockWallets)
+      vi.spyOn(
+        verbs as unknown as { getAllWallets: () => Promise<unknown[]> },
+        'getAllWallets',
+      ).mockResolvedValue(mockWallets)
 
       const result = await verbs.getAllWallets()
       expect(result).toBe(mockWallets)
@@ -138,15 +147,16 @@ describe('Verbs', () => {
 
     it('should throw error when getting lending markets without provider', async () => {
       await expect(verbs.getAvailableLendingMarkets()).rejects.toThrow(
-        'Lending provider not configured. Add lending configuration to VerbsConfig.'
+        'Lending provider not configured. Add lending configuration to VerbsConfig.',
       )
     })
 
     it('should throw error when getting market info without provider', async () => {
-      const marketId = '0x1111111111111111111111111111111111111111111111111111111111111111'
-      
+      const marketId =
+        '0x1111111111111111111111111111111111111111111111111111111111111111'
+
       await expect(verbs.getLendingMarketInfo(marketId)).rejects.toThrow(
-        'Lending provider not configured. Add lending configuration to VerbsConfig.'
+        'Lending provider not configured. Add lending configuration to VerbsConfig.',
       )
     })
   })
@@ -160,22 +170,32 @@ describe('Verbs', () => {
     it('should throw error for unsupported wallet provider type', () => {
       const invalidConfig = {
         wallet: {
-          type: 'unsupported' as any,
+          type: 'unsupported' as unknown as 'privy',
+          appId: 'test',
+          appSecret: 'test',
         },
       }
 
-      expect(() => new Verbs(invalidConfig)).toThrow('Unsupported wallet provider type: unsupported')
+      expect(() => new Verbs(invalidConfig)).toThrow(
+        'Unsupported wallet provider type: unsupported',
+      )
     })
 
     it('should throw error for unsupported lending provider type', () => {
       const invalidLendingConfig = {
         wallet: walletOnlyConfig.wallet,
         lending: {
-          type: 'unsupported' as any,
+          type: 'unsupported' as unknown as 'morpho',
+          morphoAddress:
+            '0x1234567890123456789012345678901234567890' as Address,
+          bundlerAddress:
+            '0x0987654321098765432109876543210987654321' as Address,
         },
       }
 
-      expect(() => new Verbs(invalidLendingConfig)).toThrow('Unsupported lending provider type: unsupported')
+      expect(() => new Verbs(invalidLendingConfig)).toThrow(
+        'Unsupported lending provider type: unsupported',
+      )
     })
   })
 
@@ -187,7 +207,7 @@ describe('Verbs', () => {
 
     it('should implement VerbsInterface', () => {
       const verbs = initVerbs(walletOnlyConfig)
-      
+
       expect(verbs.createWallet).toBeDefined()
       expect(verbs.getWallet).toBeDefined()
       expect(verbs.getAllWallets).toBeDefined()

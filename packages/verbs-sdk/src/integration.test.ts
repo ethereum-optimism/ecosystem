@@ -1,10 +1,11 @@
-import { describe, it, expect, beforeEach, vi } from 'vitest'
-import { createPublicClient, http, type Address } from 'viem'
+import { type Address, createPublicClient, http, type PublicClient } from 'viem'
 import { mainnet } from 'viem/chains'
-import { Verbs } from './verbs.js'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
+
 import { MorphoLendProvider } from './adapters/morpho.js'
 import { PrivyWalletProvider } from './adapters/privy.js'
 import type { VerbsConfig } from './types/verbs.js'
+import { Verbs } from './verbs.js'
 
 // Mock external dependencies
 vi.mock('./adapters/privy.js')
@@ -43,7 +44,6 @@ describe('Integration Tests', () => {
       const mockWallet = {
         id: 'test-wallet-id',
         address: '0x0000000000000000000000000000000000000000' as Address,
-        chainType: 0,
         getBalance: vi.fn().mockResolvedValue(BigInt('1000000000000000000')), // 1 ETH
         lend: vi.fn(),
       }
@@ -54,18 +54,26 @@ describe('Integration Tests', () => {
         getAllWallets: vi.fn().mockResolvedValue([mockWallet]),
       }
 
-      vi.mocked(PrivyWalletProvider).mockImplementation(() => mockWalletProvider as any)
+      vi.mocked(PrivyWalletProvider).mockImplementation(
+        () => mockWalletProvider as unknown as PrivyWalletProvider,
+      )
 
       // Create Verbs instance (will fail due to missing publicClient, but we can test the structure)
-      expect(() => new Verbs(config)).toThrow('Morpho lending provider requires publicClient')
+      expect(() => new Verbs(config)).toThrow(
+        'Morpho lending provider requires publicClient',
+      )
     })
 
     it('should integrate MorphoLendProvider with mock data', async () => {
-      const morphoProvider = new MorphoLendProvider(config.lending!, 1, mockPublicClient)
+      const morphoProvider = new MorphoLendProvider(
+        config.lending!,
+        1,
+        mockPublicClient as unknown as PublicClient,
+      )
 
       // Test getting available markets
       const markets = await morphoProvider.getAvailableMarkets()
-      expect(markets).toBeArray()
+      expect(Array.isArray(markets)).toBe(true)
       expect(markets.length).toBeGreaterThan(0)
 
       // Test getting market info
@@ -77,7 +85,7 @@ describe('Integration Tests', () => {
       // Test lending preparation
       const asset = '0xA0b86a33E6441C8C6bD63aFfaE0E30E2495B5CE0' as Address
       const amount = BigInt('1000000000') // 1000 USDC
-      
+
       const lendTransaction = await morphoProvider.lend(asset, amount)
       expect(lendTransaction).toHaveProperty('hash')
       expect(lendTransaction).toHaveProperty('amount', amount)
@@ -88,23 +96,34 @@ describe('Integration Tests', () => {
 
   describe('Error Handling Integration', () => {
     it('should handle lending provider errors gracefully', async () => {
-      const morphoProvider = new MorphoLendProvider(config.lending!, 1, mockPublicClient)
+      const morphoProvider = new MorphoLendProvider(
+        config.lending!,
+        1,
+        mockPublicClient as unknown as PublicClient,
+      )
 
       // Test with invalid asset
-      const invalidAsset = '0x0000000000000000000000000000000000000000' as Address
+      const invalidAsset =
+        '0x0000000000000000000000000000000000000000' as Address
       const amount = BigInt('1000000000')
 
-      await expect(morphoProvider.lend(invalidAsset, amount)).rejects.toThrow('Failed to lend')
+      await expect(morphoProvider.lend(invalidAsset, amount)).rejects.toThrow(
+        'Failed to lend',
+      )
     })
 
     it('should handle wallet provider errors gracefully', async () => {
       const mockWalletProvider = {
-        createWallet: vi.fn().mockRejectedValue(new Error('Wallet creation failed')),
+        createWallet: vi
+          .fn()
+          .mockRejectedValue(new Error('Wallet creation failed')),
         getWallet: vi.fn().mockResolvedValue(null),
         getAllWallets: vi.fn().mockResolvedValue([]),
       }
 
-      vi.mocked(PrivyWalletProvider).mockImplementation(() => mockWalletProvider as any)
+      vi.mocked(PrivyWalletProvider).mockImplementation(
+        () => mockWalletProvider as unknown as PrivyWalletProvider,
+      )
 
       const walletOnlyConfig = {
         wallet: config.wallet,
@@ -112,7 +131,9 @@ describe('Integration Tests', () => {
 
       const verbs = new Verbs(walletOnlyConfig)
 
-      await expect(verbs.createWallet('test-user')).rejects.toThrow('Wallet creation failed')
+      await expect(verbs.createWallet('test-user')).rejects.toThrow(
+        'Wallet creation failed',
+      )
     })
   })
 
@@ -120,39 +141,67 @@ describe('Integration Tests', () => {
     it('should validate wallet configuration', () => {
       const invalidConfig = {
         wallet: {
-          type: 'invalid' as any,
+          type: 'invalid' as unknown as 'privy',
           appId: 'test',
           appSecret: 'test',
         },
       }
 
-      expect(() => new Verbs(invalidConfig)).toThrow('Unsupported wallet provider type: invalid')
+      expect(() => new Verbs(invalidConfig)).toThrow(
+        'Unsupported wallet provider type: invalid',
+      )
     })
 
     it('should validate lending configuration', () => {
       const invalidLendingConfig = {
         wallet: config.wallet,
         lending: {
-          type: 'invalid' as any,
+          type: 'invalid' as unknown as 'morpho',
+          morphoAddress:
+            '0x1234567890123456789012345678901234567890' as Address,
+          bundlerAddress:
+            '0x0987654321098765432109876543210987654321' as Address,
         },
       }
 
-      expect(() => new Verbs(invalidLendingConfig)).toThrow('Unsupported lending provider type: invalid')
+      expect(() => new Verbs(invalidLendingConfig)).toThrow(
+        'Unsupported lending provider type: invalid',
+      )
     })
   })
 
   describe('Type Safety Integration', () => {
-    it('should maintain type safety across interfaces', () => {
-      const morphoProvider = new MorphoLendProvider(config.lending!, 1, mockPublicClient)
+    it('should maintain type safety across interfaces', async () => {
+      const morphoProvider = new MorphoLendProvider(
+        config.lending!,
+        1,
+        mockPublicClient as unknown as PublicClient,
+      )
 
       // Test that methods return correctly typed objects
       expect(morphoProvider.getAvailableMarkets()).toBeInstanceOf(Promise)
-      expect(morphoProvider.getMarketInfo('test-id')).toBeInstanceOf(Promise)
-      expect(morphoProvider.lend('0x1234567890123456789012345678901234567890' as Address, 1000n)).toBeInstanceOf(Promise)
+
+      // Use a valid market ID from the mock data
+      const markets = await morphoProvider.getAvailableMarkets()
+      expect(morphoProvider.getMarketInfo(markets[0].id)).toBeInstanceOf(
+        Promise,
+      )
+
+      // Test lend with a valid asset from the mock data
+      expect(
+        morphoProvider.lend(
+          '0xA0b86a33E6441C8C6bD63aFfaE0E30E2495B5CE0' as Address,
+          1000n,
+        ),
+      ).toBeInstanceOf(Promise)
     })
 
     it('should handle optional parameters correctly', async () => {
-      const morphoProvider = new MorphoLendProvider(config.lending!, 1, mockPublicClient)
+      const morphoProvider = new MorphoLendProvider(
+        config.lending!,
+        1,
+        mockPublicClient as unknown as PublicClient,
+      )
 
       const asset = '0xA0b86a33E6441C8C6bD63aFfaE0E30E2495B5CE0' as Address
       const amount = BigInt('1000000000')
@@ -162,9 +211,14 @@ describe('Integration Tests', () => {
       expect(resultWithoutMarket).toHaveProperty('marketId')
 
       // Test with optional marketId and options
-      const resultWithOptions = await morphoProvider.lend(asset, amount, undefined, {
-        slippage: 100,
-      })
+      const resultWithOptions = await morphoProvider.lend(
+        asset,
+        amount,
+        undefined,
+        {
+          slippage: 100,
+        },
+      )
       expect(resultWithOptions).toHaveProperty('marketId')
     })
   })

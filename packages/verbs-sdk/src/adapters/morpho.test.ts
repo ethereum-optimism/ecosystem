@@ -1,8 +1,9 @@
-import { describe, it, expect, beforeEach, vi, type MockedFunction } from 'vitest'
-import { createPublicClient, http, type Address } from 'viem'
+import { type Address, createPublicClient, http, type PublicClient } from 'viem'
 import { mainnet } from 'viem/chains'
-import { MorphoLendProvider } from './morpho.js'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
+
 import type { MorphoLendConfig } from '../types/lending.js'
+import { MorphoLendProvider } from './morpho.js'
 
 // Mock the Morpho SDK modules
 vi.mock('@morpho-org/blue-sdk', () => ({
@@ -41,7 +42,11 @@ describe('MorphoLendProvider', () => {
       transport: http(),
     })
 
-    provider = new MorphoLendProvider(mockConfig, 1, mockPublicClient)
+    provider = new MorphoLendProvider(
+      mockConfig,
+      1,
+      mockPublicClient as unknown as PublicClient,
+    )
   })
 
   describe('constructor', () => {
@@ -54,7 +59,11 @@ describe('MorphoLendProvider', () => {
         ...mockConfig,
         defaultSlippage: undefined,
       }
-      const providerWithDefaults = new MorphoLendProvider(configWithoutSlippage, 1, mockPublicClient)
+      const providerWithDefaults = new MorphoLendProvider(
+        configWithoutSlippage,
+        1,
+        mockPublicClient as unknown as PublicClient,
+      )
       expect(providerWithDefaults).toBeInstanceOf(MorphoLendProvider)
     })
   })
@@ -62,9 +71,9 @@ describe('MorphoLendProvider', () => {
   describe('getAvailableMarkets', () => {
     it('should return available markets', async () => {
       const markets = await provider.getAvailableMarkets()
-      expect(markets).toBeArray()
+      expect(Array.isArray(markets)).toBe(true)
       expect(markets.length).toBeGreaterThan(0)
-      
+
       const market = markets[0]
       expect(market).toHaveProperty('id')
       expect(market).toHaveProperty('name')
@@ -77,21 +86,34 @@ describe('MorphoLendProvider', () => {
 
     it('should handle errors gracefully', async () => {
       // Mock a provider that throws an error
-      const failingProvider = new MorphoLendProvider(mockConfig, 1, mockPublicClient)
-      
+      const failingProvider = new MorphoLendProvider(
+        mockConfig,
+        1,
+        mockPublicClient as unknown as PublicClient,
+      )
+
       // Override the private method to simulate an error
-      ;(failingProvider as any).fetchMarketConfigs = vi.fn().mockRejectedValue(new Error('Network error'))
-      
-      await expect(failingProvider.getAvailableMarkets()).rejects.toThrow('Failed to fetch available markets')
+      ;(
+        failingProvider as unknown as {
+          fetchMarketConfigs: () => Promise<unknown>
+        }
+      ).fetchMarketConfigs = vi
+        .fn()
+        .mockRejectedValue(new Error('Network error'))
+
+      await expect(failingProvider.getAvailableMarkets()).rejects.toThrow(
+        'Failed to fetch available markets',
+      )
     })
   })
 
   describe('getMarketInfo', () => {
     it('should return detailed market information', async () => {
-      const marketId = '0x1111111111111111111111111111111111111111111111111111111111111111'
-      
+      const marketId =
+        '0x1111111111111111111111111111111111111111111111111111111111111111'
+
       const marketInfo = await provider.getMarketInfo(marketId)
-      
+
       expect(marketInfo).toHaveProperty('id', marketId)
       expect(marketInfo).toHaveProperty('name')
       expect(marketInfo).toHaveProperty('loanToken')
@@ -110,9 +132,12 @@ describe('MorphoLendProvider', () => {
     })
 
     it('should handle market not found error', async () => {
-      const invalidMarketId = '0x0000000000000000000000000000000000000000000000000000000000000000'
-      
-      await expect(provider.getMarketInfo(invalidMarketId)).rejects.toThrow(`Failed to get market info for ${invalidMarketId}`)
+      const invalidMarketId =
+        '0x0000000000000000000000000000000000000000000000000000000000000000'
+
+      await expect(provider.getMarketInfo(invalidMarketId)).rejects.toThrow(
+        `Failed to get market info for ${invalidMarketId}`,
+      )
     })
   })
 
@@ -120,7 +145,8 @@ describe('MorphoLendProvider', () => {
     it('should successfully create a lending transaction', async () => {
       const asset = '0xA0b86a33E6441C8C6bD63aFfaE0E30E2495B5CE0' as Address // USDC
       const amount = BigInt('1000000000') // 1000 USDC
-      const marketId = '0x1111111111111111111111111111111111111111111111111111111111111111'
+      const marketId =
+        '0x1111111111111111111111111111111111111111111111111111111111111111'
 
       const lendTransaction = await provider.lend(asset, amount, marketId)
 
@@ -148,13 +174,16 @@ describe('MorphoLendProvider', () => {
       const asset = '0x0000000000000000000000000000000000000000' as Address // Invalid asset
       const amount = BigInt('1000000000')
 
-      await expect(provider.lend(asset, amount)).rejects.toThrow('Failed to lend')
+      await expect(provider.lend(asset, amount)).rejects.toThrow(
+        'Failed to lend',
+      )
     })
 
     it('should use custom slippage when provided', async () => {
       const asset = '0xA0b86a33E6441C8C6bD63aFfaE0E30E2495B5CE0' as Address
       const amount = BigInt('1000000000')
-      const marketId = '0x1111111111111111111111111111111111111111111111111111111111111111'
+      const marketId =
+        '0x1111111111111111111111111111111111111111111111111111111111111111'
       const customSlippage = 100 // 1%
 
       const lendTransaction = await provider.lend(asset, amount, marketId, {
@@ -168,10 +197,14 @@ describe('MorphoLendProvider', () => {
   describe('findBestMarketForAsset', () => {
     it('should find market with highest APY', async () => {
       const asset = '0xA0b86a33E6441C8C6bD63aFfaE0E30E2495B5CE0' as Address
-      
+
       // Access private method for testing
-      const findBestMarket = (provider as any).findBestMarketForAsset.bind(provider)
-      
+      const findBestMarket = (
+        provider as unknown as {
+          findBestMarketForAsset: (asset: Address) => Promise<string>
+        }
+      ).findBestMarketForAsset.bind(provider)
+
       const marketId = await findBestMarket(asset)
       expect(marketId).toBeTruthy()
       expect(typeof marketId).toBe('string')
@@ -179,10 +212,16 @@ describe('MorphoLendProvider', () => {
 
     it('should throw error when no markets available for asset', async () => {
       const asset = '0x0000000000000000000000000000000000000000' as Address
-      
-      const findBestMarket = (provider as any).findBestMarketForAsset.bind(provider)
-      
-      await expect(findBestMarket(asset)).rejects.toThrow(`No markets available for asset ${asset}`)
+
+      const findBestMarket = (
+        provider as unknown as {
+          findBestMarketForAsset: (asset: Address) => Promise<string>
+        }
+      ).findBestMarketForAsset.bind(provider)
+
+      await expect(findBestMarket(asset)).rejects.toThrow(
+        `No markets available for asset ${asset}`,
+      )
     })
   })
 
@@ -193,10 +232,17 @@ describe('MorphoLendProvider', () => {
         utilization: 0.8, // 80%
       }
 
-      const calculateSupplyApy = (provider as any).calculateSupplyApy.bind(provider)
+      const calculateSupplyApy = (
+        provider as unknown as {
+          calculateSupplyApy: (market: {
+            borrowRate: bigint
+            utilization: number
+          }) => number
+        }
+      ).calculateSupplyApy.bind(provider)
       const apy = calculateSupplyApy(mockMarket)
 
-      expect(apy).toBe(0.036) // 5% * 0.8 * 0.9 = 3.6%
+      expect(apy).toBeCloseTo(0.036) // 5% * 0.8 * 0.9 = 3.6%
     })
 
     it('should handle zero borrow rate', () => {
@@ -205,7 +251,14 @@ describe('MorphoLendProvider', () => {
         utilization: 0.8,
       }
 
-      const calculateSupplyApy = (provider as any).calculateSupplyApy.bind(provider)
+      const calculateSupplyApy = (
+        provider as unknown as {
+          calculateSupplyApy: (market: {
+            borrowRate: bigint
+            utilization: number
+          }) => number
+        }
+      ).calculateSupplyApy.bind(provider)
       const apy = calculateSupplyApy(mockMarket)
 
       expect(apy).toBe(0)

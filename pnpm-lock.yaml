@@ -606,6 +606,18 @@ importers:
 
   packages/verbs-sdk:
     dependencies:
+      '@morpho-org/blue-sdk':
+        specifier: ^3.0.9
+        version: 3.0.9(@morpho-org/morpho-ts@2.4.1)
+      '@morpho-org/blue-sdk-viem':
+        specifier: ^3.1.1
+        version: 3.1.1(@morpho-org/blue-sdk@3.0.9(@morpho-org/morpho-ts@2.4.1))(@morpho-org/morpho-ts@2.4.1)(viem@2.24.3(bufferutil@4.0.8)(typescript@5.4.5)(utf-8-validate@5.0.10)(zod@3.25.76))
+      '@morpho-org/bundler-sdk-viem':
+        specifier: ^3.2.4
+        version: 3.2.4(@morpho-org/blue-sdk-viem@3.1.1(@morpho-org/blue-sdk@3.0.9(@morpho-org/morpho-ts@2.4.1))(@morpho-org/morpho-ts@2.4.1)(viem@2.24.3(bufferutil@4.0.8)(typescript@5.4.5)(utf-8-validate@5.0.10)(zod@3.25.76)))(@morpho-org/blue-sdk@3.0.9(@morpho-org/morpho-ts@2.4.1))(@morpho-org/morpho-ts@2.4.1)(@morpho-org/simulation-sdk@3.1.2(@morpho-org/blue-sdk@3.0.9(@morpho-org/morpho-ts@2.4.1))(@morpho-org/morpho-ts@2.4.1))(viem@2.24.3(bufferutil@4.0.8)(typescript@5.4.5)(utf-8-validate@5.0.10)(zod@3.25.76))
+      '@morpho-org/simulation-sdk':
+        specifier: ^3.1.2
+        version: 3.1.2(@morpho-org/blue-sdk@3.0.9(@morpho-org/morpho-ts@2.4.1))(@morpho-org/morpho-ts@2.4.1)
       '@privy-io/server-auth':
         specifier: latest
         version: 1.28.4(bufferutil@4.0.8)(encoding@0.1.13)(typescript@5.4.5)(utf-8-validate@5.0.10)(viem@2.24.3(bufferutil@4.0.8)(typescript@5.4.5)(utf-8-validate@5.0.10)(zod@3.25.76))
@@ -613,9 +625,18 @@ importers:
         specifier: ^2.24.1
         version: 2.24.3(bufferutil@4.0.8)(typescript@5.4.5)(utf-8-validate@5.0.10)(zod@3.25.76)
     devDependencies:
+      '@types/node':
+        specifier: ^20.0.0
+        version: 20.19.8
+      '@vitest/expect':
+        specifier: ^3.2.4
+        version: 3.2.4
       typescript:
         specifier: ^5.2.2
         version: 5.4.5
+      vitest:
+        specifier: ^1.0.0
+        version: 1.6.1(@types/node@20.19.8)(jsdom@23.2.0(bufferutil@4.0.8)(utf-8-validate@5.0.10))(terser@5.31.3)
 
   packages/viem:
     devDependencies:
@@ -2938,6 +2959,36 @@ packages:
     resolution: {integrity: sha512-dbIc3C7alOe0agCuBHM1h71UaEaEqOk2W8rAtEn8QGz4haH2Qq7MoK6i7v2guzvkJVVh79c+QCzIqphC3KvrJg==}
     engines: {node: '>=16.0.0'}
 
+  '@morpho-org/blue-sdk-viem@3.1.1':
+    resolution: {integrity: sha512-lWeZSJ00SQCJ14WfQ+4mgL1jrG7OWnX+b7KHO1zrEhA3Y9IdqZeuEYqtPvDEXumbLvVb0rVRr0x/MzvHFvz8+g==}
+    peerDependencies:
+      '@morpho-org/blue-sdk': ^3.0.9
+      '@morpho-org/morpho-ts': ^2.3.0
+      viem: ^2.0.0
+
+  '@morpho-org/blue-sdk@3.0.9':
+    resolution: {integrity: sha512-wmJexYTMNIaDrw1xt8fGl9BVQljI4EEd78WP3JNVGu2+oz4TIEt0q3+I2BMSbe07hw0tYYgFurR/w+LFAhSATw==}
+    peerDependencies:
+      '@morpho-org/morpho-ts': ^2.3.0
+
+  '@morpho-org/bundler-sdk-viem@3.2.4':
+    resolution: {integrity: sha512-pmlvY7TwdytUHYBRHAUcgp07j8bUYFHaumVlf1bfk5RTmc4l+3JCgZ7LsnYWbdpBHBt4k9BVn6lYMs/hIlCGww==}
+    peerDependencies:
+      '@morpho-org/blue-sdk': ^4.4.0
+      '@morpho-org/blue-sdk-viem': ^3.1.1
+      '@morpho-org/morpho-ts': ^2.4.1
+      '@morpho-org/simulation-sdk': ^3.1.1
+      viem: ^2.0.0
+
+  '@morpho-org/morpho-ts@2.4.1':
+    resolution: {integrity: sha512-teZWzQ8+YrufGKTBRRso8Y+S11RjbQf+HJ+CUYUhUFelyHV3xCCaOVzxwu23sIHyzR0dX4erK6nGXBmr9uGtDQ==}
+
+  '@morpho-org/simulation-sdk@3.1.2':
+    resolution: {integrity: sha512-CS9CLiYIxvnvkOi+iMn1CqM+4bcmNDj10syt8qIvZ7XbAIW8cEM27Ks1HccQbyGjHUJk4bNDa7bIVEEIHRA4cw==}
+    peerDependencies:
+      '@morpho-org/blue-sdk': ^4.4.0
+      '@morpho-org/morpho-ts': ^2.4.1
+
   '@motionone/animation@10.17.0':
     resolution: {integrity: sha512-ANfIN9+iq1kGgsZxs+Nz96uiNcPLGTXwfNo2Xz/fcJXniPYpaz/Uyrfa+7I5BPLxCP82sh7quVDudf1GABqHbg==}
 
@@ -4403,11 +4454,17 @@ packages:
   '@types/babel__traverse@7.20.5':
     resolution: {integrity: sha512-WXCyOcRtH37HAUkpXhUduaxdm82b4GSlyTqajXviN4EfiuPgNYR109xMCKvpl6zPIpua0DGlMEDCq+g8EdoheQ==}
 
+  '@types/chai@5.2.2':
+    resolution: {integrity: sha512-8kB30R7Hwqf40JPiKhVzodJs2Qc1ZJ5zuT3uzw5Hq/dhNCl3G3l83jfpdI1e20BP348+fV7VIL/+FxaXkqBmWg==}
+
   '@types/connect@3.4.38':
     resolution: {integrity: sha512-K6uROf1LD88uDQqJCktA4yzL1YYAK6NgfsI0v/mTgyPKWsX1CnJ0XPSDhViejru1GcRkLWb8RlzFYJRqGUbaug==}
 
   '@types/debug@4.1.12':
     resolution: {integrity: sha512-vIChWdVG3LG1SMxEvI/AK+FWJthlrqlTu7fbrlywTkkaONwk/UAGaULXRlf8vkzFBLVm0zkMdCquhL5aOjhXPQ==}
+
+  '@types/deep-eql@4.0.2':
+    resolution: {integrity: sha512-c9h9dVVMigMPc4bwTvC5dxqtqJZwQPePsWjPlpSOnojbor6pGqdk541lfA7AqFQr5pB1BRdq0juY9db81BwyFw==}
 
   '@types/dom-screen-wake-lock@1.0.3':
     resolution: {integrity: sha512-3Iten7X3Zgwvk6kh6/NRdwN7WbZ760YgFCsF5AxDifltUQzW1RaW+WRmcVtgwFzLjaNu64H+0MPJ13yRa8g3Dw==}
@@ -4772,6 +4829,12 @@ packages:
   '@vitest/expect@1.6.1':
     resolution: {integrity: sha512-jXL+9+ZNIJKruofqXuuTClf44eSpcHlgj3CiuNihUF3Ioujtmc0zIa3UJOW5RjDK1YLBJZnWBlPuqhYycLioog==}
 
+  '@vitest/expect@3.2.4':
+    resolution: {integrity: sha512-Io0yyORnB6sikFlt8QW5K7slY4OjqNX9jmJQ02QDda8lyM6B5oNgVWoSoKPac8/kgnCUzuHQKrSLtu/uOqqrig==}
+
+  '@vitest/pretty-format@3.2.4':
+    resolution: {integrity: sha512-IVNZik8IVRJRTr9fxlitMKeJeXFFFN0JaB9PHPGQ8NKQbGpfjlTx9zO4RefN8gp7eqjNy8nyK3NZmBzOPeIxtA==}
+
   '@vitest/runner@1.6.1':
     resolution: {integrity: sha512-3nSnYXkVkf3mXFfE7vVyPmi3Sazhb/2cfZGGs0JRzFsPFvAMBEcrweV1V1GsrstdXeKCTXlJbvnQwGWgEIHmOA==}
 
@@ -4781,8 +4844,14 @@ packages:
   '@vitest/spy@1.6.1':
     resolution: {integrity: sha512-MGcMmpGkZebsMZhbQKkAf9CX5zGvjkBTqf8Zx3ApYWXr3wG+QvEu2eXWfnIIWYSJExIp4V9FCKDEeygzkYrXMw==}
 
+  '@vitest/spy@3.2.4':
+    resolution: {integrity: sha512-vAfasCOe6AIK70iP5UD11Ac4siNUNJ9i/9PZ3NKx07sG6sUxeag1LWdNrMWeKKYBLlzuK+Gn65Yd5nyL6ds+nw==}
+
   '@vitest/utils@1.6.1':
     resolution: {integrity: sha512-jOrrUvXM4Av9ZWiG1EajNto0u96kWAhJ1LmPmJhXXQx/32MecEKd10pOLYgS2BQx1TgkGhloPU1ArDW2vvaY6g==}
+
+  '@vitest/utils@3.2.4':
+    resolution: {integrity: sha512-fB2V0JFrQSMsCo9HiSq3Ezpdv4iYaXRG1Sx8edX3MwxfyNn83mKiGzOcH+Fkxt4MHxr3y42fQi1oeAInqgX2QA==}
 
   '@wagmi/connectors@5.1.4':
     resolution: {integrity: sha512-LY8RAHy5ichhc7zknFrfrQ3RYZ/fHGgojBz0zMFae5rRrjkR3fG4gRQ9mauPwykGJmOSZshGiFryG1F1gLBm3A==}
@@ -5235,6 +5304,10 @@ packages:
   assertion-error@1.1.0:
     resolution: {integrity: sha512-jgsaNduz+ndvGyFt3uSuWqvy4lCnIJiovtouQN5JZHOKCS2QuhEdbcQHFhVksz2N2U9hXJo8odG7ETyWlEeuDw==}
 
+  assertion-error@2.0.1:
+    resolution: {integrity: sha512-Izi8RQcffqCeNVgFigKli1ssklIbpHnCYc6AknXGYoB6grJqyeby7jv12JUQgmTAnIDnbck1uxksT4dzN3PWBA==}
+    engines: {node: '>=12'}
+
   ast-types-flow@0.0.8:
     resolution: {integrity: sha512-OH/2E5Fg20h2aPrbe+QL8JZQFko0YZaF+j4mnQ7BGhfavO7OpSLa8a0y9sBwomHdSbkhTS8TQNayBfnW5DwbvQ==}
 
@@ -5566,6 +5639,10 @@ packages:
     resolution: {integrity: sha512-13sOfMv2+DWduEU+/xbun3LScLoqN17nBeTLUsmDfKdoiC1fr0n9PU4guu4AhRcOVFk/sW8LyZWHuhWtQZiF+g==}
     engines: {node: '>=4'}
 
+  chai@5.2.1:
+    resolution: {integrity: sha512-5nFxhUrX0PqtyogoYOA8IPswy5sZFTOsBFl/9bNsmDLgsxYTzSZQJDPppDnZPTQbzSEm0hqGjWPzRemQCYbD6A==}
+    engines: {node: '>=18'}
+
   chalk@2.4.2:
     resolution: {integrity: sha512-Mti+f9lpJNcwF4tWV8/OrTTtF1gZi+f8FqlyAdouralcFWFQWF2+NgCHShjkCb+IFBLq9buZwE1xckQU4peSuQ==}
     engines: {node: '>=4'}
@@ -5593,6 +5670,10 @@ packages:
 
   check-error@1.0.3:
     resolution: {integrity: sha512-iKEoDYaRmd1mxM90a2OEfWhjsjPpYPuQ+lMYsoxB126+t8fw7ySEO48nmDg5COTjxDI65/Y2OWpeEHk3ZOe8zg==}
+
+  check-error@2.1.1:
+    resolution: {integrity: sha512-OAlb+T7V4Op9OwdkjmguYRqncdlx5JiofwOAUkmTF+jNdHwzTaTs4sRAGpzLF3oOz5xAyDGrPgeIDFQmDOTiJw==}
+    engines: {node: '>= 16'}
 
   chokidar@3.6.0:
     resolution: {integrity: sha512-7VT13fmjotKpGipCW9JEQAusEPE+Ei8nl6/g4FBAmIm0GOOLMua9NDDo/DWp0ZAxCr3cPq5ZpBqmPAQgDda2Pw==}
@@ -5986,6 +6067,10 @@ packages:
 
   deep-eql@4.1.3:
     resolution: {integrity: sha512-WaEtAOpRA1MQ0eohqZjpGD8zdI0Ovsm8mmFhaDN8dvDZzyoUMcYDnf5Y6iu7HTXxf8JDS23qWa4a+hKCDyOPzw==}
+    engines: {node: '>=6'}
+
+  deep-eql@5.0.2:
+    resolution: {integrity: sha512-h5k/5U50IJJFpzfL6nO9jaaumfjO/f2NjK/oYB2Djzm4p9L+3T9qWpZqZ2hAbLPuuYq9wrU08WQyBTL5GbPk5Q==}
     engines: {node: '>=6'}
 
   deep-is@0.1.4:
@@ -7903,6 +7988,9 @@ packages:
   loupe@2.3.7:
     resolution: {integrity: sha512-zSMINGVYkdpYSOBmLi0D1Uo7JU9nVdQKrHxC8eYlV+9YKK9WePqAlL7lSlorG/U2Fw1w0hTBmaa/jrQ3UbPHtA==}
 
+  loupe@3.1.4:
+    resolution: {integrity: sha512-wJzkKwJrheKtknCOKNEtDK4iqg/MxmZheEMtSTYvnzRdEYaZzmgH976nenp8WdJRdx5Vc1X/9MO0Oszl6ezeXg==}
+
   lru-cache@10.2.0:
     resolution: {integrity: sha512-2bIM8x+VAf6JT4bKAljS1qUWgMsqZRPGJS6FSahIMPVvctcNhyVp7AJu7quxOW9jwkryBReKZY5tY5JYv2n/7Q==}
     engines: {node: 14 || >=16.14}
@@ -8197,6 +8285,10 @@ packages:
 
   multiformats@9.9.0:
     resolution: {integrity: sha512-HoMUjhH9T8DDBNT+6xzkrd9ga/XiBI4xLr58LJACwK6G3HTOPeMz4nB4KJs33L2BelrIJa7P0VuNaVF3hMYfjg==}
+
+  mutative@1.2.0:
+    resolution: {integrity: sha512-1muFw45Lwjso6TSBGiXfbjKS01fVSD/qaqBfTo/gXgp79e8KM4Sa1XP/S4iN2/DvSdIZgjFJI+JIhC7eKf3GTg==}
+    engines: {node: '>=14.0'}
 
   mz@2.7.0:
     resolution: {integrity: sha512-z81GNO7nnYMEhrGh9LeymoE4+Yr0Wn5McHIZMK5cfQCl+NDX08sCZgUc9/6MHni9IWuFLm1Z3HTCXu2z9fN62Q==}
@@ -8559,6 +8651,10 @@ packages:
 
   pathval@1.1.1:
     resolution: {integrity: sha512-Dp6zGqpTdETdR63lehJYPeIOqpiNBNtc7BpWSLrOje7UaIsE5aY92r/AunQA7rsXvet3lrJ3JnZX29UPTKXyKQ==}
+
+  pathval@2.0.1:
+    resolution: {integrity: sha512-//nshmD55c46FuFw26xV/xFAaB5HF9Xdap7HJBBnrKdAd6/GxDBaNA1870O79+9ueg61cZLSVc+OaFlfmObYVQ==}
+    engines: {node: '>= 14.16'}
 
   pg-cloudflare@1.1.1:
     resolution: {integrity: sha512-xWPagP/4B6BgFO+EKz3JONXv3YDgvkbVrGw2mTo3D6tVDQRh1e7cqVGvyR3BE+eQgAvx1XhW/iEASj4/jCWl3Q==}
@@ -9791,8 +9887,16 @@ packages:
     resolution: {integrity: sha512-i11VH5gS6IFeLY3gMBQ00/MmLncVP7JLXOw1vlgkytLmJK7QnEr7NXf0LBdxfmNPAeyetukOk0bOYrJrFGjYJQ==}
     engines: {node: '>=14.0.0'}
 
+  tinyrainbow@2.0.0:
+    resolution: {integrity: sha512-op4nsTR47R6p0vMUUoYl/a+ljLFVtlfaXkLQmqfLR1qHma1h/ysYk4hEXZ880bf2CYgTskvTa/e196Vd5dDQXw==}
+    engines: {node: '>=14.0.0'}
+
   tinyspy@2.2.1:
     resolution: {integrity: sha512-KYad6Vy5VDWV4GH3fjpseMQ/XU2BhIYP7Vzd0LG44qRWm/Yt2WCOTicFdvmgo6gWaqooMQCawTtILVQJupKu7A==}
+    engines: {node: '>=14.0.0'}
+
+  tinyspy@4.0.3:
+    resolution: {integrity: sha512-t2T/WLB2WRgZ9EpE4jgPJ9w+i66UZfDc8wHh0xrwiRNN+UwH98GIJkTeZqX9rg0i0ptwzqW+uYeIF0T4F8LR7A==}
     engines: {node: '>=14.0.0'}
 
   tmp@0.0.33:
@@ -15271,7 +15375,7 @@ snapshots:
   '@jest/console@29.7.0':
     dependencies:
       '@jest/types': 29.6.3
-      '@types/node': 18.19.101
+      '@types/node': 20.19.8
       chalk: 4.1.2
       jest-message-util: 29.7.0
       jest-util: 29.7.0
@@ -15285,7 +15389,7 @@ snapshots:
     dependencies:
       '@jest/fake-timers': 29.7.0
       '@jest/types': 29.6.3
-      '@types/node': 18.19.101
+      '@types/node': 20.19.8
       jest-mock: 29.7.0
 
   '@jest/expect-utils@29.7.0':
@@ -15303,7 +15407,7 @@ snapshots:
     dependencies:
       '@jest/types': 29.6.3
       '@sinonjs/fake-timers': 10.3.0
-      '@types/node': 18.19.101
+      '@types/node': 20.19.8
       jest-message-util: 29.7.0
       jest-mock: 29.7.0
       jest-util: 29.7.0
@@ -15325,7 +15429,7 @@ snapshots:
       '@jest/transform': 29.7.0
       '@jest/types': 29.6.3
       '@jridgewell/trace-mapping': 0.3.25
-      '@types/node': 18.19.101
+      '@types/node': 20.19.8
       chalk: 4.1.2
       collect-v8-coverage: 1.0.2
       exit: 0.1.2
@@ -15403,7 +15507,7 @@ snapshots:
       '@jest/schemas': 29.6.3
       '@types/istanbul-lib-coverage': 2.0.6
       '@types/istanbul-reports': 3.0.4
-      '@types/node': 18.19.101
+      '@types/node': 20.19.8
       '@types/yargs': 17.0.32
       chalk: 4.1.2
 
@@ -15682,6 +15786,33 @@ snapshots:
       uuid: 9.0.1
     transitivePeerDependencies:
       - supports-color
+
+  '@morpho-org/blue-sdk-viem@3.1.1(@morpho-org/blue-sdk@3.0.9(@morpho-org/morpho-ts@2.4.1))(@morpho-org/morpho-ts@2.4.1)(viem@2.24.3(bufferutil@4.0.8)(typescript@5.4.5)(utf-8-validate@5.0.10)(zod@3.25.76))':
+    dependencies:
+      '@morpho-org/blue-sdk': 3.0.9(@morpho-org/morpho-ts@2.4.1)
+      '@morpho-org/morpho-ts': 2.4.1
+      viem: 2.24.3(bufferutil@4.0.8)(typescript@5.4.5)(utf-8-validate@5.0.10)(zod@3.25.76)
+
+  '@morpho-org/blue-sdk@3.0.9(@morpho-org/morpho-ts@2.4.1)':
+    dependencies:
+      '@morpho-org/morpho-ts': 2.4.1
+      '@noble/hashes': 1.7.1
+
+  '@morpho-org/bundler-sdk-viem@3.2.4(@morpho-org/blue-sdk-viem@3.1.1(@morpho-org/blue-sdk@3.0.9(@morpho-org/morpho-ts@2.4.1))(@morpho-org/morpho-ts@2.4.1)(viem@2.24.3(bufferutil@4.0.8)(typescript@5.4.5)(utf-8-validate@5.0.10)(zod@3.25.76)))(@morpho-org/blue-sdk@3.0.9(@morpho-org/morpho-ts@2.4.1))(@morpho-org/morpho-ts@2.4.1)(@morpho-org/simulation-sdk@3.1.2(@morpho-org/blue-sdk@3.0.9(@morpho-org/morpho-ts@2.4.1))(@morpho-org/morpho-ts@2.4.1))(viem@2.24.3(bufferutil@4.0.8)(typescript@5.4.5)(utf-8-validate@5.0.10)(zod@3.25.76))':
+    dependencies:
+      '@morpho-org/blue-sdk': 3.0.9(@morpho-org/morpho-ts@2.4.1)
+      '@morpho-org/blue-sdk-viem': 3.1.1(@morpho-org/blue-sdk@3.0.9(@morpho-org/morpho-ts@2.4.1))(@morpho-org/morpho-ts@2.4.1)(viem@2.24.3(bufferutil@4.0.8)(typescript@5.4.5)(utf-8-validate@5.0.10)(zod@3.25.76))
+      '@morpho-org/morpho-ts': 2.4.1
+      '@morpho-org/simulation-sdk': 3.1.2(@morpho-org/blue-sdk@3.0.9(@morpho-org/morpho-ts@2.4.1))(@morpho-org/morpho-ts@2.4.1)
+      viem: 2.24.3(bufferutil@4.0.8)(typescript@5.4.5)(utf-8-validate@5.0.10)(zod@3.25.76)
+
+  '@morpho-org/morpho-ts@2.4.1': {}
+
+  '@morpho-org/simulation-sdk@3.1.2(@morpho-org/blue-sdk@3.0.9(@morpho-org/morpho-ts@2.4.1))(@morpho-org/morpho-ts@2.4.1)':
+    dependencies:
+      '@morpho-org/blue-sdk': 3.0.9(@morpho-org/morpho-ts@2.4.1)
+      '@morpho-org/morpho-ts': 2.4.1
+      mutative: 1.2.0
 
   '@motionone/animation@10.17.0':
     dependencies:
@@ -17757,6 +17888,10 @@ snapshots:
     dependencies:
       '@babel/types': 7.24.0
 
+  '@types/chai@5.2.2':
+    dependencies:
+      '@types/deep-eql': 4.0.2
+
   '@types/connect@3.4.38':
     dependencies:
       '@types/node': 20.19.8
@@ -17764,6 +17899,8 @@ snapshots:
   '@types/debug@4.1.12':
     dependencies:
       '@types/ms': 0.7.34
+
+  '@types/deep-eql@4.0.2': {}
 
   '@types/dom-screen-wake-lock@1.0.3': {}
 
@@ -17785,7 +17922,7 @@ snapshots:
 
   '@types/graceful-fs@4.1.9':
     dependencies:
-      '@types/node': 18.19.101
+      '@types/node': 20.19.8
 
   '@types/hast@3.0.4':
     dependencies:
@@ -17849,7 +17986,7 @@ snapshots:
 
   '@types/secp256k1@4.0.6':
     dependencies:
-      '@types/node': 18.19.101
+      '@types/node': 20.19.8
 
   '@types/semver@7.5.8': {}
 
@@ -18256,6 +18393,18 @@ snapshots:
       '@vitest/utils': 1.6.1
       chai: 4.4.1
 
+  '@vitest/expect@3.2.4':
+    dependencies:
+      '@types/chai': 5.2.2
+      '@vitest/spy': 3.2.4
+      '@vitest/utils': 3.2.4
+      chai: 5.2.1
+      tinyrainbow: 2.0.0
+
+  '@vitest/pretty-format@3.2.4':
+    dependencies:
+      tinyrainbow: 2.0.0
+
   '@vitest/runner@1.6.1':
     dependencies:
       '@vitest/utils': 1.6.1
@@ -18272,12 +18421,22 @@ snapshots:
     dependencies:
       tinyspy: 2.2.1
 
+  '@vitest/spy@3.2.4':
+    dependencies:
+      tinyspy: 4.0.3
+
   '@vitest/utils@1.6.1':
     dependencies:
       diff-sequences: 29.6.3
       estree-walker: 3.0.3
       loupe: 2.3.7
       pretty-format: 29.7.0
+
+  '@vitest/utils@3.2.4':
+    dependencies:
+      '@vitest/pretty-format': 3.2.4
+      loupe: 3.1.4
+      tinyrainbow: 2.0.0
 
   '@wagmi/connectors@5.1.4(@react-native-async-storage/async-storage@1.23.1(react-native@0.73.6(@babel/core@7.27.1)(@babel/preset-env@7.24.4(@babel/core@7.27.1))(bufferutil@4.0.8)(encoding@0.1.13)(react@18.3.1)(utf-8-validate@6.0.3)))(@types/react@18.3.1)(@wagmi/core@2.13.3(@tanstack/query-core@5.29.0)(@types/react@18.3.1)(immer@10.0.4)(react@18.3.1)(typescript@5.4.5)(viem@2.17.9(bufferutil@4.0.8)(typescript@5.4.5)(utf-8-validate@6.0.3)(zod@3.24.2)))(bufferutil@4.0.8)(encoding@0.1.13)(ioredis@5.4.1)(react-dom@18.2.0(react@18.3.1))(react-native@0.73.6(@babel/core@7.27.1)(@babel/preset-env@7.24.4(@babel/core@7.27.1))(bufferutil@4.0.8)(encoding@0.1.13)(react@18.3.1)(utf-8-validate@6.0.3))(react@18.3.1)(rollup@4.45.1)(typescript@5.4.5)(utf-8-validate@6.0.3)(viem@2.17.9(bufferutil@4.0.8)(typescript@5.4.5)(utf-8-validate@6.0.3)(zod@3.24.2))(zod@3.24.2)':
     dependencies:
@@ -19316,6 +19475,8 @@ snapshots:
 
   assertion-error@1.1.0: {}
 
+  assertion-error@2.0.1: {}
+
   ast-types-flow@0.0.8: {}
 
   ast-types@0.15.2:
@@ -19867,6 +20028,14 @@ snapshots:
       pathval: 1.1.1
       type-detect: 4.0.8
 
+  chai@5.2.1:
+    dependencies:
+      assertion-error: 2.0.1
+      check-error: 2.1.1
+      deep-eql: 5.0.2
+      loupe: 3.1.4
+      pathval: 2.0.1
+
   chalk@2.4.2:
     dependencies:
       ansi-styles: 3.2.1
@@ -19891,6 +20060,8 @@ snapshots:
   check-error@1.0.3:
     dependencies:
       get-func-name: 2.0.2
+
+  check-error@2.1.1: {}
 
   chokidar@3.6.0:
     dependencies:
@@ -20285,6 +20456,8 @@ snapshots:
   deep-eql@4.1.3:
     dependencies:
       type-detect: 4.0.8
+
+  deep-eql@5.0.2: {}
 
   deep-is@0.1.4: {}
 
@@ -22136,7 +22309,7 @@ snapshots:
       '@jest/expect': 29.7.0
       '@jest/test-result': 29.7.0
       '@jest/types': 29.6.3
-      '@types/node': 18.19.101
+      '@types/node': 20.19.8
       chalk: 4.1.2
       co: 4.6.0
       dedent: 1.5.3(babel-plugin-macros@3.1.0)
@@ -22211,7 +22384,7 @@ snapshots:
       '@jest/environment': 29.7.0
       '@jest/fake-timers': 29.7.0
       '@jest/types': 29.6.3
-      '@types/node': 18.19.101
+      '@types/node': 20.19.8
       jest-mock: 29.7.0
       jest-util: 29.7.0
 
@@ -22221,7 +22394,7 @@ snapshots:
     dependencies:
       '@jest/types': 29.6.3
       '@types/graceful-fs': 4.1.9
-      '@types/node': 18.19.101
+      '@types/node': 20.19.8
       anymatch: 3.1.3
       fb-watchman: 2.0.2
       graceful-fs: 4.2.11
@@ -22260,7 +22433,7 @@ snapshots:
   jest-mock@29.7.0:
     dependencies:
       '@jest/types': 29.6.3
-      '@types/node': 18.19.101
+      '@types/node': 20.19.8
       jest-util: 29.7.0
 
   jest-pnp-resolver@1.2.3(jest-resolve@29.7.0):
@@ -22288,7 +22461,7 @@ snapshots:
       '@jest/test-result': 29.7.0
       '@jest/transform': 29.7.0
       '@jest/types': 29.6.3
-      '@types/node': 18.19.101
+      '@types/node': 20.19.8
       chalk: 4.1.2
       emittery: 0.13.1
       graceful-fs: 4.2.11
@@ -22316,7 +22489,7 @@ snapshots:
       '@jest/test-result': 29.7.0
       '@jest/transform': 29.7.0
       '@jest/types': 29.6.3
-      '@types/node': 18.19.101
+      '@types/node': 20.19.8
       chalk: 4.1.2
       cjs-module-lexer: 1.2.3
       collect-v8-coverage: 1.0.2
@@ -22362,7 +22535,7 @@ snapshots:
   jest-util@29.7.0:
     dependencies:
       '@jest/types': 29.6.3
-      '@types/node': 18.19.101
+      '@types/node': 20.19.8
       chalk: 4.1.2
       ci-info: 3.9.0
       graceful-fs: 4.2.11
@@ -22381,7 +22554,7 @@ snapshots:
     dependencies:
       '@jest/test-result': 29.7.0
       '@jest/types': 29.6.3
-      '@types/node': 18.19.101
+      '@types/node': 20.19.8
       ansi-escapes: 4.3.2
       chalk: 4.1.2
       emittery: 0.13.1
@@ -22390,13 +22563,13 @@ snapshots:
 
   jest-worker@27.5.1:
     dependencies:
-      '@types/node': 18.19.101
+      '@types/node': 20.19.8
       merge-stream: 2.0.0
       supports-color: 8.1.1
 
   jest-worker@29.7.0:
     dependencies:
-      '@types/node': 18.19.101
+      '@types/node': 20.19.8
       jest-util: 29.7.0
       merge-stream: 2.0.0
       supports-color: 8.1.1
@@ -22483,6 +22656,35 @@ snapshots:
       - supports-color
 
   jsdoc-type-pratt-parser@4.0.0: {}
+
+  jsdom@23.2.0(bufferutil@4.0.8)(utf-8-validate@5.0.10):
+    dependencies:
+      '@asamuzakjp/dom-selector': 2.0.2
+      cssstyle: 4.0.1
+      data-urls: 5.0.0
+      decimal.js: 10.4.3
+      form-data: 4.0.0
+      html-encoding-sniffer: 4.0.0
+      http-proxy-agent: 7.0.2
+      https-proxy-agent: 7.0.4
+      is-potential-custom-element-name: 1.0.1
+      parse5: 7.1.2
+      rrweb-cssom: 0.6.0
+      saxes: 6.0.0
+      symbol-tree: 3.2.4
+      tough-cookie: 4.1.3
+      w3c-xmlserializer: 5.0.0
+      webidl-conversions: 7.0.0
+      whatwg-encoding: 3.1.1
+      whatwg-mimetype: 4.0.0
+      whatwg-url: 14.0.0
+      ws: 8.18.1(bufferutil@4.0.8)(utf-8-validate@5.0.10)
+      xml-name-validator: 5.0.0
+    transitivePeerDependencies:
+      - bufferutil
+      - supports-color
+      - utf-8-validate
+    optional: true
 
   jsdom@23.2.0(bufferutil@4.0.8)(utf-8-validate@6.0.3):
     dependencies:
@@ -22731,6 +22933,8 @@ snapshots:
     dependencies:
       get-func-name: 2.0.2
 
+  loupe@3.1.4: {}
+
   lru-cache@10.2.0: {}
 
   lru-cache@10.4.3: {}
@@ -22756,7 +22960,7 @@ snapshots:
 
   magic-string@0.30.10:
     dependencies:
-      '@jridgewell/sourcemap-codec': 1.4.15
+      '@jridgewell/sourcemap-codec': 1.5.4
 
   make-dir@2.1.0:
     dependencies:
@@ -23132,6 +23336,8 @@ snapshots:
   ms@2.1.3: {}
 
   multiformats@9.9.0: {}
+
+  mutative@1.2.0: {}
 
   mz@2.7.0:
     dependencies:
@@ -23563,6 +23769,8 @@ snapshots:
   pathe@1.1.2: {}
 
   pathval@1.1.1: {}
+
+  pathval@2.0.1: {}
 
   pg-cloudflare@1.1.1:
     optional: true
@@ -25235,7 +25443,11 @@ snapshots:
 
   tinypool@0.8.4: {}
 
+  tinyrainbow@2.0.0: {}
+
   tinyspy@2.2.1: {}
+
+  tinyspy@4.0.3: {}
 
   tmp@0.0.33:
     dependencies:
@@ -25910,6 +26122,23 @@ snapshots:
       - supports-color
       - terser
 
+  vite-node@1.6.1(@types/node@20.19.8)(terser@5.31.3):
+    dependencies:
+      cac: 6.7.14
+      debug: 4.3.5
+      pathe: 1.1.2
+      picocolors: 1.1.1
+      vite: 5.2.9(@types/node@20.19.8)(terser@5.31.3)
+    transitivePeerDependencies:
+      - '@types/node'
+      - less
+      - lightningcss
+      - sass
+      - stylus
+      - sugarss
+      - supports-color
+      - terser
+
   vite-tsconfig-paths@4.3.1(typescript@5.4.5)(vite@5.0.7(@types/node@18.19.101)(terser@5.31.3)):
     dependencies:
       debug: 4.3.5
@@ -26017,6 +26246,40 @@ snapshots:
     optionalDependencies:
       '@types/node': 18.19.101
       jsdom: 23.2.0(bufferutil@4.0.8)(utf-8-validate@6.0.3)
+    transitivePeerDependencies:
+      - less
+      - lightningcss
+      - sass
+      - stylus
+      - sugarss
+      - supports-color
+      - terser
+
+  vitest@1.6.1(@types/node@20.19.8)(jsdom@23.2.0(bufferutil@4.0.8)(utf-8-validate@5.0.10))(terser@5.31.3):
+    dependencies:
+      '@vitest/expect': 1.6.1
+      '@vitest/runner': 1.6.1
+      '@vitest/snapshot': 1.6.1
+      '@vitest/spy': 1.6.1
+      '@vitest/utils': 1.6.1
+      acorn-walk: 8.3.2
+      chai: 4.4.1
+      debug: 4.3.5
+      execa: 8.0.1
+      local-pkg: 0.5.0
+      magic-string: 0.30.10
+      pathe: 1.1.2
+      picocolors: 1.1.1
+      std-env: 3.7.0
+      strip-literal: 2.1.0
+      tinybench: 2.7.0
+      tinypool: 0.8.4
+      vite: 5.2.9(@types/node@20.19.8)(terser@5.31.3)
+      vite-node: 1.6.1(@types/node@20.19.8)(terser@5.31.3)
+      why-is-node-running: 2.2.2
+    optionalDependencies:
+      '@types/node': 20.19.8
+      jsdom: 23.2.0(bufferutil@4.0.8)(utf-8-validate@5.0.10)
     transitivePeerDependencies:
       - less
       - lightningcss

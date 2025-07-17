@@ -39,15 +39,16 @@
   "author": "Optimism PBC",
   "license": "MIT",
   "dependencies": {
-    "@morpho-org/blue-sdk": "latest",
-    "@morpho-org/blue-sdk-viem": "latest",
-    "@morpho-org/bundler-sdk-viem": "latest",
-    "@morpho-org/simulation-sdk": "latest",
+    "@morpho-org/blue-sdk": "^3.0.9",
+    "@morpho-org/blue-sdk-viem": "^3.1.1",
+    "@morpho-org/bundler-sdk-viem": "^3.2.4",
+    "@morpho-org/simulation-sdk": "^3.1.2",
     "@privy-io/server-auth": "latest",
     "viem": "^2.24.1"
   },
   "devDependencies": {
     "@types/node": "^20.0.0",
+    "@vitest/expect": "^3.2.4",
     "typescript": "^5.2.2",
     "vitest": "^1.0.0"
   }

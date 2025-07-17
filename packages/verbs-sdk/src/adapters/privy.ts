@@ -1,5 +1,4 @@
 import { PrivyClient } from '@privy-io/server-auth'
-import type { Address } from 'viem'
 
 import type { GetAllWalletsOptions, WalletProvider } from '../types/wallet.js'
 import { Wallet } from '../wallet.js'
@@ -10,7 +9,7 @@ import { Wallet } from '../wallet.js'
  */
 export class PrivyWalletProvider implements WalletProvider {
   private privy: PrivyClient
-  private chainId: number = 130 // TODO: make configurable
+  private CHAIN_TYPE: 'ethereum' = 'ethereum'
 
   /**
    * Create a new Privy wallet provider
@@ -31,7 +30,7 @@ export class PrivyWalletProvider implements WalletProvider {
   async createWallet(userId: string): Promise<Wallet> {
     try {
       const wallet = await this.privy.walletApi.createWallet({
-        chainType: 'ethereum',
+        chainType: this.CHAIN_TYPE,
       })
 
       return new Wallet(wallet.id)
@@ -68,13 +67,10 @@ export class PrivyWalletProvider implements WalletProvider {
       const response = await this.privy.walletApi.getWallets({
         limit: options?.limit,
         cursor: options?.cursor,
-        chainType: options?.chainType,
+        chainType: this.CHAIN_TYPE,
       })
 
-      return response.data.map(
-        (wallet) =>
-          new Wallet(wallet.id),
-      )
+      return response.data.map((wallet) => new Wallet(wallet.id))
     } catch (error) {
       throw new Error('Failed to retrieve wallets')
     }

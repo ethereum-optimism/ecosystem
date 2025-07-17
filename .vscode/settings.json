@@ -21,5 +21,6 @@
   "eslint.format.enable": true,
   "eslint.workingDirectories": [{ "mode": "auto" }],
   "editorconfig.generateAuto": false,
-  "files.trimTrailingWhitespace": true
+  "files.trimTrailingWhitespace": true,
+  "postman.settings.dotenv-detection-notification-visibility": false
 }

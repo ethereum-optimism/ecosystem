@@ -98,7 +98,6 @@ export class WalletController {
       const options = {
         limit: query.limit ? parseInt(query.limit, 10) : undefined,
         cursor: query.cursor || undefined,
-        chainType: query.chainType as 'ethereum' | undefined,
       }
 
       const wallets = await walletService.getAllWallets(options)
@@ -107,7 +106,6 @@ export class WalletController {
         wallets: wallets.map((wallet) => ({
           id: wallet.id,
           address: wallet.address,
-          chainType: wallet.chainType,
         })),
         count: wallets.length,
       } satisfies GetAllWalletsResponse)

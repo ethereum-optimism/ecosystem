@@ -10,7 +10,6 @@ import type { Wallet as WalletInterface } from './types/wallet.js'
 export class Wallet implements WalletInterface {
   id: string
   address: Address
-  chainType: number
 
   /**
    * Create a new wallet instance
@@ -18,8 +17,7 @@ export class Wallet implements WalletInterface {
    */
   constructor(id: string) {
     this.id = id
-    this.address = '0x' + '0'.repeat(40) as Address // TODO: Fetch from provider
-    this.chainType = 0 // TODO: Fetch from provider
+    this.address = ('0x' + '0'.repeat(40)) as Address // TODO: Fetch from provider
   }
 
   /**
@@ -39,10 +37,18 @@ export class Wallet implements WalletInterface {
    * @param marketId - Optional specific market ID
    * @returns Promise resolving to lending transaction details
    */
-  async lend(asset: Address, amount: bigint, marketId?: string): Promise<LendTransaction> {
+  async lend(
+    asset: Address,
+    amount: bigint,
+    marketId?: string,
+  ): Promise<LendTransaction> {
     // TODO: Implement lending delegation to LendProvider
     // This will need to be connected to the VerbsInterface lending provider
     // For now, throw an error indicating the integration is needed
-    throw new Error('Lending delegation not yet implemented - requires VerbsInterface integration')
+    throw new Error(
+      `Lending delegation not yet implemented - requires VerbsInterface integration. Asset: ${asset}, Amount: ${amount}, MarketId: ${
+        marketId || 'auto'
+      }`,
+    )
   }
 }

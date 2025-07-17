@@ -1,4 +1,4 @@
-import type { LendConfig, LendMarket, LendMarketInfo, LendProvider } from './lending.js'
+import type { LendConfig, LendMarket, LendMarketInfo } from './lending.js'
 import type { GetAllWalletsOptions, Wallet } from './wallet.js'
 
 /**

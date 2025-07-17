@@ -1,6 +1,6 @@
 import type { Address } from 'viem'
 
-import type { LendProvider } from './lending.js'
+import type { LendTransaction } from './lending.js'
 
 /**
  * Wallet provider interface
@@ -36,8 +36,6 @@ export interface Wallet extends WalletVerbs {
   id: string
   /** Wallet address */
   address: Address
-  /** Chain type */
-  chainType: number
 }
 
 /**
@@ -49,8 +47,6 @@ export interface GetAllWalletsOptions {
   limit?: number
   /** Cursor for pagination */
   cursor?: string
-  /** Filter by chain type */
-  chainType?: 'ethereum' | 'solana'
 }
 
 /**
@@ -70,5 +66,5 @@ export type WalletVerbs = {
    * @param marketId - Optional specific market ID
    * @returns Promise resolving to lending transaction details
    */
-  lend(asset: Address, amount: bigint, marketId?: string): Promise<import('./lending.js').LendTransaction>
+  lend(asset: Address, amount: bigint, marketId?: string): Promise<LendTransaction>
 }

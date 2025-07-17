@@ -14,7 +14,6 @@ describe('Wallet', () => {
     it('should create wallet with correct properties', () => {
       expect(wallet.id).toBe('test-wallet-id')
       expect(wallet.address).toBe('0x0000000000000000000000000000000000000000')
-      expect(wallet.chainType).toBe(0)
     })
   })
 
@@ -58,10 +57,8 @@ describe('Wallet', () => {
     it('should have required properties', () => {
       expect(wallet.id).toBeDefined()
       expect(wallet.address).toBeDefined()
-      expect(wallet.chainType).toBeDefined()
       expect(typeof wallet.id).toBe('string')
       expect(typeof wallet.address).toBe('string')
-      expect(typeof wallet.chainType).toBe('number')
     })
   })
 })
