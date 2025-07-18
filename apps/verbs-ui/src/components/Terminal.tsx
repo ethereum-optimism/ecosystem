@@ -213,7 +213,7 @@ Active Wallets: 0`,
         response = {
           id: responseId,
           type: 'warning',
-          content: 'Nice try! But the ride never ends...',
+          content: 'The ride never ends!',
           timestamp: new Date(),
         }
         break
