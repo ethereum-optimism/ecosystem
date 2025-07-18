@@ -80,7 +80,7 @@ const Terminal = () => {
       {
         id: 'welcome-8',
         type: 'output',
-        content: '   Money Verbs library for the OP Stack',
+        content: '   Verbs library for the OP Stack',
         timestamp: new Date(),
       },
       {
@@ -167,6 +167,24 @@ const Terminal = () => {
     }
   }
 
+  const getAllWallets = async (): Promise<GetAllWalletsResponse> => {
+    // @TODO abstract the url here
+    const response = await fetch('http://localhost:3000/wallets', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+
+    if (!response.ok) {
+      const error = await response.json()
+      throw new Error(error.message || 'Failed to fetch wallets')
+    }
+
+    const data = await response.json()
+    return data
+  }
+
   const processCommand = (command: string) => {
     const trimmed = command.trim()
     if (!trimmed) return
@@ -232,7 +250,7 @@ Active Wallets: 0`,
         response = {
           id: responseId,
           type: 'warning',
-          content: 'Nice try! But the ride never ends...',
+          content: 'The ride never ends!',
           timestamp: new Date(),
         }
         break
@@ -241,6 +259,7 @@ Active Wallets: 0`,
       case 'borrow':
       case 'repay':
       case 'swap':
+      case 'earn':
         response = {
           id: responseId,
           type: 'error',

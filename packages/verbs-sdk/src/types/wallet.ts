@@ -50,6 +50,19 @@ export interface GetAllWalletsOptions {
 }
 
 /**
+ * Options for getting all wallets
+ * @description Parameters for filtering and paginating wallet results
+ */
+export interface GetAllWalletsOptions {
+  /** Maximum number of wallets to return */
+  limit?: number
+  /** Cursor for pagination */
+  cursor?: string
+  /** Filter by chain type */
+  chainType?: 'ethereum' | 'solana'
+}
+
+/**
  * Wallet verbs/actions
  * @description Available actions that can be performed on a wallet
  */

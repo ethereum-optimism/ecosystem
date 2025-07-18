@@ -13,6 +13,7 @@ import type { Wallet } from './wallet.js'
  * @description Core implementation of the Verbs SDK
  */
 export class Verbs implements VerbsInterface {
+  // TODO move these elsewhere
   createWallet!: (userId: string) => Promise<Wallet>
   getWallet!: (userId: string) => Promise<Wallet | null>
   getAllWallets!: (options?: GetAllWalletsOptions) => Promise<Wallet[]>
