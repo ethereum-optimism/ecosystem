@@ -1,0 +1,19 @@
+services:
+  verbs-service:
+    profiles:
+      - app
+    build:
+      context: ../../
+      dockerfile: Dockerfile
+      target: verbs-service
+      args:
+        - DOCKER_TARGET=verbs-service
+    env_file: .env
+    environment:
+      - PORT=3000
+    healthcheck:
+      test: curl http://0.0.0.0:3000/health || exit 1
+    volumes:
+      - ../../certs/extra-ca-certificates.crt:/usr/local/share/ca-certificates/extra-ca-certificates.crt
+    ports:
+      - 3000:3000
