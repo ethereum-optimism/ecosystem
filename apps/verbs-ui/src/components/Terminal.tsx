@@ -114,37 +114,57 @@ const Terminal = () => {
   const createWallet = async (
     userId: string,
   ): Promise<CreateWalletResponse> => {
-    const response = await fetch(`http://localhost:3000/wallet/${userId}`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
+    try {
+      const response = await fetch(`http://localhost:3000/wallet/${userId}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
 
-    if (!response.ok) {
-      const error = await response.json()
-      throw new Error(error.message || 'Failed to create wallet')
+      if (!response.ok) {
+        const error = await response.json()
+        throw new Error(error.message || 'Failed to create wallet')
+      }
+
+      const data = await response.json()
+      return data
+    } catch (error) {
+      // Handle network errors when service isn't running
+      if (error instanceof TypeError && error.message.includes('fetch')) {
+        throw new Error(
+          "The backend service isn't plugged in yet! Come back later",
+        )
+      }
+      throw error
     }
-
-    const data = await response.json()
-    return data
   }
 
   const getAllWallets = async (): Promise<GetAllWalletsResponse> => {
-    const response = await fetch('http://localhost:3000/wallets', {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
+    try {
+      const response = await fetch('http://localhost:3000/wallets', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
 
-    if (!response.ok) {
-      const error = await response.json()
-      throw new Error(error.message || 'Failed to fetch wallets')
+      if (!response.ok) {
+        const error = await response.json()
+        throw new Error(error.message || 'Failed to fetch wallets')
+      }
+
+      const data = await response.json()
+      return data
+    } catch (error) {
+      // Handle network errors when service isn't running
+      if (error instanceof TypeError && error.message.includes('fetch')) {
+        throw new Error(
+          "The backend service isn't plugged in yet! Come back later",
+        )
+      }
+      throw error
     }
-
-    const data = await response.json()
-    return data
   }
 
   const processCommand = (command: string) => {
