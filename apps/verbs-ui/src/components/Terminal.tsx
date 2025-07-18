@@ -131,7 +131,7 @@ const Terminal = () => {
   }
 
   const getAllWallets = async (): Promise<GetAllWalletsResponse> => {
-    @TODO abstract the url here
+    // @TODO abstract the url here
     const response = await fetch('http://localhost:3000/wallets', {
       method: 'GET',
       headers: {
