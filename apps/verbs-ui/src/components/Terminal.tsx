@@ -1,4 +1,8 @@
 import { useState, useEffect, useRef } from 'react'
+import type {
+  CreateWalletResponse,
+  GetAllWalletsResponse,
+} from '@eth-optimism/verbs-sdk'
 import VerbsLogo from './VerbsLogo'
 
 interface TerminalLine {
@@ -26,7 +30,8 @@ Verbs (coming soon):
   lend          - Open Morpho loan
   borrow        - Borrow via Morpho
   repay         - Repay Morpho loan
-  swap          - Trade via Uniswap`
+  swap          - Trade via Uniswap
+  earn          - Earn DeFi yield`
 
 const Terminal = () => {
   const [lines, setLines] = useState<TerminalLine[]>([])
@@ -58,12 +63,12 @@ const Terminal = () => {
         id: 'welcome-ascii',
         type: 'success',
         content: `
-██╗   ██╗███████╗██████╗ ██████╗ ███████╗
-██║   ██║██╔════╝██╔══██╗██╔══██╗██╔════╝
-██║   ██║█████╗  ██████╔╝██████╔╝███████╗
-╚██╗ ██╔╝██╔══╝  ██╔══██╗██╔══██╗╚════██║
- ╚████╔╝ ███████╗██║  ██║██████╔╝███████║
-  ╚═══╝  ╚══════╝╚═╝  ╚═╝╚═════╝ ╚══════╝`,
+██╗   ██╗ ███████╗ ██████╗  ██████╗  ███████╗
+██║   ██║ ██╔════╝ ██╔══██╗ ██╔══██╗ ██╔════╝
+██║   ██║ █████╗   ██████╔╝ ██████╔╝ ███████╗
+╚██╗ ██╔╝ ██╔══╝   ██╔══██╗ ██╔══██╗ ╚════██║
+ ╚████╔╝  ███████╗ ██║  ██║ ██████╔╝ ███████║
+  ╚═══╝   ╚══════╝ ╚═╝  ╚═╝ ╚═════╝  ╚══════╝`,
         timestamp: new Date(),
       },
       {
@@ -75,7 +80,7 @@ const Terminal = () => {
       {
         id: 'welcome-8',
         type: 'output',
-        content: '    Web2 -> Web3 library for the OP Stack',
+        content: '   Verbs library for the OP Stack',
         timestamp: new Date(),
       },
       {
@@ -87,7 +92,7 @@ const Terminal = () => {
       {
         id: 'help-cmd',
         type: 'input',
-        content: 'verbs@terminal:~$ help',
+        content: 'verbs: $ help',
         timestamp: new Date(),
       },
       {
@@ -106,7 +111,9 @@ const Terminal = () => {
     setLines(welcomeLines)
   }, [])
 
-  const createWallet = async (userId: string) => {
+  const createWallet = async (
+    userId: string,
+  ): Promise<CreateWalletResponse> => {
     const response = await fetch(`http://localhost:3000/wallet/${userId}`, {
       method: 'POST',
       headers: {
@@ -117,6 +124,24 @@ const Terminal = () => {
     if (!response.ok) {
       const error = await response.json()
       throw new Error(error.message || 'Failed to create wallet')
+    }
+
+    const data = await response.json()
+    return data
+  }
+
+  const getAllWallets = async (): Promise<GetAllWalletsResponse> => {
+    // @TODO abstract the url here
+    const response = await fetch('http://localhost:3000/wallets', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+
+    if (!response.ok) {
+      const error = await response.json()
+      throw new Error(error.message || 'Failed to fetch wallets')
     }
 
     const data = await response.json()
@@ -143,7 +168,7 @@ const Terminal = () => {
     const commandLine: TerminalLine = {
       id: `cmd-${Date.now()}`,
       type: 'input',
-      content: `verbs@terminal:~$ ${trimmed}`,
+      content: `verbs: $ ${trimmed}`,
       timestamp: new Date(),
     }
 
@@ -167,17 +192,12 @@ const Terminal = () => {
           type: 'userId',
           message: 'Enter unique userId:',
         })
-        // Add the command line to display but don't add a response yet
         setLines((prev) => [...prev, commandLine])
         return
       case 'wallet list':
-        response = {
-          id: responseId,
-          type: 'output',
-          content: 'COMING SOON',
-          timestamp: new Date(),
-        }
-        break
+        setLines((prev) => [...prev, commandLine])
+        handleWalletList()
+        return
       case 'status':
         response = {
           id: responseId,
@@ -193,7 +213,7 @@ Active Wallets: 0`,
         response = {
           id: responseId,
           type: 'warning',
-          content: 'Nice try! But the ride never ends...',
+          content: 'The ride never ends!',
           timestamp: new Date(),
         }
         break
@@ -202,6 +222,7 @@ Active Wallets: 0`,
       case 'borrow':
       case 'repay':
       case 'swap':
+      case 'earn':
         response = {
           id: responseId,
           type: 'error',
@@ -257,6 +278,58 @@ User ID: ${result.userId}`,
         id: `error-${Date.now()}`,
         type: 'error',
         content: `Failed to create wallet: ${
+          error instanceof Error ? error.message : 'Unknown error'
+        }`,
+        timestamp: new Date(),
+      }
+
+      setLines((prev) => [...prev.slice(0, -1), errorLine])
+    }
+  }
+
+  const handleWalletList = async () => {
+    const loadingLine: TerminalLine = {
+      id: `loading-${Date.now()}`,
+      type: 'output',
+      content: 'Fetching wallets...',
+      timestamp: new Date(),
+    }
+
+    setLines((prev) => [...prev, loadingLine])
+
+    try {
+      const result = await getAllWallets()
+
+      if (result.wallets.length === 0) {
+        const emptyLine: TerminalLine = {
+          id: `empty-${Date.now()}`,
+          type: 'output',
+          content: 'No wallets found. Create one with "wallet create".',
+          timestamp: new Date(),
+        }
+        setLines((prev) => [...prev.slice(0, -1), emptyLine])
+        return
+      }
+
+      const walletList = result.wallets
+        .map((wallet, index) => `${index + 1}. ${wallet.address}`)
+        .join('\n')
+
+      const successLine: TerminalLine = {
+        id: `success-${Date.now()}`,
+        type: 'success',
+        content: `Found ${result.count} wallet(s):
+
+${walletList}`,
+        timestamp: new Date(),
+      }
+
+      setLines((prev) => [...prev.slice(0, -1), successLine])
+    } catch (error) {
+      const errorLine: TerminalLine = {
+        id: `error-${Date.now()}`,
+        type: 'error',
+        content: `Failed to fetch wallets: ${
           error instanceof Error ? error.message : 'Unknown error'
         }`,
         timestamp: new Date(),
@@ -382,7 +455,7 @@ User ID: ${result.userId}`,
         {/* Current Input Line */}
         <div className="terminal-line">
           <span className="terminal-prompt">
-            {pendingPrompt ? pendingPrompt.message : 'verbs@terminal:~$'}
+            {pendingPrompt ? pendingPrompt.message : 'verbs: $'}
           </span>
           <div className="flex-1 flex items-center">
             <input

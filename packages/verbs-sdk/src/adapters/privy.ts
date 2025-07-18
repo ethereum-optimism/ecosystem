@@ -1,7 +1,7 @@
 import { PrivyClient } from '@privy-io/server-auth'
 import type { Address } from 'viem'
 
-import type { WalletProvider } from '../types/wallet.js'
+import type { GetAllWalletsOptions, WalletProvider } from '../types/wallet.js'
 import { Wallet } from '../wallet.js'
 
 /**
@@ -54,6 +54,29 @@ export class PrivyWalletProvider implements WalletProvider {
       return new Wallet(wallet.id, wallet.address as Address, this.chainId)
     } catch (error) {
       return null
+    }
+  }
+
+  /**
+   * Get all wallets via Privy
+   * @description Retrieves all wallets from Privy service with optional filtering
+   * @param options - Optional parameters for filtering and pagination
+   * @returns Promise resolving to array of wallets
+   */
+  async getAllWallets(options?: GetAllWalletsOptions): Promise<Wallet[]> {
+    try {
+      const response = await this.privy.walletApi.getWallets({
+        limit: options?.limit,
+        cursor: options?.cursor,
+        chainType: options?.chainType,
+      })
+
+      return response.data.map(
+        (wallet) =>
+          new Wallet(wallet.id, wallet.address as Address, this.chainId),
+      )
+    } catch (error) {
+      throw new Error('Failed to retrieve wallets')
     }
   }
 }

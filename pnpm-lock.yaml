@@ -527,6 +527,9 @@ importers:
 
   apps/verbs-ui:
     dependencies:
+      '@eth-optimism/verbs-sdk':
+        specifier: workspace:*
+        version: link:../../packages/verbs-sdk
       react:
         specifier: ^18
         version: 18.3.1

@@ -1,3 +1,8 @@
+import type {
+  CreateWalletResponse,
+  GetAllWalletsResponse,
+  GetWalletResponse,
+} from '@eth-optimism/verbs-sdk'
 import type { Context } from 'hono'
 import { z } from 'zod'
 
@@ -40,10 +45,9 @@ export class WalletController {
       const wallet = await walletService.createWallet(userId)
 
       return c.json({
-        message: 'Wallet created successfully',
         address: wallet.address,
         userId,
-      })
+      } satisfies CreateWalletResponse)
     } catch (error) {
       return c.json(
         {
@@ -74,14 +78,43 @@ export class WalletController {
       }
 
       return c.json({
-        message: 'Wallet retrieved successfully',
         address: wallet.address,
         userId,
-      })
+      } satisfies GetWalletResponse)
     } catch (error) {
       return c.json(
         {
           error: 'Failed to get wallet',
+          message: error instanceof Error ? error.message : 'Unknown error',
+        },
+        500,
+      )
+    }
+  }
+
+  async getAllWallets(c: Context) {
+    try {
+      const query = c.req.query()
+      const options = {
+        limit: query.limit ? parseInt(query.limit, 10) : undefined,
+        cursor: query.cursor || undefined,
+        chainType: query.chainType as 'ethereum' | undefined,
+      }
+
+      const wallets = await walletService.getAllWallets(options)
+
+      return c.json({
+        wallets: wallets.map((wallet) => ({
+          id: wallet.id,
+          address: wallet.address,
+          chainType: wallet.chainType,
+        })),
+        count: wallets.length,
+      } satisfies GetAllWalletsResponse)
+    } catch (error) {
+      return c.json(
+        {
+          error: 'Failed to get wallets',
           message: error instanceof Error ? error.message : 'Unknown error',
         },
         500,

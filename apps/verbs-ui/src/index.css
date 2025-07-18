@@ -8,14 +8,15 @@
   * {
     @apply border-terminal-border;
   }
-  
   body {
     @apply bg-terminal-bg text-terminal-text font-mono;
     @apply m-0 p-0 overflow-hidden;
     @apply selection:bg-terminal-muted selection:text-terminal-bg;
   }
-  
-  html, body, #root {
+
+  html,
+  body,
+  #root {
     @apply w-full h-full;
   }
 }
@@ -24,43 +25,43 @@
   .terminal-glow {
     text-shadow: 0 0 5px currentColor;
   }
-  
+
   .terminal-cursor {
     @apply inline-block w-2 h-5 bg-terminal-text animate-cursor-blink;
   }
-  
+
   .terminal-line {
     @apply flex items-center min-h-[1.5rem] leading-relaxed;
   }
-  
+
   .terminal-prompt {
     @apply text-terminal-muted mr-2 flex-shrink-0;
   }
-  
+
   .terminal-input {
     @apply bg-transparent outline-none flex-1 text-terminal-text caret-transparent;
   }
-  
+
   .terminal-output {
     @apply text-terminal-text whitespace-pre-wrap;
   }
-  
+
   .terminal-error {
     @apply text-terminal-error;
   }
-  
+
   .terminal-success {
     @apply text-terminal-success;
   }
-  
+
   .terminal-warning {
     @apply text-terminal-warning;
   }
-  
+
   .terminal-info {
     @apply text-terminal-info;
   }
-  
+
   .terminal-accent {
     @apply text-terminal-accent;
   }

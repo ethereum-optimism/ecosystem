@@ -17,6 +17,12 @@ export interface WalletProvider {
    * @returns Promise resolving to wallet or null if not found
    */
   getWallet(userId: string): Promise<Wallet | null>
+  /**
+   * Get all wallets
+   * @param options - Optional parameters for filtering and pagination
+   * @returns Promise resolving to array of wallets
+   */
+  getAllWallets(options?: GetAllWalletsOptions): Promise<Wallet[]>
 }
 
 /**
@@ -30,6 +36,19 @@ export interface Wallet extends WalletVerbs {
   address: Address
   /** Chain type */
   chainType: number
+}
+
+/**
+ * Options for getting all wallets
+ * @description Parameters for filtering and paginating wallet results
+ */
+export interface GetAllWalletsOptions {
+  /** Maximum number of wallets to return */
+  limit?: number
+  /** Cursor for pagination */
+  cursor?: string
+  /** Filter by chain type */
+  chainType?: 'ethereum' | 'solana'
 }
 
 /**
