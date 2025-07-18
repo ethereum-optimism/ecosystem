@@ -33,10 +33,12 @@ ARG DOCKER_TARGET
 RUN if [ -z "$DOCKER_TARGET" ] || [ "$DOCKER_TARGET" = "ponder-interop" ]; then pnpm nx build @eth-optimism/ponder-interop; fi
 RUN if [ -z "$DOCKER_TARGET" ] || [ "$DOCKER_TARGET" = "autorelayer-interop" ]; then pnpm nx build @eth-optimism/autorelayer-interop; fi
 RUN if [ -z "$DOCKER_TARGET" ] || [ "$DOCKER_TARGET" = "sponsored-sender" ]; then pnpm nx build @eth-optimism/sponsored-sender;  fi
+RUN if [ -z "$DOCKER_TARGET" ] || [ "$DOCKER_TARGET" = "verbs-service" ]; then pnpm nx build @eth-optimism/verbs-service; fi
 
 RUN if [ -z "$DOCKER_TARGET" ] || [ "$DOCKER_TARGET" = "autorelayer-interop" ]; then pnpm deploy --filter autorelayer-interop --prod /prod/autorelayer-interop; fi
 RUN if [ -z "$DOCKER_TARGET" ] || [ "$DOCKER_TARGET" = "ponder-interop" ]; then pnpm deploy --filter ponder-interop --prod /prod/ponder-interop; fi
 RUN if [ -z "$DOCKER_TARGET" ] || [ "$DOCKER_TARGET" = "sponsored-sender" ]; then pnpm deploy --filter sponsored-sender --prod /prod/sponsored-sender; fi
+RUN if [ -z "$DOCKER_TARGET" ] || [ "$DOCKER_TARGET" = "verbs-service" ]; then pnpm deploy --filter verbs-service --prod /prod/verbs-service; fi
 
 ########################################################
 # STAGE 2: Images
@@ -78,6 +80,20 @@ FROM base AS sponsored-sender
 
 WORKDIR /usr/src/app
 COPY --from=builder /prod/sponsored-sender ./
+
+EXPOSE 3000
+
+ENTRYPOINT ["pnpm"]
+CMD ["start"]
+
+########################################################
+# Verbs Service
+########################################################
+
+FROM base AS verbs-service
+
+WORKDIR /usr/src/app
+COPY --from=builder /prod/verbs-service ./
 
 EXPOSE 3000
 
