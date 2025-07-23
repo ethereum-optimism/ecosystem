@@ -4,17 +4,23 @@ import { useState } from 'react'
 import type { Chain } from 'viem'
 
 import { ChainPicker } from '@/components/ChainPicker'
-import { RCTSwapsCard } from '@/components/RCTSwapsCard';
+import { RCTSwapsCard } from '@/components/RCTSwapsCard'
 import { SupportedNetworks } from '@/components/SupportedNetworks'
-import { useInteropEnabledChains } from '@/hooks/useInteropEnabledChains';
+import { useInteropEnabledChains } from '@/hooks/useInteropEnabledChains'
 import { useConfig } from '@/stores/useConfig'
 
-const supportedNetworkNames: NetworkName[] = ['mainnet', 'interop-alpha', 'supersim']
+const supportedNetworkNames: NetworkName[] = [
+  'mainnet',
+  'interop-alpha',
+  'supersim',
+]
 
 export const SuperchainRctSwapsPage = () => {
   const { networkName } = useConfig()
 
-  const { enabledChains, isLoading } = useInteropEnabledChains(networks[networkName])
+  const { enabledChains, isLoading } = useInteropEnabledChains(
+    networks[networkName],
+  )
   const [selectedChain, setSelectedChain] = useState<Chain | undefined>()
 
   if (isLoading) {
@@ -27,7 +33,8 @@ export const SuperchainRctSwapsPage = () => {
   if (enabledChains.length === 0) {
     return (
       <div className="flex justify-center items-center min-h-[200px]">
-        No chains with interop contracts not found. If forking with supersim, set rpc url overrides
+        No chains with interop contracts not found. If forking with supersim,
+        set rpc url overrides
       </div>
     )
   }
@@ -44,7 +51,10 @@ export const SuperchainRctSwapsPage = () => {
               setSelectedChain={setSelectedChain}
             />
           </div>
-          <RCTSwapsCard network={network} selectedChain={selectedChain ?? enabledChains[0]!} />
+          <RCTSwapsCard
+            network={network}
+            selectedChain={selectedChain ?? enabledChains[0]!}
+          />
         </div>
       </SupportedNetworks>
     </div>

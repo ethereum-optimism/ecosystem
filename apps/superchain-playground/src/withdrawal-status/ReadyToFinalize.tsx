@@ -4,7 +4,11 @@ import { CheckCircle, Loader2 } from 'lucide-react'
 import type { Chain, Hash } from 'viem'
 import type { GetWithdrawalsReturnType } from 'viem/op-stack'
 import { walletActionsL1 } from 'viem/op-stack'
-import { useConfig,useTransactionReceipt, useWaitForTransactionReceipt  } from 'wagmi'
+import {
+  useConfig,
+  useTransactionReceipt,
+  useWaitForTransactionReceipt,
+} from 'wagmi'
 
 import { Button } from '@/components/ui/button'
 import { useWithdrawalMessage } from '@/hooks/useWithdrawalMessage'

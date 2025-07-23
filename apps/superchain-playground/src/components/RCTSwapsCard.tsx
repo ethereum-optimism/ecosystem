@@ -1,27 +1,40 @@
 import type { Network } from '@eth-optimism/viem/chains'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@radix-ui/react-tabs';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@radix-ui/react-tabs'
 import { useState } from 'react'
-import { type Chain } from 'viem';
+import { type Chain } from 'viem'
 import { useAccount } from 'wagmi'
 
 import { TokenAmountInput } from '@/components/TokenAmountInput'
 import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
 import { POSM_ADDRESS, V4_ROUTER_ADDRESS } from '@/hooks/uniswap/addresses'
-import { useApproval } from '@/hooks/uniswap/useApprovals';
+import { useApproval } from '@/hooks/uniswap/useApprovals'
 import { useERC20Reference } from '@/hooks/uniswap/useERC20Reference'
-import { getLiquidityForAmounts, MAX_SQRT_PRICE, MIN_SQRT_PRICE, usePriceFromSqrtPriceX96 } from '@/hooks/uniswap/useLiquidityAmounts';
+import {
+  getLiquidityForAmounts,
+  MAX_SQRT_PRICE,
+  MIN_SQRT_PRICE,
+  usePriceFromSqrtPriceX96,
+} from '@/hooks/uniswap/useLiquidityAmounts'
 import { usePool } from '@/hooks/uniswap/usePool'
-import { usePoolLiquidity } from '@/hooks/uniswap/usePoolLiquidity';
-import { usePoolSwap } from '@/hooks/uniswap/usePoolSwap';
+import { usePoolLiquidity } from '@/hooks/uniswap/usePoolLiquidity'
+import { usePoolSwap } from '@/hooks/uniswap/usePoolSwap'
 import { useTokenList } from '@/stores/useTokenList'
 import type { Token } from '@/types/Token'
 
-export const RCTSwapsCard = ({ network, selectedChain }: { network: Network, selectedChain: Chain }) => {
+export const RCTSwapsCard = ({
+  network,
+  selectedChain,
+}: {
+  network: Network
+  selectedChain: Chain
+}) => {
   const { tokens } = useTokenList()
 
-  const chainIds = network.chains.map(c => c.id)
-  const eligibleTokens = tokens.filter(t => !t.nativeChainId || chainIds.includes(t.nativeChainId))
+  const chainIds = network.chains.map((c) => c.id)
+  const eligibleTokens = tokens.filter(
+    (t) => !t.nativeChainId || chainIds.includes(t.nativeChainId),
+  )
 
   const [tab, setTab] = useState('swaps')
 
@@ -33,10 +46,20 @@ export const RCTSwapsCard = ({ network, selectedChain }: { network: Network, sel
     <div className="max-w-md w-full mx-auto flex flex-col gap-6 p-6 border rounded-xl bg-background">
       <Tabs defaultValue="swaps" value={tab}>
         <TabsList className="w-full flex">
-          <TabsTrigger key="swaps" value="swaps" className="flex-1 relative" onClick={() => setTab('swaps')}>
+          <TabsTrigger
+            key="swaps"
+            value="swaps"
+            className="flex-1 relative"
+            onClick={() => setTab('swaps')}
+          >
             Swaps
           </TabsTrigger>
-          <TabsTrigger key="pools" value="pools" className="flex-1 relative" onClick={() => setTab('pools')}>
+          <TabsTrigger
+            key="pools"
+            value="pools"
+            className="flex-1 relative"
+            onClick={() => setTab('pools')}
+          >
             Pools
           </TabsTrigger>
         </TabsList>
@@ -73,12 +96,12 @@ export const RCTPools = ({
   token1,
   setToken1,
 }: {
-  selectedChain: Chain,
-  tokens: Token[],
-  token0: Token,
-  setToken0: (token: Token) => void,
-  token1: Token,
-  setToken1: (token: Token) => void,
+  selectedChain: Chain
+  tokens: Token[]
+  token0: Token
+  setToken0: (token: Token) => void
+  token1: Token
+  setToken1: (token: Token) => void
 }) => {
   const { address } = useAccount()
 
@@ -98,7 +121,9 @@ export const RCTPools = ({
     isPending: isPendingReferenceToken1,
   } = useERC20Reference({ token: token1, chain: selectedChain })
 
-  const isPendingReference = (requiresReferenceToken0 && isPendingReferenceToken0) || (requiresReferenceToken1 && isPendingReferenceToken1)
+  const isPendingReference =
+    (requiresReferenceToken0 && isPendingReferenceToken0) ||
+    (requiresReferenceToken1 && isPendingReferenceToken1)
 
   const {
     sqrtPriceX96,
@@ -111,16 +136,30 @@ export const RCTPools = ({
   const price = usePriceFromSqrtPriceX96(sqrtPriceX96)
   const amount1 = sqrtPriceX96 ? amount0 * Number(price) : 0
 
-  const liquidityAmount = getLiquidityForAmounts(sqrtPriceX96, MIN_SQRT_PRICE, MAX_SQRT_PRICE, BigInt(amount0 * 10 ** token0!.decimals), BigInt(amount1 * 10 ** token1!.decimals))
+  const liquidityAmount = getLiquidityForAmounts(
+    sqrtPriceX96,
+    MIN_SQRT_PRICE,
+    MAX_SQRT_PRICE,
+    BigInt(amount0 * 10 ** token0!.decimals),
+    BigInt(amount1 * 10 ** token1!.decimals),
+  )
 
-  const { approve: approve0, isPending: pendingApproval0, requiresApproval: requiresApproval0 } = useApproval({
+  const {
+    approve: approve0,
+    isPending: pendingApproval0,
+    requiresApproval: requiresApproval0,
+  } = useApproval({
     token: token0!,
     amount: BigInt(amount0 * 10 ** token0!.decimals) + 1n,
     chain: selectedChain,
     spender: POSM_ADDRESS,
   })
 
-  const { approve: approve1, isPending: pendingApproval1, requiresApproval: requiresApproval1 } = useApproval({
+  const {
+    approve: approve1,
+    isPending: pendingApproval1,
+    requiresApproval: requiresApproval1,
+  } = useApproval({
     token: token1!,
     amount: BigInt(amount1 * 10 ** token1!.decimals) + 1n,
     chain: selectedChain,
@@ -143,7 +182,7 @@ export const RCTPools = ({
         <Label>Token 0</Label>
         <TokenAmountInput
           chainId={selectedChain.id}
-          tokens={tokens.filter(t => t.symbol !== token1!.symbol)}
+          tokens={tokens.filter((t) => t.symbol !== token1!.symbol)}
           selectedToken={token0!}
           onTokenChange={setToken0}
           amount={amount0}
@@ -154,7 +193,7 @@ export const RCTPools = ({
         <Label>Token 1</Label>
         <TokenAmountInput
           chainId={selectedChain.id}
-          tokens={tokens.filter(t => t.symbol !== token0!.symbol)}
+          tokens={tokens.filter((t) => t.symbol !== token0!.symbol)}
           selectedToken={token1!}
           onTokenChange={setToken1}
           amount={amount1}
@@ -162,40 +201,54 @@ export const RCTPools = ({
           readOnly
         />
       </div>
-        <Button
+      <Button
         className="w-full"
-        disabled={(initialized && amount0 === 0) || (!initialized && (isPendingReference || isPendingInitializePool || isPendingAddLiquidity))}
+        disabled={
+          (initialized && amount0 === 0) ||
+          (!initialized &&
+            (isPendingReference ||
+              isPendingInitializePool ||
+              isPendingAddLiquidity))
+        }
         onClick={() => {
           if (requiresReferenceToken0 || requiresReferenceToken1) {
             if (requiresReferenceToken0) initializeReferenceToken0()
             if (requiresReferenceToken1) initializeReferenceToken1()
-          }
-          else if (!initialized) {
+          } else if (!initialized) {
             initializePool()
-          }
-          else if (requiresApproval0 || requiresApproval1) {
+          } else if (requiresApproval0 || requiresApproval1) {
             if (requiresApproval0) approve0()
             if (requiresApproval1) approve1()
-          }
-          else {
+          } else {
             addLiquidity()
           }
-        }}>
-        { !address ? 'Connect Wallet' :
-
-            // Reference Requirements
-            requiresReferenceToken0 ? isPendingReferenceToken0 ? 'Deploying Reference' : `Deploy ref${token0.symbol}` :
-            requiresReferenceToken1 ? isPendingReferenceToken1 ? 'Deploying Reference' : `Deploy ref${token1.symbol}` :
-
-            // Initialization
-            !initialized ? isPendingInitializePool ? 'Initializing...' : 'Initialize Pool' :
-
-            // Approval
-            (requiresApproval0 || requiresApproval1) ? (pendingApproval0 || pendingApproval1) ? 'Approving...' : 'Approve' :
-
-            // Liquidity Addition
-            isPendingAddLiquidity ? 'Adding Liquidity...' : 'Add Liquidity'
-        }
+        }}
+      >
+        {!address
+          ? 'Connect Wallet'
+          : // Reference Requirements
+          requiresReferenceToken0
+          ? isPendingReferenceToken0
+            ? 'Deploying Reference'
+            : `Deploy ref${token0.symbol}`
+          : requiresReferenceToken1
+          ? isPendingReferenceToken1
+            ? 'Deploying Reference'
+            : `Deploy ref${token1.symbol}`
+          : // Initialization
+          !initialized
+          ? isPendingInitializePool
+            ? 'Initializing...'
+            : 'Initialize Pool'
+          : // Approval
+          requiresApproval0 || requiresApproval1
+          ? pendingApproval0 || pendingApproval1
+            ? 'Approving...'
+            : 'Approve'
+          : // Liquidity Addition
+          isPendingAddLiquidity
+          ? 'Adding Liquidity...'
+          : 'Add Liquidity'}
       </Button>
     </div>
   )
@@ -209,24 +262,35 @@ export const RCTSwaps = ({
   token1,
   setToken1,
 }: {
-  selectedChain: Chain,
-  tokens: Token[],
-  token0: Token,
-  setToken0: (token: Token) => void,
-  token1: Token,
-  setToken1: (token: Token) => void,
+  selectedChain: Chain
+  tokens: Token[]
+  token0: Token
+  setToken0: (token: Token) => void
+  token1: Token
+  setToken1: (token: Token) => void
 }) => {
   const { address } = useAccount()
 
   const tokenPair = { token0, token1 }
-  const { initialized, sqrtPriceX96 } = usePool({ tokenPair, chain: selectedChain })
+  const { initialized, sqrtPriceX96 } = usePool({
+    tokenPair,
+    chain: selectedChain,
+  })
 
   const [amount0, setAmount0] = useState(0)
 
   const price = usePriceFromSqrtPriceX96(sqrtPriceX96)
-  const amount1 = sqrtPriceX96 ? !token0.address ? amount0 * Number(price) : amount0 / Number(price) : 0
+  const amount1 = sqrtPriceX96
+    ? !token0.address
+      ? amount0 * Number(price)
+      : amount0 / Number(price)
+    : 0
 
-  const { approve: approve0, isPending: pendingApproval0, requiresApproval: requiresApproval0 } = useApproval({
+  const {
+    approve: approve0,
+    isPending: pendingApproval0,
+    requiresApproval: requiresApproval0,
+  } = useApproval({
     token: token0!,
     amount: BigInt(amount0 * 10 ** token0!.decimals) + 1n,
     chain: selectedChain,
@@ -245,7 +309,7 @@ export const RCTSwaps = ({
         <Label>Sell</Label>
         <TokenAmountInput
           chainId={selectedChain.id}
-          tokens={tokens.filter(t => t.symbol !== token1.symbol)}
+          tokens={tokens.filter((t) => t.symbol !== token1.symbol)}
           selectedToken={token0!}
           onTokenChange={setToken0}
           amount={amount0}
@@ -256,7 +320,7 @@ export const RCTSwaps = ({
         <Label>Buy</Label>
         <TokenAmountInput
           chainId={selectedChain.id}
-          tokens={tokens.filter(t => t.symbol !== token0.symbol)}
+          tokens={tokens.filter((t) => t.symbol !== token0.symbol)}
           selectedToken={token1!}
           onTokenChange={setToken1}
           amount={amount1}
@@ -272,11 +336,17 @@ export const RCTSwaps = ({
           else swap()
         }}
       >
-        { !address ? 'Connect Wallet' :
-            !initialized ? 'Uninitialized Pool' :
-            (requiresApproval0) ? (pendingApproval0) ? 'Approving...' : 'Approve' :
-            isPending ? 'Swapping...' : 'Swap'
-        }
+        {!address
+          ? 'Connect Wallet'
+          : !initialized
+          ? 'Uninitialized Pool'
+          : requiresApproval0
+          ? pendingApproval0
+            ? 'Approving...'
+            : 'Approve'
+          : isPending
+          ? 'Swapping...'
+          : 'Swap'}
       </Button>
     </div>
   )

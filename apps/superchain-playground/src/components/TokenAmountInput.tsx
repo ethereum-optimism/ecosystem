@@ -1,7 +1,10 @@
 import { zeroAddress } from 'viem'
 import { useAccount, useBalance } from 'wagmi'
 
-import { getERC20ReferenceAddress, getRequiresReference } from '@/actions/uniswap/getERC20ReferenceAddress'
+import {
+  getERC20ReferenceAddress,
+  getRequiresReference,
+} from '@/actions/uniswap/getERC20ReferenceAddress'
 import { TokenPicker } from '@/components/TokenPicker'
 import { Input } from '@/components/ui/input'
 import type { Token } from '@/types/Token'
@@ -38,8 +41,13 @@ export const TokenAmountInput = ({
 
   // TODO: We should remove this when we chain together liquidity addition with the approval.
   // But for now render the local balance of the remote token with the PositionsManager
-  const requiresReference = getRequiresReference(selectedToken, selectedChainId ?? 0)
-  const refAddress = requiresReference ? getERC20ReferenceAddress(selectedToken, selectedChainId ?? 0) : zeroAddress
+  const requiresReference = getRequiresReference(
+    selectedToken,
+    selectedChainId ?? 0,
+  )
+  const refAddress = requiresReference
+    ? getERC20ReferenceAddress(selectedToken, selectedChainId ?? 0)
+    : zeroAddress
   const { data: refData } = useBalance({
     address: address,
     token: refAddress,
@@ -48,7 +56,11 @@ export const TokenAmountInput = ({
   })
 
   const balance = (data?.value ?? 0n) + (refData?.value ?? 0n)
-  const formattedBalance = isLoadingBalance ? '-' : truncateDecimal((Number(balance) / 10 ** selectedToken.decimals).toString())
+  const formattedBalance = isLoadingBalance
+    ? '-'
+    : truncateDecimal(
+        (Number(balance) / 10 ** selectedToken.decimals).toString(),
+      )
 
   return (
     <div className="flex flex-col gap-2">
@@ -60,11 +72,13 @@ export const TokenAmountInput = ({
         />
         <Input
           type="number"
-          value={amount > 0 ? amount.toString(): ''}
-          onChange={e => onAmountChange(Number(e.target.value))}
+          value={amount > 0 ? amount.toString() : ''}
+          onChange={(e) => onAmountChange(Number(e.target.value))}
           placeholder="0.0"
           min="0"
-          className={`flex-1 ${readOnly ? 'opacity-50 cursor-not-allowed' : ''}`}
+          className={`flex-1 ${
+            readOnly ? 'opacity-50 cursor-not-allowed' : ''
+          }`}
           readOnly={readOnly}
           disabled={readOnly}
         />

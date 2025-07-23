@@ -17,23 +17,27 @@ interface TokenPickerProps {
   setSelectedToken: (token: Token) => void
 }
 
-export const TokenPicker = ({ tokens, selectedToken, setSelectedToken }: TokenPickerProps) => {
+export const TokenPicker = ({
+  tokens,
+  selectedToken,
+  setSelectedToken,
+}: TokenPickerProps) => {
   const { networkName } = useConfig()
 
   return (
     <div className="flex gap-2">
       <Select
         value={selectedToken.symbol}
-        onValueChange={val => {
-          const token = tokens.find(t => t.symbol === val)
+        onValueChange={(val) => {
+          const token = tokens.find((t) => t.symbol === val)
           if (token) setSelectedToken(token)
         }}
       >
         <SelectTrigger className="w-32">
           <SelectValue>
-              <div className="flex items-center gap-2">
-                {selectedToken.symbol}
-              </div>
+            <div className="flex items-center gap-2">
+              {selectedToken.symbol}
+            </div>
           </SelectValue>
         </SelectTrigger>
         <SelectContent>
@@ -43,11 +47,9 @@ export const TokenPicker = ({ tokens, selectedToken, setSelectedToken }: TokenPi
               value={token.symbol}
               className="w-full text-sm flex items-center justify-between"
             >
-              <div className="flex items-center gap-2">
-                {token.symbol}
-              </div>
-              </SelectItem>
-            ))}
+              <div className="flex items-center gap-2">{token.symbol}</div>
+            </SelectItem>
+          ))}
           <AddTokenModal network={networks[networkName]} />
         </SelectContent>
       </Select>

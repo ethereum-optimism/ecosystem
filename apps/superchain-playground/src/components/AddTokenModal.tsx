@@ -4,7 +4,13 @@ import type { Address, Chain } from 'viem'
 
 import { ChainPicker } from '@/components/ChainPicker'
 import { Button } from '@/components/ui/button'
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { useTokenInfo } from '@/hooks/useTokenInfo'
@@ -24,8 +30,12 @@ export const AddTokenModal = ({ network }: AddTokenModalProps) => {
   const [selectedChain, setSelectedChain] = useState<Chain | undefined>()
   const [open, setOpen] = useState(false)
 
-  const { tokenData, isLoading } = useTokenInfo({ address, chainId: selectedChain?.id ?? 0 })
-  const hasRequiredFields = (!!name || tokenData?.name) && (!!symbol || tokenData?.symbol)
+  const { tokenData, isLoading } = useTokenInfo({
+    address,
+    chainId: selectedChain?.id ?? 0,
+  })
+  const hasRequiredFields =
+    (!!name || tokenData?.name) && (!!symbol || tokenData?.symbol)
 
   const clearInputs = () => {
     setName(undefined)
@@ -36,7 +46,10 @@ export const AddTokenModal = ({ network }: AddTokenModalProps) => {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="ghost" className="w-full justify-start text-sm text-muted-foreground hover:text-foreground">
+        <Button
+          variant="ghost"
+          className="w-full justify-start text-sm text-muted-foreground hover:text-foreground"
+        >
           + Add / Change Token
         </Button>
       </DialogTrigger>
@@ -58,14 +71,21 @@ export const AddTokenModal = ({ network }: AddTokenModalProps) => {
         <div className="flex flex-col gap-4">
           <div className="flex items-center gap-4">
             <Label className="w-20">Chain</Label>
-            <ChainPicker network={network} selectedChain={selectedChain} setSelectedChain={setSelectedChain} />
+            <ChainPicker
+              network={network}
+              selectedChain={selectedChain}
+              setSelectedChain={setSelectedChain}
+            />
           </div>
           <div className="flex items-center gap-4">
             <Label className="w-20">Address</Label>
             <Input
               value={address}
               disabled={!selectedChain}
-              onChange={(e) => { clearInputs(); setAddress(e.target.value as Address) }}
+              onChange={(e) => {
+                clearInputs()
+                setAddress(e.target.value as Address)
+              }}
               placeholder="0x..."
               required
             />
@@ -113,12 +133,15 @@ export const AddTokenModal = ({ network }: AddTokenModalProps) => {
               clearInputs()
             }}
           >
-            { !selectedChain ? 'Select a chain' :
-              isLoading ? 'Loading...' :
-              !tokenData ? 'Token Not Found' :
-              !hasRequiredFields ? 'Missing Fields' :
-              'Add Token'
-            }
+            {!selectedChain
+              ? 'Select a chain'
+              : isLoading
+              ? 'Loading...'
+              : !tokenData
+              ? 'Token Not Found'
+              : !hasRequiredFields
+              ? 'Missing Fields'
+              : 'Add Token'}
           </Button>
         </div>
       </DialogContent>

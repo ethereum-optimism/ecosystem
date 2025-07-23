@@ -58,10 +58,7 @@ export const SuperchainTokenBridgePage = () => {
 
   const { addTransaction } = useTransactionStore()
 
-  const {
-    tokenData,
-    isLoading: isTokenLoading,
-  } = useTokenInfo({
+  const { tokenData, isLoading: isTokenLoading } = useTokenInfo({
     address: tokenAddress as Address,
     chainId: fromChainId,
   })

@@ -16,7 +16,11 @@ interface ChainPickerProps {
   setSelectedChain: (chain: Chain) => void
 }
 
-export const ChainPicker = ({ network, selectedChain, setSelectedChain }: ChainPickerProps) => {
+export const ChainPicker = ({
+  network,
+  selectedChain,
+  setSelectedChain,
+}: ChainPickerProps) => {
   // chore: should filter to just live networks
   return (
     <div className="w-full">
