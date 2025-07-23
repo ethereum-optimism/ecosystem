@@ -1,4 +1,5 @@
-import { contracts, l2ToL2CrossDomainMessengerAbi } from '@eth-optimism/viem'
+import { contracts } from '@eth-optimism/viem'
+import { l2ToL2CrossDomainMessengerAbi } from '@eth-optimism/viem/abis'
 import type { Network } from '@eth-optimism/viem/chains'
 import { getPublicClient } from '@wagmi/core'
 import { useEffect, useState } from 'react'

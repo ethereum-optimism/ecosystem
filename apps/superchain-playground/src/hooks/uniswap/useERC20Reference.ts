@@ -1,4 +1,5 @@
-import { contracts, create2DeployerAbi } from '@eth-optimism/viem'
+import { contracts } from '@eth-optimism/viem'
+import { create2DeployerAbi } from '@eth-optimism/viem/abis'
 import { switchChain } from '@wagmi/core'
 import { type Chain, zeroHash } from 'viem'
 import {
