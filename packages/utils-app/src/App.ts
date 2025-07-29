@@ -180,6 +180,7 @@ export abstract class App {
     this.logger.info(`starting admin api server on port :${port}`)
     this.adminServer = serve({
       fetch: this.adminApi.fetch,
+      hostname: '0.0.0.0',
       port: Number(port),
     })
   }

@@ -7,6 +7,7 @@ import { ConfigPage } from '@/pages/ConfigPage'
 import { L2ToL1RelayerPage } from '@/pages/L2ToL1RelayerPage'
 import { SuperchainETHBridgePage } from '@/pages/SuperchainETHBridgePage'
 import { SuperchainMessageRelayer } from '@/pages/SuperchainMessageRelayer'
+import { SuperchainRctSwapsPage } from '@/pages/SuperchainRCTSwapsPage'
 import { SuperchainTokenBridgePage } from '@/pages/SuperchainTokenBridgePage'
 
 const router = createBrowserRouter([
@@ -40,6 +41,10 @@ const router = createBrowserRouter([
       {
         path: '/superchain-message-relayer',
         element: <SuperchainMessageRelayer />,
+      },
+      {
+        path: '/superchain-rct-swaps',
+        element: <SuperchainRctSwapsPage />,
       },
       {
         path: '/config',

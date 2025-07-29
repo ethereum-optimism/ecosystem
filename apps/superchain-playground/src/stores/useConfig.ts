@@ -2,7 +2,7 @@ import type { NetworkName } from '@eth-optimism/viem/chains'
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 
-type Config = {
+export type Config = {
   networkName: NetworkName
   setNetworkName: (networkName: NetworkName) => void
 

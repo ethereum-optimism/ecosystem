@@ -4,13 +4,16 @@ import { CheckCircle, Loader2 } from 'lucide-react'
 import type { Chain, Hash } from 'viem'
 import type { BuildProveWithdrawalReturnType } from 'viem/op-stack'
 import { walletActionsL1 } from 'viem/op-stack'
-import { useTransactionReceipt, useWaitForTransactionReceipt } from 'wagmi'
+import {
+  useConfig,
+  useTransactionReceipt,
+  useWaitForTransactionReceipt,
+} from 'wagmi'
 
 import { Button } from '@/components/ui/button'
 import { useBuildProveWithdrawal } from '@/hooks/useBuildProveWithdrawal'
 import { useGetL2Output } from '@/hooks/useGetL2Output'
 import { useWithdrawalMessage } from '@/hooks/useWithdrawalMessage'
-import { config } from '@/lib/wagmi'
 
 const useProveWithdrawalParams = ({
   transactionHash,
@@ -39,6 +42,7 @@ const useProveWithdrawalParams = ({
 }
 
 const useWriteProveWithdrawal = () => {
+  const config = useConfig()
   return useMutation({
     mutationFn: async ({
       l2Chain,

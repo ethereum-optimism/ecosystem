@@ -3012,3 +3012,31 @@ export const superchainTokenBridgeAbi = [
     inputs: [],
   },
 ] as const
+
+/**
+ * ABI for the OP Stack contract `Create2Deployer`
+ * @category ABI
+ */
+export const create2DeployerAbi = [
+  {
+    type: 'function',
+    name: 'computeAddress',
+    inputs: [
+      { name: 'salt', type: 'bytes32', internalType: 'bytes32' },
+      { name: 'codeHash', type: 'bytes32', internalType: 'bytes32' },
+    ],
+    outputs: [{ name: '', type: 'address', internalType: 'address' }],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    name: 'deploy',
+    inputs: [
+      { name: 'value', type: 'uint256', internalType: 'uint256' },
+      { name: 'salt', type: 'bytes32', internalType: 'bytes32' },
+      { name: 'code', type: 'bytes', internalType: 'bytes' },
+    ],
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+] as const

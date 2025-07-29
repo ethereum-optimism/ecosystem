@@ -7,6 +7,15 @@ import { chainConfig } from 'viem/op-stack'
  */
 export const contracts = {
   ...chainConfig.contracts,
+  multicall3: {
+    address: '0xca11bde05977b3631167028862be2a173976ca11',
+  },
+  create2Deployer: {
+    address: '0x13b0D85CcB8bf860b6b79AF3029fCA081AE9beF2',
+  },
+  permit2: {
+    address: '0x000000000022D473030F116dDEE9F6B43aC78BA3',
+  },
   crossL2Inbox: {
     address: '0x4200000000000000000000000000000000000022',
   },
