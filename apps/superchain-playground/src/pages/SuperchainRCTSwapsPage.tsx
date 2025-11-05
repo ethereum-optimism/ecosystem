@@ -9,11 +9,7 @@ import { SupportedNetworks } from '@/components/SupportedNetworks'
 import { useInteropEnabledChains } from '@/hooks/useInteropEnabledChains'
 import { useConfig } from '@/stores/useConfig'
 
-const supportedNetworkNames: NetworkName[] = [
-  'mainnet',
-  'interop-alpha',
-  'supersim',
-]
+const supportedNetworkNames: NetworkName[] = ['mainnet', 'supersim']
 
 export const SuperchainRctSwapsPage = () => {
   const { networkName } = useConfig()

@@ -28,11 +28,7 @@ import { ReadyToProve } from '@/withdrawal-status/ReadyToProve'
 import { WaitingToFinalize } from '@/withdrawal-status/WaitingToFinalize'
 import { WaitingToProve } from '@/withdrawal-status/WaitingToProve'
 
-const supportedNetworkNames: NetworkName[] = [
-  'mainnet',
-  'sepolia',
-  'interop-alpha',
-]
+const supportedNetworkNames: NetworkName[] = ['mainnet', 'sepolia']
 
 export const L2ToL1RelayerPage = () => {
   const { networkName } = useConfig()

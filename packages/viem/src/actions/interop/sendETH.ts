@@ -15,7 +15,7 @@ import type {
 import { estimateContractGas, simulateContract } from 'viem/actions'
 
 import { superchainETHBridgeAbi } from '@/abis/index.js'
-import { contracts } from '@/contracts.js'
+import { interopContracts } from '@/contracts.js'
 import type { BaseWriteContractActionParameters } from '@/core/baseWriteAction.js'
 import { baseWriteAction } from '@/core/baseWriteAction.js'
 import type { ErrorType } from '@/types/utils.js'
@@ -78,7 +78,7 @@ export async function sendETH<
     client,
     {
       abi: superchainETHBridgeAbi,
-      contractAddress: contracts.superchainETHBridge.address,
+      contractAddress: interopContracts.superchainETHBridge.address,
       contractFunctionName: 'sendETH',
       contractArgs: [to, chainId],
     },
@@ -105,7 +105,7 @@ export async function estimateSendETHGas<
 
   return estimateContractGas(client, {
     abi: superchainETHBridgeAbi,
-    address: contracts.superchainETHBridge.address,
+    address: interopContracts.superchainETHBridge.address,
     functionName: 'sendETH',
     args: [to, chainId],
     ...txParameters,
@@ -132,7 +132,7 @@ export async function simulateSendETH<
   const res = await simulateContract(client, {
     account,
     abi: superchainETHBridgeAbi,
-    address: contracts.superchainETHBridge.address,
+    address: interopContracts.superchainETHBridge.address,
     chain: client.chain,
     functionName: 'sendETH',
     args: [to, chainId],

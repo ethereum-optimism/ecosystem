@@ -8,7 +8,7 @@ import {
   toHex,
 } from 'viem'
 
-import { contracts } from '@/contracts.js'
+import { interopContracts } from '@/contracts.js'
 import type { MessageIdentifier } from '@/types/interop/executingMessage.js'
 
 function lookupEntry(id: MessageIdentifier): Hex {
@@ -139,7 +139,7 @@ export function encodeAccessList(
 
   return [
     {
-      address: contracts.crossL2Inbox.address,
+      address: interopContracts.crossL2Inbox.address,
       storageKeys,
     },
   ]

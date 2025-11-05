@@ -2,13 +2,13 @@
 
 ***
 
-[@eth-optimism/viem](../../README.md) / [chains](../README.md) / interopAlpha1
+[@eth-optimism/viem](../../README.md) / [chains](../README.md) / silentDataMainnet
 
-# interopAlpha1
+# silentDataMainnet
 
-> `const` **interopAlpha1**: `object`
+> `const` **silentDataMainnet**: `object`
 
-L2 chain A definition for interop-alpha-1
+Chain Definition for Silent Data
 
 ## Type declaration
 
@@ -18,41 +18,17 @@ L2 chain A definition for interop-alpha-1
 
 Collection of block explorers
 
-### blockExplorers.blockscout
-
-> `readonly` **blockscout**: `object` = `interopAlpha1Blockscout`
-
-### blockExplorers.blockscout.name
-
-> **name**: `string` = `'Interop Alpha 1 Blockscout'`
-
-### blockExplorers.blockscout.url
-
-> **url**: `string` = `'https://optimism-interop-alpha-1.blockscout.com/'`
-
 ### blockExplorers.default
 
-> `readonly` **default**: `object` = `interopAlpha1Blockscout`
+> `readonly` **default**: `object`
 
 ### blockExplorers.default.name
 
-> **name**: `string` = `'Interop Alpha 1 Blockscout'`
+> `readonly` **name**: `"Silent Data Explorer"` = `'Silent Data Explorer'`
 
 ### blockExplorers.default.url
 
-> **url**: `string` = `'https://optimism-interop-alpha-1.blockscout.com/'`
-
-### blockExplorers.routescan
-
-> `readonly` **routescan**: `object`
-
-### blockExplorers.routescan.name
-
-> `readonly` **name**: `"Interop Alpha 1 Routescan"` = `'Interop Alpha 1 Routescan'`
-
-### blockExplorers.routescan.url
-
-> `readonly` **url**: `"https://420120001.testnet.routescan.io/"` = `'https://420120001.testnet.routescan.io/'`
+> `readonly` **url**: `"https://explorer-mainnet.rollup.silentdata.com"` = `'https://explorer-mainnet.rollup.silentdata.com'`
 
 ### contracts
 
@@ -60,21 +36,25 @@ Collection of block explorers
 
 Collection of contracts
 
-### contracts.addressManager
+### contracts.create2Deployer
 
-> `readonly` **addressManager**: `object`
+> `readonly` **create2Deployer**: `object`
 
-### contracts.anchorStateRegistry
+### contracts.create2Deployer.address
 
-> `readonly` **anchorStateRegistry**: `object`
+> `readonly` **address**: `"0x13b0D85CcB8bf860b6b79AF3029fCA081AE9beF2"` = `'0x13b0D85CcB8bf860b6b79AF3029fCA081AE9beF2'`
 
 ### contracts.disputeGameFactory
 
 > `readonly` **disputeGameFactory**: `object`
 
-### contracts.faultDisputeGame
+### contracts.disputeGameFactory.1
 
-> `readonly` **faultDisputeGame**: `object`
+> `readonly` **1**: `object`
+
+### contracts.disputeGameFactory.1.address
+
+> `readonly` **address**: `"0x139Cf05B34D0EC49D3BFB9704EC4cEbA6ae95dD1"` = `'0x139Cf05B34D0EC49D3BFB9704EC4cEbA6ae95dD1'`
 
 ### contracts.gasPriceOracle
 
@@ -96,13 +76,37 @@ Collection of contracts
 
 > `readonly` **l1CrossDomainMessenger**: `object`
 
-### contracts.l1Erc721BridgeProxy
+### contracts.l1CrossDomainMessenger.1
 
-> `readonly` **l1Erc721BridgeProxy**: `object`
+> `readonly` **1**: `object`
+
+### contracts.l1CrossDomainMessenger.1.address
+
+> `readonly` **address**: `"0x3131b01DF2F9eF6F42113090Edead5c97612c473"` = `'0x3131b01DF2F9eF6F42113090Edead5c97612c473'`
+
+### contracts.l1Erc721Bridge
+
+> `readonly` **l1Erc721Bridge**: `object`
+
+### contracts.l1Erc721Bridge.1
+
+> `readonly` **1**: `object`
+
+### contracts.l1Erc721Bridge.1.address
+
+> `readonly` **address**: `"0x74A3065E6A4FFAA07dAC542E28452995f3c32EeA"` = `'0x74A3065E6A4FFAA07dAC542E28452995f3c32EeA'`
 
 ### contracts.l1StandardBridge
 
 > `readonly` **l1StandardBridge**: `object`
+
+### contracts.l1StandardBridge.1
+
+> `readonly` **1**: `object`
+
+### contracts.l1StandardBridge.1.address
+
+> `readonly` **address**: `"0xe97d73B0079e04f4ea4162b9173604a6213eF158"` = `'0xe97d73B0079e04f4ea4162b9173604a6213eF158'`
 
 ### contracts.l2CrossDomainMessenger
 
@@ -136,25 +140,61 @@ Collection of contracts
 
 > `readonly` **address**: `"0x4200000000000000000000000000000000000016"`
 
-### contracts.opChainProxyAdmin
+### contracts.multicall3
 
-> `readonly` **opChainProxyAdmin**: `object`
+> `readonly` **multicall3**: `object`
 
-### contracts.optimismMintableErc20FactoryProxy
+### contracts.multicall3.address
 
-> `readonly` **optimismMintableErc20FactoryProxy**: `object`
+> `readonly` **address**: `"0xca11bde05977b3631167028862be2a173976ca11"` = `'0xca11bde05977b3631167028862be2a173976ca11'`
 
-### contracts.optimismPortal
+### contracts.optimismMintableERC20Factory
 
-> `readonly` **optimismPortal**: `object`
+> `readonly` **optimismMintableERC20Factory**: `object`
 
-### contracts.permissionedDisputeGame
+### contracts.optimismMintableERC20Factory.address
 
-> `readonly` **permissionedDisputeGame**: `object`
+> `readonly` **address**: `"0x4200000000000000000000000000000000000012"` = `'0x4200000000000000000000000000000000000012'`
+
+### contracts.permit2
+
+> `readonly` **permit2**: `object`
+
+### contracts.permit2.address
+
+> `readonly` **address**: `"0x000000000022D473030F116dDEE9F6B43aC78BA3"` = `'0x000000000022D473030F116dDEE9F6B43aC78BA3'`
+
+### contracts.portal
+
+> `readonly` **portal**: `object`
+
+### contracts.portal.1
+
+> `readonly` **1**: `object`
+
+### contracts.portal.1.address
+
+> `readonly` **address**: `"0xCcd285b1ccf1cdaB36Da995B9fC68870E287694E"` = `'0xCcd285b1ccf1cdaB36Da995B9fC68870E287694E'`
 
 ### contracts.systemConfig
 
 > `readonly` **systemConfig**: `object`
+
+### contracts.systemConfig.1
+
+> `readonly` **1**: `object`
+
+### contracts.systemConfig.1.address
+
+> `readonly` **address**: `"0x5c3Efe3cA554816E9960C02AE3B4EB3A9a8D2E16"` = `'0x5c3Efe3cA554816E9960C02AE3B4EB3A9a8D2E16'`
+
+### contracts.weth
+
+> `readonly` **weth**: `object`
+
+### contracts.weth.address
+
+> `readonly` **address**: `"0x4200000000000000000000000000000000000006"` = `'0x4200000000000000000000000000000000000006'`
 
 ### custom?
 
@@ -436,13 +476,13 @@ Modifies how data is formatted and typed (e.g. blocks and transactions)
 
 ### id
 
-> **id**: `420120001`
+> **id**: `380929`
 
 ID in number form
 
 ### name
 
-> **name**: `"Interop Alpha 1"`
+> **name**: `"Silent Data"`
 
 Human-readable name
 
@@ -476,7 +516,7 @@ Collection of RPC endpoints
 
 ### rpcUrls.default.http
 
-> `readonly` **http**: readonly [`"https://interop-alpha-1.optimism.io"`]
+> `readonly` **http**: readonly [`"https://mainnet.silentdata.com/${SILENTDATA_AUTH_TOKEN}"`]
 
 ### serializers
 
@@ -500,16 +540,16 @@ Modifies how data is serialized (e.g. transactions).
 
 ### sourceId
 
-> **sourceId**: `11155111`
+> **sourceId**: `1`
 
 Source Chain ID (ie. the L1 chain)
 
-### testnet
+### testnet?
 
-> **testnet**: `true`
+> `optional` **testnet**: `boolean`
 
 Flag for test networks
 
 ## Defined in
 
-[packages/viem/src/chains/interopAlpha.ts:58](https://github.com/ethereum-optimism/ecosystem/blob/8c0ceae82d8e909c0d00b4601d7c7276090774cc/packages/viem/src/chains/interopAlpha.ts#L58)
+[packages/viem/src/chains/mainnet.ts:1478](https://github.com/ethereum-optimism/ecosystem/blob/a4b870454ce0f0a79a41dda7928a11b5c8946efc/packages/viem/src/chains/mainnet.ts#L1478)

@@ -1,7 +1,7 @@
 import { maxUint64 } from 'viem'
 import { describe, expect, it } from 'vitest'
 
-import { contracts } from '@/contracts.js'
+import { interopContracts } from '@/contracts.js'
 import type { MessageIdentifier } from '@/types/interop/executingMessage.js'
 
 import { encodeAccessList } from './encodeAccessList.js'
@@ -23,7 +23,7 @@ describe('encodeAccessList', () => {
 
     expect(result).toEqual([
       {
-        address: contracts.crossL2Inbox.address,
+        address: interopContracts.crossL2Inbox.address,
         storageKeys: [
           '0x010000000000000000000385000000000000000e0000000067f04d4b00000002',
           '0x03c6d2648cef120ce1d7ccf9f8d4042d6b25ff30a02e22d9ea2a47d2677ccb8d',
@@ -43,7 +43,7 @@ describe('encodeAccessList', () => {
 
     expect(result).toEqual([
       {
-        address: contracts.crossL2Inbox.address,
+        address: interopContracts.crossL2Inbox.address,
         storageKeys: [
           '0x010000000000000000000013000000000000000e0000000067f04d4b00000002',
           '0x0200000000000000000000000000000000000000000000000000000000000001',

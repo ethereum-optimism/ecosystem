@@ -2,13 +2,13 @@
 
 ***
 
-[@eth-optimism/viem](../../README.md) / [chains](../README.md) / ethernitySepolia
+[@eth-optimism/viem](../../README.md) / [chains](../README.md) / radiusTestnetSepolia
 
-# ethernitySepolia
+# radiusTestnetSepolia
 
-> `const` **ethernitySepolia**: `object`
+> `const` **radiusTestnetSepolia**: `object`
 
-Chain Definition for Ethernity Sepolia
+Chain Definition for Radius Sepolia
 
 ## Type declaration
 
@@ -24,11 +24,11 @@ Collection of block explorers
 
 ### blockExplorers.default.name
 
-> `readonly` **name**: `"Ethernity Sepolia Explorer"` = `'Ethernity Sepolia Explorer'`
+> `readonly` **name**: `"Radius Sepolia Explorer"` = `'Radius Sepolia Explorer'`
 
 ### blockExplorers.default.url
 
-> `readonly` **url**: `"https://testnet.ernscan.io"` = `'https://testnet.ernscan.io'`
+> `readonly` **url**: `"https://testnet-rpc.theradius.xyz/"` = `'https://testnet-rpc.theradius.xyz/'`
 
 ### contracts
 
@@ -54,7 +54,7 @@ Collection of contracts
 
 ### contracts.disputeGameFactory.11155111.address
 
-> `readonly` **address**: `"0x64d0Bce6eD7c16CAC7817F3597758E31AFacD01B"` = `'0x64d0Bce6eD7c16CAC7817F3597758E31AFacD01B'`
+> `readonly` **address**: `"0x6D6eF1D3a2eCC7511a0881F460422B461CA7128a"` = `'0x6D6eF1D3a2eCC7511a0881F460422B461CA7128a'`
 
 ### contracts.gasPriceOracle
 
@@ -82,7 +82,7 @@ Collection of contracts
 
 ### contracts.l1CrossDomainMessenger.11155111.address
 
-> `readonly` **address**: `"0x1c8b6a6F3E3612c79E62460a6e44C24D1EfF2FDa"` = `'0x1c8b6a6F3E3612c79E62460a6e44C24D1EfF2FDa'`
+> `readonly` **address**: `"0x00faA26c5e3483a78d2ca28edc5275B9a42AC8c2"` = `'0x00faA26c5e3483a78d2ca28edc5275B9a42AC8c2'`
 
 ### contracts.l1Erc721Bridge
 
@@ -94,7 +94,7 @@ Collection of contracts
 
 ### contracts.l1Erc721Bridge.11155111.address
 
-> `readonly` **address**: `"0xBf0D43e12eF74dC21917e1D6175702AD673e1283"` = `'0xBf0D43e12eF74dC21917e1D6175702AD673e1283'`
+> `readonly` **address**: `"0x3099397312B675f629E2C2d85A0744FCaf7bf325"` = `'0x3099397312B675f629E2C2d85A0744FCaf7bf325'`
 
 ### contracts.l1StandardBridge
 
@@ -106,7 +106,7 @@ Collection of contracts
 
 ### contracts.l1StandardBridge.11155111.address
 
-> `readonly` **address**: `"0xFd1a12b7a04B13c031d8b075BA5b9080a2CF246f"` = `'0xFd1a12b7a04B13c031d8b075BA5b9080a2CF246f'`
+> `readonly` **address**: `"0xD5983849E1EBFDb97e66736962Dbf9dB4d2BDC08"` = `'0xD5983849E1EBFDb97e66736962Dbf9dB4d2BDC08'`
 
 ### contracts.l2CrossDomainMessenger
 
@@ -123,18 +123,6 @@ Collection of contracts
 ### contracts.l2Erc721Bridge.address
 
 > `readonly` **address**: `"0x4200000000000000000000000000000000000014"`
-
-### contracts.l2OutputOracle
-
-> `readonly` **l2OutputOracle**: `object`
-
-### contracts.l2OutputOracle.11155111
-
-> `readonly` **11155111**: `object`
-
-### contracts.l2OutputOracle.11155111.address
-
-> `readonly` **address**: `"0x11118536F94Bc7C98bBaf9194bE13FC1987293cd"` = `'0x11118536F94Bc7C98bBaf9194bE13FC1987293cd'`
 
 ### contracts.l2StandardBridge
 
@@ -186,7 +174,7 @@ Collection of contracts
 
 ### contracts.portal.11155111.address
 
-> `readonly` **address**: `"0x1F24d471Ef7291c7F97DBD2f76299b30D3e3B6E3"` = `'0x1F24d471Ef7291c7F97DBD2f76299b30D3e3B6E3'`
+> `readonly` **address**: `"0x86897210aaD2861Aa603937762AC7c1E6Dfa9727"` = `'0x86897210aaD2861Aa603937762AC7c1E6Dfa9727'`
 
 ### contracts.systemConfig
 
@@ -198,7 +186,7 @@ Collection of contracts
 
 ### contracts.systemConfig.11155111.address
 
-> `readonly` **address**: `"0x7C957fec1F6B3d1024442E989cB08b8f2285686C"` = `'0x7C957fec1F6B3d1024442E989cB08b8f2285686C'`
+> `readonly` **address**: `"0x59b71c0a919bC1E8daE5488A562215494f1257fe"` = `'0x59b71c0a919bC1E8daE5488A562215494f1257fe'`
 
 ### contracts.weth
 
@@ -488,13 +476,13 @@ Modifies how data is formatted and typed (e.g. blocks and transactions)
 
 ### id
 
-> **id**: `233`
+> **id**: `863`
 
 ID in number form
 
 ### name
 
-> **name**: `"Ethernity Sepolia"`
+> **name**: `"Radius Sepolia"`
 
 Human-readable name
 
@@ -528,7 +516,7 @@ Collection of RPC endpoints
 
 ### rpcUrls.default.http
 
-> `readonly` **http**: readonly [`"https://testnet.ethernitychain.io"`]
+> `readonly` **http**: readonly [`"testnet-rpc.theradius.xyz"`]
 
 ### serializers
 
@@ -564,4 +552,4 @@ Flag for test networks
 
 ## Defined in
 
-[packages/viem/src/chains/sepolia.ts:388](https://github.com/ethereum-optimism/ecosystem/blob/a4b870454ce0f0a79a41dda7928a11b5c8946efc/packages/viem/src/chains/sepolia.ts#L388)
+[packages/viem/src/chains/sepolia.ts:1023](https://github.com/ethereum-optimism/ecosystem/blob/a4b870454ce0f0a79a41dda7928a11b5c8946efc/packages/viem/src/chains/sepolia.ts#L1023)

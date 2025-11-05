@@ -1,4 +1,4 @@
-import { contracts } from '@eth-optimism/viem'
+import { interopContracts } from '@eth-optimism/viem'
 import { superchainETHBridgeAbi } from '@eth-optimism/viem/abis'
 import type { NetworkName } from '@eth-optimism/viem/chains'
 import { networks } from '@eth-optimism/viem/chains'
@@ -39,7 +39,7 @@ import {
 import { useConfig } from '@/stores/useConfig'
 import { useTransactionStore } from '@/stores/useTransactionStore'
 
-const supportedNetworkNames: NetworkName[] = ['interop-alpha', 'supersim']
+const supportedNetworkNames: NetworkName[] = ['supersim']
 
 export const SuperchainETHBridgePage = () => {
   const { address } = useAccount()
@@ -62,7 +62,7 @@ export const SuperchainETHBridgePage = () => {
 
   const simulationResult = useSimulateContract({
     abi: superchainETHBridgeAbi,
-    address: contracts.superchainETHBridge.address,
+    address: interopContracts.superchainETHBridge.address,
     functionName: 'sendETH',
     args: [address!, BigInt(toChainId)],
     chainId: fromChainId,

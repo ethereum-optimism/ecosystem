@@ -1,4 +1,4 @@
-import { contracts } from '@eth-optimism/viem'
+import { interopContracts } from '@eth-optimism/viem'
 import { l2ToL2CrossDomainMessengerAbi } from '@eth-optimism/viem/abis'
 import type { RelayCrossDomainMessageParameters } from '@eth-optimism/viem/actions/interop'
 import { useCallback } from 'react'
@@ -23,7 +23,7 @@ export const useRelayL2ToL2Message = () => {
 
       return writeContractAsync({
         abi: l2ToL2CrossDomainMessengerAbi,
-        address: contracts.l2ToL2CrossDomainMessenger.address,
+        address: interopContracts.l2ToL2CrossDomainMessenger.address,
         functionName: 'relayMessage',
         args: [id, payload],
         chain,

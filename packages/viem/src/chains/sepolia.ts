@@ -3,7 +3,9 @@ import { defineChain } from 'viem'
 import * as viemChains from 'viem/chains'
 import { chainConfig } from 'viem/op-stack'
 
+import { contracts as chainContracts } from '@/chains/contracts.js'
 import type { Network } from '@/chains/types.js'
+import { contracts as opContracts } from '@/contracts.js'
 
 /**
  * Chain Definition for Arena Z Sepolia
@@ -11,7 +13,7 @@ import type { Network } from '@/chains/types.js'
 export const arenaZSepolia = /*#__PURE__*/ defineChain({
   ...chainConfig,
   name: 'Arena Z Sepolia',
-  id: 9897,
+  id: 9899,
   sourceId: 11155111,
   nativeCurrency: {
     name: 'Ether',
@@ -20,50 +22,46 @@ export const arenaZSepolia = /*#__PURE__*/ defineChain({
   },
   rpcUrls: {
     default: {
-      http: ['https://rpc.arena-z.t.raas.gelato.cloud'],
+      http: ['https://testnet-rpc.arena-z.gg'],
     },
   },
   blockExplorers: {
     default: {
       name: 'Arena Z Sepolia Explorer',
-      url: 'https://arena-z.blockscout.com',
+      url: 'https://testnet-explorer.arena-z.gg',
     },
   },
   contracts: {
-    ...chainConfig.contracts,
+    ...opContracts,
+    ...(chainContracts[11155111]?.[9899] ? chainContracts[11155111][9899] : {}),
     portal: {
       11155111: {
-        address: '0x2188047AD28B78D975cE319dfcDa5D06c2a6a68b',
+        address: '0x90FdCE6eFFF020605462150cdE42257193d1e558',
       },
     },
     l1StandardBridge: {
       11155111: {
-        address: '0x76A4B2CC5d210729Fb3DE13CeE250663bdac73A6',
+        address: '0x23592510F948c1465294041b44192f9656146544',
       },
     },
     l1Erc721Bridge: {
       11155111: {
-        address: '0x11d7f6f2E59Fc12E61DbfafE7790e54CAb01b434',
+        address: '0x0aB6D908f5553732fBbC2e5b25357E9202c396BA',
       },
     },
     l1CrossDomainMessenger: {
       11155111: {
-        address: '0xCC226A3B7b5ec4D4d698418fC2C0492950136Ba7',
+        address: '0x3E0252828c920C21C5F1b86f862444295F5f283C',
       },
     },
     systemConfig: {
       11155111: {
-        address: '0xa3c900d30EE6e906FC085633258d2FE619680884',
+        address: '0x5357bE2D78aAd17860570E14B74561840e959D4D',
       },
     },
     disputeGameFactory: {
       11155111: {
-        address: '0xD9E9933Cc6EF672C93d2a42494b0D2BF14C05544',
-      },
-    },
-    l2OutputOracle: {
-      11155111: {
-        address: '0xf2574585eC7ba515Fd86402B84A60D5eFb51B0Ff',
+        address: '0xd02dd46b73ff5f3eC3970f9A12f08Ad703c103df',
       },
     },
   },
@@ -94,7 +92,10 @@ export const baseSepolia = /*#__PURE__*/ defineChain({
     },
   },
   contracts: {
-    ...chainConfig.contracts,
+    ...opContracts,
+    ...(chainContracts[11155111]?.[84532]
+      ? chainContracts[11155111][84532]
+      : {}),
     portal: {
       11155111: {
         address: '0x49f53e41452C74589E85cA1677426Ba426459e85',
@@ -153,7 +154,10 @@ export const bobaSepolia = /*#__PURE__*/ defineChain({
     },
   },
   contracts: {
-    ...chainConfig.contracts,
+    ...opContracts,
+    ...(chainContracts[11155111]?.[28882]
+      ? chainContracts[11155111][28882]
+      : {}),
     portal: {
       11155111: {
         address: '0xB079E6FA9B3eb072fEbf7F746044834eab308dB6',
@@ -179,9 +183,76 @@ export const bobaSepolia = /*#__PURE__*/ defineChain({
         address: '0xfDC9bCE032cEF55a71b4fde9B9a2198ad1551965',
       },
     },
+    disputeGameFactory: {
+      11155111: {
+        address: '0x29Bd67B23cAC0E6bbDe1373E3859Dd25510f3331',
+      },
+    },
+  },
+})
+
+/**
+ * Chain Definition for Camp Network  V2 Sepolia
+ */
+export const campSepolia = /*#__PURE__*/ defineChain({
+  ...chainConfig,
+  name: 'Camp Network  V2 Sepolia',
+  id: 325000,
+  sourceId: 11155111,
+  nativeCurrency: {
+    name: 'Ether',
+    symbol: 'ETH',
+    decimals: 18,
+  },
+  rpcUrls: {
+    default: {
+      http: ['https://rpc.camp-network-testnet.gelato.digital'],
+    },
+  },
+  blockExplorers: {
+    default: {
+      name: 'Camp Network  V2 Sepolia Explorer',
+      url: 'https://camp-network-testnet.blockscout.com',
+    },
+  },
+  contracts: {
+    ...opContracts,
+    ...(chainContracts[11155111]?.[325000]
+      ? chainContracts[11155111][325000]
+      : {}),
+    portal: {
+      11155111: {
+        address: '0x4238fAb3746D41e18c87138b505B6857CeF6cd1F',
+      },
+    },
+    l1StandardBridge: {
+      11155111: {
+        address: '0x5c3Ec2182Be9FbeA0da50d517362a069e13FB50E',
+      },
+    },
+    l1Erc721Bridge: {
+      11155111: {
+        address: '0x1239F374612F4674305ba7c60332b16e5396e125',
+      },
+    },
+    l1CrossDomainMessenger: {
+      11155111: {
+        address: '0x3f4A9443DdC60a0d0Dcea92C627849045B5A840f',
+      },
+    },
+    systemConfig: {
+      11155111: {
+        address: '0x7aA405B004401Be20d4A587de34aEeC99bE0b268',
+      },
+    },
+    disputeGameFactory: {
+      11155111: {
+        address: '0x83BaE25FDa209b31E903D3DD932906E2718A6E89',
+      },
+    },
     l2OutputOracle: {
       11155111: {
-        address: '0xdBdb238185f9BB40f742aE249f9a083381EC39eC',
+        address: '0x6AD70b6C30Aa872FcbB86958A6aB950b3125a6f0',
       },
     },
   },
@@ -212,7 +283,10 @@ export const creatorChainSepolia = /*#__PURE__*/ defineChain({
     },
   },
   contracts: {
-    ...chainConfig.contracts,
+    ...opContracts,
+    ...(chainContracts[11155111]?.[66665]
+      ? chainContracts[11155111][66665]
+      : {}),
     portal: {
       11155111: {
         address: '0x1Cb215554f36f518791B2e7359a73c96bFcadf69',
@@ -240,12 +314,7 @@ export const creatorChainSepolia = /*#__PURE__*/ defineChain({
     },
     disputeGameFactory: {
       11155111: {
-        address: '0x5Eb3040aeebc69595B4Bdc4eCB97323330f14517',
-      },
-    },
-    l2OutputOracle: {
-      11155111: {
-        address: '0x54E9BE93b9a1aca9C0293dB7710D9D18273aFE1D',
+        address: '0x156670e48F72cB23EAadd8b51e398c678AB651aF',
       },
     },
   },
@@ -276,7 +345,10 @@ export const cyberSepolia = /*#__PURE__*/ defineChain({
     },
   },
   contracts: {
-    ...chainConfig.contracts,
+    ...opContracts,
+    ...(chainContracts[11155111]?.[111557560]
+      ? chainContracts[11155111][111557560]
+      : {}),
     portal: {
       11155111: {
         address: '0x06C9Cadb0346c8E142fb8299cEF3EB5120d4c9b6',
@@ -285,11 +357,6 @@ export const cyberSepolia = /*#__PURE__*/ defineChain({
     l1StandardBridge: {
       11155111: {
         address: '0xAA1bD6D4d8cFD37330a917bc678CB38BEFAf44E6',
-      },
-    },
-    l1Erc721Bridge: {
-      11155111: {
-        address: '0x524e85D2B49497561c53EFEB4B126Aa63883B480',
       },
     },
     l1CrossDomainMessenger: {
@@ -340,7 +407,8 @@ export const ethernitySepolia = /*#__PURE__*/ defineChain({
     },
   },
   contracts: {
-    ...chainConfig.contracts,
+    ...opContracts,
+    ...(chainContracts[11155111]?.[233] ? chainContracts[11155111][233] : {}),
     portal: {
       11155111: {
         address: '0x1F24d471Ef7291c7F97DBD2f76299b30D3e3B6E3',
@@ -404,7 +472,10 @@ export const funkiSepolia = /*#__PURE__*/ defineChain({
     },
   },
   contracts: {
-    ...chainConfig.contracts,
+    ...opContracts,
+    ...(chainContracts[11155111]?.[3397901]
+      ? chainContracts[11155111][3397901]
+      : {}),
     portal: {
       11155111: {
         address: '0xCeE7ef4dDF482447FE14c605Ea94B37cBE87Ca9D',
@@ -468,7 +539,10 @@ export const inkSepolia = /*#__PURE__*/ defineChain({
     },
   },
   contracts: {
-    ...chainConfig.contracts,
+    ...opContracts,
+    ...(chainContracts[11155111]?.[763373]
+      ? chainContracts[11155111][763373]
+      : {}),
     portal: {
       11155111: {
         address: '0x5c1d29C6c9C8b0800692acC95D700bcb4966A1d7',
@@ -527,7 +601,8 @@ export const liskSepolia = /*#__PURE__*/ defineChain({
     },
   },
   contracts: {
-    ...chainConfig.contracts,
+    ...opContracts,
+    ...(chainContracts[11155111]?.[4202] ? chainContracts[11155111][4202] : {}),
     portal: {
       11155111: {
         address: '0xe3d90F21490686Ec7eF37BE788E02dfC12787264',
@@ -591,7 +666,8 @@ export const metalSepolia = /*#__PURE__*/ defineChain({
     },
   },
   contracts: {
-    ...chainConfig.contracts,
+    ...opContracts,
+    ...(chainContracts[11155111]?.[1740] ? chainContracts[11155111][1740] : {}),
     portal: {
       11155111: {
         address: '0x01D4dfC994878682811b2980653D03E589f093cB',
@@ -617,9 +693,9 @@ export const metalSepolia = /*#__PURE__*/ defineChain({
         address: '0x5D63A8Dc2737cE771aa4a6510D063b6Ba2c4f6F2',
       },
     },
-    l2OutputOracle: {
+    disputeGameFactory: {
       11155111: {
-        address: '0x75a6B961c8da942Ee03CA641B09C322549f6FA98',
+        address: '0xd9A68F90B2d2DEbe18a916859B672D70f79eEbe3',
       },
     },
   },
@@ -650,7 +726,8 @@ export const modeSepolia = /*#__PURE__*/ defineChain({
     },
   },
   contracts: {
-    ...chainConfig.contracts,
+    ...opContracts,
+    ...(chainContracts[11155111]?.[919] ? chainContracts[11155111][919] : {}),
     portal: {
       11155111: {
         address: '0x320e1580effF37E008F1C92700d1eBa47c1B23fD',
@@ -676,9 +753,9 @@ export const modeSepolia = /*#__PURE__*/ defineChain({
         address: '0x15cd4f6e0CE3B4832B33cB9c6f6Fe6fc246754c2',
       },
     },
-    l2OutputOracle: {
+    disputeGameFactory: {
       11155111: {
-        address: '0x2634BD65ba27AB63811c74A63118ACb312701Bfa',
+        address: '0x7Bb634B42373A87712Da14064deD13Db8b8b14f4',
       },
     },
   },
@@ -705,11 +782,14 @@ export const opSepolia = /*#__PURE__*/ defineChain({
   blockExplorers: {
     default: {
       name: 'OP Sepolia Explorer',
-      url: 'https://sepolia-optimistic.etherscan.io',
+      url: 'https://testnet-explorer.optimism.io',
     },
   },
   contracts: {
-    ...chainConfig.contracts,
+    ...opContracts,
+    ...(chainContracts[11155111]?.[11155420]
+      ? chainContracts[11155111][11155420]
+      : {}),
     portal: {
       11155111: {
         address: '0x16Fc5058F25648194471939df75CF27A2fdC48BC',
@@ -744,6 +824,73 @@ export const opSepolia = /*#__PURE__*/ defineChain({
 })
 
 /**
+ * Chain Definition for Ozean Poseidon Sepolia
+ */
+export const ozeanSepolia = /*#__PURE__*/ defineChain({
+  ...chainConfig,
+  name: 'Ozean Poseidon Sepolia',
+  id: 7849306,
+  sourceId: 11155111,
+  nativeCurrency: {
+    name: 'USDX',
+    symbol: 'USDX',
+    decimals: 18,
+  },
+  rpcUrls: {
+    default: {
+      http: ['https://ozean-testnet.rpc.caldera.xyz/http'],
+    },
+  },
+  blockExplorers: {
+    default: {
+      name: 'Ozean Poseidon Sepolia Explorer',
+      url: 'https://ozean-testnet.explorer.caldera.xyz',
+    },
+  },
+  contracts: {
+    ...opContracts,
+    ...(chainContracts[11155111]?.[7849306]
+      ? chainContracts[11155111][7849306]
+      : {}),
+    portal: {
+      11155111: {
+        address: '0x6EeeA09335D09870dD467FD34ECc10Fdb5106527',
+      },
+    },
+    l1StandardBridge: {
+      11155111: {
+        address: '0xb9558CE3C11EC69e18632A8e5B316581e852dB91',
+      },
+    },
+    l1Erc721Bridge: {
+      11155111: {
+        address: '0x50d26235319abF2bA7b043A33E53bD19480d7E69',
+      },
+    },
+    l1CrossDomainMessenger: {
+      11155111: {
+        address: '0x13931872294360cAc551BA3801f061c4C86F0725',
+      },
+    },
+    systemConfig: {
+      11155111: {
+        address: '0xdEC733B0643E7c3Bd06576A4C70Ca87E301EAe87',
+      },
+    },
+    disputeGameFactory: {
+      11155111: {
+        address: '0x80E233699F34b8FD91adea8150Ea4C91b9324Cb5',
+      },
+    },
+    l2OutputOracle: {
+      11155111: {
+        address: '0x591d916DD9C0c37Ae5b23593C79f5074aAF6778F',
+      },
+    },
+  },
+})
+
+/**
  * Chain Definition for Pivotal Sepolia
  */
 export const pivotalSepolia = /*#__PURE__*/ defineChain({
@@ -768,7 +915,10 @@ export const pivotalSepolia = /*#__PURE__*/ defineChain({
     },
   },
   contracts: {
-    ...chainConfig.contracts,
+    ...opContracts,
+    ...(chainContracts[11155111]?.[16481]
+      ? chainContracts[11155111][16481]
+      : {}),
     portal: {
       11155111: {
         address: '0x923B28e0037A799A1e60368e60c92dFfba982162',
@@ -832,7 +982,8 @@ export const raceSepolia = /*#__PURE__*/ defineChain({
     },
   },
   contracts: {
-    ...chainConfig.contracts,
+    ...opContracts,
+    ...(chainContracts[11155111]?.[6806] ? chainContracts[11155111][6806] : {}),
     portal: {
       11155111: {
         address: '0xF2891fc6819CDd6BD9221874619BB03A6277d72A',
@@ -858,9 +1009,69 @@ export const raceSepolia = /*#__PURE__*/ defineChain({
         address: '0x07e7A3F25aA73dA15bc19B71FEF8f5511342a409',
       },
     },
-    l2OutputOracle: {
+    disputeGameFactory: {
       11155111: {
-        address: '0xccac2B8FFc4f778242105F3a9E6B3Ae3F827fC6a',
+        address: '0xbDC16b0E8C18C5E13Ed02221Aa85598AF486A88f',
+      },
+    },
+  },
+})
+
+/**
+ * Chain Definition for Radius Sepolia
+ */
+export const radiusTestnetSepolia = /*#__PURE__*/ defineChain({
+  ...chainConfig,
+  name: 'Radius Sepolia',
+  id: 863,
+  sourceId: 11155111,
+  nativeCurrency: {
+    name: 'Ether',
+    symbol: 'ETH',
+    decimals: 18,
+  },
+  rpcUrls: {
+    default: {
+      http: ['testnet-rpc.theradius.xyz'],
+    },
+  },
+  blockExplorers: {
+    default: {
+      name: 'Radius Sepolia Explorer',
+      url: 'https://testnet-rpc.theradius.xyz/',
+    },
+  },
+  contracts: {
+    ...opContracts,
+    ...(chainContracts[11155111]?.[863] ? chainContracts[11155111][863] : {}),
+    portal: {
+      11155111: {
+        address: '0x86897210aaD2861Aa603937762AC7c1E6Dfa9727',
+      },
+    },
+    l1StandardBridge: {
+      11155111: {
+        address: '0xD5983849E1EBFDb97e66736962Dbf9dB4d2BDC08',
+      },
+    },
+    l1Erc721Bridge: {
+      11155111: {
+        address: '0x3099397312B675f629E2C2d85A0744FCaf7bf325',
+      },
+    },
+    l1CrossDomainMessenger: {
+      11155111: {
+        address: '0x00faA26c5e3483a78d2ca28edc5275B9a42AC8c2',
+      },
+    },
+    systemConfig: {
+      11155111: {
+        address: '0x59b71c0a919bC1E8daE5488A562215494f1257fe',
+      },
+    },
+    disputeGameFactory: {
+      11155111: {
+        address: '0x6D6eF1D3a2eCC7511a0881F460422B461CA7128a',
       },
     },
   },
@@ -891,7 +1102,8 @@ export const settlusSepoliaSepolia = /*#__PURE__*/ defineChain({
     },
   },
   contracts: {
-    ...chainConfig.contracts,
+    ...opContracts,
+    ...(chainContracts[11155111]?.[5373] ? chainContracts[11155111][5373] : {}),
     portal: {
       11155111: {
         address: '0x55585368857DcC7E0F89475d28963977DB0b1Ee1',
@@ -950,7 +1162,10 @@ export const shapeSepolia = /*#__PURE__*/ defineChain({
     },
   },
   contracts: {
-    ...chainConfig.contracts,
+    ...opContracts,
+    ...(chainContracts[11155111]?.[11011]
+      ? chainContracts[11155111][11011]
+      : {}),
     portal: {
       11155111: {
         address: '0xfF8Ca2B4d8122E41441F7ccDCf61b8692198Bd1E',
@@ -978,12 +1193,7 @@ export const shapeSepolia = /*#__PURE__*/ defineChain({
     },
     disputeGameFactory: {
       11155111: {
-        address: '0x93eaa7A1E7d7af7eD9D612F9957988C8631c33e8',
-      },
-    },
-    l2OutputOracle: {
-      11155111: {
-        address: '0x532dDCed3440Eab81c529Ac8b0d7e429B5C05c52',
+        address: '0x575697F2c20Bd63415E5B24656d935D4b81b8220',
       },
     },
   },
@@ -1014,7 +1224,8 @@ export const soneiumMinatoSepolia = /*#__PURE__*/ defineChain({
     },
   },
   contracts: {
-    ...chainConfig.contracts,
+    ...opContracts,
+    ...(chainContracts[11155111]?.[1946] ? chainContracts[11155111][1946] : {}),
     portal: {
       11155111: {
         address: '0x65ea1489741A5D72fFdD8e6485B216bBdcC15Af3',
@@ -1045,11 +1256,6 @@ export const soneiumMinatoSepolia = /*#__PURE__*/ defineChain({
         address: '0xB3Ad2c38E6e0640d7ce6aA952AB3A60E81bf7a01',
       },
     },
-    l2OutputOracle: {
-      11155111: {
-        address: '0x710e5286C746eC38beeB7538d0146f60D27be343',
-      },
-    },
   },
 })
 
@@ -1078,7 +1284,8 @@ export const tbnSepolia = /*#__PURE__*/ defineChain({
     },
   },
   contracts: {
-    ...chainConfig.contracts,
+    ...opContracts,
+    ...(chainContracts[11155111]?.[625] ? chainContracts[11155111][625] : {}),
     portal: {
       11155111: {
         address: '0xFBEd910ca54F013bfeA67Bd4DC836263bdd0b46C',
@@ -1142,7 +1349,8 @@ export const unichainSepolia = /*#__PURE__*/ defineChain({
     },
   },
   contracts: {
-    ...chainConfig.contracts,
+    ...opContracts,
+    ...(chainContracts[11155111]?.[1301] ? chainContracts[11155111][1301] : {}),
     portal: {
       11155111: {
         address: '0x0d83dab629f0e0F9d36c0Cbc89B69a489f0751bD',
@@ -1201,7 +1409,8 @@ export const worldchainSepolia = /*#__PURE__*/ defineChain({
     },
   },
   contracts: {
-    ...chainConfig.contracts,
+    ...opContracts,
+    ...(chainContracts[11155111]?.[4801] ? chainContracts[11155111][4801] : {}),
     portal: {
       11155111: {
         address: '0xFf6EBa109271fe6d4237EeeD4bAb1dD9A77dD1A4',
@@ -1232,11 +1441,6 @@ export const worldchainSepolia = /*#__PURE__*/ defineChain({
         address: '0x8Ec1111f67Dad6b6A93B3F42DfBC92D81c98449A',
       },
     },
-    l2OutputOracle: {
-      11155111: {
-        address: '0xc8886f8BAb6Eaeb215aDB5f1c686BF699248300e',
-      },
-    },
   },
 })
 
@@ -1265,7 +1469,10 @@ export const zoraSepolia = /*#__PURE__*/ defineChain({
     },
   },
   contracts: {
-    ...chainConfig.contracts,
+    ...opContracts,
+    ...(chainContracts[11155111]?.[999999999]
+      ? chainContracts[11155111][999999999]
+      : {}),
     portal: {
       11155111: {
         address: '0xeffE2C6cA9Ab797D418f0D91eA60807713f3536f',
@@ -1291,9 +1498,9 @@ export const zoraSepolia = /*#__PURE__*/ defineChain({
         address: '0xB54c7BFC223058773CF9b739cC5bd4095184Fb08',
       },
     },
-    l2OutputOracle: {
+    disputeGameFactory: {
       11155111: {
-        address: '0x2615B481Bd3E5A1C0C7Ca3Da1bdc663E8615Ade9',
+        address: '0xA983A71253Eb74e5E86A4E4eD9F37113FC25f2BF',
       },
     },
   },
@@ -1303,6 +1510,7 @@ export const sepoliaChains = [
   arenaZSepolia,
   baseSepolia,
   bobaSepolia,
+  campSepolia,
   creatorChainSepolia,
   cyberSepolia,
   ethernitySepolia,
@@ -1312,8 +1520,10 @@ export const sepoliaChains = [
   metalSepolia,
   modeSepolia,
   opSepolia,
+  ozeanSepolia,
   pivotalSepolia,
   raceSepolia,
+  radiusTestnetSepolia,
   settlusSepoliaSepolia,
   shapeSepolia,
   soneiumMinatoSepolia,

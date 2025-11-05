@@ -2,13 +2,13 @@
 
 ***
 
-[@eth-optimism/viem](../../README.md) / [chains](../README.md) / ethernitySepolia
+[@eth-optimism/viem](../../README.md) / [chains](../README.md) / fraxtal
 
-# ethernitySepolia
+# fraxtal
 
-> `const` **ethernitySepolia**: `object`
+> `const` **fraxtal**: `object`
 
-Chain Definition for Ethernity Sepolia
+Chain Definition for Fraxtal
 
 ## Type declaration
 
@@ -24,11 +24,11 @@ Collection of block explorers
 
 ### blockExplorers.default.name
 
-> `readonly` **name**: `"Ethernity Sepolia Explorer"` = `'Ethernity Sepolia Explorer'`
+> `readonly` **name**: `"Fraxtal Explorer"` = `'Fraxtal Explorer'`
 
 ### blockExplorers.default.url
 
-> `readonly` **url**: `"https://testnet.ernscan.io"` = `'https://testnet.ernscan.io'`
+> `readonly` **url**: `"https://fraxscan.com"` = `'https://fraxscan.com'`
 
 ### contracts
 
@@ -43,18 +43,6 @@ Collection of contracts
 ### contracts.create2Deployer.address
 
 > `readonly` **address**: `"0x13b0D85CcB8bf860b6b79AF3029fCA081AE9beF2"` = `'0x13b0D85CcB8bf860b6b79AF3029fCA081AE9beF2'`
-
-### contracts.disputeGameFactory
-
-> `readonly` **disputeGameFactory**: `object`
-
-### contracts.disputeGameFactory.11155111
-
-> `readonly` **11155111**: `object`
-
-### contracts.disputeGameFactory.11155111.address
-
-> `readonly` **address**: `"0x64d0Bce6eD7c16CAC7817F3597758E31AFacD01B"` = `'0x64d0Bce6eD7c16CAC7817F3597758E31AFacD01B'`
 
 ### contracts.gasPriceOracle
 
@@ -76,37 +64,37 @@ Collection of contracts
 
 > `readonly` **l1CrossDomainMessenger**: `object`
 
-### contracts.l1CrossDomainMessenger.11155111
+### contracts.l1CrossDomainMessenger.1
 
-> `readonly` **11155111**: `object`
+> `readonly` **1**: `object`
 
-### contracts.l1CrossDomainMessenger.11155111.address
+### contracts.l1CrossDomainMessenger.1.address
 
-> `readonly` **address**: `"0x1c8b6a6F3E3612c79E62460a6e44C24D1EfF2FDa"` = `'0x1c8b6a6F3E3612c79E62460a6e44C24D1EfF2FDa'`
+> `readonly` **address**: `"0x126bcc31Bc076B3d515f60FBC81FddE0B0d542Ed"` = `'0x126bcc31Bc076B3d515f60FBC81FddE0B0d542Ed'`
 
 ### contracts.l1Erc721Bridge
 
 > `readonly` **l1Erc721Bridge**: `object`
 
-### contracts.l1Erc721Bridge.11155111
+### contracts.l1Erc721Bridge.1
 
-> `readonly` **11155111**: `object`
+> `readonly` **1**: `object`
 
-### contracts.l1Erc721Bridge.11155111.address
+### contracts.l1Erc721Bridge.1.address
 
-> `readonly` **address**: `"0xBf0D43e12eF74dC21917e1D6175702AD673e1283"` = `'0xBf0D43e12eF74dC21917e1D6175702AD673e1283'`
+> `readonly` **address**: `"0xa9B5Fb84B7aeAF0D51C95DB04a76B1D4738D0eC5"` = `'0xa9B5Fb84B7aeAF0D51C95DB04a76B1D4738D0eC5'`
 
 ### contracts.l1StandardBridge
 
 > `readonly` **l1StandardBridge**: `object`
 
-### contracts.l1StandardBridge.11155111
+### contracts.l1StandardBridge.1
 
-> `readonly` **11155111**: `object`
+> `readonly` **1**: `object`
 
-### contracts.l1StandardBridge.11155111.address
+### contracts.l1StandardBridge.1.address
 
-> `readonly` **address**: `"0xFd1a12b7a04B13c031d8b075BA5b9080a2CF246f"` = `'0xFd1a12b7a04B13c031d8b075BA5b9080a2CF246f'`
+> `readonly` **address**: `"0x34C0bD5877A5Ee7099D0f5688D65F4bB9158BDE2"` = `'0x34C0bD5877A5Ee7099D0f5688D65F4bB9158BDE2'`
 
 ### contracts.l2CrossDomainMessenger
 
@@ -128,13 +116,13 @@ Collection of contracts
 
 > `readonly` **l2OutputOracle**: `object`
 
-### contracts.l2OutputOracle.11155111
+### contracts.l2OutputOracle.1
 
-> `readonly` **11155111**: `object`
+> `readonly` **1**: `object`
 
-### contracts.l2OutputOracle.11155111.address
+### contracts.l2OutputOracle.1.address
 
-> `readonly` **address**: `"0x11118536F94Bc7C98bBaf9194bE13FC1987293cd"` = `'0x11118536F94Bc7C98bBaf9194bE13FC1987293cd'`
+> `readonly` **address**: `"0x66CC916Ed5C6C2FA97014f7D1cD141528Ae171e4"` = `'0x66CC916Ed5C6C2FA97014f7D1cD141528Ae171e4'`
 
 ### contracts.l2StandardBridge
 
@@ -180,25 +168,25 @@ Collection of contracts
 
 > `readonly` **portal**: `object`
 
-### contracts.portal.11155111
+### contracts.portal.1
 
-> `readonly` **11155111**: `object`
+> `readonly` **1**: `object`
 
-### contracts.portal.11155111.address
+### contracts.portal.1.address
 
-> `readonly` **address**: `"0x1F24d471Ef7291c7F97DBD2f76299b30D3e3B6E3"` = `'0x1F24d471Ef7291c7F97DBD2f76299b30D3e3B6E3'`
+> `readonly` **address**: `"0x36cb65c1967A0Fb0EEE11569C51C2f2aA1Ca6f6D"` = `'0x36cb65c1967A0Fb0EEE11569C51C2f2aA1Ca6f6D'`
 
 ### contracts.systemConfig
 
 > `readonly` **systemConfig**: `object`
 
-### contracts.systemConfig.11155111
+### contracts.systemConfig.1
 
-> `readonly` **11155111**: `object`
+> `readonly` **1**: `object`
 
-### contracts.systemConfig.11155111.address
+### contracts.systemConfig.1.address
 
-> `readonly` **address**: `"0x7C957fec1F6B3d1024442E989cB08b8f2285686C"` = `'0x7C957fec1F6B3d1024442E989cB08b8f2285686C'`
+> `readonly` **address**: `"0x34a9f273cbD847d49c3De015FC26c3E66825f8b2"` = `'0x34a9f273cbD847d49c3De015FC26c3E66825f8b2'`
 
 ### contracts.weth
 
@@ -488,13 +476,13 @@ Modifies how data is formatted and typed (e.g. blocks and transactions)
 
 ### id
 
-> **id**: `233`
+> **id**: `252`
 
 ID in number form
 
 ### name
 
-> **name**: `"Ethernity Sepolia"`
+> **name**: `"Fraxtal"`
 
 Human-readable name
 
@@ -528,7 +516,7 @@ Collection of RPC endpoints
 
 ### rpcUrls.default.http
 
-> `readonly` **http**: readonly [`"https://testnet.ethernitychain.io"`]
+> `readonly` **http**: readonly [`"https://rpc.frax.com"`]
 
 ### serializers
 
@@ -552,7 +540,7 @@ Modifies how data is serialized (e.g. transactions).
 
 ### sourceId
 
-> **sourceId**: `11155111`
+> **sourceId**: `1`
 
 Source Chain ID (ie. the L1 chain)
 
@@ -564,4 +552,4 @@ Flag for test networks
 
 ## Defined in
 
-[packages/viem/src/chains/sepolia.ts:388](https://github.com/ethereum-optimism/ecosystem/blob/a4b870454ce0f0a79a41dda7928a11b5c8946efc/packages/viem/src/chains/sepolia.ts#L388)
+[packages/viem/src/chains/mainnet.ts:508](https://github.com/ethereum-optimism/ecosystem/blob/a4b870454ce0f0a79a41dda7928a11b5c8946efc/packages/viem/src/chains/mainnet.ts#L508)

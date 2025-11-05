@@ -3,7 +3,9 @@ import { defineChain } from 'viem'
 import * as viemChains from 'viem/chains'
 import { chainConfig } from 'viem/op-stack'
 
+import { contracts as chainContracts } from '@/chains/contracts.js'
 import type { Network } from '@/chains/types.js'
+import { contracts as opContracts } from '@/contracts.js'
 
 /**
  * Chain Definition for Arena Z
@@ -30,7 +32,8 @@ export const arenaZ = /*#__PURE__*/ defineChain({
     },
   },
   contracts: {
-    ...chainConfig.contracts,
+    ...opContracts,
+    ...(chainContracts[1]?.[7897] ? chainContracts[1][7897] : {}),
     portal: {
       1: {
         address: '0xB20f99b598E8d888d1887715439851BC68806b22',
@@ -89,7 +92,8 @@ export const automata = /*#__PURE__*/ defineChain({
     },
   },
   contracts: {
-    ...chainConfig.contracts,
+    ...opContracts,
+    ...(chainContracts[1]?.[65536] ? chainContracts[1][65536] : {}),
     portal: {
       1: {
         address: '0xD52ba64CBE1e3B44167f810622fBef36bE24d95c',
@@ -153,7 +157,8 @@ export const base = /*#__PURE__*/ defineChain({
     },
   },
   contracts: {
-    ...chainConfig.contracts,
+    ...opContracts,
+    ...(chainContracts[1]?.[8453] ? chainContracts[1][8453] : {}),
     portal: {
       1: {
         address: '0x49048044D57e1C92A77f79988d21Fa8fAF74E97e',
@@ -184,11 +189,6 @@ export const base = /*#__PURE__*/ defineChain({
         address: '0x43edB88C4B80fDD2AdFF2412A7BebF9dF42cB40e',
       },
     },
-    l2OutputOracle: {
-      1: {
-        address: '0x56315b90c40730925ec5485cf004d835058518A0',
-      },
-    },
   },
 })
 
@@ -217,7 +217,8 @@ export const bob = /*#__PURE__*/ defineChain({
     },
   },
   contracts: {
-    ...chainConfig.contracts,
+    ...opContracts,
+    ...(chainContracts[1]?.[60808] ? chainContracts[1][60808] : {}),
     portal: {
       1: {
         address: '0x8AdeE124447435fE03e3CD24dF3f4cAE32E65a3E',
@@ -243,9 +244,129 @@ export const bob = /*#__PURE__*/ defineChain({
         address: '0xACB886b75D76d1c8d9248cFdDfA09b70C71c5393',
       },
     },
-    l2OutputOracle: {
+    disputeGameFactory: {
       1: {
-        address: '0xdDa53E23f8a32640b04D7256e651C1db98dB11C1',
+        address: '0x96123dbFC3253185B594c6a7472EE5A21E9B1079',
+      },
+    },
+  },
+})
+
+/**
+ * Chain Definition for Boba
+ */
+export const boba = /*#__PURE__*/ defineChain({
+  ...chainConfig,
+  name: 'Boba',
+  id: 288,
+  sourceId: 1,
+  nativeCurrency: {
+    name: 'Ether',
+    symbol: 'ETH',
+    decimals: 18,
+  },
+  rpcUrls: {
+    default: {
+      http: ['https://mainnet.boba.network'],
+    },
+  },
+  blockExplorers: {
+    default: {
+      name: 'Boba Explorer',
+      url: 'https://bobascan.com',
+    },
+  },
+  contracts: {
+    ...opContracts,
+    ...(chainContracts[1]?.[288] ? chainContracts[1][288] : {}),
+    portal: {
+      1: {
+        address: '0x7B02D13904D8e6E0f0Efaf756aB14Cb0FF21eE7e',
+      },
+    },
+    l1StandardBridge: {
+      1: {
+        address: '0xdc1664458d2f0B6090bEa60A8793A4E66c2F1c00',
+      },
+    },
+    l1Erc721Bridge: {
+      1: {
+        address: '0xA6Ad22bb0E73DEF40a24E510cFbc93807d8bf87e',
+      },
+    },
+    l1CrossDomainMessenger: {
+      1: {
+        address: '0x6D4528d192dB72E282265D6092F4B872f9Dff69e',
+      },
+    },
+    systemConfig: {
+      1: {
+        address: '0x158Fd5715F16Ac1F2Dc959A299B383aAaf9B59EB',
+      },
+    },
+    disputeGameFactory: {
+      1: {
+        address: '0xF45a5f1e36fCeA3Cc830A98c6c3C5ceA7d6af852',
+      },
+    },
+  },
+})
+
+/**
+ * Chain Definition for Celo
+ */
+export const celo = /*#__PURE__*/ defineChain({
+  ...chainConfig,
+  name: 'Celo',
+  id: 42220,
+  sourceId: 1,
+  nativeCurrency: {
+    name: 'Celo native asset',
+    symbol: 'CELO',
+    decimals: 18,
+  },
+  rpcUrls: {
+    default: {
+      http: ['https://forno.celo.org'],
+    },
+  },
+  blockExplorers: {
+    default: {
+      name: 'Celo Explorer',
+      url: 'https://celoscan.io/',
+    },
+  },
+  contracts: {
+    ...opContracts,
+    ...(chainContracts[1]?.[42220] ? chainContracts[1][42220] : {}),
+    portal: {
+      1: {
+        address: '0xc5c5D157928BDBD2ACf6d0777626b6C75a9EAEDC',
+      },
+    },
+    l1StandardBridge: {
+      1: {
+        address: '0x9C4955b92F34148dbcfDCD82e9c9eCe5CF2badfe',
+      },
+    },
+    l1Erc721Bridge: {
+      1: {
+        address: '0x3C519816C5BdC0a0199147594F83feD4F5847f13',
+      },
+    },
+    l1CrossDomainMessenger: {
+      1: {
+        address: '0x1AC1181fc4e4F877963680587AEAa2C90D7EbB95',
+      },
+    },
+    systemConfig: {
+      1: {
+        address: '0x89E31965D844a309231B1f17759Ccaf1b7c09861',
+      },
+    },
+    disputeGameFactory: {
+      1: {
+        address: '0xFbAC162162f4009Bb007C6DeBC36B1dAC10aF683',
       },
     },
   },
@@ -276,7 +397,8 @@ export const cyber = /*#__PURE__*/ defineChain({
     },
   },
   contracts: {
-    ...chainConfig.contracts,
+    ...opContracts,
+    ...(chainContracts[1]?.[7560] ? chainContracts[1][7560] : {}),
     portal: {
       1: {
         address: '0x1d59bc9fcE6B8E2B1bf86D4777289FFd83D24C99',
@@ -340,7 +462,8 @@ export const ethernity = /*#__PURE__*/ defineChain({
     },
   },
   contracts: {
-    ...chainConfig.contracts,
+    ...opContracts,
+    ...(chainContracts[1]?.[183] ? chainContracts[1][183] : {}),
     portal: {
       1: {
         address: '0xDA29f0B4da6c23f6c1aF273945c290C0268c4ea9',
@@ -380,6 +503,66 @@ export const ethernity = /*#__PURE__*/ defineChain({
 })
 
 /**
+ * Chain Definition for Fraxtal
+ */
+export const fraxtal = /*#__PURE__*/ defineChain({
+  ...chainConfig,
+  name: 'Fraxtal',
+  id: 252,
+  sourceId: 1,
+  nativeCurrency: {
+    name: 'Ether',
+    symbol: 'ETH',
+    decimals: 18,
+  },
+  rpcUrls: {
+    default: {
+      http: ['https://rpc.frax.com'],
+    },
+  },
+  blockExplorers: {
+    default: {
+      name: 'Fraxtal Explorer',
+      url: 'https://fraxscan.com',
+    },
+  },
+  contracts: {
+    ...opContracts,
+    ...(chainContracts[1]?.[252] ? chainContracts[1][252] : {}),
+    portal: {
+      1: {
+        address: '0x36cb65c1967A0Fb0EEE11569C51C2f2aA1Ca6f6D',
+      },
+    },
+    l1StandardBridge: {
+      1: {
+        address: '0x34C0bD5877A5Ee7099D0f5688D65F4bB9158BDE2',
+      },
+    },
+    l1Erc721Bridge: {
+      1: {
+        address: '0xa9B5Fb84B7aeAF0D51C95DB04a76B1D4738D0eC5',
+      },
+    },
+    l1CrossDomainMessenger: {
+      1: {
+        address: '0x126bcc31Bc076B3d515f60FBC81FddE0B0d542Ed',
+      },
+    },
+    systemConfig: {
+      1: {
+        address: '0x34a9f273cbD847d49c3De015FC26c3E66825f8b2',
+      },
+    },
+    l2OutputOracle: {
+      1: {
+        address: '0x66CC916Ed5C6C2FA97014f7D1cD141528Ae171e4',
+      },
+    },
+  },
+})
+
+/**
  * Chain Definition for Funki
  */
 export const funki = /*#__PURE__*/ defineChain({
@@ -404,7 +587,8 @@ export const funki = /*#__PURE__*/ defineChain({
     },
   },
   contracts: {
-    ...chainConfig.contracts,
+    ...opContracts,
+    ...(chainContracts[1]?.[33979] ? chainContracts[1][33979] : {}),
     portal: {
       1: {
         address: '0x5C9C7f98eD153a2deAA981eB5C97B31744AccF22',
@@ -468,7 +652,8 @@ export const hashkeychain = /*#__PURE__*/ defineChain({
     },
   },
   contracts: {
-    ...chainConfig.contracts,
+    ...opContracts,
+    ...(chainContracts[1]?.[177] ? chainContracts[1][177] : {}),
     portal: {
       1: {
         address: '0xe7Aa79B59CAc06F9706D896a047fEb9d3BDA8bD3',
@@ -499,11 +684,6 @@ export const hashkeychain = /*#__PURE__*/ defineChain({
         address: '0x04Ec030f362CE5A0b5Fe2d4B4219f287C2EBDE50',
       },
     },
-    l2OutputOracle: {
-      1: {
-        address: '0x1c8D97E21f868f8b87fa9B16Fc77d46d7B0b48A2',
-      },
-    },
   },
 })
 
@@ -532,7 +712,8 @@ export const ink = /*#__PURE__*/ defineChain({
     },
   },
   contracts: {
-    ...chainConfig.contracts,
+    ...opContracts,
+    ...(chainContracts[1]?.[57073] ? chainContracts[1][57073] : {}),
     portal: {
       1: {
         address: '0x5d66C1782664115999C47c9fA5cd031f495D3e4F',
@@ -591,7 +772,8 @@ export const lisk = /*#__PURE__*/ defineChain({
     },
   },
   contracts: {
-    ...chainConfig.contracts,
+    ...opContracts,
+    ...(chainContracts[1]?.[1135] ? chainContracts[1][1135] : {}),
     portal: {
       1: {
         address: '0x26dB93F8b8b4f7016240af62F7730979d353f9A7',
@@ -619,12 +801,7 @@ export const lisk = /*#__PURE__*/ defineChain({
     },
     disputeGameFactory: {
       1: {
-        address: '0x0479e6757eb4743843b309DDDF78E6bA242F38BE',
-      },
-    },
-    l2OutputOracle: {
-      1: {
-        address: '0x113cB99283AF242Da0A0C54347667edF531Aa7d6',
+        address: '0x0CF7D3706a27CCE2017aEB11E8a9c8b5388c282C',
       },
     },
   },
@@ -655,7 +832,8 @@ export const lyra = /*#__PURE__*/ defineChain({
     },
   },
   contracts: {
-    ...chainConfig.contracts,
+    ...opContracts,
+    ...(chainContracts[1]?.[957] ? chainContracts[1][957] : {}),
     portal: {
       1: {
         address: '0x85eA9c11cf3D4786027F7FD08F4406b15777e5f8',
@@ -681,9 +859,9 @@ export const lyra = /*#__PURE__*/ defineChain({
         address: '0x0e4C4CDd01ceCB01070E9Fdfe7600871e4ae996e',
       },
     },
-    l2OutputOracle: {
+    disputeGameFactory: {
       1: {
-        address: '0x1145E7848c8B64c6cab86Fd6D378733385c5C3Ba',
+        address: '0x87DAFf495b5F6c4f79CEeAAF85f1Ef3df3B30d21',
       },
     },
   },
@@ -714,7 +892,8 @@ export const metal = /*#__PURE__*/ defineChain({
     },
   },
   contracts: {
-    ...chainConfig.contracts,
+    ...opContracts,
+    ...(chainContracts[1]?.[1750] ? chainContracts[1][1750] : {}),
     portal: {
       1: {
         address: '0x3F37aBdE2C6b5B2ed6F8045787Df1ED1E3753956',
@@ -740,9 +919,9 @@ export const metal = /*#__PURE__*/ defineChain({
         address: '0x7BD909970B0EEdcF078De6Aeff23ce571663b8aA',
       },
     },
-    l2OutputOracle: {
+    disputeGameFactory: {
       1: {
-        address: '0x3B1F7aDa0Fcc26B13515af752Dd07fB1CAc11426',
+        address: '0x7BFfF391A2dbbDc68A259792AC9748F50FcDE93E',
       },
     },
   },
@@ -773,7 +952,8 @@ export const mint = /*#__PURE__*/ defineChain({
     },
   },
   contracts: {
-    ...chainConfig.contracts,
+    ...opContracts,
+    ...(chainContracts[1]?.[185] ? chainContracts[1][185] : {}),
     portal: {
       1: {
         address: '0x59625d1FE0Eeb8114a4d13c863978F39b3471781',
@@ -799,9 +979,9 @@ export const mint = /*#__PURE__*/ defineChain({
         address: '0xC975862927797812371A9Fb631f83F8f5e2240D5',
       },
     },
-    l2OutputOracle: {
+    disputeGameFactory: {
       1: {
-        address: '0xB751A613f2Db932c6cdeF5048E6D2af05F9B98ED',
+        address: '0xD2922A726501f027a5a5AC122BEc92bCfb437662',
       },
     },
   },
@@ -832,7 +1012,8 @@ export const mode = /*#__PURE__*/ defineChain({
     },
   },
   contracts: {
-    ...chainConfig.contracts,
+    ...opContracts,
+    ...(chainContracts[1]?.[34443] ? chainContracts[1][34443] : {}),
     portal: {
       1: {
         address: '0x8B34b14c7c7123459Cf3076b8Cb929BE097d0C07',
@@ -858,9 +1039,9 @@ export const mode = /*#__PURE__*/ defineChain({
         address: '0x5e6432F18Bc5d497B1Ab2288a025Fbf9D69E2221',
       },
     },
-    l2OutputOracle: {
+    disputeGameFactory: {
       1: {
-        address: '0x4317ba146D4933D889518a3e5E11Fe7a53199b04',
+        address: '0x6f13EFadABD9269D6cEAd22b448d434A1f1B433E',
       },
     },
   },
@@ -891,7 +1072,8 @@ export const op = /*#__PURE__*/ defineChain({
     },
   },
   contracts: {
-    ...chainConfig.contracts,
+    ...opContracts,
+    ...(chainContracts[1]?.[10] ? chainContracts[1][10] : {}),
     portal: {
       1: {
         address: '0xbEb5Fc579115071764c7423A4f12eDde41f106Ed',
@@ -950,7 +1132,8 @@ export const orderly = /*#__PURE__*/ defineChain({
     },
   },
   contracts: {
-    ...chainConfig.contracts,
+    ...opContracts,
+    ...(chainContracts[1]?.[291] ? chainContracts[1][291] : {}),
     portal: {
       1: {
         address: '0x91493a61ab83b62943E6dCAa5475Dd330704Cc84',
@@ -976,9 +1159,9 @@ export const orderly = /*#__PURE__*/ defineChain({
         address: '0x886B187C3D293B1449A3A0F23Ca9e2269E0f2664',
       },
     },
-    l2OutputOracle: {
+    disputeGameFactory: {
       1: {
-        address: '0x5e76821C3c1AbB9fD6E310224804556C61D860e0',
+        address: '0xC8BF04A73704051E5E274F1B43B1F2F153Db2136',
       },
     },
   },
@@ -1009,7 +1192,8 @@ export const polynomial = /*#__PURE__*/ defineChain({
     },
   },
   contracts: {
-    ...chainConfig.contracts,
+    ...opContracts,
+    ...(chainContracts[1]?.[8008] ? chainContracts[1][8008] : {}),
     portal: {
       1: {
         address: '0x034cbb620d1e0e4C2E29845229bEAc57083b04eC',
@@ -1035,9 +1219,9 @@ export const polynomial = /*#__PURE__*/ defineChain({
         address: '0x58b51fb9FeeD00DD846f91D265Eba3cdd855A413',
       },
     },
-    l2OutputOracle: {
+    disputeGameFactory: {
       1: {
-        address: '0xe512D477Cc89196AF2cE837f6AB8EA30e199f757',
+        address: '0xe9394679d0f0676E4a2dE99F8ed6B4aCb16c5f0f',
       },
     },
   },
@@ -1068,7 +1252,8 @@ export const race = /*#__PURE__*/ defineChain({
     },
   },
   contracts: {
-    ...chainConfig.contracts,
+    ...opContracts,
+    ...(chainContracts[1]?.[6805] ? chainContracts[1][6805] : {}),
     portal: {
       1: {
         address: '0x0485Ca8A73682B3D3f5ae98cdca1E5b512E728e9',
@@ -1127,7 +1312,8 @@ export const redstone = /*#__PURE__*/ defineChain({
     },
   },
   contracts: {
-    ...chainConfig.contracts,
+    ...opContracts,
+    ...(chainContracts[1]?.[690] ? chainContracts[1][690] : {}),
     portal: {
       1: {
         address: '0xC7bCb0e8839a28A1cFadd1CF716de9016CdA51ae',
@@ -1191,7 +1377,8 @@ export const settlusMainnet = /*#__PURE__*/ defineChain({
     },
   },
   contracts: {
-    ...chainConfig.contracts,
+    ...opContracts,
+    ...(chainContracts[1]?.[5371] ? chainContracts[1][5371] : {}),
     portal: {
       1: {
         address: '0xFc1D560eB01443e31B0EB56620703E80e42A7E4e',
@@ -1250,7 +1437,8 @@ export const shape = /*#__PURE__*/ defineChain({
     },
   },
   contracts: {
-    ...chainConfig.contracts,
+    ...opContracts,
+    ...(chainContracts[1]?.[360] ? chainContracts[1][360] : {}),
     portal: {
       1: {
         address: '0xEB06fFa16011B5628BaB98E29776361c83741dd3',
@@ -1278,12 +1466,67 @@ export const shape = /*#__PURE__*/ defineChain({
     },
     disputeGameFactory: {
       1: {
-        address: '0x575Aecd84083f93877291901907698F7db0Bd8b0',
+        address: '0x2c03e8BF8b16Af89079852BE87f0e9eC674a5952',
       },
     },
-    l2OutputOracle: {
+  },
+})
+
+/**
+ * Chain Definition for Silent Data
+ */
+export const silentDataMainnet = /*#__PURE__*/ defineChain({
+  ...chainConfig,
+  name: 'Silent Data',
+  id: 380929,
+  sourceId: 1,
+  nativeCurrency: {
+    name: 'Ether',
+    symbol: 'ETH',
+    decimals: 18,
+  },
+  rpcUrls: {
+    default: {
+      http: ['https://mainnet.silentdata.com/${SILENTDATA_AUTH_TOKEN}'],
+    },
+  },
+  blockExplorers: {
+    default: {
+      name: 'Silent Data Explorer',
+      url: 'https://explorer-mainnet.rollup.silentdata.com',
+    },
+  },
+  contracts: {
+    ...opContracts,
+    ...(chainContracts[1]?.[380929] ? chainContracts[1][380929] : {}),
+    portal: {
       1: {
-        address: '0x6Ef8c69CfE4635d866e3E02732068022c06e724D',
+        address: '0xCcd285b1ccf1cdaB36Da995B9fC68870E287694E',
+      },
+    },
+    l1StandardBridge: {
+      1: {
+        address: '0xe97d73B0079e04f4ea4162b9173604a6213eF158',
+      },
+    },
+    l1Erc721Bridge: {
+      1: {
+        address: '0x74A3065E6A4FFAA07dAC542E28452995f3c32EeA',
+      },
+    },
+    l1CrossDomainMessenger: {
+      1: {
+        address: '0x3131b01DF2F9eF6F42113090Edead5c97612c473',
+      },
+    },
+    systemConfig: {
+      1: {
+        address: '0x5c3Efe3cA554816E9960C02AE3B4EB3A9a8D2E16',
+      },
+    },
+    disputeGameFactory: {
+      1: {
+        address: '0x139Cf05B34D0EC49D3BFB9704EC4cEbA6ae95dD1',
       },
     },
   },
@@ -1314,7 +1557,8 @@ export const snax = /*#__PURE__*/ defineChain({
     },
   },
   contracts: {
-    ...chainConfig.contracts,
+    ...opContracts,
+    ...(chainContracts[1]?.[2192] ? chainContracts[1][2192] : {}),
     portal: {
       1: {
         address: '0x936D881b4760D5e9b6D55b774f65c509236b4743',
@@ -1342,12 +1586,7 @@ export const snax = /*#__PURE__*/ defineChain({
     },
     disputeGameFactory: {
       1: {
-        address: '0x8aF5b3ED56D4a822532A07a84C499d600eCD5cf5',
-      },
-    },
-    l2OutputOracle: {
-      1: {
-        address: '0xF8f3EbF2469C00A00EA9D1D04913B73896268B25',
+        address: '0x0fD13C7f11d95070cE5CF31BAf1aCf9355BF4578',
       },
     },
   },
@@ -1378,7 +1617,8 @@ export const soneium = /*#__PURE__*/ defineChain({
     },
   },
   contracts: {
-    ...chainConfig.contracts,
+    ...opContracts,
+    ...(chainContracts[1]?.[1868] ? chainContracts[1][1868] : {}),
     portal: {
       1: {
         address: '0x88e529A6ccd302c948689Cd5156C83D4614FAE92',
@@ -1437,7 +1677,8 @@ export const sseed = /*#__PURE__*/ defineChain({
     },
   },
   contracts: {
-    ...chainConfig.contracts,
+    ...opContracts,
+    ...(chainContracts[1]?.[5330] ? chainContracts[1][5330] : {}),
     portal: {
       1: {
         address: '0x2c2150aa5c75A24fB93d4fD2F2a895D618054f07',
@@ -1465,12 +1706,7 @@ export const sseed = /*#__PURE__*/ defineChain({
     },
     disputeGameFactory: {
       1: {
-        address: '0x8b097CF1f9BbD9cbFD0DD561858a1FCbC8857Be0',
-      },
-    },
-    l2OutputOracle: {
-      1: {
-        address: '0x693A0F8854F458D282DE3C5b69E8eE5EEE8aA949',
+        address: '0x657c1b0e31FFc69A02B207Be20699bDFF938c7E7',
       },
     },
   },
@@ -1501,7 +1737,8 @@ export const swan = /*#__PURE__*/ defineChain({
     },
   },
   contracts: {
-    ...chainConfig.contracts,
+    ...opContracts,
+    ...(chainContracts[1]?.[254] ? chainContracts[1][254] : {}),
     portal: {
       1: {
         address: '0xBa50434BC5fCC07406b1baD9AC72a4CDf776db15',
@@ -1565,7 +1802,8 @@ export const swell = /*#__PURE__*/ defineChain({
     },
   },
   contracts: {
-    ...chainConfig.contracts,
+    ...opContracts,
+    ...(chainContracts[1]?.[1923] ? chainContracts[1][1923] : {}),
     portal: {
       1: {
         address: '0x758E0EE66102816F5C3Ec9ECc1188860fbb87812',
@@ -1624,7 +1862,8 @@ export const tbn = /*#__PURE__*/ defineChain({
     },
   },
   contracts: {
-    ...chainConfig.contracts,
+    ...opContracts,
+    ...(chainContracts[1]?.[624] ? chainContracts[1][624] : {}),
     portal: {
       1: {
         address: '0x5ff88fcF8e9947f45F4cAf8FFd5231B5DdF05e0A',
@@ -1688,7 +1927,8 @@ export const unichain = /*#__PURE__*/ defineChain({
     },
   },
   contracts: {
-    ...chainConfig.contracts,
+    ...opContracts,
+    ...(chainContracts[1]?.[130] ? chainContracts[1][130] : {}),
     portal: {
       1: {
         address: '0x0bd48f6B86a26D3a217d0Fa6FfE2B491B956A7a2',
@@ -1747,7 +1987,8 @@ export const worldchain = /*#__PURE__*/ defineChain({
     },
   },
   contracts: {
-    ...chainConfig.contracts,
+    ...opContracts,
+    ...(chainContracts[1]?.[480] ? chainContracts[1][480] : {}),
     portal: {
       1: {
         address: '0xd5ec14a83B7d95BE1E2Ac12523e2dEE12Cbeea6C',
@@ -1778,11 +2019,6 @@ export const worldchain = /*#__PURE__*/ defineChain({
         address: '0x069c4c579671f8c120b1327a73217D01Ea2EC5ea',
       },
     },
-    l2OutputOracle: {
-      1: {
-        address: '0x19A6d1E9034596196295CF148509796978343c5D',
-      },
-    },
   },
 })
 
@@ -1811,7 +2047,8 @@ export const xterioEth = /*#__PURE__*/ defineChain({
     },
   },
   contracts: {
-    ...chainConfig.contracts,
+    ...opContracts,
+    ...(chainContracts[1]?.[2702128] ? chainContracts[1][2702128] : {}),
     portal: {
       1: {
         address: '0xBC2bEDA4ce7A1f40aa458322A33B44081b2F545A',
@@ -1875,7 +2112,8 @@ export const zora = /*#__PURE__*/ defineChain({
     },
   },
   contracts: {
-    ...chainConfig.contracts,
+    ...opContracts,
+    ...(chainContracts[1]?.[7777777] ? chainContracts[1][7777777] : {}),
     portal: {
       1: {
         address: '0x1a0ad011913A150f69f6A19DF447A0CfD9551054',
@@ -1901,9 +2139,9 @@ export const zora = /*#__PURE__*/ defineChain({
         address: '0xA3cAB0126d5F504B071b81a3e8A2BBBF17930d86',
       },
     },
-    l2OutputOracle: {
+    disputeGameFactory: {
       1: {
-        address: '0x9E6204F750cD866b299594e2aC9eA824E2e5f95c',
+        address: '0xB0F15106fa1e473Ddb39790f197275BC979Aa37e',
       },
     },
   },
@@ -1914,8 +2152,11 @@ export const mainnetChains = [
   automata,
   base,
   bob,
+  boba,
+  celo,
   cyber,
   ethernity,
+  fraxtal,
   funki,
   hashkeychain,
   ink,
@@ -1931,6 +2172,7 @@ export const mainnetChains = [
   redstone,
   settlusMainnet,
   shape,
+  silentDataMainnet,
   snax,
   soneium,
   sseed,

@@ -15,7 +15,7 @@ import { estimateContractGas, simulateContract } from 'viem/actions'
 
 import { l2ToL2CrossDomainMessengerAbi } from '@/abis/index.js'
 import type { BuildExecutingMessageReturnType } from '@/actions/interop/buildExecutingMessage.js'
-import { contracts } from '@/contracts.js'
+import { interopContracts } from '@/contracts.js'
 import {
   baseWriteAction,
   type BaseWriteContractActionParameters,
@@ -102,7 +102,7 @@ export async function relayCrossDomainMessage<
     client,
     {
       abi: l2ToL2CrossDomainMessengerAbi,
-      contractAddress: contracts.l2ToL2CrossDomainMessenger.address,
+      contractAddress: interopContracts.l2ToL2CrossDomainMessenger.address,
       contractFunctionName: 'relayMessage',
       contractArgs: [id, payload],
     },
@@ -133,7 +133,7 @@ export async function estimateRelayCrossDomainMessageGas<
 
   return estimateContractGas(client, {
     abi: l2ToL2CrossDomainMessengerAbi,
-    address: contracts.l2ToL2CrossDomainMessenger.address,
+    address: interopContracts.l2ToL2CrossDomainMessenger.address,
     functionName: 'relayMessage',
     args: [id, payload],
     ...txParameters,
@@ -164,7 +164,7 @@ export async function simulateRelayCrossDomainMessage<
   const res = await simulateContract(client, {
     account,
     abi: l2ToL2CrossDomainMessengerAbi,
-    address: contracts.l2ToL2CrossDomainMessenger.address,
+    address: interopContracts.l2ToL2CrossDomainMessenger.address,
     chain: client.chain,
     functionName: 'relayMessage',
     args: [id, payload],

@@ -2,13 +2,13 @@
 
 ***
 
-[@eth-optimism/viem](../../README.md) / [chains](../README.md) / interopRcAlpha0
+[@eth-optimism/viem](../../README.md) / [chains](../README.md) / boba
 
-# interopRcAlpha0
+# boba
 
-> `const` **interopRcAlpha0**: `object`
+> `const` **boba**: `object`
 
-L2 chain A definition for interop-rc-alpha-0
+Chain Definition for Boba
 
 ## Type declaration
 
@@ -24,11 +24,11 @@ Collection of block explorers
 
 ### blockExplorers.default.name
 
-> `readonly` **name**: `"Interop RC Alpha 0 Block Explorer"` = `'Interop RC Alpha 0 Block Explorer'`
+> `readonly` **name**: `"Boba Explorer"` = `'Boba Explorer'`
 
 ### blockExplorers.default.url
 
-> `readonly` **url**: `""` = `''`
+> `readonly` **url**: `"https://bobascan.com"` = `'https://bobascan.com'`
 
 ### contracts
 
@@ -36,21 +36,25 @@ Collection of block explorers
 
 Collection of contracts
 
-### contracts.addressManager
+### contracts.create2Deployer
 
-> `readonly` **addressManager**: `object`
+> `readonly` **create2Deployer**: `object`
 
-### contracts.anchorStateRegistry
+### contracts.create2Deployer.address
 
-> `readonly` **anchorStateRegistry**: `object`
+> `readonly` **address**: `"0x13b0D85CcB8bf860b6b79AF3029fCA081AE9beF2"` = `'0x13b0D85CcB8bf860b6b79AF3029fCA081AE9beF2'`
 
 ### contracts.disputeGameFactory
 
 > `readonly` **disputeGameFactory**: `object`
 
-### contracts.faultDisputeGame
+### contracts.disputeGameFactory.1
 
-> `readonly` **faultDisputeGame**: `object`
+> `readonly` **1**: `object`
+
+### contracts.disputeGameFactory.1.address
+
+> `readonly` **address**: `"0xF45a5f1e36fCeA3Cc830A98c6c3C5ceA7d6af852"` = `'0xF45a5f1e36fCeA3Cc830A98c6c3C5ceA7d6af852'`
 
 ### contracts.gasPriceOracle
 
@@ -72,13 +76,37 @@ Collection of contracts
 
 > `readonly` **l1CrossDomainMessenger**: `object`
 
-### contracts.l1Erc721BridgeProxy
+### contracts.l1CrossDomainMessenger.1
 
-> `readonly` **l1Erc721BridgeProxy**: `object`
+> `readonly` **1**: `object`
+
+### contracts.l1CrossDomainMessenger.1.address
+
+> `readonly` **address**: `"0x6D4528d192dB72E282265D6092F4B872f9Dff69e"` = `'0x6D4528d192dB72E282265D6092F4B872f9Dff69e'`
+
+### contracts.l1Erc721Bridge
+
+> `readonly` **l1Erc721Bridge**: `object`
+
+### contracts.l1Erc721Bridge.1
+
+> `readonly` **1**: `object`
+
+### contracts.l1Erc721Bridge.1.address
+
+> `readonly` **address**: `"0xA6Ad22bb0E73DEF40a24E510cFbc93807d8bf87e"` = `'0xA6Ad22bb0E73DEF40a24E510cFbc93807d8bf87e'`
 
 ### contracts.l1StandardBridge
 
 > `readonly` **l1StandardBridge**: `object`
+
+### contracts.l1StandardBridge.1
+
+> `readonly` **1**: `object`
+
+### contracts.l1StandardBridge.1.address
+
+> `readonly` **address**: `"0xdc1664458d2f0B6090bEa60A8793A4E66c2F1c00"` = `'0xdc1664458d2f0B6090bEa60A8793A4E66c2F1c00'`
 
 ### contracts.l2CrossDomainMessenger
 
@@ -112,25 +140,61 @@ Collection of contracts
 
 > `readonly` **address**: `"0x4200000000000000000000000000000000000016"`
 
-### contracts.opChainProxyAdmin
+### contracts.multicall3
 
-> `readonly` **opChainProxyAdmin**: `object`
+> `readonly` **multicall3**: `object`
 
-### contracts.optimismMintableErc20FactoryProxy
+### contracts.multicall3.address
 
-> `readonly` **optimismMintableErc20FactoryProxy**: `object`
+> `readonly` **address**: `"0xca11bde05977b3631167028862be2a173976ca11"` = `'0xca11bde05977b3631167028862be2a173976ca11'`
 
-### contracts.optimismPortal
+### contracts.optimismMintableERC20Factory
 
-> `readonly` **optimismPortal**: `object`
+> `readonly` **optimismMintableERC20Factory**: `object`
 
-### contracts.permissionedDisputeGame
+### contracts.optimismMintableERC20Factory.address
 
-> `readonly` **permissionedDisputeGame**: `object`
+> `readonly` **address**: `"0x4200000000000000000000000000000000000012"` = `'0x4200000000000000000000000000000000000012'`
+
+### contracts.permit2
+
+> `readonly` **permit2**: `object`
+
+### contracts.permit2.address
+
+> `readonly` **address**: `"0x000000000022D473030F116dDEE9F6B43aC78BA3"` = `'0x000000000022D473030F116dDEE9F6B43aC78BA3'`
+
+### contracts.portal
+
+> `readonly` **portal**: `object`
+
+### contracts.portal.1
+
+> `readonly` **1**: `object`
+
+### contracts.portal.1.address
+
+> `readonly` **address**: `"0x7B02D13904D8e6E0f0Efaf756aB14Cb0FF21eE7e"` = `'0x7B02D13904D8e6E0f0Efaf756aB14Cb0FF21eE7e'`
 
 ### contracts.systemConfig
 
 > `readonly` **systemConfig**: `object`
+
+### contracts.systemConfig.1
+
+> `readonly` **1**: `object`
+
+### contracts.systemConfig.1.address
+
+> `readonly` **address**: `"0x158Fd5715F16Ac1F2Dc959A299B383aAaf9B59EB"` = `'0x158Fd5715F16Ac1F2Dc959A299B383aAaf9B59EB'`
+
+### contracts.weth
+
+> `readonly` **weth**: `object`
+
+### contracts.weth.address
+
+> `readonly` **address**: `"0x4200000000000000000000000000000000000006"` = `'0x4200000000000000000000000000000000000006'`
 
 ### custom?
 
@@ -412,13 +476,13 @@ Modifies how data is formatted and typed (e.g. blocks and transactions)
 
 ### id
 
-> **id**: `420120003`
+> **id**: `288`
 
 ID in number form
 
 ### name
 
-> **name**: `"Interop RC Alpha 0"`
+> **name**: `"Boba"`
 
 Human-readable name
 
@@ -452,7 +516,7 @@ Collection of RPC endpoints
 
 ### rpcUrls.default.http
 
-> `readonly` **http**: readonly [`"https://interop-rc-alpha-0.optimism.io"`]
+> `readonly` **http**: readonly [`"https://mainnet.boba.network"`]
 
 ### serializers
 
@@ -476,16 +540,16 @@ Modifies how data is serialized (e.g. transactions).
 
 ### sourceId
 
-> **sourceId**: `11155111`
+> **sourceId**: `1`
 
 Source Chain ID (ie. the L1 chain)
 
-### testnet
+### testnet?
 
-> **testnet**: `true`
+> `optional` **testnet**: `boolean`
 
 Flag for test networks
 
 ## Defined in
 
-[packages/viem/src/chains/interopRcAlpha.ts:18](https://github.com/ethereum-optimism/ecosystem/blob/8c0ceae82d8e909c0d00b4601d7c7276090774cc/packages/viem/src/chains/interopRcAlpha.ts#L18)
+[packages/viem/src/chains/mainnet.ts:258](https://github.com/ethereum-optimism/ecosystem/blob/a4b870454ce0f0a79a41dda7928a11b5c8946efc/packages/viem/src/chains/mainnet.ts#L258)

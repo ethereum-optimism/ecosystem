@@ -1,4 +1,4 @@
-import { contracts } from '@eth-optimism/viem'
+import { interopContracts } from '@eth-optimism/viem'
 import type {
   CrossDomainMessage,
   MessageIdentifier,
@@ -33,7 +33,7 @@ ponder.on('L2ToL2CDM:SentMessage', async ({ event, context }) => {
   } satisfies CrossDomainMessage
 
   const messageIdentifier: MessageIdentifier = {
-    origin: contracts.l2ToL2CrossDomainMessenger.address,
+    origin: interopContracts.l2ToL2CrossDomainMessenger.address,
     chainId: cdm.source,
     logIndex: BigInt(event.log.logIndex),
     blockNumber: event.block.number,

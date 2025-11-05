@@ -2,13 +2,13 @@
 
 ***
 
-[@eth-optimism/viem](../../README.md) / [chains](../README.md) / interopAlpha0
+[@eth-optimism/viem](../../README.md) / [chains](../README.md) / celo
 
-# interopAlpha0
+# celo
 
-> `const` **interopAlpha0**: `object`
+> `const` **celo**: `object`
 
-L2 chain A definition for interop-alpha-0
+Chain Definition for Celo
 
 ## Type declaration
 
@@ -18,41 +18,17 @@ L2 chain A definition for interop-alpha-0
 
 Collection of block explorers
 
-### blockExplorers.blockscout
-
-> `readonly` **blockscout**: `object` = `interopAlpha0Blockscout`
-
-### blockExplorers.blockscout.name
-
-> **name**: `string` = `'Interop Alpha 0 Blockscout'`
-
-### blockExplorers.blockscout.url
-
-> **url**: `string` = `'https://optimism-interop-alpha-0.blockscout.com/'`
-
 ### blockExplorers.default
 
-> `readonly` **default**: `object` = `interopAlpha0Blockscout`
+> `readonly` **default**: `object`
 
 ### blockExplorers.default.name
 
-> **name**: `string` = `'Interop Alpha 0 Blockscout'`
+> `readonly` **name**: `"Celo Explorer"` = `'Celo Explorer'`
 
 ### blockExplorers.default.url
 
-> **url**: `string` = `'https://optimism-interop-alpha-0.blockscout.com/'`
-
-### blockExplorers.routescan
-
-> `readonly` **routescan**: `object`
-
-### blockExplorers.routescan.name
-
-> `readonly` **name**: `"Interop Alpha 0 Routescan"` = `'Interop Alpha 0 Routescan'`
-
-### blockExplorers.routescan.url
-
-> `readonly` **url**: `"https://420120000.testnet.routescan.io/"` = `'https://420120000.testnet.routescan.io/'`
+> `readonly` **url**: `"https://celoscan.io/"` = `'https://celoscan.io/'`
 
 ### contracts
 
@@ -60,21 +36,25 @@ Collection of block explorers
 
 Collection of contracts
 
-### contracts.addressManager
+### contracts.create2Deployer
 
-> `readonly` **addressManager**: `object`
+> `readonly` **create2Deployer**: `object`
 
-### contracts.anchorStateRegistry
+### contracts.create2Deployer.address
 
-> `readonly` **anchorStateRegistry**: `object`
+> `readonly` **address**: `"0x13b0D85CcB8bf860b6b79AF3029fCA081AE9beF2"` = `'0x13b0D85CcB8bf860b6b79AF3029fCA081AE9beF2'`
 
 ### contracts.disputeGameFactory
 
 > `readonly` **disputeGameFactory**: `object`
 
-### contracts.faultDisputeGame
+### contracts.disputeGameFactory.1
 
-> `readonly` **faultDisputeGame**: `object`
+> `readonly` **1**: `object`
+
+### contracts.disputeGameFactory.1.address
+
+> `readonly` **address**: `"0xFbAC162162f4009Bb007C6DeBC36B1dAC10aF683"` = `'0xFbAC162162f4009Bb007C6DeBC36B1dAC10aF683'`
 
 ### contracts.gasPriceOracle
 
@@ -96,13 +76,37 @@ Collection of contracts
 
 > `readonly` **l1CrossDomainMessenger**: `object`
 
-### contracts.l1Erc721BridgeProxy
+### contracts.l1CrossDomainMessenger.1
 
-> `readonly` **l1Erc721BridgeProxy**: `object`
+> `readonly` **1**: `object`
+
+### contracts.l1CrossDomainMessenger.1.address
+
+> `readonly` **address**: `"0x1AC1181fc4e4F877963680587AEAa2C90D7EbB95"` = `'0x1AC1181fc4e4F877963680587AEAa2C90D7EbB95'`
+
+### contracts.l1Erc721Bridge
+
+> `readonly` **l1Erc721Bridge**: `object`
+
+### contracts.l1Erc721Bridge.1
+
+> `readonly` **1**: `object`
+
+### contracts.l1Erc721Bridge.1.address
+
+> `readonly` **address**: `"0x3C519816C5BdC0a0199147594F83feD4F5847f13"` = `'0x3C519816C5BdC0a0199147594F83feD4F5847f13'`
 
 ### contracts.l1StandardBridge
 
 > `readonly` **l1StandardBridge**: `object`
+
+### contracts.l1StandardBridge.1
+
+> `readonly` **1**: `object`
+
+### contracts.l1StandardBridge.1.address
+
+> `readonly` **address**: `"0x9C4955b92F34148dbcfDCD82e9c9eCe5CF2badfe"` = `'0x9C4955b92F34148dbcfDCD82e9c9eCe5CF2badfe'`
 
 ### contracts.l2CrossDomainMessenger
 
@@ -136,25 +140,61 @@ Collection of contracts
 
 > `readonly` **address**: `"0x4200000000000000000000000000000000000016"`
 
-### contracts.opChainProxyAdmin
+### contracts.multicall3
 
-> `readonly` **opChainProxyAdmin**: `object`
+> `readonly` **multicall3**: `object`
 
-### contracts.optimismMintableErc20FactoryProxy
+### contracts.multicall3.address
 
-> `readonly` **optimismMintableErc20FactoryProxy**: `object`
+> `readonly` **address**: `"0xca11bde05977b3631167028862be2a173976ca11"` = `'0xca11bde05977b3631167028862be2a173976ca11'`
 
-### contracts.optimismPortal
+### contracts.optimismMintableERC20Factory
 
-> `readonly` **optimismPortal**: `object`
+> `readonly` **optimismMintableERC20Factory**: `object`
 
-### contracts.permissionedDisputeGame
+### contracts.optimismMintableERC20Factory.address
 
-> `readonly` **permissionedDisputeGame**: `object`
+> `readonly` **address**: `"0x4200000000000000000000000000000000000012"` = `'0x4200000000000000000000000000000000000012'`
+
+### contracts.permit2
+
+> `readonly` **permit2**: `object`
+
+### contracts.permit2.address
+
+> `readonly` **address**: `"0x000000000022D473030F116dDEE9F6B43aC78BA3"` = `'0x000000000022D473030F116dDEE9F6B43aC78BA3'`
+
+### contracts.portal
+
+> `readonly` **portal**: `object`
+
+### contracts.portal.1
+
+> `readonly` **1**: `object`
+
+### contracts.portal.1.address
+
+> `readonly` **address**: `"0xc5c5D157928BDBD2ACf6d0777626b6C75a9EAEDC"` = `'0xc5c5D157928BDBD2ACf6d0777626b6C75a9EAEDC'`
 
 ### contracts.systemConfig
 
 > `readonly` **systemConfig**: `object`
+
+### contracts.systemConfig.1
+
+> `readonly` **1**: `object`
+
+### contracts.systemConfig.1.address
+
+> `readonly` **address**: `"0x89E31965D844a309231B1f17759Ccaf1b7c09861"` = `'0x89E31965D844a309231B1f17759Ccaf1b7c09861'`
+
+### contracts.weth
+
+> `readonly` **weth**: `object`
+
+### contracts.weth.address
+
+> `readonly` **address**: `"0x4200000000000000000000000000000000000006"` = `'0x4200000000000000000000000000000000000006'`
 
 ### custom?
 
@@ -436,13 +476,13 @@ Modifies how data is formatted and typed (e.g. blocks and transactions)
 
 ### id
 
-> **id**: `420120000`
+> **id**: `42220`
 
 ID in number form
 
 ### name
 
-> **name**: `"Interop Alpha 0"`
+> **name**: `"Celo"`
 
 Human-readable name
 
@@ -458,11 +498,11 @@ Currency used by chain
 
 ### nativeCurrency.name
 
-> `readonly` **name**: `"Ether"` = `'Ether'`
+> `readonly` **name**: `"Celo native asset"` = `'Celo native asset'`
 
 ### nativeCurrency.symbol
 
-> `readonly` **symbol**: `"ETH"` = `'ETH'`
+> `readonly` **symbol**: `"CELO"` = `'CELO'`
 
 ### rpcUrls
 
@@ -476,7 +516,7 @@ Collection of RPC endpoints
 
 ### rpcUrls.default.http
 
-> `readonly` **http**: readonly [`"https://interop-alpha-0.optimism.io"`]
+> `readonly` **http**: readonly [`"https://forno.celo.org"`]
 
 ### serializers
 
@@ -500,16 +540,16 @@ Modifies how data is serialized (e.g. transactions).
 
 ### sourceId
 
-> **sourceId**: `11155111`
+> **sourceId**: `1`
 
 Source Chain ID (ie. the L1 chain)
 
-### testnet
+### testnet?
 
-> **testnet**: `true`
+> `optional` **testnet**: `boolean`
 
 Flag for test networks
 
 ## Defined in
 
-[packages/viem/src/chains/interopAlpha.ts:23](https://github.com/ethereum-optimism/ecosystem/blob/8c0ceae82d8e909c0d00b4601d7c7276090774cc/packages/viem/src/chains/interopAlpha.ts#L23)
+[packages/viem/src/chains/mainnet.ts:318](https://github.com/ethereum-optimism/ecosystem/blob/a4b870454ce0f0a79a41dda7928a11b5c8946efc/packages/viem/src/chains/mainnet.ts#L318)

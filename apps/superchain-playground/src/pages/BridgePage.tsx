@@ -6,11 +6,7 @@ import { SupportedNetworks } from '@/components/SupportedNetworks'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { useConfig } from '@/stores/useConfig'
 
-const supportedNetworkNames: NetworkName[] = [
-  'sepolia',
-  'interop-alpha',
-  'supersim',
-]
+const supportedNetworkNames: NetworkName[] = ['sepolia', 'supersim']
 
 export const BridgePage = () => {
   const { networkName, setNetworkName } = useConfig()

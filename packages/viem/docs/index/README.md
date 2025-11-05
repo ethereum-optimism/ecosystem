@@ -8,6 +8,10 @@
 
 ## Index
 
+### Other
+
+- [interopContracts](variables/interopContracts.md)
+
 ### Predeploy Addresses
 
 - [contracts](variables/contracts.md)

@@ -2,13 +2,13 @@
 
 ***
 
-[@eth-optimism/viem](../../README.md) / [chains](../README.md) / ethernitySepolia
+[@eth-optimism/viem](../../README.md) / [chains](../README.md) / campSepolia
 
-# ethernitySepolia
+# campSepolia
 
-> `const` **ethernitySepolia**: `object`
+> `const` **campSepolia**: `object`
 
-Chain Definition for Ethernity Sepolia
+Chain Definition for Camp Network  V2 Sepolia
 
 ## Type declaration
 
@@ -24,11 +24,11 @@ Collection of block explorers
 
 ### blockExplorers.default.name
 
-> `readonly` **name**: `"Ethernity Sepolia Explorer"` = `'Ethernity Sepolia Explorer'`
+> `readonly` **name**: `"Camp Network  V2 Sepolia Explorer"` = `'Camp Network  V2 Sepolia Explorer'`
 
 ### blockExplorers.default.url
 
-> `readonly` **url**: `"https://testnet.ernscan.io"` = `'https://testnet.ernscan.io'`
+> `readonly` **url**: `"https://camp-network-testnet.blockscout.com"` = `'https://camp-network-testnet.blockscout.com'`
 
 ### contracts
 
@@ -54,7 +54,7 @@ Collection of contracts
 
 ### contracts.disputeGameFactory.11155111.address
 
-> `readonly` **address**: `"0x64d0Bce6eD7c16CAC7817F3597758E31AFacD01B"` = `'0x64d0Bce6eD7c16CAC7817F3597758E31AFacD01B'`
+> `readonly` **address**: `"0x83BaE25FDa209b31E903D3DD932906E2718A6E89"` = `'0x83BaE25FDa209b31E903D3DD932906E2718A6E89'`
 
 ### contracts.gasPriceOracle
 
@@ -82,7 +82,7 @@ Collection of contracts
 
 ### contracts.l1CrossDomainMessenger.11155111.address
 
-> `readonly` **address**: `"0x1c8b6a6F3E3612c79E62460a6e44C24D1EfF2FDa"` = `'0x1c8b6a6F3E3612c79E62460a6e44C24D1EfF2FDa'`
+> `readonly` **address**: `"0x3f4A9443DdC60a0d0Dcea92C627849045B5A840f"` = `'0x3f4A9443DdC60a0d0Dcea92C627849045B5A840f'`
 
 ### contracts.l1Erc721Bridge
 
@@ -94,7 +94,7 @@ Collection of contracts
 
 ### contracts.l1Erc721Bridge.11155111.address
 
-> `readonly` **address**: `"0xBf0D43e12eF74dC21917e1D6175702AD673e1283"` = `'0xBf0D43e12eF74dC21917e1D6175702AD673e1283'`
+> `readonly` **address**: `"0x1239F374612F4674305ba7c60332b16e5396e125"` = `'0x1239F374612F4674305ba7c60332b16e5396e125'`
 
 ### contracts.l1StandardBridge
 
@@ -106,7 +106,7 @@ Collection of contracts
 
 ### contracts.l1StandardBridge.11155111.address
 
-> `readonly` **address**: `"0xFd1a12b7a04B13c031d8b075BA5b9080a2CF246f"` = `'0xFd1a12b7a04B13c031d8b075BA5b9080a2CF246f'`
+> `readonly` **address**: `"0x5c3Ec2182Be9FbeA0da50d517362a069e13FB50E"` = `'0x5c3Ec2182Be9FbeA0da50d517362a069e13FB50E'`
 
 ### contracts.l2CrossDomainMessenger
 
@@ -134,7 +134,7 @@ Collection of contracts
 
 ### contracts.l2OutputOracle.11155111.address
 
-> `readonly` **address**: `"0x11118536F94Bc7C98bBaf9194bE13FC1987293cd"` = `'0x11118536F94Bc7C98bBaf9194bE13FC1987293cd'`
+> `readonly` **address**: `"0x6AD70b6C30Aa872FcbB86958A6aB950b3125a6f0"` = `'0x6AD70b6C30Aa872FcbB86958A6aB950b3125a6f0'`
 
 ### contracts.l2StandardBridge
 
@@ -186,7 +186,7 @@ Collection of contracts
 
 ### contracts.portal.11155111.address
 
-> `readonly` **address**: `"0x1F24d471Ef7291c7F97DBD2f76299b30D3e3B6E3"` = `'0x1F24d471Ef7291c7F97DBD2f76299b30D3e3B6E3'`
+> `readonly` **address**: `"0x4238fAb3746D41e18c87138b505B6857CeF6cd1F"` = `'0x4238fAb3746D41e18c87138b505B6857CeF6cd1F'`
 
 ### contracts.systemConfig
 
@@ -198,7 +198,7 @@ Collection of contracts
 
 ### contracts.systemConfig.11155111.address
 
-> `readonly` **address**: `"0x7C957fec1F6B3d1024442E989cB08b8f2285686C"` = `'0x7C957fec1F6B3d1024442E989cB08b8f2285686C'`
+> `readonly` **address**: `"0x7aA405B004401Be20d4A587de34aEeC99bE0b268"` = `'0x7aA405B004401Be20d4A587de34aEeC99bE0b268'`
 
 ### contracts.weth
 
@@ -488,13 +488,13 @@ Modifies how data is formatted and typed (e.g. blocks and transactions)
 
 ### id
 
-> **id**: `233`
+> **id**: `325000`
 
 ID in number form
 
 ### name
 
-> **name**: `"Ethernity Sepolia"`
+> **name**: `"Camp Network  V2 Sepolia"`
 
 Human-readable name
 
@@ -528,7 +528,7 @@ Collection of RPC endpoints
 
 ### rpcUrls.default.http
 
-> `readonly` **http**: readonly [`"https://testnet.ethernitychain.io"`]
+> `readonly` **http**: readonly [`"https://rpc.camp-network-testnet.gelato.digital"`]
 
 ### serializers
 
@@ -564,4 +564,4 @@ Flag for test networks
 
 ## Defined in
 
-[packages/viem/src/chains/sepolia.ts:388](https://github.com/ethereum-optimism/ecosystem/blob/a4b870454ce0f0a79a41dda7928a11b5c8946efc/packages/viem/src/chains/sepolia.ts#L388)
+[packages/viem/src/chains/sepolia.ts:197](https://github.com/ethereum-optimism/ecosystem/blob/a4b870454ce0f0a79a41dda7928a11b5c8946efc/packages/viem/src/chains/sepolia.ts#L197)

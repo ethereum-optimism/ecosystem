@@ -1,4 +1,4 @@
-import { contracts } from '@eth-optimism/viem'
+import { interopContracts } from '@eth-optimism/viem'
 import { gasTankAbi } from '@eth-optimism/viem/abis/experimental'
 import {
   relayCrossDomainMessage,
@@ -558,7 +558,7 @@ export class Relayer {
     account: Account,
   ): RelayMessageParams {
     const id: MessageIdentifier = {
-      origin: contracts.l2ToL2CrossDomainMessenger.address,
+      origin: interopContracts.l2ToL2CrossDomainMessenger.address,
       chainId: BigInt(message.source),
       logIndex: BigInt(message.logIndex),
       blockNumber: BigInt(message.blockNumber),
