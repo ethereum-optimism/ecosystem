@@ -6,9 +6,7 @@ See ponder [documentation](https://ponder.sh/docs/getting-started/new-project) o
 
 ## Configuration
 
-Ponder configuration is available in 3 settings.
+Ponder configuration is available in 2 settings.
 
-1. `pnpm dev:alphanet`. Spins up a dev instance indexing the interop alpha networks
-2. `pnpm dev:devnet`. Spins up a dev instances indexing the interop devnet networks.
-3. `pnpm dev:supersim`. Spins up a dev instances indexing 2 local supersim instances. Chains 901 & 902
-4. `pnpm dev`. Spins up a dev instance bootstrapped from chains specified from env, `PONDER_INTEROP_ENDPOINT_<chain_id>=<url>`
+1. `pnpm dev:supersim`. Spins up a dev instances indexing 2 local supersim instances. Chains 901 & 902
+2. `pnpm dev`. Spins up a dev instance bootstrapped from chains specified from env, `PONDER_INTEROP_ENDPOINT_<chain_id>=<url>`

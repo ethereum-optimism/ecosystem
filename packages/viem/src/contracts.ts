@@ -16,22 +16,28 @@ export const contracts = {
   permit2: {
     address: '0x000000000022D473030F116dDEE9F6B43aC78BA3',
   },
-  crossL2Inbox: {
-    address: '0x4200000000000000000000000000000000000022',
+  optimismMintableERC20Factory: {
+    address: '0x4200000000000000000000000000000000000012',
   },
+  weth: {
+    address: '0x4200000000000000000000000000000000000006',
+  },
+} as const satisfies Chain['contracts']
+
+/**
+ * Interop Contracts
+ */
+export const interopContracts = {
   l2ToL2CrossDomainMessenger: {
     address: '0x4200000000000000000000000000000000000023',
   },
-  optimismMintableERC20Factory: {
-    address: '0x4200000000000000000000000000000000000012',
+  crossL2Inbox: {
+    address: '0x4200000000000000000000000000000000000022',
   },
   superchainTokenBridge: {
     address: '0x4200000000000000000000000000000000000028',
   },
   superchainETHBridge: {
     address: '0x4200000000000000000000000000000000000024',
-  },
-  weth: {
-    address: '0x4200000000000000000000000000000000000006',
   },
 } as const satisfies Chain['contracts']

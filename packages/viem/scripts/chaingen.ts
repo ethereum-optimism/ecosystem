@@ -85,6 +85,18 @@ async function main() {
     autoTrim: [false, false],
   })
 
+  // Load addresses.json for additional address data
+  const addressesJsonPath = path.join(
+    SUPERCHAIN_REGISTRY_PATH,
+    'superchain',
+    'extra',
+    'addresses',
+    'addresses.json',
+  )
+  const addressesData = JSON.parse(
+    fs.readFileSync(addressesJsonPath, 'utf8'),
+  ) as Record<string, Record<string, Address>>
+
   const mainnetHttp = process.env.MAINNET_RPC_URL
     ? [process.env.MAINNET_RPC_URL]
     : mainnet.rpcUrls.default.http
@@ -127,23 +139,43 @@ async function main() {
           fs.readFileSync(`${configPath}/${entry}`, 'utf8'),
         )
 
-        const addresses = chainConfig.addresses as Record<string, Address>
-        const l1Addresses = {
-          // Referenced as `portal` in viem
-          portal: addresses.OptimismPortalProxy,
+        const chainId = chainConfig.chain_id as number
+        const tomlAddresses =
+          (chainConfig.addresses as Record<string, Address>) || {}
 
-          // Standard Deployments
-          l1StandardBridge: addresses.L1StandardBridgeProxy,
-          l1Erc721Bridge: addresses.L1ERC721BridgeProxy,
-          l1CrossDomainMessenger: addresses.L1CrossDomainMessengerProxy,
-          systemConfig: addresses.SystemConfigProxy,
+        const jsonAddresses = addressesData[chainId.toString()] || {}
+
+        // Merge addresses, prioritizing TOML
+        const allAddresses = { ...jsonAddresses, ...tomlAddresses }
+
+        const l1Addresses: Record<string, Address> = {}
+
+        // Referenced as `portal` in viem
+        if (allAddresses.OptimismPortalProxy) {
+          l1Addresses['portal'] = allAddresses.OptimismPortalProxy
         }
 
-        if (addresses.DisputeGameFactoryProxy) {
-          l1Addresses['disputeGameFactory'] = addresses.DisputeGameFactoryProxy
+        // Standard Deployments
+        if (allAddresses.L1StandardBridgeProxy) {
+          l1Addresses['l1StandardBridge'] = allAddresses.L1StandardBridgeProxy
         }
-        if (addresses.L2OutputOracleProxy) {
-          l1Addresses['l2OutputOracle'] = addresses.L2OutputOracleProxy
+        if (allAddresses.L1ERC721BridgeProxy) {
+          l1Addresses['l1Erc721Bridge'] = allAddresses.L1ERC721BridgeProxy
+        }
+        if (allAddresses.L1CrossDomainMessengerProxy) {
+          l1Addresses['l1CrossDomainMessenger'] =
+            allAddresses.L1CrossDomainMessengerProxy
+        }
+        if (allAddresses.SystemConfigProxy) {
+          l1Addresses['systemConfig'] = allAddresses.SystemConfigProxy
+        }
+
+        if (allAddresses.DisputeGameFactoryProxy) {
+          l1Addresses['disputeGameFactory'] =
+            allAddresses.DisputeGameFactoryProxy
+        }
+        if (allAddresses.L2OutputOracleProxy) {
+          l1Addresses['l2OutputOracle'] = allAddresses.L2OutputOracleProxy
         }
 
         // This is an edge case handler for the `arena-z-testnet` chain name.
@@ -173,7 +205,7 @@ async function main() {
         return {
           chainName: pascalCase(chainName),
           exportName: camelCase(exportName),
-          chainId: chainConfig.chain_id as number,
+          chainId: chainId,
           sourceChainId: sourceChainId,
           rpc: chainConfig.public_rpc as string,
           explorer: chainConfig.explorer as string,

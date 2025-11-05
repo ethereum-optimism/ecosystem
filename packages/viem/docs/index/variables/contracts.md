@@ -12,13 +12,13 @@ OP Stack Predeploy Addresses
 
 ## Type declaration
 
-### crossL2Inbox
+### create2Deployer
 
-> `readonly` **crossL2Inbox**: `object`
+> `readonly` **create2Deployer**: `object`
 
-### crossL2Inbox.address
+### create2Deployer.address
 
-> `readonly` **address**: `"0x4200000000000000000000000000000000000022"` = `'0x4200000000000000000000000000000000000022'`
+> `readonly` **address**: `"0x13b0D85CcB8bf860b6b79AF3029fCA081AE9beF2"` = `'0x13b0D85CcB8bf860b6b79AF3029fCA081AE9beF2'`
 
 ### gasPriceOracle
 
@@ -68,13 +68,13 @@ OP Stack Predeploy Addresses
 
 > `readonly` **address**: `"0x4200000000000000000000000000000000000016"`
 
-### l2ToL2CrossDomainMessenger
+### multicall3
 
-> `readonly` **l2ToL2CrossDomainMessenger**: `object`
+> `readonly` **multicall3**: `object`
 
-### l2ToL2CrossDomainMessenger.address
+### multicall3.address
 
-> `readonly` **address**: `"0x4200000000000000000000000000000000000023"` = `'0x4200000000000000000000000000000000000023'`
+> `readonly` **address**: `"0xca11bde05977b3631167028862be2a173976ca11"` = `'0xca11bde05977b3631167028862be2a173976ca11'`
 
 ### optimismMintableERC20Factory
 
@@ -84,21 +84,13 @@ OP Stack Predeploy Addresses
 
 > `readonly` **address**: `"0x4200000000000000000000000000000000000012"` = `'0x4200000000000000000000000000000000000012'`
 
-### superchainETHBridge
+### permit2
 
-> `readonly` **superchainETHBridge**: `object`
+> `readonly` **permit2**: `object`
 
-### superchainETHBridge.address
+### permit2.address
 
-> `readonly` **address**: `"0x4200000000000000000000000000000000000024"` = `'0x4200000000000000000000000000000000000024'`
-
-### superchainTokenBridge
-
-> `readonly` **superchainTokenBridge**: `object`
-
-### superchainTokenBridge.address
-
-> `readonly` **address**: `"0x4200000000000000000000000000000000000028"` = `'0x4200000000000000000000000000000000000028'`
+> `readonly` **address**: `"0x000000000022D473030F116dDEE9F6B43aC78BA3"` = `'0x000000000022D473030F116dDEE9F6B43aC78BA3'`
 
 ### weth
 
@@ -110,4 +102,4 @@ OP Stack Predeploy Addresses
 
 ## Defined in
 
-[packages/viem/src/contracts.ts:8](https://github.com/ethereum-optimism/ecosystem/blob/8c0ceae82d8e909c0d00b4601d7c7276090774cc/packages/viem/src/contracts.ts#L8)
+[packages/viem/src/contracts.ts:8](https://github.com/ethereum-optimism/ecosystem/blob/a4b870454ce0f0a79a41dda7928a11b5c8946efc/packages/viem/src/contracts.ts#L8)

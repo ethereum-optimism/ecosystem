@@ -1,4 +1,4 @@
-import { contracts } from '@eth-optimism/viem'
+import { interopContracts } from '@eth-optimism/viem'
 import { l2ToL2CrossDomainMessengerAbi } from '@eth-optimism/viem/abis'
 import type { NetworkName } from '@eth-optimism/viem/chains'
 import { chainById, supersimL2A } from '@eth-optimism/viem/chains'
@@ -56,7 +56,7 @@ import type { L2ToL2CrossDomainMessage } from '@/types/L2ToL2CrossDomainMessage'
 
 const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
 
-const supportedNetworkNames: NetworkName[] = ['interop-alpha', 'supersim']
+const supportedNetworkNames: NetworkName[] = ['supersim']
 
 export const SuperchainMessageRelayer = () => {
   return (
@@ -499,7 +499,7 @@ const SingleMessageDetails = ({
     isLoading: isMessageAlreadyRelayedLoading,
     refetch: refetchIsRelayed,
   } = useReadContract({
-    address: contracts.l2ToL2CrossDomainMessenger.address,
+    address: interopContracts.l2ToL2CrossDomainMessenger.address,
     chainId: Number(destination),
     abi: l2ToL2CrossDomainMessengerAbi,
     functionName: 'successfulMessages',
@@ -647,7 +647,7 @@ const MessageRelayer = ({
     useSimulateContract({
       abi: l2ToL2CrossDomainMessengerAbi,
       functionName: 'relayMessage',
-      address: contracts.l2ToL2CrossDomainMessenger.address,
+      address: interopContracts.l2ToL2CrossDomainMessenger.address,
       args: [
         identifier!,
         encodeL2ToL2CrossDomainSentMessageEvent(l2ToL2CrossDomainMessage),

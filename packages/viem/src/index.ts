@@ -2,7 +2,7 @@
 export type { MessageIdentifier } from '@/types/interop/executingMessage.js'
 
 // contracts
-export { contracts } from '@/contracts.js'
+export { contracts, interopContracts } from '@/contracts.js'
 
 // utils
 // fix

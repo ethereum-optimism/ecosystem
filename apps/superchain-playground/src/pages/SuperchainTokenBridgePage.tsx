@@ -1,4 +1,4 @@
-import { contracts } from '@eth-optimism/viem'
+import { interopContracts } from '@eth-optimism/viem'
 import type { NetworkName } from '@eth-optimism/viem/chains'
 import { networks } from '@eth-optimism/viem/chains'
 import { CheckCircle2, Loader2, Send } from 'lucide-react'
@@ -39,7 +39,7 @@ import { useTokenInfo } from '@/hooks/useTokenInfo'
 import { useConfig } from '@/stores/useConfig'
 import { useTransactionStore } from '@/stores/useTransactionStore'
 
-const supportedNetworkNames: NetworkName[] = ['supersim', 'interop-alpha']
+const supportedNetworkNames: NetworkName[] = ['supersim']
 
 export const SuperchainTokenBridgePage = () => {
   const { address } = useAccount()
@@ -71,7 +71,7 @@ export const SuperchainTokenBridgePage = () => {
 
   const simulationResult = useSimulateContract({
     abi: superchainTokenBridgeAbi,
-    address: contracts.superchainTokenBridge.address,
+    address: interopContracts.superchainTokenBridge.address,
     functionName: 'sendERC20',
     args: [tokenAddress, address!, amountUnits, BigInt(toChainId)],
     chainId: fromChainId,

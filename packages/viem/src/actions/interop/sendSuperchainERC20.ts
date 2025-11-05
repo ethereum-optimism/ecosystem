@@ -16,7 +16,7 @@ import type {
 import { estimateContractGas, simulateContract } from 'viem/actions'
 
 import { superchainTokenBridgeAbi } from '@/abis/index.js'
-import { contracts } from '@/contracts.js'
+import { interopContracts } from '@/contracts.js'
 import type { BaseWriteContractActionParameters } from '@/core/baseWriteAction.js'
 import { baseWriteAction } from '@/core/baseWriteAction.js'
 import type { ErrorType } from '@/types/utils.js'
@@ -88,7 +88,7 @@ export async function sendSuperchainERC20<
     client,
     {
       abi: superchainTokenBridgeAbi,
-      contractAddress: contracts.superchainTokenBridge.address,
+      contractAddress: interopContracts.superchainTokenBridge.address,
       contractFunctionName: 'sendERC20',
       contractArgs: [tokenAddress, to, amount, BigInt(chainId)],
     },
@@ -115,7 +115,7 @@ export async function estimateSendSuperchainERC20Gas<
 
   return estimateContractGas(client, {
     abi: superchainTokenBridgeAbi,
-    address: contracts.superchainTokenBridge.address,
+    address: interopContracts.superchainTokenBridge.address,
     functionName: 'sendERC20',
     args: [tokenAddress, to, amount, BigInt(chainId)],
     ...txParameters,
@@ -142,7 +142,7 @@ export async function simulateSendSuperchainERC20<
   const res = await simulateContract(client, {
     account,
     abi: superchainTokenBridgeAbi,
-    address: contracts.superchainTokenBridge.address,
+    address: interopContracts.superchainTokenBridge.address,
     chain: client.chain,
     functionName: 'sendERC20',
     args: [tokenAddress, to, amount, BigInt(chainId)],

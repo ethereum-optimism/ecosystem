@@ -1,4 +1,4 @@
-import { contracts } from '@eth-optimism/viem'
+import { interopContracts } from '@eth-optimism/viem'
 import { superchainTokenBridgeAbi } from '@eth-optimism/viem/abis'
 import type { SendSuperchainERC20Parameters } from '@eth-optimism/viem/actions/interop'
 import { useCallback } from 'react'
@@ -16,7 +16,7 @@ export const useSendSuperchainERC20 = () => {
 
       return writeContractAsync({
         abi: superchainTokenBridgeAbi,
-        address: contracts.superchainTokenBridge.address,
+        address: interopContracts.superchainTokenBridge.address,
         functionName: 'sendERC20',
         args: [tokenAddress, to, amount, BigInt(chainId)],
       })

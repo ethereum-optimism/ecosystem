@@ -36,6 +36,14 @@ Collection of block explorers
 
 Collection of contracts
 
+### contracts.create2Deployer
+
+> `readonly` **create2Deployer**: `object`
+
+### contracts.create2Deployer.address
+
+> `readonly` **address**: `"0x13b0D85CcB8bf860b6b79AF3029fCA081AE9beF2"` = `'0x13b0D85CcB8bf860b6b79AF3029fCA081AE9beF2'`
+
 ### contracts.disputeGameFactory
 
 > `readonly` **disputeGameFactory**: `object`
@@ -116,18 +124,6 @@ Collection of contracts
 
 > `readonly` **address**: `"0x4200000000000000000000000000000000000014"`
 
-### contracts.l2OutputOracle
-
-> `readonly` **l2OutputOracle**: `object`
-
-### contracts.l2OutputOracle.11155111
-
-> `readonly` **11155111**: `object`
-
-### contracts.l2OutputOracle.11155111.address
-
-> `readonly` **address**: `"0xc8886f8BAb6Eaeb215aDB5f1c686BF699248300e"` = `'0xc8886f8BAb6Eaeb215aDB5f1c686BF699248300e'`
-
 ### contracts.l2StandardBridge
 
 > `readonly` **l2StandardBridge**: `object`
@@ -143,6 +139,30 @@ Collection of contracts
 ### contracts.l2ToL1MessagePasser.address
 
 > `readonly` **address**: `"0x4200000000000000000000000000000000000016"`
+
+### contracts.multicall3
+
+> `readonly` **multicall3**: `object`
+
+### contracts.multicall3.address
+
+> `readonly` **address**: `"0xca11bde05977b3631167028862be2a173976ca11"` = `'0xca11bde05977b3631167028862be2a173976ca11'`
+
+### contracts.optimismMintableERC20Factory
+
+> `readonly` **optimismMintableERC20Factory**: `object`
+
+### contracts.optimismMintableERC20Factory.address
+
+> `readonly` **address**: `"0x4200000000000000000000000000000000000012"` = `'0x4200000000000000000000000000000000000012'`
+
+### contracts.permit2
+
+> `readonly` **permit2**: `object`
+
+### contracts.permit2.address
+
+> `readonly` **address**: `"0x000000000022D473030F116dDEE9F6B43aC78BA3"` = `'0x000000000022D473030F116dDEE9F6B43aC78BA3'`
 
 ### contracts.portal
 
@@ -167,6 +187,14 @@ Collection of contracts
 ### contracts.systemConfig.11155111.address
 
 > `readonly` **address**: `"0x166F9406e79A656f12F05247fb8F5DfA6155bCBF"` = `'0x166F9406e79A656f12F05247fb8F5DfA6155bCBF'`
+
+### contracts.weth
+
+> `readonly` **weth**: `object`
+
+### contracts.weth.address
+
+> `readonly` **address**: `"0x4200000000000000000000000000000000000006"` = `'0x4200000000000000000000000000000000000006'`
 
 ### custom?
 
@@ -524,4 +552,4 @@ Flag for test networks
 
 ## Defined in
 
-[packages/viem/src/chains/sepolia.ts:1182](https://github.com/ethereum-optimism/ecosystem/blob/8c0ceae82d8e909c0d00b4601d7c7276090774cc/packages/viem/src/chains/sepolia.ts#L1182)
+[packages/viem/src/chains/sepolia.ts:1390](https://github.com/ethereum-optimism/ecosystem/blob/a4b870454ce0f0a79a41dda7928a11b5c8946efc/packages/viem/src/chains/sepolia.ts#L1390)

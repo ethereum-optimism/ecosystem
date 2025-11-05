@@ -1,4 +1,4 @@
-import { contracts } from '@eth-optimism/viem'
+import { interopContracts } from '@eth-optimism/viem'
 import { l2ToL2CrossDomainMessengerAbi } from '@eth-optimism/viem/abis'
 import type { Network } from '@eth-optimism/viem/chains'
 import { getPublicClient } from '@wagmi/core'
@@ -24,7 +24,7 @@ export const useInteropEnabledChains = (network: Network) => {
   })
 
   const chains = network.chains
-  const address = contracts.l2ToL2CrossDomainMessenger.address
+  const address = interopContracts.l2ToL2CrossDomainMessenger.address
   useEffect(() => {
     const checkChains = async () => {
       // Skip if interop enabled by default

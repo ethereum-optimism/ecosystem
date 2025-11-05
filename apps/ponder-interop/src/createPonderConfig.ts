@@ -1,4 +1,4 @@
-import { contracts as addrs } from '@eth-optimism/viem'
+import { interopContracts as addrs } from '@eth-optimism/viem'
 import { l2ToL2CrossDomainMessengerAbi } from '@eth-optimism/viem/abis'
 import { gasTankAbi } from '@eth-optimism/viem/abis/experimental'
 import { createConfig, mergeAbis } from 'ponder'

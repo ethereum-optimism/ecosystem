@@ -28,13 +28,21 @@ Collection of block explorers
 
 ### blockExplorers.default.url
 
-> `readonly` **url**: `"https://arena-z.blockscout.com"` = `'https://arena-z.blockscout.com'`
+> `readonly` **url**: `"https://testnet-explorer.arena-z.gg"` = `'https://testnet-explorer.arena-z.gg'`
 
 ### contracts
 
 > **contracts**: `object`
 
 Collection of contracts
+
+### contracts.create2Deployer
+
+> `readonly` **create2Deployer**: `object`
+
+### contracts.create2Deployer.address
+
+> `readonly` **address**: `"0x13b0D85CcB8bf860b6b79AF3029fCA081AE9beF2"` = `'0x13b0D85CcB8bf860b6b79AF3029fCA081AE9beF2'`
 
 ### contracts.disputeGameFactory
 
@@ -46,7 +54,7 @@ Collection of contracts
 
 ### contracts.disputeGameFactory.11155111.address
 
-> `readonly` **address**: `"0xD9E9933Cc6EF672C93d2a42494b0D2BF14C05544"` = `'0xD9E9933Cc6EF672C93d2a42494b0D2BF14C05544'`
+> `readonly` **address**: `"0xd02dd46b73ff5f3eC3970f9A12f08Ad703c103df"` = `'0xd02dd46b73ff5f3eC3970f9A12f08Ad703c103df'`
 
 ### contracts.gasPriceOracle
 
@@ -74,7 +82,7 @@ Collection of contracts
 
 ### contracts.l1CrossDomainMessenger.11155111.address
 
-> `readonly` **address**: `"0xCC226A3B7b5ec4D4d698418fC2C0492950136Ba7"` = `'0xCC226A3B7b5ec4D4d698418fC2C0492950136Ba7'`
+> `readonly` **address**: `"0x3E0252828c920C21C5F1b86f862444295F5f283C"` = `'0x3E0252828c920C21C5F1b86f862444295F5f283C'`
 
 ### contracts.l1Erc721Bridge
 
@@ -86,7 +94,7 @@ Collection of contracts
 
 ### contracts.l1Erc721Bridge.11155111.address
 
-> `readonly` **address**: `"0x11d7f6f2E59Fc12E61DbfafE7790e54CAb01b434"` = `'0x11d7f6f2E59Fc12E61DbfafE7790e54CAb01b434'`
+> `readonly` **address**: `"0x0aB6D908f5553732fBbC2e5b25357E9202c396BA"` = `'0x0aB6D908f5553732fBbC2e5b25357E9202c396BA'`
 
 ### contracts.l1StandardBridge
 
@@ -98,7 +106,7 @@ Collection of contracts
 
 ### contracts.l1StandardBridge.11155111.address
 
-> `readonly` **address**: `"0x76A4B2CC5d210729Fb3DE13CeE250663bdac73A6"` = `'0x76A4B2CC5d210729Fb3DE13CeE250663bdac73A6'`
+> `readonly` **address**: `"0x23592510F948c1465294041b44192f9656146544"` = `'0x23592510F948c1465294041b44192f9656146544'`
 
 ### contracts.l2CrossDomainMessenger
 
@@ -116,18 +124,6 @@ Collection of contracts
 
 > `readonly` **address**: `"0x4200000000000000000000000000000000000014"`
 
-### contracts.l2OutputOracle
-
-> `readonly` **l2OutputOracle**: `object`
-
-### contracts.l2OutputOracle.11155111
-
-> `readonly` **11155111**: `object`
-
-### contracts.l2OutputOracle.11155111.address
-
-> `readonly` **address**: `"0xf2574585eC7ba515Fd86402B84A60D5eFb51B0Ff"` = `'0xf2574585eC7ba515Fd86402B84A60D5eFb51B0Ff'`
-
 ### contracts.l2StandardBridge
 
 > `readonly` **l2StandardBridge**: `object`
@@ -144,6 +140,30 @@ Collection of contracts
 
 > `readonly` **address**: `"0x4200000000000000000000000000000000000016"`
 
+### contracts.multicall3
+
+> `readonly` **multicall3**: `object`
+
+### contracts.multicall3.address
+
+> `readonly` **address**: `"0xca11bde05977b3631167028862be2a173976ca11"` = `'0xca11bde05977b3631167028862be2a173976ca11'`
+
+### contracts.optimismMintableERC20Factory
+
+> `readonly` **optimismMintableERC20Factory**: `object`
+
+### contracts.optimismMintableERC20Factory.address
+
+> `readonly` **address**: `"0x4200000000000000000000000000000000000012"` = `'0x4200000000000000000000000000000000000012'`
+
+### contracts.permit2
+
+> `readonly` **permit2**: `object`
+
+### contracts.permit2.address
+
+> `readonly` **address**: `"0x000000000022D473030F116dDEE9F6B43aC78BA3"` = `'0x000000000022D473030F116dDEE9F6B43aC78BA3'`
+
 ### contracts.portal
 
 > `readonly` **portal**: `object`
@@ -154,7 +174,7 @@ Collection of contracts
 
 ### contracts.portal.11155111.address
 
-> `readonly` **address**: `"0x2188047AD28B78D975cE319dfcDa5D06c2a6a68b"` = `'0x2188047AD28B78D975cE319dfcDa5D06c2a6a68b'`
+> `readonly` **address**: `"0x90FdCE6eFFF020605462150cdE42257193d1e558"` = `'0x90FdCE6eFFF020605462150cdE42257193d1e558'`
 
 ### contracts.systemConfig
 
@@ -166,7 +186,15 @@ Collection of contracts
 
 ### contracts.systemConfig.11155111.address
 
-> `readonly` **address**: `"0xa3c900d30EE6e906FC085633258d2FE619680884"` = `'0xa3c900d30EE6e906FC085633258d2FE619680884'`
+> `readonly` **address**: `"0x5357bE2D78aAd17860570E14B74561840e959D4D"` = `'0x5357bE2D78aAd17860570E14B74561840e959D4D'`
+
+### contracts.weth
+
+> `readonly` **weth**: `object`
+
+### contracts.weth.address
+
+> `readonly` **address**: `"0x4200000000000000000000000000000000000006"` = `'0x4200000000000000000000000000000000000006'`
 
 ### custom?
 
@@ -448,7 +476,7 @@ Modifies how data is formatted and typed (e.g. blocks and transactions)
 
 ### id
 
-> **id**: `9897`
+> **id**: `9899`
 
 ID in number form
 
@@ -488,7 +516,7 @@ Collection of RPC endpoints
 
 ### rpcUrls.default.http
 
-> `readonly` **http**: readonly [`"https://rpc.arena-z.t.raas.gelato.cloud"`]
+> `readonly` **http**: readonly [`"https://testnet-rpc.arena-z.gg"`]
 
 ### serializers
 
@@ -524,4 +552,4 @@ Flag for test networks
 
 ## Defined in
 
-[packages/viem/src/chains/sepolia.ts:11](https://github.com/ethereum-optimism/ecosystem/blob/8c0ceae82d8e909c0d00b4601d7c7276090774cc/packages/viem/src/chains/sepolia.ts#L11)
+[packages/viem/src/chains/sepolia.ts:13](https://github.com/ethereum-optimism/ecosystem/blob/a4b870454ce0f0a79a41dda7928a11b5c8946efc/packages/viem/src/chains/sepolia.ts#L13)

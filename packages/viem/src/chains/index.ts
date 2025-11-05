@@ -3,8 +3,6 @@ export * from '@/chains/mainnet.js'
 export * from '@/chains/sepolia.js'
 
 // Manually Defined Chains
-export * from '@/chains/interopAlpha.js'
-export * from '@/chains/interopRcAlpha.js'
 export * from '@/chains/supersim.js'
 
 // Useful Utilities

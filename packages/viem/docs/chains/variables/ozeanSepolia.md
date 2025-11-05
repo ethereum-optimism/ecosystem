@@ -2,13 +2,13 @@
 
 ***
 
-[@eth-optimism/viem](../../README.md) / [chains](../README.md) / interopRcAlpha1
+[@eth-optimism/viem](../../README.md) / [chains](../README.md) / ozeanSepolia
 
-# interopRcAlpha1
+# ozeanSepolia
 
-> `const` **interopRcAlpha1**: `object`
+> `const` **ozeanSepolia**: `object`
 
-L2 chain A definition for interop-rc-alpha-1
+Chain Definition for Ozean Poseidon Sepolia
 
 ## Type declaration
 
@@ -24,11 +24,11 @@ Collection of block explorers
 
 ### blockExplorers.default.name
 
-> `readonly` **name**: `"Interop RC Alpha 0 Block Explorer"` = `'Interop RC Alpha 0 Block Explorer'`
+> `readonly` **name**: `"Ozean Poseidon Sepolia Explorer"` = `'Ozean Poseidon Sepolia Explorer'`
 
 ### blockExplorers.default.url
 
-> `readonly` **url**: `""` = `''`
+> `readonly` **url**: `"https://ozean-testnet.explorer.caldera.xyz"` = `'https://ozean-testnet.explorer.caldera.xyz'`
 
 ### contracts
 
@@ -36,21 +36,25 @@ Collection of block explorers
 
 Collection of contracts
 
-### contracts.addressManager
+### contracts.create2Deployer
 
-> `readonly` **addressManager**: `object`
+> `readonly` **create2Deployer**: `object`
 
-### contracts.anchorStateRegistry
+### contracts.create2Deployer.address
 
-> `readonly` **anchorStateRegistry**: `object`
+> `readonly` **address**: `"0x13b0D85CcB8bf860b6b79AF3029fCA081AE9beF2"` = `'0x13b0D85CcB8bf860b6b79AF3029fCA081AE9beF2'`
 
 ### contracts.disputeGameFactory
 
 > `readonly` **disputeGameFactory**: `object`
 
-### contracts.faultDisputeGame
+### contracts.disputeGameFactory.11155111
 
-> `readonly` **faultDisputeGame**: `object`
+> `readonly` **11155111**: `object`
+
+### contracts.disputeGameFactory.11155111.address
+
+> `readonly` **address**: `"0x80E233699F34b8FD91adea8150Ea4C91b9324Cb5"` = `'0x80E233699F34b8FD91adea8150Ea4C91b9324Cb5'`
 
 ### contracts.gasPriceOracle
 
@@ -72,13 +76,37 @@ Collection of contracts
 
 > `readonly` **l1CrossDomainMessenger**: `object`
 
-### contracts.l1Erc721BridgeProxy
+### contracts.l1CrossDomainMessenger.11155111
 
-> `readonly` **l1Erc721BridgeProxy**: `object`
+> `readonly` **11155111**: `object`
+
+### contracts.l1CrossDomainMessenger.11155111.address
+
+> `readonly` **address**: `"0x13931872294360cAc551BA3801f061c4C86F0725"` = `'0x13931872294360cAc551BA3801f061c4C86F0725'`
+
+### contracts.l1Erc721Bridge
+
+> `readonly` **l1Erc721Bridge**: `object`
+
+### contracts.l1Erc721Bridge.11155111
+
+> `readonly` **11155111**: `object`
+
+### contracts.l1Erc721Bridge.11155111.address
+
+> `readonly` **address**: `"0x50d26235319abF2bA7b043A33E53bD19480d7E69"` = `'0x50d26235319abF2bA7b043A33E53bD19480d7E69'`
 
 ### contracts.l1StandardBridge
 
 > `readonly` **l1StandardBridge**: `object`
+
+### contracts.l1StandardBridge.11155111
+
+> `readonly` **11155111**: `object`
+
+### contracts.l1StandardBridge.11155111.address
+
+> `readonly` **address**: `"0xb9558CE3C11EC69e18632A8e5B316581e852dB91"` = `'0xb9558CE3C11EC69e18632A8e5B316581e852dB91'`
 
 ### contracts.l2CrossDomainMessenger
 
@@ -96,6 +124,18 @@ Collection of contracts
 
 > `readonly` **address**: `"0x4200000000000000000000000000000000000014"`
 
+### contracts.l2OutputOracle
+
+> `readonly` **l2OutputOracle**: `object`
+
+### contracts.l2OutputOracle.11155111
+
+> `readonly` **11155111**: `object`
+
+### contracts.l2OutputOracle.11155111.address
+
+> `readonly` **address**: `"0x591d916DD9C0c37Ae5b23593C79f5074aAF6778F"` = `'0x591d916DD9C0c37Ae5b23593C79f5074aAF6778F'`
+
 ### contracts.l2StandardBridge
 
 > `readonly` **l2StandardBridge**: `object`
@@ -112,25 +152,61 @@ Collection of contracts
 
 > `readonly` **address**: `"0x4200000000000000000000000000000000000016"`
 
-### contracts.opChainProxyAdmin
+### contracts.multicall3
 
-> `readonly` **opChainProxyAdmin**: `object`
+> `readonly` **multicall3**: `object`
 
-### contracts.optimismMintableErc20FactoryProxy
+### contracts.multicall3.address
 
-> `readonly` **optimismMintableErc20FactoryProxy**: `object`
+> `readonly` **address**: `"0xca11bde05977b3631167028862be2a173976ca11"` = `'0xca11bde05977b3631167028862be2a173976ca11'`
 
-### contracts.optimismPortal
+### contracts.optimismMintableERC20Factory
 
-> `readonly` **optimismPortal**: `object`
+> `readonly` **optimismMintableERC20Factory**: `object`
 
-### contracts.permissionedDisputeGame
+### contracts.optimismMintableERC20Factory.address
 
-> `readonly` **permissionedDisputeGame**: `object`
+> `readonly` **address**: `"0x4200000000000000000000000000000000000012"` = `'0x4200000000000000000000000000000000000012'`
+
+### contracts.permit2
+
+> `readonly` **permit2**: `object`
+
+### contracts.permit2.address
+
+> `readonly` **address**: `"0x000000000022D473030F116dDEE9F6B43aC78BA3"` = `'0x000000000022D473030F116dDEE9F6B43aC78BA3'`
+
+### contracts.portal
+
+> `readonly` **portal**: `object`
+
+### contracts.portal.11155111
+
+> `readonly` **11155111**: `object`
+
+### contracts.portal.11155111.address
+
+> `readonly` **address**: `"0x6EeeA09335D09870dD467FD34ECc10Fdb5106527"` = `'0x6EeeA09335D09870dD467FD34ECc10Fdb5106527'`
 
 ### contracts.systemConfig
 
 > `readonly` **systemConfig**: `object`
+
+### contracts.systemConfig.11155111
+
+> `readonly` **11155111**: `object`
+
+### contracts.systemConfig.11155111.address
+
+> `readonly` **address**: `"0xdEC733B0643E7c3Bd06576A4C70Ca87E301EAe87"` = `'0xdEC733B0643E7c3Bd06576A4C70Ca87E301EAe87'`
+
+### contracts.weth
+
+> `readonly` **weth**: `object`
+
+### contracts.weth.address
+
+> `readonly` **address**: `"0x4200000000000000000000000000000000000006"` = `'0x4200000000000000000000000000000000000006'`
 
 ### custom?
 
@@ -412,13 +488,13 @@ Modifies how data is formatted and typed (e.g. blocks and transactions)
 
 ### id
 
-> **id**: `420120004`
+> **id**: `7849306`
 
 ID in number form
 
 ### name
 
-> **name**: `"Interop RC Alpha 1"`
+> **name**: `"Ozean Poseidon Sepolia"`
 
 Human-readable name
 
@@ -434,11 +510,11 @@ Currency used by chain
 
 ### nativeCurrency.name
 
-> `readonly` **name**: `"Ether"` = `'Ether'`
+> `readonly` **name**: `"USDX"` = `'USDX'`
 
 ### nativeCurrency.symbol
 
-> `readonly` **symbol**: `"ETH"` = `'ETH'`
+> `readonly` **symbol**: `"USDX"` = `'USDX'`
 
 ### rpcUrls
 
@@ -452,7 +528,7 @@ Collection of RPC endpoints
 
 ### rpcUrls.default.http
 
-> `readonly` **http**: readonly [`"https://interop-rc-alpha-1.optimism.io"`]
+> `readonly` **http**: readonly [`"https://ozean-testnet.rpc.caldera.xyz/http"`]
 
 ### serializers
 
@@ -480,12 +556,12 @@ Modifies how data is serialized (e.g. transactions).
 
 Source Chain ID (ie. the L1 chain)
 
-### testnet
+### testnet?
 
-> **testnet**: `true`
+> `optional` **testnet**: `boolean`
 
 Flag for test networks
 
 ## Defined in
 
-[packages/viem/src/chains/interopRcAlpha.ts:46](https://github.com/ethereum-optimism/ecosystem/blob/8c0ceae82d8e909c0d00b4601d7c7276090774cc/packages/viem/src/chains/interopRcAlpha.ts#L46)
+[packages/viem/src/chains/sepolia.ts:829](https://github.com/ethereum-optimism/ecosystem/blob/a4b870454ce0f0a79a41dda7928a11b5c8946efc/packages/viem/src/chains/sepolia.ts#L829)

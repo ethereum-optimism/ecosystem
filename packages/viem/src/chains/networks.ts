@@ -1,5 +1,3 @@
-import { interopAlphaNetwork } from '@/chains/interopAlpha.js'
-import { interopRcAlphaNetwork } from '@/chains/interopRcAlpha.js'
 import { mainnetNetwork } from '@/chains/mainnet.js'
 import { sepoliaNetwork } from '@/chains/sepolia.js'
 import { supersimNetwork } from '@/chains/supersim.js'
@@ -14,6 +12,4 @@ export const networks: Record<NetworkName, Network> = {
   mainnet: mainnetNetwork,
   sepolia: sepoliaNetwork,
   supersim: supersimNetwork,
-  'interop-alpha': interopAlphaNetwork,
-  'interop-rc-alpha': interopRcAlphaNetwork,
 }

@@ -3,9 +3,9 @@ import { defineChain } from 'viem'
 import * as viemChains from 'viem/chains'
 import { chainConfig } from 'viem/op-stack'
 
-import { contracts as opContracts} from '@/contracts.js'
-import { contracts as chainContracts } from '@/chain/contracts.js'
+import { contracts as chainContracts } from '@/chains/contracts.js'
 import type { Network } from '@/chains/types.js'
+import { contracts as opContracts } from '@/contracts.js'
 
 <%- it.chainDefs.forEach(function(chainDef){ %>
 /**
@@ -34,7 +34,7 @@ export const <%= chainDef.exportName %> = /*#__PURE__*/ defineChain({
   },
   contracts: {
     ...opContracts,
-    ...chainContracts[<%= chainDef.sourceChainId %>][<%= chainDef.chainId %>],
+    ...(chainContracts[<%= chainDef.sourceChainId %>]?.[<%= chainDef.chainId %>] ? chainContracts[<%= chainDef.sourceChainId %>][<%= chainDef.chainId %>] : {}),
     <%_ Object.entries(chainDef.l1Addresses).forEach(function([name, address]){ %>
     <%= name %>: {
       <%= chainDef.sourceChainId %>: {

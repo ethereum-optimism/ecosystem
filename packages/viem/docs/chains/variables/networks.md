@@ -20,4 +20,4 @@ Chains can be apart of multiple networks.
 
 ## Defined in
 
-[packages/viem/src/chains/networks.ts:13](https://github.com/ethereum-optimism/ecosystem/blob/8c0ceae82d8e909c0d00b4601d7c7276090774cc/packages/viem/src/chains/networks.ts#L13)
+[packages/viem/src/chains/networks.ts:11](https://github.com/ethereum-optimism/ecosystem/blob/a4b870454ce0f0a79a41dda7928a11b5c8946efc/packages/viem/src/chains/networks.ts#L11)

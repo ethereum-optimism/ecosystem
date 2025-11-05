@@ -32,21 +32,13 @@ Collection of block explorers
 
 Collection of contracts
 
-### contracts.addressManager
+### contracts.create2Deployer
 
-> `readonly` **addressManager**: `object`
+> `readonly` **create2Deployer**: `object`
 
-### contracts.anchorStateRegistry
+### contracts.create2Deployer.address
 
-> `readonly` **anchorStateRegistry**: `object`
-
-### contracts.disputeGameFactory
-
-> `readonly` **disputeGameFactory**: `object`
-
-### contracts.faultDisputeGame
-
-> `readonly` **faultDisputeGame**: `object`
+> `readonly` **address**: `"0x13b0D85CcB8bf860b6b79AF3029fCA081AE9beF2"` = `'0x13b0D85CcB8bf860b6b79AF3029fCA081AE9beF2'`
 
 ### contracts.gasPriceOracle
 
@@ -63,18 +55,6 @@ Collection of contracts
 ### contracts.l1Block.address
 
 > `readonly` **address**: `"0x4200000000000000000000000000000000000015"`
-
-### contracts.l1CrossDomainMessenger
-
-> `readonly` **l1CrossDomainMessenger**: `object`
-
-### contracts.l1Erc721BridgeProxy
-
-> `readonly` **l1Erc721BridgeProxy**: `object`
-
-### contracts.l1StandardBridge
-
-> `readonly` **l1StandardBridge**: `object`
 
 ### contracts.l2CrossDomainMessenger
 
@@ -108,25 +88,217 @@ Collection of contracts
 
 > `readonly` **address**: `"0x4200000000000000000000000000000000000016"`
 
-### contracts.opChainProxyAdmin
+### contracts.multicall3
+
+> `readonly` **multicall3**: `object`
+
+### contracts.multicall3.address
+
+> `readonly` **address**: `"0xca11bde05977b3631167028862be2a173976ca11"` = `'0xca11bde05977b3631167028862be2a173976ca11'`
+
+### contracts.optimismMintableERC20Factory
+
+> `readonly` **optimismMintableERC20Factory**: `object`
+
+### contracts.optimismMintableERC20Factory.address
+
+> `readonly` **address**: `"0x4200000000000000000000000000000000000012"` = `'0x4200000000000000000000000000000000000012'`
+
+### contracts.permit2
+
+> `readonly` **permit2**: `object`
+
+### contracts.permit2.address
+
+> `readonly` **address**: `"0x000000000022D473030F116dDEE9F6B43aC78BA3"` = `'0x000000000022D473030F116dDEE9F6B43aC78BA3'`
+
+### contracts.supersimL2EContracts
+
+> **supersimL2EContracts**: `object`
+
+### contracts.supersimL2EContracts.addressManager
+
+> `readonly` **addressManager**: `object`
+
+### contracts.supersimL2EContracts.addressManager.901
+
+> `readonly` **901**: `object`
+
+### contracts.supersimL2EContracts.addressManager.901.address
+
+> `readonly` **address**: `"0xc74727508e3033aef05df1b88ef1d9fc127c9aea"` = `'0xc74727508e3033aef05df1b88ef1d9fc127c9aea'`
+
+### contracts.supersimL2EContracts.anchorStateRegistry
+
+> `readonly` **anchorStateRegistry**: `object`
+
+### contracts.supersimL2EContracts.anchorStateRegistry.901
+
+> `readonly` **901**: `object`
+
+### contracts.supersimL2EContracts.anchorStateRegistry.901.address
+
+> `readonly` **address**: `"0xf00b9a9110b002364b85886017ca2fc9a6d854d0"` = `'0xf00b9a9110b002364b85886017ca2fc9a6d854d0'`
+
+### contracts.supersimL2EContracts.delayedWETHPermissionedGame
+
+> `readonly` **delayedWETHPermissionedGame**: `object`
+
+### contracts.supersimL2EContracts.delayedWETHPermissionedGame.901
+
+> `readonly` **901**: `object`
+
+### contracts.supersimL2EContracts.delayedWETHPermissionedGame.901.address
+
+> `readonly` **address**: `"0xa5868d97f5eb094a0542b372c2138f186f955693"` = `'0xa5868d97f5eb094a0542b372c2138f186f955693'`
+
+### contracts.supersimL2EContracts.disputeGameFactory
+
+> `readonly` **disputeGameFactory**: `object`
+
+### contracts.supersimL2EContracts.disputeGameFactory.901
+
+> `readonly` **901**: `object`
+
+### contracts.supersimL2EContracts.disputeGameFactory.901.address
+
+> `readonly` **address**: `"0x9551f9c5808a9c93934b1588353b291b964d397f"` = `'0x9551f9c5808a9c93934b1588353b291b964d397f'`
+
+### contracts.supersimL2EContracts.l1CrossDomainMessenger
+
+> `readonly` **l1CrossDomainMessenger**: `object`
+
+### contracts.supersimL2EContracts.l1CrossDomainMessenger.901
+
+> `readonly` **901**: `object`
+
+### contracts.supersimL2EContracts.l1CrossDomainMessenger.901.address
+
+> `readonly` **address**: `"0x5a48b91987b7b63bb3700f7514c1842c3570507d"` = `'0x5a48b91987b7b63bb3700f7514c1842c3570507d'`
+
+### contracts.supersimL2EContracts.l1Erc721Bridge
+
+> `readonly` **l1Erc721Bridge**: `object`
+
+### contracts.supersimL2EContracts.l1Erc721Bridge.901
+
+> `readonly` **901**: `object`
+
+### contracts.supersimL2EContracts.l1Erc721Bridge.901.address
+
+> `readonly` **address**: `"0x05c0d93fd538b969eccffba61a5a65e5b0981c41"` = `'0x05c0d93fd538b969eccffba61a5a65e5b0981c41'`
+
+### contracts.supersimL2EContracts.l1StandardBridge
+
+> `readonly` **l1StandardBridge**: `object`
+
+### contracts.supersimL2EContracts.l1StandardBridge.901
+
+> `readonly` **901**: `object`
+
+### contracts.supersimL2EContracts.l1StandardBridge.901.address
+
+> `readonly` **address**: `"0xab256ae2457431f7437bcc6081ca480edbcb4fda"` = `'0xab256ae2457431f7437bcc6081ca480edbcb4fda'`
+
+### contracts.supersimL2EContracts.opChainProxyAdmin
 
 > `readonly` **opChainProxyAdmin**: `object`
 
-### contracts.optimismMintableErc20FactoryProxy
+### contracts.supersimL2EContracts.opChainProxyAdmin.901
 
-> `readonly` **optimismMintableErc20FactoryProxy**: `object`
+> `readonly` **901**: `object`
 
-### contracts.optimismPortal
+### contracts.supersimL2EContracts.opChainProxyAdmin.901.address
 
-> `readonly` **optimismPortal**: `object`
+> `readonly` **address**: `"0x2fa7df746bce8760680fe763ba499d2e0ae0a9d3"` = `'0x2fa7df746bce8760680fe763ba499d2e0ae0a9d3'`
 
-### contracts.permissionedDisputeGame
+### contracts.supersimL2EContracts.optimismMintableErc20Factory
+
+> `readonly` **optimismMintableErc20Factory**: `object`
+
+### contracts.supersimL2EContracts.optimismMintableErc20Factory.901
+
+> `readonly` **901**: `object`
+
+### contracts.supersimL2EContracts.optimismMintableErc20Factory.901.address
+
+> `readonly` **address**: `"0xd52ccdcd3d5fd182ead644d718e11d503bf45902"` = `'0xd52ccdcd3d5fd182ead644d718e11d503bf45902'`
+
+### contracts.supersimL2EContracts.permissionedDisputeGame
 
 > `readonly` **permissionedDisputeGame**: `object`
 
-### contracts.systemConfig
+### contracts.supersimL2EContracts.permissionedDisputeGame.901
+
+> `readonly` **901**: `object`
+
+### contracts.supersimL2EContracts.permissionedDisputeGame.901.address
+
+> `readonly` **address**: `"0xe8609e1050e7a3149e48f4aae8ad8691a8e868b3"` = `'0xe8609e1050e7a3149e48f4aae8ad8691a8e868b3'`
+
+### contracts.supersimL2EContracts.portal
+
+> `readonly` **portal**: `object`
+
+### contracts.supersimL2EContracts.portal.901
+
+> `readonly` **901**: `object`
+
+### contracts.supersimL2EContracts.portal.901.address
+
+> `readonly` **address**: `"0x21a19eee99aca16932adbc951be42c3c88f8ef28"` = `'0x21a19eee99aca16932adbc951be42c3c88f8ef28'`
+
+### contracts.supersimL2EContracts.systemConfig
 
 > `readonly` **systemConfig**: `object`
+
+### contracts.supersimL2EContracts.systemConfig.901
+
+> `readonly` **901**: `object`
+
+### contracts.supersimL2EContracts.systemConfig.901.address
+
+> `readonly` **address**: `"0x834cfe40945f210f9182adf0dc4216bcd416e5b0"` = `'0x834cfe40945f210f9182adf0dc4216bcd416e5b0'`
+
+### contracts.supersimL2EContracts.uniV4PoolManager
+
+> `readonly` **uniV4PoolManager**: `object`
+
+### contracts.supersimL2EContracts.uniV4PoolManager.address
+
+> `readonly` **address**: `"0xa1caFe2C10007B3f230B180549AF68F98F9da161"` = `'0xa1caFe2C10007B3f230B180549AF68F98F9da161'`
+
+### contracts.supersimL2EContracts.uniV4Posm
+
+> `readonly` **uniV4Posm**: `object`
+
+### contracts.supersimL2EContracts.uniV4Posm.address
+
+> `readonly` **address**: `"0xA879cbA8E7927E3486C003455824726fB06B505B"` = `'0xA879cbA8E7927E3486C003455824726fB06B505B'`
+
+### contracts.supersimL2EContracts.uniV4Router
+
+> `readonly` **uniV4Router**: `object`
+
+### contracts.supersimL2EContracts.uniV4Router.address
+
+> `readonly` **address**: `"0x08654d9B5314c439237e339858ebCF9bC0061ccB"` = `'0x08654d9B5314c439237e339858ebCF9bC0061ccB'`
+
+### contracts.supersimL2EContracts.uniV4StateView
+
+> `readonly` **uniV4StateView**: `object`
+
+### contracts.supersimL2EContracts.uniV4StateView.address
+
+> `readonly` **address**: `"0x98FD43d306458eC292944337909cd26B08b78257"` = `'0x98FD43d306458eC292944337909cd26B08b78257'`
+
+### contracts.weth
+
+> `readonly` **weth**: `object`
+
+### contracts.weth.address
+
+> `readonly` **address**: `"0x4200000000000000000000000000000000000006"` = `'0x4200000000000000000000000000000000000006'`
 
 ### custom?
 
@@ -484,4 +656,4 @@ Flag for test networks
 
 ## Defined in
 
-[packages/viem/src/chains/supersim.ts:131](https://github.com/ethereum-optimism/ecosystem/blob/8c0ceae82d8e909c0d00b4601d7c7276090774cc/packages/viem/src/chains/supersim.ts#L131)
+[packages/viem/src/chains/supersim.ts:131](https://github.com/ethereum-optimism/ecosystem/blob/a4b870454ce0f0a79a41dda7928a11b5c8946efc/packages/viem/src/chains/supersim.ts#L131)

@@ -3,7 +3,7 @@ import { BaseError } from 'viem'
 import { getChainId, readContract } from 'viem/actions'
 
 import { l2ToL2CrossDomainMessengerAbi } from '@/abis/index.js'
-import { contracts } from '@/contracts.js'
+import { interopContracts } from '@/contracts.js'
 import type { CrossDomainMessage } from '@/types/interop/cdm.js'
 import { hashCrossDomainMessage } from '@/utils/interop/hashCrossDomainMessage.js'
 
@@ -66,7 +66,7 @@ export async function getCrossDomainMessageStatus<
 
   const messageHash = hashCrossDomainMessage(message)
   const relayed = await readContract(client, {
-    address: contracts.l2ToL2CrossDomainMessenger.address,
+    address: interopContracts.l2ToL2CrossDomainMessenger.address,
     abi: l2ToL2CrossDomainMessengerAbi,
     functionName: 'successfulMessages',
     args: [messageHash],
