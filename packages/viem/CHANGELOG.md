@@ -1,5 +1,11 @@
 # @eth-optimism/viem
 
+## 0.4.14
+
+### Patch Changes
+
+- [#966](https://github.com/ethereum-optimism/ecosystem/pull/966) [`0d137a4`](https://github.com/ethereum-optimism/ecosystem/commit/0d137a4bad2982ea2a33ef5dcc7f1baeef0de1f7) Thanks [@tremarkley](https://github.com/tremarkley)! - Update chain definitions
+
 ## 0.4.13
 
 ### Patch Changes

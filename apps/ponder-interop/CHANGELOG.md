@@ -1,5 +1,12 @@
 # @eth-optimism/ponder-interop
 
+## 0.0.23
+
+### Patch Changes
+
+- Updated dependencies [[`0d137a4`](https://github.com/ethereum-optimism/ecosystem/commit/0d137a4bad2982ea2a33ef5dcc7f1baeef0de1f7)]:
+  - @eth-optimism/viem@0.4.14
+
 ## 0.0.22
 
 ### Patch Changes
