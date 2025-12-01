@@ -1,0 +1,31 @@
+name: build
+
+on:
+  push:
+    branches:
+      - "main"
+
+jobs:
+  build:
+    uses: ethereum-optimism/factory/.github/workflows/docker-build.yaml@f08b1f0c47f15b3c95dc9811fb09c1d8ed3436bd
+    strategy:
+      fail-fast: false
+      matrix:
+        image_name:
+          - autorelayer-interop
+          - ponder-interop
+          - sponsored-sender
+    with:
+      image_name: ecosystem-${{ matrix.image_name }}
+      context: .
+      dockerfile: Dockerfile
+      gcp_project_id: ${{ vars.GCP_PROJECT_ID_OPLABS_TOOLS_ARTIFACTS }}
+      registry: us-docker.pkg.dev/oplabs-tools-artifacts/oss
+      tag: latest
+      target: ${{ matrix.image_name }}
+      build_args: |
+        DOCKER_TARGET=${{ matrix.image_name }}
+    permissions:
+      contents: read
+      id-token: write
+      attestations: write
