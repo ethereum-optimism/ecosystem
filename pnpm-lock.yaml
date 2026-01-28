@@ -10,7 +10,7 @@ importers:
     dependencies:
       '@hono/node-server':
         specifier: ^1.14.0
-        version: 1.14.0(hono@4.11.4)
+        version: 1.14.0(hono@4.11.7)
       '@radix-ui/react-accordion':
         specifier: ^1.1.2
         version: 1.2.10(@types/react-dom@18.3.7(@types/react@18.3.1))(@types/react@18.3.1)(react-dom@18.2.0(react@18.3.1))(react@18.3.1)
@@ -90,8 +90,8 @@ importers:
         specifier: ^4.1.0
         version: 4.1.0
       hono:
-        specifier: ^4.11.4
-        version: 4.11.4
+        specifier: ^4.11.7
+        version: 4.11.7
       immer:
         specifier: ^10.0.3
         version: 10.0.4
@@ -100,7 +100,7 @@ importers:
         version: 0.288.0(react@18.3.1)
       ponder:
         specifier: ^0.10.6
-        version: 0.10.7(@opentelemetry/api@1.9.0)(@types/node@18.19.101)(bun-types@1.2.18(@types/react@18.3.1))(hono@4.11.4)(terser@5.46.0)(typescript@5.4.5)(viem@2.17.9(bufferutil@4.0.8)(typescript@5.4.5)(utf-8-validate@6.0.3)(zod@3.24.2))(zod@3.24.2)
+        version: 0.10.7(@opentelemetry/api@1.9.0)(@types/node@18.19.101)(bun-types@1.2.18(@types/react@18.3.1))(hono@4.11.7)(terser@5.46.0)(typescript@5.4.5)(viem@2.17.9(bufferutil@4.0.8)(typescript@5.4.5)(utf-8-validate@6.0.3)(zod@3.24.2))(zod@3.24.2)
       prom-client:
         specifier: ^15.1.0
         version: 15.1.3
@@ -289,11 +289,11 @@ importers:
         specifier: 0.39.3
         version: 0.39.3(@electric-sql/pglite@0.2.13)(@opentelemetry/api@1.9.0)(bun-types@1.2.18(@types/react@19.1.8))(kysely@0.26.3)(pg@8.14.1)
       hono:
-        specifier: ^4.11.4
-        version: 4.11.4
+        specifier: ^4.11.7
+        version: 4.11.7
       ponder:
         specifier: ^0.10.6
-        version: 0.10.7(@opentelemetry/api@1.9.0)(@types/node@18.19.130)(bun-types@1.2.18(@types/react@19.1.8))(hono@4.11.4)(terser@5.46.0)(typescript@5.8.3)(viem@2.17.9(bufferutil@4.0.8)(typescript@5.8.3)(utf-8-validate@6.0.3)(zod@3.24.2))(zod@3.24.2)
+        version: 0.10.7(@opentelemetry/api@1.9.0)(@types/node@18.19.130)(bun-types@1.2.18(@types/react@19.1.8))(hono@4.11.7)(terser@5.46.0)(typescript@5.8.3)(viem@2.17.9(bufferutil@4.0.8)(typescript@5.8.3)(utf-8-validate@6.0.3)(zod@3.24.2))(zod@3.24.2)
       viem:
         specifier: ^2.17.9
         version: 2.17.9(bufferutil@4.0.8)(typescript@5.8.3)(utf-8-validate@6.0.3)(zod@3.24.2)
@@ -317,7 +317,7 @@ importers:
         version: link:../../packages/viem
       '@hono/node-server':
         specifier: ^1.14.0
-        version: 1.14.0(hono@4.11.4)
+        version: 1.14.0(hono@4.11.7)
       abitype:
         specifier: ^1.0.8
         version: 1.0.8(typescript@5.8.3)(zod@3.24.2)
@@ -325,8 +325,8 @@ importers:
         specifier: ^13.1.0
         version: 13.1.0
       hono:
-        specifier: ^4.11.4
-        version: 4.11.4
+        specifier: ^4.11.7
+        version: 4.11.7
       pino:
         specifier: ^9.6.0
         version: 9.6.0
@@ -716,8 +716,8 @@ packages:
     peerDependencies:
       '@babel/core': ^7.4.0 || ^8.0.0-0 <8.0.0
 
-  '@babel/helper-define-polyfill-provider@0.6.5':
-    resolution: {integrity: sha512-uJnGFcPsWQK8fvjgGP5LZUZZsYGIoPeRjSF5PGwrelYgq7Q15/Ft9NGFp1zglwgIv//W0uG4BevRuSJRyylZPg==}
+  '@babel/helper-define-polyfill-provider@0.6.6':
+    resolution: {integrity: sha512-mOAsxeeKkUKayvZR3HeTYD/fICpCPLJrU5ZjelT/PA6WHtNDBOE436YiaEUvHN454bRM3CebhDsIpieCc4texA==}
     peerDependencies:
       '@babel/core': ^7.4.0 || ^8.0.0-0 <8.0.0
 
@@ -5249,8 +5249,8 @@ packages:
     peerDependencies:
       '@babel/core': ^7.4.0 || ^8.0.0-0 <8.0.0
 
-  babel-plugin-polyfill-corejs2@0.4.14:
-    resolution: {integrity: sha512-Co2Y9wX854ts6U8gAAPXfn0GmAyctHuK8n0Yhfjd6t30g7yvKjspvvOo9yG+z52PZRgFErt7Ka2pYnXCjLKEpg==}
+  babel-plugin-polyfill-corejs2@0.4.15:
+    resolution: {integrity: sha512-hR3GwrRwHUfYwGfrisXPIDP3JcYfBrW7wKE7+Au6wDYl7fm/ka1NEII6kORzxNU556JjfidZeBsO10kYvtV1aw==}
     peerDependencies:
       '@babel/core': ^7.4.0 || ^8.0.0-0 <8.0.0
 
@@ -5274,8 +5274,8 @@ packages:
     peerDependencies:
       '@babel/core': ^7.4.0 || ^8.0.0-0 <8.0.0
 
-  babel-plugin-polyfill-regenerator@0.6.5:
-    resolution: {integrity: sha512-ISqQ2frbiNU9vIJkzg7dlPpznPZ4jOiUQ1uSmB0fEHeowtN3COYRsXr/xexn64NpU13P06jc/L5TgiJXOgrbEg==}
+  babel-plugin-polyfill-regenerator@0.6.6:
+    resolution: {integrity: sha512-hYm+XLYRMvupxiQzrvXUj7YyvFFVfv5gI0R71AJzudg1g2AI2vyCPPIFEBjk162/wFzti3inBHo7isWFuEVS/A==}
     peerDependencies:
       '@babel/core': ^7.4.0 || ^8.0.0-0 <8.0.0
 
@@ -5314,8 +5314,8 @@ packages:
   base64-js@1.5.1:
     resolution: {integrity: sha512-AKpaYlHn8t4SVbOHCy+b5+KKgvR4vrsD8vbvrbiQJps7fKDTkjkDry6ji0rUJjC0kzbNePLwzxq8iypo41qeWA==}
 
-  baseline-browser-mapping@2.9.16:
-    resolution: {integrity: sha512-KeUZdBuxngy825i8xvzaK1Ncnkx0tBmb3k8DkEuqjKRkmtvNTjey2ZsNeh8Dw4lfKvbCOu9oeNx2TKm2vHqcRw==}
+  baseline-browser-mapping@2.9.18:
+    resolution: {integrity: sha512-e23vBV1ZLfjb9apvfPk4rHVu2ry6RIr2Wfs+O324okSidrX7pTAnEJPCh/O5BtRlr7QtZI7ktOP3vsqr7Z5XoA==}
     hasBin: true
 
   better-path-resolve@1.0.0:
@@ -5481,8 +5481,8 @@ packages:
   caniuse-lite@1.0.30001718:
     resolution: {integrity: sha512-AflseV1ahcSunK53NfEs9gFWgOEmzr0f+kaMFA4xiLZlr9Hzt7HxcSpIFcnNCUkz6R6dWKa54rUz3HUmI3nVcw==}
 
-  caniuse-lite@1.0.30001765:
-    resolution: {integrity: sha512-LWcNtSyZrakjECqmpP4qdg0MMGdN368D7X8XvvAqOcqMv0RxnlqVKZl2V6/mBR68oYMxOZPLw/gO7DuisMHUvQ==}
+  caniuse-lite@1.0.30001766:
+    resolution: {integrity: sha512-4C0lfJ0/YPjJQHagaE9x2Elb69CIqEPZeG0anQt9SIvIoOH4a4uaRl73IavyO+0qZh6MDLH//DrXThEYKHkmYA==}
 
   ccount@2.0.1:
     resolution: {integrity: sha512-eyrF0jiFpY+3drT6383f1qhkbGsLSifNAjA61IUjZjmLCWjItY6LB9ft9YhoDgwfmclB2zhu51Lc7+95b8NRAg==}
@@ -5709,8 +5709,8 @@ packages:
   core-js-compat@3.37.0:
     resolution: {integrity: sha512-vYq4L+T8aS5UuFg4UwDhc7YNRWVeVZwltad9C/jV3R2LgVOpS9BDr7l/WL6BN0dbV3k1XejPTHqqEzJgsa0frA==}
 
-  core-js-compat@3.47.0:
-    resolution: {integrity: sha512-IGfuznZ/n7Kp9+nypamBhvwdwLsW6KC8IOaURw2doAK5e98AG3acVLdh0woOnEqCfUtS+Vu882JE4k/DAm3ItQ==}
+  core-js-compat@3.48.0:
+    resolution: {integrity: sha512-OM4cAF3D6VtH/WkLtWvyNC56EZVXsZdU3iqaMG2B4WvYrlqU831pc4UtG5yp0sE9z8Y02wVN7PjW5Zf9Gt0f1Q==}
 
   core-util-is@1.0.3:
     resolution: {integrity: sha512-ZQBvi1DcpJ4GDqanjucZ2Hj3wEO5pZDS89BWbkcrvdxksJorwUDDZamX9ldFkp9aw2lmBDLgkObEA4DWNJ9FYQ==}
@@ -6185,8 +6185,8 @@ packages:
   electron-to-chromium@1.5.155:
     resolution: {integrity: sha512-ps5KcGGmwL8VaeJlvlDlu4fORQpv3+GIcF5I3f9tUKUlJ/wsysh6HU8P5L1XWRYeXfA0oJd4PyM8ds8zTFf6Ng==}
 
-  electron-to-chromium@1.5.267:
-    resolution: {integrity: sha512-0Drusm6MVRXSOJpGbaSVgcQsuB4hEkMpHXaVstcPmhu5LIedxs1xNK/nIxmQIU/RPC0+1/o0AVZfBTkTNJOdUw==}
+  electron-to-chromium@1.5.279:
+    resolution: {integrity: sha512-0bblUU5UNdOt5G7XqGiJtpZMONma6WAfq9vsFmtn9x1+joAObr6x1chfqyxFSDCAFwFhCQDrqeAr6MYdpwJ9Hg==}
 
   elliptic@6.5.5:
     resolution: {integrity: sha512-7EjbcmUm17NQFu4Pmgmq2olYMj8nwMnpcddByChSUjArp8F5DQWcIcpriwO4ZToLNAJig0yiyjswfyGNje/ixw==}
@@ -7001,8 +7001,8 @@ packages:
   hmac-drbg@1.0.1:
     resolution: {integrity: sha512-Tti3gMqLdZfhOQY1Mzf/AanLiqh1WTiJgEj26ZuYQ9fbkLomzGchCws4FyrSd4VkpBfiNhaE1On+lOz894jvXg==}
 
-  hono@4.11.4:
-    resolution: {integrity: sha512-U7tt8JsyrxSRKspfhtLET79pU8K+tInj5QZXs1jSugO1Vq5dFj3kmZsRldo29mTBfcjDRVRXrEZ6LS63Cog9ZA==}
+  hono@4.11.7:
+    resolution: {integrity: sha512-l7qMiNee7t82bH3SeyUCt9UF15EVmaBvsppY2zQtrbIhl/yzBTny+YUxsVjSjQ6gaqaeVtZmGocom8TzBlA4Yw==}
     engines: {node: '>=16.9.0'}
 
   hono@4.7.5:
@@ -11168,7 +11168,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@babel/helper-define-polyfill-provider@0.6.5(@babel/core@7.27.1)':
+  '@babel/helper-define-polyfill-provider@0.6.6(@babel/core@7.27.1)':
     dependencies:
       '@babel/core': 7.27.1
       '@babel/helper-compilation-targets': 7.28.6
@@ -11179,7 +11179,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@babel/helper-define-polyfill-provider@0.6.5(@babel/core@7.28.6)':
+  '@babel/helper-define-polyfill-provider@0.6.6(@babel/core@7.28.6)':
     dependencies:
       '@babel/core': 7.28.6
       '@babel/helper-compilation-targets': 7.28.6
@@ -13674,9 +13674,9 @@ snapshots:
       '@babel/core': 7.27.1
       '@babel/helper-module-imports': 7.28.6
       '@babel/helper-plugin-utils': 7.28.6
-      babel-plugin-polyfill-corejs2: 0.4.14(@babel/core@7.27.1)
+      babel-plugin-polyfill-corejs2: 0.4.15(@babel/core@7.27.1)
       babel-plugin-polyfill-corejs3: 0.13.0(@babel/core@7.27.1)
-      babel-plugin-polyfill-regenerator: 0.6.5(@babel/core@7.27.1)
+      babel-plugin-polyfill-regenerator: 0.6.6(@babel/core@7.27.1)
       semver: 6.3.1
     transitivePeerDependencies:
       - supports-color
@@ -13686,9 +13686,9 @@ snapshots:
       '@babel/core': 7.28.6
       '@babel/helper-module-imports': 7.28.6
       '@babel/helper-plugin-utils': 7.28.6
-      babel-plugin-polyfill-corejs2: 0.4.14(@babel/core@7.28.6)
+      babel-plugin-polyfill-corejs2: 0.4.15(@babel/core@7.28.6)
       babel-plugin-polyfill-corejs3: 0.13.0(@babel/core@7.28.6)
-      babel-plugin-polyfill-regenerator: 0.6.5(@babel/core@7.28.6)
+      babel-plugin-polyfill-regenerator: 0.6.6(@babel/core@7.28.6)
       semver: 6.3.1
     transitivePeerDependencies:
       - supports-color
@@ -15249,13 +15249,13 @@ snapshots:
     dependencies:
       '@hapi/hoek': 9.3.0
 
-  '@hono/node-server@1.13.3(hono@4.11.4)':
+  '@hono/node-server@1.13.3(hono@4.11.7)':
     dependencies:
-      hono: 4.11.4
+      hono: 4.11.7
 
-  '@hono/node-server@1.14.0(hono@4.11.4)':
+  '@hono/node-server@1.14.0(hono@4.11.7)':
     dependencies:
-      hono: 4.11.4
+      hono: 4.11.7
 
   '@hono/node-server@1.14.0(hono@4.7.5)':
     dependencies:
@@ -19308,20 +19308,20 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  babel-plugin-polyfill-corejs2@0.4.14(@babel/core@7.27.1):
+  babel-plugin-polyfill-corejs2@0.4.15(@babel/core@7.27.1):
     dependencies:
       '@babel/compat-data': 7.28.6
       '@babel/core': 7.27.1
-      '@babel/helper-define-polyfill-provider': 0.6.5(@babel/core@7.27.1)
+      '@babel/helper-define-polyfill-provider': 0.6.6(@babel/core@7.27.1)
       semver: 6.3.1
     transitivePeerDependencies:
       - supports-color
 
-  babel-plugin-polyfill-corejs2@0.4.14(@babel/core@7.28.6):
+  babel-plugin-polyfill-corejs2@0.4.15(@babel/core@7.28.6):
     dependencies:
       '@babel/compat-data': 7.28.6
       '@babel/core': 7.28.6
-      '@babel/helper-define-polyfill-provider': 0.6.5(@babel/core@7.28.6)
+      '@babel/helper-define-polyfill-provider': 0.6.6(@babel/core@7.28.6)
       semver: 6.3.1
     transitivePeerDependencies:
       - supports-color
@@ -19361,16 +19361,16 @@ snapshots:
   babel-plugin-polyfill-corejs3@0.13.0(@babel/core@7.27.1):
     dependencies:
       '@babel/core': 7.27.1
-      '@babel/helper-define-polyfill-provider': 0.6.5(@babel/core@7.27.1)
-      core-js-compat: 3.47.0
+      '@babel/helper-define-polyfill-provider': 0.6.6(@babel/core@7.27.1)
+      core-js-compat: 3.48.0
     transitivePeerDependencies:
       - supports-color
 
   babel-plugin-polyfill-corejs3@0.13.0(@babel/core@7.28.6):
     dependencies:
       '@babel/core': 7.28.6
-      '@babel/helper-define-polyfill-provider': 0.6.5(@babel/core@7.28.6)
-      core-js-compat: 3.47.0
+      '@babel/helper-define-polyfill-provider': 0.6.6(@babel/core@7.28.6)
+      core-js-compat: 3.48.0
     transitivePeerDependencies:
       - supports-color
 
@@ -19409,17 +19409,17 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  babel-plugin-polyfill-regenerator@0.6.5(@babel/core@7.27.1):
+  babel-plugin-polyfill-regenerator@0.6.6(@babel/core@7.27.1):
     dependencies:
       '@babel/core': 7.27.1
-      '@babel/helper-define-polyfill-provider': 0.6.5(@babel/core@7.27.1)
+      '@babel/helper-define-polyfill-provider': 0.6.6(@babel/core@7.27.1)
     transitivePeerDependencies:
       - supports-color
 
-  babel-plugin-polyfill-regenerator@0.6.5(@babel/core@7.28.6):
+  babel-plugin-polyfill-regenerator@0.6.6(@babel/core@7.28.6):
     dependencies:
       '@babel/core': 7.28.6
-      '@babel/helper-define-polyfill-provider': 0.6.5(@babel/core@7.28.6)
+      '@babel/helper-define-polyfill-provider': 0.6.6(@babel/core@7.28.6)
     transitivePeerDependencies:
       - supports-color
 
@@ -19508,7 +19508,7 @@ snapshots:
 
   base64-js@1.5.1: {}
 
-  baseline-browser-mapping@2.9.16: {}
+  baseline-browser-mapping@2.9.18: {}
 
   better-path-resolve@1.0.0:
     dependencies:
@@ -19581,9 +19581,9 @@ snapshots:
 
   browserslist@4.28.1:
     dependencies:
-      baseline-browser-mapping: 2.9.16
-      caniuse-lite: 1.0.30001765
-      electron-to-chromium: 1.5.267
+      baseline-browser-mapping: 2.9.18
+      caniuse-lite: 1.0.30001766
+      electron-to-chromium: 1.5.279
       node-releases: 2.0.27
       update-browserslist-db: 1.2.3(browserslist@4.28.1)
 
@@ -19688,7 +19688,7 @@ snapshots:
 
   caniuse-lite@1.0.30001718: {}
 
-  caniuse-lite@1.0.30001765: {}
+  caniuse-lite@1.0.30001766: {}
 
   ccount@2.0.1: {}
 
@@ -19930,7 +19930,7 @@ snapshots:
     dependencies:
       browserslist: 4.23.0
 
-  core-js-compat@3.47.0:
+  core-js-compat@3.48.0:
     dependencies:
       browserslist: 4.28.1
 
@@ -20289,7 +20289,7 @@ snapshots:
 
   electron-to-chromium@1.5.155: {}
 
-  electron-to-chromium@1.5.267: {}
+  electron-to-chromium@1.5.279: {}
 
   elliptic@6.5.5:
     dependencies:
@@ -21492,7 +21492,7 @@ snapshots:
       minimalistic-assert: 1.0.1
       minimalistic-crypto-utils: 1.0.1
 
-  hono@4.11.4: {}
+  hono@4.11.7: {}
 
   hono@4.7.5: {}
 
@@ -23491,7 +23491,7 @@ snapshots:
 
   pngjs@5.0.0: {}
 
-  ponder@0.10.7(@opentelemetry/api@1.9.0)(@types/node@18.19.101)(bun-types@1.2.18(@types/react@18.3.1))(hono@4.11.4)(terser@5.46.0)(typescript@5.4.5)(viem@2.17.9(bufferutil@4.0.8)(typescript@5.4.5)(utf-8-validate@6.0.3)(zod@3.24.2))(zod@3.24.2):
+  ponder@0.10.7(@opentelemetry/api@1.9.0)(@types/node@18.19.101)(bun-types@1.2.18(@types/react@18.3.1))(hono@4.11.7)(terser@5.46.0)(typescript@5.4.5)(viem@2.17.9(bufferutil@4.0.8)(typescript@5.4.5)(utf-8-validate@6.0.3)(zod@3.24.2))(zod@3.24.2):
     dependencies:
       '@babel/code-frame': 7.26.2
       '@commander-js/extra-typings': 12.1.0(commander@12.1.0)
@@ -23499,7 +23499,7 @@ snapshots:
       '@escape.tech/graphql-armor-max-aliases': 2.6.0
       '@escape.tech/graphql-armor-max-depth': 2.4.0
       '@escape.tech/graphql-armor-max-tokens': 2.5.0
-      '@hono/node-server': 1.13.3(hono@4.11.4)
+      '@hono/node-server': 1.13.3(hono@4.11.7)
       '@ponder/utils': 0.2.3(typescript@5.4.5)(viem@2.17.9(bufferutil@4.0.8)(typescript@5.4.5)(utf-8-validate@6.0.3)(zod@3.24.2))
       abitype: 0.10.3(typescript@5.4.5)(zod@3.24.2)
       ansi-escapes: 7.0.0
@@ -23512,7 +23512,7 @@ snapshots:
       glob: 10.4.5
       graphql: 16.10.0
       graphql-yoga: 5.13.2(graphql@16.10.0)
-      hono: 4.11.4
+      hono: 4.11.7
       http-terminator: 3.2.0
       kysely: 0.26.3
       pg: 8.14.1
@@ -23568,7 +23568,7 @@ snapshots:
       - terser
       - zod
 
-  ponder@0.10.7(@opentelemetry/api@1.9.0)(@types/node@18.19.130)(bun-types@1.2.18(@types/react@19.1.8))(hono@4.11.4)(terser@5.46.0)(typescript@5.8.3)(viem@2.17.9(bufferutil@4.0.8)(typescript@5.8.3)(utf-8-validate@6.0.3)(zod@3.24.2))(zod@3.24.2):
+  ponder@0.10.7(@opentelemetry/api@1.9.0)(@types/node@18.19.130)(bun-types@1.2.18(@types/react@19.1.8))(hono@4.11.7)(terser@5.46.0)(typescript@5.8.3)(viem@2.17.9(bufferutil@4.0.8)(typescript@5.8.3)(utf-8-validate@6.0.3)(zod@3.24.2))(zod@3.24.2):
     dependencies:
       '@babel/code-frame': 7.26.2
       '@commander-js/extra-typings': 12.1.0(commander@12.1.0)
@@ -23576,7 +23576,7 @@ snapshots:
       '@escape.tech/graphql-armor-max-aliases': 2.6.0
       '@escape.tech/graphql-armor-max-depth': 2.4.0
       '@escape.tech/graphql-armor-max-tokens': 2.5.0
-      '@hono/node-server': 1.13.3(hono@4.11.4)
+      '@hono/node-server': 1.13.3(hono@4.11.7)
       '@ponder/utils': 0.2.3(typescript@5.8.3)(viem@2.17.9(bufferutil@4.0.8)(typescript@5.8.3)(utf-8-validate@6.0.3)(zod@3.24.2))
       abitype: 0.10.3(typescript@5.8.3)(zod@3.24.2)
       ansi-escapes: 7.0.0
@@ -23589,7 +23589,7 @@ snapshots:
       glob: 10.4.5
       graphql: 16.10.0
       graphql-yoga: 5.13.2(graphql@16.10.0)
-      hono: 4.11.4
+      hono: 4.11.7
       http-terminator: 3.2.0
       kysely: 0.26.3
       pg: 8.14.1
