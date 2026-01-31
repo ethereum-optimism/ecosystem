@@ -19,7 +19,7 @@ Designed to be "aggressively open source," we encourage you to explore, modify, 
 
 - If you want to build on top of OP Mainnet, refer to the [Optimism Documentation](https://docs.optimism.io)
 - If you want to build your own OP Stack based blockchain, refer to the [OP Stack Guide](https://docs.optimism.io/stack/getting-started)
-- If you want to contribute to the OP Stack, check out the [Protocol Specs](https://github.com/ethereum-optimism/optimism/tree/develop/specs)
+- If you want to contribute to the OP Stack, check out the [Protocol Specs](https://github.com/ethereum-optimism/optimism)
 
 ## Support
 
