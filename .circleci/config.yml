@@ -129,4 +129,6 @@ workflows:
               only: main
   check-workflow:
     jobs:
-      - check
+      - check:
+          context:
+            - circleci-repo-readonly-authenticated-github-token

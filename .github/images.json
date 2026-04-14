@@ -1,0 +1,34 @@
+{
+  "shared_paths": [
+    ".github/workflows/build.yaml",
+    ".github/images.json",
+    "Dockerfile",
+    ".dockerignore",
+    "package.json",
+    "pnpm-lock.yaml",
+    "pnpm-workspace.yaml"
+  ],
+  "images": {
+    "ecosystem-autorelayer-interop": {
+      "context": ".",
+      "dockerfile": "Dockerfile",
+      "target": "autorelayer-interop",
+      "build_args": "DOCKER_TARGET=autorelayer-interop",
+      "paths": ["apps/autorelayer-interop/**", "lib/**", "packages/**"]
+    },
+    "ecosystem-ponder-interop": {
+      "context": ".",
+      "dockerfile": "Dockerfile",
+      "target": "ponder-interop",
+      "build_args": "DOCKER_TARGET=ponder-interop",
+      "paths": ["apps/ponder-interop/**", "lib/**", "packages/**"]
+    },
+    "ecosystem-sponsored-sender": {
+      "context": ".",
+      "dockerfile": "Dockerfile",
+      "target": "sponsored-sender",
+      "build_args": "DOCKER_TARGET=sponsored-sender",
+      "paths": ["apps/sponsored-sender/**", "lib/**", "packages/**"]
+    }
+  }
+}
