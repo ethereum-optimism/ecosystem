@@ -59,7 +59,7 @@ jobs:
       - setup
       - run:
           name: Install npm with OIDC trusted publishing support
-          command: npm install -g npm@latest
+          command: npm install -g npm@11.12.1
       - run:
           name: Build projects
           environment:
