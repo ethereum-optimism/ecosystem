@@ -51,7 +51,7 @@ commands:
 jobs:
   publish-to-npm:
     docker:
-      - image: cimg/node:20.11
+      - image: cimg/node:22.14
     parameters:
       prepare-snapshot:
         type: boolean
@@ -59,25 +59,17 @@ jobs:
     steps:
       - setup
       - run:
+          name: Install npm with OIDC trusted publishing support
+          command: npm install -g npm@latest
+      - run:
           name: Build projects
           environment:
             NPM_TOKEN: nada
           command: pnpm nx run-many --target=build
       - run:
-          name: Check NPM Token
+          name: Obtain OIDC token for npm trusted publishing
           command: |
-            if [ -z "${NPM_TOKEN}" ]; then
-              echo "NPM_TOKEN is not set. Please set it in CircleCI project settings."
-              exit 1
-            fi
-      - run:
-          name: Configure NPM Token and Registry
-          command: |
-            npm config set '//registry.npmjs.org/:_authToken' "${NPM_TOKEN}"
-
-      - run:
-          name: Verify NPM Token
-          command: npm whoami
+            echo "export NPM_ID_TOKEN=$(circleci run oidc get --claims '{\"aud\": \"npm:registry.npmjs.org\"}')" >> "$BASH_ENV"
 
       - when:
           condition:
@@ -114,7 +106,7 @@ workflows:
       - publish-to-npm:
           name: Publish new versions
           context:
-            - circleci-repo-ecosystem # for GITHUB_TOKEN_GOVERNANCE && NPM_TOKEN
+            - circleci-repo-ecosystem # for GITHUB_TOKEN_GOVERNANCE
           filters:
             branches:
               only: main
@@ -123,7 +115,7 @@ workflows:
           name: Publish snapshot versions
           prepare-snapshot: true
           context:
-            - circleci-repo-ecosystem # for GITHUB_TOKEN_GOVERNANCE && NPM_TOKEN
+            - circleci-repo-ecosystem # for GITHUB_TOKEN_GOVERNANCE
           filters:
             branches:
               only: main
