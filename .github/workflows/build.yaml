@@ -6,25 +6,39 @@ on:
       - "main"
 
 jobs:
+  detect-changes:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    outputs:
+      matrix_json: ${{ steps.detect.outputs.matrix_json }}
+      has_images: ${{ steps.detect.outputs.has_images }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@71cf2267d89c5cb81562390fa70a37fa40b1305e # v6
+        with:
+          fetch-depth: 0
+      - name: Detect affected images
+        id: detect
+        uses: ethereum-optimism/factory/actions/detect-changes@e2dc072bfb0492f579dfab8d0dc9938a35739a9c
+
   build:
-    uses: ethereum-optimism/factory/.github/workflows/docker.yaml@f8f3cb4800e538003134fb5f50cc734c2c98d762
+    needs: [detect-changes]
+    if: needs.detect-changes.outputs.has_images == 'true'
     strategy:
       fail-fast: false
       matrix:
-        image_name:
-          - autorelayer-interop
-          - ponder-interop
-          - sponsored-sender
+        include: ${{ fromJson(needs.detect-changes.outputs.matrix_json) }}
+    uses: ethereum-optimism/factory/.github/workflows/docker.yaml@612b1cbbd0d9c659bb6cf90dc6492f8a39288fc5
     with:
-      image_name: ecosystem-${{ matrix.image_name }}
-      context: .
-      dockerfile: Dockerfile
+      image_name: ${{ matrix.image_name }}
+      context: ${{ matrix.context || '.' }}
+      dockerfile: ${{ matrix.dockerfile || 'Dockerfile' }}
+      target: ${{ matrix.target || '' }}
+      build_args: ${{ matrix.build_args || '' }}
       gcp_project_id: ${{ vars.GCP_PROJECT_ID_OPLABS_TOOLS_ARTIFACTS }}
       registry: us-docker.pkg.dev/oplabs-tools-artifacts/images
       tag: latest
-      target: ${{ matrix.image_name }}
-      build_args: |
-        DOCKER_TARGET=${{ matrix.image_name }}
     permissions:
       contents: read
       id-token: write
