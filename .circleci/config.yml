@@ -83,7 +83,7 @@ jobs:
 
   check:
     docker:
-      - image: cimg/node:20.11
+      - image: cimg/node:22.14
     steps:
       - setup
       - run:

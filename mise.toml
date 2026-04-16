@@ -1,5 +1,5 @@
 [tools]
-node = "18.18.1"
+node = "22.14.0"
 
 "ubi:ethereum-optimism/supersim"="0.1.0-alpha.59"
 
@@ -11,7 +11,7 @@ forge = "nightly-0dd4d3153764f4706c2c9857675e42dec64155a7"
 cast = "nightly-0dd4d3153764f4706c2c9857675e42dec64155a7"
 anvil = "nightly-0dd4d3153764f4706c2c9857675e42dec64155a7"
 
-[alias]
+[tool_alias]
 forge = "ubi:foundry-rs/foundry[exe=forge]"
 cast = "ubi:foundry-rs/foundry[exe=cast]"
 anvil = "ubi:foundry-rs/foundry[exe=anvil]"
