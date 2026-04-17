@@ -107,6 +107,8 @@ jobs:
           command: pnpm nx affected --base=$NX_BASE --head=$NX_HEAD --target=test
 
   # TEMPORARY DIAGNOSTIC JOB - remove after OIDC trusted publishing is verified.
+  # Positive case: runs with the `circleci-repo-ecosystem` context attached,
+  # so the minted OIDC token carries the `context` claim.
   # Does not consume changesets, does not publish, does not write to git.
   # Runs `npm publish --dry-run` against each trust-configured package so the
   # registry's OIDC token-exchange endpoint is exercised and any per-package
@@ -137,6 +139,8 @@ jobs:
             echo "export NPM_ID_TOKEN=$NPM_ID_TOKEN" >> "$BASH_ENV"
       - run:
           name: Dry-run publish to exercise OIDC token exchange per package
+          environment:
+            NPM_TOKEN: nada
           command: |
             set +e
             overall=0
@@ -156,6 +160,64 @@ jobs:
             echo "====== SUMMARY ======"
             echo "overall_exit=$overall"
             exit $overall
+
+  # TEMPORARY DIAGNOSTIC JOB - remove together with verify-oidc.
+  # Negative case (control): runs WITHOUT any CircleCI context attached, so
+  # the minted OIDC token carries no `context` claim.
+  # Expected behaviour:
+  #   - Pre --context-id hardening: exchange succeeds (matches verify-oidc).
+  #   - Post --context-id hardening: exchange fails 401/403 on every package.
+  # This job does NOT gate the pipeline; it always exits 0 and its diagnostic
+  # value is in the log output (compare to verify-oidc).
+  verify-oidc-no-context:
+    docker:
+      - image: cimg/node:22.14
+    steps:
+      - setup
+      - run:
+          name: Install npm with OIDC trusted publishing support
+          command: npm install -g npm@11.12.1
+      - run:
+          name: Build projects
+          environment:
+            NPM_TOKEN: nada
+          command: pnpm nx run-many --target=build
+      - run:
+          name: Obtain OIDC token without any CircleCI context attached
+          command: |
+            set -e
+            NPM_ID_TOKEN=$(circleci run oidc get --claims '{"aud":"npm:registry.npmjs.org"}')
+            if [ -z "$NPM_ID_TOKEN" ]; then
+              echo "ERROR: circleci run oidc get returned an empty token" >&2
+              exit 1
+            fi
+            echo "OIDC token fetched (length=${#NPM_ID_TOKEN})"
+            echo "export NPM_ID_TOKEN=$NPM_ID_TOKEN" >> "$BASH_ENV"
+      - run:
+          name: Dry-run publish (control; expected to fail post-hardening)
+          environment:
+            NPM_TOKEN: nada
+          command: |
+            set +e
+            any_exchange_ok=0
+            for pkg_dir in \
+              packages/viem \
+              packages/wagmi \
+              apps/autorelayer-interop \
+              apps/ponder-interop; do
+              echo ""
+              echo "====== $pkg_dir ======"
+              out=$(cd "$pkg_dir" && npm publish --dry-run --loglevel=http 2>&1 | tail -60)
+              echo "$out"
+              echo "$out" | grep -qE "oidc/token/exchange/package/.*201" && any_exchange_ok=1
+            done
+            echo ""
+            echo "====== SUMMARY ======"
+            echo "any_exchange_ok=$any_exchange_ok"
+            echo "Interpretation:"
+            echo "  any_exchange_ok=1 => CONTEXT RESTRICTION NOT IN EFFECT for at least one package"
+            echo "  any_exchange_ok=0 => context restriction enforced (desired post-hardening state)"
+            exit 0
 
 workflows:
   release:
@@ -182,11 +244,21 @@ workflows:
           context:
             - circleci-repo-readonly-authenticated-github-token # for GITHUB_TOKEN (mise GitHub API auth)
 
-  # TEMPORARY - remove together with the verify-oidc job once OIDC is verified.
+  # TEMPORARY - remove together with the verify-oidc* jobs once OIDC is verified.
+  # Positive case: context attached -> token carries context claim -> exchange succeeds.
+  # Negative case: no context attached -> token lacks context claim -> exchange should
+  # fail post-hardening (serves as positive proof that --context-id is enforced).
   verify-oidc-workflow:
     jobs:
       - verify-oidc:
           name: Verify OIDC trusted publishing (dry-run)
+          context:
+            - circleci-repo-ecosystem
+          filters:
+            branches:
+              ignore: main
+      - verify-oidc-no-context:
+          name: Verify OIDC safeguard (control, no context)
           filters:
             branches:
               ignore: main
