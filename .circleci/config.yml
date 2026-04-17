@@ -106,6 +106,57 @@ jobs:
           name: Run Tests
           command: pnpm nx affected --base=$NX_BASE --head=$NX_HEAD --target=test
 
+  # TEMPORARY DIAGNOSTIC JOB - remove after OIDC trusted publishing is verified.
+  # Does not consume changesets, does not publish, does not write to git.
+  # Runs `npm publish --dry-run` against each trust-configured package so the
+  # registry's OIDC token-exchange endpoint is exercised and any per-package
+  # trust mismatch surfaces as a clear error in the job log.
+  verify-oidc:
+    docker:
+      - image: cimg/node:22.14
+    steps:
+      - setup
+      - run:
+          name: Install npm with OIDC trusted publishing support
+          command: npm install -g npm@11.12.1
+      - run:
+          name: Build projects
+          environment:
+            NPM_TOKEN: nada
+          command: pnpm nx run-many --target=build
+      - run:
+          name: Obtain OIDC token for npm trusted publishing
+          command: |
+            set -e
+            NPM_ID_TOKEN=$(circleci run oidc get --claims '{"aud":"npm:registry.npmjs.org"}')
+            if [ -z "$NPM_ID_TOKEN" ]; then
+              echo "ERROR: circleci run oidc get returned an empty token" >&2
+              exit 1
+            fi
+            echo "OIDC token fetched (length=${#NPM_ID_TOKEN})"
+            echo "export NPM_ID_TOKEN=$NPM_ID_TOKEN" >> "$BASH_ENV"
+      - run:
+          name: Dry-run publish to exercise OIDC token exchange per package
+          command: |
+            set +e
+            overall=0
+            for pkg_dir in \
+              packages/viem \
+              packages/wagmi \
+              apps/autorelayer-interop \
+              apps/ponder-interop; do
+              echo ""
+              echo "====== $pkg_dir ======"
+              ( cd "$pkg_dir" && npm publish --dry-run --loglevel=silly 2>&1 | tail -120 )
+              rc=$?
+              echo "exit_code=$rc for $pkg_dir"
+              if [ "$rc" -ne 0 ]; then overall=1; fi
+            done
+            echo ""
+            echo "====== SUMMARY ======"
+            echo "overall_exit=$overall"
+            exit $overall
+
 workflows:
   release:
     jobs:
@@ -130,3 +181,12 @@ workflows:
       - check:
           context:
             - circleci-repo-readonly-authenticated-github-token # for GITHUB_TOKEN (mise GitHub API auth)
+
+  # TEMPORARY - remove together with the verify-oidc job once OIDC is verified.
+  verify-oidc-workflow:
+    jobs:
+      - verify-oidc:
+          name: Verify OIDC trusted publishing (dry-run)
+          filters:
+            branches:
+              ignore: main
