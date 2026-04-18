@@ -1,7 +1,7 @@
 # Default owners
 * @ethereum-optimism/ecosystem
 
-/docs @ethereum-optimism/ecosystem @zainbacchus
+/docs @ethereum-optimism/ecosystem
 
 # Infra and security files — cloud-security team reviews these independently
 .github/workflows/ @ethereum-optimism/ecosystem @ethereum-optimism/cloud-security
