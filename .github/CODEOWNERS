@@ -4,11 +4,11 @@
 /docs @ethereum-optimism/ecosystem @zainbacchus
 
 # Infra and security files — cloud-security team reviews these independently
-.github/workflows/ @ethereum-optimism/cloud-security
-.github/images.json @ethereum-optimism/cloud-security
-.circleci/ @ethereum-optimism/cloud-security
-Dockerfile @ethereum-optimism/cloud-security
-.dockerignore @ethereum-optimism/cloud-security
-pnpm-lock.yaml @ethereum-optimism/cloud-security
-.nvmrc @ethereum-optimism/cloud-security
-mise.toml @ethereum-optimism/cloud-security
+.github/workflows/ @ethereum-optimism/ecosystem @ethereum-optimism/cloud-security
+.github/images.json @ethereum-optimism/ecosystem @ethereum-optimism/cloud-security
+.circleci/ @ethereum-optimism/ecosystem @ethereum-optimism/cloud-security
+Dockerfile @ethereum-optimism/ecosystem @ethereum-optimism/cloud-security
+.dockerignore @ethereum-optimism/ecosystem @ethereum-optimism/cloud-security
+pnpm-lock.yaml @ethereum-optimism/ecosystem @ethereum-optimism/cloud-security
+.nvmrc @ethereum-optimism/ecosystem @ethereum-optimism/cloud-security
+mise.toml @ethereum-optimism/ecosystem @ethereum-optimism/cloud-security
