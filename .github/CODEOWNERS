@@ -1,4 +1,14 @@
 # Default owners
 * @ethereum-optimism/ecosystem
-  
+
 /docs @ethereum-optimism/ecosystem @zainbacchus
+
+# Infra and security files — cloud-security team reviews these independently
+.github/workflows/ @ethereum-optimism/cloud-security
+.github/images.json @ethereum-optimism/cloud-security
+.circleci/ @ethereum-optimism/cloud-security
+Dockerfile @ethereum-optimism/cloud-security
+.dockerignore @ethereum-optimism/cloud-security
+pnpm-lock.yaml @ethereum-optimism/cloud-security
+.nvmrc @ethereum-optimism/cloud-security
+mise.toml @ethereum-optimism/cloud-security
