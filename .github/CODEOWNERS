@@ -1,4 +1,24 @@
 # Default owners
 * @ethereum-optimism/ecosystem
-  
-/docs @ethereum-optimism/ecosystem @zainbacchus
+
+/docs @ethereum-optimism/ecosystem
+
+# Infra & security — cloud-security team approval required
+# (rules below override the catch-all per GitHub last-match-wins semantics)
+
+# CI/CD pipelines
+.github/workflows/ @ethereum-optimism/ecosystem @ethereum-optimism/cloud-security
+.github/images.json @ethereum-optimism/ecosystem @ethereum-optimism/cloud-security
+.circleci/ @ethereum-optimism/ecosystem @ethereum-optimism/cloud-security
+
+# Container definitions
+Dockerfile @ethereum-optimism/ecosystem @ethereum-optimism/cloud-security
+.dockerignore @ethereum-optimism/ecosystem @ethereum-optimism/cloud-security
+*/docker-compose*.yml @ethereum-optimism/ecosystem @ethereum-optimism/cloud-security
+
+# Dependency lockfile
+pnpm-lock.yaml @ethereum-optimism/ecosystem @ethereum-optimism/cloud-security
+
+# Runtime version pinning
+.nvmrc @ethereum-optimism/ecosystem @ethereum-optimism/cloud-security
+mise.toml @ethereum-optimism/ecosystem @ethereum-optimism/cloud-security
