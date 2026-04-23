@@ -25,7 +25,7 @@ const hash = await relayMessage({
 
 - **Type:** `(params: RelayL2ToL2MessageParameters) => Promise<`0x${string}`>`
 
-Call this function with the [RelayL2ToL2MessageParameters](https://github.com/ethereum-optimism/ecosystem/blob/main/packages/viem/docs/actions/relayL2ToL2Message.md#parameters) to execute a cross chain message
+Call this function with the [RelayL2ToL2MessageParameters](https://github.com/ethereum-optimism/ecosystem/blob/main/packages/wagmi/docs/useRelayL2ToL2Message.md) to execute a cross chain message
 
 ### `isError`
 
