@@ -46,7 +46,7 @@
     "tailwind-merge": "^1.14.0",
     "tailwindcss-animate": "^1.0.7",
     "viem": "^2.17.9",
-    "wagmi": "^2.12",
+    "wagmi": "3.0.0",
     "zod": "^3.24.2",
     "zod-validation-error": "^3.4.0",
     "zustand": "^4.4.4"
