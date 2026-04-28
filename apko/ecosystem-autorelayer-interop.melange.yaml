@@ -1,0 +1,29 @@
+package:
+  name: ecosystem-autorelayer-interop
+  version: 0.0.0
+  epoch: 0
+  description: ecosystem-autorelayer-interop
+  copyright:
+    - license: MIT
+
+environment:
+  contents:
+    repositories:
+      - https://packages.wolfi.dev/os
+    keyring:
+      - https://packages.wolfi.dev/os/wolfi-signing.rsa.pub
+    packages:
+      - nodejs-22
+      - pnpm
+      - busybox
+      - ca-certificates-bundle
+      - python3
+      - build-base
+      - git
+
+pipeline:
+  - runs: |
+      pnpm install --frozen-lockfile
+      pnpm --filter @eth-optimism/autorelayer-interop build
+      mkdir -p ${{targets.destdir}}/usr/src/app
+      pnpm deploy --filter @eth-optimism/autorelayer-interop --prod ${{targets.destdir}}/usr/src/app

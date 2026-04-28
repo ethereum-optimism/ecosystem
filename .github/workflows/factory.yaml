@@ -1,0 +1,61 @@
+name: factory
+
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - '*/v*'
+      - 'v*'
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  plan:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    outputs:
+      matrix_json: ${{ steps.plan.outputs.matrix_json }}
+      has_builds: ${{ steps.plan.outputs.has_builds }}
+      is_release: ${{ steps.plan.outputs.is_release }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@71cf2267d89c5cb81562390fa70a37fa40b1305e # v4
+        with:
+          fetch-depth: 0
+
+      - name: Plan builds
+        id: plan
+        uses: ethereum-optimism/factory/actions/plan@236c1ba2ea2b46d997303d76217ca2b8a81b8e83
+
+  build:
+    needs: [plan]
+    if: needs.plan.outputs.has_builds == 'true'
+    strategy:
+      fail-fast: false
+      matrix:
+        include: ${{ fromJson(needs.plan.outputs.matrix_json) }}
+    uses: ethereum-optimism/factory/.github/workflows/docker.yaml@236c1ba2ea2b46d997303d76217ca2b8a81b8e83
+    with:
+      mode: ${{ matrix.mode || 'build' }}
+      image_name: ${{ matrix.image_name }}
+      tag: ${{ matrix.tag }}
+      context: ${{ matrix.context || '.' }}
+      dockerfile: ${{ matrix.dockerfile || 'Dockerfile' }}
+      target: ${{ matrix.target || '' }}
+      ko_working_directory: ${{ matrix.ko_working_directory || '.' }}
+      ko_importpath: ${{ matrix.ko_importpath || './cmd' }}
+      apko_config: ${{ matrix.apko_config || '' }}
+      melange_configs: ${{ matrix.melange_configs || '' }}
+      melange_workdir: ${{ matrix.melange_workdir || '' }}
+      env: ${{ matrix.env || '' }}
+      build_args: ${{ matrix.build_args || '' }}
+      gcp_project_id: ${{ vars.GCP_PROJECT_ID_OPLABS_TOOLS_ARTIFACTS }}
+      registry: us-docker.pkg.dev/oplabs-tools-artifacts/images
+      skip_arm64: true
+    permissions:
+      contents: read
+      id-token: write
+      attestations: write

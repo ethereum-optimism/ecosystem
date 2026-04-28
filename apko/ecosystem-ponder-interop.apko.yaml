@@ -1,0 +1,20 @@
+contents:
+  repositories:
+    - https://packages.wolfi.dev/os
+    - "@local /work/packages"
+  keyring:
+    - https://packages.wolfi.dev/os/wolfi-signing.rsa.pub
+  packages:
+    - nodejs-22
+    - pnpm
+    - busybox
+    - ca-certificates-bundle
+    - ecosystem-ponder-interop@local
+
+entrypoint:
+  command: /usr/bin/pnpm start
+
+work-dir: /usr/src/app
+
+archs:
+  - x86_64

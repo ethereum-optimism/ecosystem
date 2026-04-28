@@ -1,34 +1,33 @@
 {
   "shared_paths": [
-    ".github/workflows/build.yaml",
+    ".github/workflows/factory.yaml",
     ".github/images.json",
-    "Dockerfile",
-    ".dockerignore",
     "package.json",
     "pnpm-lock.yaml",
-    "pnpm-workspace.yaml"
+    "pnpm-workspace.yaml",
+    "apko/**"
   ],
   "images": {
     "ecosystem-autorelayer-interop": {
-      "context": ".",
-      "dockerfile": "Dockerfile",
-      "target": "autorelayer-interop",
-      "build_args": "DOCKER_TARGET=autorelayer-interop",
-      "paths": ["apps/autorelayer-interop/**", "lib/**", "packages/**"]
+      "mode": "apko",
+      "apko_config": "apko/ecosystem-autorelayer-interop.apko.yaml",
+      "melange_configs": "apko/ecosystem-autorelayer-interop.melange.yaml",
+      "tag": "latest",
+      "paths": ["apps/autorelayer-interop/**", "lib/**", "packages/**", "apko/**"]
     },
     "ecosystem-ponder-interop": {
-      "context": ".",
-      "dockerfile": "Dockerfile",
-      "target": "ponder-interop",
-      "build_args": "DOCKER_TARGET=ponder-interop",
-      "paths": ["apps/ponder-interop/**", "lib/**", "packages/**"]
+      "mode": "apko",
+      "apko_config": "apko/ecosystem-ponder-interop.apko.yaml",
+      "melange_configs": "apko/ecosystem-ponder-interop.melange.yaml",
+      "tag": "latest",
+      "paths": ["apps/ponder-interop/**", "lib/**", "packages/**", "apko/**"]
     },
     "ecosystem-sponsored-sender": {
-      "context": ".",
-      "dockerfile": "Dockerfile",
-      "target": "sponsored-sender",
-      "build_args": "DOCKER_TARGET=sponsored-sender",
-      "paths": ["apps/sponsored-sender/**", "lib/**", "packages/**"]
+      "mode": "apko",
+      "apko_config": "apko/ecosystem-sponsored-sender.apko.yaml",
+      "melange_configs": "apko/ecosystem-sponsored-sender.melange.yaml",
+      "tag": "latest",
+      "paths": ["apps/sponsored-sender/**", "lib/**", "packages/**", "apko/**"]
     }
   }
 }
