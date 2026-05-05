@@ -40,7 +40,7 @@ jobs:
     uses: ethereum-optimism/factory/.github/workflows/docker.yaml@d1304a6e3ef93a8fcb0f672707f5f2ae9737a59d
     with:
       image_name: ${{ matrix.image_name }}
-      tag: ${{ matrix.tag }}
+      tag: ${{ (github.event_name == 'push' && github.ref == 'refs/heads/main') && 'latest' || matrix.tag }}
       target: ${{ matrix.target }}
       build_args: ${{ matrix.build_args }}
       gcp_project_id: ${{ vars.GCP_PROJECT_ID_OPLABS_TOOLS_ARTIFACTS }}
