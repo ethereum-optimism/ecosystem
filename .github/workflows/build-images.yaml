@@ -1,0 +1,51 @@
+name: build
+
+on:
+  push:
+    branches:
+      - 'main'
+    tags:
+      - '*/v*'
+      - 'v*'
+  pull_request:
+    branches:
+      - 'main'
+  workflow_dispatch:
+
+jobs:
+  plan:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    outputs:
+      matrix_json: ${{ steps.plan.outputs.matrix_json }}
+      has_builds: ${{ steps.plan.outputs.has_builds }}
+      is_release: ${{ steps.plan.outputs.is_release }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@71cf2267d89c5cb81562390fa70a37fa40b1305e # v6
+        with:
+          fetch-depth: 0
+      - name: Plan affected images
+        id: plan
+        uses: ethereum-optimism/factory/actions/plan@e7c939d0effb3c1a49937dc11b2d490694ede41c
+
+  build:
+    needs: [plan]
+    if: needs.plan.outputs.has_builds == 'true'
+    strategy:
+      fail-fast: false
+      matrix:
+        include: ${{ fromJson(needs.plan.outputs.matrix_json) }}
+    uses: ethereum-optimism/factory/.github/workflows/docker.yaml@e7c939d0effb3c1a49937dc11b2d490694ede41c
+    with:
+      image_name: ${{ matrix.image_name }}
+      tag: ${{ matrix.tag }}
+      target: ${{ matrix.target }}
+      build_args: ${{ matrix.build_args }}
+      gcp_project_id: ${{ vars.GCP_PROJECT_ID_OPLABS_TOOLS_ARTIFACTS }}
+      registry: us-docker.pkg.dev/oplabs-tools-artifacts/images
+    permissions:
+      contents: read
+      id-token: write
+      attestations: write

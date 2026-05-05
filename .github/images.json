@@ -1,6 +1,6 @@
 {
   "shared_paths": [
-    ".github/workflows/build.yaml",
+    ".github/workflows/build-images.yaml",
     ".github/images.json",
     "Dockerfile",
     ".dockerignore",
