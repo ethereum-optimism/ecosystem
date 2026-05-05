@@ -28,7 +28,7 @@ jobs:
           fetch-depth: 0
       - name: Plan affected images
         id: plan
-        uses: ethereum-optimism/factory/actions/plan@68264452366a69faa03c474ce70ac6104e373b36
+        uses: ethereum-optimism/factory/actions/plan@34c087314cb7efc271e486e0c7fd84ae0905a135
 
   build:
     needs: [plan]
@@ -37,7 +37,7 @@ jobs:
       fail-fast: false
       matrix:
         include: ${{ fromJson(needs.plan.outputs.matrix_json) }}
-    uses: ethereum-optimism/factory/.github/workflows/docker.yaml@68264452366a69faa03c474ce70ac6104e373b36
+    uses: ethereum-optimism/factory/.github/workflows/docker.yaml@34c087314cb7efc271e486e0c7fd84ae0905a135
     with:
       image_name: ${{ matrix.image_name }}
       tag: ${{ matrix.tag }}
