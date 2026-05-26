@@ -1,6 +1,6 @@
 # Docker Node install scripts policy
 
-Dependency installs in `Dockerfile` use `--ignore-scripts` by default (see `.npmrc`).
+Dependency installs in `Dockerfile` use `--ignore-scripts` on the install line and in repo-root `.npmrc`.
 
 `pnpm fetch` has no ignore-scripts flag; it only populates the store from the lockfile.
 
