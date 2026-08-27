@@ -30,7 +30,6 @@ Governance discussion can also be found on the [Optimism Governance Forum](https
 
 <pre>
 ├── <a href="./apps">apps</a>
-├── ├── <a href="./apps/autorelayer-interop">autorelayer-interop</a>: Superchain interop relayer service
 ├── ├── <a href="./apps/ponder-interop">ponder-interop</a>: Ponder indexer for Superchain interop contracts.
 ├── ├── <a href="./apps/sponsored-sender">sponsored-sender</a>: Util service that locally spins up single-url tx submission json-rpc endpoint
 ├── ├── <a href="./apps/superchain-playground">superchain-playground</a>: Playground with demo components for various op-stack features.
@@ -40,6 +39,16 @@ Governance discussion can also be found on the [Optimism Governance Forum](https
 │   ├── <a href="./packages/wagmi">wagmi</a>: Optimism Wagmi Extensions
 │   ├── <a href="./packages/utils-app">utils-app</a>: Optimism Application lifeycle package
 </pre>
+
+### Removed: `apps/autorelayer-interop`
+
+The interop autorelayer that used to live here has been removed. It was superseded by a newer
+relayer developed outside this repository, and keeping it here was misleading for developers
+landing on it. Its history remains reachable at commit
+[`62d792fe`](https://github.com/ethereum-optimism/ecosystem/tree/62d792fe05b73c4d0ceb1f99fb75c919eb634d64/apps/autorelayer-interop).
+
+The current relayer does not have a public home yet. This note will be updated with a pointer once
+it does.
 
 ## Development Quick Start
 
