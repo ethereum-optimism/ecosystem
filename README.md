@@ -9,11 +9,49 @@
 
 ## Ecosystem
 
-In this repository, you'll find numerous code references for applications & packages to help app developers build on top of the OP Stack with ease.
+Client-side libraries and reference applications for building **interop** apps on the OP Stack.
 
-If the [Optimism Repository](https://github.com/ethereum-optimism/ecosystem) is a place where the protocol and its infrastructure gets built. The Ecosystem Repository is a place where utilities, applications, and examples get built to interact with the protocols and its infrastructure.
+### What this repo is
 
-Designed to be "aggressively open source," we encourage you to explore, modify, extend, and test the code as needed. We look forward to building with you!
+`packages/viem` and `packages/wagmi` are the supported surface. They are the extensions app
+developers use to read and write Superchain interop from a TypeScript app, and they are what the
+starter kits depend on.
+
+### What this repo is not
+
+It is not where the protocol is built. That is the
+[Optimism monorepo](https://github.com/ethereum-optimism/optimism). It is not a support boundary
+for everything in the tree either: the apps here are references and local-development tools, not
+production services. Anything labelled experimental below can change or disappear without a
+deprecation cycle.
+
+### Supported surface
+
+| Package | Status | What it is |
+|---|---|---|
+| [`packages/viem`](./packages/viem) | **Supported** | Optimism viem extensions. The primary entry point for interop. |
+| [`packages/wagmi`](./packages/wagmi) | **Supported** | Optimism wagmi extensions, built on `packages/viem`. |
+| [`packages/utils-app`](./packages/utils-app) | **Experimental** | Application lifecycle helpers for the services in this repo. Published, but not intended as a developer-facing library. |
+| [`packages/supersim`](./packages/supersim) | **Supported** | npx wrapper that installs the [supersim](https://github.com/ethereum-optimism/supersim) binary. The tool itself lives in that repo. |
+| [`apps/ponder-interop`](./apps/ponder-interop) | **Experimental** | Ponder indexer for interop contracts, exposing an HTTP API. |
+| [`apps/sponsored-sender`](./apps/sponsored-sender) | **Experimental** | Local single-URL sponsored tx json-rpc endpoint. Explicitly not for production. |
+| [`apps/superchain-playground`](./apps/superchain-playground) | **Experimental** | Demo components for OP Stack features. |
+
+`apps/autorelayer-interop` was **removed**. See the note under Directory Structure.
+
+### What the starter kits depend on
+
+All six interop starter repos (`superchainerc20-starter`, `superchain-starter`,
+`superchain-starter-superchainerc20`, `superchain-starter-xchain-flash-loan-example`,
+`superchain-starter-xchain-eth-multitransfer`, `superchain-starter-pingpong`) declare exactly one
+dependency on this repo: **`@eth-optimism/viem`**.
+
+None of them depend on `@eth-optimism/wagmi` or on anything under `apps/`, so changes to the
+experimental apps above cannot break them. `packages/viem` is the only package here with downstream
+starter-kit consumers, which is the practical reason it leads this list.
+
+Designed to be "aggressively open source," we encourage you to explore, modify, extend, and test
+the code as needed. We look forward to building with you!
 
 ## Documentation
 
