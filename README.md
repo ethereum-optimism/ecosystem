@@ -31,7 +31,7 @@ deprecation cycle.
 |---|---|---|
 | [`packages/viem`](./packages/viem) | **Supported** | Optimism viem extensions. The primary entry point for interop. |
 | [`packages/wagmi`](./packages/wagmi) | **Supported** | Optimism wagmi extensions, built on `packages/viem`. |
-| [`packages/utils-app`](./packages/utils-app) | **Supported** | Application lifecycle helpers used by the services here. |
+| [`packages/utils-app`](./packages/utils-app) | **Experimental** | Application lifecycle helpers for the services in this repo. Published, but not intended as a developer-facing library. |
 | [`packages/supersim`](./packages/supersim) | **Supported** | npx wrapper that installs the [supersim](https://github.com/ethereum-optimism/supersim) binary. The tool itself lives in that repo. |
 | [`apps/ponder-interop`](./apps/ponder-interop) | **Experimental** | Ponder indexer for interop contracts, exposing an HTTP API. |
 | [`apps/sponsored-sender`](./apps/sponsored-sender) | **Experimental** | Local single-URL sponsored tx json-rpc endpoint. Explicitly not for production. |
