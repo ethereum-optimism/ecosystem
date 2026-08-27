@@ -256,26 +256,6 @@ importers:
         specifier: ^0.4.0
         version: 0.4.0(zod@3.24.2)
 
-  apps/autorelayer-interop:
-    dependencies:
-      '@eth-optimism/utils-app':
-        specifier: workspace:*
-        version: link:../../packages/utils-app
-      '@eth-optimism/viem':
-        specifier: workspace:*
-        version: link:../../packages/viem
-      commander:
-        specifier: ^13.1.0
-        version: 13.1.0
-      pino:
-        specifier: ^9.6.0
-        version: 9.6.0
-      pino-pretty:
-        specifier: ^13.0.0
-        version: 13.0.0
-      viem:
-        specifier: 2.17.9
-        version: 2.17.9(bufferutil@4.0.8)(typescript@5.8.3)(utf-8-validate@6.0.3)(zod@3.25.76)
 
   apps/ponder-interop:
     dependencies:

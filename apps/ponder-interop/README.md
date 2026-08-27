@@ -1,6 +1,6 @@
 # Ponder Interop
 
-A [Ponder](https://ponder.sh) indexer for op-stack interop contracts. Exposes a http api, leveraged in services such as the [autorelayer](../autorelayer-interop/README.md).
+A [Ponder](https://ponder.sh) indexer for op-stack interop contracts. Exposes a http api for services that need to query pending interop messages.
 
 See ponder [documentation](https://ponder.sh/docs/getting-started/new-project) on how ponder works.
 

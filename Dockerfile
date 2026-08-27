@@ -18,7 +18,7 @@ ENV NODE_EXTRA_CA_CERTS=/usr/local/share/ca-certificates/extra-ca-certificates.c
 FROM base AS builder
 WORKDIR /usr/src/app
 
-RUN apk add --no-cache python3=3.12.13-r0 make=4.4.1-r2 g++=14.2.0-r4
+RUN apk add --no-cache python3=~3.12 make=4.4.1-r2 g++=14.2.0-r4
 
 COPY ../pnpm-lock.yaml ./
 RUN pnpm fetch
@@ -31,30 +31,14 @@ RUN rm -f apps/ponder-interop/.npmignore
 ARG DOCKER_TARGET
 
 RUN if [ -z "$DOCKER_TARGET" ] || [ "$DOCKER_TARGET" = "ponder-interop" ]; then pnpm nx build @eth-optimism/ponder-interop; fi
-RUN if [ -z "$DOCKER_TARGET" ] || [ "$DOCKER_TARGET" = "autorelayer-interop" ]; then pnpm nx build @eth-optimism/autorelayer-interop; fi
 RUN if [ -z "$DOCKER_TARGET" ] || [ "$DOCKER_TARGET" = "sponsored-sender" ]; then pnpm nx build @eth-optimism/sponsored-sender;  fi
 
-RUN if [ -z "$DOCKER_TARGET" ] || [ "$DOCKER_TARGET" = "autorelayer-interop" ]; then pnpm deploy --filter autorelayer-interop --prod /prod/autorelayer-interop; fi
 RUN if [ -z "$DOCKER_TARGET" ] || [ "$DOCKER_TARGET" = "ponder-interop" ]; then pnpm deploy --filter ponder-interop --prod /prod/ponder-interop; fi
 RUN if [ -z "$DOCKER_TARGET" ] || [ "$DOCKER_TARGET" = "sponsored-sender" ]; then pnpm deploy --filter sponsored-sender --prod /prod/sponsored-sender; fi
 
 ########################################################
 # STAGE 2: Images
 ########################################################
-
-########################################################
-# Autorelayer Interop
-########################################################
-
-FROM base AS autorelayer-interop
-
-WORKDIR /usr/src/app
-COPY --from=builder /prod/autorelayer-interop ./
-
-EXPOSE 7300
-
-ENTRYPOINT ["pnpm"]
-CMD ["start"]
 
 ########################################################
 # Ponder Interop

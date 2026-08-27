@@ -9,13 +9,6 @@
     "pnpm-workspace.yaml"
   ],
   "images": {
-    "ecosystem-autorelayer-interop": {
-      "context": ".",
-      "dockerfile": "Dockerfile",
-      "target": "autorelayer-interop",
-      "build_args": "DOCKER_TARGET=autorelayer-interop",
-      "paths": ["apps/autorelayer-interop/**", "lib/**", "packages/**"]
-    },
     "ecosystem-ponder-interop": {
       "context": ".",
       "dockerfile": "Dockerfile",
