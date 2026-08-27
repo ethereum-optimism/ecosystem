@@ -47,8 +47,9 @@ relayer developed outside this repository, and keeping it here was misleading fo
 landing on it. Its history remains reachable at commit
 [`62d792fe`](https://github.com/ethereum-optimism/ecosystem/tree/62d792fe05b73c4d0ceb1f99fb75c919eb634d64/apps/autorelayer-interop).
 
-The current relayer does not have a public home yet. This note will be updated with a pointer once
-it does.
+The maintained relayer now lives in
+[ethereum-optimism/interop-services](https://github.com/ethereum-optimism/interop-services), which
+is currently a private repository.
 
 ## Development Quick Start
 
