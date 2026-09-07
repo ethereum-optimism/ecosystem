@@ -66,6 +66,8 @@ export function walletActionsL2() {
     return {
       ...opWalletActionsL2(),
       interop: {
+        // viem `extend` shallow-merges top-level keys; keep public interop helpers.
+        ...(client as { interop?: Record<string, unknown> }).interop,
         sendCrossDomainMessage: (args) => sendCrossDomainMessage(client, args),
         relayCrossDomainMessage: (args) =>
           relayCrossDomainMessage(client, args),
