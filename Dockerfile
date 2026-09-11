@@ -18,7 +18,7 @@ ENV NODE_EXTRA_CA_CERTS=/usr/local/share/ca-certificates/extra-ca-certificates.c
 FROM base AS builder
 WORKDIR /usr/src/app
 
-RUN apk add --no-cache python3=~3.12 make=4.4.1-r2 g++=14.2.0-r4
+RUN apk add --no-cache python3=~3.12 make=~4.4 g++=~14.2
 
 COPY ../pnpm-lock.yaml ./
 RUN pnpm fetch
