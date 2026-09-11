@@ -159,16 +159,19 @@ export async function simulateRelayCrossDomainMessage<
     TChainOverride
   >,
 ): Promise<RelayCrossDomainMessageContractReturnType> {
-  const { account, id, payload, accessList } = parameters
+  // Spread the rest of the parameters instead of picking out accessList, so gas
+  // fields reach simulateContract, matching estimateRelayCrossDomainMessageGas.
+  // CrossL2Inbox rejects relayMessage when tx.gasprice is 0 and basefee is not,
+  // and callers had no way to set a gas price through here.
+  const { id, payload, ...txParameters } = parameters
 
   const res = await simulateContract(client, {
-    account,
     abi: l2ToL2CrossDomainMessengerAbi,
     address: interopContracts.l2ToL2CrossDomainMessenger.address,
     chain: client.chain,
     functionName: 'relayMessage',
     args: [id, payload],
-    accessList,
+    ...txParameters,
   } as SimulateContractParameters)
 
   return res.result as RelayCrossDomainMessageContractReturnType
