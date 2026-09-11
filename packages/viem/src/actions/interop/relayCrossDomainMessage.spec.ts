@@ -36,9 +36,14 @@ describe('relayMessage', () => {
       const params = await publicClientA.interop.buildExecutingMessage({
         log: messages[0].log,
       })
+      // CrossL2Inbox rejects relayMessage when tx.gasprice is 0 and basefee is
+      // not, to stop deposits executing messages. Estimating and simulating
+      // default the price to 0, so both have to be given a real one.
+      const maxFeePerGas = await publicClientB.getGasPrice()
       const gas =
         await publicClientB.interop.estimateRelayCrossDomainMessageGas({
           account: testAccount.address,
+          maxFeePerGas,
           ...params,
         })
       expect(gas).toBeDefined()
@@ -63,12 +68,14 @@ describe('relayMessage', () => {
       const params = await publicClientA.interop.buildExecutingMessage({
         log: messages[0].log,
       })
-      expect(() =>
-        publicClientB.interop.simulateRelayCrossDomainMessage({
+      const maxFeePerGas = await publicClientB.getGasPrice()
+      const result =
+        await publicClientB.interop.simulateRelayCrossDomainMessage({
           account: testAccount,
+          maxFeePerGas,
           ...params,
-        }),
-      ).not.throw()
+        })
+      expect(result).toBeDefined()
     })
   })
 
