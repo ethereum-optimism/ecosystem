@@ -2,7 +2,7 @@ version: 2.1
 
 orbs:
   nx: nrwl/nx@1.7.0
-  utils: ethereum-optimism/circleci-utils@1.0.27
+  utils: ethereum-optimism/circleci-utils@1.0.33
 
 commands:
   prepare-snapshot:
