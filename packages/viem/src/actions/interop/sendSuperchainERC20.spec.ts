@@ -7,7 +7,14 @@ import { SUPERSIM_SUPERC20_ADDRESS } from '@/test/supERC20.js'
 
 const AMOUNT_TO_SEND = 10n
 
-describe('sendSuperchainERC20', () => {
+// Skipped from supersim 0.1.0-alpha.60 on. These drive sendERC20 on the
+// SuperchainTokenBridge predeploy at 0x4200000000000000000000000000000000000028,
+// which was removed from the OP Stack in ethereum-optimism/optimism#19999. The
+// proxy is still in genesis but its implementation is not, so every call reverts
+// with "Proxy: implementation not initialized". Nothing has replaced the bridge,
+// so SuperchainERC20 tokens cannot move between chains and these cannot pass.
+// Unskip if and when a token bridge returns; see ethereum-optimism/ecosystem#1009.
+describe.skip('sendSuperchainERC20', () => {
   beforeAll(async () => {
     const hash = await walletClientA.writeContract({
       address: SUPERSIM_SUPERC20_ADDRESS,

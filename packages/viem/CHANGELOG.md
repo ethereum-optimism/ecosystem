@@ -1,5 +1,15 @@
 # @eth-optimism/viem
 
+## 0.4.16
+
+### Patch Changes
+
+- [#1022](https://github.com/ethereum-optimism/ecosystem/pull/1022) [`eac3e7d`](https://github.com/ethereum-optimism/ecosystem/commit/eac3e7d5b3dde76879efaa27df23a10da4406d6b) Thanks [@jefr90](https://github.com/jefr90)! - forward gas parameters through simulateRelayCrossDomainMessage
+
+  It only read account, id, payload and accessList, so callers could not set a gas
+  price. CrossL2Inbox rejects relayMessage when tx.gasprice is 0 and basefee is
+  not, which made the action unusable on any chain with a non-zero basefee.
+
 ## 0.4.15
 
 ### Patch Changes
