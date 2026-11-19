@@ -1,4 +1,12 @@
 {
+  "version": 2,
+  "registry": "us-docker.pkg.dev/oplabs-tools-artifacts/images",
+  "default_branch_tags": [
+    "latest"
+  ],
+  "release": {
+    "publish_tag": "${version}"
+  },
   "shared_paths": [
     ".github/workflows/build-images.yaml",
     ".github/images.json",
@@ -10,25 +18,55 @@
   ],
   "images": {
     "ecosystem-autorelayer-interop": {
-      "context": ".",
-      "dockerfile": "Dockerfile",
-      "target": "autorelayer-interop",
-      "build_args": "DOCKER_TARGET=autorelayer-interop",
-      "paths": ["apps/autorelayer-interop/**", "lib/**", "packages/**"]
+      "builders": {
+        "docker": {
+          "context": ".",
+          "dockerfile": "Dockerfile",
+          "target": "autorelayer-interop",
+          "build_args": {
+            "DOCKER_TARGET": "autorelayer-interop"
+          }
+        }
+      },
+      "paths": [
+        "apps/autorelayer-interop/**",
+        "lib/**",
+        "packages/**"
+      ]
     },
     "ecosystem-ponder-interop": {
-      "context": ".",
-      "dockerfile": "Dockerfile",
-      "target": "ponder-interop",
-      "build_args": "DOCKER_TARGET=ponder-interop",
-      "paths": ["apps/ponder-interop/**", "lib/**", "packages/**"]
+      "builders": {
+        "docker": {
+          "context": ".",
+          "dockerfile": "Dockerfile",
+          "target": "ponder-interop",
+          "build_args": {
+            "DOCKER_TARGET": "ponder-interop"
+          }
+        }
+      },
+      "paths": [
+        "apps/ponder-interop/**",
+        "lib/**",
+        "packages/**"
+      ]
     },
     "ecosystem-sponsored-sender": {
-      "context": ".",
-      "dockerfile": "Dockerfile",
-      "target": "sponsored-sender",
-      "build_args": "DOCKER_TARGET=sponsored-sender",
-      "paths": ["apps/sponsored-sender/**", "lib/**", "packages/**"]
+      "builders": {
+        "docker": {
+          "context": ".",
+          "dockerfile": "Dockerfile",
+          "target": "sponsored-sender",
+          "build_args": {
+            "DOCKER_TARGET": "sponsored-sender"
+          }
+        }
+      },
+      "paths": [
+        "apps/sponsored-sender/**",
+        "lib/**",
+        "packages/**"
+      ]
     }
   }
 }
