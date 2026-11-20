@@ -1,4 +1,7 @@
-export type { CrossDomainMessage } from '@/types/interop/cdm.js'
+export type {
+  CrossDomainMessage,
+  CrossDomainMessageFields,
+} from '@/types/interop/cdm.js'
 export type {
   MessageIdentifier,
   MessagePayload,

@@ -19,6 +19,7 @@ import { interopContracts } from '@/contracts.js'
 import {
   baseWriteAction,
   type BaseWriteContractActionParameters,
+  resolveFees,
 } from '@/core/baseWriteAction.js'
 import type { ErrorType } from '@/types/utils.js'
 
@@ -64,6 +65,10 @@ export type RelayCrossDomainMessageErrorType =
 
 /**
  * Relays a message emitted by the CrossDomainMessenger
+ *
+ * A message can only be relayed within the expiry window, 7 days after it was
+ * sent. After that it can never be relayed; it can be exported with
+ * {@link exportUndeliveredMessage} so the source chain marks it expired.
  * @category Actions
  * @param client - L2 Client
  * @param parameters - {@link RelayCrossDomainMessageParameters}
@@ -131,12 +136,17 @@ export async function estimateRelayCrossDomainMessageGas<
 ): Promise<bigint> {
   const { id, payload, ...txParameters } = parameters
 
+  // CrossL2Inbox rejects an executing message with a zero gas price, so fill
+  // the fees the caller did not set.
+  const fees = await resolveFees(client, txParameters)
+
   return estimateContractGas(client, {
     abi: l2ToL2CrossDomainMessengerAbi,
     address: interopContracts.l2ToL2CrossDomainMessenger.address,
     functionName: 'relayMessage',
     args: [id, payload],
     ...txParameters,
+    ...fees,
   } as EstimateContractGasParameters)
 }
 
@@ -162,8 +172,9 @@ export async function simulateRelayCrossDomainMessage<
   // Spread the rest of the parameters instead of picking out accessList, so gas
   // fields reach simulateContract, matching estimateRelayCrossDomainMessageGas.
   // CrossL2Inbox rejects relayMessage when tx.gasprice is 0 and basefee is not,
-  // and callers had no way to set a gas price through here.
+  // so fees the caller does not set are filled in.
   const { id, payload, ...txParameters } = parameters
+  const fees = await resolveFees(client, txParameters)
 
   const res = await simulateContract(client, {
     abi: l2ToL2CrossDomainMessengerAbi,
@@ -172,6 +183,7 @@ export async function simulateRelayCrossDomainMessage<
     functionName: 'relayMessage',
     args: [id, payload],
     ...txParameters,
+    ...fees,
   } as SimulateContractParameters)
 
   return res.result as RelayCrossDomainMessageContractReturnType

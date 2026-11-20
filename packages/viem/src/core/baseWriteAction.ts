@@ -16,7 +16,11 @@ import type {
   UnionOmit,
   WriteContractParameters,
 } from 'viem'
-import { estimateContractGas, writeContract } from 'viem/actions'
+import {
+  estimateContractGas,
+  estimateFeesPerGas,
+  writeContract,
+} from 'viem/actions'
 
 import type { GetAccountParameter, UnionEvaluate } from '@/types/utils.js'
 
@@ -84,6 +88,18 @@ export async function baseWriteAction<
     accessList,
   } = parameters
 
+  // Fill the fees before estimating gas. Without them, the gas estimate runs
+  // with a zero gas price, and `CrossL2Inbox.validateMessage` treats a zero gas
+  // price under a positive base fee as a deposit and reverts with
+  // `CrossL2Inbox_NoExecutingDeposits`, so relaying a message could not be
+  // estimated. viem fills transactions with `eth_fillTransaction` when it can,
+  // which leaves the gas price unset while estimating.
+  const fees = await resolveFees(client, {
+    chain,
+    maxFeePerGas,
+    maxPriorityFeePerGas,
+  })
+
   const gas_ =
     typeof gas !== 'bigint' && gas !== null
       ? await estimateContractGas(client, {
@@ -93,8 +109,7 @@ export async function baseWriteAction<
           chain,
           functionName: contractFunctionName,
           args: contractArgs,
-          maxFeePerGas,
-          maxPriorityFeePerGas,
+          ...fees,
           nonce,
           value,
           accessList,
@@ -109,10 +124,56 @@ export async function baseWriteAction<
     functionName: contractFunctionName,
     args: contractArgs,
     gas: gas_,
-    maxFeePerGas,
-    maxPriorityFeePerGas,
+    ...fees,
     nonce,
     value,
     accessList,
   } satisfies WriteContractParameters as any)
+}
+
+/**
+ * Returns EIP-1559 fees for a transaction, estimating whichever of
+ * `maxFeePerGas` and `maxPriorityFeePerGas` the caller did not set.
+ */
+export async function resolveFees<
+  TChain extends Chain | undefined = Chain | undefined,
+  TAccount extends Account | undefined = Account | undefined,
+>(
+  client: Client<Transport, TChain, TAccount>,
+  parameters: {
+    chain?: Chain | null | undefined
+    maxFeePerGas?: bigint | undefined
+    maxPriorityFeePerGas?: bigint | undefined
+  },
+): Promise<{ maxFeePerGas: bigint; maxPriorityFeePerGas: bigint }> {
+  const { chain, maxFeePerGas, maxPriorityFeePerGas } = parameters
+  if (
+    typeof maxFeePerGas === 'bigint' &&
+    typeof maxPriorityFeePerGas === 'bigint'
+  )
+    return { maxFeePerGas, maxPriorityFeePerGas }
+
+  const estimated = (await estimateFeesPerGas(client, {
+    chain: chain ?? undefined,
+    type: 'eip1559',
+  } as Parameters<typeof estimateFeesPerGas>[1])) as {
+    maxFeePerGas: bigint
+    maxPriorityFeePerGas: bigint
+  }
+
+  const maxPriorityFeePerGas_ =
+    maxPriorityFeePerGas ?? estimated.maxPriorityFeePerGas
+  const maxFeePerGas_ = maxFeePerGas ?? estimated.maxFeePerGas
+  // The priority fee can never exceed the max fee.
+  return maxPriorityFeePerGas_ > maxFeePerGas_
+    ? typeof maxFeePerGas === 'bigint'
+      ? { maxFeePerGas: maxFeePerGas_, maxPriorityFeePerGas: maxFeePerGas_ }
+      : {
+          maxFeePerGas: maxPriorityFeePerGas_,
+          maxPriorityFeePerGas: maxPriorityFeePerGas_,
+        }
+    : {
+        maxFeePerGas: maxFeePerGas_,
+        maxPriorityFeePerGas: maxPriorityFeePerGas_,
+      }
 }

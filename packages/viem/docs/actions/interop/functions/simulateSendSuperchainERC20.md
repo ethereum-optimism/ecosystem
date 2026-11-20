@@ -4,7 +4,7 @@
 
 [@eth-optimism/viem](../../../README.md) / [actions/interop](../README.md) / simulateSendSuperchainERC20
 
-# simulateSendSuperchainERC20()
+# ~~simulateSendSuperchainERC20()~~
 
 > **simulateSendSuperchainERC20**\<`TChain`, `TAccount`, `TChainOverride`\>(`client`, `parameters`): `Promise`\<[`SendSuperchainERC20ContractReturnType`](../type-aliases/SendSuperchainERC20ContractReturnType.md)\>
 
@@ -34,6 +34,12 @@ L2 Client
 
 contract return value - [SendSuperchainERC20ContractReturnType](../type-aliases/SendSuperchainERC20ContractReturnType.md)
 
+## Deprecated
+
+The `SuperchainTokenBridge` predeploy is not part of OP Stack
+Upgrade 22 (Lagoon), so this action does not work on chains that activate
+interop at Lagoon. It still works on supersim for local development.
+
 ## Defined in
 
-[packages/viem/src/actions/interop/sendSuperchainERC20.ts:132](https://github.com/ethereum-optimism/ecosystem/blob/a4b870454ce0f0a79a41dda7928a11b5c8946efc/packages/viem/src/actions/interop/sendSuperchainERC20.ts#L132)
+[packages/viem/src/actions/interop/sendSuperchainERC20.ts:141](https://github.com/ethereum-optimism/ecosystem/blob/dce63954ec565887eebd9760c7ff674d954c6387/packages/viem/src/actions/interop/sendSuperchainERC20.ts#L141)

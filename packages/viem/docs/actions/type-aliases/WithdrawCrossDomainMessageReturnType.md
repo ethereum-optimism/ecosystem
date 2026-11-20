@@ -10,4 +10,4 @@
 
 ## Defined in
 
-[packages/viem/src/actions/withdrawCrossDomainMessage.ts:62](https://github.com/ethereum-optimism/ecosystem/blob/a4b870454ce0f0a79a41dda7928a11b5c8946efc/packages/viem/src/actions/withdrawCrossDomainMessage.ts#L62)
+[packages/viem/src/actions/withdrawCrossDomainMessage.ts:62](https://github.com/ethereum-optimism/ecosystem/blob/dce63954ec565887eebd9760c7ff674d954c6387/packages/viem/src/actions/withdrawCrossDomainMessage.ts#L62)

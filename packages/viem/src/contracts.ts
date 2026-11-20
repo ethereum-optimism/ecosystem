@@ -26,6 +26,9 @@ export const contracts = {
 
 /**
  * Interop Contracts
+ *
+ * Predeploy addresses from `Predeploys.sol` in
+ * `ethereum-optimism/optimism/packages/contracts-bedrock`.
  */
 export const interopContracts = {
   l2ToL2CrossDomainMessenger: {
@@ -34,10 +37,22 @@ export const interopContracts = {
   crossL2Inbox: {
     address: '0x4200000000000000000000000000000000000022',
   },
+  /**
+   * @deprecated The `SuperchainTokenBridge` predeploy is not part of OP Stack
+   * Upgrade 22 (Lagoon): it was removed from the OP Stack contracts, so chains
+   * that activate interop at Lagoon do not have it. It is still available on
+   * supersim for local development.
+   */
   superchainTokenBridge: {
     address: '0x4200000000000000000000000000000000000028',
   },
   superchainETHBridge: {
     address: '0x4200000000000000000000000000000000000024',
+  },
+  ethLiquidity: {
+    address: '0x4200000000000000000000000000000000000025',
+  },
+  undeliveredMessageExporter: {
+    address: '0x4200000000000000000000000000000000000030',
   },
 } as const satisfies Chain['contracts']

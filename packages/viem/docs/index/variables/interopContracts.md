@@ -10,6 +10,9 @@
 
 Interop Contracts
 
+Predeploy addresses from `Predeploys.sol` in
+`ethereum-optimism/optimism/packages/contracts-bedrock`.
+
 ## Type declaration
 
 ### crossL2Inbox
@@ -19,6 +22,14 @@ Interop Contracts
 ### crossL2Inbox.address
 
 > `readonly` **address**: `"0x4200000000000000000000000000000000000022"` = `'0x4200000000000000000000000000000000000022'`
+
+### ethLiquidity
+
+> `readonly` **ethLiquidity**: `object`
+
+### ethLiquidity.address
+
+> `readonly` **address**: `"0x4200000000000000000000000000000000000025"` = `'0x4200000000000000000000000000000000000025'`
 
 ### l2ToL2CrossDomainMessenger
 
@@ -36,14 +47,29 @@ Interop Contracts
 
 > `readonly` **address**: `"0x4200000000000000000000000000000000000024"` = `'0x4200000000000000000000000000000000000024'`
 
-### superchainTokenBridge
+### ~~superchainTokenBridge~~
 
 > `readonly` **superchainTokenBridge**: `object`
+
+#### Deprecated
+
+The `SuperchainTokenBridge` predeploy is not part of OP Stack
+Upgrade 22 (Lagoon): it was removed from the OP Stack contracts, so chains
+that activate interop at Lagoon do not have it. It is still available on
+supersim for local development.
 
 ### superchainTokenBridge.address
 
 > `readonly` **address**: `"0x4200000000000000000000000000000000000028"` = `'0x4200000000000000000000000000000000000028'`
 
+### undeliveredMessageExporter
+
+> `readonly` **undeliveredMessageExporter**: `object`
+
+### undeliveredMessageExporter.address
+
+> `readonly` **address**: `"0x4200000000000000000000000000000000000030"` = `'0x4200000000000000000000000000000000000030'`
+
 ## Defined in
 
-[packages/viem/src/contracts.ts:30](https://github.com/ethereum-optimism/ecosystem/blob/a4b870454ce0f0a79a41dda7928a11b5c8946efc/packages/viem/src/contracts.ts#L30)
+[packages/viem/src/contracts.ts:33](https://github.com/ethereum-optimism/ecosystem/blob/dce63954ec565887eebd9760c7ff674d954c6387/packages/viem/src/contracts.ts#L33)

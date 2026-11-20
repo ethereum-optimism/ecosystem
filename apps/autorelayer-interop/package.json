@@ -35,7 +35,7 @@
   },
   "dependencies": {
     "commander": "^13.1.0",
-    "viem": "2.17.9",
+    "viem": "2.58.2",
     "@eth-optimism/utils-app": "workspace:*",
     "@eth-optimism/viem": "workspace:*"
   },

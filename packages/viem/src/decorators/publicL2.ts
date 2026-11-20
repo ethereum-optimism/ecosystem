@@ -5,10 +5,17 @@ import { publicActionsL2 as opPublicActionsL2 } from 'viem/op-stack'
 import type {
   BuildExecutingMessageParameters,
   BuildExecutingMessageReturnType,
+  ExportUndeliveredMessageContractReturnType,
+  ExportUndeliveredMessageParameters,
+  GetCrossDomainMessageExpiryParameters,
+  GetCrossDomainMessageExpiryReturnType,
   GetCrossDomainMessagesParameters,
   GetCrossDomainMessagesReturnType,
   GetCrossDomainMessageStatusParameters,
   GetCrossDomainMessageStatusReturnType,
+  GetETHLiquidityPausedReturnType,
+  RefundETHContractReturnType,
+  RefundETHParameters,
   RelayCrossDomainMessageContractReturnType,
   RelayCrossDomainMessageParameters,
   SendCrossDomainMessageContractReturnType,
@@ -20,12 +27,18 @@ import type {
 } from '@/actions/interop/index.js'
 import {
   buildExecutingMessage,
+  estimateExportUndeliveredMessageGas,
+  estimateRefundETHGas,
   estimateRelayCrossDomainMessageGas,
   estimateSendCrossDomainMessageGas,
   estimateSendETHGas,
   estimateSendSuperchainERC20Gas,
+  getCrossDomainMessageExpiry,
   getCrossDomainMessages,
   getCrossDomainMessageStatus,
+  getETHLiquidityPaused,
+  simulateExportUndeliveredMessage,
+  simulateRefundETH,
   simulateRelayCrossDomainMessage,
   simulateSendCrossDomainMessage,
   simulateSendETH,
@@ -77,6 +90,40 @@ export type PublicInteropActionsL2<
   getCrossDomainMessageStatus: (
     parameters: GetCrossDomainMessageStatusParameters,
   ) => Promise<GetCrossDomainMessageStatusReturnType>
+
+  getCrossDomainMessageExpiry: (
+    parameters: GetCrossDomainMessageExpiryParameters,
+  ) => Promise<GetCrossDomainMessageExpiryReturnType>
+
+  getETHLiquidityPaused: () => Promise<GetETHLiquidityPausedReturnType>
+
+  estimateExportUndeliveredMessageGas: <
+    TChainOverride extends Chain | undefined = undefined,
+  >(
+    parameters: ExportUndeliveredMessageParameters<
+      TChain,
+      TAccount,
+      TChainOverride
+    >,
+  ) => Promise<bigint>
+
+  simulateExportUndeliveredMessage: <
+    TChainOverride extends Chain | undefined = undefined,
+  >(
+    parameters: ExportUndeliveredMessageParameters<
+      TChain,
+      TAccount,
+      TChainOverride
+    >,
+  ) => Promise<ExportUndeliveredMessageContractReturnType>
+
+  estimateRefundETHGas: <TChainOverride extends Chain | undefined = undefined>(
+    parameters: RefundETHParameters<TChain, TAccount, TChainOverride>,
+  ) => Promise<bigint>
+
+  simulateRefundETH: <TChainOverride extends Chain | undefined = undefined>(
+    parameters: RefundETHParameters<TChain, TAccount, TChainOverride>,
+  ) => Promise<RefundETHContractReturnType>
 
   simulateSendCrossDomainMessage: <
     TChainOverride extends Chain | undefined = undefined,
@@ -146,6 +193,15 @@ export function publicActionsL2() {
         simulateSendSuperchainERC20: (args) =>
           simulateSendSuperchainERC20(client, args),
         simulateSendETH: (args) => simulateSendETH(client, args),
+        getCrossDomainMessageExpiry: (args) =>
+          getCrossDomainMessageExpiry(client, args),
+        getETHLiquidityPaused: () => getETHLiquidityPaused(client),
+        estimateExportUndeliveredMessageGas: (args) =>
+          estimateExportUndeliveredMessageGas(client, args),
+        simulateExportUndeliveredMessage: (args) =>
+          simulateExportUndeliveredMessage(client, args),
+        estimateRefundETHGas: (args) => estimateRefundETHGas(client, args),
+        simulateRefundETH: (args) => simulateRefundETH(client, args),
       },
     } as PublicActionsL2<TChain, TAccount>
   }

@@ -10,4 +10,4 @@
 
 ## Defined in
 
-[packages/viem/src/chains/mainnet.ts:2150](https://github.com/ethereum-optimism/ecosystem/blob/a4b870454ce0f0a79a41dda7928a11b5c8946efc/packages/viem/src/chains/mainnet.ts#L2150)
+[packages/viem/src/chains/mainnet.ts:1985](https://github.com/ethereum-optimism/ecosystem/blob/dce63954ec565887eebd9760c7ff674d954c6387/packages/viem/src/chains/mainnet.ts#L1985)

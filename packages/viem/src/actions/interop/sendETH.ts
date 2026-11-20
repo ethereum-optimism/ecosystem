@@ -59,6 +59,13 @@ export type SendETHErrorType =
 
 /**
  * Sends ETH to the specified recipient on the destination chain
+ *
+ * From OP Stack Upgrade 22 (Lagoon), if the message is not relayed on the
+ * destination chain before it expires, the sender can get the ETH back with
+ * {@link refundETH} once the message is marked expired (see
+ * {@link getCrossDomainMessageExpiry}). The refund goes to the account that
+ * called `sendETH`, not to `to`. This reverts with `ETHLiquidity_Paused`
+ * while `ETHLiquidity` is paused (see {@link getETHLiquidityPaused}).
  * @category Actions
  * @param client - L2 Client
  * @param parameters - {@link SendETHParameters}

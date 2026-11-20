@@ -41,9 +41,9 @@
   },
   "devDependencies": {
     "dotenv": "16.5.0",
-    "viem": "^2.17.9"
+    "viem": "^2.58.2"
   },
   "peerDependencies": {
-    "viem": "^2.17.9"
+    "viem": "^2.58.2"
   }
 }
