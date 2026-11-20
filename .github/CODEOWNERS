@@ -7,8 +7,6 @@
 # (rules below override the catch-all per GitHub last-match-wins semantics)
 
 # CI/CD pipelines
-.github/workflows/ @ethereum-optimism/ecosystem @ethereum-optimism/cloud-security
-.github/images.json @ethereum-optimism/ecosystem @ethereum-optimism/cloud-security
 .circleci/ @ethereum-optimism/ecosystem @ethereum-optimism/cloud-security
 
 # Container definitions
@@ -22,3 +20,6 @@ pnpm-lock.yaml @ethereum-optimism/ecosystem @ethereum-optimism/cloud-security
 # Runtime version pinning
 .nvmrc @ethereum-optimism/ecosystem @ethereum-optimism/cloud-security
 mise.toml @ethereum-optimism/ecosystem @ethereum-optimism/cloud-security
+
+# GitHub configuration (workflows, actions, CODEOWNERS): cloud-security only
+/.github/ @ethereum-optimism/cloud-security
