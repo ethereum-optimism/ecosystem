@@ -59,11 +59,6 @@ export const arenaZSepolia = /*#__PURE__*/ defineChain({
         address: '0x5357bE2D78aAd17860570E14B74561840e959D4D',
       },
     },
-    disputeGameFactory: {
-      11155111: {
-        address: '0xd02dd46b73ff5f3eC3970f9A12f08Ad703c103df',
-      },
-    },
   },
 })
 
@@ -119,11 +114,6 @@ export const baseSepolia = /*#__PURE__*/ defineChain({
     systemConfig: {
       11155111: {
         address: '0xf272670eb55e895584501d564AfEB048bEd26194',
-      },
-    },
-    disputeGameFactory: {
-      11155111: {
-        address: '0xd6E6dBf4F7EA0ac412fD8b65ED297e64BB7a06E1',
       },
     },
   },
@@ -183,11 +173,6 @@ export const bobaSepolia = /*#__PURE__*/ defineChain({
         address: '0xfDC9bCE032cEF55a71b4fde9B9a2198ad1551965',
       },
     },
-    disputeGameFactory: {
-      11155111: {
-        address: '0x29Bd67B23cAC0E6bbDe1373E3859Dd25510f3331',
-      },
-    },
   },
 })
 
@@ -243,11 +228,6 @@ export const campSepolia = /*#__PURE__*/ defineChain({
     systemConfig: {
       11155111: {
         address: '0x7aA405B004401Be20d4A587de34aEeC99bE0b268',
-      },
-    },
-    disputeGameFactory: {
-      11155111: {
-        address: '0x83BaE25FDa209b31E903D3DD932906E2718A6E89',
       },
     },
     l2OutputOracle: {
@@ -312,11 +292,6 @@ export const creatorChainSepolia = /*#__PURE__*/ defineChain({
         address: '0x978e8311A5A710ef6413abA3A6b89092ce4a58f5',
       },
     },
-    disputeGameFactory: {
-      11155111: {
-        address: '0x156670e48F72cB23EAadd8b51e398c678AB651aF',
-      },
-    },
   },
 })
 
@@ -367,11 +342,6 @@ export const cyberSepolia = /*#__PURE__*/ defineChain({
     systemConfig: {
       11155111: {
         address: '0x43b838Aa237B27c4fC953E591594CEBb1CA2817F',
-      },
-    },
-    disputeGameFactory: {
-      11155111: {
-        address: '0x99f0f9B0E7B16B10042E0935CE34F2fCebBE13C1',
       },
     },
     l2OutputOracle: {
@@ -432,11 +402,6 @@ export const ethernitySepolia = /*#__PURE__*/ defineChain({
     systemConfig: {
       11155111: {
         address: '0x7C957fec1F6B3d1024442E989cB08b8f2285686C',
-      },
-    },
-    disputeGameFactory: {
-      11155111: {
-        address: '0x64d0Bce6eD7c16CAC7817F3597758E31AFacD01B',
       },
     },
     l2OutputOracle: {
@@ -501,11 +466,6 @@ export const funkiSepolia = /*#__PURE__*/ defineChain({
         address: '0xd6A01f1Ef51D65F023433992a8F62fEeAD35b172',
       },
     },
-    disputeGameFactory: {
-      11155111: {
-        address: '0xEc7C6E35f4e5361D279d5Fe7222F3F45A8A83352',
-      },
-    },
     l2OutputOracle: {
       11155111: {
         address: '0xB25812386D1Cb976b50de7387F5CBc10Fec3F27c',
@@ -568,11 +528,6 @@ export const inkSepolia = /*#__PURE__*/ defineChain({
         address: '0x05C993e60179f28bF649a2Bb5b00b5F4283bD525',
       },
     },
-    disputeGameFactory: {
-      11155111: {
-        address: '0x860e626c700AF381133D9f4aF31412A2d1DB3D5d',
-      },
-    },
   },
 })
 
@@ -626,11 +581,6 @@ export const liskSepolia = /*#__PURE__*/ defineChain({
     systemConfig: {
       11155111: {
         address: '0xF54791059df4a12BA461b881B4080Ae81a1d0AC0',
-      },
-    },
-    disputeGameFactory: {
-      11155111: {
-        address: '0x9AA3890a87E6BD2CB85Dad1A5D8B0A9D669e658a',
       },
     },
     l2OutputOracle: {
@@ -693,11 +643,6 @@ export const metalSepolia = /*#__PURE__*/ defineChain({
         address: '0x5D63A8Dc2737cE771aa4a6510D063b6Ba2c4f6F2',
       },
     },
-    disputeGameFactory: {
-      11155111: {
-        address: '0xd9A68F90B2d2DEbe18a916859B672D70f79eEbe3',
-      },
-    },
   },
 })
 
@@ -751,11 +696,6 @@ export const modeSepolia = /*#__PURE__*/ defineChain({
     systemConfig: {
       11155111: {
         address: '0x15cd4f6e0CE3B4832B33cB9c6f6Fe6fc246754c2',
-      },
-    },
-    disputeGameFactory: {
-      11155111: {
-        address: '0x7Bb634B42373A87712Da14064deD13Db8b8b14f4',
       },
     },
   },
@@ -815,11 +755,6 @@ export const opSepolia = /*#__PURE__*/ defineChain({
         address: '0x034edD2A225f7f429A63E0f1D2084B9E0A93b538',
       },
     },
-    disputeGameFactory: {
-      11155111: {
-        address: '0x05F9613aDB30026FFd634f38e5C4dFd30a197Fa1',
-      },
-    },
   },
 })
 
@@ -875,11 +810,6 @@ export const ozeanSepolia = /*#__PURE__*/ defineChain({
     systemConfig: {
       11155111: {
         address: '0xdEC733B0643E7c3Bd06576A4C70Ca87E301EAe87',
-      },
-    },
-    disputeGameFactory: {
-      11155111: {
-        address: '0x80E233699F34b8FD91adea8150Ea4C91b9324Cb5',
       },
     },
     l2OutputOracle: {
@@ -944,11 +874,6 @@ export const pivotalSepolia = /*#__PURE__*/ defineChain({
         address: '0x5C72CE6EA707037bC476dA8f4f969bC1f8abc78b',
       },
     },
-    disputeGameFactory: {
-      11155111: {
-        address: '0xcB97C9224Af16C95b8D8959A2752eF1832EB8BA9',
-      },
-    },
     l2OutputOracle: {
       11155111: {
         address: '0x8A5F3B0897d9B9bA09fd2974F3aBE038C15AaBa9',
@@ -1009,11 +934,6 @@ export const raceSepolia = /*#__PURE__*/ defineChain({
         address: '0x07e7A3F25aA73dA15bc19B71FEF8f5511342a409',
       },
     },
-    disputeGameFactory: {
-      11155111: {
-        address: '0xbDC16b0E8C18C5E13Ed02221Aa85598AF486A88f',
-      },
-    },
   },
 })
 
@@ -1069,11 +989,6 @@ export const radiusTestnetSepolia = /*#__PURE__*/ defineChain({
         address: '0x59b71c0a919bC1E8daE5488A562215494f1257fe',
       },
     },
-    disputeGameFactory: {
-      11155111: {
-        address: '0x6D6eF1D3a2eCC7511a0881F460422B461CA7128a',
-      },
-    },
   },
 })
 
@@ -1127,11 +1042,6 @@ export const settlusSepoliaSepolia = /*#__PURE__*/ defineChain({
     systemConfig: {
       11155111: {
         address: '0x7f73514A7eC19f3F51E3c607D536560818dF4205',
-      },
-    },
-    disputeGameFactory: {
-      11155111: {
-        address: '0x017D15a6854CCAaa89c63d1A9fea8da45Ced97Cf',
       },
     },
   },
@@ -1191,11 +1101,6 @@ export const shapeSepolia = /*#__PURE__*/ defineChain({
         address: '0xa1aC91ED91EbE40E00d61E233c8026318b4da5fb',
       },
     },
-    disputeGameFactory: {
-      11155111: {
-        address: '0x575697F2c20Bd63415E5B24656d935D4b81b8220',
-      },
-    },
   },
 })
 
@@ -1251,11 +1156,6 @@ export const soneiumMinatoSepolia = /*#__PURE__*/ defineChain({
         address: '0x4Ca9608Fef202216bc21D543798ec854539bAAd3',
       },
     },
-    disputeGameFactory: {
-      11155111: {
-        address: '0xB3Ad2c38E6e0640d7ce6aA952AB3A60E81bf7a01',
-      },
-    },
   },
 })
 
@@ -1309,11 +1209,6 @@ export const tbnSepolia = /*#__PURE__*/ defineChain({
     systemConfig: {
       11155111: {
         address: '0x1a6D0312FaaaCa2BF818660F164450176C6205C9',
-      },
-    },
-    disputeGameFactory: {
-      11155111: {
-        address: '0x096b38bDC80B5BF5B5Fb4e1A75Ae38BDa520474A',
       },
     },
     l2OutputOracle: {
@@ -1376,11 +1271,6 @@ export const unichainSepolia = /*#__PURE__*/ defineChain({
         address: '0xaeE94b9aB7752D3F7704bDE212c0C6A0b701571D',
       },
     },
-    disputeGameFactory: {
-      11155111: {
-        address: '0xeff73e5aa3B9AEC32c659Aa3E00444d20a84394b',
-      },
-    },
   },
 })
 
@@ -1434,11 +1324,6 @@ export const worldchainSepolia = /*#__PURE__*/ defineChain({
     systemConfig: {
       11155111: {
         address: '0x166F9406e79A656f12F05247fb8F5DfA6155bCBF',
-      },
-    },
-    disputeGameFactory: {
-      11155111: {
-        address: '0x8Ec1111f67Dad6b6A93B3F42DfBC92D81c98449A',
       },
     },
   },
@@ -1496,11 +1381,6 @@ export const zoraSepolia = /*#__PURE__*/ defineChain({
     systemConfig: {
       11155111: {
         address: '0xB54c7BFC223058773CF9b739cC5bd4095184Fb08',
-      },
-    },
-    disputeGameFactory: {
-      11155111: {
-        address: '0xA983A71253Eb74e5E86A4E4eD9F37113FC25f2BF',
       },
     },
   },

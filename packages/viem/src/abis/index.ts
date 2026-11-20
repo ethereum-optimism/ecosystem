@@ -600,6 +600,11 @@ export const crossL2InboxAbi = [
   },
   {
     type: 'error',
+    name: 'CrossL2Inbox_NoExecutingDeposits',
+    inputs: [],
+  },
+  {
+    type: 'error',
     name: 'LogIndexTooHigh',
     inputs: [],
   },
@@ -616,10 +621,202 @@ export const crossL2InboxAbi = [
 ] as const
 
 /**
+ * ABI for the OP Stack contract `ETHLiquidity`
+ * @category ABI
+ */
+export const ethLiquidityAbi = [
+  {
+    type: 'function',
+    name: 'burn',
+    inputs: [],
+    outputs: [],
+    stateMutability: 'payable',
+  },
+  {
+    type: 'function',
+    name: 'fund',
+    inputs: [],
+    outputs: [],
+    stateMutability: 'payable',
+  },
+  {
+    type: 'function',
+    name: 'mint',
+    inputs: [
+      {
+        name: '_amount',
+        type: 'uint256',
+        internalType: 'uint256',
+      },
+    ],
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    name: 'paused',
+    inputs: [],
+    outputs: [
+      {
+        name: '',
+        type: 'bool',
+        internalType: 'bool',
+      },
+    ],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    name: 'pausedMessageNonce',
+    inputs: [],
+    outputs: [
+      {
+        name: '',
+        type: 'uint256',
+        internalType: 'uint256',
+      },
+    ],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    name: 'setPaused',
+    inputs: [
+      {
+        name: '_paused',
+        type: 'bool',
+        internalType: 'bool',
+      },
+      {
+        name: '_messageNonce',
+        type: 'uint256',
+        internalType: 'uint256',
+      },
+    ],
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    name: 'version',
+    inputs: [],
+    outputs: [
+      {
+        name: '',
+        type: 'string',
+        internalType: 'string',
+      },
+    ],
+    stateMutability: 'view',
+  },
+  {
+    type: 'event',
+    name: 'LiquidityBurned',
+    inputs: [
+      {
+        name: 'caller',
+        type: 'address',
+        indexed: true,
+        internalType: 'address',
+      },
+      {
+        name: 'value',
+        type: 'uint256',
+        indexed: false,
+        internalType: 'uint256',
+      },
+    ],
+    anonymous: false,
+  },
+  {
+    type: 'event',
+    name: 'LiquidityFunded',
+    inputs: [
+      {
+        name: 'funder',
+        type: 'address',
+        indexed: true,
+        internalType: 'address',
+      },
+      {
+        name: 'amount',
+        type: 'uint256',
+        indexed: false,
+        internalType: 'uint256',
+      },
+    ],
+    anonymous: false,
+  },
+  {
+    type: 'event',
+    name: 'LiquidityMinted',
+    inputs: [
+      {
+        name: 'caller',
+        type: 'address',
+        indexed: true,
+        internalType: 'address',
+      },
+      {
+        name: 'value',
+        type: 'uint256',
+        indexed: false,
+        internalType: 'uint256',
+      },
+    ],
+    anonymous: false,
+  },
+  {
+    type: 'event',
+    name: 'PausedSet',
+    inputs: [
+      {
+        name: 'paused',
+        type: 'bool',
+        indexed: false,
+        internalType: 'bool',
+      },
+      {
+        name: 'messageNonce',
+        type: 'uint256',
+        indexed: false,
+        internalType: 'uint256',
+      },
+    ],
+    anonymous: false,
+  },
+  {
+    type: 'error',
+    name: 'ETHLiquidity_NotL1CrossDomainMessenger',
+    inputs: [],
+  },
+  {
+    type: 'error',
+    name: 'ETHLiquidity_Paused',
+    inputs: [],
+  },
+  {
+    type: 'error',
+    name: 'InvalidAmount',
+    inputs: [],
+  },
+  {
+    type: 'error',
+    name: 'Unauthorized',
+    inputs: [],
+  },
+] as const
+
+/**
  * ABI for the OP Stack contract `L2ToL2CrossDomainMessenger`
  * @category ABI
  */
 export const l2ToL2CrossDomainMessengerAbi = [
+  {
+    type: 'constructor',
+    inputs: [],
+    stateMutability: 'nonpayable',
+  },
   {
     type: 'function',
     name: 'crossDomainMessageContext',
@@ -666,6 +863,69 @@ export const l2ToL2CrossDomainMessengerAbi = [
   },
   {
     type: 'function',
+    name: 'expireMessage',
+    inputs: [
+      {
+        name: '_messageHash',
+        type: 'bytes32',
+        internalType: 'bytes32',
+      },
+      {
+        name: '_undeliveredAt',
+        type: 'uint256',
+        internalType: 'uint256',
+      },
+    ],
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    name: 'expiredMessages',
+    inputs: [
+      {
+        name: '',
+        type: 'bytes32',
+        internalType: 'bytes32',
+      },
+    ],
+    outputs: [
+      {
+        name: '',
+        type: 'bool',
+        internalType: 'bool',
+      },
+    ],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    name: 'expiryPeriod',
+    inputs: [],
+    outputs: [
+      {
+        name: '',
+        type: 'uint256',
+        internalType: 'uint256',
+      },
+    ],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    name: 'initialize',
+    inputs: [
+      {
+        name: '_expiryPeriod',
+        type: 'uint256',
+        internalType: 'uint256',
+      },
+    ],
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
     name: 'messageNonce',
     inputs: [],
     outputs: [
@@ -686,6 +946,32 @@ export const l2ToL2CrossDomainMessengerAbi = [
         name: '',
         type: 'uint16',
         internalType: 'uint16',
+      },
+    ],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    name: 'proxyAdmin',
+    inputs: [],
+    outputs: [
+      {
+        name: '',
+        type: 'address',
+        internalType: 'contract IProxyAdmin',
+      },
+    ],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    name: 'proxyAdminOwner',
+    inputs: [],
+    outputs: [
+      {
+        name: '',
+        type: 'address',
+        internalType: 'address',
       },
     ],
     stateMutability: 'view',
@@ -743,45 +1029,6 @@ export const l2ToL2CrossDomainMessengerAbi = [
   },
   {
     type: 'function',
-    name: 'resendMessage',
-    inputs: [
-      {
-        name: '_destination',
-        type: 'uint256',
-        internalType: 'uint256',
-      },
-      {
-        name: '_nonce',
-        type: 'uint256',
-        internalType: 'uint256',
-      },
-      {
-        name: '_sender',
-        type: 'address',
-        internalType: 'address',
-      },
-      {
-        name: '_target',
-        type: 'address',
-        internalType: 'address',
-      },
-      {
-        name: '_message',
-        type: 'bytes',
-        internalType: 'bytes',
-      },
-    ],
-    outputs: [
-      {
-        name: 'messageHash_',
-        type: 'bytes32',
-        internalType: 'bytes32',
-      },
-    ],
-    stateMutability: 'nonpayable',
-  },
-  {
-    type: 'function',
     name: 'sendMessage',
     inputs: [
       {
@@ -811,7 +1058,7 @@ export const l2ToL2CrossDomainMessengerAbi = [
   },
   {
     type: 'function',
-    name: 'sentMessages',
+    name: 'sentMessageTimestamps',
     inputs: [
       {
         name: '',
@@ -822,8 +1069,27 @@ export const l2ToL2CrossDomainMessengerAbi = [
     outputs: [
       {
         name: '',
-        type: 'bool',
-        internalType: 'bool',
+        type: 'uint256',
+        internalType: 'uint256',
+      },
+    ],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    name: 'sentMessages',
+    inputs: [
+      {
+        name: '',
+        type: 'uint256',
+        internalType: 'uint256',
+      },
+    ],
+    outputs: [
+      {
+        name: '',
+        type: 'bytes32',
+        internalType: 'bytes32',
       },
     ],
     stateMutability: 'view',
@@ -859,6 +1125,38 @@ export const l2ToL2CrossDomainMessengerAbi = [
       },
     ],
     stateMutability: 'view',
+  },
+  {
+    type: 'event',
+    name: 'Initialized',
+    inputs: [
+      {
+        name: 'version',
+        type: 'uint64',
+        indexed: false,
+        internalType: 'uint64',
+      },
+    ],
+    anonymous: false,
+  },
+  {
+    type: 'event',
+    name: 'MessageExpired',
+    inputs: [
+      {
+        name: 'messageHash',
+        type: 'bytes32',
+        indexed: true,
+        internalType: 'bytes32',
+      },
+      {
+        name: 'undeliveredAt',
+        type: 'uint256',
+        indexed: false,
+        internalType: 'uint256',
+      },
+    ],
+    anonymous: false,
   },
   {
     type: 'event',
@@ -940,7 +1238,32 @@ export const l2ToL2CrossDomainMessengerAbi = [
   },
   {
     type: 'error',
+    name: 'InvalidInitialization',
+    inputs: [],
+  },
+  {
+    type: 'error',
     name: 'InvalidMessage',
+    inputs: [],
+  },
+  {
+    type: 'error',
+    name: 'L2ToL2CrossDomainMessenger_InvalidExpiryPeriod',
+    inputs: [],
+  },
+  {
+    type: 'error',
+    name: 'L2ToL2CrossDomainMessenger_MessageNotExpired',
+    inputs: [],
+  },
+  {
+    type: 'error',
+    name: 'L2ToL2CrossDomainMessenger_MessageTargetUnsafe',
+    inputs: [],
+  },
+  {
+    type: 'error',
+    name: 'L2ToL2CrossDomainMessenger_NotOtherMessenger',
     inputs: [],
   },
   {
@@ -966,6 +1289,41 @@ export const l2ToL2CrossDomainMessengerAbi = [
   {
     type: 'error',
     name: 'NotEntered',
+    inputs: [],
+  },
+  {
+    type: 'error',
+    name: 'NotInitializing',
+    inputs: [],
+  },
+  {
+    type: 'error',
+    name: 'ProxyAdminOwnedBase_NotProxyAdmin',
+    inputs: [],
+  },
+  {
+    type: 'error',
+    name: 'ProxyAdminOwnedBase_NotProxyAdminOrProxyAdminOwner',
+    inputs: [],
+  },
+  {
+    type: 'error',
+    name: 'ProxyAdminOwnedBase_NotProxyAdminOwner',
+    inputs: [],
+  },
+  {
+    type: 'error',
+    name: 'ProxyAdminOwnedBase_NotResolvedDelegateProxy',
+    inputs: [],
+  },
+  {
+    type: 'error',
+    name: 'ProxyAdminOwnedBase_NotSharedProxyAdminOwner',
+    inputs: [],
+  },
+  {
+    type: 'error',
+    name: 'ProxyAdminOwnedBase_ProxyAdminNotFound',
     inputs: [],
   },
   {
@@ -2700,6 +3058,53 @@ export const superchainERC20Abi = [
 export const superchainETHBridgeAbi = [
   {
     type: 'function',
+    name: 'refundETH',
+    inputs: [
+      {
+        name: '_destination',
+        type: 'uint256',
+        internalType: 'uint256',
+      },
+      {
+        name: '_nonce',
+        type: 'uint256',
+        internalType: 'uint256',
+      },
+      {
+        name: '_to',
+        type: 'address',
+        internalType: 'address',
+      },
+      {
+        name: '_amount',
+        type: 'uint256',
+        internalType: 'uint256',
+      },
+    ],
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    name: 'refunded',
+    inputs: [
+      {
+        name: '',
+        type: 'bytes32',
+        internalType: 'bytes32',
+      },
+    ],
+    outputs: [
+      {
+        name: '',
+        type: 'bool',
+        internalType: 'bool',
+      },
+    ],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
     name: 'relayETH',
     inputs: [
       {
@@ -2757,6 +3162,31 @@ export const superchainETHBridgeAbi = [
       },
     ],
     stateMutability: 'view',
+  },
+  {
+    type: 'event',
+    name: 'RefundETH',
+    inputs: [
+      {
+        name: 'from',
+        type: 'address',
+        indexed: true,
+        internalType: 'address',
+      },
+      {
+        name: 'amount',
+        type: 'uint256',
+        indexed: false,
+        internalType: 'uint256',
+      },
+      {
+        name: 'messageHash',
+        type: 'bytes32',
+        indexed: true,
+        internalType: 'bytes32',
+      },
+    ],
+    anonymous: false,
   },
   {
     type: 'event',
@@ -2823,6 +3253,21 @@ export const superchainETHBridgeAbi = [
   {
     type: 'error',
     name: 'InvalidCrossDomainSender',
+    inputs: [],
+  },
+  {
+    type: 'error',
+    name: 'SuperchainETHBridge_AlreadyRefunded',
+    inputs: [],
+  },
+  {
+    type: 'error',
+    name: 'SuperchainETHBridge_MessageNotExpired',
+    inputs: [],
+  },
+  {
+    type: 'error',
+    name: 'SuperchainETHBridge_SenderIsMessenger',
     inputs: [],
   },
   {
@@ -3009,6 +3454,111 @@ export const superchainTokenBridgeAbi = [
   {
     type: 'error',
     name: 'ZeroAddress',
+    inputs: [],
+  },
+] as const
+
+/**
+ * ABI for the OP Stack contract `UndeliveredMessageExporter`
+ * @category ABI
+ */
+export const undeliveredMessageExporterAbi = [
+  {
+    type: 'function',
+    name: 'exportUndeliveredMessage',
+    inputs: [
+      {
+        name: '_sourceMessenger',
+        type: 'address',
+        internalType: 'address',
+      },
+      {
+        name: '_source',
+        type: 'uint256',
+        internalType: 'uint256',
+      },
+      {
+        name: '_nonce',
+        type: 'uint256',
+        internalType: 'uint256',
+      },
+      {
+        name: '_sender',
+        type: 'address',
+        internalType: 'address',
+      },
+      {
+        name: '_target',
+        type: 'address',
+        internalType: 'address',
+      },
+      {
+        name: '_message',
+        type: 'bytes',
+        internalType: 'bytes',
+      },
+      {
+        name: '_minGasLimit',
+        type: 'uint32',
+        internalType: 'uint32',
+      },
+    ],
+    outputs: [
+      {
+        name: 'messageHash_',
+        type: 'bytes32',
+        internalType: 'bytes32',
+      },
+    ],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    name: 'version',
+    inputs: [],
+    outputs: [
+      {
+        name: '',
+        type: 'string',
+        internalType: 'string',
+      },
+    ],
+    stateMutability: 'view',
+  },
+  {
+    type: 'event',
+    name: 'UndeliveredMessageExported',
+    inputs: [
+      {
+        name: 'messageHash',
+        type: 'bytes32',
+        indexed: true,
+        internalType: 'bytes32',
+      },
+      {
+        name: 'source',
+        type: 'uint256',
+        indexed: true,
+        internalType: 'uint256',
+      },
+      {
+        name: 'sourceMessenger',
+        type: 'address',
+        indexed: false,
+        internalType: 'address',
+      },
+      {
+        name: 'undeliveredAt',
+        type: 'uint256',
+        indexed: false,
+        internalType: 'uint256',
+      },
+    ],
+    anonymous: false,
+  },
+  {
+    type: 'error',
+    name: 'UndeliveredMessageExporter_MessageRelayed',
     inputs: [],
   },
 ] as const

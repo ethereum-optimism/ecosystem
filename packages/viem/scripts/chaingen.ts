@@ -170,10 +170,13 @@ async function main() {
           l1Addresses['systemConfig'] = allAddresses.SystemConfigProxy
         }
 
-        if (allAddresses.DisputeGameFactoryProxy) {
-          l1Addresses['disputeGameFactory'] =
-            allAddresses.DisputeGameFactoryProxy
-        }
+        // `disputeGameFactory` is deliberately left out. When a chain definition
+        // has no factory, viem's `getGames` (and the withdrawal actions built on
+        // it) reads `OptimismPortal2.disputeGameFactory()`, which is the factory
+        // the portal accepts games from. A stored address goes stale when a
+        // chain moves to a new factory, as OP Mainnet and Unichain do when
+        // `OPContractsManagerV2.migrate` puts them on a shared factory before
+        // OP Stack Upgrade 22 (Lagoon).
         if (allAddresses.L2OutputOracleProxy) {
           l1Addresses['l2OutputOracle'] = allAddresses.L2OutputOracleProxy
         }

@@ -44,11 +44,8 @@ describe('withdrawCrossDomainMessage', () => {
         logs,
       })
       expect(extension).toBeDefined()
-
-      // TODO: This is a bug in viem which includes the `SentMessage` event in the extension logs.
-      // Latest version of viem has a fix but we need to update the entire workspace
-      expect(extension!.length).toBe(2)
-      expect(extension![1].args.value).toBe(10n)
+      expect(extension!.length).toBe(1)
+      expect(extension![0].args.value).toBe(10n)
     })
   })
 

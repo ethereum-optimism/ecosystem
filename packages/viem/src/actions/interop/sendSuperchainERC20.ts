@@ -69,6 +69,9 @@ export type SendSuperchainERC20ErrorType =
 
 /**
  * Sends tokens to a target address on another chain. Used in the interop flow.
+ * @deprecated The `SuperchainTokenBridge` predeploy is not part of OP Stack
+ * Upgrade 22 (Lagoon), so this action does not work on chains that activate
+ * interop at Lagoon. It still works on supersim for local development.
  * @category Actions
  * @param client - L2 Client
  * @param parameters - {@link SendSuperchainERC20Parameters}
@@ -98,6 +101,9 @@ export async function sendSuperchainERC20<
 
 /**
  * Estimates gas for {@link sendSuperchainERC20}
+ * @deprecated The `SuperchainTokenBridge` predeploy is not part of OP Stack
+ * Upgrade 22 (Lagoon), so this action does not work on chains that activate
+ * interop at Lagoon. It still works on supersim for local development.
  * @category Actions
  * @param client - L2 Client
  * @param parameters - {@link SendSuperchainERC20Parameters}
@@ -124,6 +130,9 @@ export async function estimateSendSuperchainERC20Gas<
 
 /**
  * Simulate contract call for {@link sendSuperchainERC20}
+ * @deprecated The `SuperchainTokenBridge` predeploy is not part of OP Stack
+ * Upgrade 22 (Lagoon), so this action does not work on chains that activate
+ * interop at Lagoon. It still works on supersim for local development.
  * @category Actions
  * @param client - L2 Client
  * @param parameters - {@link SendSuperchainERC20Parameters}

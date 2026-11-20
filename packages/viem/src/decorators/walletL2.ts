@@ -3,6 +3,10 @@ import type { WalletActionsL2 as OpWalletActionsL2 } from 'viem/op-stack'
 import { walletActionsL2 as opWalletActionsL2 } from 'viem/op-stack'
 
 import type {
+  ExportUndeliveredMessageParameters,
+  ExportUndeliveredMessageReturnType,
+  RefundETHParameters,
+  RefundETHReturnType,
   RelayCrossDomainMessageParameters,
   RelayCrossDomainMessageReturnType,
   SendCrossDomainMessageParameters,
@@ -13,6 +17,8 @@ import type {
   SendSuperchainERC20ReturnType,
 } from '@/actions/interop/index.js'
 import {
+  exportUndeliveredMessage,
+  refundETH,
   relayCrossDomainMessage,
   sendCrossDomainMessage,
   sendETH,
@@ -45,6 +51,18 @@ export type WalletInteropActionsL2<
   sendETH: <chainOverride extends Chain | undefined = undefined>(
     parameters: SendETHParameters<TChain, TAccount, chainOverride>,
   ) => Promise<SendETHContractReturnType>
+  exportUndeliveredMessage: <
+    chainOverride extends Chain | undefined = undefined,
+  >(
+    parameters: ExportUndeliveredMessageParameters<
+      TChain,
+      TAccount,
+      chainOverride
+    >,
+  ) => Promise<ExportUndeliveredMessageReturnType>
+  refundETH: <chainOverride extends Chain | undefined = undefined>(
+    parameters: RefundETHParameters<TChain, TAccount, chainOverride>,
+  ) => Promise<RefundETHReturnType>
 }
 
 export type WalletActionsL2<
@@ -71,6 +89,9 @@ export function walletActionsL2() {
           relayCrossDomainMessage(client, args),
         sendSuperchainERC20: (args) => sendSuperchainERC20(client, args),
         sendETH: (args) => sendETH(client, args),
+        exportUndeliveredMessage: (args) =>
+          exportUndeliveredMessage(client, args),
+        refundETH: (args) => refundETH(client, args),
       },
     } as WalletActionsL2<chain, account>
   }
