@@ -128,6 +128,8 @@ export function publicActionsL2() {
     return {
       ...opPublicActionsL2(),
       interop: {
+        // viem `extend` shallow-merges top-level keys; keep wallet interop helpers.
+        ...(client as { interop?: Record<string, unknown> }).interop,
         buildExecutingMessage: (args) => buildExecutingMessage(client, args),
         estimateSendCrossDomainMessageGas: (args) =>
           estimateSendCrossDomainMessageGas(client, args),
