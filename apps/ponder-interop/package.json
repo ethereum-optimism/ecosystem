@@ -37,7 +37,7 @@
   "dependencies": {
     "@eth-optimism/viem": "workspace:*",
     "dotenv": "16.5.0",
-    "drizzle-orm": "0.39.3",
+    "drizzle-orm": "0.45.2",
     "hono": "^4.11.7",
     "ponder": "^0.10.6",
     "viem": "^2.17.9",
