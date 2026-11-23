@@ -59,11 +59,6 @@ export const arenaZ = /*#__PURE__*/ defineChain({
         address: '0x34A564BbD863C4bf73Eca711Cf38a77C4Ccbdd6A',
       },
     },
-    disputeGameFactory: {
-      1: {
-        address: '0x658656A14AFdf9c507096aC406564497d13EC754',
-      },
-    },
   },
 })
 
@@ -117,11 +112,6 @@ export const automata = /*#__PURE__*/ defineChain({
     systemConfig: {
       1: {
         address: '0x72934D7AEDC1A2d889ca89Aaf064CD9455E64d00',
-      },
-    },
-    disputeGameFactory: {
-      1: {
-        address: '0xB52337F38747D6931f2976eEa24A3f3F6B7CDEA2',
       },
     },
     l2OutputOracle: {
@@ -184,11 +174,6 @@ export const base = /*#__PURE__*/ defineChain({
         address: '0x73a79Fab69143498Ed3712e519A88a918e1f4072',
       },
     },
-    disputeGameFactory: {
-      1: {
-        address: '0x43edB88C4B80fDD2AdFF2412A7BebF9dF42cB40e',
-      },
-    },
   },
 })
 
@@ -242,11 +227,6 @@ export const bob = /*#__PURE__*/ defineChain({
     systemConfig: {
       1: {
         address: '0xACB886b75D76d1c8d9248cFdDfA09b70C71c5393',
-      },
-    },
-    disputeGameFactory: {
-      1: {
-        address: '0x96123dbFC3253185B594c6a7472EE5A21E9B1079',
       },
     },
   },
@@ -304,11 +284,6 @@ export const boba = /*#__PURE__*/ defineChain({
         address: '0x158Fd5715F16Ac1F2Dc959A299B383aAaf9B59EB',
       },
     },
-    disputeGameFactory: {
-      1: {
-        address: '0xF45a5f1e36fCeA3Cc830A98c6c3C5ceA7d6af852',
-      },
-    },
   },
 })
 
@@ -364,11 +339,6 @@ export const celo = /*#__PURE__*/ defineChain({
         address: '0x89E31965D844a309231B1f17759Ccaf1b7c09861',
       },
     },
-    disputeGameFactory: {
-      1: {
-        address: '0xFbAC162162f4009Bb007C6DeBC36B1dAC10aF683',
-      },
-    },
   },
 })
 
@@ -422,11 +392,6 @@ export const cyber = /*#__PURE__*/ defineChain({
     systemConfig: {
       1: {
         address: '0x5D1F4bbaF6D484fA9D5D9705f92dE6063bff6055',
-      },
-    },
-    disputeGameFactory: {
-      1: {
-        address: '0xbF4676f21a7889E0Fd61BcDc9b98E60b01C1B36F',
       },
     },
     l2OutputOracle: {
@@ -487,11 +452,6 @@ export const ethernity = /*#__PURE__*/ defineChain({
     systemConfig: {
       1: {
         address: '0x20c3035C92bdB4C461242571EeAc59EeD03Df931',
-      },
-    },
-    disputeGameFactory: {
-      1: {
-        address: '0xFcdb270B674911D321F1014c347EaBB1c55134FB',
       },
     },
     l2OutputOracle: {
@@ -614,11 +574,6 @@ export const funki = /*#__PURE__*/ defineChain({
         address: '0xD39a6CcCFa23cb741bB530497e42EC337f1215a8',
       },
     },
-    disputeGameFactory: {
-      1: {
-        address: '0x2Dc9d2Cb1Ba0b8A46AE252ab4FBE1ad5C5c3B795',
-      },
-    },
     l2OutputOracle: {
       1: {
         address: '0x1A9aE6486caEc0504657351ac473B3dF8A1367cb',
@@ -679,11 +634,6 @@ export const hashkeychain = /*#__PURE__*/ defineChain({
         address: '0x43F8DeFe3E9286D152E91BB16a248808E7247198',
       },
     },
-    disputeGameFactory: {
-      1: {
-        address: '0x04Ec030f362CE5A0b5Fe2d4B4219f287C2EBDE50',
-      },
-    },
   },
 })
 
@@ -737,11 +687,6 @@ export const ink = /*#__PURE__*/ defineChain({
     systemConfig: {
       1: {
         address: '0x62C0a111929fA32ceC2F76aDba54C16aFb6E8364',
-      },
-    },
-    disputeGameFactory: {
-      1: {
-        address: '0x10d7B35078d3baabB96Dd45a9143B94be65b12CD',
       },
     },
   },
@@ -799,11 +744,6 @@ export const lisk = /*#__PURE__*/ defineChain({
         address: '0x05f23282FFDCA8286E4738C1aF79079f3d843750',
       },
     },
-    disputeGameFactory: {
-      1: {
-        address: '0x0CF7D3706a27CCE2017aEB11E8a9c8b5388c282C',
-      },
-    },
   },
 })
 
@@ -857,11 +797,6 @@ export const lyra = /*#__PURE__*/ defineChain({
     systemConfig: {
       1: {
         address: '0x0e4C4CDd01ceCB01070E9Fdfe7600871e4ae996e',
-      },
-    },
-    disputeGameFactory: {
-      1: {
-        address: '0x87DAFf495b5F6c4f79CEeAAF85f1Ef3df3B30d21',
       },
     },
   },
@@ -919,11 +854,6 @@ export const metal = /*#__PURE__*/ defineChain({
         address: '0x7BD909970B0EEdcF078De6Aeff23ce571663b8aA',
       },
     },
-    disputeGameFactory: {
-      1: {
-        address: '0x7BFfF391A2dbbDc68A259792AC9748F50FcDE93E',
-      },
-    },
   },
 })
 
@@ -977,11 +907,6 @@ export const mint = /*#__PURE__*/ defineChain({
     systemConfig: {
       1: {
         address: '0xC975862927797812371A9Fb631f83F8f5e2240D5',
-      },
-    },
-    disputeGameFactory: {
-      1: {
-        address: '0xD2922A726501f027a5a5AC122BEc92bCfb437662',
       },
     },
   },
@@ -1039,11 +964,6 @@ export const mode = /*#__PURE__*/ defineChain({
         address: '0x5e6432F18Bc5d497B1Ab2288a025Fbf9D69E2221',
       },
     },
-    disputeGameFactory: {
-      1: {
-        address: '0x6f13EFadABD9269D6cEAd22b448d434A1f1B433E',
-      },
-    },
   },
 })
 
@@ -1097,11 +1017,6 @@ export const op = /*#__PURE__*/ defineChain({
     systemConfig: {
       1: {
         address: '0x229047fed2591dbec1eF1118d64F7aF3dB9EB290',
-      },
-    },
-    disputeGameFactory: {
-      1: {
-        address: '0xe5965Ab5962eDc7477C8520243A95517CD252fA9',
       },
     },
   },
@@ -1159,11 +1074,6 @@ export const orderly = /*#__PURE__*/ defineChain({
         address: '0x886B187C3D293B1449A3A0F23Ca9e2269E0f2664',
       },
     },
-    disputeGameFactory: {
-      1: {
-        address: '0xC8BF04A73704051E5E274F1B43B1F2F153Db2136',
-      },
-    },
   },
 })
 
@@ -1217,11 +1127,6 @@ export const polynomial = /*#__PURE__*/ defineChain({
     systemConfig: {
       1: {
         address: '0x58b51fb9FeeD00DD846f91D265Eba3cdd855A413',
-      },
-    },
-    disputeGameFactory: {
-      1: {
-        address: '0xe9394679d0f0676E4a2dE99F8ed6B4aCb16c5f0f',
       },
     },
   },
@@ -1339,11 +1244,6 @@ export const redstone = /*#__PURE__*/ defineChain({
         address: '0x8f2428F7189c0d92D1c4a5358903A8c80Ec6a69D',
       },
     },
-    disputeGameFactory: {
-      1: {
-        address: '0x8f68E849eaf8EB943536F9d1D49Ea9C9b5868b98',
-      },
-    },
     l2OutputOracle: {
       1: {
         address: '0xa426A052f657AEEefc298b3B5c35a470e4739d69',
@@ -1404,11 +1304,6 @@ export const settlusMainnet = /*#__PURE__*/ defineChain({
         address: '0x15C1dAED5443A77b4DcF6FE35cAFcCEBb0c6da0E',
       },
     },
-    disputeGameFactory: {
-      1: {
-        address: '0xde9FDA9C499bA1C0168AC083acF5BEc5cC67fA76',
-      },
-    },
   },
 })
 
@@ -1462,11 +1357,6 @@ export const shape = /*#__PURE__*/ defineChain({
     systemConfig: {
       1: {
         address: '0xfF11e41D5C4F522E423Ff6C064Ff8D55AF8f7355',
-      },
-    },
-    disputeGameFactory: {
-      1: {
-        address: '0x2c03e8BF8b16Af89079852BE87f0e9eC674a5952',
       },
     },
   },
@@ -1524,11 +1414,6 @@ export const silentDataMainnet = /*#__PURE__*/ defineChain({
         address: '0x5c3Efe3cA554816E9960C02AE3B4EB3A9a8D2E16',
       },
     },
-    disputeGameFactory: {
-      1: {
-        address: '0x139Cf05B34D0EC49D3BFB9704EC4cEbA6ae95dD1',
-      },
-    },
   },
 })
 
@@ -1582,11 +1467,6 @@ export const snax = /*#__PURE__*/ defineChain({
     systemConfig: {
       1: {
         address: '0x9c9B78f798F821C2f6398f603825fd175e2427f9',
-      },
-    },
-    disputeGameFactory: {
-      1: {
-        address: '0x0fD13C7f11d95070cE5CF31BAf1aCf9355BF4578',
       },
     },
   },
@@ -1644,11 +1524,6 @@ export const soneium = /*#__PURE__*/ defineChain({
         address: '0x7A8Ed66B319911A0F3E7288BDdAB30d9c0C875c3',
       },
     },
-    disputeGameFactory: {
-      1: {
-        address: '0x512A3d2c7a43BD9261d2B8E8C9c70D4bd4D503C0',
-      },
-    },
   },
 })
 
@@ -1704,11 +1579,6 @@ export const sseed = /*#__PURE__*/ defineChain({
         address: '0x525a2744134805516a45B8abb6Aa0aA1dA3809F6',
       },
     },
-    disputeGameFactory: {
-      1: {
-        address: '0x657c1b0e31FFc69A02B207Be20699bDFF938c7E7',
-      },
-    },
   },
 })
 
@@ -1762,11 +1632,6 @@ export const swan = /*#__PURE__*/ defineChain({
     systemConfig: {
       1: {
         address: '0x504D56cf68f791B45E3A2e895B0e1562f3431328',
-      },
-    },
-    disputeGameFactory: {
-      1: {
-        address: '0x2069FC7097b7784FCA21aa459e57E95C0046EeCD',
       },
     },
     l2OutputOracle: {
@@ -1829,11 +1694,6 @@ export const swell = /*#__PURE__*/ defineChain({
         address: '0xD3d4c6B703978a5d24FecF3a70a51127667Ff1A4',
       },
     },
-    disputeGameFactory: {
-      1: {
-        address: '0x87690676786cDc8cCA75A472e483AF7C8F2f0F57',
-      },
-    },
   },
 })
 
@@ -1887,11 +1747,6 @@ export const tbn = /*#__PURE__*/ defineChain({
     systemConfig: {
       1: {
         address: '0x7aC7e5989EaC278B7BbfeF560871a2026baD472c',
-      },
-    },
-    disputeGameFactory: {
-      1: {
-        address: '0x0D7e0590c58e4aC9B14B3eD6163CF55223931699',
       },
     },
     l2OutputOracle: {
@@ -1954,11 +1809,6 @@ export const unichain = /*#__PURE__*/ defineChain({
         address: '0xc407398d063f942feBbcC6F80a156b47F3f1BDA6',
       },
     },
-    disputeGameFactory: {
-      1: {
-        address: '0x2F12d621a16e2d3285929C9996f478508951dFe4',
-      },
-    },
   },
 })
 
@@ -2014,11 +1864,6 @@ export const worldchain = /*#__PURE__*/ defineChain({
         address: '0x6ab0777fD0e609CE58F939a7F70Fe41F5Aa6300A',
       },
     },
-    disputeGameFactory: {
-      1: {
-        address: '0x069c4c579671f8c120b1327a73217D01Ea2EC5ea',
-      },
-    },
   },
 })
 
@@ -2072,11 +1917,6 @@ export const xterioEth = /*#__PURE__*/ defineChain({
     systemConfig: {
       1: {
         address: '0x6E99cdE188DAAFeEcb6eD8AC28B98dE4c8eE5D6C',
-      },
-    },
-    disputeGameFactory: {
-      1: {
-        address: '0x443164F044D8840479234e00E7aD5bb06b85fC78',
       },
     },
     l2OutputOracle: {
@@ -2137,11 +1977,6 @@ export const zora = /*#__PURE__*/ defineChain({
     systemConfig: {
       1: {
         address: '0xA3cAB0126d5F504B071b81a3e8A2BBBF17930d86',
-      },
-    },
-    disputeGameFactory: {
-      1: {
-        address: '0xB0F15106fa1e473Ddb39790f197275BC979Aa37e',
       },
     },
   },

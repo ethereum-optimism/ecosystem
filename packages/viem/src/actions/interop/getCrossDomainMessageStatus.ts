@@ -32,7 +32,12 @@ export class InvalidDestinationChainError extends BaseError {
 }
 
 /**
- * Get the status of a cross domain message
+ * Get the status of a cross domain message on its destination chain.
+ *
+ * `ready-to-relay` means the message has not been relayed yet. From OP Stack
+ * Upgrade 22 (Lagoon), a message that is not relayed within the 7-day expiry
+ * window can no longer be relayed; use {@link getCrossDomainMessageExpiry} on
+ * the source chain to check whether it was marked expired.
  * @category Actions
  * @param client - The client to use
  * @param parameters - {@link GetCrossDomainMessageStatusParameters}

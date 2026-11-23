@@ -37,8 +37,8 @@ describe('relayMessage', () => {
         log: messages[0].log,
       })
       // CrossL2Inbox rejects relayMessage when tx.gasprice is 0 and basefee is
-      // not, to stop deposits executing messages. Estimating and simulating
-      // default the price to 0, so both have to be given a real one.
+      // not, to stop deposits executing messages. A caller-provided fee is used
+      // as given; the next test covers the default.
       const maxFeePerGas = await publicClientB.getGasPrice()
       const gas =
         await publicClientB.interop.estimateRelayCrossDomainMessageGas({
@@ -47,6 +47,36 @@ describe('relayMessage', () => {
           ...params,
         })
       expect(gas).toBeDefined()
+    })
+
+    it('should fill the fees when none are given', async () => {
+      const hash = await walletClientA.interop.sendCrossDomainMessage({
+        account: testAccount.address,
+        destinationChainId: supersimL2B.id,
+        target: ticTacToeAddress,
+        message: calldata,
+      })
+
+      const receipt = await publicClientA.waitForTransactionReceipt({ hash })
+      const messages = await publicClientA.interop.getCrossDomainMessages({
+        logs: receipt.logs,
+      })
+      const params = await publicClientA.interop.buildExecutingMessage({
+        log: messages[0].log,
+      })
+
+      const gas =
+        await publicClientB.interop.estimateRelayCrossDomainMessageGas({
+          account: testAccount.address,
+          ...params,
+        })
+      expect(gas).toBeGreaterThan(0n)
+      await expect(
+        publicClientB.interop.simulateRelayCrossDomainMessage({
+          account: testAccount,
+          ...params,
+        }),
+      ).resolves.toBeDefined()
     })
   })
 

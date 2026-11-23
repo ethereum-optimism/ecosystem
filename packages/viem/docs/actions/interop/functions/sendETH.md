@@ -10,6 +10,13 @@
 
 Sends ETH to the specified recipient on the destination chain
 
+From OP Stack Upgrade 22 (Lagoon), if the message is not relayed on the
+destination chain before it expires, the sender can get the ETH back with
+[refundETH](refundETH.md) once the message is marked expired (see
+[getCrossDomainMessageExpiry](getCrossDomainMessageExpiry.md)). The refund goes to the account that
+called `sendETH`, not to `to`. This reverts with `ETHLiquidity_Paused`
+while `ETHLiquidity` is paused (see [getETHLiquidityPaused](getETHLiquidityPaused.md)).
+
 ## Type Parameters
 
 • **chain** *extends* `undefined` \| `Chain`
@@ -36,4 +43,4 @@ transaction hash - [SendETHContractReturnType](../type-aliases/SendETHContractRe
 
 ## Defined in
 
-[packages/viem/src/actions/interop/sendETH.ts:67](https://github.com/ethereum-optimism/ecosystem/blob/a4b870454ce0f0a79a41dda7928a11b5c8946efc/packages/viem/src/actions/interop/sendETH.ts#L67)
+[packages/viem/src/actions/interop/sendETH.ts:74](https://github.com/ethereum-optimism/ecosystem/blob/dce63954ec565887eebd9760c7ff674d954c6387/packages/viem/src/actions/interop/sendETH.ts#L74)

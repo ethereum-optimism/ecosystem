@@ -30,6 +30,12 @@ Collection of block explorers
 
 > `readonly` **url**: `"https://celoscan.io/"` = `'https://celoscan.io/'`
 
+### blockTime
+
+> `readonly` **blockTime**: `2000`
+
+Block time in milliseconds.
+
 ### contracts
 
 > **contracts**: `object`
@@ -43,18 +49,6 @@ Collection of contracts
 ### contracts.create2Deployer.address
 
 > `readonly` **address**: `"0x13b0D85CcB8bf860b6b79AF3029fCA081AE9beF2"` = `'0x13b0D85CcB8bf860b6b79AF3029fCA081AE9beF2'`
-
-### contracts.disputeGameFactory
-
-> `readonly` **disputeGameFactory**: `object`
-
-### contracts.disputeGameFactory.1
-
-> `readonly` **1**: `object`
-
-### contracts.disputeGameFactory.1.address
-
-> `readonly` **address**: `"0xFbAC162162f4009Bb007C6DeBC36B1dAC10aF683"` = `'0xFbAC162162f4009Bb007C6DeBC36B1dAC10aF683'`
 
 ### contracts.gasPriceOracle
 
@@ -196,11 +190,33 @@ Collection of contracts
 
 > `readonly` **address**: `"0x4200000000000000000000000000000000000006"` = `'0x4200000000000000000000000000000000000006'`
 
-### custom?
+### ~~custom?~~
 
 > `optional` **custom**: `Record`\<`string`, `unknown`\>
 
 Custom chain data.
+
+#### Deprecated
+
+use `.extend` instead.
+
+### ensTlds?
+
+> `optional` **ensTlds**: readonly `string`[]
+
+Collection of ENS TLDs for the chain.
+
+### experimental\_preconfirmationTime?
+
+> `optional` **experimental\_preconfirmationTime**: `number`
+
+Preconfirmation time in milliseconds.
+
+### extendSchema?
+
+> `optional` **extendSchema**: `Record`\<`string`, `unknown`\>
+
+Extend schema.
 
 ### fees?
 
@@ -224,119 +240,17 @@ Modifies how data is formatted and typed (e.g. blocks and transactions)
 
 ### formatters.block.format()
 
-> **format**: (`args`) => `object`
+> **format**: (`args`, `action`?) => `OpStackBlock`\<`boolean`, `BlockTag`\>
 
 #### Parameters
 
 • **args**: `OpStackRpcBlock`\<`BlockTag`, `boolean`\>
 
+• **action?**: `string`
+
 #### Returns
 
-`object`
-
-##### baseFeePerGas
-
-> **baseFeePerGas**: `null` \| `bigint`
-
-##### blobGasUsed
-
-> **blobGasUsed**: `bigint`
-
-##### difficulty
-
-> **difficulty**: `bigint`
-
-##### excessBlobGas
-
-> **excessBlobGas**: `bigint`
-
-##### extraData
-
-> **extraData**: \`0x$\{string\}\`
-
-##### gasLimit
-
-> **gasLimit**: `bigint`
-
-##### gasUsed
-
-> **gasUsed**: `bigint`
-
-##### hash
-
-> **hash**: `null` \| \`0x$\{string\}\`
-
-##### logsBloom
-
-> **logsBloom**: `null` \| \`0x$\{string\}\`
-
-##### miner
-
-> **miner**: \`0x$\{string\}\`
-
-##### mixHash
-
-> **mixHash**: \`0x$\{string\}\`
-
-##### nonce
-
-> **nonce**: `null` \| \`0x$\{string\}\`
-
-##### number
-
-> **number**: `null` \| `bigint`
-
-##### parentHash
-
-> **parentHash**: \`0x$\{string\}\`
-
-##### receiptsRoot
-
-> **receiptsRoot**: \`0x$\{string\}\`
-
-##### sealFields
-
-> **sealFields**: \`0x$\{string\}\`[]
-
-##### sha3Uncles
-
-> **sha3Uncles**: \`0x$\{string\}\`
-
-##### size
-
-> **size**: `bigint`
-
-##### stateRoot
-
-> **stateRoot**: \`0x$\{string\}\`
-
-##### timestamp
-
-> **timestamp**: `bigint`
-
-##### totalDifficulty
-
-> **totalDifficulty**: `null` \| `bigint`
-
-##### transactions
-
-> **transactions**: \`0x$\{string\}\`[] \| `OpStackTransaction`\<`boolean`\>[]
-
-##### transactionsRoot
-
-> **transactionsRoot**: \`0x$\{string\}\`
-
-##### uncles
-
-> **uncles**: \`0x$\{string\}\`[]
-
-##### withdrawals?
-
-> `optional` **withdrawals**: `Withdrawal`[]
-
-##### withdrawalsRoot?
-
-> `optional` **withdrawalsRoot**: \`0x$\{string\}\`
+`OpStackBlock`\<`boolean`, `BlockTag`\>
 
 ### formatters.block.type
 
@@ -352,15 +266,17 @@ Modifies how data is formatted and typed (e.g. blocks and transactions)
 
 ### formatters.transaction.format()
 
-> **format**: (`args`) => `object` \| `object` \| `object` \| `object` \| `object`
+> **format**: (`args`, `action`?) => `OpStackTransaction`\<`boolean`\>
 
 #### Parameters
 
 • **args**: `OpStackRpcTransaction`\<`boolean`\>
 
+• **action?**: `string`
+
 #### Returns
 
-`object` \| `object` \| `object` \| `object` \| `object`
+`OpStackTransaction`\<`boolean`\>
 
 ### formatters.transaction.type
 
@@ -376,99 +292,17 @@ Modifies how data is formatted and typed (e.g. blocks and transactions)
 
 ### formatters.transactionReceipt.format()
 
-> **format**: (`args`) => `object`
+> **format**: (`args`, `action`?) => `OpStackTransactionReceipt`
 
 #### Parameters
 
 • **args**: `OpStackRpcTransactionReceipt`
 
+• **action?**: `string`
+
 #### Returns
 
-`object`
-
-##### blobGasPrice?
-
-> `optional` **blobGasPrice**: `bigint`
-
-##### blobGasUsed?
-
-> `optional` **blobGasUsed**: `bigint`
-
-##### blockHash
-
-> **blockHash**: \`0x$\{string\}\`
-
-##### blockNumber
-
-> **blockNumber**: `bigint`
-
-##### contractAddress
-
-> **contractAddress**: `undefined` \| `null` \| \`0x$\{string\}\`
-
-##### cumulativeGasUsed
-
-> **cumulativeGasUsed**: `bigint`
-
-##### effectiveGasPrice
-
-> **effectiveGasPrice**: `bigint`
-
-##### from
-
-> **from**: \`0x$\{string\}\`
-
-##### gasUsed
-
-> **gasUsed**: `bigint`
-
-##### l1Fee
-
-> **l1Fee**: `null` \| `bigint`
-
-##### l1FeeScalar
-
-> **l1FeeScalar**: `null` \| `number`
-
-##### l1GasPrice
-
-> **l1GasPrice**: `null` \| `bigint`
-
-##### l1GasUsed
-
-> **l1GasUsed**: `null` \| `bigint`
-
-##### logs
-
-> **logs**: `Log`\<`bigint`, `number`, `false`, `undefined`, `undefined`, `undefined`, `undefined`\>[]
-
-##### logsBloom
-
-> **logsBloom**: \`0x$\{string\}\`
-
-##### root?
-
-> `optional` **root**: \`0x$\{string\}\`
-
-##### status
-
-> **status**: `"success"` \| `"reverted"`
-
-##### to
-
-> **to**: `null` \| \`0x$\{string\}\`
-
-##### transactionHash
-
-> **transactionHash**: \`0x$\{string\}\`
-
-##### transactionIndex
-
-> **transactionIndex**: `number`
-
-##### type
-
-> **type**: `TransactionType`
+`OpStackTransactionReceipt`
 
 ### formatters.transactionReceipt.type
 
@@ -504,6 +338,12 @@ Currency used by chain
 
 > `readonly` **symbol**: `"CELO"` = `'CELO'`
 
+### prepareTransactionRequest?
+
+> `optional` **prepareTransactionRequest**: `PrepareTransactionRequestFn` \| [`PrepareTransactionRequestFn`, `object`]
+
+Function to prepare a transaction request. Runs before the transaction is filled.
+
 ### rpcUrls
 
 > **rpcUrls**: `object`
@@ -526,7 +366,7 @@ Modifies how data is serialized (e.g. transactions).
 
 ### serializers.transaction()
 
-> `readonly` **transaction**: (`transaction`, `signature`?) => \`0x02$\{string\}\` \| \`0x01$\{string\}\` \| \`0x03$\{string\}\` \| `TransactionSerializedLegacy` \| \`0x7e$\{string\}\`
+> `readonly` **transaction**: (`transaction`, `signature`?) => \`0x02$\{string\}\` \| \`0x01$\{string\}\` \| \`0x03$\{string\}\` \| \`0x04$\{string\}\` \| `TransactionSerializedLegacy` \| \`0x7e$\{string\}\`
 
 #### Parameters
 
@@ -536,7 +376,7 @@ Modifies how data is serialized (e.g. transactions).
 
 #### Returns
 
-\`0x02$\{string\}\` \| \`0x01$\{string\}\` \| \`0x03$\{string\}\` \| `TransactionSerializedLegacy` \| \`0x7e$\{string\}\`
+\`0x02$\{string\}\` \| \`0x01$\{string\}\` \| \`0x03$\{string\}\` \| \`0x04$\{string\}\` \| `TransactionSerializedLegacy` \| \`0x7e$\{string\}\`
 
 ### sourceId
 
@@ -544,12 +384,37 @@ Modifies how data is serialized (e.g. transactions).
 
 Source Chain ID (ie. the L1 chain)
 
+### supportsTransactionReplacementDetection?
+
+> `optional` **supportsTransactionReplacementDetection**: `boolean`
+
+Whether transaction replacement detection is supported.
+
+#### Default
+
+```ts
+true
+```
+
 ### testnet?
 
 > `optional` **testnet**: `boolean`
 
 Flag for test networks
 
+### transactionReplacement?
+
+> `optional` **transactionReplacement**: `ChainTransactionReplacement`
+
+Chain-specific transaction replacement semantics, used by
+`waitForTransactionReceipt`.
+
+### verifyHash?
+
+> `optional` **verifyHash**: `ChainVerifyHashFn`
+
+Chain-specific signature verification.
+
 ## Defined in
 
-[packages/viem/src/chains/mainnet.ts:318](https://github.com/ethereum-optimism/ecosystem/blob/a4b870454ce0f0a79a41dda7928a11b5c8946efc/packages/viem/src/chains/mainnet.ts#L318)
+[packages/viem/src/chains/mainnet.ts:293](https://github.com/ethereum-optimism/ecosystem/blob/dce63954ec565887eebd9760c7ff674d954c6387/packages/viem/src/chains/mainnet.ts#L293)
